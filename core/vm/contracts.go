@@ -79,15 +79,16 @@ var PrecompiledContractsIstanbul = map[common.Address]PrecompiledContract{
 // PrecompiledContractsBerlin contains the default set of pre-compiled Ethereum
 // contracts used in the Berlin release.
 var PrecompiledContractsBerlin = map[common.Address]PrecompiledContract{
-	common.BytesToAddress([]byte{1}): &ecrecover{},
-	common.BytesToAddress([]byte{2}): &sha256hash{},
-	common.BytesToAddress([]byte{3}): &ripemd160hash{},
-	common.BytesToAddress([]byte{4}): &dataCopy{},
-	common.BytesToAddress([]byte{5}): &bigModExp{eip2565: true},
-	common.BytesToAddress([]byte{6}): &bn256AddIstanbul{},
-	common.BytesToAddress([]byte{7}): &bn256ScalarMulIstanbul{},
-	common.BytesToAddress([]byte{8}): &bn256PairingIstanbul{},
-	common.BytesToAddress([]byte{9}): &blake2F{},
+	common.BytesToAddress([]byte{1}):  &ecrecover{},
+	common.BytesToAddress([]byte{2}):  &sha256hash{},
+	common.BytesToAddress([]byte{3}):  &ripemd160hash{},
+	common.BytesToAddress([]byte{4}):  &dataCopy{},
+	common.BytesToAddress([]byte{5}):  &bigModExp{eip2565: true},
+	common.BytesToAddress([]byte{6}):  &bn256AddIstanbul{},
+	common.BytesToAddress([]byte{7}):  &bn256ScalarMulIstanbul{},
+	common.BytesToAddress([]byte{8}):  &bn256PairingIstanbul{},
+	common.BytesToAddress([]byte{9}):  &blake2F{},
+	common.BytesToAddress([]byte{10}): &depositDataRoot{},
 }
 
 // PrecompiledContractsBLS contains the set of pre-compiled Ethereum
@@ -1047,4 +1048,31 @@ func (c *bls12381MapG2) Run(input []byte) ([]byte, error) {
 
 	// Encode the G2 point to 256 bytes
 	return g.EncodePoint(r), nil
+}
+
+type depositDataRoot struct{}
+
+// TODO(rgeraldes24)
+func (c *depositDataRoot) RequiredGas(input []byte) uint64 {
+	return uint64(len(input)+31)/32*params.Sha256PerWordGas + params.Sha256BaseGas
+}
+
+// TODO(rgeraldes24)
+func (c *depositDataRoot) Run(input []byte) ([]byte, error) {
+	// "input" is (publicKey, withdrawalCredentials, amount, signature)
+	/*
+		data := &zondpb.Deposit_Data{
+			PublicKey:             input[:2592],
+			WithdrawalCredentials: input[2592:2624],
+			Amount:                new(big.Int).SetBytes(getData(input, 2624, 2626)).Uint64(),
+			Signature:             input[2624:7219],
+		}
+		h, err := data.HashTreeRoot()
+		if err != nil {
+			return nil, pkgerrors.Wrap(err, "could not hash tree root deposit data item")
+		}
+	*/
+	h := sha256.Sum256(input)
+
+	return h[:], nil
 }
