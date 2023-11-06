@@ -22,12 +22,16 @@ import (
 	"errors"
 	"math/big"
 
+	pkgerrors "github.com/pkg/errors"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/crypto/blake2b"
 	"github.com/theQRL/go-zond/crypto/bls12381"
 	"github.com/theQRL/go-zond/crypto/bn256"
 	"github.com/theQRL/go-zond/params"
+
+	// TODO(rgeraldes24) - remove dep?
+	zondpb "github.com/theQRL/qrysm/v4/proto/prysm/v1alpha1"
 	"golang.org/x/crypto/ripemd160"
 )
 
@@ -1013,28 +1017,32 @@ func (c *bls12381MapG2) Run(input []byte) ([]byte, error) {
 // DEPOSITROOT implemented as a native contract.
 type depositroot struct{}
 
-// TODO(rgeraldes24)
 func (c *depositroot) RequiredGas(input []byte) uint64 {
-	//return params.DepositRootGas
-	return uint64(len(input)+31)/32*params.Sha256PerWordGas + params.Sha256BaseGas
+	// TODO(rgeraldes24)
+	return params.EcrecoverGas
 }
 
 // TODO(rgeraldes24)
 func (c *depositroot) Run(input []byte) ([]byte, error) {
-	// "input" is (publicKey, withdrawalCredentials, amount, signature)
-	/*
-		data := &zondpb.Deposit_Data{
-			PublicKey:             input[:2592],
-			WithdrawalCredentials: input[2592:2624],
-			Amount:                new(big.Int).SetBytes(getData(input, 2624, 2626)).Uint64(),
-			Signature:             input[2624:7219],
-		}
-		h, err := data.HashTreeRoot()
-		if err != nil {
-			return nil, pkgerrors.Wrap(err, "could not hash tree root deposit data item")
-		}
-	*/
-	h := sha256.Sum256(input)
+	const depositRootInputLength = 7251
+
+	input = common.RightPadBytes(input, depositRootInputLength)
+	// "input" is (pubkey, withdrawal_credentials, amount, signature)
+	// pubkey is 2592 bytes
+	// withdrawal_credentials is 32 bytes
+	// amount is 32 bytes
+	// signature is 4595 bytes
+
+	data := &zondpb.Deposit_Data{
+		PublicKey:             input[:2592],
+		WithdrawalCredentials: input[2592:2624],
+		Amount:                new(big.Int).SetBytes(getData(input, 2624, 32)).Uint64(),
+		Signature:             input[2656:7251],
+	}
+	h, err := data.HashTreeRoot()
+	if err != nil {
+		return nil, pkgerrors.Wrap(err, "could not hash tree root deposit data item")
+	}
 
 	return h[:], nil
 }
