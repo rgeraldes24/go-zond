@@ -23,15 +23,13 @@ import (
 	"math/big"
 
 	pkgerrors "github.com/pkg/errors"
+	ssz "github.com/prysmaticlabs/fastssz"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/crypto/blake2b"
 	"github.com/theQRL/go-zond/crypto/bls12381"
 	"github.com/theQRL/go-zond/crypto/bn256"
 	"github.com/theQRL/go-zond/params"
-
-	// TODO(rgeraldes24) - remove dep?
-	zondpb "github.com/theQRL/qrysm/v4/proto/prysm/v1alpha1"
 	"golang.org/x/crypto/ripemd160"
 )
 
@@ -1022,6 +1020,54 @@ func (c *depositroot) RequiredGas(input []byte) uint64 {
 	return params.EcrecoverGas
 }
 
+type depositdata struct {
+	PublicKey             []byte
+	WithdrawalCredentials []byte
+	Amount                uint64
+	Signature             []byte
+}
+
+// HashTreeRoot ssz hashes the Deposit_Data object
+func (d *depositdata) HashTreeRoot() ([32]byte, error) {
+	return ssz.HashWithDefaultHasher(d)
+}
+
+// HashTreeRootWith ssz hashes the Deposit_Data object with a hasher
+func (d *depositdata) HashTreeRootWith(hh *ssz.Hasher) (err error) {
+	indx := hh.Index()
+
+	// Field (0) 'Pubkey'
+	if size := len(d.PublicKey); size != 2592 {
+		err = ssz.ErrBytesLengthFn("--.Pubkey", size, 2592)
+		return
+	}
+	hh.PutBytes(d.PublicKey)
+
+	// Field (1) 'WithdrawalCredentials'
+	if size := len(d.WithdrawalCredentials); size != 32 {
+		err = ssz.ErrBytesLengthFn("--.WithdrawalCredentials", size, 32)
+		return
+	}
+	hh.PutBytes(d.WithdrawalCredentials)
+
+	// Field (2) 'Amount'
+	hh.PutUint64(d.Amount)
+
+	// Field (3) 'Signature'
+	if size := len(d.Signature); size != 4595 {
+		err = ssz.ErrBytesLengthFn("--.Signature", size, 4595)
+		return
+	}
+	hh.PutBytes(d.Signature)
+
+	if ssz.EnableVectorizedHTR {
+		hh.MerkleizeVectorizedHTR(indx)
+	} else {
+		hh.Merkleize(indx)
+	}
+	return
+}
+
 // TODO(rgeraldes24)
 func (c *depositroot) Run(input []byte) ([]byte, error) {
 	const depositRootInputLength = 7251
@@ -1033,7 +1079,7 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 	// amount is 32 bytes
 	// signature is 4595 bytes
 
-	data := &zondpb.Deposit_Data{
+	data := &depositdata{
 		PublicKey:             input[:2592],
 		WithdrawalCredentials: input[2592:2624],
 		Amount:                new(big.Int).SetBytes(getData(input, 2624, 32)).Uint64(),
