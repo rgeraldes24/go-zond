@@ -1083,8 +1083,12 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 
 	fmt.Println(hex.EncodeToString(input[160:2752]))
 	fmt.Println(hex.EncodeToString(input[2784:2816]))
-	fmt.Println(hex.EncodeToString(input[2816:2944]))
-	fmt.Println(hex.EncodeToString(input[2944:7539]))
+	fmt.Println(hex.EncodeToString(input[2816:2912]))
+	fmt.Println(new(big.Int).SetBytes(getData(input, 2816, 32)).Uint64())
+	fmt.Println(new(big.Int).SetBytes(getData(input, 2816, 64)).Uint64())
+	fmt.Println(new(big.Int).SetBytes(getData(input, 2848, 32)).Uint64())
+	fmt.Println(new(big.Int).SetBytes(getData(input, 2848, 64)).Uint64())
+	fmt.Println(hex.EncodeToString(input[2912:7507]))
 
 	eth32Big, _ := new(big.Int).SetString("32000000000000000000", 10)
 	var amount uint64 = eth32Big.Uint64()
@@ -1093,12 +1097,13 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 		PublicKey:             input[160:2752],
 		WithdrawalCredentials: input[2784:2816],
 		Amount:                amount,
-		Signature:             input[2944:7539],
+		Signature:             input[2912:7507],
 	}
 	h, err := data.HashTreeRoot()
 	if err != nil {
 		return nil, pkgerrors.Wrap(err, "could not hash tree root deposit data item")
 	}
+	fmt.Println(hex.EncodeToString(h[:]))
 
 	return h[:], nil
 }
