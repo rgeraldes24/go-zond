@@ -1074,23 +1074,24 @@ func (d *depositdata) HashTreeRootWith(hh *ssz.Hasher) (err error) {
 func (c *depositroot) Run(input []byte) ([]byte, error) {
 	const depositRootInputLength = 7251
 
+	fmt.Println(hex.EncodeToString(input))
+
 	input = common.RightPadBytes(input, depositRootInputLength)
 	// "input" is (pubkey, withdrawal_credentials, amount, signature)
 	// pubkey is 2592 bytes
 	// withdrawal_credentials is 32 bytes
-	// amount is 32 bytes
 	// signature is 4595 bytes
 
-	fmt.Println(hex.EncodeToString(input[:2592]))
-	fmt.Println(hex.EncodeToString(input[2592:2624]))
-	fmt.Println(new(big.Int).SetBytes(getData(input, 2624, 32)).Uint64())
-	fmt.Println(input[2656:7251])
+	fmt.Println(hex.EncodeToString(input[320:2912]))
+	fmt.Println(hex.EncodeToString(input[2912:2944]))
+	fmt.Println(new(big.Int).SetBytes(getData(input, 2944, 32)).Uint64())
+	fmt.Println(hex.EncodeToString(input[2976:7251]))
 
 	data := &depositdata{
-		PublicKey:             input[:2592],
-		WithdrawalCredentials: input[2592:2624],
-		Amount:                new(big.Int).SetBytes(getData(input, 2624, 32)).Uint64(),
-		Signature:             input[2656:7251],
+		PublicKey:             input[320:2912],
+		WithdrawalCredentials: input[2912:2944],
+		Amount:                new(big.Int).SetBytes(getData(input, 2944, 32)).Uint64(),
+		Signature:             input[2976:7571],
 	}
 	h, err := data.HashTreeRoot()
 	if err != nil {
