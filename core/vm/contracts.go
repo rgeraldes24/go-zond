@@ -20,9 +20,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/binary"
-	"encoding/hex"
 	"errors"
-	"fmt"
 	"math/big"
 
 	pkgerrors "github.com/pkg/errors"
@@ -1082,17 +1080,12 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 	// withdrawal_credentials is 32 bytes
 	// signature is 4595 bytes
 
-	fmt.Println(hex.EncodeToString(input[160:2752]))
-	fmt.Println(hex.EncodeToString(input[2784:2816]))
-	fmt.Println(hex.EncodeToString(input[2816:2912]))
 	var amount uint64
 	buf := bytes.NewReader(getData(input, 2848, 32))
 	err := binary.Read(buf, binary.LittleEndian, &amount)
 	if err != nil {
-		fmt.Println("binary.Read failed:", err)
+		return nil, err
 	}
-	fmt.Println(amount)
-	fmt.Println(hex.EncodeToString(input[2912:7507]))
 
 	data := &depositdata{
 		PublicKey:             input[160:2752],
@@ -1104,7 +1097,6 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 	if err != nil {
 		return nil, pkgerrors.Wrap(err, "could not hash tree root deposit data item")
 	}
-	fmt.Println(hex.EncodeToString(h[:]))
 
 	return h[:], nil
 }
