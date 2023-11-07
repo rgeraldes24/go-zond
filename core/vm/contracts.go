@@ -1083,15 +1083,17 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 
 	fmt.Println(hex.EncodeToString(input[160:2752]))
 	fmt.Println(hex.EncodeToString(input[2784:2816]))
-	fmt.Printf("%x\n", new(big.Int).SetBytes(getData(input, 2816, 32)).Uint64())
-	fmt.Printf("%x\n", new(big.Int).SetBytes(getData(input, 2848, 32)).Uint64())
-	fmt.Println(hex.EncodeToString(input[2848:7443]))
+	fmt.Println(hex.EncodeToString(input[2816:2944]))
+	fmt.Println(hex.EncodeToString(input[2944:7539]))
+
+	eth32Big, _ := new(big.Int).SetString("32000000000000000000", 10)
+	var amount uint64 = eth32Big.Uint64()
 
 	data := &depositdata{
 		PublicKey:             input[160:2752],
 		WithdrawalCredentials: input[2784:2816],
-		Amount:                new(big.Int).SetBytes(getData(input, 2816, 32)).Uint64(),
-		Signature:             input[2848:7443],
+		Amount:                amount,
+		Signature:             input[2944:7539],
 	}
 	h, err := data.HashTreeRoot()
 	if err != nil {
