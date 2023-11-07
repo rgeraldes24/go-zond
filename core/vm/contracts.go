@@ -17,6 +17,7 @@
 package vm
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/binary"
 	"encoding/hex"
@@ -1084,14 +1085,14 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 	fmt.Println(hex.EncodeToString(input[160:2752]))
 	fmt.Println(hex.EncodeToString(input[2784:2816]))
 	fmt.Println(hex.EncodeToString(input[2816:2912]))
-	fmt.Println(new(big.Int).SetBytes(getData(input, 2816, 32)).Uint64())
-	fmt.Println(new(big.Int).SetBytes(getData(input, 2816, 64)).Uint64())
-	fmt.Println(new(big.Int).SetBytes(getData(input, 2848, 32)).Uint64())
-	fmt.Println(new(big.Int).SetBytes(getData(input, 2848, 64)).Uint64())
+	var amount uint64
+	buf := bytes.NewReader(getData(input, 2848, 32))
+	err := binary.Read(buf, binary.LittleEndian, &amount)
+	if err != nil {
+		fmt.Println("binary.Read failed:", err)
+	}
+	fmt.Println(amount)
 	fmt.Println(hex.EncodeToString(input[2912:7507]))
-
-	eth32Big, _ := new(big.Int).SetString("32000000000000000000", 10)
-	var amount uint64 = eth32Big.Uint64()
 
 	data := &depositdata{
 		PublicKey:             input[160:2752],
