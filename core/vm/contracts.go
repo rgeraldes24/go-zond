@@ -1085,13 +1085,13 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 	// signature is 4595 bytes
 
 	fmt.Println(hex.EncodeToString(input[160:2752]))
-	fmt.Println(hex.EncodeToString(input[2752:2784]))
-	fmt.Println(new(big.Int).SetBytes(getData(input, 2784, 32)).Uint64())
+	fmt.Println(hex.EncodeToString(input[2784:2816]))
+	fmt.Println(hex.EncodeToString(getData(input, 2784, 32)))
 	fmt.Println(hex.EncodeToString(input[2816:7411]))
 
 	data := &depositdata{
 		PublicKey:             input[160:2752],
-		WithdrawalCredentials: input[2752:2784],
+		WithdrawalCredentials: input[2784:2816],
 		Amount:                new(big.Int).SetBytes(getData(input, 2784, 32)).Uint64(),
 		Signature:             input[2816:7411],
 	}
