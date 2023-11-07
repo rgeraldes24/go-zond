@@ -19,7 +19,9 @@ package vm
 import (
 	"crypto/sha256"
 	"encoding/binary"
+	"encoding/hex"
 	"errors"
+	"fmt"
 	"math/big"
 
 	pkgerrors "github.com/pkg/errors"
@@ -1078,6 +1080,11 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 	// withdrawal_credentials is 32 bytes
 	// amount is 32 bytes
 	// signature is 4595 bytes
+
+	fmt.Println(hex.EncodeToString(input[:2592]))
+	fmt.Println(hex.EncodeToString(input[2592:2624]))
+	fmt.Println(new(big.Int).SetBytes(getData(input, 2624, 32)).Uint64())
+	fmt.Println(input[2656:7251])
 
 	data := &depositdata{
 		PublicKey:             input[:2592],
