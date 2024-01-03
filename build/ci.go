@@ -209,7 +209,7 @@ func doInstall(cmdline []string) {
 	}
 	// Disable CLI markdown doc generation in release builds and enable linking
 	// the CKZG library since we can make it portable here.
-	buildTags := []string{"urfave_cli_no_docs", "ckzg"}
+	buildTags := []string{"urfave_cli_no_docs"}
 
 	// Configure the build.
 	env := build.Env()
@@ -298,7 +298,7 @@ func doTest(cmdline []string) {
 		csdb := build.MustLoadChecksums("build/checksums.txt")
 		tc.Root = build.DownloadGo(csdb, dlgoVersion)
 	}
-	gotest := tc.Go("test", "-tags=ckzg")
+	gotest := tc.Go("test")
 
 	// Test a single package at a time. CI builders are slow
 	// and some tests run into timeouts under load.

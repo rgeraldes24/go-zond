@@ -16,13 +16,14 @@
 
 package types
 
+// TODO(rgeraldes24)
 import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"math/bits"
 
-	bls "github.com/protolambda/bls12-381-util"
+	// bls "github.com/protolambda/bls12-381-util"
 	"github.com/theQRL/go-zond/beacon/params"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
@@ -118,23 +119,26 @@ func (s *SerializedSyncCommittee) Root() common.Hash {
 
 // Deserialize splits open the pubkeys into proper BLS key types.
 func (s *SerializedSyncCommittee) Deserialize() (*SyncCommittee, error) {
-	sc := new(SyncCommittee)
-	for i := 0; i <= params.SyncCommitteeSize; i++ {
-		key := new(bls.Pubkey)
+	/*
+		sc := new(SyncCommittee)
+		for i := 0; i <= params.SyncCommitteeSize; i++ {
+			key := new(bls.Pubkey)
 
-		var bytes [params.BLSPubkeySize]byte
-		copy(bytes[:], s[i*params.BLSPubkeySize:(i+1)*params.BLSPubkeySize])
+			var bytes [params.BLSPubkeySize]byte
+			copy(bytes[:], s[i*params.BLSPubkeySize:(i+1)*params.BLSPubkeySize])
 
-		if err := key.Deserialize(&bytes); err != nil {
-			return nil, err
+			if err := key.Deserialize(&bytes); err != nil {
+				return nil, err
+			}
+			if i < params.SyncCommitteeSize {
+				sc.keys[i] = key
+			} else {
+				sc.aggregate = key
+			}
 		}
-		if i < params.SyncCommitteeSize {
-			sc.keys[i] = key
-		} else {
-			sc.aggregate = key
-		}
-	}
-	return sc, nil
+		return sc, nil
+	*/
+	return nil, nil
 }
 
 // SyncCommittee is a set of sync committee signer pubkeys and the aggregate key.
@@ -142,26 +146,29 @@ func (s *SerializedSyncCommittee) Deserialize() (*SyncCommittee, error) {
 // See data structure definition here:
 // https://github.com/ethereum/consensus-specs/blob/dev/specs/altair/beacon-chain.md#syncaggregate
 type SyncCommittee struct {
-	keys      [params.SyncCommitteeSize]*bls.Pubkey
-	aggregate *bls.Pubkey
+	keys [params.SyncCommitteeSize][]byte
+	// aggregate *bls.Pubkey
 }
 
 // VerifySignature returns true if the given sync aggregate is a valid signature
 // or the given hash.
 func (sc *SyncCommittee) VerifySignature(signingRoot common.Hash, signature *SyncAggregate) bool {
-	var (
-		sig  bls.Signature
-		keys = make([]*bls.Pubkey, 0, params.SyncCommitteeSize)
-	)
-	if err := sig.Deserialize(&signature.Signature); err != nil {
-		return false
-	}
-	for i, key := range sc.keys {
-		if signature.Signers[i/8]&(byte(1)<<(i%8)) != 0 {
-			keys = append(keys, key)
+	/*
+		var (
+			sig  bls.Signature
+			keys = make([]*bls.Pubkey, 0, params.SyncCommitteeSize)
+		)
+		if err := sig.Deserialize(&signature.Signature); err != nil {
+			return false
 		}
-	}
-	return bls.FastAggregateVerify(keys, signingRoot[:], &sig)
+		for i, key := range sc.keys {
+			if signature.Signers[i/8]&(byte(1)<<(i%8)) != 0 {
+				keys = append(keys, key)
+			}
+		}
+		return bls.FastAggregateVerify(keys, signingRoot[:], &sig)
+	*/
+	return true
 }
 
 //go:generate go run github.com/fjl/gencodec -type SyncAggregate -field-override syncAggregateMarshaling -out gen_syncaggregate_json.go

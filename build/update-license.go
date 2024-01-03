@@ -70,7 +70,6 @@ var (
 		"consensus/ethash/xor.go",
 		"crypto/blake2b/",
 		"crypto/bn256/",
-		"crypto/bls12381/",
 		"crypto/ecies/",
 		"graphql/graphiql.go",
 		"internal/jsre/deps",
