@@ -51,8 +51,9 @@ jobs:
           platform: "linux-amd64"
   
   publish-linux-arm64-gzond-binary:
-    docker:
-      - image: cimg/go:1.20
+    machine:
+      image: ubuntu-2004:current
+    resource_class: medium
     steps:
       - checkout
       - restore_cache:
@@ -66,7 +67,7 @@ jobs:
             - /home/circleci/go/pkg/mod
       - run: |
           sudo -E apt-get -yq --no-install-suggests --no-install-recommends --force-yes install gcc-arm-linux-gnueabi libc6-dev-armel-cross gcc-arm-linux-gnueabihf libc6-dev-armhf-cross gcc-aarch64-linux-gnu libc6-dev-arm64-cross
-          go run build/ci.go install -arch arm -cc arm-linux-gnueabi-gcc
+          go run build/ci.go install -dlgo -arch arm -cc arm-linux-gnueabi-gcc
       - prepare-publish-artifacts:
           platform: "linux-arm64"
           
