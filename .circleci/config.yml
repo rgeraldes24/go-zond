@@ -83,7 +83,7 @@ jobs:
     steps:
       - checkout
       - run: |
-          brew install go@1.21
+          brew install go
       - *restore_go_cache
       - run:
           command: go mod download
