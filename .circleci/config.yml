@@ -50,10 +50,10 @@ jobs:
       - image: cimg/go:1.20
     steps:
       - checkout
-      - restore_go_cache
+      - *restore_go_cache
       - run:
           command: go mod download
-      - save_go_cache
+      - *save_go_cache
       - run: |
           go run build/ci.go install ./cmd/gzond
       - prepare-publish-artifacts:
@@ -65,10 +65,10 @@ jobs:
     resource_class: arm.medium
     steps:
       - checkout
-      - restore_go_cache
+      - *restore_go_cache
       - run:
           command: go mod download
-      - save_go_cache
+      - *save_go_cache
       - run: |
           go run build/ci.go install -dlgo
       - prepare-publish-artifacts:
@@ -80,10 +80,10 @@ jobs:
     resource_class: macos.x86.medium.gen2
     steps:
       - checkout
-      - restore_go_cache
+      - *restore_go_cache
       - run:
           command: go mod download
-      - save_go_cache
+      - *save_go_cache
       - run: |
           go run build/ci.go install -dlgo
       - prepare-publish-artifacts:
