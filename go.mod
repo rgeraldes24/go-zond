@@ -125,7 +125,7 @@ require (
 	github.com/prometheus/client_model v0.2.1-0.20210607210712-147c58e9608a // indirect
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
-	github.com/prysmaticlabs/gohashtree v0.0.0-20220517220438-192ee5ae6982 // indirect
+	github.com/prysmaticlabs/gohashtree v0.0.3-alpha // indirect
 	github.com/rogpeppe/go-internal v1.6.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
@@ -138,5 +138,3 @@ require (
 	gotest.tools/v3 v3.5.0 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
-
-replace github.com/ipfs/go-mfs v0.1.3-0.20210507195338-96fbfa122164 => github.com/ipfs/go-mfs v0.2.2
