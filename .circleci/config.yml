@@ -45,7 +45,7 @@ jobs:
           key: go-mod-{{ checksum "go.sum" }}
           paths:
             - /home/circleci/go/pkg/mod
-      - steps: |
+      - run: |
           go run build/ci.go install ./cmd/gzond
       - prepare-publish-artifacts:
           platform: "linux-amd64"
