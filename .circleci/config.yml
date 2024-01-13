@@ -94,17 +94,17 @@ jobs:
       - run: 
           command: go run build/ci.go install ./cmd/gzond
       - prepare-publish-artifacts:
-          platform: "linux-arm64"
+          platform: "darwin-amd64"
           
 workflows:
   release:
     jobs:
       - publish-linux-amd64-gzond-binary
-          # filters:
-          #   <<: *filters-release
+          filters:
+            <<: *filters-release
       - publish-linux-arm64-gzond-binary
-          # filters:
-          #   <<: *filters-release
+          filters:
+            <<: *filters-release
       - publish-darwin-amd64-gzond-binary
-          # filters:
-          #   <<: *filters-release
+          filters:
+            <<: *filters-release
