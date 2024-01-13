@@ -57,6 +57,7 @@ func (env Environment) String() string {
 // Env returns metadata about the current CI environment, falling back to LocalEnv
 // if not running on CI.
 func Env() Environment {
+	// TODO(rgeraldes24)
 	switch {
 	case os.Getenv("CI") == "true" && os.Getenv("TRAVIS") == "true":
 		commit := os.Getenv("TRAVIS_PULL_REQUEST_SHA")
