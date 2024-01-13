@@ -7,6 +7,20 @@ filters-release: &filters-release
   branches:
     ignore: /.*/
 
+restore_go_cache: &restore_go_cache
+  restore_cache:
+    keys:
+      - go-mod-{{ checksum "go.sum" }}-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ .Revision }}
+      - go-mod-{{ checksum "go.sum" }}-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}
+      - go-mod-{{ checksum "go.sum" }}-{{ .Environment.CIRCLE_JOB }}-main
+
+save_go_cache: &save_go_cache
+  save_cache:
+    when: always
+    key: go-mod-{{ checksum "go.sum" }}-{{ .Environment.CIRCLE_JOB }}-{{ .Branch }}-{{ .Revision }}
+    paths:
+      - /home/circleci/go/pkg/mod
+
 commands:
   prepare-publish-artifacts:
     parameters:
@@ -36,15 +50,10 @@ jobs:
       - image: cimg/go:1.20
     steps:
       - checkout
-      - restore_cache:
-          key: go-mod-{{ checksum "go.sum" }}
+      - restore_go_cache
       - run:
-          name: Download Go modules
           command: go mod download
-      - save_cache:
-          key: go-mod-{{ checksum "go.sum" }}
-          paths:
-            - /home/circleci/go/pkg/mod
+      - save_go_cache
       - run: |
           go run build/ci.go install ./cmd/gzond
       - prepare-publish-artifacts:
@@ -56,15 +65,25 @@ jobs:
     resource_class: arm.medium
     steps:
       - checkout
-      - restore_cache:
-          key: go-mod-{{ checksum "go.sum" }}
+      - restore_go_cache
       - run:
-          name: Download Go modules
           command: go mod download
-      - save_cache:
-          key: go-mod-{{ checksum "go.sum" }}
-          paths:
-            - /home/circleci/go/pkg/mod
+      - save_go_cache
+      - run: |
+          go run build/ci.go install -dlgo
+      - prepare-publish-artifacts:
+          platform: "linux-arm64"
+
+  publish-darwin-amd64-beacon-chain-binary:
+    macos:
+      xcode: 14.2.0
+    resource_class: macos.x86.medium.gen2
+    steps:
+      - checkout
+      - restore_go_cache
+      - run:
+          command: go mod download
+      - save_go_cache
       - run: |
           go run build/ci.go install -dlgo
       - prepare-publish-artifacts:
@@ -73,18 +92,12 @@ jobs:
 workflows:
   release:
     jobs:
-      #- publish-linux-amd64-gzond-binary
+      - publish-linux-amd64-gzond-binary
           # filters:
           #   <<: *filters-release
       - publish-linux-arm64-gzond-binary
-      #     filters:
-      #       <<: *filters-release
-      # - publish-darwin-amd64-gzond-binary:
-      #     filters:
-      #       <<: *filters-release
-      # - publish-darwin-arm64-gzond-binary:
-      #     filters:
-      #       <<: *filters-release
-      # - publish-windows-amd64-gzond-binary:
-      #     filters: 
-      #       <<: *filters-release
+          # filters:
+          #   <<: *filters-release
+      - publish-darwin-amd64-gzond-binary
+          # filters:
+          #   <<: *filters-release
