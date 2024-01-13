@@ -54,7 +54,7 @@ jobs:
 workflows:
   release:
     jobs:
-      - publish-linux-amd64-gzond-binary:
+      - publish-linux-amd64-gzond-binary
           # filters:
           #   <<: *filters-release
       # - publish-linux-arm64-gzond-binary:
