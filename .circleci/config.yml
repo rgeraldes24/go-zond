@@ -70,7 +70,7 @@ jobs:
           command: go mod download
       - *save_go_cache
       - run: |
-          go run build/ci.go install
+          go run build/ci.go install ./cmd/gzond
       - prepare-publish-artifacts:
           platform: "linux-arm64"
 
@@ -78,18 +78,20 @@ jobs:
     macos:
       xcode: 14.2.0
     resource_class: macos.x86.medium.gen2
+    # NOTE(rgeraldes24): currently relying on auto update to have the latest
+    # versions of golang available but this can be achieved in other ways!
     #environment:
     #  HOMEBREW_NO_AUTO_UPDATE: 1
     steps:
       - checkout
       - run: |
-          brew install go
+          brew install go@1.20
       - *restore_go_cache
       - run:
           command: go mod download
       - *save_go_cache
       - run: |
-          go run build/ci.go install
+          go run build/ci.go install ./cmd/gzond
       - prepare-publish-artifacts:
           platform: "linux-arm64"
           
