@@ -49,14 +49,33 @@ jobs:
           go run build/ci.go install ./cmd/gzond
       - prepare-publish-artifacts:
           platform: "linux-amd64"
+  
+  publish-linux-arm64-gzond-binary:
+    docker:
+      - image: cimg/go:1.20
+    steps:
+      - checkout
+      - restore_cache:
+          key: go-mod-{{ checksum "go.sum" }}
+      - run:
+          name: Download Go modules
+          command: go mod download
+      - save_cache:
+          key: go-mod-{{ checksum "go.sum" }}
+          paths:
+            - /home/circleci/go/pkg/mod
+      - run: |
+          go run build/ci.go install -dlgo -arch arm -cc arm-linux-gnueabi-gcc
+      - prepare-publish-artifacts:
+          platform: "linux-arm64"
           
 workflows:
   release:
     jobs:
-      - publish-linux-amd64-gzond-binary
+      #- publish-linux-amd64-gzond-binary
           # filters:
           #   <<: *filters-release
-      # - publish-linux-arm64-gzond-binary:
+      - publish-linux-arm64-gzond-binary
       #     filters:
       #       <<: *filters-release
       # - publish-darwin-amd64-gzond-binary:
