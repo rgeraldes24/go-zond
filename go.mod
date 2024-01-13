@@ -138,3 +138,5 @@ require (
 	gotest.tools/v3 v3.5.0 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
+
+replace github.com/ipfs/go-mfs v0.1.3-0.20210507195338-96fbfa122164 => github.com/ipfs/go-mfs v0.2.2
