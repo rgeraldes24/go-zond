@@ -7,9 +7,6 @@ filters-release: &filters-release
   branches:
     ignore: /.*/
 
-orbs:
-  go: circleci/go@1.7.3
-
 commands:
   prepare-publish-artifacts:
     parameters:
@@ -35,17 +32,19 @@ commands:
 
 jobs:
   publish-linux-amd64-gzond-binary:
-    executor:
-      name: go/default
-      tag: '1.20.13'
-    machine:
-      image: ubuntu-2004:current
-    resource_class: medium
+    docker:
+      - image: cimg/go:1.20
     steps:
       - checkout
-      - go/load-cache 
-      - go/mod-download
-      - go/save-cache
+      - restore_cache:
+          key: go-mod-{{ checksum "go.sum" }}
+      - run:
+          name: Download Go modules
+          command: go mod download
+      - save_cache:
+          key: go-mod-{{ checksum "go.sum" }}
+          paths:
+            - /home/circleci/go/pkg/mod
       - steps: |
           go run build/ci.go install ./cmd/gzond
       - prepare-publish-artifacts:
