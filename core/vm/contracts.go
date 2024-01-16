@@ -237,6 +237,7 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 			return nil, errDepositRootInvalidInputLength
 		}
 	*/
+	fmt.Println(len(input))
 
 	var (
 		pubKey = input[:2592]     // 2592 bytes
@@ -244,6 +245,11 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 		amount = input[2624:2656] // 32 bytes
 		sig    = input[2656:7251] // 4595 bytes
 	)
+
+	fmt.Println(pubKey)
+	fmt.Println(creds)
+	fmt.Println(amount)
+	fmt.Println(sig)
 
 	var amountUint64 uint64
 	buf := bytes.NewReader(amount)
