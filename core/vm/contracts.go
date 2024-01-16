@@ -242,7 +242,6 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 		amount = input[2624:2632] // 8 bytes
 		sig    = input[2632:7227] // 4595 bytes
 	)
-	fmt.Println(amount)
 
 	var amountUint64 uint64
 	buf := bytes.NewReader(amount)
