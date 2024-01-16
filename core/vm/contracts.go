@@ -239,8 +239,8 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 	var (
 		pubKey = input[:2592]     // 2592 bytes
 		creds  = input[2592:2624] // 32 bytes
-		amount = input[2624:2656] // 8 bytes
-		sig    = input[2656:7251] // 4595 bytes
+		amount = input[2624:2632] // 8 bytes
+		sig    = input[2632:7227] // 4595 bytes
 	)
 	fmt.Println(amount)
 
