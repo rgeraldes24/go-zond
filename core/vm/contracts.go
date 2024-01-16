@@ -231,28 +231,32 @@ func (c *depositroot) RequiredGas(input []byte) uint64 {
 	return params.DepositrootGas
 }
 
-// TODO(rgeraldes24): assess why extra bytes are being added
 func (c *depositroot) Run(input []byte) ([]byte, error) {
-	const depositRootInputLength = 7508 // 7251 in the correct version
-	input = common.RightPadBytes(input, depositRootInputLength)
-	// "input" is (pubkey, withdrawal_credentials, amount, signature)
-	// pubkey is 2592 bytes
-	// withdrawal_credentials is 32 bytes
-	// signature is 4595 bytes
+	/*
+		if len(input) != 7251 {
+			return nil, errDepositRootInvalidInputLength
+		}
+	*/
 
-	var amount uint64
+	var (
+		pubKey = input[:2592]     // 2592 bytes
+		creds  = input[2592:2624] // 32 bytes
+		amount = input[2624:2656] // 32 bytes
+		sig    = input[2656:7251] // 4595 bytes
+	)
 
-	buf := bytes.NewReader(input[2848:2880])
-	err := binary.Read(buf, binary.LittleEndian, &amount)
+	var amountUint64 uint64
+	buf := bytes.NewReader(amount)
+	err := binary.Read(buf, binary.LittleEndian, &amountUint64)
 	if err != nil {
 		return nil, err
 	}
 
 	data := &depositdata{
-		PublicKey:             input[160:2752],  // 2592 bytes
-		WithdrawalCredentials: input[2784:2816], // 32 bytes
-		Amount:                amount,           // 32 bytes
-		Signature:             input[2912:7507], // 4595 bytes
+		PublicKey:             pubKey,
+		WithdrawalCredentials: creds,
+		Amount:                amountUint64,
+		Signature:             sig,
 	}
 	h, err := data.HashTreeRoot()
 	if err != nil {
@@ -742,6 +746,7 @@ func (c *blake2F) Run(input []byte) ([]byte, error) {
 }
 
 var (
+	errDepositRootInvalidInputLength       = errors.New("invalid input length")
 	errBLS12381InvalidInputLength          = errors.New("invalid input length")
 	errBLS12381InvalidFieldElementTopBytes = errors.New("invalid field element top bytes")
 	errBLS12381G1PointSubgroup             = errors.New("g1 point is not on correct subgroup")
