@@ -17,14 +17,12 @@
 package vm
 
 import (
-	"bytes"
 	"crypto/sha256"
 	"encoding/binary"
 	"errors"
 	"fmt"
 	"math/big"
 
-	pkgerrors "github.com/pkg/errors"
 	ssz "github.com/prysmaticlabs/fastssz"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
@@ -233,33 +231,39 @@ func (c *depositroot) RequiredGas(input []byte) uint64 {
 
 // TODO(rgeraldes24): assess why extra bytes are being added
 func (c *depositroot) Run(input []byte) ([]byte, error) {
-	const depositRootInputLength = 7508 // 7251 in the correct version
-	input = common.RightPadBytes(input, depositRootInputLength)
-	// "input" is (pubkey, withdrawal_credentials, amount, signature)
-	// pubkey is 2592 bytes
-	// withdrawal_credentials is 32 bytes
-	// signature is 4595 bytes
+	/*
+		const depositRootInputLength = 7508 // 7251 in the correct version
+		input = common.RightPadBytes(input, depositRootInputLength)
+		// "input" is (pubkey, withdrawal_credentials, amount, signature)
+		// pubkey is 2592 bytes
+		// withdrawal_credentials is 32 bytes
+		// signature is 4595 bytes
 
-	var amount uint64
+		var amount uint64
 
-	buf := bytes.NewReader(input[2848:2880])
-	err := binary.Read(buf, binary.LittleEndian, &amount)
-	if err != nil {
-		return nil, err
-	}
+		buf := bytes.NewReader(input[2848:2880])
+		err := binary.Read(buf, binary.LittleEndian, &amount)
+		if err != nil {
+			return nil, err
+		}
 
-	data := &depositdata{
-		PublicKey:             input[160:2752],  // 2592 bytes
-		WithdrawalCredentials: input[2784:2816], // 32 bytes
-		Amount:                amount,           // 32 bytes
-		Signature:             input[2912:7507], // 4595 bytes
-	}
-	h, err := data.HashTreeRoot()
-	if err != nil {
-		return nil, pkgerrors.Wrap(err, "could not hash tree root deposit data item")
-	}
+		data := &depositdata{
+			PublicKey:             input[160:2752],  // 2592 bytes
+			WithdrawalCredentials: input[2784:2816], // 32 bytes
+			Amount:                amount,           // 32 bytes
+			Signature:             input[2912:7507], // 4595 bytes
+		}
+		h, err := data.HashTreeRoot()
+		if err != nil {
+			return nil, pkgerrors.Wrap(err, "could not hash tree root deposit data item")
+		}
 
-	return h[:], nil
+		return h[:], nil
+	*/
+
+	fmt.Println(len(input))
+	fmt.Println(input)
+	return []byte("test"), nil
 }
 
 type depositdata struct {
