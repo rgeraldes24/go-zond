@@ -232,24 +232,17 @@ func (c *depositroot) RequiredGas(input []byte) uint64 {
 }
 
 func (c *depositroot) Run(input []byte) ([]byte, error) {
-	/*
-		if len(input) != 7251 {
-			return nil, errDepositRootInvalidInputLength
-		}
-	*/
-	fmt.Println(len(input))
+	if len(input) != 7227 {
+		return nil, errors.New("invalid input length")
+	}
 
 	var (
 		pubKey = input[:2592]     // 2592 bytes
 		creds  = input[2592:2624] // 32 bytes
-		amount = input[2624:2656] // 32 bytes
+		amount = input[2624:2656] // 8 bytes
 		sig    = input[2656:7251] // 4595 bytes
 	)
-
-	fmt.Println(pubKey)
-	fmt.Println(creds)
 	fmt.Println(amount)
-	fmt.Println(sig)
 
 	var amountUint64 uint64
 	buf := bytes.NewReader(amount)
@@ -752,7 +745,6 @@ func (c *blake2F) Run(input []byte) ([]byte, error) {
 }
 
 var (
-	errDepositRootInvalidInputLength       = errors.New("invalid input length")
 	errBLS12381InvalidInputLength          = errors.New("invalid input length")
 	errBLS12381InvalidFieldElementTopBytes = errors.New("invalid field element top bytes")
 	errBLS12381G1PointSubgroup             = errors.New("g1 point is not on correct subgroup")
