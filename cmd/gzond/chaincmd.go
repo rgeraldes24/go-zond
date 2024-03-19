@@ -95,7 +95,6 @@ if one is set.  Otherwise it prints the genesis from the datadir.`,
 			utils.MetricsInfluxDBTokenFlag,
 			utils.MetricsInfluxDBBucketFlag,
 			utils.MetricsInfluxDBOrganizationFlag,
-			utils.TxLookupLimitFlag,
 			utils.TransactionHistoryFlag,
 			utils.StateSchemeFlag,
 			utils.StateHistoryFlag,
@@ -197,7 +196,7 @@ func initGenesis(ctx *cli.Context) error {
 	stack, _ := makeConfigNode(ctx)
 	defer stack.Close()
 
-	for _, name := range []string{"chaindata", "lightchaindata"} {
+	for _, name := range []string{"chaindata"} {
 		chaindb, err := stack.OpenDatabaseWithFreezer(name, 0, 0, ctx.String(utils.AncientFlag.Name), "", false)
 		if err != nil {
 			utils.Fatalf("Failed to open database: %v", err)
@@ -227,7 +226,7 @@ func dumpGenesis(ctx *cli.Context) error {
 	}
 	// dump whatever already exists in the datadir
 	stack, _ := makeConfigNode(ctx)
-	for _, name := range []string{"chaindata", "lightchaindata"} {
+	for _, name := range []string{"chaindata"} {
 		db, err := stack.OpenDatabase(name, 0, 0, "", true)
 		if err != nil {
 			if !os.IsNotExist(err) {

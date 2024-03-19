@@ -37,6 +37,7 @@ import (
 	"github.com/theQRL/go-zond/consensus/ethash"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/types"
+	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/crypto/kzg4844"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/miner"
@@ -61,14 +62,12 @@ var (
 	testBalance = big.NewInt(2e18)
 )
 
-func generateMergeChain(n int, merged bool) (*core.Genesis, []*types.Block) {
+func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 	config := *params.AllEthashProtocolChanges
 	engine := consensus.Engine(beaconConsensus.New(ethash.NewFaker()))
-	if merged {
-		config.TerminalTotalDifficulty = common.Big0
-		config.TerminalTotalDifficultyPassed = true
-		engine = beaconConsensus.NewFaker()
-	}
+	config.TerminalTotalDifficulty = common.Big0
+	config.TerminalTotalDifficultyPassed = true
+	engine = beaconConsensus.NewFaker()
 	genesis := &core.Genesis{
 		Config: &config,
 		Alloc: core.GenesisAlloc{
@@ -89,14 +88,6 @@ func generateMergeChain(n int, merged bool) (*core.Genesis, []*types.Block) {
 		testNonce++
 	}
 	_, blocks, _ := core.GenerateChainWithGenesis(genesis, engine, n, generate)
-
-	if !merged {
-		totalDifficulty := big.NewInt(0)
-		for _, b := range blocks {
-			totalDifficulty.Add(totalDifficulty, b.Difficulty())
-		}
-		config.TerminalTotalDifficulty = totalDifficulty
-	}
 
 	return genesis, blocks
 }
