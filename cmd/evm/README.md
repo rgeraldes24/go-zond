@@ -96,7 +96,6 @@ type Env struct {
     ParentGasLimit    uint64             `json:"parentGasLimit"`
     ParentTimestamp   uint64             `json:"parentTimestamp"`
     BlockHashes       map[uint64]common.Hash `json:"blockHashes"`
-    ParentUncleHash   common.Hash        `json:"parentUncleHash"`
     Ommers            []Ommer            `json:"ommers"`
 }
 type Ommer struct {
@@ -549,7 +548,6 @@ The `header` object is a consensus header.
 ```go=
 type Header struct {
         ParentHash  common.Hash       `json:"parentHash"`
-        OmmerHash   *common.Hash      `json:"sha3Uncles"`
         Coinbase    *common.Address   `json:"miner"`
         Root        common.Hash       `json:"stateRoot"         gencodec:"required"`
         TxHash      *common.Hash      `json:"transactionsRoot"`

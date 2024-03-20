@@ -246,9 +246,6 @@ const schema string = `
         # OmmerAt returns the ommer (AKA uncle) at the specified index. If ommers
         # are unavailable, or the index is out of bounds, this field will be null.
         ommerAt(index: Long!): Block
-        # OmmerHash is the keccak256 hash of all the ommers (AKA uncles)
-        # associated with this block.
-        ommerHash: Bytes32!
         # Transactions is a list of transactions associated with this block. If
         # transactions are unavailable for this block, this field will be null.
         transactions: [Transaction!]

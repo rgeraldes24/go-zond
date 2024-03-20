@@ -56,8 +56,6 @@ func (e ExecutableData) MarshalJSON() ([]byte, error) {
 		}
 	}
 	enc.Withdrawals = e.Withdrawals
-	enc.BlobGasUsed = (*hexutil.Uint64)(e.BlobGasUsed)
-	enc.ExcessBlobGas = (*hexutil.Uint64)(e.ExcessBlobGas)
 	return json.Marshal(&enc)
 }
 
@@ -147,12 +145,6 @@ func (e *ExecutableData) UnmarshalJSON(input []byte) error {
 	}
 	if dec.Withdrawals != nil {
 		e.Withdrawals = dec.Withdrawals
-	}
-	if dec.BlobGasUsed != nil {
-		e.BlobGasUsed = (*uint64)(dec.BlobGasUsed)
-	}
-	if dec.ExcessBlobGas != nil {
-		e.ExcessBlobGas = (*uint64)(dec.ExcessBlobGas)
 	}
 	return nil
 }

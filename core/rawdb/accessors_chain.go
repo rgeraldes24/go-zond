@@ -24,7 +24,6 @@ import (
 	"math/big"
 
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/consensus/misc/eip4844"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/log"
@@ -645,12 +644,7 @@ func ReadReceipts(db zonddb.Reader, hash common.Hash, number uint64, time uint64
 	} else {
 		baseFee = header.BaseFee
 	}
-	// Compute effective blob gas price.
-	var blobGasPrice *big.Int
-	if header != nil && header.ExcessBlobGas != nil {
-		blobGasPrice = eip4844.CalcBlobFee(*header.ExcessBlobGas)
-	}
-	if err := receipts.DeriveFields(config, hash, number, time, baseFee, blobGasPrice, body.Transactions); err != nil {
+	if err := receipts.DeriveFields(config, hash, number, time, baseFee, body.Transactions); err != nil {
 		log.Error("Failed to derive block receipts fields", "hash", hash, "number", number, "err", err)
 		return nil
 	}
@@ -765,7 +759,7 @@ func ReadBlock(db zonddb.Reader, hash common.Hash, number uint64) *types.Block {
 	if body == nil {
 		return nil
 	}
-	return types.NewBlockWithHeader(header).WithBody(body.Transactions, body.Uncles).WithWithdrawals(body.Withdrawals)
+	return types.NewBlockWithHeader(header).WithBody(body.Transactions).WithWithdrawals(body.Withdrawals)
 }
 
 // WriteBlock serializes a block into the database, header and body separately.
@@ -775,9 +769,8 @@ func WriteBlock(db zonddb.KeyValueWriter, block *types.Block) {
 }
 
 // WriteAncientBlocks writes entire block data into ancient store and returns the total written size.
-func WriteAncientBlocks(db zonddb.AncientWriter, blocks []*types.Block, receipts []types.Receipts, td *big.Int) (int64, error) {
+func WriteAncientBlocks(db zonddb.AncientWriter, blocks []*types.Block, receipts []types.Receipts) (int64, error) {
 	var (
-		tdSum      = new(big.Int).Set(td)
 		stReceipts []*types.ReceiptForStorage
 	)
 	return db.ModifyAncients(func(op zonddb.AncientWriteOp) error {
@@ -788,10 +781,7 @@ func WriteAncientBlocks(db zonddb.AncientWriter, blocks []*types.Block, receipts
 				stReceipts = append(stReceipts, (*types.ReceiptForStorage)(receipt))
 			}
 			header := block.Header()
-			if i > 0 {
-				tdSum.Add(tdSum, header.Difficulty)
-			}
-			if err := writeAncientBlock(op, block, header, stReceipts, tdSum); err != nil {
+			if err := writeAncientBlock(op, block, header, stReceipts); err != nil {
 				return err
 			}
 		}
@@ -799,7 +789,7 @@ func WriteAncientBlocks(db zonddb.AncientWriter, blocks []*types.Block, receipts
 	})
 }
 
-func writeAncientBlock(op zonddb.AncientWriteOp, block *types.Block, header *types.Header, receipts []*types.ReceiptForStorage, td *big.Int) error {
+func writeAncientBlock(op zonddb.AncientWriteOp, block *types.Block, header *types.Header, receipts []*types.ReceiptForStorage) error {
 	num := block.NumberU64()
 	if err := op.AppendRaw(ChainFreezerHashTable, num, block.Hash().Bytes()); err != nil {
 		return fmt.Errorf("can't add block %d hash: %v", num, err)
@@ -812,9 +802,6 @@ func writeAncientBlock(op zonddb.AncientWriteOp, block *types.Block, header *typ
 	}
 	if err := op.Append(ChainFreezerReceiptTable, num, receipts); err != nil {
 		return fmt.Errorf("can't append block %d receipts: %v", num, err)
-	}
-	if err := op.Append(ChainFreezerDifficultyTable, num, td); err != nil {
-		return fmt.Errorf("can't append block %d total difficulty: %v", num, err)
 	}
 	return nil
 }
@@ -855,7 +842,7 @@ func ReadBadBlock(db zonddb.Reader, hash common.Hash) *types.Block {
 	}
 	for _, bad := range badBlocks {
 		if bad.Header.Hash() == hash {
-			return types.NewBlockWithHeader(bad.Header).WithBody(bad.Body.Transactions, bad.Body.Uncles).WithWithdrawals(bad.Body.Withdrawals)
+			return types.NewBlockWithHeader(bad.Header).WithBody(bad.Body.Transactions).WithWithdrawals(bad.Body.Withdrawals)
 		}
 	}
 	return nil
@@ -874,7 +861,7 @@ func ReadAllBadBlocks(db zonddb.Reader) []*types.Block {
 	}
 	var blocks []*types.Block
 	for _, bad := range badBlocks {
-		blocks = append(blocks, types.NewBlockWithHeader(bad.Header).WithBody(bad.Body.Transactions, bad.Body.Uncles).WithWithdrawals(bad.Body.Withdrawals))
+		blocks = append(blocks, types.NewBlockWithHeader(bad.Header).WithBody(bad.Body.Transactions).WithWithdrawals(bad.Body.Withdrawals))
 	}
 	return blocks
 }

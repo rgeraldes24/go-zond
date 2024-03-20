@@ -19,7 +19,6 @@ var _ = (*headerMarshaling)(nil)
 func (h header) MarshalJSON() ([]byte, error) {
 	type header struct {
 		ParentHash      common.Hash           `json:"parentHash"`
-		OmmerHash       *common.Hash          `json:"sha3Uncles"`
 		Coinbase        *common.Address       `json:"miner"`
 		Root            common.Hash           `json:"stateRoot"        gencodec:"required"`
 		TxHash          *common.Hash          `json:"transactionsRoot"`
@@ -38,7 +37,6 @@ func (h header) MarshalJSON() ([]byte, error) {
 	}
 	var enc header
 	enc.ParentHash = h.ParentHash
-	enc.OmmerHash = h.OmmerHash
 	enc.Coinbase = h.Coinbase
 	enc.Root = h.Root
 	enc.TxHash = h.TxHash
@@ -61,7 +59,6 @@ func (h header) MarshalJSON() ([]byte, error) {
 func (h *header) UnmarshalJSON(input []byte) error {
 	type header struct {
 		ParentHash      *common.Hash          `json:"parentHash"`
-		OmmerHash       *common.Hash          `json:"sha3Uncles"`
 		Coinbase        *common.Address       `json:"miner"`
 		Root            *common.Hash          `json:"stateRoot"        gencodec:"required"`
 		TxHash          *common.Hash          `json:"transactionsRoot"`
@@ -84,9 +81,6 @@ func (h *header) UnmarshalJSON(input []byte) error {
 	}
 	if dec.ParentHash != nil {
 		h.ParentHash = *dec.ParentHash
-	}
-	if dec.OmmerHash != nil {
-		h.OmmerHash = dec.OmmerHash
 	}
 	if dec.Coinbase != nil {
 		h.Coinbase = dec.Coinbase

@@ -28,7 +28,7 @@ import (
 	"github.com/theQRL/go-qrllib/dilithium"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
-	"github.com/theQRL/go-zond/consensus/misc"
+	"github.com/theQRL/go-zond/consensus/misc/eip1559"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/types"
@@ -276,8 +276,8 @@ func signUnsignedTransactions(txs []*txWithKey, signer types.Signer) (types.Tran
 	for i, tx := range txs {
 		var (
 			signature = tx.tx.RawSignatureValues()
-			signed  *types.Transaction
-			err     error
+			signed    *types.Transaction
+			err       error
 		)
 		if tx.key == nil || signature != nil {
 			// Already signed
@@ -370,51 +370,14 @@ func applyShanghaiChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 }
 
 func applyMergeChecks(env *stEnv, chainConfig *params.ChainConfig) error {
-	isMerged := chainConfig.TerminalTotalDifficulty != nil && chainConfig.TerminalTotalDifficulty.BitLen() == 0
-	if !isMerged {
-		// pre-merge: If difficulty was not provided by caller, we need to calculate it.
-		if env.Difficulty != nil {
-			// already set
-			return nil
-		}
-		switch {
-		case env.ParentDifficulty == nil:
-			return NewError(ErrorConfig, errors.New("currentDifficulty was not provided, and cannot be calculated due to missing parentDifficulty"))
-		case env.Number == 0:
-			return NewError(ErrorConfig, errors.New("currentDifficulty needs to be provided for block number 0"))
-		case env.Timestamp <= env.ParentTimestamp:
-			return NewError(ErrorConfig, fmt.Errorf("currentDifficulty cannot be calculated -- currentTime (%d) needs to be after parent time (%d)",
-				env.Timestamp, env.ParentTimestamp))
-		}
-		env.Difficulty = calcDifficulty(chainConfig, env.Number, env.Timestamp,
-			env.ParentTimestamp, env.ParentDifficulty, env.ParentUncleHash)
-		return nil
-	}
 	// post-merge:
 	// - random must be supplied
 	// - difficulty must be zero
 	switch {
 	case env.Random == nil:
 		return NewError(ErrorConfig, errors.New("post-merge requires currentRandom to be defined in env"))
-	case env.Difficulty != nil && env.Difficulty.BitLen() != 0:
-		return NewError(ErrorConfig, errors.New("post-merge difficulty must be zero (or omitted) in env"))
-	}
-	env.Difficulty = nil
-	return nil
 }
 
-func applyCancunChecks(env *stEnv, chainConfig *params.ChainConfig) error {
-	if !chainConfig.IsCancun(big.NewInt(int64(env.Number)), env.Timestamp) {
-		env.ParentBeaconBlockRoot = nil // un-set it if it has been set too early
-		return nil
-	}
-	// Post-cancun
-	// We require EIP-4788 beacon root to be set in the env
-	if env.ParentBeaconBlockRoot == nil {
-		return NewError(ErrorConfig, errors.New("post-cancun env requires parentBeaconBlockRoot to be set"))
-	}
-	return nil
-}
 
 type Alloc map[common.Address]core.GenesisAccount
 

@@ -43,7 +43,6 @@ func TestBlockEncoding(t *testing.T) {
 			t.Errorf("%s mismatch: got %v, want %v", f, got, want)
 		}
 	}
-	check("Difficulty", block.Difficulty(), big.NewInt(131072))
 	check("GasLimit", block.GasLimit(), uint64(3141592))
 	check("GasUsed", block.GasUsed(), uint64(21000))
 	check("Coinbase", block.Coinbase(), common.HexToAddress("8888f1f195afa192cfee860698584c030f4c9db1"))
@@ -80,7 +79,6 @@ func TestEIP1559BlockEncoding(t *testing.T) {
 		}
 	}
 
-	check("Difficulty", block.Difficulty(), big.NewInt(131072))
 	check("GasLimit", block.GasLimit(), uint64(3141592))
 	check("GasUsed", block.GasUsed(), uint64(21000))
 	check("Coinbase", block.Coinbase(), common.HexToAddress("8888f1f195afa192cfee860698584c030f4c9db1"))
@@ -144,7 +142,6 @@ func TestEIP2718BlockEncoding(t *testing.T) {
 			t.Errorf("%s mismatch: got %v, want %v", f, got, want)
 		}
 	}
-	check("Difficulty", block.Difficulty(), big.NewInt(131072))
 	check("GasLimit", block.GasLimit(), uint64(3141592))
 	check("GasUsed", block.GasUsed(), uint64(42000))
 	check("Coinbase", block.Coinbase(), common.HexToAddress("8888f1f195afa192cfee860698584c030f4c9db1"))
@@ -193,15 +190,6 @@ func TestEIP2718BlockEncoding(t *testing.T) {
 	}
 }
 
-func TestUncleHash(t *testing.T) {
-	uncles := make([]*Header, 0)
-	h := CalcUncleHash(uncles)
-	exp := common.HexToHash("1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347")
-	if h != exp {
-		t.Fatalf("empty uncle hash is wrong, got %x != %x", h, exp)
-	}
-}
-
 var benchBuffer = bytes.NewBuffer(make([]byte, 0, 32000))
 
 func BenchmarkEncodeBlock(b *testing.B) {
@@ -225,12 +213,11 @@ func makeBenchBlock() *Block {
 		uncles   = make([]*Header, 3)
 	)
 	header := &Header{
-		Difficulty: math.BigPow(11, 11),
-		Number:     math.BigPow(2, 9),
-		GasLimit:   12345678,
-		GasUsed:    1476322,
-		Time:       9876543,
-		Extra:      []byte("coolest block on chain"),
+		Number:   math.BigPow(2, 9),
+		GasLimit: 12345678,
+		GasUsed:  1476322,
+		Time:     9876543,
+		Extra:    []byte("coolest block on chain"),
 	}
 	for i := range txs {
 		amount := math.BigPow(2, int64(i))
@@ -246,12 +233,11 @@ func makeBenchBlock() *Block {
 	}
 	for i := range uncles {
 		uncles[i] = &Header{
-			Difficulty: math.BigPow(11, 11),
-			Number:     math.BigPow(2, 9),
-			GasLimit:   12345678,
-			GasUsed:    1476322,
-			Time:       9876543,
-			Extra:      []byte("benchmark uncle"),
+			Number:   math.BigPow(2, 9),
+			GasLimit: 12345678,
+			GasUsed:  1476322,
+			Time:     9876543,
+			Extra:    []byte("benchmark uncle"),
 		}
 	}
 	return NewBlock(header, txs, uncles, receipts, blocktest.NewHasher())
@@ -276,7 +262,6 @@ func TestRlpDecodeParentHash(t *testing.T) {
 	mainnetTd.SetString("5ad3c2c71bbff854908", 16)
 	if rlpData, err := rlp.EncodeToBytes(&Header{
 		ParentHash: want,
-		Difficulty: mainnetTd,
 		Number:     new(big.Int).SetUint64(math.MaxUint64),
 		Extra:      make([]byte, 65+32),
 		BaseFee:    new(big.Int).SetUint64(math.MaxUint64),

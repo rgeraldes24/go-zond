@@ -40,13 +40,11 @@ func (h Header) MarshalJSON() ([]byte, error) {
 	}
 	var enc Header
 	enc.ParentHash = h.ParentHash
-	enc.UncleHash = h.UncleHash
 	enc.Coinbase = h.Coinbase
 	enc.Root = h.Root
 	enc.TxHash = h.TxHash
 	enc.ReceiptHash = h.ReceiptHash
 	enc.Bloom = h.Bloom
-	enc.Difficulty = (*hexutil.Big)(h.Difficulty)
 	enc.Number = (*hexutil.Big)(h.Number)
 	enc.GasLimit = hexutil.Uint64(h.GasLimit)
 	enc.GasUsed = hexutil.Uint64(h.GasUsed)
@@ -56,9 +54,6 @@ func (h Header) MarshalJSON() ([]byte, error) {
 	enc.Nonce = h.Nonce
 	enc.BaseFee = (*hexutil.Big)(h.BaseFee)
 	enc.WithdrawalsHash = h.WithdrawalsHash
-	enc.BlobGasUsed = (*hexutil.Uint64)(h.BlobGasUsed)
-	enc.ExcessBlobGas = (*hexutil.Uint64)(h.ExcessBlobGas)
-	enc.ParentBeaconRoot = h.ParentBeaconRoot
 	enc.Hash = h.Hash()
 	return json.Marshal(&enc)
 }
@@ -95,10 +90,6 @@ func (h *Header) UnmarshalJSON(input []byte) error {
 		return errors.New("missing required field 'parentHash' for Header")
 	}
 	h.ParentHash = *dec.ParentHash
-	if dec.UncleHash == nil {
-		return errors.New("missing required field 'sha3Uncles' for Header")
-	}
-	h.UncleHash = *dec.UncleHash
 	if dec.Coinbase != nil {
 		h.Coinbase = *dec.Coinbase
 	}
@@ -120,10 +111,6 @@ func (h *Header) UnmarshalJSON(input []byte) error {
 	h.Bloom = *dec.Bloom
 	if dec.Difficulty == nil {
 		return errors.New("missing required field 'difficulty' for Header")
-	}
-	h.Difficulty = (*big.Int)(dec.Difficulty)
-	if dec.Number == nil {
-		return errors.New("missing required field 'number' for Header")
 	}
 	h.Number = (*big.Int)(dec.Number)
 	if dec.GasLimit == nil {
@@ -153,15 +140,6 @@ func (h *Header) UnmarshalJSON(input []byte) error {
 	}
 	if dec.WithdrawalsHash != nil {
 		h.WithdrawalsHash = dec.WithdrawalsHash
-	}
-	if dec.BlobGasUsed != nil {
-		h.BlobGasUsed = (*uint64)(dec.BlobGasUsed)
-	}
-	if dec.ExcessBlobGas != nil {
-		h.ExcessBlobGas = (*uint64)(dec.ExcessBlobGas)
-	}
-	if dec.ParentBeaconRoot != nil {
-		h.ParentBeaconRoot = dec.ParentBeaconRoot
 	}
 	return nil
 }

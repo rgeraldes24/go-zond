@@ -27,7 +27,6 @@ func (p PayloadAttributes) MarshalJSON() ([]byte, error) {
 	enc.Random = p.Random
 	enc.SuggestedFeeRecipient = p.SuggestedFeeRecipient
 	enc.Withdrawals = p.Withdrawals
-	enc.BeaconRoot = p.BeaconRoot
 	return json.Marshal(&enc)
 }
 
@@ -58,9 +57,6 @@ func (p *PayloadAttributes) UnmarshalJSON(input []byte) error {
 	p.SuggestedFeeRecipient = *dec.SuggestedFeeRecipient
 	if dec.Withdrawals != nil {
 		p.Withdrawals = dec.Withdrawals
-	}
-	if dec.BeaconRoot != nil {
-		p.BeaconRoot = dec.BeaconRoot
 	}
 	return nil
 }

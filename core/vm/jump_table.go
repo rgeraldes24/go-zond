@@ -56,7 +56,7 @@ var (
 	londonInstructionSet           = newLondonInstructionSet()
 	mergeInstructionSet            = newMergeInstructionSet()
 	shanghaiInstructionSet         = newShanghaiInstructionSet()
-	cancunInstructionSet           = newCancunInstructionSet()
+	// cancunInstructionSet           = newCancunInstructionSet()
 )
 
 // JumpTable contains the EVM opcodes supported at a given fork.
@@ -80,14 +80,14 @@ func validate(jt JumpTable) JumpTable {
 	return jt
 }
 
-func newCancunInstructionSet() JumpTable {
-	instructionSet := newShanghaiInstructionSet()
-	enable4844(&instructionSet) // EIP-4844 (DATAHASH opcode)
-	enable1153(&instructionSet) // EIP-1153 "Transient Storage"
-	enable5656(&instructionSet) // EIP-5656 (MCOPY opcode)
-	enable6780(&instructionSet) // EIP-6780 SELFDESTRUCT only in same transaction
-	return validate(instructionSet)
-}
+// func newCancunInstructionSet() JumpTable {
+// 	instructionSet := newShanghaiInstructionSet()
+// 	enable4844(&instructionSet) // EIP-4844 (DATAHASH opcode)
+// 	enable1153(&instructionSet) // EIP-1153 "Transient Storage"
+// 	enable5656(&instructionSet) // EIP-5656 (MCOPY opcode)
+// 	enable6780(&instructionSet) // EIP-6780 SELFDESTRUCT only in same transaction
+// 	return validate(instructionSet)
+// }
 
 func newShanghaiInstructionSet() JumpTable {
 	instructionSet := newMergeInstructionSet()
@@ -247,6 +247,7 @@ func newHomesteadInstructionSet() JumpTable {
 	return validate(instructionSet)
 }
 
+// TODO(rgeraldes24): move under shangai
 // newFrontierInstructionSet returns the frontier instructions
 // that can be executed during the frontier phase.
 func newFrontierInstructionSet() JumpTable {

@@ -38,7 +38,6 @@ import (
 //go:generate go run github.com/fjl/gencodec -type header -field-override headerMarshaling -out gen_header.go
 type header struct {
 	ParentHash      common.Hash       `json:"parentHash"`
-	OmmerHash       *common.Hash      `json:"sha3Uncles"`
 	Coinbase        *common.Address   `json:"miner"`
 	Root            common.Hash       `json:"stateRoot"        gencodec:"required"`
 	TxHash          *common.Hash      `json:"transactionsRoot"`
@@ -114,13 +113,11 @@ func (c *cliqueInput) UnmarshalJSON(input []byte) error {
 func (i *bbInput) ToBlock() *types.Block {
 	header := &types.Header{
 		ParentHash:      i.Header.ParentHash,
-		UncleHash:       types.EmptyUncleHash,
 		Coinbase:        common.Address{},
 		Root:            i.Header.Root,
 		TxHash:          types.EmptyTxsHash,
 		ReceiptHash:     types.EmptyReceiptsHash,
 		Bloom:           i.Header.Bloom,
-		Difficulty:      common.Big0,
 		Number:          i.Header.Number,
 		GasLimit:        i.Header.GasLimit,
 		GasUsed:         i.Header.GasUsed,
@@ -132,12 +129,6 @@ func (i *bbInput) ToBlock() *types.Block {
 	}
 
 	// Fill optional values.
-	if i.Header.OmmerHash != nil {
-		header.UncleHash = *i.Header.OmmerHash
-	} else if len(i.Ommers) != 0 {
-		// Calculate the ommer hash if none is provided and there are ommers to hash
-		header.UncleHash = types.CalcUncleHash(i.Ommers)
-	}
 	if i.Header.Coinbase != nil {
 		header.Coinbase = *i.Header.Coinbase
 	}
@@ -150,10 +141,7 @@ func (i *bbInput) ToBlock() *types.Block {
 	if i.Header.Nonce != nil {
 		header.Nonce = *i.Header.Nonce
 	}
-	if header.Difficulty != nil {
-		header.Difficulty = i.Header.Difficulty
-	}
-	return types.NewBlockWithHeader(header).WithBody(i.Txs, i.Ommers).WithWithdrawals(i.Withdrawals)
+	return types.NewBlockWithHeader(header).WithBody(i.Txs).WithWithdrawals(i.Withdrawals)
 }
 
 // SealBlock seals the given block using the configured engine.

@@ -50,6 +50,7 @@ const (
 	// that might cover uncles should be enough.
 	maxQueuedBlocks = 4
 
+	// TODO(rgeraldes24)
 	// maxQueuedBlockAnns is the maximum number of block announcements to queue up before
 	// dropping broadcasts. Similarly to block propagations, there's no point to queue
 	// above some healthy uncle limit, so use that.
