@@ -34,16 +34,13 @@ var customGenesisTests = []struct {
 		genesis: `{
 			"alloc"      : {},
 			"coinbase"   : "0x0000000000000000000000000000000000000000",
-			"difficulty" : "0x20000",
 			"extraData"  : "",
 			"gasLimit"   : "0x2fefd8",
 			"nonce"      : "0x0000000000001338",
 			"mixhash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"timestamp"  : "0x00",
-			"config"     : {
-				"terminalTotalDifficultyPassed": true
-			}
+			"config"     : {}
 		}`,
 		query:  "zond.getBlock(0).nonce",
 		result: "0x0000000000001338",
@@ -53,19 +50,13 @@ var customGenesisTests = []struct {
 		genesis: `{
 			"alloc"      : {},
 			"coinbase"   : "0x0000000000000000000000000000000000000000",
-			"difficulty" : "0x20000",
 			"extraData"  : "",
 			"gasLimit"   : "0x2fefd8",
 			"nonce"      : "0x0000000000001339",
 			"mixhash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"timestamp"  : "0x00",
-			"config"     : {
-				"homesteadBlock"                : 42,
-				"daoForkBlock"                  : 141,
-				"daoForkSupport"                : true,
-				"terminalTotalDifficultyPassed" : true
-			}
+			"config"     : {}
 		}`,
 		query:  "zond.getBlock(0).nonce",
 		result: "0x0000000000001339",
@@ -107,16 +98,13 @@ func TestCustomBackend(t *testing.T) {
 	genesis := `{
 		"alloc"      : {},
 		"coinbase"   : "0x0000000000000000000000000000000000000000",
-			"difficulty" : "0x20000",
 			"extraData"  : "",
 			"gasLimit"   : "0x2fefd8",
 			"nonce"      : "0x0000000000001338",
 			"mixhash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"timestamp"  : "0x00",
-			"config"     : {
-				"terminalTotalDifficultyPassed": true
-			}
+			"config"     : {}
 		}`
 	type backendTest struct {
 		initArgs   []string

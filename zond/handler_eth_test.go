@@ -540,7 +540,7 @@ func testBroadcastBlock(t *testing.T, peers, bcasts int) {
 	}
 }
 
-// Tests that a propagated malformed block (uncles or transactions don't match
+// Tests that a propagated malformed block (transactions don't match
 // with the hashes in the header) gets discarded and not broadcast forward.
 func TestBroadcastMalformedBlock66(t *testing.T) { testBroadcastMalformedBlock(t, zond.ETH66) }
 func TestBroadcastMalformedBlock67(t *testing.T) { testBroadcastMalformedBlock(t, zond.ETH67) }
@@ -589,17 +589,14 @@ func testBroadcastMalformedBlock(t *testing.T, protocol uint) {
 	head := source.chain.CurrentBlock()
 	block := source.chain.GetBlock(head.Hash(), head.Number.Uint64())
 
-	malformedUncles := head
-	malformedUncles.UncleHash[0]++
 	malformedTransactions := head
 	malformedTransactions.TxHash[0]++
 	malformedEverything := head
-	malformedEverything.UncleHash[0]++
 	malformedEverything.TxHash[0]++
 
 	// Try to broadcast all malformations and ensure they all get discarded
-	for _, header := range []*types.Header{malformedUncles, malformedTransactions, malformedEverything} {
-		block := types.NewBlockWithHeader(header).WithBody(block.Transactions(), block.Uncles())
+	for _, header := range []*types.Header{malformedTransactions, malformedEverything} {
+		block := types.NewBlockWithHeader(header).WithBody(block.Transactions())
 		if err := src.SendNewBlock(block, big.NewInt(131136)); err != nil {
 			t.Fatalf("failed to broadcast block: %v", err)
 		}

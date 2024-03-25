@@ -26,10 +26,7 @@ import (
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
-	"github.com/theQRL/go-zond/consensus/clique"
-	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/signer/core/apitypes"
 )
 
@@ -134,36 +131,36 @@ func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType 
 			},
 		}
 		req = &SignDataRequest{ContentType: mediaType, Rawdata: []byte(msg), Messages: messages, Hash: sighash}
-	case apitypes.ApplicationClique.Mime:
-		// Clique is the Ethereum PoA standard
-		cliqueData, err := fromHex(data)
-		if err != nil {
-			return nil, useEthereumV, err
-		}
-		header := &types.Header{}
-		if err := rlp.DecodeBytes(cliqueData, header); err != nil {
-			return nil, useEthereumV, err
-		}
-		// Add space in the extradata to put the signature
-		newExtra := make([]byte, len(header.Extra)+65)
-		copy(newExtra, header.Extra)
-		header.Extra = newExtra
+	// case apitypes.ApplicationClique.Mime:
+	// 	// Clique is the Ethereum PoA standard
+	// 	cliqueData, err := fromHex(data)
+	// 	if err != nil {
+	// 		return nil, useEthereumV, err
+	// 	}
+	// 	header := &types.Header{}
+	// 	if err := rlp.DecodeBytes(cliqueData, header); err != nil {
+	// 		return nil, useEthereumV, err
+	// 	}
+	// 	// Add space in the extradata to put the signature
+	// 	newExtra := make([]byte, len(header.Extra)+65)
+	// 	copy(newExtra, header.Extra)
+	// 	header.Extra = newExtra
 
-		// Get back the rlp data, encoded by us
-		sighash, cliqueRlp, err := cliqueHeaderHashAndRlp(header)
-		if err != nil {
-			return nil, useEthereumV, err
-		}
-		messages := []*apitypes.NameValueType{
-			{
-				Name:  "Clique header",
-				Typ:   "clique",
-				Value: fmt.Sprintf("clique header %d [%#x]", header.Number, header.Hash()),
-			},
-		}
-		// Clique uses V on the form 0 or 1
-		useEthereumV = false
-		req = &SignDataRequest{ContentType: mediaType, Rawdata: cliqueRlp, Messages: messages, Hash: sighash}
+	// 	// Get back the rlp data, encoded by us
+	// 	sighash, cliqueRlp, err := cliqueHeaderHashAndRlp(header)
+	// 	if err != nil {
+	// 		return nil, useEthereumV, err
+	// 	}
+	// 	messages := []*apitypes.NameValueType{
+	// 		{
+	// 			Name:  "Clique header",
+	// 			Typ:   "clique",
+	// 			Value: fmt.Sprintf("clique header %d [%#x]", header.Number, header.Hash()),
+	// 		},
+	// 	}
+	// 	// Clique uses V on the form 0 or 1
+	// 	useEthereumV = false
+	// 	req = &SignDataRequest{ContentType: mediaType, Rawdata: cliqueRlp, Messages: messages, Hash: sighash}
 	case apitypes.DataTyped.Mime:
 		// EIP-712 conformant typed data
 		var err error
@@ -209,15 +206,15 @@ func SignTextValidator(validatorData apitypes.ValidatorData) (hexutil.Bytes, str
 // The method requires the extra data to be at least 65 bytes -- the original implementation
 // in clique.go panics if this is the case, thus it's been reimplemented here to avoid the panic
 // and simply return an error instead
-func cliqueHeaderHashAndRlp(header *types.Header) (hash, rlp []byte, err error) {
-	if len(header.Extra) < 65 {
-		err = fmt.Errorf("clique header extradata too short, %d < 65", len(header.Extra))
-		return
-	}
-	rlp = clique.CliqueRLP(header)
-	hash = clique.SealHash(header).Bytes()
-	return hash, rlp, err
-}
+// func cliqueHeaderHashAndRlp(header *types.Header) (hash, rlp []byte, err error) {
+// 	if len(header.Extra) < 65 {
+// 		err = fmt.Errorf("clique header extradata too short, %d < 65", len(header.Extra))
+// 		return
+// 	}
+// 	rlp = clique.CliqueRLP(header)
+// 	hash = clique.SealHash(header).Bytes()
+// 	return hash, rlp, err
+// }
 
 // SignTypedData signs EIP-712 conformant typed data
 // hash = keccak256("\x19${byteVersion}${domainSeparator}${hashStruct(message)}")

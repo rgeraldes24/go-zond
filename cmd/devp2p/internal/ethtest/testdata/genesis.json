@@ -1,19 +1,11 @@
 {
     "config": {
-        "chainId": 19763,
-        "homesteadBlock": 0,
-        "eip150Block": 0,
-        "eip155Block": 0,
-        "eip158Block": 0,
-        "byzantiumBlock": 0,
-        "terminalTotalDifficultyPassed": true,
-        "ethash": {}
+        "chainId": 19763
     },
     "nonce": "0xdeadbeefdeadbeef",
     "timestamp": "0x0",
     "extraData": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "gasLimit": "0x80000000",
-    "difficulty": "0x20000",
     "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "coinbase": "0x0000000000000000000000000000000000000000",
     "alloc": {

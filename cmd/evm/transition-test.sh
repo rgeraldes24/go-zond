@@ -109,11 +109,6 @@ type Env struct {
     ParentGasLimit    uint64             `json:"parentGasLimit"`
     ParentTimestamp   uint64             `json:"parentTimestamp"`
     BlockHashes       map[uint64]common.Hash `json:"blockHashes"`
-    Ommers            []Ommer            `json:"ommers"`
-}
-type Ommer struct {
-    Delta   uint64         `json:"delta"`
-    Address common.Address `json:"address"`
 }
 type Withdrawal struct {
     Index          uint64         `json:"index"`
@@ -191,7 +186,6 @@ type ExecutionResult struct {
     Bloom       types.Bloom    `json:"logsBloom"`
     Receipts    types.Receipts `json:"receipts"`
     Rejected    []*rejectedTx  `json:"rejected,omitempty"`
-    Difficulty  *big.Int       `json:"currentDifficulty"`
     GasUsed     uint64         `json:"gasUsed"`
     BaseFee     *big.Int       `json:"currentBaseFee,omitempty"`
 }
@@ -279,10 +273,6 @@ To make `t8n` apply these, the following inputs are required:
   - A value of `0` is valid, and causes accounts to be 'touched'.
 - For each ommer, the tool needs to be given an `address\` and a `delta`. This
   is done via the `ommers` field in `env`.
-
-Note: the tool does not verify that e.g. the normal uncle rules apply,
-and allows e.g two uncles at the same height, or the uncle-distance. This means that
-the tool allows for negative uncle reward (distance > 8)
 
 Example:
 EOF
@@ -442,7 +432,6 @@ type Header struct {
         TxHash      *common.Hash      `json:"transactionsRoot"`
         ReceiptHash *common.Hash      `json:"receiptsRoot"`
         Bloom       types.Bloom       `json:"logsBloom"`
-        Difficulty  *big.Int          `json:"difficulty"`
         Number      *big.Int          `json:"number"            gencodec:"required"`
         GasLimit    uint64            `json:"gasLimit"          gencodec:"required"`
         GasUsed     uint64            `json:"gasUsed"`

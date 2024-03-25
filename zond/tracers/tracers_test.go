@@ -26,9 +26,9 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/zond/tracers/logger"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/tests"
+	"github.com/theQRL/go-zond/zond/tracers/logger"
 )
 
 func BenchmarkTransactionTrace(b *testing.B) {
@@ -57,7 +57,6 @@ func BenchmarkTransactionTrace(b *testing.B) {
 		Coinbase:    common.Address{},
 		BlockNumber: new(big.Int).SetUint64(uint64(5)),
 		Time:        5,
-		Difficulty:  big.NewInt(0xffffffff),
 		GasLimit:    gas,
 		BaseFee:     big.NewInt(8),
 	}

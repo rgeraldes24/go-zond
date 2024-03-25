@@ -273,13 +273,11 @@ func (dlp *downloadTesterPeer) RequestBodies(hashes []common.Hash, sink chan *zo
 	}
 	var (
 		txsHashes        = make([]common.Hash, len(bodies))
-		uncleHashes      = make([]common.Hash, len(bodies))
 		withdrawalHashes = make([]common.Hash, len(bodies))
 	)
 	hasher := trie.NewStackTrie(nil)
 	for i, body := range bodies {
 		txsHashes[i] = types.DeriveSha(types.Transactions(body.Transactions), hasher)
-		uncleHashes[i] = types.CalcUncleHash(body.Uncles)
 	}
 	req := &zond.Request{
 		Peer: dlp.id,
@@ -287,7 +285,7 @@ func (dlp *downloadTesterPeer) RequestBodies(hashes []common.Hash, sink chan *zo
 	res := &zond.Response{
 		Req:  req,
 		Res:  (*zond.BlockBodiesPacket)(&bodies),
-		Meta: [][]common.Hash{txsHashes, uncleHashes, withdrawalHashes},
+		Meta: [][]common.Hash{txsHashes, withdrawalHashes},
 		Time: 1,
 		Done: make(chan error, 1), // Ignore the returned status
 	}
@@ -708,12 +706,16 @@ func testCancel(t *testing.T, protocol uint, mode SyncMode) {
 }
 
 // Tests that synchronisation from multiple peers works as intended (multi thread sanity test).
-func TestMultiSynchronisation66Full(t *testing.T)  { testMultiSynchronisation(t, zond.ETH66, FullSync) }
-func TestMultiSynchronisation66Snap(t *testing.T)  { testMultiSynchronisation(t, zond.ETH66, SnapSync) }
-func TestMultiSynchronisation66Light(t *testing.T) { testMultiSynchronisation(t, zond.ETH66, LightSync) }
-func TestMultiSynchronisation67Full(t *testing.T)  { testMultiSynchronisation(t, zond.ETH67, FullSync) }
-func TestMultiSynchronisation67Snap(t *testing.T)  { testMultiSynchronisation(t, zond.ETH67, SnapSync) }
-func TestMultiSynchronisation67Light(t *testing.T) { testMultiSynchronisation(t, zond.ETH67, LightSync) }
+func TestMultiSynchronisation66Full(t *testing.T) { testMultiSynchronisation(t, zond.ETH66, FullSync) }
+func TestMultiSynchronisation66Snap(t *testing.T) { testMultiSynchronisation(t, zond.ETH66, SnapSync) }
+func TestMultiSynchronisation66Light(t *testing.T) {
+	testMultiSynchronisation(t, zond.ETH66, LightSync)
+}
+func TestMultiSynchronisation67Full(t *testing.T) { testMultiSynchronisation(t, zond.ETH67, FullSync) }
+func TestMultiSynchronisation67Snap(t *testing.T) { testMultiSynchronisation(t, zond.ETH67, SnapSync) }
+func TestMultiSynchronisation67Light(t *testing.T) {
+	testMultiSynchronisation(t, zond.ETH67, LightSync)
+}
 
 func testMultiSynchronisation(t *testing.T, protocol uint, mode SyncMode) {
 	tester := newTester(t)
@@ -802,7 +804,7 @@ func testEmptyShortCircuit(t *testing.T, protocol uint, mode SyncMode) {
 	// Validate the number of block bodies that should have been requested
 	bodiesNeeded, receiptsNeeded := 0, 0
 	for _, block := range chain.blocks[1:] {
-		if mode != LightSync && (len(block.Transactions()) > 0 || len(block.Uncles()) > 0) {
+		if mode != LightSync && (len(block.Transactions()) > 0) {
 			bodiesNeeded++
 		}
 	}
@@ -881,8 +883,12 @@ func testShiftedHeaderAttack(t *testing.T, protocol uint, mode SyncMode) {
 // Tests that upon detecting an invalid header, the recent ones are rolled back
 // for various failure scenarios. Afterwards a full sync is attempted to make
 // sure no state was corrupted.
-func TestInvalidHeaderRollback66Snap(t *testing.T) { testInvalidHeaderRollback(t, zond.ETH66, SnapSync) }
-func TestInvalidHeaderRollback67Snap(t *testing.T) { testInvalidHeaderRollback(t, zond.ETH67, SnapSync) }
+func TestInvalidHeaderRollback66Snap(t *testing.T) {
+	testInvalidHeaderRollback(t, zond.ETH66, SnapSync)
+}
+func TestInvalidHeaderRollback67Snap(t *testing.T) {
+	testInvalidHeaderRollback(t, zond.ETH67, SnapSync)
+}
 
 func testInvalidHeaderRollback(t *testing.T, protocol uint, mode SyncMode) {
 	tester := newTester(t)

@@ -49,7 +49,6 @@ var makeTest = function(tx, rewind) {
     genesis: genesis,
     context: {
       number:     block.number.toString(),
-      difficulty: block.difficulty,
       timestamp:  block.timestamp.toString(),
       gasLimit:   block.gasLimit.toString(),
       miner:      block.miner,

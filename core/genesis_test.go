@@ -208,10 +208,6 @@ func TestGenesis_Commit(t *testing.T) {
 	db := rawdb.NewMemoryDatabase()
 	genesisBlock := genesis.MustCommit(db, trie.NewDatabase(db, trie.HashDefaults))
 
-	if genesis.Difficulty != nil {
-		t.Fatalf("assumption wrong")
-	}
-
 	// This value should have been set as default in the ToBlock method.
 	if genesisBlock.Difficulty().Cmp(params.GenesisDifficulty) != 0 {
 		t.Errorf("assumption wrong: want: %d, got: %v", params.GenesisDifficulty, genesisBlock.Difficulty())

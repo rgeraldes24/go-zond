@@ -27,7 +27,6 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/common/math"
-	"github.com/theQRL/go-zond/consensus/clique"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/log"
@@ -37,32 +36,29 @@ import (
 
 //go:generate go run github.com/fjl/gencodec -type header -field-override headerMarshaling -out gen_header.go
 type header struct {
-	ParentHash      common.Hash       `json:"parentHash"`
-	Coinbase        *common.Address   `json:"miner"`
-	Root            common.Hash       `json:"stateRoot"        gencodec:"required"`
-	TxHash          *common.Hash      `json:"transactionsRoot"`
-	ReceiptHash     *common.Hash      `json:"receiptsRoot"`
-	Bloom           types.Bloom       `json:"logsBloom"`
-	Difficulty      *big.Int          `json:"difficulty"`
-	Number          *big.Int          `json:"number"           gencodec:"required"`
-	GasLimit        uint64            `json:"gasLimit"         gencodec:"required"`
-	GasUsed         uint64            `json:"gasUsed"`
-	Time            uint64            `json:"timestamp"        gencodec:"required"`
-	Extra           []byte            `json:"extraData"`
-	MixDigest       common.Hash       `json:"mixHash"`
-	Nonce           *types.BlockNonce `json:"nonce"`
-	BaseFee         *big.Int          `json:"baseFeePerGas" rlp:"optional"`
-	WithdrawalsHash *common.Hash      `json:"withdrawalsRoot" rlp:"optional"`
+	ParentHash      common.Hash     `json:"parentHash"`
+	Coinbase        *common.Address `json:"miner"`
+	Root            common.Hash     `json:"stateRoot"        gencodec:"required"`
+	TxHash          *common.Hash    `json:"transactionsRoot"`
+	ReceiptHash     *common.Hash    `json:"receiptsRoot"`
+	Bloom           types.Bloom     `json:"logsBloom"`
+	Number          *big.Int        `json:"number"           gencodec:"required"`
+	GasLimit        uint64          `json:"gasLimit"         gencodec:"required"`
+	GasUsed         uint64          `json:"gasUsed"`
+	Time            uint64          `json:"timestamp"        gencodec:"required"`
+	Extra           []byte          `json:"extraData"`
+	MixDigest       common.Hash     `json:"mixHash"`
+	BaseFee         *big.Int        `json:"baseFeePerGas" rlp:"optional"`
+	WithdrawalsHash *common.Hash    `json:"withdrawalsRoot" rlp:"optional"`
 }
 
 type headerMarshaling struct {
-	Difficulty *math.HexOrDecimal256
-	Number     *math.HexOrDecimal256
-	GasLimit   math.HexOrDecimal64
-	GasUsed    math.HexOrDecimal64
-	Time       math.HexOrDecimal64
-	Extra      hexutil.Bytes
-	BaseFee    *math.HexOrDecimal256
+	Number   *math.HexOrDecimal256
+	GasLimit math.HexOrDecimal64
+	GasUsed  math.HexOrDecimal64
+	Time     math.HexOrDecimal64
+	Extra    hexutil.Bytes
+	BaseFee  *math.HexOrDecimal256
 }
 
 type bbInput struct {
@@ -147,14 +143,15 @@ func (i *bbInput) ToBlock() *types.Block {
 // SealBlock seals the given block using the configured engine.
 func (i *bbInput) SealBlock(block *types.Block) (*types.Block, error) {
 	switch {
-	case i.Clique != nil:
-		return i.sealClique(block)
+	// case i.Clique != nil:
+	// 	return i.sealClique(block)
 	default:
 		return block, nil
 	}
 }
 
 // sealClique seals the given block using clique.
+/*
 func (i *bbInput) sealClique(block *types.Block) (*types.Block, error) {
 	// If any clique value overwrites an explicit header value, fail
 	// to avoid silently building a block with unexpected values.
@@ -192,6 +189,7 @@ func (i *bbInput) sealClique(block *types.Block) (*types.Block, error) {
 	block = block.WithSeal(header)
 	return block, nil
 }
+*/
 
 // BuildBlock constructs a block from the given inputs.
 func BuildBlock(ctx *cli.Context) error {

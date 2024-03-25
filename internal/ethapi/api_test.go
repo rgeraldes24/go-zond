@@ -381,7 +381,6 @@ func allBlobTxs(addr common.Address, config *params.ChainConfig) []txData {
                 "gasPrice": "0x5",
                 "maxFeePerGas": "0x5",
                 "maxPriorityFeePerGas": "0x1",
-                "maxFeePerBlobGas": "0x1",
                 "hash": "0x1f2b59a20e61efc615ad0cbe936379d6bbea6f938aafaf35eb1da05d8e7f46a3",
                 "input": "0x",
                 "nonce": "0x6",
@@ -391,9 +390,6 @@ func allBlobTxs(addr common.Address, config *params.ChainConfig) []txData {
                 "type": "0x3",
                 "accessList": [],
                 "chainId": "0x1",
-                "blobVersionedHashes": [
-                    "0x0100000000000000000000000000000000000000000000000000000000000000"
-                ],
                 "v": "0x0",
                 "r": "0x618be8908e0e5320f8f3b48042a079fe5a335ebd4ed1422a7d2207cd45d872bc",
                 "s": "0x27b2bc6c80e849a8e8b764d4549d8c2efac3441e73cf37054eb0a9b9f8e89b27",
@@ -937,7 +933,6 @@ func TestRPCMarshalBlock(t *testing.T) {
 			inclTx: false,
 			fullTx: false,
 			want: `{
-				"difficulty": "0x0",
 				"extraData": "0x",
 				"gasLimit": "0x0",
 				"gasUsed": "0x0",
@@ -949,12 +944,10 @@ func TestRPCMarshalBlock(t *testing.T) {
 				"number": "0x64",
 				"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-				"sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
 				"size": "0x296",
 				"stateRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"timestamp": "0x0",
-				"transactionsRoot": "0x661a9febcfa8f1890af549b874faf9fa274aede26ef489d9db0b25daa569450e",
-				"uncles": []
+				"transactionsRoot": "0x661a9febcfa8f1890af549b874faf9fa274aede26ef489d9db0b25daa569450e"
 			}`,
 		},
 		// only tx hashes
@@ -962,7 +955,6 @@ func TestRPCMarshalBlock(t *testing.T) {
 			inclTx: true,
 			fullTx: false,
 			want: `{
-				"difficulty": "0x0",
 				"extraData": "0x",
 				"gasLimit": "0x0",
 				"gasUsed": "0x0",
@@ -974,7 +966,6 @@ func TestRPCMarshalBlock(t *testing.T) {
 				"number": "0x64",
 				"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-				"sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
 				"size": "0x296",
 				"stateRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"timestamp": "0x0",
@@ -984,8 +975,7 @@ func TestRPCMarshalBlock(t *testing.T) {
 					"0x98909ea1ff040da6be56bc4231d484de1414b3c1dac372d69293a4beb9032cb5",
 					"0x12e1f81207b40c3bdcc13c0ee18f5f86af6d31754d57a0ea1b0d4cfef21abef1"
 				],
-				"transactionsRoot": "0x661a9febcfa8f1890af549b874faf9fa274aede26ef489d9db0b25daa569450e",
-				"uncles": []
+				"transactionsRoot": "0x661a9febcfa8f1890af549b874faf9fa274aede26ef489d9db0b25daa569450e"
 			}`,
 		},
 		// full tx details
@@ -993,7 +983,6 @@ func TestRPCMarshalBlock(t *testing.T) {
 			inclTx: true,
 			fullTx: true,
 			want: `{
-				"difficulty": "0x0",
 				"extraData": "0x",
 				"gasLimit": "0x0",
 				"gasUsed": "0x0",
@@ -1005,7 +994,6 @@ func TestRPCMarshalBlock(t *testing.T) {
 				"number": "0x64",
 				"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-				"sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
 				"size": "0x296",
 				"stateRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"timestamp": "0x0",
@@ -1087,8 +1075,7 @@ func TestRPCMarshalBlock(t *testing.T) {
 						"s": "0x0"
 					}
 				],
-				"transactionsRoot": "0x661a9febcfa8f1890af549b874faf9fa274aede26ef489d9db0b25daa569450e",
-				"uncles": []
+				"transactionsRoot": "0x661a9febcfa8f1890af549b874faf9fa274aede26ef489d9db0b25daa569450e"
 			}`,
 		},
 	}
@@ -1422,20 +1409,6 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 				StorageKeys: []common.Hash{{0}},
 			}}
 			tx, err = types.SignTx(types.NewTx(&types.AccessListTx{Nonce: uint64(i), To: nil, Gas: 58100, GasPrice: b.BaseFee(), Data: common.FromHex("0x60806040"), AccessList: accessList}), signer, acc1Key)
-		case 5:
-			// blob tx
-			fee := big.NewInt(500)
-			fee.Add(fee, b.BaseFee())
-			tx, err = types.SignTx(types.NewTx(&types.BlobTx{
-				Nonce:      uint64(i),
-				GasTipCap:  uint256.NewInt(1),
-				GasFeeCap:  uint256.MustFromBig(fee),
-				Gas:        params.TxGas,
-				To:         acc2Addr,
-				BlobFeeCap: uint256.NewInt(1),
-				BlobHashes: []common.Hash{{1}},
-				Value:      new(uint256.Int),
-			}), signer, acc1Key)
 		}
 		if err != nil {
 			t.Errorf("failed to sign tx: %v", err)
@@ -1444,10 +1417,6 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 			b.AddTx(tx)
 			txHashes[i] = tx.Hash()
 		}
-		if i == 5 {
-			b.SetBlobGas(params.BlobTxBlobGasPerBlob)
-		}
-		b.SetPoS()
 	})
 	return backend, txHashes
 }

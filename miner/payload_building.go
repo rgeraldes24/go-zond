@@ -180,7 +180,6 @@ func (w *worker) buildPayload(args *BuildPayloadArgs) (*Payload, error) {
 		coinbase:    args.FeeRecipient,
 		random:      args.Random,
 		withdrawals: args.Withdrawals,
-		beaconRoot:  args.BeaconRoot,
 		noTxs:       true,
 	}
 	empty := w.getSealingBlock(emptyParams)
@@ -212,7 +211,6 @@ func (w *worker) buildPayload(args *BuildPayloadArgs) (*Payload, error) {
 			coinbase:    args.FeeRecipient,
 			random:      args.Random,
 			withdrawals: args.Withdrawals,
-			beaconRoot:  args.BeaconRoot,
 			noTxs:       false,
 		}
 

@@ -21,7 +21,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"math/big"
 	"runtime"
 	"strings"
 	"sync"
@@ -542,21 +541,16 @@ func (bc *BlockChain) loadLastState() error {
 	var (
 		currentSnapBlock  = bc.CurrentSnapBlock()
 		currentFinalBlock = bc.CurrentFinalBlock()
-
-		headerTd = bc.GetTd(headHeader.Hash(), headHeader.Number.Uint64())
-		blockTd  = bc.GetTd(headBlock.Hash(), headBlock.NumberU64())
 	)
 	if headHeader.Hash() != headBlock.Hash() {
-		log.Info("Loaded most recent local header", "number", headHeader.Number, "hash", headHeader.Hash(), "td", headerTd, "age", common.PrettyAge(time.Unix(int64(headHeader.Time), 0)))
+		log.Info("Loaded most recent local header", "number", headHeader.Number, "hash", headHeader.Hash(), "age", common.PrettyAge(time.Unix(int64(headHeader.Time), 0)))
 	}
-	log.Info("Loaded most recent local block", "number", headBlock.Number(), "hash", headBlock.Hash(), "td", blockTd, "age", common.PrettyAge(time.Unix(int64(headBlock.Time()), 0)))
+	log.Info("Loaded most recent local block", "number", headBlock.Number(), "hash", headBlock.Hash(), "age", common.PrettyAge(time.Unix(int64(headBlock.Time()), 0)))
 	if headBlock.Hash() != currentSnapBlock.Hash() {
-		snapTd := bc.GetTd(currentSnapBlock.Hash(), currentSnapBlock.Number.Uint64())
-		log.Info("Loaded most recent local snap block", "number", currentSnapBlock.Number, "hash", currentSnapBlock.Hash(), "td", snapTd, "age", common.PrettyAge(time.Unix(int64(currentSnapBlock.Time), 0)))
+		log.Info("Loaded most recent local snap block", "number", currentSnapBlock.Number, "hash", currentSnapBlock.Hash(), "age", common.PrettyAge(time.Unix(int64(currentSnapBlock.Time), 0)))
 	}
 	if currentFinalBlock != nil {
-		finalTd := bc.GetTd(currentFinalBlock.Hash(), currentFinalBlock.Number.Uint64())
-		log.Info("Loaded most recent local finalized block", "number", currentFinalBlock.Number, "hash", currentFinalBlock.Hash(), "td", finalTd, "age", common.PrettyAge(time.Unix(int64(currentFinalBlock.Time), 0)))
+		log.Info("Loaded most recent local finalized block", "number", currentFinalBlock.Number, "hash", currentFinalBlock.Hash(), "age", common.PrettyAge(time.Unix(int64(currentFinalBlock.Time), 0)))
 	}
 	if pivot := rawdb.ReadLastPivotNumber(bc.db); pivot != nil {
 		log.Info("Loaded last snap-sync pivot marker", "number", *pivot)
@@ -880,7 +874,8 @@ func (bc *BlockChain) ResetWithGenesisBlock(genesis *types.Block) error {
 
 	// Prepare the genesis block and reinitialise the chain
 	batch := bc.db.NewBatch()
-	rawdb.WriteTd(batch, genesis.Hash(), genesis.NumberU64(), genesis.Difficulty())
+	// TODO(rgeraldes24): remove
+	// rawdb.WriteTd(batch, genesis.Hash(), genesis.NumberU64(), genesis.Difficulty())
 	rawdb.WriteBlock(batch, genesis)
 	if err := batch.Write(); err != nil {
 		log.Crit("Failed to write genesis block", "err", err)
@@ -1163,8 +1158,7 @@ func (bc *BlockChain) InsertReceiptChain(blockChain types.Blocks, receiptChain [
 		if first.NumberU64() == 1 {
 			if frozen, _ := bc.db.Ancients(); frozen == 0 {
 				b := bc.genesisBlock
-				td := bc.genesisBlock.Difficulty()
-				writeSize, err := rawdb.WriteAncientBlocks(bc.db, []*types.Block{b}, []types.Receipts{nil}, td)
+				writeSize, err := rawdb.WriteAncientBlocks(bc.db, []*types.Block{b}, []types.Receipts{nil})
 				size += writeSize
 				if err != nil {
 					log.Error("Error writing genesis to ancients", "err", err)
@@ -1181,8 +1175,7 @@ func (bc *BlockChain) InsertReceiptChain(blockChain types.Blocks, receiptChain [
 		}
 
 		// Write all chain data to ancients.
-		td := bc.GetTd(first.Hash(), first.NumberU64())
-		writeSize, err := rawdb.WriteAncientBlocks(bc.db, blockChain, receiptChain, td)
+		writeSize, err := rawdb.WriteAncientBlocks(bc.db, blockChain, receiptChain)
 		size += writeSize
 		if err != nil {
 			log.Error("Error importing chain data to ancients", "err", err)
@@ -1363,13 +1356,12 @@ func (bc *BlockChain) InsertReceiptChain(blockChain types.Blocks, receiptChain [
 // writeBlockWithoutState writes only the block and its metadata to the database,
 // but does not write any state. This is used to construct competing side forks
 // up to the point where they exceed the canonical total difficulty.
-func (bc *BlockChain) writeBlockWithoutState(block *types.Block, td *big.Int) (err error) {
+func (bc *BlockChain) writeBlockWithoutState(block *types.Block) (err error) {
 	if bc.insertStopped() {
 		return errInsertionInterrupted
 	}
 
 	batch := bc.db.NewBatch()
-	rawdb.WriteTd(batch, block.Hash(), block.NumberU64(), td)
 	rawdb.WriteBlock(batch, block)
 	if err := batch.Write(); err != nil {
 		log.Crit("Failed to write block into disk", "err", err)
@@ -1394,19 +1386,21 @@ func (bc *BlockChain) writeKnownBlock(block *types.Block) error {
 // database.
 func (bc *BlockChain) writeBlockWithState(block *types.Block, receipts []*types.Receipt, state *state.StateDB) error {
 	// Calculate the total difficulty of the block
-	ptd := bc.GetTd(block.ParentHash(), block.NumberU64()-1)
-	if ptd == nil {
-		return consensus.ErrUnknownAncestor
-	}
+	// ptd := bc.GetTd(block.ParentHash(), block.NumberU64()-1)
+	// if ptd == nil {
+	// 	return consensus.ErrUnknownAncestor
+	// }
 	// Make sure no inconsistent state is leaked during insertion
-	externTd := new(big.Int).Add(block.Difficulty(), ptd)
+	// TODO(rgeraldes24): remove
+	// externTd := new(big.Int).Add(block.Difficulty(), ptd)
 
 	// Irrelevant of the canonical status, write the block itself to the database.
 	//
 	// Note all the components of block(td, hash->number map, header, body, receipts)
 	// should be written atomically. BlockBatch is used for containing all components.
 	blockBatch := bc.db.NewBatch()
-	rawdb.WriteTd(blockBatch, block.Hash(), block.NumberU64(), externTd)
+	// TODO(rgeraldes24): remove
+	// rawdb.WriteTd(blockBatch, block.Hash(), block.NumberU64(), externTd)
 	rawdb.WriteBlock(blockBatch, block)
 	rawdb.WriteReceipts(blockBatch, block.Hash(), block.NumberU64(), receipts)
 	rawdb.WritePreimages(blockBatch, state.Preimages())
@@ -1547,11 +1541,12 @@ func (bc *BlockChain) addFutureBlock(block *types.Block) error {
 	if block.Time() > max {
 		return fmt.Errorf("future block timestamp %v > allowed %v", block.Time(), max)
 	}
-	if block.Difficulty().Cmp(common.Big0) == 0 {
-		// Never add PoS blocks into the future queue
-		return nil
-	}
-	bc.futureBlocks.Add(block.Hash(), block)
+	// TODO(rgeraldes24): remove
+	// if block.Difficulty().Cmp(common.Big0) == 0 {
+	// 	// Never add PoS blocks into the future queue
+	// 	return nil
+	// }
+	// bc.futureBlocks.Add(block.Hash(), block)
 	return nil
 }
 
@@ -1748,7 +1743,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, setHead bool) (int, error)
 		if bc.skipBlock(err, it) {
 			logger := log.Warn
 			logger("Inserted known block", "number", block.Number(), "hash", block.Hash(),
-				"uncles", len(block.Uncles()), "txs", len(block.Transactions()), "gas", block.GasUsed(),
+				"txs", len(block.Transactions()), "gas", block.GasUsed(),
 				"root", block.Root())
 
 			// Special case. Commit the empty receipt slice if we meet the known
@@ -1889,7 +1884,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, setHead bool) (int, error)
 		switch status {
 		case CanonStatTy:
 			log.Debug("Inserted new block", "number", block.Number(), "hash", block.Hash(),
-				"uncles", len(block.Uncles()), "txs", len(block.Transactions()), "gas", block.GasUsed(),
+				"txs", len(block.Transactions()), "gas", block.GasUsed(),
 				"elapsed", common.PrettyDuration(time.Since(start)),
 				"root", block.Root())
 
@@ -1900,16 +1895,16 @@ func (bc *BlockChain) insertChain(chain types.Blocks, setHead bool) (int, error)
 
 		case SideStatTy:
 			log.Debug("Inserted forked block", "number", block.Number(), "hash", block.Hash(),
-				"diff", block.Difficulty(), "elapsed", common.PrettyDuration(time.Since(start)),
-				"txs", len(block.Transactions()), "gas", block.GasUsed(), "uncles", len(block.Uncles()),
+				"elapsed", common.PrettyDuration(time.Since(start)),
+				"txs", len(block.Transactions()), "gas", block.GasUsed(),
 				"root", block.Root())
 
 		default:
 			// This in theory is impossible, but lets be nice to our future selves and leave
 			// a log, instead of trying to track down blocks imports that don't emit logs.
 			log.Warn("Inserted block with unknown status", "number", block.Number(), "hash", block.Hash(),
-				"diff", block.Difficulty(), "elapsed", common.PrettyDuration(time.Since(start)),
-				"txs", len(block.Transactions()), "gas", block.GasUsed(), "uncles", len(block.Uncles()),
+				"elapsed", common.PrettyDuration(time.Since(start)),
+				"txs", len(block.Transactions()), "gas", block.GasUsed(),
 				"root", block.Root())
 		}
 	}
@@ -1933,6 +1928,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, setHead bool) (int, error)
 	return it.index, err
 }
 
+// TODO(rgeraldes24): remove
 // insertSideChain is called when an import batch hits upon a pruned ancestor
 // error, which happens when a sidechain with a sufficiently old fork-block is
 // found.
@@ -1941,131 +1937,131 @@ func (bc *BlockChain) insertChain(chain types.Blocks, setHead bool) (int, error)
 // switch over to the new chain if the TD exceeded the current chain.
 // insertSideChain is only used pre-merge.
 func (bc *BlockChain) insertSideChain(block *types.Block, it *insertIterator) (int, error) {
-	var (
-		externTd  *big.Int
-		lastBlock = block
-		current   = bc.CurrentBlock()
-	)
-	// The first sidechain block error is already verified to be ErrPrunedAncestor.
-	// Since we don't import them here, we expect ErrUnknownAncestor for the remaining
-	// ones. Any other errors means that the block is invalid, and should not be written
-	// to disk.
-	err := consensus.ErrPrunedAncestor
-	for ; block != nil && errors.Is(err, consensus.ErrPrunedAncestor); block, err = it.next() {
-		// Check the canonical state root for that number
-		if number := block.NumberU64(); current.Number.Uint64() >= number {
-			canonical := bc.GetBlockByNumber(number)
-			if canonical != nil && canonical.Hash() == block.Hash() {
-				// Not a sidechain block, this is a re-import of a canon block which has it's state pruned
+	// var (
+	// 	externTd  *big.Int
+	// 	lastBlock = block
+	// 	current   = bc.CurrentBlock()
+	// )
+	// // The first sidechain block error is already verified to be ErrPrunedAncestor.
+	// // Since we don't import them here, we expect ErrUnknownAncestor for the remaining
+	// // ones. Any other errors means that the block is invalid, and should not be written
+	// // to disk.
+	// err := consensus.ErrPrunedAncestor
+	// for ; block != nil && errors.Is(err, consensus.ErrPrunedAncestor); block, err = it.next() {
+	// 	// Check the canonical state root for that number
+	// 	if number := block.NumberU64(); current.Number.Uint64() >= number {
+	// 		canonical := bc.GetBlockByNumber(number)
+	// 		if canonical != nil && canonical.Hash() == block.Hash() {
+	// 			// Not a sidechain block, this is a re-import of a canon block which has it's state pruned
 
-				// Collect the TD of the block. Since we know it's a canon one,
-				// we can get it directly, and not (like further below) use
-				// the parent and then add the block on top
-				externTd = bc.GetTd(block.Hash(), block.NumberU64())
-				continue
-			}
-			if canonical != nil && canonical.Root() == block.Root() {
-				// This is most likely a shadow-state attack. When a fork is imported into the
-				// database, and it eventually reaches a block height which is not pruned, we
-				// just found that the state already exist! This means that the sidechain block
-				// refers to a state which already exists in our canon chain.
-				//
-				// If left unchecked, we would now proceed importing the blocks, without actually
-				// having verified the state of the previous blocks.
-				log.Warn("Sidechain ghost-state attack detected", "number", block.NumberU64(), "sideroot", block.Root(), "canonroot", canonical.Root())
+	// 			// Collect the TD of the block. Since we know it's a canon one,
+	// 			// we can get it directly, and not (like further below) use
+	// 			// the parent and then add the block on top
+	// 			externTd = bc.GetTd(block.Hash(), block.NumberU64())
+	// 			continue
+	// 		}
+	// 		if canonical != nil && canonical.Root() == block.Root() {
+	// 			// This is most likely a shadow-state attack. When a fork is imported into the
+	// 			// database, and it eventually reaches a block height which is not pruned, we
+	// 			// just found that the state already exist! This means that the sidechain block
+	// 			// refers to a state which already exists in our canon chain.
+	// 			//
+	// 			// If left unchecked, we would now proceed importing the blocks, without actually
+	// 			// having verified the state of the previous blocks.
+	// 			log.Warn("Sidechain ghost-state attack detected", "number", block.NumberU64(), "sideroot", block.Root(), "canonroot", canonical.Root())
 
-				// If someone legitimately side-mines blocks, they would still be imported as usual. However,
-				// we cannot risk writing unverified blocks to disk when they obviously target the pruning
-				// mechanism.
-				return it.index, errors.New("sidechain ghost-state attack")
-			}
-		}
-		if externTd == nil {
-			externTd = bc.GetTd(block.ParentHash(), block.NumberU64()-1)
-		}
-		externTd = new(big.Int).Add(externTd, block.Difficulty())
+	// 			// If someone legitimately side-mines blocks, they would still be imported as usual. However,
+	// 			// we cannot risk writing unverified blocks to disk when they obviously target the pruning
+	// 			// mechanism.
+	// 			return it.index, errors.New("sidechain ghost-state attack")
+	// 		}
+	// 	}
+	// 	if externTd == nil {
+	// 		externTd = bc.GetTd(block.ParentHash(), block.NumberU64()-1)
+	// 	}
+	// 	externTd = new(big.Int).Add(externTd, block.Difficulty())
 
-		if !bc.HasBlock(block.Hash(), block.NumberU64()) {
-			start := time.Now()
-			if err := bc.writeBlockWithoutState(block, externTd); err != nil {
-				return it.index, err
-			}
-			log.Debug("Injected sidechain block", "number", block.Number(), "hash", block.Hash(),
-				"diff", block.Difficulty(), "elapsed", common.PrettyDuration(time.Since(start)),
-				"txs", len(block.Transactions()), "gas", block.GasUsed(), "uncles", len(block.Uncles()),
-				"root", block.Root())
-		}
-		lastBlock = block
-	}
-	// At this point, we've written all sidechain blocks to database. Loop ended
-	// either on some other error or all were processed. If there was some other
-	// error, we can ignore the rest of those blocks.
-	//
-	// If the externTd was larger than our local TD, we now need to reimport the previous
-	// blocks to regenerate the required state
-	reorg, err := bc.forker.ReorgNeeded(current, lastBlock.Header())
-	if err != nil {
-		return it.index, err
-	}
-	if !reorg {
-		localTd := bc.GetTd(current.Hash(), current.Number.Uint64())
-		log.Info("Sidechain written to disk", "start", it.first().NumberU64(), "end", it.previous().Number, "sidetd", externTd, "localtd", localTd)
-		return it.index, err
-	}
-	// Gather all the sidechain hashes (full blocks may be memory heavy)
-	var (
-		hashes  []common.Hash
-		numbers []uint64
-	)
-	parent := it.previous()
-	for parent != nil && !bc.HasState(parent.Root) {
-		if bc.stateRecoverable(parent.Root) {
-			if err := bc.triedb.Recover(parent.Root); err != nil {
-				return 0, err
-			}
-			break
-		}
-		hashes = append(hashes, parent.Hash())
-		numbers = append(numbers, parent.Number.Uint64())
+	// 	if !bc.HasBlock(block.Hash(), block.NumberU64()) {
+	// 		start := time.Now()
+	// 		if err := bc.writeBlockWithoutState(block, externTd); err != nil {
+	// 			return it.index, err
+	// 		}
+	// 		log.Debug("Injected sidechain block", "number", block.Number(), "hash", block.Hash(),
+	// 			"elapsed", common.PrettyDuration(time.Since(start)),
+	// 			"txs", len(block.Transactions()), "gas", block.GasUsed(), "uncles", len(block.Uncles()),
+	// 			"root", block.Root())
+	// 	}
+	// 	lastBlock = block
+	// }
+	// // At this point, we've written all sidechain blocks to database. Loop ended
+	// // either on some other error or all were processed. If there was some other
+	// // error, we can ignore the rest of those blocks.
+	// //
+	// // If the externTd was larger than our local TD, we now need to reimport the previous
+	// // blocks to regenerate the required state
+	// reorg, err := bc.forker.ReorgNeeded(current, lastBlock.Header())
+	// if err != nil {
+	// 	return it.index, err
+	// }
+	// if !reorg {
+	// 	localTd := bc.GetTd(current.Hash(), current.Number.Uint64())
+	// 	log.Info("Sidechain written to disk", "start", it.first().NumberU64(), "end", it.previous().Number, "sidetd", externTd, "localtd", localTd)
+	// 	return it.index, err
+	// }
+	// // Gather all the sidechain hashes (full blocks may be memory heavy)
+	// var (
+	// 	hashes  []common.Hash
+	// 	numbers []uint64
+	// )
+	// parent := it.previous()
+	// for parent != nil && !bc.HasState(parent.Root) {
+	// 	if bc.stateRecoverable(parent.Root) {
+	// 		if err := bc.triedb.Recover(parent.Root); err != nil {
+	// 			return 0, err
+	// 		}
+	// 		break
+	// 	}
+	// 	hashes = append(hashes, parent.Hash())
+	// 	numbers = append(numbers, parent.Number.Uint64())
 
-		parent = bc.GetHeader(parent.ParentHash, parent.Number.Uint64()-1)
-	}
-	if parent == nil {
-		return it.index, errors.New("missing parent")
-	}
-	// Import all the pruned blocks to make the state available
-	var (
-		blocks []*types.Block
-		memory uint64
-	)
-	for i := len(hashes) - 1; i >= 0; i-- {
-		// Append the next block to our batch
-		block := bc.GetBlock(hashes[i], numbers[i])
+	// 	parent = bc.GetHeader(parent.ParentHash, parent.Number.Uint64()-1)
+	// }
+	// if parent == nil {
+	// 	return it.index, errors.New("missing parent")
+	// }
+	// // Import all the pruned blocks to make the state available
+	// var (
+	// 	blocks []*types.Block
+	// 	memory uint64
+	// )
+	// for i := len(hashes) - 1; i >= 0; i-- {
+	// 	// Append the next block to our batch
+	// 	block := bc.GetBlock(hashes[i], numbers[i])
 
-		blocks = append(blocks, block)
-		memory += block.Size()
+	// 	blocks = append(blocks, block)
+	// 	memory += block.Size()
 
-		// If memory use grew too large, import and continue. Sadly we need to discard
-		// all raised events and logs from notifications since we're too heavy on the
-		// memory here.
-		if len(blocks) >= 2048 || memory > 64*1024*1024 {
-			log.Info("Importing heavy sidechain segment", "blocks", len(blocks), "start", blocks[0].NumberU64(), "end", block.NumberU64())
-			if _, err := bc.insertChain(blocks, true); err != nil {
-				return 0, err
-			}
-			blocks, memory = blocks[:0], 0
+	// 	// If memory use grew too large, import and continue. Sadly we need to discard
+	// 	// all raised events and logs from notifications since we're too heavy on the
+	// 	// memory here.
+	// 	if len(blocks) >= 2048 || memory > 64*1024*1024 {
+	// 		log.Info("Importing heavy sidechain segment", "blocks", len(blocks), "start", blocks[0].NumberU64(), "end", block.NumberU64())
+	// 		if _, err := bc.insertChain(blocks, true); err != nil {
+	// 			return 0, err
+	// 		}
+	// 		blocks, memory = blocks[:0], 0
 
-			// If the chain is terminating, stop processing blocks
-			if bc.insertStopped() {
-				log.Debug("Abort during blocks processing")
-				return 0, nil
-			}
-		}
-	}
-	if len(blocks) > 0 {
-		log.Info("Importing sidechain segment", "start", blocks[0].NumberU64(), "end", blocks[len(blocks)-1].NumberU64())
-		return bc.insertChain(blocks, true)
-	}
+	// 		// If the chain is terminating, stop processing blocks
+	// 		if bc.insertStopped() {
+	// 			log.Debug("Abort during blocks processing")
+	// 			return 0, nil
+	// 		}
+	// 	}
+	// }
+	// if len(blocks) > 0 {
+	// 	log.Info("Importing sidechain segment", "start", blocks[0].NumberU64(), "end", blocks[len(blocks)-1].NumberU64())
+	// 	return bc.insertChain(blocks, true)
+	// }
 	return 0, nil
 }
 

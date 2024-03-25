@@ -65,9 +65,8 @@ func TestGraphQLBlockSerialization(t *testing.T) {
 	stack := createNode(t)
 	defer stack.Close()
 	genesis := &core.Genesis{
-		Config:     params.AllEthashProtocolChanges,
-		GasLimit:   11500000,
-		Difficulty: big.NewInt(1048576),
+		Config:   params.AllEthashProtocolChanges,
+		GasLimit: 11500000,
 	}
 	newGQLService(t, stack, false, genesis, 10, func(i int, gen *core.BlockGen) {})
 	// start node
@@ -178,9 +177,8 @@ func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 	stack := createNode(t)
 	defer stack.Close()
 	genesis := &core.Genesis{
-		Config:     params.AllEthashProtocolChanges,
-		GasLimit:   11500000,
-		Difficulty: big.NewInt(1048576),
+		Config:   params.AllEthashProtocolChanges,
+		GasLimit: 11500000,
 		Alloc: core.GenesisAlloc{
 			address: {Balance: funds},
 			// The address 0xdad sloads 0x00 and 0x01
@@ -275,9 +273,8 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 		dadStr  = "0x0000000000000000000000000000000000000dad"
 		dad     = common.HexToAddress(dadStr)
 		genesis = &core.Genesis{
-			Config:     params.AllEthashProtocolChanges,
-			GasLimit:   11500000,
-			Difficulty: big.NewInt(1048576),
+			Config:   params.AllEthashProtocolChanges,
+			GasLimit: 11500000,
 			Alloc: core.GenesisAlloc{
 				addr: {Balance: big.NewInt(params.Ether)},
 				dad: {

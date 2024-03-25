@@ -42,18 +42,16 @@ func TestGenerateWithdrawalChain(t *testing.T) {
 		funds   = big.NewInt(0).Mul(big.NewInt(1337), big.NewInt(params.Ether))
 		config  = *params.AllEthashProtocolChanges
 		gspec   = &Genesis{
-			Config:     &config,
-			Alloc:      GenesisAlloc{address: {Balance: funds}},
-			BaseFee:    big.NewInt(params.InitialBaseFee),
-			Difficulty: common.Big1,
-			GasLimit:   5_000_000,
+			Config:   &config,
+			Alloc:    GenesisAlloc{address: {Balance: funds}},
+			BaseFee:  big.NewInt(params.InitialBaseFee),
+			GasLimit: 5_000_000,
 		}
 		gendb  = rawdb.NewMemoryDatabase()
 		signer = types.LatestSigner(gspec.Config)
 		db     = rawdb.NewMemoryDatabase()
 	)
 
-	config.TerminalTotalDifficulty = common.Big0
 	config.ShanghaiTime = u64(0)
 
 	// init 0xaa with some storage elements

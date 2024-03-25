@@ -30,7 +30,6 @@ import (
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/consensus/beacon"
-	"github.com/theQRL/go-zond/consensus/ethash"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/state"
@@ -67,45 +66,35 @@ type btBlock struct {
 	BlockHeader     *btHeader
 	ExpectException string
 	Rlp             string
-	UncleHeaders    []*btHeader
 }
 
 //go:generate go run github.com/fjl/gencodec -type btHeader -field-override btHeaderMarshaling -out gen_btheader.go
 
 type btHeader struct {
-	Bloom                 types.Bloom
-	Coinbase              common.Address
-	MixHash               common.Hash
-	Nonce                 types.BlockNonce
-	Number                *big.Int
-	Hash                  common.Hash
-	ParentHash            common.Hash
-	ReceiptTrie           common.Hash
-	StateRoot             common.Hash
-	TransactionsTrie      common.Hash
-	UncleHash             common.Hash
-	ExtraData             []byte
-	Difficulty            *big.Int
-	GasLimit              uint64
-	GasUsed               uint64
-	Timestamp             uint64
-	BaseFeePerGas         *big.Int
-	WithdrawalsRoot       *common.Hash
-	BlobGasUsed           *uint64
-	ExcessBlobGas         *uint64
-	ParentBeaconBlockRoot *common.Hash
+	Bloom            types.Bloom
+	Coinbase         common.Address
+	MixHash          common.Hash
+	Number           *big.Int
+	Hash             common.Hash
+	ParentHash       common.Hash
+	ReceiptTrie      common.Hash
+	StateRoot        common.Hash
+	TransactionsTrie common.Hash
+	ExtraData        []byte
+	GasLimit         uint64
+	GasUsed          uint64
+	Timestamp        uint64
+	BaseFeePerGas    *big.Int
+	WithdrawalsRoot  *common.Hash
 }
 
 type btHeaderMarshaling struct {
 	ExtraData     hexutil.Bytes
 	Number        *math.HexOrDecimal256
-	Difficulty    *math.HexOrDecimal256
 	GasLimit      math.HexOrDecimal64
 	GasUsed       math.HexOrDecimal64
 	Timestamp     math.HexOrDecimal64
 	BaseFeePerGas *math.HexOrDecimal256
-	BlobGasUsed   *math.HexOrDecimal64
-	ExcessBlobGas *math.HexOrDecimal64
 }
 
 func (t *BlockTest) Run(snapshotter bool, scheme string, tracer vm.EVMLogger) error {
@@ -139,7 +128,7 @@ func (t *BlockTest) Run(snapshotter bool, scheme string, tracer vm.EVMLogger) er
 		return fmt.Errorf("genesis block state root does not match test: computed=%x, test=%x", gblock.Root().Bytes()[:6], t.json.Genesis.StateRoot[:6])
 	}
 	// Wrap the original engine within the beacon-engine
-	engine := beacon.New(ethash.NewFaker())
+	engine := beacon.New()
 
 	cache := &core.CacheConfig{TrieCleanLimit: 0, StateScheme: scheme}
 	if snapshotter {
@@ -180,20 +169,16 @@ func (t *BlockTest) Run(snapshotter bool, scheme string, tracer vm.EVMLogger) er
 
 func (t *BlockTest) genesis(config *params.ChainConfig) *core.Genesis {
 	return &core.Genesis{
-		Config:        config,
-		Nonce:         t.json.Genesis.Nonce.Uint64(),
-		Timestamp:     t.json.Genesis.Timestamp,
-		ParentHash:    t.json.Genesis.ParentHash,
-		ExtraData:     t.json.Genesis.ExtraData,
-		GasLimit:      t.json.Genesis.GasLimit,
-		GasUsed:       t.json.Genesis.GasUsed,
-		Difficulty:    t.json.Genesis.Difficulty,
-		Mixhash:       t.json.Genesis.MixHash,
-		Coinbase:      t.json.Genesis.Coinbase,
-		Alloc:         t.json.Pre,
-		BaseFee:       t.json.Genesis.BaseFeePerGas,
-		BlobGasUsed:   t.json.Genesis.BlobGasUsed,
-		ExcessBlobGas: t.json.Genesis.ExcessBlobGas,
+		Config:     config,
+		Timestamp:  t.json.Genesis.Timestamp,
+		ParentHash: t.json.Genesis.ParentHash,
+		ExtraData:  t.json.Genesis.ExtraData,
+		GasLimit:   t.json.Genesis.GasLimit,
+		GasUsed:    t.json.Genesis.GasUsed,
+		Mixhash:    t.json.Genesis.MixHash,
+		Coinbase:   t.json.Genesis.Coinbase,
+		Alloc:      t.json.Pre,
+		BaseFee:    t.json.Genesis.BaseFeePerGas,
 	}
 }
 
@@ -201,7 +186,7 @@ func (t *BlockTest) genesis(config *params.ChainConfig) *core.Genesis {
 See https://github.com/ethereum/tests/wiki/Blockchain-Tests-II
 
 	Whether a block is valid or not is a bit subtle, it's defined by presence of
-	blockHeader, transactions and uncleHeaders fields. If they are missing, the block is
+	blockHeader and transactions fields. If they are missing, the block is
 	invalid and we must verify that we do not accept it.
 
 	Since some tests mix valid and invalid blocks we need to check this for every block.
@@ -260,9 +245,6 @@ func validateHeader(h *btHeader, h2 *types.Header) error {
 	if h.MixHash != h2.MixDigest {
 		return fmt.Errorf("MixHash: want: %x have: %x", h.MixHash, h2.MixDigest)
 	}
-	if h.Nonce != h2.Nonce {
-		return fmt.Errorf("nonce: want: %x have: %x", h.Nonce, h2.Nonce)
-	}
 	if h.Number.Cmp(h2.Number) != 0 {
 		return fmt.Errorf("number: want: %v have: %v", h.Number, h2.Number)
 	}
@@ -278,14 +260,8 @@ func validateHeader(h *btHeader, h2 *types.Header) error {
 	if h.StateRoot != h2.Root {
 		return fmt.Errorf("state hash: want: %x have: %x", h.StateRoot, h2.Root)
 	}
-	if h.UncleHash != h2.UncleHash {
-		return fmt.Errorf("uncle hash: want: %x have: %x", h.UncleHash, h2.UncleHash)
-	}
 	if !bytes.Equal(h.ExtraData, h2.Extra) {
 		return fmt.Errorf("extra data: want: %x have: %x", h.ExtraData, h2.Extra)
-	}
-	if h.Difficulty.Cmp(h2.Difficulty) != 0 {
-		return fmt.Errorf("difficulty: want: %v have: %v", h.Difficulty, h2.Difficulty)
 	}
 	if h.GasLimit != h2.GasLimit {
 		return fmt.Errorf("gasLimit: want: %d have: %d", h.GasLimit, h2.GasLimit)
@@ -301,15 +277,6 @@ func validateHeader(h *btHeader, h2 *types.Header) error {
 	}
 	if !reflect.DeepEqual(h.WithdrawalsRoot, h2.WithdrawalsHash) {
 		return fmt.Errorf("withdrawalsRoot: want: %v have: %v", h.WithdrawalsRoot, h2.WithdrawalsHash)
-	}
-	if !reflect.DeepEqual(h.BlobGasUsed, h2.BlobGasUsed) {
-		return fmt.Errorf("blobGasUsed: want: %v have: %v", h.BlobGasUsed, h2.BlobGasUsed)
-	}
-	if !reflect.DeepEqual(h.ExcessBlobGas, h2.ExcessBlobGas) {
-		return fmt.Errorf("excessBlobGas: want: %v have: %v", h.ExcessBlobGas, h2.ExcessBlobGas)
-	}
-	if !reflect.DeepEqual(h.ParentBeaconBlockRoot, h2.ParentBeaconRoot) {
-		return fmt.Errorf("parentBeaconBlockRoot: want: %v have: %v", h.ParentBeaconBlockRoot, h2.ParentBeaconRoot)
 	}
 	return nil
 }

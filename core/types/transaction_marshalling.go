@@ -36,11 +36,9 @@ type txJSON struct {
 	GasPrice             *hexutil.Big    `json:"gasPrice"`
 	MaxPriorityFeePerGas *hexutil.Big    `json:"maxPriorityFeePerGas"`
 	MaxFeePerGas         *hexutil.Big    `json:"maxFeePerGas"`
-	MaxFeePerBlobGas     *hexutil.Big    `json:"maxFeePerBlobGas,omitempty"`
 	Value                *hexutil.Big    `json:"value"`
 	Input                *hexutil.Bytes  `json:"input"`
 	AccessList           *AccessList     `json:"accessList,omitempty"`
-	BlobVersionedHashes  []common.Hash   `json:"blobVersionedHashes,omitempty"`
 	PublicKey            *hexutil.Bytes  `json:"publicKey"`
 	Signature            *hexutil.Bytes  `json:"signature"`
 	YParity              *hexutil.Uint64 `json:"yParity,omitempty"`

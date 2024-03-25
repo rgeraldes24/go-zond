@@ -29,8 +29,8 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
-	"github.com/theQRL/go-zond/zond/tracers"
 	"github.com/theQRL/go-zond/tests"
+	"github.com/theQRL/go-zond/zond/tracers"
 )
 
 // prestateTrace is the result of a prestateTrace run.
@@ -104,7 +104,6 @@ func testPrestateDiffTracer(tracerName string, dirPath string, t *testing.T) {
 					Coinbase:    test.Context.Miner,
 					BlockNumber: new(big.Int).SetUint64(uint64(test.Context.Number)),
 					Time:        uint64(test.Context.Time),
-					Difficulty:  (*big.Int)(test.Context.Difficulty),
 					GasLimit:    uint64(test.Context.GasLimit),
 					BaseFee:     test.Genesis.BaseFee,
 				}

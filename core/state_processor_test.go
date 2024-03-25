@@ -45,20 +45,8 @@ func u64(val uint64) *uint64 { return &val }
 func TestStateProcessorErrors(t *testing.T) {
 	var (
 		config = &params.ChainConfig{
-			ChainID:                 big.NewInt(1),
-			HomesteadBlock:          big.NewInt(0),
-			EIP150Block:             big.NewInt(0),
-			EIP155Block:             big.NewInt(0),
-			EIP158Block:             big.NewInt(0),
-			ByzantiumBlock:          big.NewInt(0),
-			ConstantinopleBlock:     big.NewInt(0),
-			PetersburgBlock:         big.NewInt(0),
-			IstanbulBlock:           big.NewInt(0),
-			MuirGlacierBlock:        big.NewInt(0),
-			BerlinBlock:             big.NewInt(0),
-			LondonBlock:             big.NewInt(0),
-			TerminalTotalDifficulty: big.NewInt(0),
-			ShanghaiTime:            new(uint64),
+			ChainID:      big.NewInt(1),
+			ShanghaiTime: new(uint64),
 		}
 		signer = types.LatestSigner(config)
 		d1, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
@@ -243,16 +231,7 @@ func TestStateProcessorErrors(t *testing.T) {
 			db    = rawdb.NewMemoryDatabase()
 			gspec = &Genesis{
 				Config: &params.ChainConfig{
-					ChainID:             big.NewInt(1),
-					HomesteadBlock:      big.NewInt(0),
-					EIP150Block:         big.NewInt(0),
-					EIP155Block:         big.NewInt(0),
-					EIP158Block:         big.NewInt(0),
-					ByzantiumBlock:      big.NewInt(0),
-					ConstantinopleBlock: big.NewInt(0),
-					PetersburgBlock:     big.NewInt(0),
-					IstanbulBlock:       big.NewInt(0),
-					MuirGlacierBlock:    big.NewInt(0),
+					ChainID: big.NewInt(1),
 				},
 				Alloc: GenesisAlloc{
 					common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7"): GenesisAccount{
@@ -329,24 +308,16 @@ func TestStateProcessorErrors(t *testing.T) {
 // GenerateBadBlock constructs a "block" which contains the transactions. The transactions are not expected to be
 // valid, and no proper post-state can be made. But from the perspective of the blockchain, the block is sufficiently
 // valid to be considered for import:
-// - valid pow (fake), ancestry, difficulty, gaslimit etc
+// - valid pow (fake), ancestry, gaslimit etc
 func GenerateBadBlock(parent *types.Block, engine consensus.Engine, txs types.Transactions, config *params.ChainConfig) *types.Block {
-	difficulty := big.NewInt(0)
-
 	header := &types.Header{
-		ParentHash: parent.Hash(),
-		Coinbase:   parent.Coinbase(),
-		Difficulty: difficulty,
-		GasLimit:   parent.GasLimit(),
-		Number:     new(big.Int).Add(parent.Number(), common.Big1),
-		Time:       parent.Time() + 10,
-		UncleHash:  types.EmptyUncleHash,
-	}
-	if config.IsLondon(header.Number) {
-		header.BaseFee = eip1559.CalcBaseFee(config, parent.Header())
-	}
-	if config.IsShanghai(header.Number, header.Time) {
-		header.WithdrawalsHash = &types.EmptyWithdrawalsHash
+		ParentHash:      parent.Hash(),
+		Coinbase:        parent.Coinbase(),
+		GasLimit:        parent.GasLimit(),
+		Number:          new(big.Int).Add(parent.Number(), common.Big1),
+		Time:            parent.Time() + 10,
+		BaseFee:         eip1559.CalcBaseFee(config, parent.Header()),
+		WithdrawalsHash: &types.EmptyWithdrawalsHash,
 	}
 	var receipts []*types.Receipt
 	// The post-state result doesn't need to be correct (this is a bad block), but we do need something there
@@ -365,8 +336,5 @@ func GenerateBadBlock(parent *types.Block, engine consensus.Engine, txs types.Tr
 	}
 	header.Root = common.BytesToHash(hasher.Sum(nil))
 	// Assemble and return the final block for sealing
-	if config.IsShanghai(header.Number, header.Time) {
-		return types.NewBlockWithWithdrawals(header, txs, nil, receipts, []*types.Withdrawal{}, trie.NewStackTrie(nil))
-	}
-	return types.NewBlock(header, txs, nil, receipts, trie.NewStackTrie(nil))
+	return types.NewBlockWithWithdrawals(header, txs, nil, receipts, []*types.Withdrawal{}, trie.NewStackTrie(nil))
 }

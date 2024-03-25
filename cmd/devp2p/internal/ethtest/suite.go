@@ -358,15 +358,12 @@ func (s *Suite) TestLargeAnnounce(t *utesting.T) {
 	blocks := []*NewBlock{
 		{
 			Block: largeBlock(),
-			TD:    s.fullChain.TotalDifficultyAt(nextBlock),
 		},
 		{
 			Block: s.fullChain.blocks[nextBlock],
-			TD:    largeNumber(2),
 		},
 		{
 			Block: largeBlock(),
-			TD:    largeNumber(2),
 		},
 	}
 

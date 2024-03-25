@@ -31,12 +31,6 @@ import (
 	"github.com/theQRL/go-zond/trie"
 )
 
-// Proof-of-stake protocol constants.
-var (
-	beaconDifficulty = common.Big0          // The default block difficulty in the beacon consensus
-	beaconNonce      = types.EncodeNonce(0) // The default block nonce in the beacon consensus
-)
-
 // Various error messages to mark blocks invalid. These should be private to
 // prevent engine specific errors from being referenced in the remainder of the
 // codebase, inherently breaking if the engine is swapped out. Please put common
@@ -81,18 +75,10 @@ func (beacon *Beacon) VerifyHeaders(chain consensus.ChainHeaderReader, headers [
 	return beacon.verifyHeaders(chain, headers, nil)
 }
 
-// VerifyUncles verifies that the given block's uncles conform to the consensus
-// rules of the Ethereum consensus engine.
-func (beacon *Beacon) VerifyUncles(chain consensus.ChainReader, block *types.Block) error {
-	return nil
-}
-
 // verifyHeader checks whether a header conforms to the consensus rules of the
 // stock Ethereum consensus engine. The difference between the beacon and classic is
 // (a) The following fields are expected to be constants:
-//   - difficulty is expected to be 0
 //   - nonce is expected to be 0
-//   - unclehash is expected to be Hash(emptyHeader)
 //     to be the desired constants
 //
 // (b) we don't verify if a block is in the future anymore
@@ -101,10 +87,6 @@ func (beacon *Beacon) verifyHeader(chain consensus.ChainHeaderReader, header, pa
 	// Ensure that the header's extra-data section is of a reasonable size
 	if len(header.Extra) > 32 {
 		return fmt.Errorf("extra-data longer than 32 bytes (%d)", len(header.Extra))
-	}
-	// Verify the seal parts. Ensure the nonce and uncle hash are the expected value.
-	if header.Nonce != beaconNonce {
-		return errInvalidNonce
 	}
 	// Verify the timestamp
 	if header.Time <= parent.Time {
@@ -239,31 +221,6 @@ func (beacon *Beacon) FinalizeAndAssemble(chain consensus.ChainHeaderReader, hea
 
 	// Assemble and return the final block.
 	return types.NewBlockWithWithdrawals(header, txs, receipts, withdrawals, trie.NewStackTrie(nil)), nil
-}
-
-// Seal generates a new sealing request for the given input block and pushes
-// the result into the given channel.
-//
-// Note, the method returns immediately and will send the result async. More
-// than one result may also be returned depending on the consensus algorithm.
-func (beacon *Beacon) Seal(chain consensus.ChainHeaderReader, block *types.Block, results chan<- *types.Block, stop <-chan struct{}) error {
-	// The seal verification is done by the external consensus engine,
-	// return directly without pushing any block back. In another word
-	// beacon won't return any result by `results` channel which may
-	// blocks the receiver logic forever.
-	return nil
-}
-
-// SealHash returns the hash of a block prior to it being sealed.
-func (beacon *Beacon) SealHash(header *types.Header) common.Hash {
-	return common.Hash{}
-}
-
-// CalcDifficulty is the difficulty adjustment algorithm. It returns
-// the difficulty that a new block should have when created at time
-// given the parent block's time and difficulty.
-func (beacon *Beacon) CalcDifficulty(chain consensus.ChainHeaderReader, time uint64, parent *types.Header) *big.Int {
-	return beaconDifficulty
 }
 
 // APIs implements consensus.Engine, returning the user facing RPC APIs.

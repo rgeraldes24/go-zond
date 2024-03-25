@@ -17,15 +17,10 @@
 package beacon
 
 import (
-	"math/big"
-
 	"github.com/theQRL/go-zond/consensus"
-	"github.com/theQRL/go-zond/core/types"
 )
 
 // NewFaker creates a fake consensus engine for testing.
-// The fake engine simulates a merged network.
-// It can not be used to test the merge transition.
 // This type is needed since the fakeChainReader can not be used with
 // a normal beacon consensus engine.
 func NewFaker() consensus.Engine {
@@ -34,8 +29,4 @@ func NewFaker() consensus.Engine {
 
 type faker struct {
 	Beacon
-}
-
-func (f *faker) CalcDifficulty(chain consensus.ChainHeaderReader, time uint64, parent *types.Header) *big.Int {
-	return beaconDifficulty
 }

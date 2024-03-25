@@ -20,7 +20,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"math/big"
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/forkid"
@@ -89,7 +88,6 @@ type Packet interface {
 type StatusPacket struct {
 	ProtocolVersion uint32
 	NetworkID       uint64
-	TD              *big.Int
 	Head            common.Hash
 	Genesis         common.Hash
 	ForkID          forkid.ID
@@ -190,7 +188,6 @@ type BlockHeadersRLPPacket66 struct {
 // NewBlockPacket is the network packet for the block propagation message.
 type NewBlockPacket struct {
 	Block *types.Block
-	TD    *big.Int
 }
 
 // sanityCheck verifies that the values are reasonable, as a DoS protection

@@ -64,7 +64,6 @@ func largeHeader() *types.Header {
 		MixDigest:   randHash(),
 		ReceiptHash: randHash(),
 		TxHash:      randHash(),
-		Nonce:       types.BlockNonce{},
 		Extra:       []byte{},
 		Bloom:       types.Bloom{},
 		GasUsed:     0,
@@ -74,6 +73,5 @@ func largeHeader() *types.Header {
 		ParentHash:  randHash(),
 		Root:        randHash(),
 		Number:      largeNumber(2),
-		Difficulty:  largeNumber(2),
 	}
 }

@@ -1,6 +1,5 @@
 {
   "genesis": {
-    "difficulty": "59917798787272",
     "extraData": "0xe4b883e5bda9e7a59ee4bb99e9b1bc",
     "gasLimit": "4712380",
     "hash": "0xae82afe3630b001a34ad4c51695dacb17872ebee4dadd2de88b1a16671871da4",
@@ -10,7 +9,6 @@
     "number": "1881283",
     "stateRoot": "0x6e3832bc2e4e66170a1e716449083e08fbb70e7b2a9f1f34e0c57e66ce40c50f",
     "timestamp": "1468467284",
-    "totalDifficulty": "37186898441932102239",
     "alloc": {
       "0x0000000000000000000000000000000000000004": {
         "balance": "0x0"
@@ -265,30 +263,11 @@
       }
     },
     "config": {
-      "chainId": 1,
-      "homesteadBlock": 1150000,
-      "daoForkBlock": 1920000,
-      "daoForkSupport": true,
-      "eip150Block": 2463000,
-      "eip150Hash": "0x2086799aeebeae135c246c65021c82b4e15a2c451340993aacfd2751886514f0",
-      "eip155Block": 2675000,
-      "eip158Block": 2675000,
-      "byzantiumBlock": 4370000,
-      "constantinopleBlock": 7280000,
-      "petersburgBlock": 7280000,
-      "istanbulBlock": 9069000,
-      "muirGlacierBlock": 9200000,
-      "berlinBlock": 12244000,
-      "londonBlock": 12965000,
-      "arrowGlacierBlock": 13773000,
-      "grayGlacierBlock": 15050000,
-      "terminalTotalDifficultyPassed": true,
-      "ethash": {}
+      "chainId": 1
     }
   },
   "context": {
     "number": "1881284",
-    "difficulty": "59917798852808",
     "timestamp": "1468467296",
     "gasLimit": "4712388",
     "miner": "0xea674fdde714fd979de3edf0f56aa9716b898ec8"

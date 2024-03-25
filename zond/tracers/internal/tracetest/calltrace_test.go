@@ -31,18 +31,17 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
-	"github.com/theQRL/go-zond/zond/tracers"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/tests"
+	"github.com/theQRL/go-zond/zond/tracers"
 )
 
 type callContext struct {
-	Number     math.HexOrDecimal64   `json:"number"`
-	Difficulty *math.HexOrDecimal256 `json:"difficulty"`
-	Time       math.HexOrDecimal64   `json:"timestamp"`
-	GasLimit   math.HexOrDecimal64   `json:"gasLimit"`
-	Miner      common.Address        `json:"miner"`
+	Number   math.HexOrDecimal64 `json:"number"`
+	Time     math.HexOrDecimal64 `json:"timestamp"`
+	GasLimit math.HexOrDecimal64 `json:"gasLimit"`
+	Miner    common.Address      `json:"miner"`
 }
 
 // callLog is the result of LOG opCode
@@ -133,7 +132,6 @@ func testCallTracer(tracerName string, dirPath string, t *testing.T) {
 					Coinbase:    test.Context.Miner,
 					BlockNumber: new(big.Int).SetUint64(uint64(test.Context.Number)),
 					Time:        uint64(test.Context.Time),
-					Difficulty:  (*big.Int)(test.Context.Difficulty),
 					GasLimit:    uint64(test.Context.GasLimit),
 					BaseFee:     test.Genesis.BaseFee,
 				}
@@ -236,7 +234,6 @@ func benchTracer(tracerName string, test *callTracerTest, b *testing.B) {
 		Coinbase:    test.Context.Miner,
 		BlockNumber: new(big.Int).SetUint64(uint64(test.Context.Number)),
 		Time:        uint64(test.Context.Time),
-		Difficulty:  (*big.Int)(test.Context.Difficulty),
 		GasLimit:    uint64(test.Context.GasLimit),
 	}
 	triedb, _, statedb := tests.MakePreState(rawdb.NewMemoryDatabase(), test.Genesis.Alloc, false, rawdb.HashScheme)
@@ -276,7 +273,6 @@ func TestInternals(t *testing.T) {
 			Coinbase:    common.Address{},
 			BlockNumber: new(big.Int).SetUint64(8000000),
 			Time:        5,
-			Difficulty:  big.NewInt(0x30000),
 			GasLimit:    uint64(6000000),
 		}
 	)

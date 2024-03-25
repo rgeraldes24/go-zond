@@ -22,7 +22,6 @@ import (
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
-	"github.com/theQRL/go-zond/consensus/ethash"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/state"
@@ -74,18 +73,16 @@ type stEnv struct {
 }
 
 type stEnvMarshaling struct {
-	Coinbase         common.UnprefixedAddress
-	Difficulty       *math.HexOrDecimal256
-	Random           *math.HexOrDecimal256
-	ParentDifficulty *math.HexOrDecimal256
-	ParentBaseFee    *math.HexOrDecimal256
-	ParentGasUsed    math.HexOrDecimal64
-	ParentGasLimit   math.HexOrDecimal64
-	GasLimit         math.HexOrDecimal64
-	Number           math.HexOrDecimal64
-	Timestamp        math.HexOrDecimal64
-	ParentTimestamp  math.HexOrDecimal64
-	BaseFee          *math.HexOrDecimal256
+	Coinbase        common.UnprefixedAddress
+	Random          *math.HexOrDecimal256
+	ParentBaseFee   *math.HexOrDecimal256
+	ParentGasUsed   math.HexOrDecimal64
+	ParentGasLimit  math.HexOrDecimal64
+	GasLimit        math.HexOrDecimal64
+	Number          math.HexOrDecimal64
+	Timestamp       math.HexOrDecimal64
+	ParentTimestamp math.HexOrDecimal64
+	BaseFee         *math.HexOrDecimal256
 }
 
 type rejectedTx struct {
@@ -285,17 +282,4 @@ func rlpHash(x interface{}) (h common.Hash) {
 	rlp.Encode(hw, x)
 	hw.Sum(h[:0])
 	return h
-}
-
-// calcDifficulty is based on ethash.CalcDifficulty. This method is used in case
-// the caller does not provide an explicit difficulty, but instead provides only
-// parent timestamp + difficulty.
-// Note: this method only works for ethash engine.
-func calcDifficulty(config *params.ChainConfig, number, currentTime, parentTime uint64) *big.Int {
-	parent := &types.Header{
-		ParentHash: common.Hash{},
-		Number:     new(big.Int).SetUint64(number - 1),
-		Time:       parentTime,
-	}
-	return ethash.CalcDifficulty(config, currentTime, parent)
 }

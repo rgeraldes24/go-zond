@@ -32,9 +32,9 @@ import (
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
+	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/zond/tracers"
 	"github.com/theQRL/go-zond/zond/tracers/logger"
-	"github.com/theQRL/go-zond/params"
 
 	// force-load js tracers to trigger registration
 	_ "github.com/theQRL/go-zond/zond/tracers/js"
@@ -43,10 +43,6 @@ import (
 func TestDefaults(t *testing.T) {
 	cfg := new(Config)
 	setDefaults(cfg)
-
-	if cfg.Difficulty == nil {
-		t.Error("expected difficulty to be non nil")
-	}
 
 	if cfg.GasLimit == 0 {
 		t.Error("didn't expect gaslimit to be zero")
@@ -170,20 +166,11 @@ func benchmarkEVM_Create(bench *testing.B, code string) {
 		Origin:      sender,
 		State:       statedb,
 		GasLimit:    10000000,
-		Difficulty:  big.NewInt(0x200000),
 		Time:        0,
 		Coinbase:    common.Address{},
 		BlockNumber: new(big.Int).SetUint64(1),
 		ChainConfig: &params.ChainConfig{
-			ChainID:             big.NewInt(1),
-			HomesteadBlock:      new(big.Int),
-			ByzantiumBlock:      new(big.Int),
-			ConstantinopleBlock: new(big.Int),
-			DAOForkBlock:        new(big.Int),
-			DAOForkSupport:      false,
-			EIP150Block:         new(big.Int),
-			EIP155Block:         new(big.Int),
-			EIP158Block:         new(big.Int),
+			ChainID: big.NewInt(1),
 		},
 		EVMConfig: vm.Config{},
 	}
@@ -220,7 +207,6 @@ func fakeHeader(n uint64, parentHash common.Hash) *types.Header {
 		Time:       1000,
 		Nonce:      types.BlockNonce{0x1},
 		Extra:      []byte{},
-		Difficulty: big.NewInt(0),
 		GasLimit:   100000,
 	}
 	return &header

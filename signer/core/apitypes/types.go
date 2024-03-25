@@ -180,10 +180,10 @@ var (
 		accounts.MimetypeTypedData,
 		0x01,
 	}
-	ApplicationClique = SigFormat{
-		accounts.MimetypeClique,
-		0x02,
-	}
+	// ApplicationClique = SigFormat{
+	// 	accounts.MimetypeClique,
+	// 	0x02,
+	// }
 	TextPlain = SigFormat{
 		accounts.MimetypeTextPlain,
 		0x45,

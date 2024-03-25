@@ -164,9 +164,6 @@ loop:
 				return nil, fmt.Errorf("wrong head block in status, want:  %#x (block %d) have %#x",
 					want, chain.blocks[chain.Len()-1].NumberU64(), have)
 			}
-			if have, want := msg.TD.Cmp(chain.TD()), 0; have != want {
-				return nil, fmt.Errorf("wrong TD in status: have %v want %v", have, want)
-			}
 			if have, want := msg.ForkID, chain.ForkID(); !reflect.DeepEqual(have, want) {
 				return nil, fmt.Errorf("wrong fork ID in status: have %v, want %v", have, want)
 			}
@@ -193,7 +190,6 @@ loop:
 		status = &Status{
 			ProtocolVersion: uint32(c.negotiatedProtoVersion),
 			NetworkID:       chain.chainConfig.ChainID.Uint64(),
-			TD:              chain.TD(),
 			Head:            chain.blocks[chain.Len()-1].Hash(),
 			Genesis:         chain.blocks[0].Hash(),
 			ForkID:          chain.ForkID(),
@@ -316,7 +312,6 @@ func (s *Suite) sendNextBlock() error {
 	nextBlock := s.fullChain.blocks[s.chain.Len()]
 	blockAnnouncement := &NewBlock{
 		Block: nextBlock,
-		TD:    s.fullChain.TotalDifficultyAt(s.chain.Len()),
 	}
 	// send announcement and wait for node to request the header
 	if err = s.testAnnounce(sendConn, recvConn, blockAnnouncement); err != nil {
@@ -348,9 +343,6 @@ func (s *Suite) waitAnnounce(conn *Conn, blockAnnouncement *NewBlock) error {
 			if !reflect.DeepEqual(blockAnnouncement.Block.Header(), msg.Block.Header()) {
 				return fmt.Errorf("wrong header in block announcement: \nexpected %v "+
 					"\ngot %v", blockAnnouncement.Block.Header(), msg.Block.Header())
-			}
-			if !reflect.DeepEqual(blockAnnouncement.TD, msg.TD) {
-				return fmt.Errorf("wrong TD in announcement: expected %v, got %v", blockAnnouncement.TD, msg.TD)
 			}
 			return nil
 		case *NewBlockHashes:
@@ -421,7 +413,6 @@ func (s *Suite) oldAnnounce() error {
 	// create old block announcement
 	oldBlockAnnounce := &NewBlock{
 		Block: s.chain.blocks[len(s.chain.blocks)/2],
-		TD:    s.chain.blocks[len(s.chain.blocks)/2].Difficulty(),
 	}
 	if err := sendConn.Write(oldBlockAnnounce); err != nil {
 		return fmt.Errorf("could not write to connection: %v", err)
@@ -534,7 +525,6 @@ func (s *Suite) maliciousStatus(conn *Conn) error {
 	status := &Status{
 		ProtocolVersion: uint32(conn.negotiatedProtoVersion),
 		NetworkID:       s.chain.chainConfig.ChainID.Uint64(),
-		TD:              largeNumber(2),
 		Head:            s.chain.blocks[s.chain.Len()-1].Hash(),
 		Genesis:         s.chain.blocks[0].Hash(),
 		ForkID:          s.chain.ForkID(),

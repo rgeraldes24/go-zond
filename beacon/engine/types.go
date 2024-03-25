@@ -147,15 +147,12 @@ func decodeTransactions(enc [][]byte) ([]*types.Transaction, error) {
 // ExecutableDataToBlock constructs a block from executable data.
 // It verifies that the following fields:
 //
-//		len(extraData) <= 32
-//		uncleHash = emptyUncleHash
-//		difficulty = 0
-//	 	if versionedHashes != nil, versionedHashes match to blob transactions
+//	len(extraData) <= 32
 //
 // and that the blockhash of the constructed block matches the parameters. Nil
 // Withdrawals value will propagate through the returned block. Empty
 // Withdrawals value must be passed via non-nil, length 0 value in params.
-func ExecutableDataToBlock(params ExecutableData, versionedHashes []common.Hash, beaconRoot *common.Hash) (*types.Block, error) {
+func ExecutableDataToBlock(params ExecutableData) (*types.Block, error) {
 	txs, err := decodeTransactions(params.Transactions)
 	if err != nil {
 		return nil, err
@@ -185,7 +182,6 @@ func ExecutableDataToBlock(params ExecutableData, versionedHashes []common.Hash,
 		TxHash:          types.DeriveSha(types.Transactions(txs), trie.NewStackTrie(nil)),
 		ReceiptHash:     params.ReceiptsRoot,
 		Bloom:           types.BytesToBloom(params.LogsBloom),
-		Difficulty:      common.Big0,
 		Number:          new(big.Int).SetUint64(params.Number),
 		GasLimit:        params.GasLimit,
 		GasUsed:         params.GasUsed,
