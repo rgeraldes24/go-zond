@@ -34,16 +34,6 @@ var (
 	testpubkeyc = hexutil.MustDecode("0x02e32df42865e97135acfb65f3bae71bdc86f4d49150ad6a440b6f15878109880a")
 )
 
-func TestEcrecover(t *testing.T) {
-	pubkey, err := Ecrecover(testmsg, testsig)
-	if err != nil {
-		t.Fatalf("recover error: %s", err)
-	}
-	if !bytes.Equal(pubkey, testpubkey) {
-		t.Errorf("pubkey mismatch: want: %x have: %x", testpubkey, pubkey)
-	}
-}
-
 func TestVerifySignature(t *testing.T) {
 	sig := testsig[:len(testsig)-1] // remove recovery id
 	if !VerifySignature(testpubkey, testmsg, sig) {
@@ -130,14 +120,6 @@ func TestPubkeyRandom(t *testing.T) {
 		}
 		if !reflect.DeepEqual(key.PublicKey, *pubkey2) {
 			t.Fatalf("iteration %d: keys not equal", i)
-		}
-	}
-}
-
-func BenchmarkEcrecoverSignature(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		if _, err := Ecrecover(testmsg, testsig); err != nil {
-			b.Fatal("ecrecover error", err)
 		}
 	}
 }

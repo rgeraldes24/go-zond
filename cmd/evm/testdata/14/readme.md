@@ -1,3 +1,4 @@
+# TODO(rgeraldes24): remove
 ## Difficulty calculation
 
 This test shows how the `evm t8n` can be used to calculate the (ethash) difficulty, if none is provided by the caller. 

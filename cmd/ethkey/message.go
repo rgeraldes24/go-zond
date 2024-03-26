@@ -24,7 +24,6 @@ import (
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
-	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/urfave/cli/v2"
 )
@@ -101,43 +100,46 @@ It is possible to refer to a file containing the message.`,
 		msgfileFlag,
 	},
 	Action: func(ctx *cli.Context) error {
-		addressStr := ctx.Args().First()
-		signatureHex := ctx.Args().Get(1)
-		message := getMessage(ctx, 2)
+		// TODO(rgeraldes24)
+		/*
+			addressStr := ctx.Args().First()
+			signatureHex := ctx.Args().Get(1)
+			message := getMessage(ctx, 2)
 
-		if !common.IsHexAddress(addressStr) {
-			utils.Fatalf("Invalid address: %s", addressStr)
-		}
-		address := common.HexToAddress(addressStr)
-		signature, err := hex.DecodeString(signatureHex)
-		if err != nil {
-			utils.Fatalf("Signature encoding is not hexadecimal: %v", err)
-		}
-
-		recoveredPubkey, err := crypto.SigToPub(accounts.TextHash(message), signature)
-		if err != nil || recoveredPubkey == nil {
-			utils.Fatalf("Signature verification failed: %v", err)
-		}
-		recoveredPubkeyBytes := crypto.FromECDSAPub(recoveredPubkey)
-		recoveredAddress := crypto.PubkeyToAddress(*recoveredPubkey)
-		success := address == recoveredAddress
-
-		out := outputVerify{
-			Success:            success,
-			RecoveredPublicKey: hex.EncodeToString(recoveredPubkeyBytes),
-			RecoveredAddress:   recoveredAddress.Hex(),
-		}
-		if ctx.Bool(jsonFlag.Name) {
-			mustPrintJSON(out)
-		} else {
-			if out.Success {
-				fmt.Println("Signature verification successful!")
-			} else {
-				fmt.Println("Signature verification failed!")
+			if !common.IsHexAddress(addressStr) {
+				utils.Fatalf("Invalid address: %s", addressStr)
 			}
-			fmt.Println("Recovered public key:", out.RecoveredPublicKey)
-			fmt.Println("Recovered address:", out.RecoveredAddress)
-		}
+			address := common.HexToAddress(addressStr)
+			signature, err := hex.DecodeString(signatureHex)
+			if err != nil {
+				utils.Fatalf("Signature encoding is not hexadecimal: %v", err)
+			}
+
+			recoveredPubkey, err := crypto.SigToPub(accounts.TextHash(message), signature)
+			if err != nil || recoveredPubkey == nil {
+				utils.Fatalf("Signature verification failed: %v", err)
+			}
+			recoveredPubkeyBytes := crypto.FromECDSAPub(recoveredPubkey)
+			recoveredAddress := crypto.PubkeyToAddress(*recoveredPubkey)
+			success := address == recoveredAddress
+
+			out := outputVerify{
+				Success:            success,
+				RecoveredPublicKey: hex.EncodeToString(recoveredPubkeyBytes),
+				RecoveredAddress:   recoveredAddress.Hex(),
+			}
+			if ctx.Bool(jsonFlag.Name) {
+				mustPrintJSON(out)
+			} else {
+				if out.Success {
+					fmt.Println("Signature verification successful!")
+				} else {
+					fmt.Println("Signature verification failed!")
+				}
+				fmt.Println("Recovered public key:", out.RecoveredPublicKey)
+				fmt.Println("Recovered address:", out.RecoveredAddress)
+			}
+		*/
 		return nil
 	},
 }

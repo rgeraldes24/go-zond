@@ -61,10 +61,8 @@ var (
 		utils.MinFreeDiskSpaceFlag,
 		utils.KeyStoreDirFlag,
 		utils.ExternalSignerFlag,
-		utils.USBFlag,
-		utils.SmartCardDaemonPathFlag,
-		// TODO(rgeraldes24): remove
-		// utils.OverrideCancun,
+		// utils.USBFlag,
+		// utils.SmartCardDaemonPathFlag,
 		utils.TxPoolLocalsFlag,
 		utils.TxPoolNoLocalsFlag,
 		utils.TxPoolJournalFlag,
@@ -177,12 +175,12 @@ var (
 	}
 )
 
-var app = flags.NewApp("the go-ethereum command line interface")
+var app = flags.NewApp("the go-zond command line interface")
 
 func init() {
-	// Initialize the CLI app and start Geth
-	app.Action = geth
-	app.Copyright = "Copyright 2013-2023 The go-ethereum Authors"
+	// Initialize the CLI app and start Gzond
+	app.Action = gzond
+	app.Copyright = "Copyright 2013-2023 The go-zond Authors"
 	app.Commands = []*cli.Command{
 		// See chaincmd.go:
 		initCommand,
@@ -292,10 +290,10 @@ func prepare(ctx *cli.Context) {
 	go metrics.CollectProcessMetrics(3 * time.Second)
 }
 
-// geth is the main entry point into the system if no special subcommand is run.
+// gzond is the main entry point into the system if no special subcommand is run.
 // It creates a default node based on the command line arguments and runs it in
 // blocking mode, waiting for it to be shut down.
-func geth(ctx *cli.Context) error {
+func gzond(ctx *cli.Context) error {
 	if args := ctx.Args().Slice(); len(args) > 0 {
 		return fmt.Errorf("invalid command: %q", args[0])
 	}

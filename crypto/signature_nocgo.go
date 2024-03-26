@@ -52,15 +52,6 @@ func sigToPub(hash, sig []byte) (*btcec.PublicKey, error) {
 	return pub, err
 }
 
-// SigToPub returns the public key that created the given signature.
-func SigToPub(hash, sig []byte) (*ecdsa.PublicKey, error) {
-	pub, err := sigToPub(hash, sig)
-	if err != nil {
-		return nil, err
-	}
-	return pub.ToECDSA(), nil
-}
-
 // Sign calculates an ECDSA signature.
 //
 // This function is susceptible to chosen plaintext attacks that can leak

@@ -24,6 +24,7 @@ import (
 	"time"
 
 	"github.com/theQRL/go-zond/consensus"
+	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/consensus/ethash"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
@@ -75,7 +76,7 @@ func TestHeaderInsertion(t *testing.T) {
 		gspec = &Genesis{BaseFee: big.NewInt(params.InitialBaseFee), Config: params.AllBeaconProtocolChanges}
 	)
 	gspec.Commit(db, trie.NewDatabase(db, nil))
-	hc, err := NewHeaderChain(db, gspec.Config, ethash.NewFaker(), func() bool { return false })
+	hc, err := NewHeaderChain(db, gspec.Config, beacon.NewFaker(), func() bool { return false })
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -16,12 +16,6 @@
 
 package params
 
-import (
-	"math/big"
-
-	"github.com/theQRL/go-zond/common"
-)
-
 const (
 	GasLimitBoundDivisor uint64 = 1024               // The bound divisor of the gas limit, used in update calculations.
 	MinGasLimit          uint64 = 5000               // Minimum the gas limit may ever be.
@@ -133,7 +127,6 @@ const (
 
 	// Precompiled contract gas prices
 
-	// EcrecoverGas        uint64 = 3000 // Elliptic curve sender recovery gas price
 	DepositrootGas      uint64 = 3000 // Deposit root operation gas price
 	Sha256BaseGas       uint64 = 60   // Base price for a SHA256 operation
 	Sha256PerWordGas    uint64 = 12   // Per-word price for a SHA256 operation
@@ -155,14 +148,4 @@ const (
 	// up to half the consumed gas could be refunded. Redefined as 1/5th in EIP-3529
 	RefundQuotient        uint64 = 2
 	RefundQuotientEIP3529 uint64 = 5
-)
-
-var (
-	DifficultyBoundDivisor = big.NewInt(2048) // The bound divisor of the difficulty, used in the update calculations.
-	DurationLimit          = big.NewInt(13)   // The decision boundary on the blocktime duration used to determine whether difficulty should go up or not.
-
-	// BeaconRootsStorageAddress is the address where historical beacon roots are stored as per EIP-4788
-	BeaconRootsStorageAddress = common.HexToAddress("0xbEac00dDB15f3B6d645C48263dC93862413A222D")
-	// SystemAddress is where the system-transaction is sent from as per EIP-4788
-	SystemAddress common.Address = common.HexToAddress("0xfffffffffffffffffffffffffffffffffffffffe")
 )

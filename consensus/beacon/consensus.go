@@ -185,8 +185,7 @@ func (beacon *Beacon) verifyHeaders(chain consensus.ChainHeaderReader, headers [
 	return abort, results
 }
 
-// Prepare implements consensus.Engine, initializing the difficulty field of a
-// header to conform to the beacon protocol. The changes are done inline.
+// Prepare implements consensus.Engine.
 func (beacon *Beacon) Prepare(chain consensus.ChainHeaderReader, header *types.Header) error {
 	return nil
 }

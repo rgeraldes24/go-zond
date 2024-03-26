@@ -464,41 +464,6 @@ Response
 }
 ```
 
-### account_ecRecover
-
-#### Recover the signing address
-
-Derive the address from the account that was used to sign data with content type `text/plain` and the signature.
-
-#### Arguments
-  - data [data]: data that was signed
-  - signature [data]: the signature to verify
-
-#### Result
-  - derived account [address]
-
-#### Sample call
-```json
-{
-  "id": 4,
-  "jsonrpc": "2.0",
-  "method": "account_ecRecover",
-  "params": [
-    "0xaabbccdd",
-    "0x5b6693f153b48ec1c706ba4169960386dbaa6903e249cc79a8e6ddc434451d417e1e57327872c7f538beeb323c300afa9999a3d4a5de6caf3be0d5ef832b67ef1c"
-  ]
-}
-```
-Response
-
-```json
-{
-  "id": 4,
-  "jsonrpc": "2.0",
-  "result": "0x1923f626bb8dc025849e00f99c25fe2b2f7fb0db"
-}
-```
-
 ### account_version
 
 #### Get external API version

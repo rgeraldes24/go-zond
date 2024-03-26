@@ -28,7 +28,7 @@ import (
 
 	"github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/consensus/ethash"
+	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
@@ -72,7 +72,7 @@ func newTesterWithNotification(t *testing.T, success func()) *downloadTester {
 		Alloc:   core.GenesisAlloc{testAddress: {Balance: big.NewInt(1000000000000000)}},
 		BaseFee: big.NewInt(params.InitialBaseFee),
 	}
-	chain, err := core.NewBlockChain(db, nil, gspec, nil, ethash.NewFaker(), vm.Config{}, nil, nil)
+	chain, err := core.NewBlockChain(db, nil, gspec, beacon.NewFaker(), vm.Config{}, nil, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -153,11 +153,10 @@ type downloadTesterPeer struct {
 	withholdHeaders map[common.Hash]struct{}
 }
 
-// Head constructs a function to retrieve a peer's current head hash
-// and total difficulty.
-func (dlp *downloadTesterPeer) Head() (common.Hash, *big.Int) {
+// Head constructs a function to retrieve a peer's current head hash.
+func (dlp *downloadTesterPeer) Head() common.Hash {
 	head := dlp.chain.CurrentBlock()
-	return head.Hash(), dlp.chain.GetTd(head.Hash(), head.Number.Uint64())
+	return head.Hash()
 }
 
 func unmarshalRlpHeaders(rlpdata []rlp.RawValue) []*types.Header {

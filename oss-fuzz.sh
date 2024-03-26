@@ -61,7 +61,7 @@ DOG
 
 function compile_fuzzer {
   # Inputs:
-  # $1: The package to fuzz, within go-ethereum
+  # $1: The package to fuzz, within go-zond
   # $2: The name of the fuzzing function
   # $3: The name to give to the final fuzzing-binary
 
@@ -99,7 +99,6 @@ compile_fuzzer tests/fuzzers/txfetcher  Fuzz fuzzTxfetcher
 compile_fuzzer tests/fuzzers/rlp        Fuzz fuzzRlp
 compile_fuzzer tests/fuzzers/trie       Fuzz fuzzTrie
 compile_fuzzer tests/fuzzers/stacktrie  Fuzz fuzzStackTrie
-compile_fuzzer tests/fuzzers/difficulty Fuzz fuzzDifficulty
 compile_fuzzer tests/fuzzers/abi        Fuzz fuzzAbi
 compile_fuzzer tests/fuzzers/les        Fuzz fuzzLes
 compile_fuzzer tests/fuzzers/secp256k1  Fuzz fuzzSecp256k1

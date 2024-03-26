@@ -65,9 +65,8 @@ func NewForkChoice(chainReader ChainReader, preserve func(header *types.Header) 
 
 // ReorgNeeded returns whether the reorg should be applied
 // based on the given external header and local canonical chain.
-// In the td mode, the new head is chosen if the corresponding
-// total difficulty is higher. In the extern mode, the trusted
-// header is always selected as the head.
+// In the extern mode, the trusted header is always selected as
+// the head.
 func (f *ForkChoice) ReorgNeeded(current *types.Header, extern *types.Header) (bool, error) {
 	return true, nil
 }

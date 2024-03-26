@@ -36,62 +36,65 @@ func TestCheckCompatible(t *testing.T) {
 		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 0, headTimestamp: 0, wantErr: nil},
 		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 0, headTimestamp: uint64(time.Now().Unix()), wantErr: nil},
 		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 100, wantErr: nil},
-		{
-			stored:    &ChainConfig{EIP150Block: big.NewInt(10)},
-			new:       &ChainConfig{EIP150Block: big.NewInt(20)},
-			headBlock: 9,
-			wantErr:   nil,
-		},
-		{
-			stored:    AllEthashProtocolChanges,
-			new:       &ChainConfig{HomesteadBlock: nil},
-			headBlock: 3,
-			wantErr: &ConfigCompatError{
-				What:          "Homestead fork block",
-				StoredBlock:   big.NewInt(0),
-				NewBlock:      nil,
-				RewindToBlock: 0,
+		// TODO(rgeraldes24)
+		/*
+			{
+				stored:    &ChainConfig{EIP150Block: big.NewInt(10)},
+				new:       &ChainConfig{EIP150Block: big.NewInt(20)},
+				headBlock: 9,
+				wantErr:   nil,
 			},
-		},
-		{
-			stored:    AllEthashProtocolChanges,
-			new:       &ChainConfig{HomesteadBlock: big.NewInt(1)},
-			headBlock: 3,
-			wantErr: &ConfigCompatError{
-				What:          "Homestead fork block",
-				StoredBlock:   big.NewInt(0),
-				NewBlock:      big.NewInt(1),
-				RewindToBlock: 0,
+			{
+				stored:    AllEthashProtocolChanges,
+				new:       &ChainConfig{HomesteadBlock: nil},
+				headBlock: 3,
+				wantErr: &ConfigCompatError{
+					What:          "Homestead fork block",
+					StoredBlock:   big.NewInt(0),
+					NewBlock:      nil,
+					RewindToBlock: 0,
+				},
 			},
-		},
-		{
-			stored:    &ChainConfig{HomesteadBlock: big.NewInt(30), EIP150Block: big.NewInt(10)},
-			new:       &ChainConfig{HomesteadBlock: big.NewInt(25), EIP150Block: big.NewInt(20)},
-			headBlock: 25,
-			wantErr: &ConfigCompatError{
-				What:          "EIP150 fork block",
-				StoredBlock:   big.NewInt(10),
-				NewBlock:      big.NewInt(20),
-				RewindToBlock: 9,
+			{
+				stored:    AllEthashProtocolChanges,
+				new:       &ChainConfig{HomesteadBlock: big.NewInt(1)},
+				headBlock: 3,
+				wantErr: &ConfigCompatError{
+					What:          "Homestead fork block",
+					StoredBlock:   big.NewInt(0),
+					NewBlock:      big.NewInt(1),
+					RewindToBlock: 0,
+				},
 			},
-		},
-		{
-			stored:    &ChainConfig{ConstantinopleBlock: big.NewInt(30)},
-			new:       &ChainConfig{ConstantinopleBlock: big.NewInt(30), PetersburgBlock: big.NewInt(30)},
-			headBlock: 40,
-			wantErr:   nil,
-		},
-		{
-			stored:    &ChainConfig{ConstantinopleBlock: big.NewInt(30)},
-			new:       &ChainConfig{ConstantinopleBlock: big.NewInt(30), PetersburgBlock: big.NewInt(31)},
-			headBlock: 40,
-			wantErr: &ConfigCompatError{
-				What:          "Petersburg fork block",
-				StoredBlock:   nil,
-				NewBlock:      big.NewInt(31),
-				RewindToBlock: 30,
+			{
+				stored:    &ChainConfig{HomesteadBlock: big.NewInt(30), EIP150Block: big.NewInt(10)},
+				new:       &ChainConfig{HomesteadBlock: big.NewInt(25), EIP150Block: big.NewInt(20)},
+				headBlock: 25,
+				wantErr: &ConfigCompatError{
+					What:          "EIP150 fork block",
+					StoredBlock:   big.NewInt(10),
+					NewBlock:      big.NewInt(20),
+					RewindToBlock: 9,
+				},
 			},
-		},
+			{
+				stored:    &ChainConfig{ConstantinopleBlock: big.NewInt(30)},
+				new:       &ChainConfig{ConstantinopleBlock: big.NewInt(30), PetersburgBlock: big.NewInt(30)},
+				headBlock: 40,
+				wantErr:   nil,
+			},
+			{
+				stored:    &ChainConfig{ConstantinopleBlock: big.NewInt(30)},
+				new:       &ChainConfig{ConstantinopleBlock: big.NewInt(30), PetersburgBlock: big.NewInt(31)},
+				headBlock: 40,
+				wantErr: &ConfigCompatError{
+					What:          "Petersburg fork block",
+					StoredBlock:   nil,
+					NewBlock:      big.NewInt(31),
+					RewindToBlock: 30,
+				},
+			},
+		*/
 		{
 			stored:        &ChainConfig{ShanghaiTime: newUint64(10)},
 			new:           &ChainConfig{ShanghaiTime: newUint64(20)},

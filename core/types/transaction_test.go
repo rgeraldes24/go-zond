@@ -18,7 +18,6 @@ package types
 
 import (
 	"bytes"
-	"crypto/ecdsa"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -26,6 +25,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/theQRL/go-qrllib/dilithium"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/pqcrypto"
@@ -221,9 +221,11 @@ func decodeTx(data []byte) (*Transaction, error) {
 	return t, err
 }
 
-func defaultTestKey() (*ecdsa.PrivateKey, common.Address) {
-	key, _ := crypto.HexToECDSA("45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8")
-	addr := crypto.PubkeyToAddress(key.PublicKey)
+func defaultTestKey() (*dilithium.Dilithium, common.Address) {
+	// key, _ := crypto.HexToECDSA("45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8")
+	// addr := crypto.PubkeyToAddress(key.PublicKey)
+	key, _ := crypto.GenerateDilithiumKey()
+	var addr common.Address = key.GetAddress()
 	return key, addr
 }
 

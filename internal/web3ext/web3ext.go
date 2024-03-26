@@ -723,11 +723,6 @@ web3._extend({
 			inputFormatter: [null, web3._extend.formatters.inputAddressFormatter, null]
 		}),
 		new web3._extend.Method({
-			name: 'ecRecover',
-			call: 'personal_ecRecover',
-			params: 2
-		}),
-		new web3._extend.Method({
 			name: 'openWallet',
 			call: 'personal_openWallet',
 			params: 2
