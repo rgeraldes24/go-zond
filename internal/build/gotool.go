@@ -53,6 +53,7 @@ func (g *GoToolchain) Go(command string, args ...string) *exec.Cmd {
 	} else if os.Getenv("CC") != "" {
 		tool.Env = append(tool.Env, "CC="+os.Getenv("CC"))
 	}
+	// TODO(rgeraldes24)
 	// CKZG by default is not portable, append the necessary build flags to make
 	// it not rely on modern CPU instructions and enable linking against.
 	tool.Env = append(tool.Env, "CGO_CFLAGS=-O2 -g -D__BLST_PORTABLE__")

@@ -195,11 +195,12 @@ func (request *NewBlockPacket) sanityCheck() error {
 	if err := request.Block.SanityCheck(); err != nil {
 		return err
 	}
+	// TODO(rgeraldes24): remove
 	//TD at mainnet block #7753254 is 76 bits. If it becomes 100 million times
 	// larger, it will still fit within 100 bits
-	if tdlen := request.TD.BitLen(); tdlen > 100 {
-		return fmt.Errorf("too large block TD: bitlen %d", tdlen)
-	}
+	// if tdlen := request.TD.BitLen(); tdlen > 100 {
+	// 	return fmt.Errorf("too large block TD: bitlen %d", tdlen)
+	// }
 	return nil
 }
 

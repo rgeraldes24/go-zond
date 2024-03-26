@@ -43,6 +43,11 @@ var (
 		ShanghaiTime: newUint64(1705841668),
 	}
 
+	AllBeaconProtocolChanges = &ChainConfig{
+		ChainID:      big.NewInt(1337),
+		ShanghaiTime: newUint64(0),
+	}
+
 	AllDevChainProtocolChanges = &ChainConfig{
 		ChainID:      big.NewInt(1337),
 		ShanghaiTime: newUint64(0),

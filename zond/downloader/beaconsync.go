@@ -105,7 +105,7 @@ func (b *beaconBackfiller) resume() {
 		}()
 		// If the downloader fails, report an error as in beacon chain mode there
 		// should be no errors as long as the chain we're syncing to is valid.
-		if err := b.downloader.synchronise("", common.Hash{}, nil, nil, mode, true, b.started); err != nil {
+		if err := b.downloader.synchronise("", common.Hash{}, mode, b.started); err != nil {
 			log.Error("Beacon backfilling failed", "err", err)
 			return
 		}
@@ -196,12 +196,10 @@ func (d *Downloader) findBeaconAncestor() (uint64, error) {
 	var chainHead *types.Header
 
 	switch d.getMode() {
-	case FullSync:
-		chainHead = d.blockchain.CurrentBlock()
 	case SnapSync:
 		chainHead = d.blockchain.CurrentSnapBlock()
 	default:
-		chainHead = d.lightchain.CurrentHeader()
+		chainHead = d.blockchain.CurrentBlock()
 	}
 	number := chainHead.Number.Uint64()
 
@@ -216,12 +214,10 @@ func (d *Downloader) findBeaconAncestor() (uint64, error) {
 	}
 	var linked bool
 	switch d.getMode() {
-	case FullSync:
-		linked = d.blockchain.HasBlock(beaconTail.ParentHash, beaconTail.Number.Uint64()-1)
 	case SnapSync:
 		linked = d.blockchain.HasFastBlock(beaconTail.ParentHash, beaconTail.Number.Uint64()-1)
 	default:
-		linked = d.blockchain.HasHeader(beaconTail.ParentHash, beaconTail.Number.Uint64()-1)
+		linked = d.blockchain.HasBlock(beaconTail.ParentHash, beaconTail.Number.Uint64()-1)
 	}
 	if !linked {
 		// This is a programming error. The chain backfiller was called with a
@@ -251,12 +247,10 @@ func (d *Downloader) findBeaconAncestor() (uint64, error) {
 
 		var known bool
 		switch d.getMode() {
-		case FullSync:
-			known = d.blockchain.HasBlock(h.Hash(), n)
 		case SnapSync:
 			known = d.blockchain.HasFastBlock(h.Hash(), n)
 		default:
-			known = d.lightchain.HasHeader(h.Hash(), n)
+			known = d.blockchain.HasBlock(h.Hash(), n)
 		}
 		if !known {
 			end = check

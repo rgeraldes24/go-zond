@@ -292,7 +292,6 @@ func (p *Peer) SendNewBlock(block *types.Block, td *big.Int) error {
 	p.knownBlocks.Add(block.Hash())
 	return p2p.Send(p.rw, NewBlockMsg, &NewBlockPacket{
 		Block: block,
-		TD:    td,
 	})
 }
 

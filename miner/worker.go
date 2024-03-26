@@ -453,7 +453,8 @@ func (w *worker) newWorkLoop(recommit time.Duration) {
 		case <-timer.C:
 			// If sealing is running resubmit a new work cycle periodically to pull in
 			// higher priced transactions. Disable this overhead for pending blocks.
-			if w.isRunning() && (w.chainConfig.Clique == nil || w.chainConfig.Clique.Period > 0) {
+			// TODO(rgeraldes24)
+			if w.isRunning() /*&& (w.chainConfig.Clique == nil || w.chainConfig.Clique.Period > 0) */ {
 				// Short circuit if no new transaction arrives.
 				if w.newTxs.Load() == 0 {
 					timer.Reset(recommit)
@@ -535,7 +536,7 @@ func (w *worker) mainLoop() {
 					acc, _ := types.Sender(w.current.signer, tx)
 					txs[acc] = append(txs[acc], &txpool.LazyTransaction{
 						Hash:      tx.Hash(),
-						Tx:        tx.WithoutBlobTxSidecar(),
+						Tx:        tx,
 						Time:      tx.Time(),
 						GasFeeCap: tx.GasFeeCap(),
 						GasTipCap: tx.GasTipCap(),
@@ -609,13 +610,6 @@ func (w *worker) taskLoop() {
 			w.pendingMu.Lock()
 			w.pendingTasks[sealHash] = task
 			w.pendingMu.Unlock()
-
-			if err := w.engine.Seal(w.chain, task.block, w.resultCh, stopCh); err != nil {
-				log.Warn("Block sealing failed", "err", err)
-				w.pendingMu.Lock()
-				delete(w.pendingTasks, sealHash)
-				w.pendingMu.Unlock()
-			}
 		case <-w.exitCh:
 			interrupt()
 			return
@@ -883,13 +877,8 @@ func (w *worker) prepareWork(genParams *generateParams) (*environment, error) {
 		header.MixDigest = genParams.random
 	}
 	// Set baseFee and GasLimit if we are on an EIP-1559 chain
-	if w.chainConfig.IsLondon(header.Number) {
-		header.BaseFee = eip1559.CalcBaseFee(w.chainConfig, parent)
-		if !w.chainConfig.IsLondon(parent.Number) {
-			parentGasLimit := parent.GasLimit * w.chainConfig.ElasticityMultiplier()
-			header.GasLimit = core.CalcGasLimit(parentGasLimit, w.config.GasCeil)
-		}
-	}
+	header.BaseFee = eip1559.CalcBaseFee(w.chainConfig, parent)
+
 	// Run the consensus preparation with the default or customized consensus engine.
 	if err := w.engine.Prepare(w.chain, header); err != nil {
 		log.Error("Failed to prepare header for sealing", "err", err)

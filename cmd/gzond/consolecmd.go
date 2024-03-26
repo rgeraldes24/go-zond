@@ -52,17 +52,6 @@ which exposes a node admin interface as well as the Ðapp JavaScript API.
 See https://geth.ethereum.org/docs/interacting-with-geth/javascript-console.
 This command allows to open a console on a running geth node.`,
 	}
-
-	javascriptCommand = &cli.Command{
-		Action:    ephemeralConsole,
-		Name:      "js",
-		Usage:     "(DEPRECATED) Execute the specified JavaScript files",
-		ArgsUsage: "<jsfile> [jsfile...]",
-		Flags:     flags.Merge(nodeFlags, consoleFlags),
-		Description: `
-The JavaScript VM exposes a node admin interface as well as the Ðapp
-JavaScript API. See https://geth.ethereum.org/docs/interacting-with-geth/javascript-console`,
-	}
 )
 
 // localConsole starts a new geth node, attaching a JavaScript console to it at the

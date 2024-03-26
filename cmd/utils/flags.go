@@ -234,16 +234,11 @@ var (
 		Value:    2048,
 		Category: flags.EthCategory,
 	}
-	OverrideCancun = &cli.Uint64Flag{
-		Name:     "override.cancun",
-		Usage:    "Manually specify the Cancun fork timestamp, overriding the bundled setting",
-		Category: flags.EthCategory,
-	}
-	OverrideVerkle = &cli.Uint64Flag{
-		Name:     "override.verkle",
-		Usage:    "Manually specify the Verkle fork timestamp, overriding the bundled setting",
-		Category: flags.EthCategory,
-	}
+	// OverrideCancun = &cli.Uint64Flag{
+	// 	Name:     "override.cancun",
+	// 	Usage:    "Manually specify the Cancun fork timestamp, overriding the bundled setting",
+	// 	Category: flags.EthCategory,
+	// }
 	SyncModeFlag = &flags.TextMarshalerFlag{
 		Name:     "syncmode",
 		Usage:    `Blockchain sync mode ("snap" or "full")`,
@@ -339,25 +334,6 @@ var (
 		Value:    ethconfig.Defaults.TxPool.Lifetime,
 		Category: flags.TxPoolCategory,
 	}
-	// Blob transaction pool settings
-	BlobPoolDataDirFlag = &cli.StringFlag{
-		Name:     "blobpool.datadir",
-		Usage:    "Data directory to store blob transactions in",
-		Value:    ethconfig.Defaults.BlobPool.Datadir,
-		Category: flags.BlobPoolCategory,
-	}
-	BlobPoolDataCapFlag = &cli.Uint64Flag{
-		Name:     "blobpool.datacap",
-		Usage:    "Disk space to allocate for pending blob transactions (soft limit)",
-		Value:    ethconfig.Defaults.BlobPool.Datacap,
-		Category: flags.BlobPoolCategory,
-	}
-	BlobPoolPriceBumpFlag = &cli.Uint64Flag{
-		Name:     "blobpool.pricebump",
-		Usage:    "Price bump percentage to replace an already existing blob transaction",
-		Value:    ethconfig.Defaults.BlobPool.PriceBump,
-		Category: flags.BlobPoolCategory,
-	}
 	// Performance tuning settings
 	CacheFlag = &cli.IntFlag{
 		Name:     "cache",
@@ -408,12 +384,6 @@ var (
 	FDLimitFlag = &cli.IntFlag{
 		Name:     "fdlimit",
 		Usage:    "Raise the open file descriptor resource limit (default = system fd limit)",
-		Category: flags.PerfCategory,
-	}
-	CryptoKZGFlag = &cli.StringFlag{
-		Name:     "crypto.kzg",
-		Usage:    "KZG library implementation to use; gokzg (recommended) or ckzg",
-		Value:    "gokzg",
 		Category: flags.PerfCategory,
 	}
 
@@ -673,11 +643,6 @@ var (
 		Name:     "rpc.batch-response-max-size",
 		Usage:    "Maximum number of bytes returned from a batched call",
 		Value:    node.DefaultConfig.BatchResponseMaxSize,
-		Category: flags.APICategory,
-	}
-	EnablePersonal = &cli.BoolFlag{
-		Name:     "rpc.enabledeprecatedpersonal",
-		Usage:    "Enables the (deprecated) personal namespace",
 		Category: flags.APICategory,
 	}
 
@@ -1281,10 +1246,6 @@ func SetNodeConfig(ctx *cli.Context, cfg *node.Config) {
 		cfg.JWTSecret = ctx.String(JWTSecretFlag.Name)
 	}
 
-	if ctx.IsSet(EnablePersonal.Name) {
-		cfg.EnablePersonal = true
-	}
-
 	if ctx.IsSet(ExternalSignerFlag.Name) {
 		cfg.ExternalSigner = ctx.String(ExternalSignerFlag.Name)
 	}
@@ -1558,12 +1519,6 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 	}
 	cfg.StateScheme = scheme
 
-	// Parse transaction history flag, if user is still using legacy config
-	// file with 'TxLookupLimit' configured, copy the value to 'TransactionHistory'.
-	if cfg.TransactionHistory == ethconfig.Defaults.TransactionHistory && cfg.TxLookupLimit != ethconfig.Defaults.TxLookupLimit {
-		log.Warn("The config option 'TxLookupLimit' is deprecated and will be removed, please use 'TransactionHistory'")
-		cfg.TransactionHistory = cfg.TxLookupLimit
-	}
 	if ctx.IsSet(TransactionHistoryFlag.Name) {
 		cfg.TransactionHistory = ctx.Uint64(TransactionHistoryFlag.Name)
 	}
@@ -1703,14 +1658,6 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 			SetDNSDiscoveryDefaults(cfg, params.MainnetGenesisHash)
 		}
 	}
-	// Set any dangling config values
-	// if ctx.String(CryptoKZGFlag.Name) != "gokzg" && ctx.String(CryptoKZGFlag.Name) != "ckzg" {
-	// 	Fatalf("--%s flag must be 'gokzg' or 'ckzg'", CryptoKZGFlag.Name)
-	// }
-	// log.Info("Initializing the KZG library", "backend", ctx.String(CryptoKZGFlag.Name))
-	// if err := kzg4844.UseCKZG(ctx.String(CryptoKZGFlag.Name) == "ckzg"); err != nil {
-	// 	Fatalf("Failed to set KZG library implementation to %s: %v", ctx.String(CryptoKZGFlag.Name), err)
-	// }
 }
 
 // SetDNSDiscoveryDefaults configures DNS discovery with the given URL if

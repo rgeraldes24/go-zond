@@ -35,6 +35,7 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
+// TODO(rgeraldes24)
 // SignatureLength indicates the byte length required to carry a signature with recovery id.
 const SignatureLength = 64 + 1 // 64 bytes ECDSA signature + 1 byte recovery id
 

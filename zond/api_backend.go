@@ -241,13 +241,6 @@ func (b *EthAPIBackend) GetLogs(ctx context.Context, hash common.Hash, number ui
 	return rawdb.ReadLogs(b.eth.chainDb, hash, number), nil
 }
 
-func (b *EthAPIBackend) GetTd(ctx context.Context, hash common.Hash) *big.Int {
-	if header := b.eth.blockchain.GetHeaderByHash(hash); header != nil {
-		return b.eth.blockchain.GetTd(hash, header.Number.Uint64())
-	}
-	return nil
-}
-
 func (b *EthAPIBackend) GetEVM(ctx context.Context, msg *core.Message, state *state.StateDB, header *types.Header, vmConfig *vm.Config, blockCtx *vm.BlockContext) (*vm.EVM, func() error) {
 	if vmConfig == nil {
 		vmConfig = b.eth.blockchain.GetVMConfig()

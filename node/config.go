@@ -207,9 +207,6 @@ type Config struct {
 	// JWTSecret is the path to the hex-encoded jwt secret.
 	JWTSecret string `toml:",omitempty"`
 
-	// EnablePersonal enables the deprecated personal namespace.
-	EnablePersonal bool `toml:"-"`
-
 	DBEngine string `toml:",omitempty"`
 }
 

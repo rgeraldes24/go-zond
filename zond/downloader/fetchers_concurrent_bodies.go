@@ -92,7 +92,7 @@ func (q *bodyQueue) deliver(peer *peerConnection, packet *zond.Response) (int, e
 	txs, withdrawals := packet.Res.(*zond.BlockBodiesPacket).Unpack()
 	hashsets := packet.Meta.([][]common.Hash) // {txs hashes, withdrawal hashes}
 
-	accepted, err := q.queue.DeliverBodies(peer.id, txs, hashsets[0], hashsets[1], withdrawals, hashsets[2])
+	accepted, err := q.queue.DeliverBodies(peer.id, txs, hashsets[0], withdrawals, hashsets[2])
 	switch {
 	case err == nil && len(txs) == 0:
 		peer.log.Trace("Requested bodies delivered")

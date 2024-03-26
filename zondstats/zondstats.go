@@ -66,7 +66,6 @@ type backend interface {
 	SubscribeNewTxsEvent(ch chan<- core.NewTxsEvent) event.Subscription
 	CurrentHeader() *types.Header
 	HeaderByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Header, error)
-	GetTd(ctx context.Context, hash common.Hash) *big.Int
 	Stats() (pending int, queued int)
 	SyncProgress() zond.SyncProgress
 }
@@ -610,7 +609,6 @@ func (s *Service) assembleBlockStats(block *types.Block) *blockStats {
 	// Gather the block infos from the local blockchain
 	var (
 		header *types.Header
-		td     *big.Int
 		txs    []txStats
 	)
 
@@ -621,7 +619,6 @@ func (s *Service) assembleBlockStats(block *types.Block) *blockStats {
 			block = fullBackend.CurrentBlock()
 		}
 		header = block.Header()
-		td = fullBackend.GetTd(context.Background(), header.Hash())
 
 		txs = make([]txStats, len(block.Transactions()))
 		for i, tx := range block.Transactions() {
@@ -634,7 +631,6 @@ func (s *Service) assembleBlockStats(block *types.Block) *blockStats {
 		} else {
 			header = s.backend.CurrentHeader()
 		}
-		td = s.backend.GetTd(context.Background(), header.Hash())
 		txs = []txStats{}
 	}
 
@@ -742,7 +738,6 @@ type nodeStats struct {
 	Active   bool `json:"active"`
 	Syncing  bool `json:"syncing"`
 	Mining   bool `json:"mining"`
-	Hashrate int  `json:"hashrate"`
 	Peers    int  `json:"peers"`
 	GasPrice int  `json:"gasPrice"`
 	Uptime   int  `json:"uptime"`
@@ -754,7 +749,6 @@ func (s *Service) reportStats(conn *connWrapper) error {
 	// Gather the syncing and mining infos from the local miner instance
 	var (
 		mining   bool
-		hashrate int
 		syncing  bool
 		gasprice int
 	)
@@ -762,7 +756,6 @@ func (s *Service) reportStats(conn *connWrapper) error {
 	fullBackend, ok := s.backend.(fullNodeBackend)
 	if ok {
 		mining = fullBackend.Miner().Mining()
-		hashrate = int(fullBackend.Miner().Hashrate())
 
 		sync := fullBackend.SyncProgress()
 		syncing = fullBackend.CurrentHeader().Number.Uint64() >= sync.HighestBlock
@@ -784,7 +777,6 @@ func (s *Service) reportStats(conn *connWrapper) error {
 		"stats": &nodeStats{
 			Active:   true,
 			Mining:   mining,
-			Hashrate: hashrate,
 			Peers:    s.server.PeerCount(),
 			GasPrice: gasprice,
 			Syncing:  syncing,

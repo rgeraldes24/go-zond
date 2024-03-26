@@ -280,7 +280,7 @@ func SetupGenesisBlock(db zonddb.Database, triedb *trie.Database, genesis *Genes
 
 func SetupGenesisBlockWithOverride(db zonddb.Database, triedb *trie.Database, genesis *Genesis) (*params.ChainConfig, common.Hash, error) {
 	if genesis != nil && genesis.Config == nil {
-		return params.AllEthashProtocolChanges, common.Hash{}, errGenesisNoConfig
+		return params.AllBeaconProtocolChanges, common.Hash{}, errGenesisNoConfig
 	}
 
 	// Just commit the new block if there is no stored genesis block.
@@ -402,7 +402,7 @@ func (g *Genesis) configOrDefault(ghash common.Hash) *params.ChainConfig {
 	case ghash == params.MainnetGenesisHash:
 		return params.MainnetChainConfig
 	default:
-		return params.AllEthashProtocolChanges
+		return params.AllBeaconProtocolChanges
 	}
 }
 
@@ -427,7 +427,7 @@ func (g *Genesis) ToBlock() *types.Block {
 	if g.GasLimit == 0 {
 		head.GasLimit = params.GenesisGasLimit
 	}
-	if g.Config != nil && g.Config.IsLondon(common.Big0) {
+	if g.Config != nil {
 		if g.BaseFee != nil {
 			head.BaseFee = g.BaseFee
 		} else {
@@ -453,7 +453,7 @@ func (g *Genesis) Commit(db zonddb.Database, triedb *trie.Database) (*types.Bloc
 	}
 	config := g.Config
 	if config == nil {
-		config = params.AllEthashProtocolChanges
+		config = params.AllBeaconProtocolChanges
 	}
 	if err := config.CheckConfigForkOrder(); err != nil {
 		return nil, err

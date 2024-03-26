@@ -24,7 +24,6 @@ const (
 	DevCategory        = "DEVELOPER CHAIN"
 	StateCategory      = "STATE HISTORY MANAGEMENT"
 	TxPoolCategory     = "TRANSACTION POOL (EVM)"
-	BlobPoolCategory   = "TRANSACTION POOL (BLOB)"
 	PerfCategory       = "PERFORMANCE TUNING"
 	AccountCategory    = "ACCOUNT"
 	APICategory        = "API AND CONSOLE"

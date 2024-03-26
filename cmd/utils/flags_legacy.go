@@ -19,7 +19,6 @@ package utils
 import (
 	"fmt"
 
-	"github.com/theQRL/go-zond/internal/flags"
 	"github.com/urfave/cli/v2"
 )
 
@@ -31,30 +30,7 @@ var ShowDeprecated = &cli.Command{
 	Description: "Show flags that have been deprecated and will soon be removed",
 }
 
-var DeprecatedFlags = []cli.Flag{
-	CacheTrieJournalFlag,
-	CacheTrieRejournalFlag,
-	LegacyDiscoveryV5Flag,
-}
-
-var (
-	// Deprecated July 2023
-	CacheTrieJournalFlag = &cli.StringFlag{
-		Name:     "cache.trie.journal",
-		Usage:    "Disk journal directory for trie cache to survive node restarts",
-		Category: flags.DeprecatedCategory,
-	}
-	CacheTrieRejournalFlag = &cli.DurationFlag{
-		Name:     "cache.trie.rejournal",
-		Usage:    "Time interval to regenerate the trie cache journal",
-		Category: flags.DeprecatedCategory,
-	}
-	LegacyDiscoveryV5Flag = &cli.BoolFlag{
-		Name:     "v5disc",
-		Usage:    "Enables the experimental RLPx V5 (Topic Discovery) mechanism (deprecated, use --discv5 instead)",
-		Category: flags.DeprecatedCategory,
-	}
-)
+var DeprecatedFlags = []cli.Flag{}
 
 // showDeprecated displays deprecated flags that will be soon removed from the codebase.
 func showDeprecated(*cli.Context) error {

@@ -35,13 +35,13 @@ import (
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
-	"github.com/theQRL/go-zond/zond/tracers/logger"
-	"github.com/theQRL/go-zond/zonddb"
 	"github.com/theQRL/go-zond/internal/ethapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/rpc"
+	"github.com/theQRL/go-zond/zond/tracers/logger"
+	"github.com/theQRL/go-zond/zonddb"
 )
 
 const (
@@ -283,7 +283,7 @@ func (api *API) traceChain(start, end *types.Block, config *TraceConfig, closed 
 						break
 					}
 					// Only delete empty objects if EIP158/161 (a.k.a Spurious Dragon) is in effect
-					task.statedb.Finalise(api.backend.ChainConfig().IsEIP158(task.block.Number()))
+					task.statedb.Finalise(true)
 					task.results[i] = &txTraceResult{TxHash: tx.Hash(), Result: res}
 				}
 				// Tracing state is used up, queue it for de-referencing. Note the
@@ -523,7 +523,7 @@ func (api *API) IntermediateRoots(ctx context.Context, hash common.Hash, config 
 		signer             = types.MakeSigner(api.backend.ChainConfig(), block.Number(), block.Time())
 		chainConfig        = api.backend.ChainConfig()
 		vmctx              = core.NewEVMBlockContext(block.Header(), api.chainContext(ctx), nil)
-		deleteEmptyObjects = chainConfig.IsEIP158(block.Number())
+		deleteEmptyObjects = true
 	)
 	for i, tx := range block.Transactions() {
 		if err := ctx.Err(); err != nil {
@@ -597,7 +597,6 @@ func (api *API) traceBlock(ctx context.Context, block *types.Block, config *Trac
 	var (
 		txs       = block.Transactions()
 		blockHash = block.Hash()
-		is158     = api.backend.ChainConfig().IsEIP158(block.Number())
 		blockCtx  = core.NewEVMBlockContext(block.Header(), api.chainContext(ctx), nil)
 		signer    = types.MakeSigner(api.backend.ChainConfig(), block.Number(), block.Time())
 		results   = make([]*txTraceResult, len(txs))
@@ -618,7 +617,7 @@ func (api *API) traceBlock(ctx context.Context, block *types.Block, config *Trac
 		results[i] = &txTraceResult{TxHash: tx.Hash(), Result: res}
 		// Finalize the state so any modifications are written to the trie
 		// Only delete empty objects if EIP158/161 (a.k.a Spurious Dragon) is in effect
-		statedb.Finalise(is158)
+		statedb.Finalise(true)
 	}
 	return results, nil
 }
@@ -687,7 +686,7 @@ txloop:
 		}
 		// Finalize the state so any modifications are written to the trie
 		// Only delete empty objects if EIP158/161 (a.k.a Spurious Dragon) is in effect
-		statedb.Finalise(vmenv.ChainConfig().IsEIP158(block.Number()))
+		statedb.Finalise(true)
 	}
 
 	close(jobs)
@@ -801,7 +800,7 @@ func (api *API) standardTraceBlockToFile(ctx context.Context, block *types.Block
 		}
 		// Finalize the state so any modifications are written to the trie
 		// Only delete empty objects if EIP158/161 (a.k.a Spurious Dragon) is in effect
-		statedb.Finalise(vmenv.ChainConfig().IsEIP158(block.Number()))
+		statedb.Finalise(true)
 
 		// If we've traced the transaction we were looking for, abort
 		if tx.Hash() == txHash {
@@ -986,41 +985,8 @@ func overrideConfig(original *params.ChainConfig, override *params.ChainConfig) 
 	*copy = *original
 	canon := true
 
-	// Apply forks (after Berlin) to the copy.
-	if block := override.BerlinBlock; block != nil {
-		copy.BerlinBlock = block
-		canon = false
-	}
-	if block := override.LondonBlock; block != nil {
-		copy.LondonBlock = block
-		canon = false
-	}
-	if block := override.ArrowGlacierBlock; block != nil {
-		copy.ArrowGlacierBlock = block
-		canon = false
-	}
-	if block := override.GrayGlacierBlock; block != nil {
-		copy.GrayGlacierBlock = block
-		canon = false
-	}
-	if block := override.MergeNetsplitBlock; block != nil {
-		copy.MergeNetsplitBlock = block
-		canon = false
-	}
 	if timestamp := override.ShanghaiTime; timestamp != nil {
 		copy.ShanghaiTime = timestamp
-		canon = false
-	}
-	if timestamp := override.CancunTime; timestamp != nil {
-		copy.CancunTime = timestamp
-		canon = false
-	}
-	if timestamp := override.PragueTime; timestamp != nil {
-		copy.PragueTime = timestamp
-		canon = false
-	}
-	if timestamp := override.VerkleTime; timestamp != nil {
-		copy.VerkleTime = timestamp
 		canon = false
 	}
 

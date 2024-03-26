@@ -19,6 +19,7 @@ package beacon
 import (
 	"errors"
 	"fmt"
+	"io"
 	"math/big"
 
 	"github.com/theQRL/go-zond/common"
@@ -26,9 +27,12 @@ import (
 	"github.com/theQRL/go-zond/consensus/misc/eip1559"
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/types"
+	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/trie"
+	"golang.org/x/crypto/sha3"
 )
 
 // Various error messages to mark blocks invalid. These should be private to
@@ -223,6 +227,11 @@ func (beacon *Beacon) FinalizeAndAssemble(chain consensus.ChainHeaderReader, hea
 	return types.NewBlockWithWithdrawals(header, txs, receipts, withdrawals, trie.NewStackTrie(nil)), nil
 }
 
+// SealHash returns the hash of a block prior to it being sealed.
+func (beacon *Beacon) SealHash(header *types.Header) common.Hash {
+	return SealHash(header)
+}
+
 // APIs implements consensus.Engine, returning the user facing RPC APIs.
 func (beacon *Beacon) APIs(chain consensus.ChainHeaderReader) []rpc.API {
 	return []rpc.API{}
@@ -231,4 +240,39 @@ func (beacon *Beacon) APIs(chain consensus.ChainHeaderReader) []rpc.API {
 // Close shutdowns the consensus engine
 func (beacon *Beacon) Close() error {
 	return nil
+}
+
+// SealHash returns the hash of a block prior to it being sealed.
+func SealHash(header *types.Header) (hash common.Hash) {
+	hasher := sha3.NewLegacyKeccak256()
+	encodeSigHeader(hasher, header)
+	hasher.(crypto.KeccakState).Read(hash[:])
+	return hash
+}
+
+func encodeSigHeader(w io.Writer, header *types.Header) {
+	enc := []interface{}{
+		header.ParentHash,
+		header.Coinbase,
+		header.Root,
+		header.TxHash,
+		header.ReceiptHash,
+		header.Bloom,
+		header.Number,
+		header.GasLimit,
+		header.GasUsed,
+		header.Time,
+		// TODO(rgeraldes24)
+		header.Extra[:len(header.Extra)-crypto.SignatureLength], // Yes, this will panic if extra is too short
+		header.MixDigest,
+	}
+	if header.BaseFee != nil {
+		enc = append(enc, header.BaseFee)
+	}
+	if header.WithdrawalsHash != nil {
+		panic("unexpected withdrawal hash value in clique")
+	}
+	if err := rlp.Encode(w, enc); err != nil {
+		panic("can't encode: " + err.Error())
+	}
 }

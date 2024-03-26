@@ -123,34 +123,6 @@ last block to write. In this mode, the file will be appended
 if already existing. If the file ends with .gz, the output will
 be gzipped.`,
 	}
-	importPreimagesCommand = &cli.Command{
-		Action:    importPreimages,
-		Name:      "import-preimages",
-		Usage:     "Import the preimage database from an RLP stream",
-		ArgsUsage: "<datafile>",
-		Flags: flags.Merge([]cli.Flag{
-			utils.CacheFlag,
-			utils.SyncModeFlag,
-		}, utils.DatabasePathFlags),
-		Description: `
-The import-preimages command imports hash preimages from an RLP encoded stream.
-It's deprecated, please use "gzond db import" instead.
-`,
-	}
-	exportPreimagesCommand = &cli.Command{
-		Action:    exportPreimages,
-		Name:      "export-preimages",
-		Usage:     "Export the preimage database into an RLP stream",
-		ArgsUsage: "<dumpfile>",
-		Flags: flags.Merge([]cli.Flag{
-			utils.CacheFlag,
-			utils.SyncModeFlag,
-		}, utils.DatabasePathFlags),
-		Description: `
-The export-preimages command exports hash preimages to an RLP encoded stream.
-It's deprecated, please use "gzond db export" instead.
-`,
-	}
 	dumpCommand = &cli.Command{
 		Action:    dump,
 		Name:      "dump",

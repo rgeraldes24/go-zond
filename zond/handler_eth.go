@@ -18,7 +18,6 @@ package zond
 
 import (
 	"fmt"
-	"math/big"
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core"
@@ -63,7 +62,7 @@ func (h *ethHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 		return h.handleBlockAnnounces(peer, hashes, numbers)
 
 	case *zond.NewBlockPacket:
-		return h.handleBlockBroadcast(peer, packet.Block, packet.TD)
+		return h.handleBlockBroadcast(peer, packet.Block)
 
 	case *zond.NewPooledTransactionHashesPacket66:
 		return h.txFetcher.Notify(peer.ID(), *packet)
@@ -92,7 +91,7 @@ func (h *ethHandler) handleBlockAnnounces(peer *zond.Peer, hashes []common.Hash,
 
 // handleBlockBroadcast is invoked from a peer's message handler when it transmits a
 // block broadcast for the local node to process.
-func (h *ethHandler) handleBlockBroadcast(peer *zond.Peer, block *types.Block, td *big.Int) error {
+func (h *ethHandler) handleBlockBroadcast(peer *zond.Peer, block *types.Block) error {
 	// TODO (MariusVanDerWijden) drop non-updated peers after the merge
 	return nil
 	// return errors.New("unexpected block announces")

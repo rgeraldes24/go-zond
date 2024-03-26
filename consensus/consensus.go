@@ -90,6 +90,9 @@ type Engine interface {
 	FinalizeAndAssemble(chain ChainHeaderReader, header *types.Header, state *state.StateDB, txs []*types.Transaction,
 		receipts []*types.Receipt, withdrawals []*types.Withdrawal) (*types.Block, error)
 
+	// SealHash returns the hash of a block prior to it being sealed.
+	SealHash(header *types.Header) common.Hash
+
 	// APIs returns the RPC APIs this consensus engine provides.
 	APIs(chain ChainHeaderReader) []rpc.API
 

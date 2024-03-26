@@ -231,14 +231,13 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 	triedb, snaps, statedb := MakePreState(rawdb.NewMemoryDatabase(), t.json.Pre, snapshotter, scheme)
 
 	var baseFee *big.Int
-	if config.IsLondon(new(big.Int)) {
-		baseFee = t.json.Env.BaseFee
-		if baseFee == nil {
-			// Retesteth uses `0x10` for genesis baseFee. Therefore, it defaults to
-			// parent - 2 : 0xa as the basefee for 'this' context.
-			baseFee = big.NewInt(0x0a)
-		}
+	baseFee = t.json.Env.BaseFee
+	if baseFee == nil {
+		// Retesteth uses `0x10` for genesis baseFee. Therefore, it defaults to
+		// parent - 2 : 0xa as the basefee for 'this' context.
+		baseFee = big.NewInt(0x0a)
 	}
+
 	post := t.json.Post[subtest.Fork][subtest.Index]
 	msg, err := t.json.Tx.toMessage(post, baseFee)
 	if err != nil {
@@ -290,7 +289,7 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 	statedb.AddBalance(block.Coinbase(), new(big.Int))
 
 	// Commit state mutations into database.
-	root, _ := statedb.Commit(block.NumberU64(), config.IsEIP158(block.Number()))
+	root, _ := statedb.Commit(block.NumberU64(), true)
 	return triedb, snaps, statedb, root, err
 }
 
