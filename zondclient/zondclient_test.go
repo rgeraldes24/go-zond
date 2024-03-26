@@ -34,7 +34,7 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
-	"github.com/theQRL/go-zond/zond"
+	zondsvc "github.com/theQRL/go-zond/zond"
 	"github.com/theQRL/go-zond/zond/ethconfig"
 )
 
@@ -186,7 +186,7 @@ var (
 )
 
 var genesis = &core.Genesis{
-	Config:    params.AllEthashProtocolChanges,
+	Config:    params.AllBeaconProtocolChanges,
 	Alloc:     core.GenesisAlloc{testAddr: {Balance: testBalance}},
 	ExtraData: []byte("test genesis"),
 	Timestamp: 9000,
@@ -220,7 +220,7 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 	}
 	// Create Ethereum Service
 	config := &ethconfig.Config{Genesis: genesis}
-	ethservice, err := zond.New(n, config)
+	ethservice, err := zondsvc.New(n, config)
 	if err != nil {
 		t.Fatalf("can't create new ethereum service: %v", err)
 	}
@@ -413,7 +413,7 @@ func testChainID(t *testing.T, client *rpc.Client) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if id == nil || id.Cmp(params.AllEthashProtocolChanges.ChainID) != 0 {
+	if id == nil || id.Cmp(params.AllBeaconProtocolChanges.ChainID) != 0 {
 		t.Fatalf("ChainID returned wrong number: %+v", id)
 	}
 }

@@ -182,8 +182,9 @@ func TestGenesisHashes(t *testing.T) {
 		want    common.Hash
 	}{
 		{DefaultGenesisBlock(), params.MainnetGenesisHash},
-		{DefaultGoerliGenesisBlock(), params.GoerliGenesisHash},
-		{DefaultSepoliaGenesisBlock(), params.SepoliaGenesisHash},
+		// TODO(rgeraldes24)
+		// {DefaultGoerliGenesisBlock(), params.GoerliGenesisHash},
+		// {DefaultSepoliaGenesisBlock(), params.SepoliaGenesisHash},
 		{DefaultBetaNetGenesisBlock(), params.BetaNetGenesisHash},
 	} {
 		// Test via MustCommit

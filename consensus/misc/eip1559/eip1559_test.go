@@ -35,7 +35,6 @@ func copyConfig(original *params.ChainConfig) *params.ChainConfig {
 
 func config() *params.ChainConfig {
 	config := copyConfig(params.TestChainConfig)
-	config.LondonBlock = big.NewInt(5)
 	return config
 }
 

@@ -3,7 +3,7 @@ ARG COMMIT=""
 ARG VERSION=""
 ARG BUILDNUM=""
 
-# Build Geth in a stock Go builder container
+# Build Gzond in a stock Go builder container
 FROM golang:1.21-alpine as builder
 
 RUN apk add --no-cache gcc musl-dev linux-headers git
@@ -14,9 +14,9 @@ COPY go.sum /go-zond/
 RUN cd /go-zond && go mod download
 
 ADD . /go-zond
-RUN cd /go-zond && go run build/ci.go install -static ./cmd/geth
+RUN cd /go-zond && go run build/ci.go install -static ./cmd/gzond
 
-# Pull Geth into a second stage deploy alpine container
+# Pull Gzond into a second stage deploy alpine container
 FROM alpine:latest
 
 RUN apk add --no-cache ca-certificates

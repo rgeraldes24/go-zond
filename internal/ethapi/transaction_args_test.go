@@ -214,30 +214,16 @@ type backendMock struct {
 
 func newBackendMock() *backendMock {
 	config := &params.ChainConfig{
-		ChainID:             big.NewInt(42),
-		HomesteadBlock:      big.NewInt(0),
-		DAOForkBlock:        nil,
-		DAOForkSupport:      true,
-		EIP150Block:         big.NewInt(0),
-		EIP155Block:         big.NewInt(0),
-		EIP158Block:         big.NewInt(0),
-		ByzantiumBlock:      big.NewInt(0),
-		ConstantinopleBlock: big.NewInt(0),
-		PetersburgBlock:     big.NewInt(0),
-		IstanbulBlock:       big.NewInt(0),
-		MuirGlacierBlock:    big.NewInt(0),
-		BerlinBlock:         big.NewInt(0),
-		LondonBlock:         big.NewInt(1000),
+		ChainID: big.NewInt(42),
 	}
 	return &backendMock{
 		current: &types.Header{
-			Difficulty: big.NewInt(10000000000),
-			Number:     big.NewInt(1100),
-			GasLimit:   8_000_000,
-			GasUsed:    8_000_000,
-			Time:       555,
-			Extra:      make([]byte, 32),
-			BaseFee:    big.NewInt(10),
+			Number:   big.NewInt(1100),
+			GasLimit: 8_000_000,
+			GasUsed:  8_000_000,
+			Time:     555,
+			Extra:    make([]byte, 32),
+			BaseFee:  big.NewInt(10),
 		},
 		config: config,
 	}
@@ -261,7 +247,7 @@ func (b *backendMock) SyncProgress() zond.SyncProgress { return zond.SyncProgres
 func (b *backendMock) FeeHistory(ctx context.Context, blockCount uint64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*big.Int, [][]*big.Int, []*big.Int, []float64, error) {
 	return nil, nil, nil, nil, nil
 }
-func (b *backendMock) ChainDb() zonddb.Database           { return nil }
+func (b *backendMock) ChainDb() zonddb.Database          { return nil }
 func (b *backendMock) AccountManager() *accounts.Manager { return nil }
 func (b *backendMock) ExtRPCEnabled() bool               { return false }
 func (b *backendMock) RPCGasCap() uint64                 { return 0 }

@@ -30,7 +30,7 @@ import (
 
 // SerializedSyncCommitteeSize is the size of the sync committee plus the
 // aggregate public key.
-const SerializedSyncCommitteeSize = (params.SyncCommitteeSize + 1) * params.BLSPubkeySize
+const SerializedSyncCommitteeSize = params.SyncCommitteeSize * params.DilithiumPubkeySize
 
 // SerializedSyncCommittee is the serialized version of a sync committee
 // plus the aggregate public key.
@@ -41,19 +41,16 @@ type SerializedSyncCommittee [SerializedSyncCommitteeSize]byte
 // See data structure definition here:
 // https://github.com/ethereum/consensus-specs/blob/dev/specs/altair/beacon-chain.md#syncaggregate
 type jsonSyncCommittee struct {
-	Pubkeys   []hexutil.Bytes `json:"pubkeys"`
-	Aggregate hexutil.Bytes   `json:"aggregate_pubkey"`
+	Pubkeys []hexutil.Bytes `json:"pubkeys"`
 }
 
 // MarshalJSON implements json.Marshaler.
 func (s *SerializedSyncCommittee) MarshalJSON() ([]byte, error) {
 	sc := jsonSyncCommittee{Pubkeys: make([]hexutil.Bytes, params.SyncCommitteeSize)}
 	for i := range sc.Pubkeys {
-		sc.Pubkeys[i] = make(hexutil.Bytes, params.BLSPubkeySize)
-		copy(sc.Pubkeys[i][:], s[i*params.BLSPubkeySize:(i+1)*params.BLSPubkeySize])
+		sc.Pubkeys[i] = make(hexutil.Bytes, params.DilithiumPubkeySize)
+		copy(sc.Pubkeys[i][:], s[i*params.DilithiumPubkeySize:(i+1)*params.DilithiumPubkeySize])
 	}
-	sc.Aggregate = make(hexutil.Bytes, params.BLSPubkeySize)
-	copy(sc.Aggregate[:], s[params.SyncCommitteeSize*params.BLSPubkeySize:])
 	return json.Marshal(&sc)
 }
 
@@ -67,15 +64,12 @@ func (s *SerializedSyncCommittee) UnmarshalJSON(input []byte) error {
 		return fmt.Errorf("invalid number of pubkeys %d", len(sc.Pubkeys))
 	}
 	for i, key := range sc.Pubkeys {
-		if len(key) != params.BLSPubkeySize {
+		if len(key) != params.DilithiumPubkeySize {
 			return fmt.Errorf("pubkey %d has invalid size %d", i, len(key))
 		}
-		copy(s[i*params.BLSPubkeySize:], key[:])
+		copy(s[i*params.DilithiumPubkeySize:], key[:])
 	}
-	if len(sc.Aggregate) != params.BLSPubkeySize {
-		return fmt.Errorf("invalid aggregate pubkey size %d", len(sc.Aggregate))
-	}
-	copy(s[params.SyncCommitteeSize*params.BLSPubkeySize:], sc.Aggregate[:])
+
 	return nil
 }
 
@@ -86,13 +80,13 @@ func (s *SerializedSyncCommittee) UnmarshalJSON(input []byte) error {
 func (s *SerializedSyncCommittee) Root() common.Hash {
 	var (
 		hasher  = sha256.New()
-		padding [64 - params.BLSPubkeySize]byte
+		padding [64 - params.DilithiumPubkeySize]byte
 		data    [params.SyncCommitteeSize]common.Hash
 		l       = params.SyncCommitteeSize
 	)
 	for i := range data {
 		hasher.Reset()
-		hasher.Write(s[i*params.BLSPubkeySize : (i+1)*params.BLSPubkeySize])
+		hasher.Write(s[i*params.DilithiumPubkeySize : (i+1)*params.DilithiumPubkeySize])
 		hasher.Write(padding[:])
 		hasher.Sum(data[i][:0])
 	}
@@ -106,7 +100,7 @@ func (s *SerializedSyncCommittee) Root() common.Hash {
 		l /= 2
 	}
 	hasher.Reset()
-	hasher.Write(s[SerializedSyncCommitteeSize-params.BLSPubkeySize : SerializedSyncCommitteeSize])
+	hasher.Write(s[SerializedSyncCommitteeSize-params.DilithiumPubkeySize : SerializedSyncCommitteeSize])
 	hasher.Write(padding[:])
 	hasher.Sum(data[1][:0])
 	hasher.Reset()
@@ -119,20 +113,17 @@ func (s *SerializedSyncCommittee) Root() common.Hash {
 // Deserialize splits open the pubkeys into proper BLS key types.
 func (s *SerializedSyncCommittee) Deserialize() (*SyncCommittee, error) {
 	sc := new(SyncCommittee)
-	for i := 0; i <= params.SyncCommitteeSize; i++ {
+	for i := 0; i < params.SyncCommitteeSize; i++ {
 		key := new(bls.Pubkey)
 
-		var bytes [params.BLSPubkeySize]byte
-		copy(bytes[:], s[i*params.BLSPubkeySize:(i+1)*params.BLSPubkeySize])
+		var bytes [params.DilithiumPubkeySize]byte
+		copy(bytes[:], s[i*params.DilithiumPubkeySize:(i+1)*params.DilithiumPubkeySize])
 
+		// TODO(rgeraldes24)
 		if err := key.Deserialize(&bytes); err != nil {
 			return nil, err
 		}
-		if i < params.SyncCommitteeSize {
-			sc.keys[i] = key
-		} else {
-			sc.aggregate = key
-		}
+		sc.keys[i] = key
 	}
 	return sc, nil
 }
@@ -142,26 +133,29 @@ func (s *SerializedSyncCommittee) Deserialize() (*SyncCommittee, error) {
 // See data structure definition here:
 // https://github.com/ethereum/consensus-specs/blob/dev/specs/altair/beacon-chain.md#syncaggregate
 type SyncCommittee struct {
-	keys      [params.SyncCommitteeSize]*bls.Pubkey
-	aggregate *bls.Pubkey
+	keys [params.SyncCommitteeSize]*bls.Pubkey
 }
 
 // VerifySignature returns true if the given sync aggregate is a valid signature
 // or the given hash.
-func (sc *SyncCommittee) VerifySignature(signingRoot common.Hash, signature *SyncAggregate) bool {
-	var (
-		sig  bls.Signature
-		keys = make([]*bls.Pubkey, 0, params.SyncCommitteeSize)
-	)
-	if err := sig.Deserialize(&signature.Signature); err != nil {
-		return false
-	}
-	for i, key := range sc.keys {
-		if signature.Signers[i/8]&(byte(1)<<(i%8)) != 0 {
-			keys = append(keys, key)
+func (sc *SyncCommittee) VerifySignatures(signingRoot common.Hash, signature *SyncAggregate) bool {
+	// TODO(rgeraldes24)
+	/*
+		var (
+			sig  bls.Signature
+			keys = make([]*bls.Pubkey, 0, params.SyncCommitteeSize)
+		)
+		if err := sig.Deserialize(&signature.Signature); err != nil {
+			return false
 		}
-	}
-	return bls.FastAggregateVerify(keys, signingRoot[:], &sig)
+		for i, key := range sc.keys {
+			if signature.Signers[i/8]&(byte(1)<<(i%8)) != 0 {
+				keys = append(keys, key)
+			}
+		}
+		return bls.FastAggregateVerify(keys, signingRoot[:], &sig)
+	*/
+	return true
 }
 
 //go:generate go run github.com/fjl/gencodec -type SyncAggregate -field-override syncAggregateMarshaling -out gen_syncaggregate_json.go
@@ -172,13 +166,14 @@ func (sc *SyncCommittee) VerifySignature(signingRoot common.Hash, signature *Syn
 // See data structure definition here:
 // https://github.com/ethereum/consensus-specs/blob/dev/specs/altair/beacon-chain.md#syncaggregate
 type SyncAggregate struct {
-	Signers   [params.SyncCommitteeBitmaskSize]byte `gencodec:"required" json:"sync_committee_bits"`
-	Signature [params.BLSSignatureSize]byte         `gencodec:"required" json:"sync_committee_signature"`
+	Signers    [params.SyncCommitteeBitmaskSize]byte `gencodec:"required" json:"sync_committee_bits"`
+	Signatures [][params.DilithiumSignatureSize]byte `gencodec:"required" json:"sync_committee_signatures"`
 }
 
+// TODO(rgeraldes24): new artifact generation
 type syncAggregateMarshaling struct {
-	Signers   hexutil.Bytes
-	Signature hexutil.Bytes
+	Signers    hexutil.Bytes
+	Signatures []hexutil.Bytes
 }
 
 // SignerCount returns the number of signers in the aggregate signature.

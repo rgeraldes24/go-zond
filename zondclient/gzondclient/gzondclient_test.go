@@ -32,7 +32,7 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
-	"github.com/theQRL/go-zond/zond"
+	zondsvc "github.com/theQRL/go-zond/zond"
 	"github.com/theQRL/go-zond/zond/ethconfig"
 	"github.com/theQRL/go-zond/zond/filters"
 	"github.com/theQRL/go-zond/zondclient"
@@ -56,14 +56,14 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 	}
 	// Create Ethereum Service
 	config := &ethconfig.Config{Genesis: genesis}
-	ethservice, err := zond.New(n, config)
+	ethservice, err := zondsvc.New(n, config)
 	if err != nil {
 		t.Fatalf("can't create new ethereum service: %v", err)
 	}
 	filterSystem := filters.NewFilterSystem(ethservice.APIBackend, filters.Config{})
 	n.RegisterAPIs([]rpc.API{{
 		Namespace: "zond",
-		Service:   filters.NewFilterAPI(filterSystem, false),
+		Service:   filters.NewFilterAPI(filterSystem),
 	}})
 
 	// Import the test chain.
@@ -78,7 +78,7 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 
 func generateTestChain() (*core.Genesis, []*types.Block) {
 	genesis := &core.Genesis{
-		Config:    params.AllEthashProtocolChanges,
+		Config:    params.AllBeaconProtocolChanges,
 		Alloc:     core.GenesisAlloc{testAddr: {Balance: testBalance, Storage: map[common.Hash]common.Hash{testSlot: testValue}}},
 		ExtraData: []byte("test genesis"),
 		Timestamp: 9000,
@@ -323,7 +323,8 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	signedTx, err := tx.WithSignature(signer, signature)
+	// TODO(rgeraldes24): public key
+	signedTx, err := tx.WithSignatureAndPublicKey(signer, signature, []byte{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -357,7 +358,8 @@ func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	signedTx, err := tx.WithSignature(signer, signature)
+	// TODO(rgeraldes24)
+	signedTx, err := tx.WithSignatureAndPublicKey(signer, signature, []byte{})
 	if err != nil {
 		t.Fatal(err)
 	}

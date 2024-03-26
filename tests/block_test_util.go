@@ -135,7 +135,7 @@ func (t *BlockTest) Run(snapshotter bool, scheme string, tracer vm.EVMLogger) er
 		cache.SnapshotLimit = 1
 		cache.SnapshotWait = true
 	}
-	chain, err := core.NewBlockChain(db, cache, gspec, nil, engine, vm.Config{
+	chain, err := core.NewBlockChain(db, cache, gspec, engine, vm.Config{
 		Tracer: tracer,
 	}, nil, nil)
 	if err != nil {

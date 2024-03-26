@@ -29,7 +29,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/holiman/uint256"
 	"github.com/stretchr/testify/require"
 	"github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/accounts"
@@ -92,19 +91,10 @@ func testTransactionMarshal(t *testing.T, tests []txData, config *params.ChainCo
 
 func TestTransaction_RoundTripRpcJSON(t *testing.T) {
 	var (
-		config = params.AllEthashProtocolChanges
+		config = params.AllBeaconProtocolChanges
 		tests  = allTransactionTypes(common.Address{0xde, 0xad}, config)
 	)
 	testTransactionMarshal(t, tests, config)
-}
-
-func TestTransactionBlobTx(t *testing.T) {
-	config := *params.TestChainConfig
-	config.ShanghaiTime = new(uint64)
-	config.CancunTime = new(uint64)
-	tests := allBlobTxs(common.Address{0xde, 0xad}, &config)
-
-	testTransactionMarshal(t, tests, &config)
 }
 
 type txData struct {
@@ -353,48 +343,6 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 				"s": "0x7626abc15834f391a117c63450047309dbf84c5ce3e8e609b607062641e2de43",
 				"yParity": "0x0"
 			}`,
-		},
-	}
-}
-
-func allBlobTxs(addr common.Address, config *params.ChainConfig) []txData {
-	return []txData{
-		{
-			Tx: &types.BlobTx{
-				Nonce:      6,
-				GasTipCap:  uint256.NewInt(1),
-				GasFeeCap:  uint256.NewInt(5),
-				Gas:        6,
-				To:         addr,
-				BlobFeeCap: uint256.NewInt(1),
-				BlobHashes: []common.Hash{{1}},
-				Value:      new(uint256.Int),
-				V:          uint256.NewInt(32),
-				R:          uint256.NewInt(10),
-				S:          uint256.NewInt(11),
-			},
-			Want: `{
-                "blockHash": null,
-                "blockNumber": null,
-                "from": "0x71562b71999873db5b286df957af199ec94617f7",
-                "gas": "0x6",
-                "gasPrice": "0x5",
-                "maxFeePerGas": "0x5",
-                "maxPriorityFeePerGas": "0x1",
-                "hash": "0x1f2b59a20e61efc615ad0cbe936379d6bbea6f938aafaf35eb1da05d8e7f46a3",
-                "input": "0x",
-                "nonce": "0x6",
-                "to": "0xdead000000000000000000000000000000000000",
-                "transactionIndex": null,
-                "value": "0x0",
-                "type": "0x3",
-                "accessList": [],
-                "chainId": "0x1",
-                "v": "0x0",
-                "r": "0x618be8908e0e5320f8f3b48042a079fe5a335ebd4ed1422a7d2207cd45d872bc",
-                "s": "0x27b2bc6c80e849a8e8b764d4549d8c2efac3441e73cf37054eb0a9b9f8e89b27",
-                "yParity": "0x0"
-            }`,
 		},
 	}
 }
@@ -1468,11 +1416,6 @@ func TestRPCGetTransactionReceipt(t *testing.T) {
 			txHash: common.HexToHash("deadbeef"),
 			file:   "txhash-notfound",
 		},
-		// 7. blob tx
-		{
-			txHash: txHashes[5],
-			file:   "blob-tx",
-		},
 	}
 
 	for i, tt := range testSuite {
@@ -1565,11 +1508,6 @@ func TestRPCGetBlockReceipts(t *testing.T) {
 		{
 			test: rpc.BlockNumberOrHashWithNumber(rpc.BlockNumber(genBlocks + 1)),
 			file: "block-notfound",
-		},
-		// 11. block with blob tx
-		{
-			test: rpc.BlockNumberOrHashWithNumber(rpc.BlockNumber(6)),
-			file: "block-with-blob-tx",
 		},
 	}
 

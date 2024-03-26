@@ -33,9 +33,9 @@ func TestCheckCompatible(t *testing.T) {
 		wantErr       *ConfigCompatError
 	}
 	tests := []test{
-		{stored: AllEthashProtocolChanges, new: AllEthashProtocolChanges, headBlock: 0, headTimestamp: 0, wantErr: nil},
-		{stored: AllEthashProtocolChanges, new: AllEthashProtocolChanges, headBlock: 0, headTimestamp: uint64(time.Now().Unix()), wantErr: nil},
-		{stored: AllEthashProtocolChanges, new: AllEthashProtocolChanges, headBlock: 100, wantErr: nil},
+		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 0, headTimestamp: 0, wantErr: nil},
+		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 0, headTimestamp: uint64(time.Now().Unix()), wantErr: nil},
+		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 100, wantErr: nil},
 		{
 			stored:    &ChainConfig{EIP150Block: big.NewInt(10)},
 			new:       &ChainConfig{EIP150Block: big.NewInt(20)},
@@ -121,19 +121,18 @@ func TestCheckCompatible(t *testing.T) {
 
 func TestConfigRules(t *testing.T) {
 	c := &ChainConfig{
-		LondonBlock:  new(big.Int),
 		ShanghaiTime: newUint64(500),
 	}
 	var stamp uint64
-	if r := c.Rules(big.NewInt(0), true, stamp); r.IsShanghai {
+	if r := c.Rules(big.NewInt(0), stamp); r.IsShanghai {
 		t.Errorf("expected %v to not be shanghai", stamp)
 	}
 	stamp = 500
-	if r := c.Rules(big.NewInt(0), true, stamp); !r.IsShanghai {
+	if r := c.Rules(big.NewInt(0), stamp); !r.IsShanghai {
 		t.Errorf("expected %v to be shanghai", stamp)
 	}
 	stamp = math.MaxInt64
-	if r := c.Rules(big.NewInt(0), true, stamp); !r.IsShanghai {
+	if r := c.Rules(big.NewInt(0), stamp); !r.IsShanghai {
 		t.Errorf("expected %v to be shanghai", stamp)
 	}
 }

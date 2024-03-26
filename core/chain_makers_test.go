@@ -40,7 +40,7 @@ func TestGenerateWithdrawalChain(t *testing.T) {
 		aa      = common.Address{0xaa}
 		bb      = common.Address{0xbb}
 		funds   = big.NewInt(0).Mul(big.NewInt(1337), big.NewInt(params.Ether))
-		config  = *params.AllEthashProtocolChanges
+		config  = *params.AllBeaconProtocolChanges
 		gspec   = &Genesis{
 			Config:   &config,
 			Alloc:    GenesisAlloc{address: {Balance: funds}},
@@ -104,7 +104,7 @@ func TestGenerateWithdrawalChain(t *testing.T) {
 	})
 
 	// Import the chain. This runs all block validation rules.
-	blockchain, _ := NewBlockChain(db, nil, gspec, nil, beacon.NewFaker(), vm.Config{}, nil, nil)
+	blockchain, _ := NewBlockChain(db, nil, gspec, beacon.NewFaker(), vm.Config{}, nil, nil)
 	defer blockchain.Stop()
 
 	if i, err := blockchain.InsertChain(chain); err != nil {

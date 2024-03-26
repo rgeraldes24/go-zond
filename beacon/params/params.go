@@ -17,13 +17,14 @@
 package params
 
 const (
+	// TODO(rgeraldes24): review values
 	EpochLength      = 32
 	SyncPeriodLength = 8192
 
-	BLSSignatureSize = 96
-	BLSPubkeySize    = 48
+	DilithiumSignatureSize = 4595
+	DilithiumPubkeySize    = 2592
 
-	SyncCommitteeSize          = 512
+	SyncCommitteeSize          = 128
 	SyncCommitteeBitmaskSize   = SyncCommitteeSize / 8
 	SyncCommitteeSupermajority = (SyncCommitteeSize*2 + 2) / 3
 )
