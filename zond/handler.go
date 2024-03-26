@@ -179,7 +179,7 @@ func newHandler(config *handlerConfig) (*handler, error) {
 		h.enableSyncedFeatures()
 	}
 	// Construct the downloader (long sync)
-	h.downloader = downloader.New(config.Database, h.eventMux, h.chain, nil, h.removePeer, success)
+	h.downloader = downloader.New(config.Database, h.eventMux, h.chain, h.removePeer, success)
 
 	fetchTx := func(peer string, hashes []common.Hash) error {
 		p := h.peers.peer(peer)

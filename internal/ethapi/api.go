@@ -1333,14 +1333,9 @@ func (s *BlockChainAPI) rpcMarshalHeader(ctx context.Context, header *types.Head
 	return fields
 }
 
-// rpcMarshalBlock uses the generalized output filler, then adds the total difficulty field, which requires
-// a `BlockchainAPI`.
+// rpcMarshalBlock uses the generalized output filler.
 func (s *BlockChainAPI) rpcMarshalBlock(ctx context.Context, b *types.Block, inclTx bool, fullTx bool) (map[string]interface{}, error) {
-	fields := RPCMarshalBlock(b, inclTx, fullTx, s.b.ChainConfig())
-	if inclTx {
-		fields["totalDifficulty"] = (*hexutil.Big)(s.b.GetTd(ctx, b.Hash()))
-	}
-	return fields, nil
+	return RPCMarshalBlock(b, inclTx, fullTx, s.b.ChainConfig()), nil
 }
 
 // RPCTransaction represents a transaction that will serialize to the RPC representation of a transaction
