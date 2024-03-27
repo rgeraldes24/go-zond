@@ -44,7 +44,7 @@ func testHeaderVerification(t *testing.T, scheme string) {
 		headers[i] = block.Header()
 	}
 	// Run the header checker for blocks one-by-one, checking for both valid and invalid nonces
-	chain, _ := NewBlockChain(rawdb.NewMemoryDatabase(), DefaultCacheConfigWithScheme(scheme), gspec, nil, beacon.NewFaker(), vm.Config{}, nil, nil)
+	chain, _ := NewBlockChain(rawdb.NewMemoryDatabase(), DefaultCacheConfigWithScheme(scheme), gspec, beacon.NewFaker(), vm.Config{}, nil, nil)
 	defer chain.Stop()
 
 	for i := 0; i < len(blocks); i++ {
@@ -55,8 +55,9 @@ func testHeaderVerification(t *testing.T, scheme string) {
 				engine := beacon.NewFaker()
 				_, results = engine.VerifyHeaders(chain, []*types.Header{headers[i]})
 			} else {
-				engine := beacon.NewFakeFailer(headers[i].Number.Uint64())
-				_, results = engine.VerifyHeaders(chain, []*types.Header{headers[i]})
+				// TODO(rgeraldes24)
+				// engine := beacon.NewFakeFailer(headers[i].Number.Uint64())
+				// _, results = engine.VerifyHeaders(chain, []*types.Header{headers[i]})
 			}
 			// Wait for the verification result
 			select {

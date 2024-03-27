@@ -30,6 +30,7 @@ import (
 	"time"
 
 	"github.com/theQRL/go-zond/consensus"
+	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
@@ -78,7 +79,8 @@ func (basic *snapshotTestBasic) prepare(t *testing.T) (*BlockChain, []*types.Blo
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Config:  params.AllBeaconProtocolChanges,
 		}
-		engine = beacon.NewFullFaker()
+		// engine = beacon.NewFullFaker()
+		engine = beacon.New()
 	)
 	chain, err := NewBlockChain(db, DefaultCacheConfigWithScheme(basic.scheme), gspec, engine, vm.Config{}, nil, nil)
 	if err != nil {

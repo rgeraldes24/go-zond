@@ -257,11 +257,12 @@ func signUnsignedTransactions(txs []*txWithKey, signer types.Signer) (types.Tran
 	var signedTxs []*types.Transaction
 	for i, tx := range txs {
 		var (
-			signature = tx.tx.RawSignatureValues()
-			signed    *types.Transaction
-			err       error
+			// signature = tx.tx.RawSignatureValues()
+			signed *types.Transaction
+			err    error
 		)
-		if tx.key == nil || signature != nil {
+		// TODO(rgeraldes24)
+		if tx.key == nil /* || signature != nil */ {
 			// Already signed
 			signedTxs = append(signedTxs, tx.tx)
 			continue
@@ -343,7 +344,7 @@ func applyShanghaiChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 		return nil
 	}
 	if env.Withdrawals == nil {
-		return NewError(ErrorConfig, errors.New("Shanghai config but missing 'withdrawals' in env section"))
+		return NewError(ErrorConfig, errors.New("shanghai config but missing 'withdrawals' in env section"))
 	}
 
 	// post-merge:

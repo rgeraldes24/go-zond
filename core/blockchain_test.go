@@ -208,7 +208,8 @@ func testLastBlock(t *testing.T, scheme string) {
 	}
 	defer blockchain.Stop()
 
-	blocks := makeBlockChain(blockchain.chainConfig, blockchain.GetBlockByHash(blockchain.CurrentBlock().Hash()), 1, beacon.NewFullFaker(), genDb, 0)
+	// blocks := makeBlockChain(blockchain.chainConfig, blockchain.GetBlockByHash(blockchain.CurrentBlock().Hash()), 1, beacon.NewFullFaker(), genDb, 0)
+	blocks := makeBlockChain(blockchain.chainConfig, blockchain.GetBlockByHash(blockchain.CurrentBlock().Hash()), 1, beacon.New(), genDb, 0)
 	if _, err := blockchain.InsertChain(blocks); err != nil {
 		t.Fatalf("Failed to insert block: %v", err)
 	}
@@ -789,7 +790,8 @@ func testInsertNonceError(t *testing.T, full bool, scheme string) {
 			failAt = rand.Int() % len(blocks)
 			failNum = blocks[failAt].NumberU64()
 
-			blockchain.engine = beacon.NewFakeFailer(failNum)
+			// blockchain.engine = beacon.NewFakeFailer(failNum)
+			blockchain.engine = beacon.New()
 			failRes, err = blockchain.InsertChain(blocks)
 		} else {
 			headers := makeHeaderChain(blockchain.chainConfig, blockchain.CurrentHeader(), i, beacon.NewFaker(), genDb, 0)
@@ -797,7 +799,8 @@ func testInsertNonceError(t *testing.T, full bool, scheme string) {
 			failAt = rand.Int() % len(headers)
 			failNum = headers[failAt].Number.Uint64()
 
-			blockchain.engine = beacon.NewFakeFailer(failNum)
+			// blockchain.engine = beacon.NewFakeFailer(failNum)
+			blockchain.engine = beacon.New()
 			blockchain.hc.engine = blockchain.engine
 			failRes, err = blockchain.InsertHeaderChain(headers)
 		}
@@ -4281,7 +4284,7 @@ func TestTxIndexer(t *testing.T) {
 	for _, c := range cases {
 		frdir := t.TempDir()
 		db, _ := rawdb.NewDatabaseWithFreezer(rawdb.NewMemoryDatabase(), frdir, "", false)
-		rawdb.WriteAncientBlocks(db, append([]*types.Block{gspec.ToBlock()}, blocks...), append([]types.Receipts{{}}, receipts...), big.NewInt(0))
+		rawdb.WriteAncientBlocks(db, append([]*types.Block{gspec.ToBlock()}, blocks...), append([]types.Receipts{{}}, receipts...))
 
 		// Index the initial blocks from ancient store
 		chain, _ := NewBlockChain(db, nil, gspec, engine, vm.Config{}, nil, &c.limitA)

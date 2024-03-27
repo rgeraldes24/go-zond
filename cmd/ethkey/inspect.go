@@ -23,7 +23,6 @@ import (
 
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
-	"github.com/theQRL/go-zond/crypto"
 	"github.com/urfave/cli/v2"
 )
 
@@ -70,15 +69,17 @@ make sure to use this feature with great caution!`,
 			utils.Fatalf("Error decrypting key: %v", err)
 		}
 
+		// TODO(rgeraldes24)
+		publicKey := key.Dilithium.GetPK()
+		privKey := key.Dilithium.GetSK()
 		// Output all relevant information we can retrieve.
 		showPrivate := ctx.Bool(privateFlag.Name)
 		out := outputInspect{
-			Address: key.Address.Hex(),
-			PublicKey: hex.EncodeToString(
-				crypto.FromECDSAPub(&key.PrivateKey.PublicKey)),
+			Address:   key.Address.Hex(),
+			PublicKey: hex.EncodeToString(publicKey[:]),
 		}
 		if showPrivate {
-			out.PrivateKey = hex.EncodeToString(crypto.FromECDSA(key.PrivateKey))
+			out.PrivateKey = hex.EncodeToString(privKey[:])
 		}
 
 		if ctx.Bool(jsonFlag.Name) {
