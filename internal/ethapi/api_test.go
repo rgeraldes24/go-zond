@@ -1313,12 +1313,12 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 		// acc2Key, _ = crypto.HexToECDSA("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
 		// acc1Addr   = crypto.PubkeyToAddress(acc1Key.PublicKey)
 		// acc2Addr   = crypto.PubkeyToAddress(acc2Key.PublicKey)
-		acc1Key, _ = crypto.GenerateDilithiumKey()
-		acc2Key, _ = crypto.GenerateDilithiumKey()
-		acc1Addr   = acc1Key.GetAddress()
-		acc2Addr   = acc2Key.GetAddress()
-		contract   = common.HexToAddress("0000000000000000000000000000000000031ec7")
-		genesis    = &core.Genesis{
+		acc1Key, _                = crypto.GenerateDilithiumKey()
+		acc2Key, _                = crypto.GenerateDilithiumKey()
+		acc1Addr                  = acc1Key.GetAddress()
+		acc2Addr   common.Address = acc2Key.GetAddress()
+		contract                  = common.HexToAddress("0000000000000000000000000000000000031ec7")
+		genesis                   = &core.Genesis{
 			Config: &config,
 			Alloc: core.GenesisAlloc{
 				acc1Addr: {Balance: big.NewInt(params.Ether)},

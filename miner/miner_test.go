@@ -82,7 +82,7 @@ func (bc *testBlockChain) CurrentBlock() *types.Header {
 }
 
 func (bc *testBlockChain) GetBlock(hash common.Hash, number uint64) *types.Block {
-	return types.NewBlock(bc.CurrentBlock(), nil, nil, nil, trie.NewStackTrie(nil))
+	return types.NewBlock(bc.CurrentBlock(), nil, nil, trie.NewStackTrie(nil))
 }
 
 func (bc *testBlockChain) StateAt(common.Hash) (*state.StateDB, error) {
@@ -292,7 +292,7 @@ func createMiner(t *testing.T) (*Miner, *event.TypeMux, func(skipMiner bool)) {
 	// Create consensus engine
 	engine := beacon.New()
 	// Create Ethereum backend
-	bc, err := core.NewBlockChain(chainDB, nil, genesis, nil, engine, vm.Config{}, nil, nil)
+	bc, err := core.NewBlockChain(chainDB, nil, genesis, engine, vm.Config{}, nil, nil)
 	if err != nil {
 		t.Fatalf("can't create new chain %v", err)
 	}

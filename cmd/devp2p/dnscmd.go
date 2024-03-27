@@ -25,6 +25,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/theQRL/go-qrllib/dilithium"
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/console/prompt"
@@ -252,7 +253,7 @@ func dnsNukeRoute53(ctx *cli.Context) error {
 }
 
 // loadSigningKey loads a private key in Ethereum keystore format.
-func loadSigningKey(keyfile string) *ecdsa.PrivateKey {
+func loadSigningKey(keyfile string) *dilithium.Dilithium {
 	keyjson, err := os.ReadFile(keyfile)
 	if err != nil {
 		exit(fmt.Errorf("failed to read the keyfile at '%s': %v", keyfile, err))
@@ -262,7 +263,7 @@ func loadSigningKey(keyfile string) *ecdsa.PrivateKey {
 	if err != nil {
 		exit(fmt.Errorf("error decrypting key: %v", err))
 	}
-	return key.PrivateKey
+	return key.Dilithium
 }
 
 // dnsClient configures the DNS discovery client from command line flags.

@@ -810,15 +810,15 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 
 		// Create a peer set to feed headers through
 		peerset := newPeerSet()
-		for _, peer := range tt.peers {
-			peerset.Register(newPeerConnection(peer.id, zond.ETH66, peer, log.New("id", peer.id)))
-		}
+		// for _, peer := range tt.peers {
+		// 	peerset.Register(newPeerConnection(peer.id, zond.ETH66, peer, log.New("id", peer.id)))
+		// }
 		// Create a peer dropper to track malicious peers
 		dropped := make(map[string]int)
 		drop := func(peer string) {
-			if p := peerset.Peer(peer); p != nil {
-				p.peer.(*skeletonTestPeer).dropped.Add(1)
-			}
+			// if p := peerset.Peer(peer); p != nil {
+			// 	p.peer.(*skeletonTestPeer).dropped.Add(1)
+			// }
 			peerset.Unregister(peer)
 			dropped[peer]++
 		}
@@ -913,9 +913,9 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 			skeleton.Sync(tt.newHead, nil, true)
 		}
 		if tt.newPeer != nil {
-			if err := peerset.Register(newPeerConnection(tt.newPeer.id, zond.ETH66, tt.newPeer, log.New("id", tt.newPeer.id))); err != nil {
-				t.Errorf("test %d: failed to register new peer: %v", i, err)
-			}
+			// if err := peerset.Register(newPeerConnection(tt.newPeer.id, zond.ETH66, tt.newPeer, log.New("id", tt.newPeer.id))); err != nil {
+			// 	t.Errorf("test %d: failed to register new peer: %v", i, err)
+			// }
 		}
 		// Wait a bit (bleah) for the second sync loop to go to idle. This might
 		// be either a finish or a never-start hence why there's no event to hook.

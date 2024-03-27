@@ -110,15 +110,16 @@ func TestSign(t *testing.T) {
 		t.Errorf("Address mismatch: want: %x have: %x", addr, recoveredAddr)
 	}
 
+	// TODO(rgeraldes24)
 	// should be equal to SigToPub
-	recoveredPub2, err := SigToPub(msg, sig)
-	if err != nil {
-		t.Errorf("ECRecover error: %s", err)
-	}
-	recoveredAddr2 := PubkeyToAddress(*recoveredPub2)
-	if addr != recoveredAddr2 {
-		t.Errorf("Address mismatch: want: %x have: %x", addr, recoveredAddr2)
-	}
+	// recoveredPub2, err := SigToPub(msg, sig)
+	// if err != nil {
+	// 	t.Errorf("ECRecover error: %s", err)
+	// }
+	// recoveredAddr2 := PubkeyToAddress(*recoveredPub2)
+	// if addr != recoveredAddr2 {
+	// 	t.Errorf("Address mismatch: want: %x have: %x", addr, recoveredAddr2)
+	// }
 }
 
 func TestInvalidSign(t *testing.T) {

@@ -177,11 +177,13 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 		// Receipt:
 		{
 			var root []byte
-			if chainConfig.IsByzantium(vmContext.BlockNumber) {
-				statedb.Finalise(true)
-			} else {
-				root = statedb.IntermediateRoot(chainConfig.IsEIP158(vmContext.BlockNumber)).Bytes()
-			}
+			// TODO(rgeraldes24)
+			// if chainConfig.IsByzantium(vmContext.BlockNumber) {
+			// 	statedb.Finalise(true)
+			// } else {
+			// 	root = statedb.IntermediateRoot(chainConfig.IsEIP158(vmContext.BlockNumber)).Bytes()
+			// }
+			statedb.Finalise(true)
 
 			// Create a new receipt for the transaction, storing the intermediate root and
 			// gas used by the tx.
@@ -211,7 +213,7 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 
 		txIndex++
 	}
-	statedb.IntermediateRoot(chainConfig.IsEIP158(vmContext.BlockNumber))
+	statedb.IntermediateRoot(true)
 	// Add mining reward? (-1 means rewards are disabled)
 	if miningReward >= 0 {
 		// Add mining reward. The mining reward may be `0`, which only makes a difference in the cases
@@ -232,7 +234,7 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 		statedb.AddBalance(w.Address, amount)
 	}
 	// Commit block
-	root, err := statedb.Commit(vmContext.BlockNumber.Uint64(), chainConfig.IsEIP158(vmContext.BlockNumber))
+	root, err := statedb.Commit(vmContext.BlockNumber.Uint64(), true)
 	if err != nil {
 		return nil, nil, NewError(ErrorEVM, fmt.Errorf("could not commit state: %v", err))
 	}

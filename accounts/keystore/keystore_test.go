@@ -450,11 +450,13 @@ func checkEvents(t *testing.T, want []walletEvent, have []walletEvent) {
 	}
 }
 
+// TODO(rgeraldes24)
 func tmpKeyStore(t *testing.T, encrypted bool) (string, *KeyStore) {
 	d := t.TempDir()
-	newKs := NewPlaintextKeyStore
-	if encrypted {
-		newKs = func(kd string) *KeyStore { return NewKeyStore(kd, veryLightScryptN, veryLightScryptP) }
-	}
-	return d, newKs(d)
+	// newKs := NewPlaintextKeyStore
+	// if encrypted {
+	// 	newKs = func(kd string) *KeyStore { return NewKeyStore(kd, veryLightScryptN, veryLightScryptP) }
+	// }
+	// return d, newKs(d)
+	return d, nil
 }

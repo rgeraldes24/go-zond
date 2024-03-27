@@ -17,12 +17,12 @@
 package main
 
 import (
-	"crypto/ecdsa"
 	"fmt"
 	"os"
 	"path/filepath"
 
 	"github.com/google/uuid"
+	"github.com/theQRL/go-qrllib/dilithium"
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
 	"github.com/theQRL/go-zond/crypto"
@@ -73,20 +73,26 @@ If you want to encrypt an existing private key, it can be specified by setting
 			utils.Fatalf("Error checking if keyfile exists: %v", err)
 		}
 
-		var privateKey *ecdsa.PrivateKey
+		var privateKey *dilithium.Dilithium
 		var err error
-		if file := ctx.String(privateKeyFlag.Name); file != "" {
-			// Load private key from file.
-			privateKey, err = crypto.LoadECDSA(file)
-			if err != nil {
-				utils.Fatalf("Can't load private key: %v", err)
-			}
-		} else {
-			// If not loaded, generate random.
-			privateKey, err = crypto.GenerateKey()
-			if err != nil {
-				utils.Fatalf("Failed to generate random private key: %v", err)
-			}
+		// TODO(rgeraldes24)
+		// if file := ctx.String(privateKeyFlag.Name); file != "" {
+		// 	// Load private key from file.
+		// 	privateKey, err = crypto.LoadECDSA(file)
+		// 	if err != nil {
+		// 		utils.Fatalf("Can't load private key: %v", err)
+		// 	}
+		// } else {
+		// 	// If not loaded, generate random.
+		// 	privateKey, err = crypto.GenerateKey()
+		// 	if err != nil {
+		// 		utils.Fatalf("Failed to generate random private key: %v", err)
+		// 	}
+		// }
+		// If not loaded, generate random.
+		privateKey, err = crypto.GenerateDilithiumKey()
+		if err != nil {
+			utils.Fatalf("Failed to generate random private key: %v", err)
 		}
 
 		// Create the keyfile object with a random UUID.
@@ -95,9 +101,9 @@ If you want to encrypt an existing private key, it can be specified by setting
 			utils.Fatalf("Failed to generate random uuid: %v", err)
 		}
 		key := &keystore.Key{
-			Id:         UUID,
-			Address:    crypto.PubkeyToAddress(privateKey.PublicKey),
-			PrivateKey: privateKey,
+			Id:        UUID,
+			Address:   privateKey.GetAddress(),
+			Dilithium: privateKey,
 		}
 
 		// Encrypt key with passphrase.

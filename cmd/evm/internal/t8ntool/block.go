@@ -134,9 +134,6 @@ func (i *bbInput) ToBlock() *types.Block {
 	if i.Header.ReceiptHash != nil {
 		header.ReceiptHash = *i.Header.ReceiptHash
 	}
-	if i.Header.Nonce != nil {
-		header.Nonce = *i.Header.Nonce
-	}
 	return types.NewBlockWithHeader(header).WithBody(i.Txs).WithWithdrawals(i.Withdrawals)
 }
 

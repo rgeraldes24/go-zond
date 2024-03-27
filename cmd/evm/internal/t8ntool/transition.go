@@ -189,12 +189,6 @@ func Transition(ctx *cli.Context) error {
 	if err := applyShanghaiChecks(&prestate.Env, chainConfig); err != nil {
 		return err
 	}
-	if err := applyMergeChecks(&prestate.Env, chainConfig); err != nil {
-		return err
-	}
-	if err := applyCancunChecks(&prestate.Env, chainConfig); err != nil {
-		return err
-	}
 	// Run the test and aggregate the result
 	s, result, err := prestate.Apply(vmConfig, chainConfig, txs, ctx.Int64(RewardFlag.Name), getTracer)
 	if err != nil {
@@ -327,9 +321,6 @@ func loadTransactions(txStr string, inputData *input, env stEnv, chainConfig *pa
 }
 
 func applyLondonChecks(env *stEnv, chainConfig *params.ChainConfig) error {
-	if !chainConfig.IsLondon(big.NewInt(int64(env.Number))) {
-		return nil
-	}
 	// Sanity check, to not `panic` in state_transition
 	if env.BaseFee != nil {
 		// Already set, base fee has precedent over parent base fee.
@@ -348,23 +339,22 @@ func applyLondonChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 }
 
 func applyShanghaiChecks(env *stEnv, chainConfig *params.ChainConfig) error {
-	if !chainConfig.IsShanghai(big.NewInt(int64(env.Number)), env.Timestamp) {
+	if !chainConfig.IsShanghai(env.Timestamp) {
 		return nil
 	}
 	if env.Withdrawals == nil {
 		return NewError(ErrorConfig, errors.New("Shanghai config but missing 'withdrawals' in env section"))
 	}
-	return nil
-}
 
-func applyMergeChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 	// post-merge:
 	// - random must be supplied
 	switch {
 	case env.Random == nil:
 		return NewError(ErrorConfig, errors.New("post-merge requires currentRandom to be defined in env"))
-}
+	}
 
+	return nil
+}
 
 type Alloc map[common.Address]core.GenesisAccount
 

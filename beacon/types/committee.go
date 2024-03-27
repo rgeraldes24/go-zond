@@ -22,7 +22,6 @@ import (
 	"fmt"
 	"math/bits"
 
-	bls "github.com/protolambda/bls12-381-util"
 	"github.com/theQRL/go-zond/beacon/params"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
@@ -79,8 +78,10 @@ func (s *SerializedSyncCommittee) UnmarshalJSON(input []byte) error {
 // TODO(zsfelfoldi): Get rid of this when SSZ encoding lands.
 func (s *SerializedSyncCommittee) Root() common.Hash {
 	var (
-		hasher  = sha256.New()
-		padding [64 - params.DilithiumPubkeySize]byte
+		hasher = sha256.New()
+		// TODO(rgeraldes24)
+		// padding [64 - params.DilithiumPubkeySize]byte
+		padding [16]byte
 		data    [params.SyncCommitteeSize]common.Hash
 		l       = params.SyncCommitteeSize
 	)
@@ -114,16 +115,9 @@ func (s *SerializedSyncCommittee) Root() common.Hash {
 func (s *SerializedSyncCommittee) Deserialize() (*SyncCommittee, error) {
 	sc := new(SyncCommittee)
 	for i := 0; i < params.SyncCommitteeSize; i++ {
-		key := new(bls.Pubkey)
-
-		var bytes [params.DilithiumPubkeySize]byte
-		copy(bytes[:], s[i*params.DilithiumPubkeySize:(i+1)*params.DilithiumPubkeySize])
-
-		// TODO(rgeraldes24)
-		if err := key.Deserialize(&bytes); err != nil {
-			return nil, err
-		}
-		sc.keys[i] = key
+		var pk []byte
+		copy(pk[:], s[i*params.DilithiumPubkeySize:(i+1)*params.DilithiumPubkeySize])
+		sc.keys[i] = pk
 	}
 	return sc, nil
 }
@@ -133,7 +127,7 @@ func (s *SerializedSyncCommittee) Deserialize() (*SyncCommittee, error) {
 // See data structure definition here:
 // https://github.com/ethereum/consensus-specs/blob/dev/specs/altair/beacon-chain.md#syncaggregate
 type SyncCommittee struct {
-	keys [params.SyncCommitteeSize]*bls.Pubkey
+	keys [params.SyncCommitteeSize][]byte
 }
 
 // VerifySignature returns true if the given sync aggregate is a valid signature
