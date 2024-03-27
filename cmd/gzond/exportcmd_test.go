@@ -29,9 +29,9 @@ import (
 func TestExport(t *testing.T) {
 	outfile := fmt.Sprintf("%v/testExport.out", os.TempDir())
 	defer os.Remove(outfile)
-	geth := runGeth(t, "--datadir", initGeth(t), "export", outfile)
-	geth.WaitExit()
-	if have, want := geth.ExitStatus(), 0; have != want {
+	gzond := runGzond(t, "--datadir", initGzond(t), "export", outfile)
+	gzond.WaitExit()
+	if have, want := gzond.ExitStatus(), 0; have != want {
 		t.Errorf("exit error, have %d want %d", have, want)
 	}
 	have, err := os.ReadFile(outfile)

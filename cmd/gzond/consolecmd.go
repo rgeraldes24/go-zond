@@ -35,7 +35,7 @@ var (
 		Usage:  "Start an interactive JavaScript environment",
 		Flags:  flags.Merge(nodeFlags, rpcFlags, consoleFlags),
 		Description: `
-The Geth console is an interactive shell for the JavaScript runtime environment
+The Gzond console is an interactive shell for the JavaScript runtime environment
 which exposes a node admin interface as well as the Ðapp JavaScript API.
 See https://geth.ethereum.org/docs/interacting-with-geth/javascript-console.`,
 	}
@@ -47,14 +47,14 @@ See https://geth.ethereum.org/docs/interacting-with-geth/javascript-console.`,
 		ArgsUsage: "[endpoint]",
 		Flags:     flags.Merge([]cli.Flag{utils.DataDirFlag, utils.HttpHeaderFlag}, consoleFlags),
 		Description: `
-The Geth console is an interactive shell for the JavaScript runtime environment
+The Gzond console is an interactive shell for the JavaScript runtime environment
 which exposes a node admin interface as well as the Ðapp JavaScript API.
 See https://geth.ethereum.org/docs/interacting-with-geth/javascript-console.
-This command allows to open a console on a running geth node.`,
+This command allows to open a console on a running gzond node.`,
 	}
 )
 
-// localConsole starts a new geth node, attaching a JavaScript console to it at the
+// localConsole starts a new gzond node, attaching a JavaScript console to it at the
 // same time.
 func localConsole(ctx *cli.Context) error {
 	// Create and start the node based on the CLI flags
@@ -96,7 +96,7 @@ func localConsole(ctx *cli.Context) error {
 	return nil
 }
 
-// remoteConsole will connect to a remote geth instance, attaching a JavaScript
+// remoteConsole will connect to a remote gzond instance, attaching a JavaScript
 // console to it.
 func remoteConsole(ctx *cli.Context) error {
 	if ctx.Args().Len() > 1 {
@@ -110,7 +110,7 @@ func remoteConsole(ctx *cli.Context) error {
 	}
 	client, err := utils.DialRPCWithHeaders(endpoint, ctx.StringSlice(utils.HttpHeaderFlag.Name))
 	if err != nil {
-		utils.Fatalf("Unable to attach to remote geth: %v", err)
+		utils.Fatalf("Unable to attach to remote gzond: %v", err)
 	}
 	config := console.Config{
 		DataDir: utils.MakeDataDir(ctx),
@@ -135,7 +135,7 @@ func remoteConsole(ctx *cli.Context) error {
 	return nil
 }
 
-// ephemeralConsole starts a new geth node, attaches an ephemeral JavaScript
+// ephemeralConsole starts a new gzond node, attaches an ephemeral JavaScript
 // console to it, executes each of the files specified as arguments and tears
 // everything down.
 func ephemeralConsole(ctx *cli.Context) error {
@@ -144,6 +144,6 @@ func ephemeralConsole(ctx *cli.Context) error {
 		b.Write([]byte(fmt.Sprintf("loadScript('%s');", file)))
 	}
 	utils.Fatalf(`The "js" command is deprecated. Please use the following instead:
-geth --exec "%s" console`, b.String())
+gzond --exec "%s" console`, b.String())
 	return nil
 }

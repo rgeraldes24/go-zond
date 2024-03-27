@@ -31,31 +31,31 @@ import (
 	"github.com/theQRL/go-zond/rpc"
 )
 
-type gethrpc struct {
+type gzondrpc struct {
 	name     string
 	rpc      *rpc.Client
-	geth     *testgeth
+	gzond    *testgzond
 	nodeInfo *p2p.NodeInfo
 }
 
-func (g *gethrpc) killAndWait() {
-	g.geth.Kill()
-	g.geth.WaitExit()
+func (g *gzondrpc) killAndWait() {
+	g.gzond.Kill()
+	g.gzond.WaitExit()
 }
 
-func (g *gethrpc) callRPC(result interface{}, method string, args ...interface{}) {
+func (g *gzondrpc) callRPC(result interface{}, method string, args ...interface{}) {
 	if err := g.rpc.Call(&result, method, args...); err != nil {
-		g.geth.Fatalf("callRPC %v: %v", method, err)
+		g.gzond.Fatalf("callRPC %v: %v", method, err)
 	}
 }
 
-func (g *gethrpc) addPeer(peer *gethrpc) {
-	g.geth.Logf("%v.addPeer(%v)", g.name, peer.name)
+func (g *gzondrpc) addPeer(peer *gzondrpc) {
+	g.gzond.Logf("%v.addPeer(%v)", g.name, peer.name)
 	enode := peer.getNodeInfo().Enode
 	peerCh := make(chan *p2p.PeerEvent)
 	sub, err := g.rpc.Subscribe(context.Background(), "admin", peerCh, "peerEvents")
 	if err != nil {
-		g.geth.Fatalf("subscribe %v: %v", g.name, err)
+		g.gzond.Fatalf("subscribe %v: %v", g.name, err)
 	}
 	defer sub.Unsubscribe()
 	g.callRPC(nil, "admin_addPeer", enode)
@@ -63,16 +63,16 @@ func (g *gethrpc) addPeer(peer *gethrpc) {
 	timeout := time.After(dur)
 	select {
 	case ev := <-peerCh:
-		g.geth.Logf("%v received event: type=%v, peer=%v", g.name, ev.Type, ev.Peer)
+		g.gzond.Logf("%v received event: type=%v, peer=%v", g.name, ev.Type, ev.Peer)
 	case err := <-sub.Err():
-		g.geth.Fatalf("%v sub error: %v", g.name, err)
+		g.gzond.Fatalf("%v sub error: %v", g.name, err)
 	case <-timeout:
-		g.geth.Error("timeout adding peer after", dur)
+		g.gzond.Error("timeout adding peer after", dur)
 	}
 }
 
 // Use this function instead of `g.nodeInfo` directly
-func (g *gethrpc) getNodeInfo() *p2p.NodeInfo {
+func (g *gzondrpc) getNodeInfo() *p2p.NodeInfo {
 	if g.nodeInfo != nil {
 		return g.nodeInfo
 	}
@@ -109,17 +109,17 @@ func ipcEndpoint(ipcPath, datadir string) string {
 // the pipe filename instead of folder.
 var nextIPC atomic.Uint32
 
-func startGethWithIpc(t *testing.T, name string, args ...string) *gethrpc {
-	ipcName := fmt.Sprintf("geth-%d.ipc", nextIPC.Add(1))
+func startGzondWithIpc(t *testing.T, name string, args ...string) *gzondrpc {
+	ipcName := fmt.Sprintf("gzond-%d.ipc", nextIPC.Add(1))
 	args = append([]string{"--networkid=42", "--port=0", "--authrpc.port", "0", "--ipcpath", ipcName}, args...)
 	t.Logf("Starting %v with rpc: %v", name, args)
 
-	g := &gethrpc{
-		name: name,
-		geth: runGeth(t, args...),
+	g := &gzondrpc{
+		name:  name,
+		gzond: runGzond(t, args...),
 	}
-	ipcpath := ipcEndpoint(ipcName, g.geth.Datadir)
-	// We can't know exactly how long geth will take to start, so we try 10
+	ipcpath := ipcEndpoint(ipcName, g.gzond.Datadir)
+	// We can't know exactly how long gzond will take to start, so we try 10
 	// times over a 5 second period.
 	var err error
 	for i := 0; i < 10; i++ {
@@ -132,27 +132,27 @@ func startGethWithIpc(t *testing.T, name string, args ...string) *gethrpc {
 	return nil
 }
 
-func initGeth(t *testing.T) string {
+func initGzond(t *testing.T) string {
 	args := []string{"--networkid=42", "init", "./testdata/clique.json"}
-	t.Logf("Initializing geth: %v ", args)
-	g := runGeth(t, args...)
+	t.Logf("Initializing gzond: %v ", args)
+	g := runGzond(t, args...)
 	datadir := g.Datadir
 	g.WaitExit()
 	return datadir
 }
 
-func startLightServer(t *testing.T) *gethrpc {
-	datadir := initGeth(t)
-	t.Logf("Importing keys to geth")
-	runGeth(t, "account", "import", "--datadir", datadir, "--password", "./testdata/password.txt", "--lightkdf", "./testdata/key.prv").WaitExit()
+func startLightServer(t *testing.T) *gzondrpc {
+	datadir := initGzond(t)
+	t.Logf("Importing keys to gzond")
+	runGzond(t, "account", "import", "--datadir", datadir, "--password", "./testdata/password.txt", "--lightkdf", "./testdata/key.prv").WaitExit()
 	account := "0x02f0d131f1f97aef08aec6e3291b957d9efe7105"
-	server := startGethWithIpc(t, "lightserver", "--allow-insecure-unlock", "--datadir", datadir, "--password", "./testdata/password.txt", "--unlock", account, "--miner.etherbase=0x02f0d131f1f97aef08aec6e3291b957d9efe7105", "--mine", "--light.serve=100", "--light.maxpeers=1", "--discv4=false", "--nat=extip:127.0.0.1", "--verbosity=4")
+	server := startGzondWithIpc(t, "lightserver", "--allow-insecure-unlock", "--datadir", datadir, "--password", "./testdata/password.txt", "--unlock", account, "--miner.etherbase=0x02f0d131f1f97aef08aec6e3291b957d9efe7105", "--mine", "--light.serve=100", "--light.maxpeers=1", "--discv4=false", "--nat=extip:127.0.0.1", "--verbosity=4")
 	return server
 }
 
-func startClient(t *testing.T, name string) *gethrpc {
-	datadir := initGeth(t)
-	return startGethWithIpc(t, name, "--datadir", datadir, "--discv4=false", "--syncmode=light", "--nat=extip:127.0.0.1", "--verbosity=4")
+func startClient(t *testing.T, name string) *gzondrpc {
+	datadir := initGzond(t)
+	return startGzondWithIpc(t, name, "--datadir", datadir, "--discv4=false", "--syncmode=light", "--nat=extip:127.0.0.1", "--verbosity=4")
 }
 
 func TestPriorityClient(t *testing.T) {
@@ -185,7 +185,7 @@ func TestPriorityClient(t *testing.T) {
 		t.Errorf("Expected: # of prio peers == 1, actual: %v", len(peers))
 	}
 
-	nodes := map[string]*gethrpc{
+	nodes := map[string]*gzondrpc{
 		lightServer.getNodeInfo().ID: lightServer,
 		freeCli.getNodeInfo().ID:     freeCli,
 		prioCli.getNodeInfo().ID:     prioCli,

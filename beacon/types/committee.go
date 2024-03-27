@@ -111,7 +111,7 @@ func (s *SerializedSyncCommittee) Root() common.Hash {
 	return data[0]
 }
 
-// Deserialize splits open the pubkeys into proper BLS key types.
+// Deserialize splits open the pubkeys into proper key types.
 func (s *SerializedSyncCommittee) Deserialize() (*SyncCommittee, error) {
 	sc := new(SyncCommittee)
 	for i := 0; i < params.SyncCommitteeSize; i++ {
@@ -133,28 +133,27 @@ type SyncCommittee struct {
 // VerifySignature returns true if the given sync aggregate is a valid signature
 // or the given hash.
 func (sc *SyncCommittee) VerifySignatures(signingRoot common.Hash, signature *SyncAggregate) bool {
+	var (
+		keys = make([][]byte, 0, params.SyncCommitteeSize)
+	)
+	for i, key := range sc.keys {
+		if signature.Signers[i/8]&(byte(1)<<(i%8)) != 0 {
+			keys = append(keys, key)
+		}
+	}
 	// TODO(rgeraldes24)
-	/*
-		var (
-			sig  bls.Signature
-			keys = make([]*bls.Pubkey, 0, params.SyncCommitteeSize)
-		)
-		if err := sig.Deserialize(&signature.Signature); err != nil {
-			return false
-		}
-		for i, key := range sc.keys {
-			if signature.Signers[i/8]&(byte(1)<<(i%8)) != 0 {
-				keys = append(keys, key)
-			}
-		}
-		return bls.FastAggregateVerify(keys, signingRoot[:], &sig)
-	*/
+	// for i, key := range keys {
+	// 	if success := dilithium.Verify(signingRoot[:], signature.Signatures[i], key); !success {
+	// 		return false
+	// 	}
+	// }
+
 	return true
 }
 
 //go:generate go run github.com/fjl/gencodec -type SyncAggregate -field-override syncAggregateMarshaling -out gen_syncaggregate_json.go
 
-// SyncAggregate represents an aggregated BLS signature with Signers referring
+// SyncAggregate represents signatures with Signers referring
 // to a subset of the corresponding sync committee.
 //
 // See data structure definition here:

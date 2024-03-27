@@ -28,7 +28,7 @@ import (
 	"github.com/theQRL/go-zond/rpc"
 )
 
-type testgeth struct {
+type testgzond struct {
 	*cmdtest.TestCmd
 
 	// template variables for expect
@@ -37,7 +37,7 @@ type testgeth struct {
 }
 
 func init() {
-	// Run the app if we've been exec'd as "gzond-test" in runGeth.
+	// Run the app if we've been exec'd as "gzond-test" in runGzond.
 	reexec.Register("gzond-test", func() {
 		if err := app.Run(os.Args); err != nil {
 			fmt.Fprintln(os.Stderr, err)
@@ -55,10 +55,10 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-// spawns geth with the given command line args. If the args don't set --datadir, the
+// spawns gzond with the given command line args. If the args don't set --datadir, the
 // child g gets a temporary data directory.
-func runGeth(t *testing.T, args ...string) *testgeth {
-	tt := &testgeth{}
+func runGzond(t *testing.T, args ...string) *testgzond {
+	tt := &testgzond{}
 	tt.TestCmd = cmdtest.NewTestCmd(t, tt)
 	for i, arg := range args {
 		switch arg {

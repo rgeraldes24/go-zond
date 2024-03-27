@@ -89,14 +89,14 @@ type ethstatsConfig struct {
 	URL string `toml:",omitempty"`
 }
 
-type gethConfig struct {
+type gzondConfig struct {
 	Eth      ethconfig.Config
 	Node     node.Config
 	Ethstats ethstatsConfig
 	Metrics  metrics.Config
 }
 
-func loadConfig(file string, cfg *gethConfig) error {
+func loadConfig(file string, cfg *gzondConfig) error {
 	f, err := os.Open(file)
 	if err != nil {
 		return err
@@ -122,11 +122,11 @@ func defaultNodeConfig() node.Config {
 	return cfg
 }
 
-// loadBaseConfig loads the gethConfig based on the given command line
+// loadBaseConfig loads the gzondConfig based on the given command line
 // parameters and config file.
-func loadBaseConfig(ctx *cli.Context) gethConfig {
+func loadBaseConfig(ctx *cli.Context) gzondConfig {
 	// Load defaults.
-	cfg := gethConfig{
+	cfg := gzondConfig{
 		Eth:     ethconfig.Defaults,
 		Node:    defaultNodeConfig(),
 		Metrics: metrics.DefaultConfig,
@@ -144,8 +144,8 @@ func loadBaseConfig(ctx *cli.Context) gethConfig {
 	return cfg
 }
 
-// makeConfigNode loads geth configuration and creates a blank node instance.
-func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
+// makeConfigNode loads gzond configuration and creates a blank node instance.
+func makeConfigNode(ctx *cli.Context) (*node.Node, gzondConfig) {
 	cfg := loadBaseConfig(ctx)
 	stack, err := node.New(&cfg.Node)
 	if err != nil {
@@ -165,7 +165,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 	return stack, cfg
 }
 
-// makeFullNode loads geth configuration and creates the Ethereum backend.
+// makeFullNode loads gzond configuration and creates the Ethereum backend.
 func makeFullNode(ctx *cli.Context) (*node.Node, ethapi.Backend) {
 	stack, cfg := makeConfigNode(ctx)
 	// if ctx.IsSet(utils.OverrideCancun.Name) {
@@ -174,13 +174,13 @@ func makeFullNode(ctx *cli.Context) (*node.Node, ethapi.Backend) {
 	// }
 	backend, eth := utils.RegisterEthService(stack, &cfg.Eth)
 
-	// Create gauge with geth system and build information
+	// Create gauge with gzond system and build information
 	if eth != nil { // The 'eth' backend may be nil in light mode
 		var protos []string
 		for _, p := range eth.Protocols() {
 			protos = append(protos, fmt.Sprintf("%v/%d", p.Name, p.Version))
 		}
-		metrics.NewRegisteredGaugeInfo("geth/info", nil).Update(metrics.GaugeInfoValue{
+		metrics.NewRegisteredGaugeInfo("gzond/info", nil).Update(metrics.GaugeInfoValue{
 			"arch":      runtime.GOARCH,
 			"os":        runtime.GOOS,
 			"version":   cfg.Node.Version,
@@ -253,7 +253,7 @@ func dumpConfig(ctx *cli.Context) error {
 	return nil
 }
 
-func applyMetricConfig(ctx *cli.Context, cfg *gethConfig) {
+func applyMetricConfig(ctx *cli.Context, cfg *gzondConfig) {
 	if ctx.IsSet(utils.MetricsEnabledFlag.Name) {
 		cfg.Metrics.Enabled = ctx.Bool(utils.MetricsEnabledFlag.Name)
 	}

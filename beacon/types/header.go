@@ -112,7 +112,7 @@ type SignedHeader struct {
 	// Beacon header being signed
 	Header Header
 
-	// Sync committee BLS signature aggregate
+	// Sync committee signatures
 	Signature SyncAggregate
 
 	// Slot in which the signature has been created (newer than Header.Slot,
