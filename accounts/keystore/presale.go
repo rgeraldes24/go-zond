@@ -55,6 +55,7 @@ func importPreSaleKey(keyStore keyStore, keyJSON []byte, password string) (accou
 func decryptPreSaleKey(fileContent []byte, password string) (key *Key, err error) {
 	preSaleKeyStruct := struct {
 		EncSeed string
+		// TODO(rgeraldes24)
 		EthAddr string
 		Email   string
 		BtcAddr string

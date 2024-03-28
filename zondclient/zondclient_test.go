@@ -35,10 +35,10 @@ import (
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
 	zondsvc "github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/ethconfig"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 )
 
-// Verify that Client implements the ethereum interfaces.
+// Verify that Client implements the zond interfaces.
 var (
 	_ = zond.ChainReader(&Client{})
 	_ = zond.TransactionReader(&Client{})
@@ -220,17 +220,17 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 	if err != nil {
 		t.Fatalf("can't create new node: %v", err)
 	}
-	// Create Ethereum Service
-	config := &ethconfig.Config{Genesis: genesis}
-	ethservice, err := zondsvc.New(n, config)
+	// Create Zond Service
+	config := &zondconfig.Config{Genesis: genesis}
+	zondservice, err := zondsvc.New(n, config)
 	if err != nil {
-		t.Fatalf("can't create new ethereum service: %v", err)
+		t.Fatalf("can't create new zond service: %v", err)
 	}
 	// Import the test chain.
 	if err := n.Start(); err != nil {
 		t.Fatalf("can't start test node: %v", err)
 	}
-	if _, err := ethservice.BlockChain().InsertChain(blocks[1:]); err != nil {
+	if _, err := zondservice.BlockChain().InsertChain(blocks[1:]); err != nil {
 		t.Fatalf("can't import test blocks: %v", err)
 	}
 	return n, blocks
@@ -250,7 +250,7 @@ func generateTestChain() []*types.Block {
 	return append([]*types.Block{genesis.ToBlock()}, blocks...)
 }
 
-func TestEthClient(t *testing.T) {
+func TestZondClient(t *testing.T) {
 	backend, chain := newTestBackend(t)
 	client := backend.Attach()
 	defer backend.Close()

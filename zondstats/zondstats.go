@@ -43,7 +43,7 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/rpc"
-	ethproto "github.com/theQRL/go-zond/zond/protocols/zond"
+	zondproto "github.com/theQRL/go-zond/zond/protocols/zond"
 )
 
 const (
@@ -80,7 +80,7 @@ type fullNodeBackend interface {
 	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
 }
 
-// Service implements an Ethereum netstats reporting daemon that pushes local
+// Service implements a Zond netstats reporting daemon that pushes local
 // chain statistics up to a monitoring server.
 type Service struct {
 	server  *p2p.Server // Peer-to-peer server to retrieve networking infos
@@ -148,10 +148,10 @@ func (w *connWrapper) Close() error {
 	return w.conn.Close()
 }
 
-// parseEthstatsURL parses the netstats connection url.
+// parseZondstatsURL parses the netstats connection url.
 // URL argument should be of the form <nodename:secret@host:port>
 // If non-erroring, the returned slice contains 3 elements: [nodename, pass, host]
-func parseEthstatsURL(url string) (parts []string, err error) {
+func parseZondstatsURL(url string) (parts []string, err error) {
 	err = fmt.Errorf("invalid netstats url: \"%s\", should be nodename:secret@host:port", url)
 
 	hostIndex := strings.LastIndex(url, "@")
@@ -174,11 +174,11 @@ func parseEthstatsURL(url string) (parts []string, err error) {
 
 // New returns a monitoring service ready for stats reporting.
 func New(node *node.Node, backend backend, engine consensus.Engine, url string) error {
-	parts, err := parseEthstatsURL(url)
+	parts, err := parseZondstatsURL(url)
 	if err != nil {
 		return err
 	}
-	ethstats := &Service{
+	zondstats := &Service{
 		backend: backend,
 		engine:  engine,
 		server:  node.Server(),
@@ -189,7 +189,7 @@ func New(node *node.Node, backend backend, engine consensus.Engine, url string) 
 		histCh:  make(chan []uint64, 1),
 	}
 
-	node.RegisterLifecycle(ethstats)
+	node.RegisterLifecycle(zondstats)
 	return nil
 }
 
@@ -475,10 +475,10 @@ func (s *Service) login(conn *connWrapper) error {
 		protocols = append(protocols, fmt.Sprintf("%s/%d", proto.Name, proto.Version))
 	}
 	var network string
-	if info := infos.Protocols["eth"]; info != nil {
-		network = fmt.Sprintf("%d", info.(*ethproto.NodeInfo).Network)
+	if info := infos.Protocols["zond"]; info != nil {
+		network = fmt.Sprintf("%d", info.(*zondproto.NodeInfo).Network)
 	} else {
-		return errors.New("no eth protocol available")
+		return errors.New("zond protocol not available")
 	}
 	auth := &authMsg{
 		ID: s.node,

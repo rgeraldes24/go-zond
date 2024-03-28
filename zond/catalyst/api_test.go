@@ -45,7 +45,7 @@ import (
 	"github.com/theQRL/go-zond/trie"
 	"github.com/theQRL/go-zond/zond"
 	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zond/ethconfig"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 )
 
 var (
@@ -429,21 +429,21 @@ func startEthService(t *testing.T, genesis *core.Genesis, blocks []*types.Block)
 		t.Fatal("can't create node:", err)
 	}
 
-	ethcfg := &ethconfig.Config{Genesis: genesis, SyncMode: downloader.FullSync, TrieTimeout: time.Minute, TrieDirtyCache: 256, TrieCleanCache: 256}
-	ethservice, err := zond.New(n, ethcfg)
+	zondcfg := &zondconfig.Config{Genesis: genesis, SyncMode: downloader.FullSync, TrieTimeout: time.Minute, TrieDirtyCache: 256, TrieCleanCache: 256}
+	zondservice, err := zond.New(n, zondcfg)
 	if err != nil {
 		t.Fatal("can't create zond service:", err)
 	}
 	if err := n.Start(); err != nil {
 		t.Fatal("can't start node:", err)
 	}
-	if _, err := ethservice.BlockChain().InsertChain(blocks); err != nil {
+	if _, err := zondservice.BlockChain().InsertChain(blocks); err != nil {
 		n.Close()
 		t.Fatal("can't import test blocks:", err)
 	}
 
-	ethservice.SetSynced()
-	return n, ethservice
+	zondservice.SetSynced()
+	return n, zondservice
 }
 
 func TestFullAPI(t *testing.T) {

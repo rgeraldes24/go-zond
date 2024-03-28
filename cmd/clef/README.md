@@ -2,7 +2,7 @@
 
 Clef can be used to sign transactions and data and is meant as a(n eventual) replacement for Gzond's account management. This allows DApps to not depend on Gzond's account management. When a DApp wants to sign data (or a transaction), it can send the content to Clef, which will then provide the user with context and asks for permission to sign the content. If the users grants the signing request, Clef will send the signature back to the DApp.
 
-This setup allows a DApp to connect to a remote Ethereum node and send transactions that are locally signed. This can help in situations when a DApp is connected to an untrusted remote Ethereum node, because a local one is not available, not synchronised with the chain, or is a node that has no built-in (or limited) account management.
+This setup allows a DApp to connect to a remote Zond node and send transactions that are locally signed. This can help in situations when a DApp is connected to an untrusted remote Zond node, because a local one is not available, not synchronised with the chain, or is a node that has no built-in (or limited) account management.
 
 Clef can run as a daemon on the same machine, off a usb-stick like [USB armory](https://inversepath.com/usbarmory), or even a separate VM in a [QubesOS](https://www.qubes-os.org/) type setup.
 
@@ -27,7 +27,7 @@ COMMANDS:
 
 GLOBAL OPTIONS:
    --loglevel value        log level to emit to the screen (default: 4)
-   --keystore value        Directory for the keystore (default: "$HOME/.ethereum/keystore")
+   --keystore value        Directory for the keystore (default: "$HOME/.zond/keystore")
    --configdir value       Directory for Clef configuration (default: "$HOME/.clef")
    --chainid value         Chain id to use for signing (1=mainnet, 5=Goerli) (default: 1)
    --lightkdf              Reduce key-derivation RAM & CPU usage at some expense of KDF strength
@@ -70,7 +70,7 @@ The security model of Clef is as follows:
 The general flow for signing a transaction using e.g. Gzond is as follows:
 ![image](sign_flow.png)
 
-In this case, `gzond` would be started with `--signer http://localhost:8550` and would relay requests to `eth.sendTransaction`.
+In this case, `gzond` would be started with `--signer http://localhost:8550` and would relay requests to `zond.sendTransaction`.
 
 ## TODOs
 
@@ -700,7 +700,7 @@ Invoked when a request for account listing has been made.
       "messages": [
         {
           "name": "message",
-          "value": "\u0019Ethereum Signed Message:\n4\u0001\u0002\u0003\u0004",
+          "value": "\u0019Zond Signed Message:\n4\u0001\u0002\u0003\u0004",
           "type": "text/plain"
         }
       ],

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-// bootnode runs a bootstrap node for the Ethereum Discovery Protocol.
+// bootnode runs a bootstrap node for the Zond Discovery Protocol.
 package main
 
 import (
@@ -152,7 +152,7 @@ func printNotice(nodeKey *ecdsa.PublicKey, addr net.UDPAddr) {
 func doPortMapping(natm nat.Interface, ln *enode.LocalNode, addr *net.UDPAddr) *net.UDPAddr {
 	const (
 		protocol = "udp"
-		name     = "ethereum discovery"
+		name     = "zond discovery"
 	)
 	newLogger := func(external int, internal int) log.Logger {
 		return log.New("proto", protocol, "extport", external, "intport", internal, "interface", natm)

@@ -250,7 +250,7 @@ func dnsNukeRoute53(ctx *cli.Context) error {
 }
 
 // TODO(rgeraldes24)
-// loadSigningKey loads a private key in Ethereum keystore format.
+// loadSigningKey loads a private key in Zond keystore format.
 func loadSigningKey(keyfile string) *ecdsa.PrivateKey {
 	/*
 		keyjson, err := os.ReadFile(keyfile)

@@ -257,6 +257,7 @@ $ gzond --datadir=path/to/custom/data/folder --bootnodes=<bootnode-enode-url-fro
 *Note: Since your network will be completely cut off from the main and test networks, you'll
 also need to configure a miner to process transactions and create new blocks for you.*
 
+# TODO(rgeraldes24)
 #### Running a private miner
 
 

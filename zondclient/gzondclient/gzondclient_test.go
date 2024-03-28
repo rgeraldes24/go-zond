@@ -33,8 +33,8 @@ import (
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
 	zondsvc "github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/ethconfig"
 	"github.com/theQRL/go-zond/zond/filters"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 	"github.com/theQRL/go-zond/zondclient"
 )
 
@@ -54,13 +54,13 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 	if err != nil {
 		t.Fatalf("can't create new node: %v", err)
 	}
-	// Create Ethereum Service
-	config := &ethconfig.Config{Genesis: genesis}
-	ethservice, err := zondsvc.New(n, config)
+	// Create Zond Service
+	config := &zondconfig.Config{Genesis: genesis}
+	zondservice, err := zondsvc.New(n, config)
 	if err != nil {
-		t.Fatalf("can't create new ethereum service: %v", err)
+		t.Fatalf("can't create new zond service: %v", err)
 	}
-	filterSystem := filters.NewFilterSystem(ethservice.APIBackend, filters.Config{})
+	filterSystem := filters.NewFilterSystem(zondservice.APIBackend, filters.Config{})
 	n.RegisterAPIs([]rpc.API{{
 		Namespace: "zond",
 		Service:   filters.NewFilterAPI(filterSystem),
@@ -70,7 +70,7 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 	if err := n.Start(); err != nil {
 		t.Fatalf("can't start test node: %v", err)
 	}
-	if _, err := ethservice.BlockChain().InsertChain(blocks[1:]); err != nil {
+	if _, err := zondservice.BlockChain().InsertChain(blocks[1:]); err != nil {
 		t.Fatalf("can't import test blocks: %v", err)
 	}
 	return n, blocks
@@ -203,7 +203,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 
 func testGetProof(t *testing.T, client *rpc.Client) {
 	ec := New(client)
-	ethcl := zondclient.NewClient(client)
+	zondcl := zondclient.NewClient(client)
 	result, err := ec.GetProof(context.Background(), testAddr, []string{testSlot.String()}, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -212,12 +212,12 @@ func testGetProof(t *testing.T, client *rpc.Client) {
 		t.Fatalf("unexpected address, want: %v got: %v", testAddr, result.Address)
 	}
 	// test nonce
-	nonce, _ := ethcl.NonceAt(context.Background(), result.Address, nil)
+	nonce, _ := zondcl.NonceAt(context.Background(), result.Address, nil)
 	if result.Nonce != nonce {
 		t.Fatalf("invalid nonce, want: %v got: %v", nonce, result.Nonce)
 	}
 	// test balance
-	balance, _ := ethcl.BalanceAt(context.Background(), result.Address, nil)
+	balance, _ := zondcl.BalanceAt(context.Background(), result.Address, nil)
 	if result.Balance.Cmp(balance) != 0 {
 		t.Fatalf("invalid balance, want: %v got: %v", balance, result.Balance)
 	}
@@ -227,7 +227,7 @@ func testGetProof(t *testing.T, client *rpc.Client) {
 		t.Fatalf("invalid storage proof, want 1 proof, got %v proof(s)", len(result.StorageProof))
 	}
 	proof := result.StorageProof[0]
-	slotValue, _ := ethcl.StorageAt(context.Background(), testAddr, testSlot, nil)
+	slotValue, _ := zondcl.StorageAt(context.Background(), testAddr, testSlot, nil)
 	if !bytes.Equal(slotValue, proof.Value.Bytes()) {
 		t.Fatalf("invalid storage proof value, want: %v, got: %v", slotValue, proof.Value.Bytes())
 	}
@@ -307,12 +307,12 @@ func testSetHead(t *testing.T, client *rpc.Client) {
 
 func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 	ec := New(client)
-	ethcl := zondclient.NewClient(client)
+	zondcl := zondclient.NewClient(client)
 	// Subscribe to Transactions
 	ch := make(chan common.Hash)
 	ec.SubscribePendingTransactions(context.Background(), ch)
 	// Send a transaction
-	chainID, err := ethcl.ChainID(context.Background())
+	chainID, err := zondcl.ChainID(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -329,7 +329,7 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 		t.Fatal(err)
 	}
 	// Send transaction
-	err = ethcl.SendTransaction(context.Background(), signedTx)
+	err = zondcl.SendTransaction(context.Background(), signedTx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -342,12 +342,12 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 
 func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
 	ec := New(client)
-	ethcl := zondclient.NewClient(client)
+	zondcl := zondclient.NewClient(client)
 	// Subscribe to Transactions
 	ch := make(chan *types.Transaction)
 	ec.SubscribeFullPendingTransactions(context.Background(), ch)
 	// Send a transaction
-	chainID, err := ethcl.ChainID(context.Background())
+	chainID, err := zondcl.ChainID(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -364,7 +364,7 @@ func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
 		t.Fatal(err)
 	}
 	// Send transaction
-	err = ethcl.SendTransaction(context.Background(), signedTx)
+	err = zondcl.SendTransaction(context.Background(), signedTx)
 	if err != nil {
 		t.Fatal(err)
 	}

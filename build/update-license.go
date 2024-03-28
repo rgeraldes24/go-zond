@@ -68,7 +68,6 @@ var (
 		"cmd/internal/browser",
 		"common/bitutil/bitutil",
 		"common/prque/",
-		"consensus/ethash/xor.go",
 		"crypto/blake2b/",
 		"crypto/bn256/",
 		"crypto/ecies/",
@@ -90,13 +89,13 @@ var (
 	licenseCommentRE = regexp.MustCompile(`^//\s*(Copyright|This file is part of).*?\n(?://.*?\n)*\n*`)
 
 	// this text appears at the start of AUTHORS
-	authorsFileHeader = "# This is the official list of go-ethereum authors for copyright purposes.\n\n"
+	authorsFileHeader = "# This is the official list of go-zond authors for copyright purposes.\n\n"
 )
 
 // this template generates the license comment.
 // its input is an info structure.
 var licenseT = template.Must(template.New("").Parse(`
-// Copyright {{.Year}} The go-ethereum Authors
+// Copyright {{.Year}} The go-zond Authors
 // This file is part of {{.Whole false}}.
 //
 // {{.Whole true}} is free software: you can redistribute it and/or modify
@@ -135,12 +134,12 @@ func (i info) ShortLicense() string {
 
 func (i info) Whole(startOfSentence bool) string {
 	if i.gpl() {
-		return "go-ethereum"
+		return "go-zond"
 	}
 	if startOfSentence {
-		return "The go-ethereum library"
+		return "The go-zond library"
 	}
-	return "the go-ethereum library"
+	return "the go-zond library"
 }
 
 func (i info) gpl() bool {

@@ -28,11 +28,11 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/console/prompt"
 	"github.com/theQRL/go-zond/core"
-	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/ethconfig"
 	"github.com/theQRL/go-zond/internal/jsre"
 	"github.com/theQRL/go-zond/miner"
 	"github.com/theQRL/go-zond/node"
+	"github.com/theQRL/go-zond/zond"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 )
 
 const (
@@ -84,25 +84,25 @@ type tester struct {
 
 // newTester creates a test environment based on which the console can operate.
 // Please ensure you call Close() on the returned tester to avoid leaks.
-func newTester(t *testing.T, confOverride func(*ethconfig.Config)) *tester {
+func newTester(t *testing.T, confOverride func(*zondconfig.Config)) *tester {
 	// Create a temporary storage for the node keys and initialize it
 	workspace := t.TempDir()
 
-	// Create a networkless protocol stack and start an Ethereum service within
+	// Create a networkless protocol stack and start a Zond service within
 	stack, err := node.New(&node.Config{DataDir: workspace, UseLightweightKDF: true, Name: testInstance})
 	if err != nil {
 		t.Fatalf("failed to create node: %v", err)
 	}
-	ethConf := &ethconfig.Config{
+	zondConf := &zondconfig.Config{
 		Genesis: core.DeveloperGenesisBlock(11_500_000, common.Address{}),
 		Miner: miner.Config{
 			Etherbase: common.HexToAddress(testAddress),
 		},
 	}
 	if confOverride != nil {
-		confOverride(ethConf)
+		confOverride(zondConf)
 	}
-	ethBackend, err := zond.New(stack, ethConf)
+	ethBackend, err := zond.New(stack, zondConf)
 	if err != nil {
 		t.Fatalf("failed to register Ethereum protocol: %v", err)
 	}

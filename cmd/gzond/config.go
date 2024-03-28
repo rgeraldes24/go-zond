@@ -42,7 +42,7 @@ import (
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/zond/catalyst"
 	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zond/ethconfig"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 	"github.com/urfave/cli/v2"
 )
 
@@ -59,7 +59,7 @@ var (
 	configFileFlag = &cli.StringFlag{
 		Name:     "config",
 		Usage:    "TOML configuration file",
-		Category: flags.EthCategory,
+		Category: flags.ZondCategory,
 	}
 )
 
@@ -85,15 +85,15 @@ var tomlSettings = toml.Config{
 	},
 }
 
-type ethstatsConfig struct {
+type zondstatsConfig struct {
 	URL string `toml:",omitempty"`
 }
 
 type gzondConfig struct {
-	Eth      ethconfig.Config
-	Node     node.Config
-	Ethstats ethstatsConfig
-	Metrics  metrics.Config
+	Zond      zondconfig.Config
+	Node      node.Config
+	Zondstats zondstatsConfig
+	Metrics   metrics.Config
 }
 
 func loadConfig(file string, cfg *gzondConfig) error {
@@ -127,7 +127,7 @@ func defaultNodeConfig() node.Config {
 func loadBaseConfig(ctx *cli.Context) gzondConfig {
 	// Load defaults.
 	cfg := gzondConfig{
-		Eth:     ethconfig.Defaults,
+		Zond:    zondconfig.Defaults,
 		Node:    defaultNodeConfig(),
 		Metrics: metrics.DefaultConfig,
 	}
@@ -156,9 +156,9 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gzondConfig) {
 		utils.Fatalf("Failed to set account manager backends: %v", err)
 	}
 
-	utils.SetEthConfig(ctx, stack, &cfg.Eth)
-	if ctx.IsSet(utils.EthStatsURLFlag.Name) {
-		cfg.Ethstats.URL = ctx.String(utils.EthStatsURLFlag.Name)
+	utils.SetZondConfig(ctx, stack, &cfg.Zond)
+	if ctx.IsSet(utils.ZondStatsURLFlag.Name) {
+		cfg.Zondstats.URL = ctx.String(utils.ZondStatsURLFlag.Name)
 	}
 	applyMetricConfig(ctx, &cfg)
 
@@ -172,7 +172,7 @@ func makeFullNode(ctx *cli.Context) (*node.Node, ethapi.Backend) {
 	// 	v := ctx.Uint64(utils.OverrideCancun.Name)
 	// 	cfg.Eth.OverrideCancun = &v
 	// }
-	backend, eth := utils.RegisterEthService(stack, &cfg.Eth)
+	backend, eth := utils.RegisterEthService(stack, &cfg.Zond)
 
 	// Create gauge with gzond system and build information
 	if eth != nil { // The 'eth' backend may be nil in light mode
@@ -189,7 +189,7 @@ func makeFullNode(ctx *cli.Context) (*node.Node, ethapi.Backend) {
 	}
 
 	// Configure log filter RPC API.
-	filterSystem := utils.RegisterFilterAPI(stack, backend, &cfg.Eth)
+	filterSystem := utils.RegisterFilterAPI(stack, backend, &cfg.Zond)
 
 	// Configure GraphQL if requested.
 	if ctx.IsSet(utils.GraphQLEnabledFlag.Name) {
@@ -197,12 +197,12 @@ func makeFullNode(ctx *cli.Context) (*node.Node, ethapi.Backend) {
 	}
 
 	// Add the Ethereum Stats daemon if requested.
-	if cfg.Ethstats.URL != "" {
-		utils.RegisterEthStatsService(stack, backend, cfg.Ethstats.URL)
+	if cfg.Zondstats.URL != "" {
+		utils.RegisterEthStatsService(stack, backend, cfg.Zondstats.URL)
 	}
 
 	// Configure full-sync tester service if requested
-	if ctx.IsSet(utils.SyncTargetFlag.Name) && cfg.Eth.SyncMode == downloader.FullSync {
+	if ctx.IsSet(utils.SyncTargetFlag.Name) && cfg.Zond.SyncMode == downloader.FullSync {
 		utils.RegisterFullSyncTester(stack, eth, ctx.Path(utils.SyncTargetFlag.Name))
 	}
 
@@ -229,8 +229,8 @@ func dumpConfig(ctx *cli.Context) error {
 	_, cfg := makeConfigNode(ctx)
 	comment := ""
 
-	if cfg.Eth.Genesis != nil {
-		cfg.Eth.Genesis = nil
+	if cfg.Zond.Genesis != nil {
+		cfg.Zond.Genesis = nil
 		comment += "# Note: this config doesn't contain the genesis block.\n\n"
 	}
 
@@ -300,13 +300,13 @@ func applyMetricConfig(ctx *cli.Context, cfg *gzondConfig) {
 
 func deprecated(field string) bool {
 	switch field {
-	case "ethconfig.Config.EVMInterpreter":
+	case "zondconfig.Config.EVMInterpreter":
 		return true
-	case "ethconfig.Config.EWASMInterpreter":
+	case "zondconfig.Config.EWASMInterpreter":
 		return true
-	case "ethconfig.Config.TrieCleanCacheJournal":
+	case "zondconfig.Config.TrieCleanCacheJournal":
 		return true
-	case "ethconfig.Config.TrieCleanCacheRejournal":
+	case "zondconfig.Config.TrieCleanCacheRejournal":
 		return true
 	default:
 		return false

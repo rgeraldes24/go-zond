@@ -25,7 +25,7 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/ethconfig"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 )
 
 var (
@@ -108,7 +108,7 @@ func setupGzond(stack *node.Node) error {
 		return err
 	}
 
-	backend, err := zond.New(stack, &ethconfig.Config{
+	backend, err := zond.New(stack, &zondconfig.Config{
 		Genesis:        &chain.genesis,
 		NetworkId:      chain.genesis.Config.ChainID.Uint64(), // 19763
 		DatabaseCache:  10,

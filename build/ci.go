@@ -81,19 +81,19 @@ var (
 	debExecutables = []debExecutable{
 		{
 			BinaryName:  "abigen",
-			Description: "Source code generator to convert Ethereum contract definitions into easy to use, compile-time type-safe Go packages.",
+			Description: "Source code generator to convert Zond contract definitions into easy to use, compile-time type-safe Go packages.",
 		},
 		{
 			BinaryName:  "bootnode",
-			Description: "Ethereum bootnode.",
+			Description: "Zond bootnode.",
 		},
 		{
 			BinaryName:  "evm",
-			Description: "Developer utility version of the EVM (Ethereum Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
+			Description: "Developer utility version of the EVM (Zond Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
 		},
 		{
 			BinaryName:  "gzond",
-			Description: "Ethereum CLI client.",
+			Description: "Zond CLI client.",
 		},
 		{
 			BinaryName:  "rlpdump",
@@ -101,10 +101,11 @@ var (
 		},
 		{
 			BinaryName:  "clef",
-			Description: "Ethereum account management tool.",
+			Description: "Zond account management tool.",
 		},
 	}
 
+	// TODO(rgeraldes24): disable
 	// A debian package is created for all executables listed here.
 	debEthereum = debPackage{
 		Name:        "ethereum",

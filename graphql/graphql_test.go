@@ -37,8 +37,8 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/ethconfig"
 	"github.com/theQRL/go-zond/zond/filters"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -434,7 +434,7 @@ func createNode(t *testing.T) *node.Node {
 }
 
 func newGQLService(t *testing.T, stack *node.Node, shanghai bool, gspec *core.Genesis, genBlocks int, genfunc func(i int, gen *core.BlockGen)) (*handler, []*types.Block) {
-	ethConf := &ethconfig.Config{
+	zondConf := &zondconfig.Config{
 		Genesis:        gspec,
 		NetworkId:      1337,
 		TrieCleanCache: 5,
@@ -449,7 +449,7 @@ func newGQLService(t *testing.T, stack *node.Node, shanghai bool, gspec *core.Ge
 	shanghaiTime := uint64(5)
 	chainCfg.ShanghaiTime = &shanghaiTime
 
-	ethBackend, err := zond.New(stack, ethConf)
+	ethBackend, err := zond.New(stack, zondConf)
 	if err != nil {
 		t.Fatalf("could not create eth backend: %v", err)
 	}
