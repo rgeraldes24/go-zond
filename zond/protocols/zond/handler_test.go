@@ -44,14 +44,14 @@ var (
 	// testKey, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	testKey, _ = crypto.GenerateDilithiumKey()
 
-	// testAddr is the Ethereum address of the tester account.
+	// testAddr is the Zond address of the tester account.
 	// testAddr = crypto.PubkeyToAddress(testKey.PublicKey)
 	testAddr = testKey.GetAddress()
 )
 
 func u64(val uint64) *uint64 { return &val }
 
-// testBackend is a mock implementation of the live Ethereum message handler. Its
+// testBackend is a mock implementation of the live Zond message handler. Its
 // purpose is to allow testing the request/reply workflows and wire serialization
 // in the `zond` protocol without actually doing any data processing.
 type testBackend struct {

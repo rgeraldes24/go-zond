@@ -51,7 +51,7 @@ func startSimulatedBeaconZondService(t *testing.T, genesis *core.Genesis) (*node
 	zondcfg := &zondconfig.Config{Genesis: genesis, SyncMode: downloader.FullSync, TrieTimeout: time.Minute, TrieDirtyCache: 256, TrieCleanCache: 256}
 	zondservice, err := zond.New(n, zondcfg)
 	if err != nil {
-		t.Fatal("can't create eth service:", err)
+		t.Fatal("can't create zond service:", err)
 	}
 
 	simBeacon, err := NewSimulatedBeacon(1, zondservice)
@@ -80,7 +80,7 @@ func TestSimulatedBeaconSendWithdrawals(t *testing.T) {
 		// testKey, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		testKey, _ = crypto.GenerateDilithiumKey()
 
-		// testAddr is the Ethereum address of the tester account.
+		// testAddr is the Zond address of the tester account.
 		// testAddr = crypto.PubkeyToAddress(testKey.PublicKey)
 		testAddr common.Address = testKey.GetAddress()
 	)

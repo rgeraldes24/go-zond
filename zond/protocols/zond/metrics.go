@@ -37,7 +37,7 @@ func (h *bidirectionalMeters) get(ingress bool) *hsMeters {
 }
 
 // hsMeters is a collection of meters which track metrics related to the
-// eth subprotocol handshake.
+// zond subprotocol handshake.
 type hsMeters struct {
 	// peerError measures the number of errors related to incorrect peer
 	// behaviour, such as invalid message code, size, encoding, etc.
@@ -75,7 +75,7 @@ func newHandshakeMeters(base string) *hsMeters {
 
 func init() {
 	meters = bidirectionalMeters{
-		ingress: newHandshakeMeters("eth/protocols/eth/ingress/handshake/"),
-		egress:  newHandshakeMeters("eth/protocols/eth/egress/handshake/"),
+		ingress: newHandshakeMeters("zond/protocols/zond/ingress/handshake/"),
+		egress:  newHandshakeMeters("zond/protocols/zond/egress/handshake/"),
 	}
 }

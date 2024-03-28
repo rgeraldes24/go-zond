@@ -271,7 +271,7 @@ func createAccountRequestResponse(t *testPeer, root common.Hash, origin common.H
 	}
 	// Unless we send the entire trie, we need to supply proofs
 	// Actually, we need to supply proofs either way! This seems to be an implementation
-	// quirk in go-ethereum
+	// quirk in go-zond
 	proof := trienode.NewProofSet()
 	if err := t.accountTrie.Prove(origin[:], proof); err != nil {
 		t.logger.Error("Could not prove inexistence of origin", "origin", origin, "error", err)

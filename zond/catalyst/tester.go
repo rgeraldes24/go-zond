@@ -63,19 +63,19 @@ func (tester *FullSyncTester) Start() error {
 			select {
 			case <-ticker.C:
 				// Don't bother downloader in case it's already syncing.
-				if tester.api.eth.Downloader().Synchronising() {
+				if tester.api.zond.Downloader().Synchronising() {
 					continue
 				}
 				// Short circuit in case the target block is already stored
 				// locally. TODO(somehow terminate the node stack if target
 				// is reached).
-				if tester.api.eth.BlockChain().HasBlock(tester.block.Hash(), tester.block.NumberU64()) {
+				if tester.api.zond.BlockChain().HasBlock(tester.block.Hash(), tester.block.NumberU64()) {
 					log.Info("Full-sync target reached", "number", tester.block.NumberU64(), "hash", tester.block.Hash())
 					return
 				}
 				// Trigger beacon sync with the provided block header as
 				// trusted chain head.
-				err := tester.api.eth.Downloader().BeaconSync(downloader.FullSync, tester.block.Header(), tester.block.Header())
+				err := tester.api.zond.Downloader().BeaconSync(downloader.FullSync, tester.block.Header(), tester.block.Header())
 				if err != nil {
 					log.Info("Failed to beacon sync", "err", err)
 				}
