@@ -207,8 +207,6 @@ func init() {
 		utils.ShowDeprecated,
 		// See snapshot.go
 		snapshotCommand,
-		// See verkle.go
-		verkleCommand,
 	}
 	sort.Sort(cli.CommandsByName(app.Commands))
 

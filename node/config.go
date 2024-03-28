@@ -25,7 +25,6 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/p2p"
@@ -193,8 +192,6 @@ type Config struct {
 	// Logger is a custom logger to use with the p2p.Server.
 	Logger log.Logger `toml:",omitempty"`
 
-	oldGzondResourceWarning bool
-
 	// AllowUnprotectedTxs allows non EIP-155 protected transactions to be send over RPC.
 	AllowUnprotectedTxs bool `toml:",omitempty"`
 
@@ -320,15 +317,6 @@ func (c *Config) name() string {
 	return c.Name
 }
 
-// These resources are resolved differently for "gzond" instances.
-var isOldGzondResource = map[string]bool{
-	"chaindata":          true,
-	"nodes":              true,
-	"nodekey":            true,
-	"static-nodes.json":  false, // no warning for these because they have their
-	"trusted-nodes.json": false, // own separate warning.
-}
-
 // ResolvePath resolves path in the instance directory.
 func (c *Config) ResolvePath(path string) string {
 	if filepath.IsAbs(path) {
@@ -337,22 +325,7 @@ func (c *Config) ResolvePath(path string) string {
 	if c.DataDir == "" {
 		return ""
 	}
-	// TODO(rgeraldes24): remove
-	// Backwards-compatibility: ensure that data directory files created
-	// by gzond 1.4 are used if they exist.
-	if warn, isOld := isOldGzondResource[path]; isOld {
-		oldpath := ""
-		if c.name() == "gzond" {
-			oldpath = filepath.Join(c.DataDir, path)
-		}
-		if oldpath != "" && common.FileExist(oldpath) {
-			if warn && !c.oldGzondResourceWarning {
-				c.oldGzondResourceWarning = true
-				log.Warn("Using deprecated resource file, please move this file to the 'gzond' subdirectory of datadir.", "file", oldpath)
-			}
-			return oldpath
-		}
-	}
+
 	return filepath.Join(c.instanceDir(), path)
 }
 

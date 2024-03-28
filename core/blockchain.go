@@ -1367,22 +1367,11 @@ func (bc *BlockChain) writeKnownBlock(block *types.Block) error {
 // writeBlockWithState writes block, metadata and corresponding state data to the
 // database.
 func (bc *BlockChain) writeBlockWithState(block *types.Block, receipts []*types.Receipt, state *state.StateDB) error {
-	// Calculate the total difficulty of the block
-	// ptd := bc.GetTd(block.ParentHash(), block.NumberU64()-1)
-	// if ptd == nil {
-	// 	return consensus.ErrUnknownAncestor
-	// }
-	// Make sure no inconsistent state is leaked during insertion
-	// TODO(rgeraldes24): remove
-	// externTd := new(big.Int).Add(block.Difficulty(), ptd)
-
 	// Irrelevant of the canonical status, write the block itself to the database.
 	//
 	// Note all the components of block(td, hash->number map, header, body, receipts)
 	// should be written atomically. BlockBatch is used for containing all components.
 	blockBatch := bc.db.NewBatch()
-	// TODO(rgeraldes24): remove
-	// rawdb.WriteTd(blockBatch, block.Hash(), block.NumberU64(), externTd)
 	rawdb.WriteBlock(blockBatch, block)
 	rawdb.WriteReceipts(blockBatch, block.Hash(), block.NumberU64(), receipts)
 	rawdb.WritePreimages(blockBatch, state.Preimages())
@@ -1523,12 +1512,7 @@ func (bc *BlockChain) addFutureBlock(block *types.Block) error {
 	if block.Time() > max {
 		return fmt.Errorf("future block timestamp %v > allowed %v", block.Time(), max)
 	}
-	// TODO(rgeraldes24): remove
-	// if block.Difficulty().Cmp(common.Big0) == 0 {
-	// 	// Never add PoS blocks into the future queue
-	// 	return nil
-	// }
-	// bc.futureBlocks.Add(block.Hash(), block)
+
 	return nil
 }
 

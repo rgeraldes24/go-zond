@@ -39,21 +39,7 @@ type sigCache struct {
 // TODO(rgeraldes24): merge all the signers into the London signer
 // MakeSigner returns a Signer based on the given chain config and block number.
 func MakeSigner(config *params.ChainConfig, blockNumber *big.Int, blockTime uint64) Signer {
-	var signer Signer
-	switch {
-	// case config.IsLondon(blockNumber):
-	// 	signer = NewLondonSigner(config.ChainID)
-	// TODO(rgeraldes24): remove
-	// case config.IsBerlin(blockNumber):
-	// 	signer = NewEIP2930Signer(config.ChainID)
-	// case config.IsEIP155(blockNumber):
-	// 	signer = NewEIP155Signer(config.ChainID)
-	// case config.IsHomestead(blockNumber):
-	// 	signer = HomesteadSigner{}
-	default:
-		signer = NewLondonSigner(config.ChainID)
-	}
-	return signer
+	return NewLondonSigner(config.ChainID)
 }
 
 // LatestSigner returns the 'most permissive' Signer available for the given chain

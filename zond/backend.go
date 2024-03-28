@@ -177,14 +177,7 @@ func New(stack *node.Node, config *ethconfig.Config) (*Ethereum, error) {
 			StateScheme:         config.StateScheme,
 		}
 	)
-	// Override the chain config with provided settings.
-	// var overrides core.ChainOverrides
-	// if config.OverrideCancun != nil {
-	// 	overrides.OverrideCancun = config.OverrideCancun
-	// }
-	// if config.OverrideVerkle != nil {
-	// 	overrides.OverrideVerkle = config.OverrideVerkle
-	// }
+
 	// TODO (MariusVanDerWijden) get rid of shouldPreserve in a follow-up PR
 	shouldPreserve := func(header *types.Header) bool {
 		return false
