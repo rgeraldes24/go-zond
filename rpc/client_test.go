@@ -399,10 +399,10 @@ func TestClientSubscribeInvalidArg(t *testing.T) {
 		defer func() {
 			err := recover()
 			if shouldPanic && err == nil {
-				t.Errorf("EthSubscribe should've panicked for %#v", arg)
+				t.Errorf("ZondSubscribe should've panicked for %#v", arg)
 			}
 			if !shouldPanic && err != nil {
-				t.Errorf("EthSubscribe shouldn't have panicked for %#v", arg)
+				t.Errorf("ZondSubscribe shouldn't have panicked for %#v", arg)
 				buf := make([]byte, 1024*1024)
 				buf = buf[:runtime.Stack(buf, false)]
 				t.Error(err)
@@ -833,7 +833,7 @@ func httpTestClient(srv *Server, transport string, fl *flakeyListener) (*Client,
 
 func ipcTestClient(srv *Server, fl *flakeyListener) (*Client, net.Listener) {
 	// Listen on a random endpoint.
-	endpoint := fmt.Sprintf("go-ethereum-test-ipc-%d-%d", os.Getpid(), rand.Int63())
+	endpoint := fmt.Sprintf("go-zond-test-ipc-%d-%d", os.Getpid(), rand.Int63())
 	if runtime.GOOS == "windows" {
 		endpoint = `\\.\pipe\` + endpoint
 	} else {

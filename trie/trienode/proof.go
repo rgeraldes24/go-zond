@@ -124,7 +124,7 @@ func (db *ProofSet) Store(target zonddb.KeyValueWriter) {
 	}
 }
 
-// ProofList stores an ordered list of trie nodes. It implements ethdb.KeyValueWriter.
+// ProofList stores an ordered list of trie nodes. It implements zonddb.KeyValueWriter.
 type ProofList []rlp.RawValue
 
 // Store writes the contents of the list to the given database

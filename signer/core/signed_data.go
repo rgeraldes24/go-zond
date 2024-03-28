@@ -92,7 +92,8 @@ func (api *SignerAPI) SignData(ctx context.Context, contentType string, addr com
 // This method returns the mimetype for signing along with the request
 func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType string, addr common.MixedcaseAddress, data interface{}) (*SignDataRequest, bool, error) {
 	var (
-		req          *SignDataRequest
+		req *SignDataRequest
+		// TODO(rgeraldes24): useEthereumV
 		useEthereumV = true // Default to use V = 27 or 28, the legacy Ethereum format
 	)
 	mediaType, _, err := mime.ParseMediaType(contentType)
@@ -169,8 +170,8 @@ func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType 
 			return nil, useEthereumV, err
 		}
 	default: // also case TextPlain.Mime:
-		// Calculates an Ethereum ECDSA signature for:
-		// hash = keccak256("\x19Ethereum Signed Message:\n${message length}${message}")
+		// Calculates an Zond ECDSA signature for:
+		// hash = keccak256("\x19Zond Signed Message:\n${message length}${message}")
 		// We expect input to be a hex-encoded string
 		textData, err := fromHex(data)
 		if err != nil {
