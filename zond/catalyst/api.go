@@ -37,7 +37,7 @@ import (
 )
 
 // Register adds the engine API to the full node.
-func Register(stack *node.Node, backend *zond.Ethereum) error {
+func Register(stack *node.Node, backend *zond.Zond) error {
 	log.Warn("Engine API enabled", "protocol", "zond")
 	stack.RegisterAPIs([]rpc.API{
 		{
@@ -83,7 +83,7 @@ var caps = []string{
 }
 
 type ConsensusAPI struct {
-	eth *zond.Ethereum
+	eth *zond.Zond
 
 	remoteBlocks *headerQueue  // Cache of remote payloads received
 	localBlocks  *payloadQueue // Cache of local payloads generated
@@ -127,14 +127,14 @@ type ConsensusAPI struct {
 
 // NewConsensusAPI creates a new consensus api for the given backend.
 // The underlying blockchain needs to have a valid terminal total difficulty set.
-func NewConsensusAPI(eth *zond.Ethereum) *ConsensusAPI {
+func NewConsensusAPI(eth *zond.Zond) *ConsensusAPI {
 	api := newConsensusAPIWithoutHeartbeat(eth)
 	go api.heartbeat()
 	return api
 }
 
 // newConsensusAPIWithoutHeartbeat creates a new consensus api for the SimulatedBeacon Node.
-func newConsensusAPIWithoutHeartbeat(eth *zond.Ethereum) *ConsensusAPI {
+func newConsensusAPIWithoutHeartbeat(eth *zond.Zond) *ConsensusAPI {
 	api := &ConsensusAPI{
 		eth:               eth,
 		remoteBlocks:      newHeaderQueue(),

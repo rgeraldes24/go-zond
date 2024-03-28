@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package zond implements the Ethereum protocol.
+// Package zond implements the Zond protocol.
 package zond
 
 import (
@@ -36,8 +36,8 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/event"
-	"github.com/theQRL/go-zond/internal/ethapi"
 	"github.com/theQRL/go-zond/internal/shutdowncheck"
+	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/miner"
 	"github.com/theQRL/go-zond/node"
@@ -55,8 +55,8 @@ import (
 	"github.com/theQRL/go-zond/zonddb"
 )
 
-// Ethereum implements the Ethereum full node service.
-type Ethereum struct {
+// Zond implements the Zond full node service.
+type Zond struct {
 	config *zondconfig.Config
 
 	// Handlers
@@ -64,7 +64,7 @@ type Ethereum struct {
 
 	blockchain         *core.BlockChain
 	handler            *handler
-	ethDialCandidates  enode.Iterator
+	zondDialCandidates enode.Iterator
 	snapDialCandidates enode.Iterator
 
 	// DB interfaces
@@ -78,13 +78,13 @@ type Ethereum struct {
 	bloomIndexer      *core.ChainIndexer             // Bloom indexer operating during block imports
 	closeBloomHandler chan struct{}
 
-	APIBackend *EthAPIBackend
+	APIBackend *ZondAPIBackend
 
 	miner    *miner.Miner
 	gasPrice *big.Int
 
 	networkID     uint64
-	netRPCService *ethapi.NetAPI
+	netRPCService *zondapi.NetAPI
 
 	p2pServer *p2p.Server
 
@@ -93,9 +93,9 @@ type Ethereum struct {
 	shutdownTracker *shutdowncheck.ShutdownTracker // Tracks if and when the node has shutdown ungracefully
 }
 
-// New creates a new Ethereum object (including the
-// initialisation of the common Ethereum object)
-func New(stack *node.Node, config *zondconfig.Config) (*Ethereum, error) {
+// New creates a new Zond object (including the
+// initialisation of the common Zond object)
+func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	// Ensure configuration values are compatible and sane
 	if !config.SyncMode.IsValid() {
 		return nil, fmt.Errorf("invalid sync mode %d", config.SyncMode)
@@ -115,8 +115,8 @@ func New(stack *node.Node, config *zondconfig.Config) (*Ethereum, error) {
 	}
 	log.Info("Allocated trie memory caches", "clean", common.StorageSize(config.TrieCleanCache)*1024*1024, "dirty", common.StorageSize(config.TrieDirtyCache)*1024*1024)
 
-	// Assemble the Ethereum object
-	chainDb, err := stack.OpenDatabaseWithFreezer("chaindata", config.DatabaseCache, config.DatabaseHandles, config.DatabaseFreezer, "eth/db/chaindata/", false)
+	// Assemble the Zond object
+	chainDb, err := stack.OpenDatabaseWithFreezer("chaindata", config.DatabaseCache, config.DatabaseHandles, config.DatabaseFreezer, "zond/db/chaindata/", false)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Ethereum, error) {
 	if err != nil {
 		return nil, err
 	}
-	eth := &Ethereum{
+	zond := &Zond{
 		config:            config,
 		chainDb:           chainDb,
 		eventMux:          stack.EventMux(),
@@ -149,7 +149,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Ethereum, error) {
 	if bcVersion != nil {
 		dbVer = fmt.Sprintf("%d", *bcVersion)
 	}
-	log.Info("Initialising Ethereum protocol", "network", config.NetworkId, "dbversion", dbVer)
+	log.Info("Initialising Zond protocol", "network", config.NetworkId, "dbversion", dbVer)
 
 	if !config.SkipBcVersionCheck {
 		if bcVersion != nil && *bcVersion > core.BlockChainVersion {
@@ -182,72 +182,72 @@ func New(stack *node.Node, config *zondconfig.Config) (*Ethereum, error) {
 	shouldPreserve := func(header *types.Header) bool {
 		return false
 	}
-	eth.blockchain, err = core.NewBlockChain(chainDb, cacheConfig, config.Genesis, eth.engine, vmConfig, shouldPreserve, &config.TransactionHistory)
+	zond.blockchain, err = core.NewBlockChain(chainDb, cacheConfig, config.Genesis, zond.engine, vmConfig, shouldPreserve, &config.TransactionHistory)
 	if err != nil {
 		return nil, err
 	}
-	eth.bloomIndexer.Start(eth.blockchain)
+	zond.bloomIndexer.Start(zond.blockchain)
 
 	if config.TxPool.Journal != "" {
 		config.TxPool.Journal = stack.ResolvePath(config.TxPool.Journal)
 	}
-	legacyPool := legacypool.New(config.TxPool, eth.blockchain)
+	legacyPool := legacypool.New(config.TxPool, zond.blockchain)
 
-	eth.txPool, err = txpool.New(new(big.Int).SetUint64(config.TxPool.PriceLimit), eth.blockchain, []txpool.SubPool{legacyPool})
+	zond.txPool, err = txpool.New(new(big.Int).SetUint64(config.TxPool.PriceLimit), zond.blockchain, []txpool.SubPool{legacyPool})
 	if err != nil {
 		return nil, err
 	}
 	// Permit the downloader to use the trie cache allowance during fast sync
 	cacheLimit := cacheConfig.TrieCleanLimit + cacheConfig.TrieDirtyLimit + cacheConfig.SnapshotLimit
-	if eth.handler, err = newHandler(&handlerConfig{
+	if zond.handler, err = newHandler(&handlerConfig{
 		Database:       chainDb,
-		Chain:          eth.blockchain,
-		TxPool:         eth.txPool,
+		Chain:          zond.blockchain,
+		TxPool:         zond.txPool,
 		Network:        config.NetworkId,
 		Sync:           config.SyncMode,
 		BloomCache:     uint64(cacheLimit),
-		EventMux:       eth.eventMux,
+		EventMux:       zond.eventMux,
 		RequiredBlocks: config.RequiredBlocks,
 	}); err != nil {
 		return nil, err
 	}
 
-	eth.miner = miner.New(eth, &config.Miner, eth.blockchain.Config(), eth.EventMux(), eth.engine, eth.isLocalBlock)
-	eth.miner.SetExtra(makeExtraData(config.Miner.ExtraData))
+	zond.miner = miner.New(zond, &config.Miner, zond.blockchain.Config(), zond.EventMux(), zond.engine, zond.isLocalBlock)
+	zond.miner.SetExtra(makeExtraData(config.Miner.ExtraData))
 
-	eth.APIBackend = &EthAPIBackend{stack.Config().ExtRPCEnabled(), stack.Config().AllowUnprotectedTxs, eth, nil}
-	if eth.APIBackend.allowUnprotectedTxs {
+	zond.APIBackend = &ZondAPIBackend{stack.Config().ExtRPCEnabled(), stack.Config().AllowUnprotectedTxs, zond, nil}
+	if zond.APIBackend.allowUnprotectedTxs {
 		log.Info("Unprotected transactions allowed")
 	}
 	gpoParams := config.GPO
 	if gpoParams.Default == nil {
 		gpoParams.Default = config.Miner.GasPrice
 	}
-	eth.APIBackend.gpo = gasprice.NewOracle(eth.APIBackend, gpoParams)
+	zond.APIBackend.gpo = gasprice.NewOracle(zond.APIBackend, gpoParams)
 
 	// Setup DNS discovery iterators.
 	dnsclient := dnsdisc.NewClient(dnsdisc.Config{})
-	eth.ethDialCandidates, err = dnsclient.NewIterator(eth.config.EthDiscoveryURLs...)
+	zond.zondDialCandidates, err = dnsclient.NewIterator(zond.config.ZondDiscoveryURLs...)
 	if err != nil {
 		return nil, err
 	}
-	eth.snapDialCandidates, err = dnsclient.NewIterator(eth.config.SnapDiscoveryURLs...)
+	zond.snapDialCandidates, err = dnsclient.NewIterator(zond.config.SnapDiscoveryURLs...)
 	if err != nil {
 		return nil, err
 	}
 
 	// Start the RPC service
-	eth.netRPCService = ethapi.NewNetAPI(eth.p2pServer, config.NetworkId)
+	zond.netRPCService = zondapi.NewNetAPI(zond.p2pServer, config.NetworkId)
 
 	// Register the backend on the node
-	stack.RegisterAPIs(eth.APIs())
-	stack.RegisterProtocols(eth.Protocols())
-	stack.RegisterLifecycle(eth)
+	stack.RegisterAPIs(zond.APIs())
+	stack.RegisterProtocols(zond.Protocols())
+	stack.RegisterLifecycle(zond)
 
 	// Successful startup; push a marker and check previous unclean shutdowns.
-	eth.shutdownTracker.MarkStartup()
+	zond.shutdownTracker.MarkStartup()
 
-	return eth, nil
+	return zond, nil
 }
 
 func makeExtraData(extra []byte) []byte {
@@ -267,10 +267,10 @@ func makeExtraData(extra []byte) []byte {
 	return extra
 }
 
-// APIs return the collection of RPC services the ethereum package offers.
+// APIs return the collection of RPC services the zond package offers.
 // NOTE, some of these services probably need to be moved to somewhere else.
-func (s *Ethereum) APIs() []rpc.API {
-	apis := ethapi.GetAPIs(s.APIBackend)
+func (s *Zond) APIs() []rpc.API {
+	apis := zondapi.GetAPIs(s.APIBackend)
 
 	// Append any APIs exposed explicitly by the consensus engine
 	apis = append(apis, s.engine.APIs(s.BlockChain())...)
@@ -296,29 +296,29 @@ func (s *Ethereum) APIs() []rpc.API {
 	}...)
 }
 
-func (s *Ethereum) ResetWithGenesisBlock(gb *types.Block) {
+func (s *Zond) ResetWithGenesisBlock(gb *types.Block) {
 	s.blockchain.ResetWithGenesisBlock(gb)
 }
 
-func (s *Ethereum) Miner() *miner.Miner { return s.miner }
+func (s *Zond) Miner() *miner.Miner { return s.miner }
 
-func (s *Ethereum) AccountManager() *accounts.Manager  { return s.accountManager }
-func (s *Ethereum) BlockChain() *core.BlockChain       { return s.blockchain }
-func (s *Ethereum) TxPool() *txpool.TxPool             { return s.txPool }
-func (s *Ethereum) EventMux() *event.TypeMux           { return s.eventMux }
-func (s *Ethereum) Engine() consensus.Engine           { return s.engine }
-func (s *Ethereum) ChainDb() zonddb.Database           { return s.chainDb }
-func (s *Ethereum) IsListening() bool                  { return true } // Always listening
-func (s *Ethereum) Downloader() *downloader.Downloader { return s.handler.downloader }
-func (s *Ethereum) Synced() bool                       { return s.handler.acceptTxs.Load() }
-func (s *Ethereum) SetSynced()                         { s.handler.enableSyncedFeatures() }
-func (s *Ethereum) ArchiveMode() bool                  { return s.config.NoPruning }
-func (s *Ethereum) BloomIndexer() *core.ChainIndexer   { return s.bloomIndexer }
+func (s *Zond) AccountManager() *accounts.Manager  { return s.accountManager }
+func (s *Zond) BlockChain() *core.BlockChain       { return s.blockchain }
+func (s *Zond) TxPool() *txpool.TxPool             { return s.txPool }
+func (s *Zond) EventMux() *event.TypeMux           { return s.eventMux }
+func (s *Zond) Engine() consensus.Engine           { return s.engine }
+func (s *Zond) ChainDb() zonddb.Database           { return s.chainDb }
+func (s *Zond) IsListening() bool                  { return true } // Always listening
+func (s *Zond) Downloader() *downloader.Downloader { return s.handler.downloader }
+func (s *Zond) Synced() bool                       { return s.handler.acceptTxs.Load() }
+func (s *Zond) SetSynced()                         { s.handler.enableSyncedFeatures() }
+func (s *Zond) ArchiveMode() bool                  { return s.config.NoPruning }
+func (s *Zond) BloomIndexer() *core.ChainIndexer   { return s.bloomIndexer }
 
 // Protocols returns all the currently configured
 // network protocols to start.
-func (s *Ethereum) Protocols() []p2p.Protocol {
-	protos := zond.MakeProtocols((*ethHandler)(s.handler), s.networkID, s.ethDialCandidates)
+func (s *Zond) Protocols() []p2p.Protocol {
+	protos := zond.MakeProtocols((*zondHandler)(s.handler), s.networkID, s.zondDialCandidates)
 	if s.config.SnapshotCache > 0 {
 		protos = append(protos, snap.MakeProtocols((*snapHandler)(s.handler), s.snapDialCandidates)...)
 	}
@@ -326,8 +326,8 @@ func (s *Ethereum) Protocols() []p2p.Protocol {
 }
 
 // Start implements node.Lifecycle, starting all internal goroutines needed by the
-// Ethereum protocol implementation.
-func (s *Ethereum) Start() error {
+// Zond protocol implementation.
+func (s *Zond) Start() error {
 	zond.StartENRUpdater(s.blockchain, s.p2pServer.LocalNode())
 
 	// Start the bloom bits servicing goroutines
@@ -350,10 +350,10 @@ func (s *Ethereum) Start() error {
 }
 
 // Stop implements node.Lifecycle, terminating all internal goroutines used by the
-// Ethereum protocol.
-func (s *Ethereum) Stop() error {
+// Zond protocol.
+func (s *Zond) Stop() error {
 	// Stop all the peer-related stuff first.
-	s.ethDialCandidates.Close()
+	s.zondDialCandidates.Close()
 	s.snapDialCandidates.Close()
 	s.handler.Stop()
 
@@ -375,7 +375,7 @@ func (s *Ethereum) Stop() error {
 
 // SyncMode retrieves the current sync mode, either explicitly set, or derived
 // from the chain status.
-func (s *Ethereum) SyncMode() downloader.SyncMode {
+func (s *Zond) SyncMode() downloader.SyncMode {
 	// If we're in snap sync mode, return that directly
 	if s.handler.snapSync.Load() {
 		return downloader.SnapSync
@@ -404,6 +404,6 @@ func (s *Ethereum) SyncMode() downloader.SyncMode {
 //
 // We regard two types of accounts as local miner account: etherbase
 // and accounts specified via `txpool.locals` flag.
-func (s *Ethereum) isLocalBlock(header *types.Header) bool {
+func (s *Zond) isLocalBlock(header *types.Header) bool {
 	return false
 }

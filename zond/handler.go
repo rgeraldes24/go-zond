@@ -57,7 +57,7 @@ var (
 )
 
 // txPool defines the methods needed from a transaction pool implementation to
-// support all the operations needed by the Ethereum chain protocols.
+// support all the operations needed by the Zond chain protocols.
 type txPool interface {
 	// Has returns an indicator whether txpool has a transaction
 	// cached with the given hash.
@@ -123,7 +123,7 @@ type handler struct {
 	handlerDoneCh  chan struct{}
 }
 
-// newHandler returns a handler for all Ethereum chain management protocol.
+// newHandler returns a handler for all Zond chain management protocol.
 func newHandler(config *handlerConfig) (*handler, error) {
 	// Create the protocol manager with the base fields
 	if config.EventMux == nil {
@@ -231,9 +231,9 @@ func (h *handler) decHandlers() {
 	h.handlerDoneCh <- struct{}{}
 }
 
-// runEthPeer registers an eth peer into the joint eth/snap peerset, adds it to
+// runZondPeer registers an zond peer into the joint zond/snap peerset, adds it to
 // various subsystems and starts handling messages.
-func (h *handler) runEthPeer(peer *zond.Peer, handler zond.Handler) error {
+func (h *handler) runZondPeer(peer *zond.Peer, handler zond.Handler) error {
 	if !h.incHandlers() {
 		return p2p.DiscQuitting
 	}
@@ -247,7 +247,7 @@ func (h *handler) runEthPeer(peer *zond.Peer, handler zond.Handler) error {
 		return err
 	}
 
-	// Execute the Ethereum handshake
+	// Execute the Zond handshake
 	var (
 		genesis = h.chain.Genesis()
 		head    = h.chain.CurrentHeader()
@@ -256,7 +256,7 @@ func (h *handler) runEthPeer(peer *zond.Peer, handler zond.Handler) error {
 	)
 	forkID := forkid.NewID(h.chain.Config(), genesis, number, head.Time)
 	if err := peer.Handshake(h.networkID, hash, genesis.Hash(), forkID, h.forkFilter); err != nil {
-		peer.Log().Debug("Ethereum handshake failed", "err", err)
+		peer.Log().Debug("Zond handshake failed", "err", err)
 		return err
 	}
 	reject := false // reserved peer slots
@@ -276,11 +276,11 @@ func (h *handler) runEthPeer(peer *zond.Peer, handler zond.Handler) error {
 			return p2p.DiscTooManyPeers
 		}
 	}
-	peer.Log().Debug("Ethereum peer connected", "name", peer.Name())
+	peer.Log().Debug("Zond peer connected", "name", peer.Name())
 
 	// Register the peer locally
 	if err := h.peers.registerPeer(peer, snap); err != nil {
-		peer.Log().Error("Ethereum peer registration failed", "err", err)
+		peer.Log().Error("Zond peer registration failed", "err", err)
 		return err
 	}
 	defer h.unregisterPeer(peer.ID())
@@ -400,11 +400,11 @@ func (h *handler) unregisterPeer(id string) {
 	// Abort if the peer does not exist
 	peer := h.peers.peer(id)
 	if peer == nil {
-		logger.Error("Ethereum peer removal failed", "err", errPeerNotRegistered)
+		logger.Error("Zond peer removal failed", "err", errPeerNotRegistered)
 		return
 	}
 	// Remove the `zond` peer if it exists
-	logger.Debug("Removing Ethereum peer", "snap", peer.snapExt != nil)
+	logger.Debug("Removing Zond peer", "snap", peer.snapExt != nil)
 
 	// Remove the `snap` extension if it exists
 	if peer.snapExt != nil {
@@ -414,7 +414,7 @@ func (h *handler) unregisterPeer(id string) {
 	h.txFetcher.Drop(id)
 
 	if err := h.peers.unregisterPeer(id); err != nil {
-		logger.Error("Ethereum peer removal failed", "err", err)
+		logger.Error("Zond peer removal failed", "err", err)
 	}
 }
 
@@ -451,7 +451,7 @@ func (h *handler) Stop() {
 	h.peers.close()
 	h.wg.Wait()
 
-	log.Info("Ethereum protocol stopped")
+	log.Info("Zond protocol stopped")
 }
 
 // BroadcastTransactions will propagate a batch of transactions
@@ -465,8 +465,8 @@ func (h *handler) BroadcastTransactions(txs types.Transactions) {
 		directCount int // Count of the txs sent directly to peers
 		directPeers int // Count of the peers that were sent transactions directly
 
-		txset = make(map[*ethPeer][]common.Hash) // Set peer->hash to transfer directly
-		annos = make(map[*ethPeer][]common.Hash) // Set peer->hash to announce
+		txset = make(map[*zondPeer][]common.Hash) // Set peer->hash to transfer directly
+		annos = make(map[*zondPeer][]common.Hash) // Set peer->hash to announce
 
 	)
 	// Broadcast transactions to a batch of peers not knowing about it

@@ -76,7 +76,7 @@ func (p *hookedPrompter) SetWordCompleter(completer prompt.WordCompleter) {}
 type tester struct {
 	workspace string
 	stack     *node.Node
-	ethereum  *zond.Ethereum
+	ethereum  *zond.Zond
 	console   *Console
 	input     *hookedPrompter
 	output    *bytes.Buffer

@@ -36,7 +36,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/event"
-	"github.com/theQRL/go-zond/internal/ethapi"
+	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/zonddb"
@@ -318,7 +318,7 @@ func TestPendingTxFilterFullTx(t *testing.T) {
 			types.NewTransaction(4, common.HexToAddress("0xb794f5ea0ba39494ce83a213fffba74279579268"), new(big.Int), 0, new(big.Int), nil),
 		}
 
-		txs []*ethapi.RPCTransaction
+		txs []*zondapi.RPCTransaction
 	)
 
 	fullTx := true
@@ -334,7 +334,7 @@ func TestPendingTxFilterFullTx(t *testing.T) {
 			t.Fatalf("Unable to retrieve logs: %v", err)
 		}
 
-		tx := results.([]*ethapi.RPCTransaction)
+		tx := results.([]*zondapi.RPCTransaction)
 		txs = append(txs, tx...)
 		if len(txs) >= len(transactions) {
 			break

@@ -34,7 +34,7 @@ import (
 	"github.com/theQRL/go-zond/zond/zondconfig"
 )
 
-func startSimulatedBeaconZondService(t *testing.T, genesis *core.Genesis) (*node.Node, *zond.Ethereum, *SimulatedBeacon) {
+func startSimulatedBeaconZondService(t *testing.T, genesis *core.Genesis) (*node.Node, *zond.Zond, *SimulatedBeacon) {
 	t.Helper()
 
 	n, err := node.New(&node.Config{

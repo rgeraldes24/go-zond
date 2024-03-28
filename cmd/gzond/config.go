@@ -33,9 +33,9 @@ import (
 	"github.com/theQRL/go-zond/accounts/scwallet"
 	"github.com/theQRL/go-zond/accounts/usbwallet"
 	"github.com/theQRL/go-zond/cmd/utils"
-	"github.com/theQRL/go-zond/internal/ethapi"
 	"github.com/theQRL/go-zond/internal/flags"
 	"github.com/theQRL/go-zond/internal/version"
+	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/node"
@@ -166,7 +166,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gzondConfig) {
 }
 
 // makeFullNode loads gzond configuration and creates the Ethereum backend.
-func makeFullNode(ctx *cli.Context) (*node.Node, ethapi.Backend) {
+func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
 	stack, cfg := makeConfigNode(ctx)
 	// if ctx.IsSet(utils.OverrideCancun.Name) {
 	// 	v := ctx.Uint64(utils.OverrideCancun.Name)

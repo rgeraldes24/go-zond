@@ -69,7 +69,7 @@ func (w *withdrawalQueue) gatherPending(maxCount int) []*types.Withdrawal {
 
 type SimulatedBeacon struct {
 	shutdownCh  chan struct{}
-	eth         *zond.Ethereum
+	eth         *zond.Zond
 	period      uint64
 	withdrawals withdrawalQueue
 
@@ -81,7 +81,7 @@ type SimulatedBeacon struct {
 	lastBlockTime      uint64
 }
 
-func NewSimulatedBeacon(period uint64, eth *zond.Ethereum) (*SimulatedBeacon, error) {
+func NewSimulatedBeacon(period uint64, eth *zond.Zond) (*SimulatedBeacon, error) {
 	chainConfig := eth.APIBackend.ChainConfig()
 	if !chainConfig.IsDevMode {
 		return nil, errors.New("incompatible pre-existing chain configuration")

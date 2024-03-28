@@ -88,7 +88,7 @@ type Config struct {
 
 	// This can be set to list of enrtree:// URLs which will be queried for
 	// for nodes to connect to.
-	EthDiscoveryURLs  []string
+	ZondDiscoveryURLs []string
 	SnapDiscoveryURLs []string
 
 	NoPruning  bool // Whether to disable pruning and flush everything to disk
