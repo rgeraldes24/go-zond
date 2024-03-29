@@ -21,10 +21,10 @@ import (
 	"time"
 
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/zonddb"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
+	"github.com/theQRL/go-zond/zonddb"
 )
 
 // ReadDatabaseVersion retrieves the version number of the database.
@@ -172,18 +172,5 @@ func UpdateUncleanShutdownMarker(db zonddb.KeyValueStore) {
 	data, _ := rlp.EncodeToBytes(uncleanShutdowns)
 	if err := db.Put(uncleanShutdownKey, data); err != nil {
 		log.Warn("Failed to write unclean-shutdown marker", "err", err)
-	}
-}
-
-// ReadTransitionStatus retrieves the eth2 transition status from the database
-func ReadTransitionStatus(db zonddb.KeyValueReader) []byte {
-	data, _ := db.Get(transitionStatusKey)
-	return data
-}
-
-// WriteTransitionStatus stores the eth2 transition status to the database
-func WriteTransitionStatus(db zonddb.KeyValueWriter, data []byte) {
-	if err := db.Put(transitionStatusKey, data); err != nil {
-		log.Crit("Failed to store the eth2 transition status", "err", err)
 	}
 }

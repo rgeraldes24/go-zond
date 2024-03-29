@@ -31,7 +31,6 @@ import (
 	"github.com/theQRL/go-zond/beacon/engine"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
-	"github.com/theQRL/go-zond/consensus"
 	beaconConsensus "github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/types"
@@ -60,8 +59,9 @@ var (
 
 func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 	config := *params.AllBeaconProtocolChanges
-	engine := consensus.Engine(beaconConsensus.New())
-	engine = beaconConsensus.NewFaker()
+	// TODO(rgeraldes24)
+	// engine := consensus.Engine(beaconConsensus.New())
+	engine := beaconConsensus.NewFaker()
 	genesis := &core.Genesis{
 		Config: &config,
 		Alloc: core.GenesisAlloc{

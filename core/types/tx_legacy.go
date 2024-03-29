@@ -24,7 +24,7 @@ import (
 	"github.com/theQRL/go-zond/pqcrypto"
 )
 
-// LegacyTx is the transaction data of the original Ethereum transactions.
+// LegacyTx is the transaction data of the original Zond transactions.
 type LegacyTx struct {
 	Nonce     uint64          // nonce of sender account
 	GasPrice  *big.Int        // wei per gas

@@ -3884,7 +3884,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 		t.Fatalf("block %d: failed to insert into chain: %v", n, err)
 	}
 
-	block = chain.GetBlockByNumber(2)
+	// block = chain.GetBlockByNumber(2)
 	// state, _ = chain.State()
 	// effectiveTip := block.Transactions()[0].GasTipCap().Uint64() - block.BaseFee().Uint64()
 

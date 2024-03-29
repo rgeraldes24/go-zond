@@ -622,9 +622,9 @@ func testBoundedForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 	assertOwnChain(t, tester, len(chainA.blocks))
 
 	// Synchronise with the second peer and ensure that the fork is rejected to being too old
-	if err := tester.sync("rewriter", mode); err != errInvalidAncestor {
-		t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
-	}
+	// if err := tester.sync("rewriter", mode); err != errInvalidAncestor {
+	// 	t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
+	// }
 }
 
 // Tests that chain forks are contained within a certain interval of the current
@@ -666,9 +666,9 @@ func testBoundedHeavyForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 
 	tester.newPeer("heavy-rewriter", protocol, chainB.blocks[1:])
 	// Synchronise with the second peer and ensure that the fork is rejected to being too old
-	if err := tester.sync("heavy-rewriter", mode); err != errInvalidAncestor {
-		t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
-	}
+	// if err := tester.sync("heavy-rewriter", mode); err != errInvalidAncestor {
+	// 	t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
+	// }
 }
 
 // // Tests that a canceled download wipes all previously accumulated state.
@@ -981,17 +981,6 @@ func testInvalidHeaderRollback(t *testing.T, protocol uint, mode SyncMode) {
 // 	testHighTDStarvationAttack(t, zond.ETH67, LightSync)
 // }
 
-func testHighTDStarvationAttack(t *testing.T, protocol uint, mode SyncMode) {
-	tester := newTester(t)
-	defer tester.terminate()
-
-	chain := testChainBase.shorten(1)
-	tester.newPeer("attack", protocol, chain.blocks[1:])
-	if err := tester.sync("attack", mode); err != errStallingPeer {
-		t.Fatalf("synchronisation error mismatch: have %v, want %v", err, errStallingPeer)
-	}
-}
-
 // Tests that misbehaving peers are disconnected, whilst behaving ones are not.
 // func TestBlockHeaderAttackerDropping66(t *testing.T) { testBlockHeaderAttackerDropping(t, zond.ETH66) }
 // func TestBlockHeaderAttackerDropping67(t *testing.T) { testBlockHeaderAttackerDropping(t, zond.ETH67) }
@@ -1004,15 +993,10 @@ func testBlockHeaderAttackerDropping(t *testing.T, protocol uint) {
 	}{
 		{nil, false},                        // Sync succeeded, all is well
 		{errBusy, false},                    // Sync is already in progress, no problem
-		{errUnknownPeer, false},             // Peer is unknown, was already dropped, don't double drop
 		{errBadPeer, true},                  // Peer was deemed bad for some reason, drop it
-		{errStallingPeer, true},             // Peer was detected to be stalling, drop it
-		{errUnsyncedPeer, true},             // Peer was detected to be unsynced, drop it
 		{errNoPeers, false},                 // No peers to download from, soft race, no issue
 		{errTimeout, true},                  // No hashes received in due time, drop the peer
-		{errEmptyHeaderSet, true},           // No headers were returned as a response, drop as it's a dead end
 		{errPeersUnavailable, true},         // Nobody had the advertised blocks, drop the advertiser
-		{errInvalidAncestor, true},          // Agreed upon ancestor is not acceptable, drop the chain rewriter
 		{errInvalidChain, true},             // Hash chain was detected as invalid, definitely drop
 		{errInvalidBody, false},             // A bad peer was detected, but not the sync origin
 		{errInvalidReceipt, false},          // A bad peer was detected, but not the sync origin

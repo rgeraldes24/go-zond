@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package miner implements Ethereum block creation and mining.
+// Package miner implements Zond block creation and mining.
 package miner
 
 import (
@@ -71,7 +71,7 @@ var DefaultConfig = Config{
 // Miner creates blocks and searches for proof-of-work values.
 type Miner struct {
 	mux     *event.TypeMux
-	eth     Backend
+	zond    Backend
 	engine  consensus.Engine
 	exitCh  chan struct{}
 	startCh chan struct{}
@@ -81,15 +81,15 @@ type Miner struct {
 	wg sync.WaitGroup
 }
 
-func New(eth Backend, config *Config, chainConfig *params.ChainConfig, mux *event.TypeMux, engine consensus.Engine, isLocalBlock func(header *types.Header) bool) *Miner {
+func New(zond Backend, config *Config, chainConfig *params.ChainConfig, mux *event.TypeMux, engine consensus.Engine, isLocalBlock func(header *types.Header) bool) *Miner {
 	miner := &Miner{
 		mux:     mux,
-		eth:     eth,
+		zond:    zond,
 		engine:  engine,
 		exitCh:  make(chan struct{}),
 		startCh: make(chan struct{}),
 		stopCh:  make(chan struct{}),
-		worker:  newWorker(config, chainConfig, engine, eth, mux, isLocalBlock, true),
+		worker:  newWorker(config, chainConfig, engine, zond, mux, isLocalBlock, true),
 	}
 	miner.wg.Add(1)
 	go miner.update()

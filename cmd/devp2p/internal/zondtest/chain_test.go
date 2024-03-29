@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-package ethtest
+package zondtest
 
 import (
 	"path/filepath"
@@ -23,8 +23,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/theQRL/go-zond/core/types"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
 	"github.com/theQRL/go-zond/p2p"
+	"github.com/theQRL/go-zond/zond/protocols/zond"
 )
 
 // TestEthProtocolNegotiation tests whether the test suite

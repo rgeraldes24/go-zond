@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-package ethtest
+package zondtest
 
 import "github.com/theQRL/go-zond/zond/protocols/snap"
 

@@ -54,7 +54,7 @@ func VCS() (VCSInfo, bool) {
 }
 
 // ClientName creates a software name/version identifier according to common
-// conventions in the Ethereum p2p network.
+// conventions in the Zond p2p network.
 func ClientName(clientIdentifier string) string {
 	git, _ := VCS()
 	return fmt.Sprintf("%s/v%v/%v-%v/%v",
@@ -67,7 +67,7 @@ func ClientName(clientIdentifier string) string {
 
 // runtimeInfo returns build and platform information about the current binary.
 //
-// If the package that is currently executing is a prefixed by our go-ethereum
+// If the package that is currently executing is a prefixed by our go-zond
 // module path, it will print out commit and date VCS information. Otherwise,
 // it will assume it's imported by a third-party and will return the imported
 // version and whether it was replaced by another module.

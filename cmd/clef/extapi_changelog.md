@@ -41,6 +41,7 @@ The API-method `account_signGnosisSafeTx` was added. This method takes two param
       "executor": null,
       "isExecuted": false,
       "isSuccessful": null,
+      // TODO(rgeraldes24)
       "ethGasPrice": null,
       "gasUsed": null,
       "fee": null,
@@ -76,6 +77,7 @@ for the Gnosis Safe, and making the output be directly importable to by a relay 
 
 #### 5.0.0
 
+// TODO(rgeraldes24)
 * The external `account_EcRecover`-method was reimplemented.
 * The external method `account_sign(address, data)` was replaced with `account_signData(contentType, address, data)`.
 The addition of `contentType` makes it possible to use the method for different types of objects, such as:

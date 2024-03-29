@@ -269,7 +269,7 @@ func prepare(ctx *cli.Context) {
 `)
 
 	case !ctx.IsSet(utils.NetworkIdFlag.Name):
-		log.Info("Starting Gzond on Ethereum mainnet...")
+		log.Info("Starting Gzond on Zond mainnet...")
 	}
 	// If we're a full node on mainnet without --cache specified, bump default cache allowance
 	if !ctx.IsSet(utils.CacheFlag.Name) && !ctx.IsSet(utils.NetworkIdFlag.Name) {
@@ -323,7 +323,7 @@ func startNode(ctx *cli.Context, stack *node.Node, backend zondapi.Backend, isCo
 
 	// Create a client to interact with local gzond node.
 	rpcClient := stack.Attach()
-	ethClient := zondclient.NewClient(rpcClient)
+	zondClient := zondclient.NewClient(rpcClient)
 
 	go func() {
 		// Open any wallets already attached
@@ -349,7 +349,7 @@ func startNode(ctx *cli.Context, stack *node.Node, backend zondapi.Backend, isCo
 				}
 				derivationPaths = append(derivationPaths, accounts.DefaultBaseDerivationPath)
 
-				event.Wallet.SelfDerive(derivationPaths, ethClient)
+				event.Wallet.SelfDerive(derivationPaths, zondClient)
 
 			case accounts.WalletDropped:
 				log.Info("Old wallet dropped", "url", event.Wallet.URL())

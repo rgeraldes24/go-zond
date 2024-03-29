@@ -40,7 +40,6 @@ import (
 // codebase, inherently breaking if the engine is swapped out. Please put common
 // error types into the consensus package.
 var (
-	errInvalidNonce     = errors.New("invalid nonce")
 	errInvalidTimestamp = errors.New("invalid timestamp")
 )
 
@@ -49,7 +48,7 @@ var (
 // is only used for necessary consensus checks.
 type Beacon struct{}
 
-// New creates a consensus engine with the given embedded eth1 engine.
+// New creates a consensus engine.
 func New() *Beacon {
 	return &Beacon{}
 }
@@ -60,7 +59,7 @@ func (beacon *Beacon) Author(header *types.Header) (common.Address, error) {
 }
 
 // VerifyHeader checks whether a header conforms to the consensus rules of the
-// stock Ethereum consensus engine.
+// stock Zond consensus engine.
 func (beacon *Beacon) VerifyHeader(chain consensus.ChainHeaderReader, header *types.Header) error {
 	// Short circuit if the parent is not known
 	parent := chain.GetHeader(header.ParentHash, header.Number.Uint64()-1)
@@ -80,7 +79,7 @@ func (beacon *Beacon) VerifyHeaders(chain consensus.ChainHeaderReader, headers [
 }
 
 // verifyHeader checks whether a header conforms to the consensus rules of the
-// stock Ethereum consensus engine. The difference between the beacon and classic is
+// stock Zond consensus engine. The difference between the beacon and classic is
 // (a) The following fields are expected to be constants:
 //   - nonce is expected to be 0
 //     to be the desired constants

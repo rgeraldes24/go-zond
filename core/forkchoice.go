@@ -34,6 +34,7 @@ type ChainReader interface {
 	Config() *params.ChainConfig
 }
 
+// TODO(rgeraldes24)
 // ForkChoice is the fork chooser based on the highest total difficulty of the
 // chain(the fork choice used in the eth1) and the external fork choice (the fork
 // choice used in the eth2). This main goal of this ForkChoice is not only for

@@ -44,9 +44,9 @@ You should treat 'masterseed.json' with utmost secrecy and make a backup of it!
 Clef is capable of managing both key-file based accounts as well as hardware wallets. To evaluate clef, we're going to point it to our Rinkeby testnet keystore and specify the Rinkeby chain ID for signing (Clef doesn't have a backing chain, so it doesn't know what network it runs on).
 
 ```text
-$ clef --keystore ~/.ethereum/rinkeby/keystore --chainid 4
+$ clef --keystore ~/.zond/rinkeby/keystore --chainid 4
 
-INFO [07-01|11:00:46.385] Starting signer                          chainid=4 keystore=$HOME/.ethereum/rinkeby/keystore light-kdf=false advanced=false
+INFO [07-01|11:00:46.385] Starting signer                          chainid=4 keystore=$HOME/.zond/rinkeby/keystore light-kdf=false advanced=false
 DEBUG[07-01|11:00:46.389] FS scan times                            list=3.521941ms set=9.017µs diff=4.112µs
 DEBUG[07-01|11:00:46.391] Ledger support enabled
 DEBUG[07-01|11:00:46.391] Trezor support enabled via HID
@@ -292,14 +292,14 @@ For more details on writing automatic rules, please see the [rules spec](https:/
 
 ## Gzond integration
 
-Of course, as awesome as Clef is, it's not feasible to interact with it via JSON RPC by hand. Long term, we're hoping to convince the general Ethereum community to support Clef as a general signer (it's only 3-5 methods), thus allowing your favorite DApp, Metamask, MyCrypto, etc to request signatures directly.
+Of course, as awesome as Clef is, it's not feasible to interact with it via JSON RPC by hand. Long term, we're hoping to convince the general Zond community to support Clef as a general signer (it's only 3-5 methods), thus allowing your favorite DApp, Metamask, MyCrypto, etc to request signatures directly.
 
 Until then however, we're trying to pave the way via Gzond. Gzond v1.9.0 has built in support via `--signer <API endpoint>` for using a local or remote Clef instance as an account backend!
 
 We can try this by running Clef with our previous rules on Rinkeby (for now it's a good idea to allow auto-listing accounts, since Gzond likes to retrieve them once in a while).
 
 ```text
-$ clef --keystore ~/.ethereum/rinkeby/keystore --chainid 4 --rules rules.js
+$ clef --keystore ~/.zond/rinkeby/keystore --chainid 4 --rules rules.js
 ```
 
 In a different window we can start Gzond, list our accounts, even list our wallets to see where the accounts originate from:
@@ -307,7 +307,7 @@ In a different window we can start Gzond, list our accounts, even list our walle
 ```text
 $ gzond --rinkeby --signer=~/.clef/clef.ipc console
 
-> eth.accounts
+> zond.accounts
 ["0xd9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3", "0x086278a6c067775f71d6b2bb1856db6e28c30418"]
 
 > personal.listWallets
@@ -323,7 +323,7 @@ $ gzond --rinkeby --signer=~/.clef/clef.ipc console
     url: "extapi://$HOME/.clef/clef.ipc"
 }]
 
-> eth.sendTransaction({from: eth.accounts[0], to: eth.accounts[0]})
+> zond.sendTransaction({from: zond.accounts[0], to: zond.accounts[0]})
 ```
 
 Lastly, when we requested a transaction to be sent, Clef prompted us in the original window to approve it:

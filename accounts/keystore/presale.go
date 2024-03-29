@@ -56,9 +56,9 @@ func decryptPreSaleKey(fileContent []byte, password string) (key *Key, err error
 	preSaleKeyStruct := struct {
 		EncSeed string
 		// TODO(rgeraldes24)
-		EthAddr string
-		Email   string
-		BtcAddr string
+		ZondAddr string
+		Email    string
+		BtcAddr  string
 	}{}
 	err = json.Unmarshal(fileContent, &preSaleKeyStruct)
 	if err != nil {
@@ -94,7 +94,7 @@ func decryptPreSaleKey(fileContent []byte, password string) (key *Key, err error
 		Dilithium: d,
 	}
 	derivedAddr := hex.EncodeToString(key.Address.Bytes()) // needed because .Hex() gives leading "0x"
-	expectedAddr := preSaleKeyStruct.EthAddr
+	expectedAddr := preSaleKeyStruct.ZondAddr
 	if derivedAddr != expectedAddr {
 		err = fmt.Errorf("decrypted addr '%s' not equal to expected addr '%s'", derivedAddr, expectedAddr)
 	}

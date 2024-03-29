@@ -30,7 +30,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	// Run the app if we've been exec'd as "ethkey-test" in runEthkey.
+	// Run the app if we've been exec'd as "zondkey-test" in runZondkey.
 	reexec.Register("evm-test", func() {
 		if err := app.Run(os.Args); err != nil {
 			fmt.Fprintln(os.Stderr, err)
@@ -367,6 +367,7 @@ func TestT9n(t *testing.T) {
 	}
 }
 
+// TODO(rgeraldes24)
 type b11rInput struct {
 	inEnv         string
 	inOmmersRlp   string

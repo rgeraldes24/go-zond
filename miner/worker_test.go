@@ -109,6 +109,7 @@ func newTestWorkerBackend(t *testing.T, chainConfig *params.ChainConfig, engine 
 		Config: chainConfig,
 		Alloc:  core.GenesisAlloc{testBankAddress: {Balance: testBankFunds}},
 	}
+	// TODO(rgeraldes24)
 	// switch e := engine.(type) {
 	// case *clique.Clique:
 	// 	gspec.ExtraData = make([]byte, 32+common.AddressLength+crypto.SignatureLength)

@@ -45,18 +45,7 @@ type operation struct {
 }
 
 var (
-	frontierInstructionSet         = newFrontierInstructionSet()
-	homesteadInstructionSet        = newHomesteadInstructionSet()
-	tangerineWhistleInstructionSet = newTangerineWhistleInstructionSet()
-	spuriousDragonInstructionSet   = newSpuriousDragonInstructionSet()
-	byzantiumInstructionSet        = newByzantiumInstructionSet()
-	constantinopleInstructionSet   = newConstantinopleInstructionSet()
-	istanbulInstructionSet         = newIstanbulInstructionSet()
-	berlinInstructionSet           = newBerlinInstructionSet()
-	londonInstructionSet           = newLondonInstructionSet()
-	mergeInstructionSet            = newMergeInstructionSet()
-	shanghaiInstructionSet         = newShanghaiInstructionSet()
-	// cancunInstructionSet           = newCancunInstructionSet()
+	shanghaiInstructionSet = newShanghaiInstructionSet()
 )
 
 // JumpTable contains the EVM opcodes supported at a given fork.
@@ -80,6 +69,7 @@ func validate(jt JumpTable) JumpTable {
 	return jt
 }
 
+// TODO(rgeraldes24)
 // func newCancunInstructionSet() JumpTable {
 // 	instructionSet := newShanghaiInstructionSet()
 // 	enable4844(&instructionSet) // EIP-4844 (DATAHASH opcode)

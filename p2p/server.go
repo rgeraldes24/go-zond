@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package p2p implements the Ethereum p2p network protocols.
+// Package p2p implements the Zond p2p network protocols.
 package p2p
 
 import (
@@ -649,7 +649,7 @@ func (srv *Server) setupListening() error {
 		if !tcp.IP.IsLoopback() && !tcp.IP.IsPrivate() {
 			srv.portMappingRegister <- &portMapping{
 				protocol: "TCP",
-				name:     "ethereum p2p",
+				name:     "zond p2p",
 				port:     tcp.Port,
 			}
 		}
@@ -682,7 +682,7 @@ func (srv *Server) setupUDPListening() (*net.UDPConn, error) {
 	if !laddr.IP.IsLoopback() && !laddr.IP.IsPrivate() {
 		srv.portMappingRegister <- &portMapping{
 			protocol: "UDP",
-			name:     "ethereum peer discovery",
+			name:     "zond peer discovery",
 			port:     laddr.Port,
 		}
 	}
@@ -1074,8 +1074,9 @@ type NodeInfo struct {
 	ID    string `json:"id"`    // Unique node identifier (also the encryption key)
 	Name  string `json:"name"`  // Name of the node, including client type, version, OS, custom data
 	Enode string `json:"enode"` // Enode URL for adding this peer from remote peers
-	ENR   string `json:"enr"`   // Ethereum Node Record
-	IP    string `json:"ip"`    // IP address of the node
+	// TODO(rgeraldes24)
+	ENR   string `json:"enr"` // Ethereum Node Record
+	IP    string `json:"ip"`  // IP address of the node
 	Ports struct {
 		Discovery int `json:"discovery"` // UDP listening port for discovery protocol
 		Listener  int `json:"listener"`  // TCP listening port for RLPx

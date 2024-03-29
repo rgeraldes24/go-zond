@@ -379,9 +379,7 @@ func (n *Node) obtainJWTSecret(cliParam string) ([]byte, error) {
 func (n *Node) startRPC() error {
 	// Filter out personal api
 	var apis []rpc.API
-	for _, api := range n.rpcAPIs {
-		apis = append(apis, api)
-	}
+	apis = append(apis, n.rpcAPIs...)
 	if err := n.startInProc(apis); err != nil {
 		return err
 	}

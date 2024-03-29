@@ -341,43 +341,6 @@ func exportChain(ctx *cli.Context) error {
 	return nil
 }
 
-// importPreimages imports preimage data from the specified file.
-func importPreimages(ctx *cli.Context) error {
-	if ctx.Args().Len() < 1 {
-		utils.Fatalf("This command requires an argument.")
-	}
-
-	stack, _ := makeConfigNode(ctx)
-	defer stack.Close()
-
-	db := utils.MakeChainDatabase(ctx, stack, false)
-	start := time.Now()
-
-	if err := utils.ImportPreimages(db, ctx.Args().First()); err != nil {
-		utils.Fatalf("Import error: %v\n", err)
-	}
-	fmt.Printf("Import done in %v\n", time.Since(start))
-	return nil
-}
-
-// exportPreimages dumps the preimage data to specified json file in streaming way.
-func exportPreimages(ctx *cli.Context) error {
-	if ctx.Args().Len() < 1 {
-		utils.Fatalf("This command requires an argument.")
-	}
-	stack, _ := makeConfigNode(ctx)
-	defer stack.Close()
-
-	db := utils.MakeChainDatabase(ctx, stack, true)
-	start := time.Now()
-
-	if err := utils.ExportPreimages(db, ctx.Args().First()); err != nil {
-		utils.Fatalf("Export error: %v\n", err)
-	}
-	fmt.Printf("Export done in %v\n", time.Since(start))
-	return nil
-}
-
 func parseDumpConfig(ctx *cli.Context, stack *node.Node) (*state.DumpConfig, zonddb.Database, common.Hash, error) {
 	db := utils.MakeChainDatabase(ctx, stack, true)
 	var header *types.Header

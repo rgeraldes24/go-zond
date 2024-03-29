@@ -1272,18 +1272,18 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 		if tt.blockHash != nil {
 			if tt.reqHeader {
 				result = api.GetHeaderByHash(context.Background(), *tt.blockHash)
-				rpc = "eth_getHeaderByHash"
+				rpc = "zond_getHeaderByHash"
 			} else {
 				result, err = api.GetBlockByHash(context.Background(), *tt.blockHash, tt.fullTx)
-				rpc = "eth_getBlockByHash"
+				rpc = "zond_getBlockByHash"
 			}
 		} else {
 			if tt.reqHeader {
 				result, err = api.GetHeaderByNumber(context.Background(), tt.blockNumber)
-				rpc = "eth_getHeaderByNumber"
+				rpc = "zond_getHeaderByNumber"
 			} else {
 				result, err = api.GetBlockByNumber(context.Background(), tt.blockNumber, tt.fullTx)
-				rpc = "eth_getBlockByNumber"
+				rpc = "zond_getBlockByNumber"
 			}
 		}
 		if tt.expectErr != nil {
@@ -1442,7 +1442,7 @@ func TestRPCGetTransactionReceipt(t *testing.T) {
 			t.Errorf("test %d: want no error, have %v", i, err)
 			continue
 		}
-		testRPCResponseWithFile(t, i, result, "eth_getTransactionReceipt", tt.file)
+		testRPCResponseWithFile(t, i, result, "zond_getTransactionReceipt", tt.file)
 	}
 }
 
@@ -1535,7 +1535,7 @@ func TestRPCGetBlockReceipts(t *testing.T) {
 			t.Errorf("test %d: want no error, have %v", i, err)
 			continue
 		}
-		testRPCResponseWithFile(t, i, result, "eth_getBlockReceipts", tt.file)
+		testRPCResponseWithFile(t, i, result, "zond_getBlockReceipts", tt.file)
 	}
 }
 

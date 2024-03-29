@@ -9,6 +9,7 @@ import (
 func TestF(t *testing.T) {
 	for i, test := range testVectorsF {
 		t.Run(fmt.Sprintf("test vector %v", i), func(t *testing.T) {
+			// TODO(rgeraldes24)
 			//toEthereumTestCase(test)
 
 			h := test.hIn

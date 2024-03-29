@@ -18,7 +18,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/theQRL/go-zond/cmd/utils"
 	"github.com/theQRL/go-zond/console"
@@ -132,18 +131,5 @@ func remoteConsole(ctx *cli.Context) error {
 	// Otherwise print the welcome screen and enter interactive mode
 	console.Welcome()
 	console.Interactive()
-	return nil
-}
-
-// ephemeralConsole starts a new gzond node, attaches an ephemeral JavaScript
-// console to it, executes each of the files specified as arguments and tears
-// everything down.
-func ephemeralConsole(ctx *cli.Context) error {
-	var b strings.Builder
-	for _, file := range ctx.Args().Slice() {
-		b.Write([]byte(fmt.Sprintf("loadScript('%s');", file)))
-	}
-	utils.Fatalf(`The "js" command is deprecated. Please use the following instead:
-gzond --exec "%s" console`, b.String())
 	return nil
 }

@@ -107,16 +107,16 @@ var (
 
 	// TODO(rgeraldes24): disable
 	// A debian package is created for all executables listed here.
-	debEthereum = debPackage{
-		Name:        "ethereum",
-		Version:     params.Version,
-		Executables: debExecutables,
-	}
+	// debEthereum = debPackage{
+	// 	Name:        "ethereum",
+	// 	Version:     params.Version,
+	// 	Executables: debExecutables,
+	// }
 
 	// Debian meta packages to build and push to Ubuntu PPA
-	debPackages = []debPackage{
-		debEthereum,
-	}
+	// debPackages = []debPackage{
+	// 	debEthereum,
+	// }
 
 	// Distros for which packages are created.
 	// Note: vivid is unsupported because there is no golang-1.6 package for it.
@@ -187,8 +187,8 @@ func main() {
 		doArchive(os.Args[2:])
 	case "docker":
 		doDocker(os.Args[2:])
-	case "debsrc":
-		doDebianSource(os.Args[2:])
+	// case "debsrc":
+	// 	doDebianSource(os.Args[2:])
 	case "nsis":
 		doWindowsInstaller(os.Args[2:])
 	case "purge":
@@ -667,6 +667,7 @@ func doDocker(cmdline []string) {
 }
 
 // Debian Packaging
+/*
 func doDebianSource(cmdline []string) {
 	var (
 		cachedir = flag.String("cachedir", "./build/cache", `Filesystem path to cache the downloaded Go bundles at`)
@@ -703,52 +704,53 @@ func doDebianSource(cmdline []string) {
 	cidepfetch.Run() // Command fails, don't care, we only need the deps to start it
 
 	// Create Debian packages and upload them.
-	for _, pkg := range debPackages {
-		for distro, goboot := range debDistroGoBoots {
-			// Prepare the debian package with the go-ethereum sources.
-			meta := newDebMetadata(distro, goboot, *signer, env, now, pkg.Name, pkg.Version, pkg.Executables)
-			pkgdir := stageDebianSource(*workdir, meta)
+	// for _, pkg := range debPackages {
+	// 	for distro, goboot := range debDistroGoBoots {
+	// 		// Prepare the debian package with the go-ethereum sources.
+	// 		meta := newDebMetadata(distro, goboot, *signer, env, now, pkg.Name, pkg.Version, pkg.Executables)
+	// 		pkgdir := stageDebianSource(*workdir, meta)
 
-			// Add bootstrapper Go source code
-			if err := build.ExtractArchive(gobootbundle, pkgdir); err != nil {
-				log.Fatalf("Failed to extract bootstrapper Go sources: %v", err)
-			}
-			if err := os.Rename(filepath.Join(pkgdir, "go"), filepath.Join(pkgdir, ".goboot")); err != nil {
-				log.Fatalf("Failed to rename bootstrapper Go source folder: %v", err)
-			}
-			// Add builder Go source code
-			if err := build.ExtractArchive(gobundle, pkgdir); err != nil {
-				log.Fatalf("Failed to extract builder Go sources: %v", err)
-			}
-			if err := os.Rename(filepath.Join(pkgdir, "go"), filepath.Join(pkgdir, ".go")); err != nil {
-				log.Fatalf("Failed to rename builder Go source folder: %v", err)
-			}
-			// Add all dependency modules in compressed form
-			os.MkdirAll(filepath.Join(pkgdir, ".mod", "cache"), 0755)
-			if err := cp.CopyAll(filepath.Join(pkgdir, ".mod", "cache", "download"), filepath.Join(*workdir, "modgopath", "pkg", "mod", "cache", "download")); err != nil {
-				log.Fatalf("Failed to copy Go module dependencies: %v", err)
-			}
-			// Run the packaging and upload to the PPA
-			debuild := exec.Command("debuild", "-S", "-sa", "-us", "-uc", "-d", "-Zxz", "-nc")
-			debuild.Dir = pkgdir
-			build.MustRun(debuild)
+	// 		// Add bootstrapper Go source code
+	// 		if err := build.ExtractArchive(gobootbundle, pkgdir); err != nil {
+	// 			log.Fatalf("Failed to extract bootstrapper Go sources: %v", err)
+	// 		}
+	// 		if err := os.Rename(filepath.Join(pkgdir, "go"), filepath.Join(pkgdir, ".goboot")); err != nil {
+	// 			log.Fatalf("Failed to rename bootstrapper Go source folder: %v", err)
+	// 		}
+	// 		// Add builder Go source code
+	// 		if err := build.ExtractArchive(gobundle, pkgdir); err != nil {
+	// 			log.Fatalf("Failed to extract builder Go sources: %v", err)
+	// 		}
+	// 		if err := os.Rename(filepath.Join(pkgdir, "go"), filepath.Join(pkgdir, ".go")); err != nil {
+	// 			log.Fatalf("Failed to rename builder Go source folder: %v", err)
+	// 		}
+	// 		// Add all dependency modules in compressed form
+	// 		os.MkdirAll(filepath.Join(pkgdir, ".mod", "cache"), 0755)
+	// 		if err := cp.CopyAll(filepath.Join(pkgdir, ".mod", "cache", "download"), filepath.Join(*workdir, "modgopath", "pkg", "mod", "cache", "download")); err != nil {
+	// 			log.Fatalf("Failed to copy Go module dependencies: %v", err)
+	// 		}
+	// 		// Run the packaging and upload to the PPA
+	// 		debuild := exec.Command("debuild", "-S", "-sa", "-us", "-uc", "-d", "-Zxz", "-nc")
+	// 		debuild.Dir = pkgdir
+	// 		build.MustRun(debuild)
 
-			var (
-				basename  = fmt.Sprintf("%s_%s", meta.Name(), meta.VersionString())
-				source    = filepath.Join(*workdir, basename+".tar.xz")
-				dsc       = filepath.Join(*workdir, basename+".dsc")
-				changes   = filepath.Join(*workdir, basename+"_source.changes")
-				buildinfo = filepath.Join(*workdir, basename+"_source.buildinfo")
-			)
-			if *signer != "" {
-				build.MustRunCommand("debsign", changes)
-			}
-			if *upload != "" {
-				ppaUpload(*workdir, *upload, *sshUser, []string{source, dsc, changes, buildinfo})
-			}
-		}
-	}
+	// 		var (
+	// 			basename  = fmt.Sprintf("%s_%s", meta.Name(), meta.VersionString())
+	// 			source    = filepath.Join(*workdir, basename+".tar.xz")
+	// 			dsc       = filepath.Join(*workdir, basename+".dsc")
+	// 			changes   = filepath.Join(*workdir, basename+"_source.changes")
+	// 			buildinfo = filepath.Join(*workdir, basename+"_source.buildinfo")
+	// 		)
+	// 		if *signer != "" {
+	// 			build.MustRunCommand("debsign", changes)
+	// 		}
+	// 		if *upload != "" {
+	// 			ppaUpload(*workdir, *upload, *sshUser, []string{source, dsc, changes, buildinfo})
+	// 		}
+	// 	}
+	// }
 }
+*/
 
 // downloadGoBootstrapSources downloads the Go source tarball that will be used
 // to bootstrap the builder Go.

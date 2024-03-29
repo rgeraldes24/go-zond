@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package web3ext contains geth specific web3.js extensions.
+// Package web3ext contains gzond specific web3.js extensions.
 package web3ext
 
 var Modules = map[string]string{
-	"admin":    AdminJs,
-	"clique":   CliqueJs,
-	"ethash":   EthashJs,
+	"admin": AdminJs,
+	// TODO(rgeraldes24)
+	// "clique":   CliqueJs,
+	// "ethash":   EthashJs,
 	"debug":    DebugJs,
 	"zond":     EthJs,
 	"miner":    MinerJs,

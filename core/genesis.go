@@ -484,7 +484,7 @@ func (g *Genesis) MustCommit(db zonddb.Database, triedb *trie.Database) *types.B
 	return block
 }
 
-// DefaultGenesisBlock returns the Ethereum main net genesis block.
+// DefaultGenesisBlock returns the Zond main net genesis block.
 func DefaultGenesisBlock() *Genesis {
 	return &Genesis{
 		Config:    params.MainnetChainConfig,
