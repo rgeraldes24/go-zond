@@ -27,9 +27,9 @@ import (
 	"testing"
 
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/zonddb"
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/rpc"
+	"github.com/theQRL/go-zond/zonddb"
 
 	"github.com/stretchr/testify/assert"
 )

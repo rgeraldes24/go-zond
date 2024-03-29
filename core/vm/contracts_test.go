@@ -35,51 +35,17 @@ type precompiledTest struct {
 	NoBenchmark     bool // Benchmark primarily the worst-cases
 }
 
-// precompiledFailureTest defines the input/error pairs for precompiled
-// contract failure tests.
-type precompiledFailureTest struct {
-	Input         string
-	ExpectedError string
-	Name          string
-}
-
 // allPrecompiles does not map to the actual set of precompiles, as it also contains
 // repriced versions of precompiles at certain slots
 var allPrecompiles = map[common.Address]PrecompiledContract{
 	common.BytesToAddress([]byte{1}):    &depositroot{},
 	common.BytesToAddress([]byte{2}):    &sha256hash{},
-	common.BytesToAddress([]byte{3}):    &ripemd160hash{},
 	common.BytesToAddress([]byte{4}):    &dataCopy{},
 	common.BytesToAddress([]byte{5}):    &bigModExp{eip2565: false},
 	common.BytesToAddress([]byte{0xf5}): &bigModExp{eip2565: true},
 	common.BytesToAddress([]byte{6}):    &bn256AddIstanbul{},
 	common.BytesToAddress([]byte{7}):    &bn256ScalarMulIstanbul{},
 	common.BytesToAddress([]byte{8}):    &bn256PairingIstanbul{},
-	common.BytesToAddress([]byte{9}):    &blake2F{},
-}
-
-// EIP-152 test vectors
-var blake2FMalformedInputTests = []precompiledFailureTest{
-	{
-		Input:         "",
-		ExpectedError: errBlake2FInvalidInputLength.Error(),
-		Name:          "vector 0: empty input",
-	},
-	{
-		Input:         "00000c48c9bdf267e6096a3ba7ca8485ae67bb2bf894fe72f36e3cf1361d5f3af54fa5d182e6ad7f520e511f6c3e2b8c68059b6bbd41fbabd9831f79217e1319cde05b61626300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000001",
-		ExpectedError: errBlake2FInvalidInputLength.Error(),
-		Name:          "vector 1: less than 213 bytes input",
-	},
-	{
-		Input:         "000000000c48c9bdf267e6096a3ba7ca8485ae67bb2bf894fe72f36e3cf1361d5f3af54fa5d182e6ad7f520e511f6c3e2b8c68059b6bbd41fbabd9831f79217e1319cde05b61626300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000001",
-		ExpectedError: errBlake2FInvalidInputLength.Error(),
-		Name:          "vector 2: more than 213 bytes input",
-	},
-	{
-		Input:         "0000000c48c9bdf267e6096a3ba7ca8485ae67bb2bf894fe72f36e3cf1361d5f3af54fa5d182e6ad7f520e511f6c3e2b8c68059b6bbd41fbabd9831f79217e1319cde05b61626300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000002",
-		ExpectedError: errBlake2FInvalidFinalFlag.Error(),
-		Name:          "vector 3: malformed final block indicator flag",
-	},
 }
 
 func testPrecompiled(addr string, test precompiledTest, t *testing.T) {
@@ -112,23 +78,6 @@ func testPrecompiledOOG(addr string, test precompiledTest, t *testing.T) {
 		_, _, err := RunPrecompiledContract(p, in, gas)
 		if err.Error() != "out of gas" {
 			t.Errorf("Expected error [out of gas], got [%v]", err)
-		}
-		// Verify that the precompile did not touch the input buffer
-		exp := common.Hex2Bytes(test.Input)
-		if !bytes.Equal(in, exp) {
-			t.Errorf("Precompiled %v modified input data", addr)
-		}
-	})
-}
-
-func testPrecompiledFailure(addr string, test precompiledFailureTest, t *testing.T) {
-	p := allPrecompiles[common.HexToAddress(addr)]
-	in := common.Hex2Bytes(test.Input)
-	gas := p.RequiredGas(in)
-	t.Run(test.Name, func(t *testing.T) {
-		_, _, err := RunPrecompiledContract(p, in, gas)
-		if err.Error() != test.ExpectedError {
-			t.Errorf("Expected error [%v], got [%v]", test.ExpectedError, err)
 		}
 		// Verify that the precompile did not touch the input buffer
 		exp := common.Hex2Bytes(test.Input)
@@ -242,15 +191,6 @@ func BenchmarkPrecompiledBn256ScalarMul(b *testing.B) { benchJson("bn256ScalarMu
 func TestPrecompiledBn256Pairing(t *testing.T)      { testJson("bn256Pairing", "08", t) }
 func BenchmarkPrecompiledBn256Pairing(b *testing.B) { benchJson("bn256Pairing", "08", b) }
 
-func TestPrecompiledBlake2F(t *testing.T)      { testJson("blake2F", "09", t) }
-func BenchmarkPrecompiledBlake2F(b *testing.B) { benchJson("blake2F", "09", b) }
-
-func TestPrecompileBlake2FMalformedInput(t *testing.T) {
-	for _, test := range blake2FMalformedInputTests {
-		testPrecompiledFailure("09", test, t)
-	}
-}
-
 func testJson(name, addr string, t *testing.T) {
 	tests, err := loadJson(name)
 	if err != nil {
@@ -258,16 +198,6 @@ func testJson(name, addr string, t *testing.T) {
 	}
 	for _, test := range tests {
 		testPrecompiled(addr, test, t)
-	}
-}
-
-func testJsonFail(name, addr string, t *testing.T) {
-	tests, err := loadJsonFail(name)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, test := range tests {
-		testPrecompiledFailure(addr, test, t)
 	}
 }
 
@@ -287,16 +217,6 @@ func loadJson(name string) ([]precompiledTest, error) {
 		return nil, err
 	}
 	var testcases []precompiledTest
-	err = json.Unmarshal(data, &testcases)
-	return testcases, err
-}
-
-func loadJsonFail(name string) ([]precompiledFailureTest, error) {
-	data, err := os.ReadFile(fmt.Sprintf("testdata/precompiles/fail-%v.json", name))
-	if err != nil {
-		return nil, err
-	}
-	var testcases []precompiledFailureTest
 	err = json.Unmarshal(data, &testcases)
 	return testcases, err
 }

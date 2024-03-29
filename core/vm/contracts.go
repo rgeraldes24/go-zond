@@ -27,10 +27,8 @@ import (
 	ssz "github.com/prysmaticlabs/fastssz"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
-	"github.com/theQRL/go-zond/crypto/blake2b"
 	"github.com/theQRL/go-zond/crypto/bn256"
 	"github.com/theQRL/go-zond/params"
-	"golang.org/x/crypto/ripemd160"
 )
 
 // PrecompiledContract is the basic interface for native Go contracts. The implementation
@@ -46,13 +44,11 @@ type PrecompiledContract interface {
 var PrecompiledContractsShangai = map[common.Address]PrecompiledContract{
 	common.BytesToAddress([]byte{1}): &depositroot{},
 	common.BytesToAddress([]byte{2}): &sha256hash{},
-	common.BytesToAddress([]byte{3}): &ripemd160hash{},
 	common.BytesToAddress([]byte{4}): &dataCopy{},
 	common.BytesToAddress([]byte{5}): &bigModExp{eip2565: true},
 	common.BytesToAddress([]byte{6}): &bn256AddIstanbul{},
 	common.BytesToAddress([]byte{7}): &bn256ScalarMulIstanbul{},
 	common.BytesToAddress([]byte{8}): &bn256PairingIstanbul{},
-	common.BytesToAddress([]byte{9}): &blake2F{},
 }
 
 var (
@@ -189,22 +185,6 @@ func (c *sha256hash) RequiredGas(input []byte) uint64 {
 func (c *sha256hash) Run(input []byte) ([]byte, error) {
 	h := sha256.Sum256(input)
 	return h[:], nil
-}
-
-// RIPEMD160 implemented as a native contract.
-type ripemd160hash struct{}
-
-// RequiredGas returns the gas required to execute the pre-compiled contract.
-//
-// This method does not require any overflow checking as the input size gas costs
-// required for anything significant is so high it's impossible to pay for.
-func (c *ripemd160hash) RequiredGas(input []byte) uint64 {
-	return uint64(len(input)+31)/32*params.Ripemd160PerWordGas + params.Ripemd160BaseGas
-}
-func (c *ripemd160hash) Run(input []byte) ([]byte, error) {
-	ripemd := ripemd160.New()
-	ripemd.Write(input)
-	return common.LeftPadBytes(ripemd.Sum(nil), 32), nil
 }
 
 // data copy implemented as a native contract.
@@ -505,65 +485,4 @@ func (c *bn256PairingIstanbul) RequiredGas(input []byte) uint64 {
 
 func (c *bn256PairingIstanbul) Run(input []byte) ([]byte, error) {
 	return runBn256Pairing(input)
-}
-
-type blake2F struct{}
-
-func (c *blake2F) RequiredGas(input []byte) uint64 {
-	// If the input is malformed, we can't calculate the gas, return 0 and let the
-	// actual call choke and fault.
-	if len(input) != blake2FInputLength {
-		return 0
-	}
-	return uint64(binary.BigEndian.Uint32(input[0:4]))
-}
-
-const (
-	blake2FInputLength        = 213
-	blake2FFinalBlockBytes    = byte(1)
-	blake2FNonFinalBlockBytes = byte(0)
-)
-
-var (
-	errBlake2FInvalidInputLength = errors.New("invalid input length")
-	errBlake2FInvalidFinalFlag   = errors.New("invalid final flag")
-)
-
-func (c *blake2F) Run(input []byte) ([]byte, error) {
-	// Make sure the input is valid (correct length and final flag)
-	if len(input) != blake2FInputLength {
-		return nil, errBlake2FInvalidInputLength
-	}
-	if input[212] != blake2FNonFinalBlockBytes && input[212] != blake2FFinalBlockBytes {
-		return nil, errBlake2FInvalidFinalFlag
-	}
-	// Parse the input into the Blake2b call parameters
-	var (
-		rounds = binary.BigEndian.Uint32(input[0:4])
-		final  = input[212] == blake2FFinalBlockBytes
-
-		h [8]uint64
-		m [16]uint64
-		t [2]uint64
-	)
-	for i := 0; i < 8; i++ {
-		offset := 4 + i*8
-		h[i] = binary.LittleEndian.Uint64(input[offset : offset+8])
-	}
-	for i := 0; i < 16; i++ {
-		offset := 68 + i*8
-		m[i] = binary.LittleEndian.Uint64(input[offset : offset+8])
-	}
-	t[0] = binary.LittleEndian.Uint64(input[196:204])
-	t[1] = binary.LittleEndian.Uint64(input[204:212])
-
-	// Execute the compression function, extract and return the result
-	blake2b.F(&h, m, t, final, rounds)
-
-	output := make([]byte, 64)
-	for i := 0; i < 8; i++ {
-		offset := i * 8
-		binary.LittleEndian.PutUint64(output[offset:offset+8], h[i])
-	}
-	return output, nil
 }
