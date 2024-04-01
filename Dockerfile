@@ -25,7 +25,7 @@ COPY --from=builder /go-zond/build/bin/gzond /usr/local/bin/
 EXPOSE 8545 8546 30303 30303/udp
 ENTRYPOINT ["gzond"]
 
-# Add some metadata labels to help programatic image consumption
+# Add some metadata labels to help programmatic image consumption
 ARG COMMIT=""
 ARG VERSION=""
 ARG BUILDNUM=""
