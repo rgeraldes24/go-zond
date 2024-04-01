@@ -51,8 +51,6 @@ import (
 	"sync"
 	"text/template"
 	"time"
-
-	"golang.org/x/exp/slices"
 )
 
 var (
@@ -68,7 +66,6 @@ var (
 		"cmd/internal/browser",
 		"common/bitutil/bitutil",
 		"common/prque/",
-		"crypto/blake2b/",
 		"crypto/bn256/",
 		"crypto/ecies/",
 		"graphql/graphiql.go",
@@ -159,7 +156,8 @@ func main() {
 		wg    sync.WaitGroup
 	)
 
-	writeAuthors(files)
+	// TODO(rgeraldes24): remove
+	// writeAuthors(files)
 
 	go func() {
 		for _, f := range files {
@@ -234,6 +232,7 @@ func gitAuthors(files []string) []string {
 	return authors
 }
 
+/*
 func readAuthors() []string {
 	content, err := os.ReadFile("AUTHORS")
 	if err != nil && !os.IsNotExist(err) {
@@ -305,6 +304,7 @@ func writeAuthors(files []string) {
 		log.Fatalln(err)
 	}
 }
+*/
 
 func getInfo(files <-chan string, out chan<- *info, wg *sync.WaitGroup) {
 	for file := range files {

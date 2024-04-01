@@ -277,16 +277,18 @@ var opCodeToString = map[OpCode]string{
 	EXTCODEHASH:    "EXTCODEHASH",
 
 	// 0x40 range - block operations.
-	BLOCKHASH:   "BLOCKHASH",
-	COINBASE:    "COINBASE",
-	TIMESTAMP:   "TIMESTAMP",
-	NUMBER:      "NUMBER",
+	BLOCKHASH: "BLOCKHASH",
+	COINBASE:  "COINBASE",
+	TIMESTAMP: "TIMESTAMP",
+	NUMBER:    "NUMBER",
+	// TODO(rgeraldes24)
 	DIFFICULTY:  "DIFFICULTY", // TODO (MariusVanDerWijden) rename to PREVRANDAO post merge
 	GASLIMIT:    "GASLIMIT",
 	CHAINID:     "CHAINID",
 	SELFBALANCE: "SELFBALANCE",
 	BASEFEE:     "BASEFEE",
-	BLOBHASH:    "BLOBHASH",
+	// TODO(rgeraldes24)
+	BLOBHASH: "BLOBHASH",
 
 	// 0x50 range - 'storage' and execution.
 	POP:      "POP",
