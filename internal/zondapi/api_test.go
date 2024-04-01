@@ -211,8 +211,7 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 				"chainId": "0x539",
 				"v": "0x0",
 				"r": "0xf372ad499239ae11d91d34c559ffc5dab4daffc0069e03afcabdcdf231a0c16b",
-				"s": "0x28573161d1f9472fa0fd4752533609e72f06414f7ab5588699a7141f65d2abf",
-				"yParity": "0x0"
+				"s": "0x28573161d1f9472fa0fd4752533609e72f06414f7ab5588699a7141f65d2abf"
 			}`,
 		}, {
 			Tx: &types.AccessListTx{
@@ -258,8 +257,7 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 				"chainId": "0x539",
 				"v": "0x1",
 				"r": "0x542981b5130d4613897fbab144796cb36d3cb3d7807d47d9c7f89ca7745b085c",
-				"s": "0x7425b9dd6c5deaa42e4ede35d0c4570c4624f68c28d812c10d806ffdf86ce63",
-				"yParity": "0x1"
+				"s": "0x7425b9dd6c5deaa42e4ede35d0c4570c4624f68c28d812c10d806ffdf86ce63"
 			}`,
 		}, {
 			Tx: &types.DynamicFeeTx{
@@ -308,8 +306,7 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 				"chainId": "0x539",
 				"v": "0x1",
 				"r": "0x3b167e05418a8932cd53d7578711fe1a76b9b96c48642402bb94978b7a107e80",
-				"s": "0x22f98a332d15ea2cc80386c1ebaa31b0afebfa79ebc7d039a1e0074418301fef",
-				"yParity": "0x1"
+				"s": "0x22f98a332d15ea2cc80386c1ebaa31b0afebfa79ebc7d039a1e0074418301fef"
 			}`,
 		}, {
 			Tx: &types.DynamicFeeTx{
@@ -346,8 +343,7 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 				"chainId": "0x539",
 				"v": "0x0",
 				"r": "0x6446b8a682db7e619fc6b4f6d1f708f6a17351a41c7fbd63665f469bc78b41b9",
-				"s": "0x7626abc15834f391a117c63450047309dbf84c5ce3e8e609b607062641e2de43",
-				"yParity": "0x0"
+				"s": "0x7626abc15834f391a117c63450047309dbf84c5ce3e8e609b607062641e2de43"
 			}`,
 		},
 	}
@@ -971,8 +967,7 @@ func TestRPCMarshalBlock(t *testing.T) {
 						"chainId": "0x539",
 						"v": "0x0",
 						"r": "0x0",
-						"s": "0x0",
-						"yParity": "0x0"
+						"s": "0x0"
 					},
 					{
 						"blockHash": "0x9b73c83b25d0faf7eab854e3684c7e394336d6e135625aafa5c183f27baa8fee",
@@ -1009,8 +1004,7 @@ func TestRPCMarshalBlock(t *testing.T) {
 						"chainId": "0x539",
 						"v": "0x0",
 						"r": "0x0",
-						"s": "0x0",
-						"yParity": "0x0"
+						"s": "0x0"
 					},
 					{
 						"blockHash": "0x9b73c83b25d0faf7eab854e3684c7e394336d6e135625aafa5c183f27baa8fee",

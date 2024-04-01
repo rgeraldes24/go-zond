@@ -148,10 +148,8 @@ const schema string = `
         # Logs is a list of log entries emitted by this transaction. If the
         # transaction has not yet been mined, this field will be null.
         logs: [Log!]
-        r: BigInt!
-        s: BigInt!
-        v: BigInt!
-        yParity: Long
+        signature: Bytes!
+        publicKey: Bytes!
         # Envelope transaction support
         type: Long
         accessList: [AccessTuple!]
@@ -162,8 +160,6 @@ const schema string = `
         # RawReceipt is the canonical encoding of the receipt. For post EIP-2718 typed transactions
         # this is equivalent to TxType || ReceiptEncoding.
         rawReceipt: Bytes!
-        # BlobVersionedHashes is a set of hash outputs from the blobs in the transaction.
-        blobVersionedHashes: [Bytes32!]
     }
 
     # BlockFilterCriteria encapsulates log filter criteria for a filter applied
@@ -194,8 +190,6 @@ const schema string = `
         hash: Bytes32!
         # Parent is the parent block of this block.
         parent: Block
-        # Nonce is the block nonce, an 8 byte sequence determined by the miner.
-        nonce: Bytes!
         # TransactionsRoot is the keccak256 hash of the root of the trie of transactions in this block.
         transactionsRoot: Bytes32!
         # TransactionCount is the number of transactions in this block. if
@@ -224,22 +218,6 @@ const schema string = `
         logsBloom: Bytes!
         # MixHash is the hash that was used as an input to the PoW process.
         mixHash: Bytes32!
-        # Difficulty is a measure of the difficulty of mining this block.
-        difficulty: BigInt!
-        # TotalDifficulty is the sum of all difficulty values up to and including
-        # this block.
-        totalDifficulty: BigInt!
-        # OmmerCount is the number of ommers (AKA uncles) associated with this
-        # block. If ommers are unavailable, this field will be null.
-        ommerCount: Long
-        # Ommers is a list of ommer (AKA uncle) blocks associated with this block.
-        # If ommers are unavailable, this field will be null. Depending on your
-        # node, the transactions, transactionAt, transactionCount, ommers,
-        # ommerCount and ommerAt fields may not be available on any ommer blocks.
-        ommers: [Block]
-        # OmmerAt returns the ommer (AKA uncle) at the specified index. If ommers
-        # are unavailable, or the index is out of bounds, this field will be null.
-        ommerAt(index: Long!): Block
         # Transactions is a list of transactions associated with this block. If
         # transactions are unavailable for this block, this field will be null.
         transactions: [Transaction!]

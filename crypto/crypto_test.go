@@ -20,7 +20,6 @@ import (
 	"bytes"
 	"crypto/ecdsa"
 	"encoding/hex"
-	"math/big"
 	"os"
 	"reflect"
 	"testing"
@@ -224,6 +223,7 @@ func TestSaveECDSA(t *testing.T) {
 	}
 }
 
+/*
 func TestValidateSignatureValues(t *testing.T) {
 	check := func(expected bool, v byte, r, s *big.Int) {
 		if ValidateSignatureValues(v, r, s, false) != expected {
@@ -269,6 +269,7 @@ func TestValidateSignatureValues(t *testing.T) {
 	check(false, 0, minusOne, one)
 	check(false, 0, one, minusOne)
 }
+*/
 
 func checkhash(t *testing.T, name string, f func([]byte) []byte, msg, exp []byte) {
 	sum := f(msg)
