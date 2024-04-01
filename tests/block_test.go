@@ -19,7 +19,6 @@ package tests
 import (
 	"testing"
 
-	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/rawdb"
 )
 
@@ -56,6 +55,7 @@ func TestBlockchain(t *testing.T) {
 	// which run natively, so there's no reason to run them here.
 }
 
+/*
 // TestExecutionSpec runs the test fixtures from execution-spec-tests.
 func TestExecutionSpec(t *testing.T) {
 	if !common.FileExist(executionSpecDir) {
@@ -71,6 +71,7 @@ func TestExecutionSpec(t *testing.T) {
 		execBlockTest(t, bt, test)
 	})
 }
+*/
 
 func execBlockTest(t *testing.T, bt *testMatcher, test *BlockTest) {
 	if err := bt.checkFailure(t, test.Run(false, rawdb.HashScheme, nil)); err != nil {

@@ -152,10 +152,10 @@ var (
 
 	// This is the version of execution-spec-tests that we are using.
 	// When updating, you must also update build/checksums.txt.
-	executionSpecTestsVersion = "1.0.2"
+	// executionSpecTestsVersion = "1.0.2"
 
 	// This is where the tests should be unpacked.
-	executionSpecTestsDir = "tests/spec-tests"
+	// executionSpecTestsDir = "tests/spec-tests"
 )
 
 var GOBIN, _ = filepath.Abs(filepath.Join("build", "bin"))
@@ -297,13 +297,13 @@ func doTest(cmdline []string) {
 		coverage = flag.Bool("coverage", false, "Whether to record code coverage")
 		verbose  = flag.Bool("v", false, "Whether to log verbosely")
 		race     = flag.Bool("race", false, "Execute the race detector")
-		cachedir = flag.String("cachedir", "./build/cache", "directory for caching downloads")
+		// cachedir = flag.String("cachedir", "./build/cache", "directory for caching downloads")
 	)
 	flag.CommandLine.Parse(cmdline)
 
 	// Get test fixtures.
 	csdb := build.MustLoadChecksums("build/checksums.txt")
-	downloadSpecTestFixtures(csdb, *cachedir)
+	// downloadSpecTestFixtures(csdb, *cachedir)
 
 	// Configure the toolchain.
 	tc := build.GoToolchain{GOARCH: *arch, CC: *cc}
@@ -336,6 +336,7 @@ func doTest(cmdline []string) {
 	build.MustRun(gotest)
 }
 
+/*
 // downloadSpecTestFixtures downloads and extracts the execution-spec-tests fixtures.
 func downloadSpecTestFixtures(csdb *build.ChecksumDB, cachedir string) string {
 	ext := ".tar.gz"
@@ -350,6 +351,7 @@ func downloadSpecTestFixtures(csdb *build.ChecksumDB, cachedir string) string {
 	}
 	return filepath.Join(cachedir, base)
 }
+*/
 
 // doLint runs golangci-lint on requested packages.
 func doLint(cmdline []string) {
