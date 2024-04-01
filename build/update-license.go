@@ -84,9 +84,6 @@ var (
 	// this regexp must match the entire license comment at the
 	// beginning of each file.
 	licenseCommentRE = regexp.MustCompile(`^//\s*(Copyright|This file is part of).*?\n(?://.*?\n)*\n*`)
-
-	// this text appears at the start of AUTHORS
-	authorsFileHeader = "# This is the official list of go-zond authors for copyright purposes.\n\n"
 )
 
 // this template generates the license comment.
@@ -155,9 +152,6 @@ func main() {
 		infoc = make(chan *info, 20)
 		wg    sync.WaitGroup
 	)
-
-	// TODO(rgeraldes24): remove
-	// writeAuthors(files)
 
 	go func() {
 		for _, f := range files {
@@ -231,80 +225,6 @@ func gitAuthors(files []string) []string {
 	}
 	return authors
 }
-
-/*
-func readAuthors() []string {
-	content, err := os.ReadFile("AUTHORS")
-	if err != nil && !os.IsNotExist(err) {
-		log.Fatalln("error reading AUTHORS:", err)
-	}
-	var authors []string
-	for _, a := range bytes.Split(content, []byte("\n")) {
-		if len(a) > 0 && a[0] != '#' {
-			authors = append(authors, string(a))
-		}
-	}
-	// Retranslate existing authors through .mailmap.
-	// This should catch email address changes.
-	authors = mailmapLookup(authors)
-	return authors
-}
-
-func mailmapLookup(authors []string) []string {
-	if len(authors) == 0 {
-		return nil
-	}
-	cmds := []string{"check-mailmap", "--"}
-	cmds = append(cmds, authors...)
-	cmd := exec.Command("git", cmds...)
-	var translated []string
-	err := doLines(cmd, func(line string) {
-		translated = append(translated, line)
-	})
-	if err != nil {
-		log.Fatalln("error translating authors:", err)
-	}
-	return translated
-}
-
-func writeAuthors(files []string) {
-	var (
-		dedup = make(map[string]bool)
-		list  []string
-	)
-	// Add authors that Git reports as contributors.
-	// This is the primary source of author information.
-	for _, a := range gitAuthors(files) {
-		if la := strings.ToLower(a); !dedup[la] {
-			list = append(list, a)
-			dedup[la] = true
-		}
-	}
-	// Add existing authors from the file. This should ensure that we
-	// never lose authors, even if Git stops listing them. We can also
-	// add authors manually this way.
-	for _, a := range readAuthors() {
-		if la := strings.ToLower(a); !dedup[la] {
-			list = append(list, a)
-			dedup[la] = true
-		}
-	}
-	// Write sorted list of authors back to the file.
-	slices.SortFunc(list, func(a, b string) bool {
-		return strings.ToLower(a) < strings.ToLower(b)
-	})
-	content := new(bytes.Buffer)
-	content.WriteString(authorsFileHeader)
-	for _, a := range list {
-		content.WriteString(a)
-		content.WriteString("\n")
-	}
-	fmt.Println("writing AUTHORS")
-	if err := os.WriteFile("AUTHORS", content.Bytes(), 0644); err != nil {
-		log.Fatalln(err)
-	}
-}
-*/
 
 func getInfo(files <-chan string, out chan<- *info, wg *sync.WaitGroup) {
 	for file := range files {
