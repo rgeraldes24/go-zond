@@ -31,15 +31,6 @@ import (
 	"github.com/theQRL/go-zond/zonddb"
 )
 
-// func TestInvalidCliqueConfig(t *testing.T) {
-// 	block := DefaultGoerliGenesisBlock()
-// 	block.ExtraData = []byte{}
-// 	db := rawdb.NewMemoryDatabase()
-// 	if _, err := block.Commit(db, trie.NewDatabase(db, nil)); err == nil {
-// 		t.Fatal("Expected error on invalid clique config")
-// 	}
-// }
-
 func TestSetupGenesis(t *testing.T) {
 	testSetupGenesis(t, rawdb.HashScheme)
 	testSetupGenesis(t, rawdb.PathScheme)
@@ -180,9 +171,6 @@ func TestGenesisHashes(t *testing.T) {
 		want    common.Hash
 	}{
 		{DefaultGenesisBlock(), params.MainnetGenesisHash},
-		// TODO(rgeraldes24)
-		// {DefaultGoerliGenesisBlock(), params.GoerliGenesisHash},
-		// {DefaultSepoliaGenesisBlock(), params.SepoliaGenesisHash},
 		{DefaultBetaNetGenesisBlock(), params.BetaNetGenesisHash},
 	} {
 		// Test via MustCommit

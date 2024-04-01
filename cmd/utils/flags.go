@@ -233,11 +233,6 @@ var (
 		Value:    2048,
 		Category: flags.ZondCategory,
 	}
-	// OverrideCancun = &cli.Uint64Flag{
-	// 	Name:     "override.cancun",
-	// 	Usage:    "Manually specify the Cancun fork timestamp, overriding the bundled setting",
-	// 	Category: flags.EthCategory,
-	// }
 	SyncModeFlag = &flags.TextMarshalerFlag{
 		Name:     "syncmode",
 		Usage:    `Blockchain sync mode ("snap" or "full")`,
