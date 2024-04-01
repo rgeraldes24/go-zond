@@ -30,7 +30,7 @@ import (
 	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/types"
-	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
@@ -180,9 +180,7 @@ func TestToFilterArg(t *testing.T) {
 }
 
 var (
-	// testKey, _  = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-	testKey, _ = crypto.GenerateDilithiumKey()
-	// testAddr    = crypto.PubkeyToAddress(testKey.PublicKey)
+	testKey, _                 = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	testAddr    common.Address = testKey.GetAddress()
 	testBalance                = big.NewInt(2e15)
 )
