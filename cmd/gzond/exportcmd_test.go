@@ -25,6 +25,15 @@ import (
 	"github.com/theQRL/go-zond/common"
 )
 
+func initGzond(t *testing.T) string {
+	args := []string{"--networkid=42", "init", "./testdata/clique.json"}
+	t.Logf("Initializing geth: %v ", args)
+	g := runGzond(t, args...)
+	datadir := g.Datadir
+	g.WaitExit()
+	return datadir
+}
+
 // TestExport does a basic test of "gzond export", exporting the test-genesis.
 func TestExport(t *testing.T) {
 	outfile := fmt.Sprintf("%v/testExport.out", os.TempDir())
