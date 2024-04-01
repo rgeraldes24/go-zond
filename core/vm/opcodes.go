@@ -87,6 +87,7 @@ const (
 	EXTCODEHASH    OpCode = 0x3f
 )
 
+// TODO(rgeraldes24)
 // 0x40 range - block operations.
 const (
 	BLOCKHASH   OpCode = 0x40

@@ -193,8 +193,8 @@ func main() {
 	// 	doDebianSource(os.Args[2:])
 	case "nsis":
 		doWindowsInstaller(os.Args[2:])
-	case "purge":
-		doPurge(os.Args[2:])
+	// case "purge":
+	// 	doPurge(os.Args[2:])
 	default:
 		log.Fatal("unknown command ", os.Args[1])
 	}
@@ -469,27 +469,9 @@ func archiveUpload(archive string, blobstore string, signer string, signifyVar s
 			return err
 		}
 	}
-	// If uploading to Azure was requested, push the archive possibly with its signature
-	if blobstore != "" {
-		auth := build.AzureBlobstoreConfig{
-			Account:   strings.Split(blobstore, "/")[0],
-			Token:     os.Getenv("AZURE_BLOBSTORE_TOKEN"),
-			Container: strings.SplitN(blobstore, "/", 2)[1],
-		}
-		if err := build.AzureBlobstoreUpload(archive, filepath.Base(archive), auth); err != nil {
-			return err
-		}
-		if signer != "" {
-			if err := build.AzureBlobstoreUpload(archive+".asc", filepath.Base(archive+".asc"), auth); err != nil {
-				return err
-			}
-		}
-		if signifyVar != "" {
-			if err := build.AzureBlobstoreUpload(archive+".sig", filepath.Base(archive+".sig"), auth); err != nil {
-				return err
-			}
-		}
-	}
+
+	// TODO(rgeraldes24): upload
+
 	return nil
 }
 
@@ -1049,8 +1031,8 @@ func doWindowsInstaller(cmdline []string) {
 	}
 }
 
+/*
 // Binary distribution cleanups
-
 func doPurge(cmdline []string) {
 	var (
 		store = flag.String("store", "", `Destination from where to purge archives (usually "gzondstore/builds")`)
@@ -1062,42 +1044,5 @@ func doPurge(cmdline []string) {
 		log.Printf("skipping because not a cron job")
 		os.Exit(0)
 	}
-	// Create the azure authentication and list the current archives
-	auth := build.AzureBlobstoreConfig{
-		Account:   strings.Split(*store, "/")[0],
-		Token:     os.Getenv("AZURE_BLOBSTORE_TOKEN"),
-		Container: strings.SplitN(*store, "/", 2)[1],
-	}
-	blobs, err := build.AzureBlobstoreList(auth)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Found %d blobs\n", len(blobs))
-
-	// Iterate over the blobs, collect and sort all unstable builds
-	for i := 0; i < len(blobs); i++ {
-		if !strings.Contains(*blobs[i].Name, "unstable") {
-			blobs = append(blobs[:i], blobs[i+1:]...)
-			i--
-		}
-	}
-	for i := 0; i < len(blobs); i++ {
-		for j := i + 1; j < len(blobs); j++ {
-			if blobs[i].Properties.LastModified.After(*blobs[j].Properties.LastModified) {
-				blobs[i], blobs[j] = blobs[j], blobs[i]
-			}
-		}
-	}
-	// Filter out all archives more recent that the given threshold
-	for i, blob := range blobs {
-		if time.Since(*blob.Properties.LastModified) < time.Duration(*limit)*24*time.Hour {
-			blobs = blobs[:i]
-			break
-		}
-	}
-	fmt.Printf("Deleting %d blobs\n", len(blobs))
-	// Delete all marked as such and return
-	if err := build.AzureBlobstoreDelete(auth, blobs); err != nil {
-		log.Fatal(err)
-	}
 }
+*/
