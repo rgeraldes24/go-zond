@@ -23,8 +23,8 @@ import (
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/log"
-	"github.com/theQRL/go-zond/pqcrypto"
 	"github.com/urfave/cli/v2"
 )
 

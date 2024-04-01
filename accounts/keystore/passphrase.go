@@ -41,7 +41,7 @@ import (
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/pqcrypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"golang.org/x/crypto/pbkdf2"
 	"golang.org/x/crypto/scrypt"
 )

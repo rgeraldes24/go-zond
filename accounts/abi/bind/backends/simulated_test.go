@@ -34,8 +34,8 @@ import (
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/pqcrypto"
 )
 
 func TestSimulatedBackend(t *testing.T) {

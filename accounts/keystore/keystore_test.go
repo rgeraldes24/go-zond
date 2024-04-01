@@ -28,8 +28,8 @@ import (
 
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/event"
-	"github.com/theQRL/go-zond/pqcrypto"
 	"golang.org/x/exp/slices"
 )
 
