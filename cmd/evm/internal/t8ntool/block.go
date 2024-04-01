@@ -63,14 +63,10 @@ type headerMarshaling struct {
 
 type bbInput struct {
 	Header      *header             `json:"header,omitempty"`
-	OmmersRlp   []string            `json:"ommers,omitempty"`
 	TxRlp       string              `json:"txs,omitempty"`
 	Withdrawals []*types.Withdrawal `json:"withdrawals,omitempty"`
-	Clique      *cliqueInput        `json:"clique,omitempty"`
 
-	Ethash bool                 `json:"-"`
-	Txs    []*types.Transaction `json:"-"`
-	Ommers []*types.Header      `json:"-"`
+	Txs []*types.Transaction `json:"-"`
 }
 
 type cliqueInput struct {
@@ -214,24 +210,15 @@ func BuildBlock(ctx *cli.Context) error {
 func readInput(ctx *cli.Context) (*bbInput, error) {
 	var (
 		headerStr      = ctx.String(InputHeaderFlag.Name)
-		ommersStr      = ctx.String(InputOmmersFlag.Name)
 		withdrawalsStr = ctx.String(InputWithdrawalsFlag.Name)
 		txsStr         = ctx.String(InputTxsRlpFlag.Name)
-		cliqueStr      = ctx.String(SealCliqueFlag.Name)
 		inputData      = &bbInput{}
 	)
-	if headerStr == stdinSelector || ommersStr == stdinSelector || txsStr == stdinSelector || cliqueStr == stdinSelector {
+	if headerStr == stdinSelector || txsStr == stdinSelector {
 		decoder := json.NewDecoder(os.Stdin)
 		if err := decoder.Decode(inputData); err != nil {
 			return nil, NewError(ErrorJson, fmt.Errorf("failed unmarshaling stdin: %v", err))
 		}
-	}
-	if cliqueStr != stdinSelector && cliqueStr != "" {
-		var clique cliqueInput
-		if err := readFile(cliqueStr, "clique", &clique); err != nil {
-			return nil, err
-		}
-		inputData.Clique = &clique
 	}
 	if headerStr != stdinSelector {
 		var env header
@@ -239,13 +226,6 @@ func readInput(ctx *cli.Context) (*bbInput, error) {
 			return nil, err
 		}
 		inputData.Header = &env
-	}
-	if ommersStr != stdinSelector && ommersStr != "" {
-		var ommers []string
-		if err := readFile(ommersStr, "ommers", &ommers); err != nil {
-			return nil, err
-		}
-		inputData.OmmersRlp = ommers
 	}
 	if withdrawalsStr != stdinSelector && withdrawalsStr != "" {
 		var withdrawals []*types.Withdrawal
@@ -261,10 +241,9 @@ func readInput(ctx *cli.Context) (*bbInput, error) {
 		}
 		inputData.TxRlp = txs
 	}
-	// Deserialize rlp txs and ommers
+	// Deserialize rlp txs
 	var (
-		ommers = []*types.Header{}
-		txs    = []*types.Transaction{}
+		txs = []*types.Transaction{}
 	)
 	if inputData.TxRlp != "" {
 		if err := rlp.DecodeBytes(common.FromHex(inputData.TxRlp), &txs); err != nil {
@@ -272,19 +251,6 @@ func readInput(ctx *cli.Context) (*bbInput, error) {
 		}
 		inputData.Txs = txs
 	}
-	for _, str := range inputData.OmmersRlp {
-		type extblock struct {
-			Header *types.Header
-			Txs    []*types.Transaction
-			Ommers []*types.Header
-		}
-		var ommer *extblock
-		if err := rlp.DecodeBytes(common.FromHex(str), &ommer); err != nil {
-			return nil, NewError(ErrorRlp, fmt.Errorf("unable to decode ommer from rlp data: %v", err))
-		}
-		ommers = append(ommers, ommer.Header)
-	}
-	inputData.Ommers = ommers
 
 	return inputData, nil
 }

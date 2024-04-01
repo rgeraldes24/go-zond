@@ -351,16 +351,10 @@ func TestT9n(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24)
 type b11rInput struct {
 	inEnv         string
-	inOmmersRlp   string
 	inWithdrawals string
 	inTxsRlp      string
-	inClique      string
-	ethash        bool
-	ethashMode    string
-	ethashDir     string
 }
 
 func (args *b11rInput) get(base string) []string {
@@ -369,31 +363,12 @@ func (args *b11rInput) get(base string) []string {
 		out = append(out, "--input.header")
 		out = append(out, fmt.Sprintf("%v/%v", base, opt))
 	}
-	if opt := args.inOmmersRlp; opt != "" {
-		out = append(out, "--input.ommers")
-		out = append(out, fmt.Sprintf("%v/%v", base, opt))
-	}
 	if opt := args.inWithdrawals; opt != "" {
 		out = append(out, "--input.withdrawals")
 		out = append(out, fmt.Sprintf("%v/%v", base, opt))
 	}
 	if opt := args.inTxsRlp; opt != "" {
 		out = append(out, "--input.txs")
-		out = append(out, fmt.Sprintf("%v/%v", base, opt))
-	}
-	if opt := args.inClique; opt != "" {
-		out = append(out, "--seal.clique")
-		out = append(out, fmt.Sprintf("%v/%v", base, opt))
-	}
-	if args.ethash {
-		out = append(out, "--seal.ethash")
-	}
-	if opt := args.ethashMode; opt != "" {
-		out = append(out, "--seal.ethash.mode")
-		out = append(out, fmt.Sprintf("%v/%v", base, opt))
-	}
-	if opt := args.ethashDir; opt != "" {
-		out = append(out, "--seal.ethash.dir")
 		out = append(out, fmt.Sprintf("%v/%v", base, opt))
 	}
 	out = append(out, "--output.block")
@@ -413,37 +388,16 @@ func TestB11r(t *testing.T) {
 		{ // unsealed block
 			base: "./testdata/20",
 			input: b11rInput{
-				inEnv:       "header.json",
-				inOmmersRlp: "ommers.json",
-				inTxsRlp:    "txs.rlp",
+				inEnv:    "header.json",
+				inTxsRlp: "txs.rlp",
 			},
 			expOut: "exp.json",
-		},
-		{ // ethash test seal
-			base: "./testdata/21",
-			input: b11rInput{
-				inEnv:       "header.json",
-				inOmmersRlp: "ommers.json",
-				inTxsRlp:    "txs.rlp",
-			},
-			expOut: "exp.json",
-		},
-		{ // clique test seal
-			base: "./testdata/21",
-			input: b11rInput{
-				inEnv:       "header.json",
-				inOmmersRlp: "ommers.json",
-				inTxsRlp:    "txs.rlp",
-				inClique:    "clique.json",
-			},
-			expOut: "exp-clique.json",
 		},
 		{ // block with ommers
 			base: "./testdata/22",
 			input: b11rInput{
-				inEnv:       "header.json",
-				inOmmersRlp: "ommers.json",
-				inTxsRlp:    "txs.rlp",
+				inEnv:    "header.json",
+				inTxsRlp: "txs.rlp",
 			},
 			expOut: "exp.json",
 		},
@@ -451,7 +405,6 @@ func TestB11r(t *testing.T) {
 			base: "./testdata/27",
 			input: b11rInput{
 				inEnv:         "header.json",
-				inOmmersRlp:   "ommers.json",
 				inWithdrawals: "withdrawals.json",
 				inTxsRlp:      "txs.rlp",
 			},
