@@ -77,65 +77,66 @@ var (
 		executablePath("clef"),
 	}
 
-	// A debian package is created for all executables listed here.
-	debExecutables = []debExecutable{
-		{
-			BinaryName:  "abigen",
-			Description: "Source code generator to convert Zond contract definitions into easy to use, compile-time type-safe Go packages.",
-		},
-		{
-			BinaryName:  "bootnode",
-			Description: "Zond bootnode.",
-		},
-		{
-			BinaryName:  "evm",
-			Description: "Developer utility version of the EVM (Zond Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
-		},
-		{
-			BinaryName:  "gzond",
-			Description: "Zond CLI client.",
-		},
-		{
-			BinaryName:  "rlpdump",
-			Description: "Developer utility tool that prints RLP structures.",
-		},
-		{
-			BinaryName:  "clef",
-			Description: "Zond account management tool.",
-		},
-	}
+	/*
+		// A debian package is created for all executables listed here.
+		debExecutables = []debExecutable{
+			{
+				BinaryName:  "abigen",
+				Description: "Source code generator to convert Zond contract definitions into easy to use, compile-time type-safe Go packages.",
+			},
+			{
+				BinaryName:  "bootnode",
+				Description: "Zond bootnode.",
+			},
+			{
+				BinaryName:  "evm",
+				Description: "Developer utility version of the EVM (Zond Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
+			},
+			{
+				BinaryName:  "gzond",
+				Description: "Zond CLI client.",
+			},
+			{
+				BinaryName:  "rlpdump",
+				Description: "Developer utility tool that prints RLP structures.",
+			},
+			{
+				BinaryName:  "clef",
+				Description: "Zond account management tool.",
+			},
+		}
 
-	// TODO(rgeraldes24): disable
-	// A debian package is created for all executables listed here.
-	// debEthereum = debPackage{
-	// 	Name:        "ethereum",
-	// 	Version:     params.Version,
-	// 	Executables: debExecutables,
-	// }
+		// A debian package is created for all executables listed here.
+		debEthereum = debPackage{
+			Name:        "ethereum",
+			Version:     params.Version,
+			Executables: debExecutables,
+		}
 
-	// Debian meta packages to build and push to Ubuntu PPA
-	// debPackages = []debPackage{
-	// 	debEthereum,
-	// }
+		// Debian meta packages to build and push to Ubuntu PPA
+		debPackages = []debPackage{
+			debEthereum,
+		}
 
-	// Distros for which packages are created.
-	// Note: vivid is unsupported because there is no golang-1.6 package for it.
-	// Note: the following Ubuntu releases have been officially deprecated on Launchpad:
-	//   wily, yakkety, zesty, artful, cosmic, disco, eoan, groovy, hirsuite, impish,
-	//   kinetic
-	debDistroGoBoots = map[string]string{
-		"trusty": "golang-1.11", // EOL: 04/2024
-		"xenial": "golang-go",   // EOL: 04/2026
-		"bionic": "golang-go",   // EOL: 04/2028
-		"focal":  "golang-go",   // EOL: 04/2030
-		"jammy":  "golang-go",   // EOL: 04/2032
-		"lunar":  "golang-go",   // EOL: 01/2024
-	}
+		// Distros for which packages are created.
+		// Note: vivid is unsupported because there is no golang-1.6 package for it.
+		// Note: the following Ubuntu releases have been officially deprecated on Launchpad:
+		//   wily, yakkety, zesty, artful, cosmic, disco, eoan, groovy, hirsuite, impish,
+		//   kinetic
+		debDistroGoBoots = map[string]string{
+			"trusty": "golang-1.11", // EOL: 04/2024
+			"xenial": "golang-go",   // EOL: 04/2026
+			"bionic": "golang-go",   // EOL: 04/2028
+			"focal":  "golang-go",   // EOL: 04/2030
+			"jammy":  "golang-go",   // EOL: 04/2032
+			"lunar":  "golang-go",   // EOL: 01/2024
+		}
 
-	debGoBootPaths = map[string]string{
-		"golang-1.11": "/usr/lib/go-1.11",
-		"golang-go":   "/usr/lib/go",
-	}
+		debGoBootPaths = map[string]string{
+			"golang-1.11": "/usr/lib/go-1.11",
+			"golang-go":   "/usr/lib/go",
+		}
+	*/
 
 	// This is the version of Go that will be downloaded by
 	//
@@ -833,6 +834,7 @@ func isUnstableBuild(env build.Environment) bool {
 	return true
 }
 
+/*
 type debPackage struct {
 	Name        string          // the name of the Debian package to produce, e.g. "ethereum"
 	Version     string          // the clean version of the debPackage, e.g. 1.8.12, without any metadata
@@ -969,6 +971,7 @@ func stageDebianSource(tmpdir string, meta debMetadata) (pkgdir string) {
 	}
 	return pkgdir
 }
+*/
 
 // Windows installer
 func doWindowsInstaller(cmdline []string) {
