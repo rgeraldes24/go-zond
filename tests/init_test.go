@@ -40,6 +40,7 @@ var (
 	legacyStateTestDir = filepath.Join(baseDir, "LegacyTests", "Constantinople", "GeneralStateTests")
 	transactionTestDir = filepath.Join(baseDir, "TransactionTests")
 	rlpTestDir         = filepath.Join(baseDir, "RLPTests")
+	// TODO(theQRL/go-zond/issues/35)
 	// executionSpecDir   = filepath.Join(".", "spec-tests", "fixtures")
 	benchmarksDir = filepath.Join(".", "evm-benchmarks", "benchmarks")
 )

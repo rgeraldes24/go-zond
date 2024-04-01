@@ -150,6 +150,7 @@ var (
 	// versions.
 	gobootVersion = "1.19.6"
 
+	// TODO(theQRL/go-zond/issues/35)
 	// This is the version of execution-spec-tests that we are using.
 	// When updating, you must also update build/checksums.txt.
 	// executionSpecTestsVersion = "1.0.2"
@@ -303,6 +304,7 @@ func doTest(cmdline []string) {
 
 	// Get test fixtures.
 	csdb := build.MustLoadChecksums("build/checksums.txt")
+	// TODO(theQRL/go-zond/issues/35)
 	// downloadSpecTestFixtures(csdb, *cachedir)
 
 	// Configure the toolchain.

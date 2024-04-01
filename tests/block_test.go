@@ -55,6 +55,7 @@ func TestBlockchain(t *testing.T) {
 	// which run natively, so there's no reason to run them here.
 }
 
+// TODO(theQRL/go-zond/issues/35)
 /*
 // TestExecutionSpec runs the test fixtures from execution-spec-tests.
 func TestExecutionSpec(t *testing.T) {
