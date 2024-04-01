@@ -228,7 +228,7 @@ func TestNoStepExec(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix: blake2f is no longer available
+// TODO(rgeraldes24): fix: use other contract - blake2f is no longer available
 /*
 func TestIsPrecompile(t *testing.T) {
 	chaincfg := &params.ChainConfig{ChainID: big.NewInt(1)}
