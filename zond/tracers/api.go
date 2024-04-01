@@ -74,7 +74,7 @@ var errTxNotFound = errors.New("transaction not found")
 type StateReleaseFunc func()
 
 // Backend interface provides the common API services (that are provided by
-// both full and light clients) with access to necessary functions.
+// both full clients) with access to necessary functions.
 type Backend interface {
 	HeaderByHash(ctx context.Context, hash common.Hash) (*types.Header, error)
 	HeaderByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Header, error)

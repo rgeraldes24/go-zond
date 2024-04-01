@@ -42,16 +42,6 @@ var FullNodeGPO = gasprice.Config{
 	IgnorePrice:      gasprice.DefaultIgnorePrice,
 }
 
-// LightClientGPO contains default gasprice oracle settings for light client.
-var LightClientGPO = gasprice.Config{
-	Blocks:           2,
-	Percentile:       60,
-	MaxHeaderHistory: 300,
-	MaxBlockHistory:  5,
-	MaxPrice:         gasprice.DefaultMaxPrice,
-	IgnorePrice:      gasprice.DefaultIgnorePrice,
-}
-
 // Defaults contains default settings for use on the Zond main net.
 var Defaults = Config{
 	SyncMode:           downloader.SnapSync,
@@ -59,7 +49,6 @@ var Defaults = Config{
 	TransactionHistory: 2350000,
 	StateHistory:       params.FullImmutabilityThreshold,
 	StateScheme:        rawdb.HashScheme,
-	LightPeers:         100,
 	DatabaseCache:      512,
 	TrieCleanCache:     154,
 	TrieDirtyCache:     256,
@@ -102,14 +91,6 @@ type Config struct {
 	// canonical chain of all remote peers. Setting the option makes gzond verify the
 	// presence of these blocks for every new peer connection.
 	RequiredBlocks map[uint64]common.Hash `toml:"-"`
-
-	// Light client options
-	LightServ        int  `toml:",omitempty"` // Maximum percentage of time allowed for serving LES requests
-	LightIngress     int  `toml:",omitempty"` // Incoming bandwidth limit for light servers
-	LightEgress      int  `toml:",omitempty"` // Outgoing bandwidth limit for light servers
-	LightPeers       int  `toml:",omitempty"` // Maximum number of LES client peers
-	LightNoPrune     bool `toml:",omitempty"` // Whether to disable light chain pruning
-	LightNoSyncServe bool `toml:",omitempty"` // Whether to serve light clients before syncing
 
 	// Database options
 	SkipBcVersionCheck bool `toml:"-"`
