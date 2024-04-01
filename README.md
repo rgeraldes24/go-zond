@@ -11,7 +11,7 @@ Official Golang execution layer implementation of the Zond protocol.
 
 For prerequisites and detailed build instructions please read the [Installation Instructions](https://test-zond.theqrl.org/install).
 
-Building `gzond` requires both a Go (version 1.20 or later) and a C compiler. You can install
+Building `gzond` requires both a Go (version 1.21 or later) and a C compiler. You can install
 them using your favourite package manager. Once the dependencies are installed, run
 
 ```shell
