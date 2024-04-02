@@ -32,6 +32,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/p2p/enode"
 	"github.com/theQRL/go-zond/params"
@@ -40,11 +41,9 @@ import (
 
 var (
 	// testKey is a private key to use for funding a tester account.
-	// testKey, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-	testKey, _ = crypto.GenerateDilithiumKey()
+	testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
 	// testAddr is the Zond address of the tester account.
-	// testAddr = crypto.PubkeyToAddress(testKey.PublicKey)
 	testAddr = testKey.GetAddress()
 )
 
@@ -446,7 +445,7 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 			block.SetCoinbase(acc2Addr)
 			block.SetExtra([]byte("yeehaw"))
 		case 3:
-			// TODO(rgeraldes24)
+			// TODO(rgeraldes24): fix: uncles are not available anymore
 			// Block 4 includes blocks 2 and 3 as uncle headers (with modified extra data).
 			b2 := block.PrevBlock(1).Header()
 			b2.Extra = []byte("foo")
