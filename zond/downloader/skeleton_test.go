@@ -817,9 +817,9 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 		// Create a peer dropper to track malicious peers
 		dropped := make(map[string]int)
 		drop := func(peer string) {
-			// if p := peerset.Peer(peer); p != nil {
-			// 	p.peer.(*skeletonTestPeer).dropped.Add(1)
-			// }
+			if p := peerset.Peer(peer); p != nil {
+				p.peer.(*skeletonTestPeer).dropped.Add(1)
+			}
 			peerset.Unregister(peer)
 			dropped[peer]++
 		}
