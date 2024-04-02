@@ -228,12 +228,10 @@ func TestNoStepExec(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix: use other contract - blake2f is no longer available
-/*
 func TestIsPrecompile(t *testing.T) {
 	chaincfg := &params.ChainConfig{ChainID: big.NewInt(1)}
 	txCtx := vm.TxContext{GasPrice: big.NewInt(100000)}
-	tracer, err := newJsTracer("{addr: toAddress('0000000000000000000000000000000000000009'), res: null, step: function() { this.res = isPrecompiled(this.addr); }, fault: function() {}, result: function() { return this.res; }}", nil, nil)
+	tracer, err := newJsTracer("{addr: toAddress('0000000000000000000000000000000000000020'), res: null, step: function() { this.res = isPrecompiled(this.addr); }, fault: function() {}, result: function() { return this.res; }}", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -244,20 +242,19 @@ func TestIsPrecompile(t *testing.T) {
 		t.Error(err)
 	}
 	if string(res) != "false" {
-		t.Errorf("tracer should not consider blake2f as precompile in byzantium")
+		t.Errorf("tracer should not consider unavailable contract as precompile in shangai")
 	}
 
-	tracer, _ = newJsTracer("{addr: toAddress('0000000000000000000000000000000000000009'), res: null, step: function() { this.res = isPrecompiled(this.addr); }, fault: function() {}, result: function() { return this.res; }}", nil, nil)
+	tracer, _ = newJsTracer("{addr: toAddress('0000000000000000000000000000000000000001'), res: null, step: function() { this.res = isPrecompiled(this.addr); }, fault: function() {}, result: function() { return this.res; }}", nil, nil)
 	blockCtx = vm.BlockContext{BlockNumber: big.NewInt(250)}
 	res, err = runTrace(tracer, &vmContext{blockCtx, txCtx}, chaincfg, nil)
 	if err != nil {
 		t.Error(err)
 	}
 	if string(res) != "true" {
-		t.Errorf("tracer should consider blake2f as precompile in istanbul")
+		t.Errorf("tracer should consider deposit contract as precompile in shangai")
 	}
 }
-*/
 
 func TestEnterExit(t *testing.T) {
 	// test that either both or none of enter() and exit() are defined
