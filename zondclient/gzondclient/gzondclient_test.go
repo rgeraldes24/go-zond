@@ -29,6 +29,7 @@ import (
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
@@ -39,11 +40,11 @@ import (
 )
 
 var (
-	testKey, _  = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-	testAddr    = crypto.PubkeyToAddress(testKey.PublicKey)
-	testSlot    = common.HexToHash("0xdeadbeef")
-	testValue   = crypto.Keccak256Hash(testSlot[:])
-	testBalance = big.NewInt(2e15)
+	testKey, _                 = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	testAddr    common.Address = testKey.GetAddress()
+	testSlot                   = common.HexToHash("0xdeadbeef")
+	testValue                  = crypto.Keccak256Hash(testSlot[:])
+	testBalance                = big.NewInt(2e15)
 )
 
 func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
@@ -319,12 +320,12 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 	// Create transaction
 	tx := types.NewTransaction(0, common.Address{1}, big.NewInt(1), 22000, big.NewInt(1), nil)
 	signer := types.LatestSignerForChainID(chainID)
-	signature, err := crypto.Sign(signer.Hash(tx).Bytes(), testKey)
+	signature, err := crypto.SignDilithium(signer.Hash(tx).Bytes(), testKey)
 	if err != nil {
 		t.Fatal(err)
 	}
-	// TODO(rgeraldes24): public key
-	signedTx, err := tx.WithSignatureAndPublicKey(signer, signature, []byte{})
+	publicKey := testKey.GetPK()
+	signedTx, err := tx.WithSignatureAndPublicKey(signer, signature, publicKey[:])
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -354,12 +355,12 @@ func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
 	// Create transaction
 	tx := types.NewTransaction(1, common.Address{1}, big.NewInt(1), 22000, big.NewInt(1), nil)
 	signer := types.LatestSignerForChainID(chainID)
-	signature, err := crypto.Sign(signer.Hash(tx).Bytes(), testKey)
+	signature, err := crypto.SignDilithium(signer.Hash(tx).Bytes(), testKey)
 	if err != nil {
 		t.Fatal(err)
 	}
-	// TODO(rgeraldes24)
-	signedTx, err := tx.WithSignatureAndPublicKey(signer, signature, []byte{})
+	publicKey := testKey.GetPK()
+	signedTx, err := tx.WithSignatureAndPublicKey(signer, signature, publicKey[:])
 	if err != nil {
 		t.Fatal(err)
 	}
