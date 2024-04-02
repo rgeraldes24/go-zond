@@ -29,8 +29,6 @@ import (
 
 // Constants to match up protocol versions and messages
 const (
-	ETH66 = 66
-	ETH67 = 67
 	ETH68 = 68
 )
 
@@ -40,11 +38,11 @@ const ProtocolName = "zond"
 
 // ProtocolVersions are the supported versions of the `zond` protocol (first
 // is primary).
-var ProtocolVersions = []uint{ETH68, ETH67, ETH66}
+var ProtocolVersions = []uint{ETH68}
 
 // protocolLengths are the number of implemented message corresponding to
 // different protocol versions.
-var protocolLengths = map[uint]uint64{ETH68: 17, ETH67: 17, ETH66: 17}
+var protocolLengths = map[uint]uint64{ETH68: 17}
 
 // maxMessageSize is the maximum cap on the size of a protocol message.
 const maxMessageSize = 10 * 1024 * 1024
@@ -61,8 +59,6 @@ const (
 	NewPooledTransactionHashesMsg = 0x08
 	GetPooledTransactionsMsg      = 0x09
 	PooledTransactionsMsg         = 0x0a
-	GetNodeDataMsg                = 0x0d
-	NodeDataMsg                   = 0x0e
 	GetReceiptsMsg                = 0x0f
 	ReceiptsMsg                   = 0x10
 )
@@ -248,24 +244,6 @@ func (p *BlockBodiesPacket) Unpack() ([][]*types.Transaction, [][]*types.Withdra
 	return txset, withdrawalset
 }
 
-// GetNodeDataPacket represents a trie node data query.
-type GetNodeDataPacket []common.Hash
-
-// GetNodeDataPacket66 represents a trie node data query over zond/66.
-type GetNodeDataPacket66 struct {
-	RequestId uint64
-	GetNodeDataPacket
-}
-
-// NodeDataPacket is the network packet for trie node data distribution.
-type NodeDataPacket [][]byte
-
-// NodeDataPacket66 is the network packet for trie node data distribution over zond/66.
-type NodeDataPacket66 struct {
-	RequestId uint64
-	NodeDataPacket
-}
-
 // GetReceiptsPacket represents a block receipts query.
 type GetReceiptsPacket []common.Hash
 
@@ -364,12 +342,6 @@ func (*GetPooledTransactionsPacket) Kind() byte   { return GetPooledTransactions
 
 func (*PooledTransactionsPacket) Name() string { return "PooledTransactions" }
 func (*PooledTransactionsPacket) Kind() byte   { return PooledTransactionsMsg }
-
-func (*GetNodeDataPacket) Name() string { return "GetNodeData" }
-func (*GetNodeDataPacket) Kind() byte   { return GetNodeDataMsg }
-
-func (*NodeDataPacket) Name() string { return "NodeData" }
-func (*NodeDataPacket) Kind() byte   { return NodeDataMsg }
 
 func (*GetReceiptsPacket) Name() string { return "GetReceipts" }
 func (*GetReceiptsPacket) Kind() byte   { return GetReceiptsMsg }

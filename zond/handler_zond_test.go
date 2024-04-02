@@ -80,8 +80,7 @@ func (h *testZondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 
 // Tests that peers are correctly accepted (or rejected) based on the advertised
 // fork IDs in the protocol handshake.
-func TestForkIDSplit66(t *testing.T) { testForkIDSplit(t, zond.ETH66) }
-func TestForkIDSplit67(t *testing.T) { testForkIDSplit(t, zond.ETH67) }
+
 func TestForkIDSplit68(t *testing.T) { testForkIDSplit(t, zond.ETH68) }
 
 func testForkIDSplit(t *testing.T, protocol uint) {
@@ -228,8 +227,6 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 }
 
 // Tests that received transactions are added to the local pool.
-func TestRecvTransactions66(t *testing.T) { testRecvTransactions(t, zond.ETH66) }
-func TestRecvTransactions67(t *testing.T) { testRecvTransactions(t, zond.ETH67) }
 func TestRecvTransactions68(t *testing.T) { testRecvTransactions(t, zond.ETH68) }
 
 func testRecvTransactions(t *testing.T, protocol uint) {
@@ -286,8 +283,6 @@ func testRecvTransactions(t *testing.T, protocol uint) {
 }
 
 // This test checks that pending transactions are sent.
-func TestSendTransactions66(t *testing.T) { testSendTransactions(t, zond.ETH66) }
-func TestSendTransactions67(t *testing.T) { testSendTransactions(t, zond.ETH67) }
 func TestSendTransactions68(t *testing.T) { testSendTransactions(t, zond.ETH68) }
 
 func testSendTransactions(t *testing.T, protocol uint) {
@@ -372,8 +367,6 @@ func testSendTransactions(t *testing.T, protocol uint) {
 
 // Tests that transactions get propagated to all attached peers, either via direct
 // broadcasts or via announcements/retrievals.
-func TestTransactionPropagation66(t *testing.T) { testTransactionPropagation(t, zond.ETH66) }
-func TestTransactionPropagation67(t *testing.T) { testTransactionPropagation(t, zond.ETH67) }
 func TestTransactionPropagation68(t *testing.T) { testTransactionPropagation(t, zond.ETH68) }
 
 func testTransactionPropagation(t *testing.T, protocol uint) {
@@ -534,8 +527,6 @@ func testBroadcastBlock(t *testing.T, peers, bcasts int) {
 
 // Tests that a propagated malformed block (transactions don't match
 // with the hashes in the header) gets discarded and not broadcast forward.
-func TestBroadcastMalformedBlock66(t *testing.T) { testBroadcastMalformedBlock(t, zond.ETH66) }
-func TestBroadcastMalformedBlock67(t *testing.T) { testBroadcastMalformedBlock(t, zond.ETH67) }
 func TestBroadcastMalformedBlock68(t *testing.T) { testBroadcastMalformedBlock(t, zond.ETH68) }
 
 func testBroadcastMalformedBlock(t *testing.T, protocol uint) {

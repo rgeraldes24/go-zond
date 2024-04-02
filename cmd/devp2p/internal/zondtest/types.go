@@ -127,12 +127,6 @@ type NewBlock zond.NewBlockPacket
 func (msg NewBlock) Code() int     { return 23 }
 func (msg NewBlock) ReqID() uint64 { return 0 }
 
-// NewPooledTransactionHashes66 is the network packet for the tx hash propagation message.
-type NewPooledTransactionHashes66 zond.NewPooledTransactionHashesPacket66
-
-func (msg NewPooledTransactionHashes66) Code() int     { return 24 }
-func (msg NewPooledTransactionHashes66) ReqID() uint64 { return 0 }
-
 // NewPooledTransactionHashes is the network packet for the tx hash propagation message.
 type NewPooledTransactionHashes zond.NewPooledTransactionHashesPacket68
 
@@ -209,13 +203,6 @@ func (c *Conn) Read() Message {
 		msg = new(NewBlockHashes)
 	case (Transactions{}).Code():
 		msg = new(Transactions)
-	case (NewPooledTransactionHashes66{}).Code():
-		// Try decoding to eth68
-		ethMsg := new(NewPooledTransactionHashes)
-		if err := rlp.DecodeBytes(rawData, ethMsg); err == nil {
-			return ethMsg
-		}
-		msg = new(NewPooledTransactionHashes66)
 	case (GetPooledTransactions{}.Code()):
 		ethMsg := new(zond.GetPooledTransactionsPacket66)
 		if err := rlp.DecodeBytes(rawData, ethMsg); err != nil {

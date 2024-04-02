@@ -531,9 +531,6 @@ func (s *Suite) TestNewPooledTxs(t *utesting.T) {
 	}
 
 	var ann Message = NewPooledTransactionHashes{Types: types, Sizes: sizes, Hashes: hashes}
-	if conn.negotiatedProtoVersion < zond.ETH68 {
-		ann = NewPooledTransactionHashes66(hashes)
-	}
 	err = conn.Write(ann)
 	if err != nil {
 		t.Fatalf("failed to write to connection: %v", err)
@@ -550,8 +547,6 @@ func (s *Suite) TestNewPooledTxs(t *utesting.T) {
 			return
 
 		// ignore propagated txs from previous tests
-		case *NewPooledTransactionHashes66:
-			continue
 		case *NewPooledTransactionHashes:
 			continue
 		case *Transactions:
