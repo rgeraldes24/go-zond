@@ -95,12 +95,9 @@ func (dl *downloadTester) terminate() {
 }
 
 // sync starts synchronizing with a remote peer, blocking until it completes.
-func (dl *downloadTester) sync(id string /*td *big.Int,*/, mode SyncMode) error {
+func (dl *downloadTester) sync(id string, mode SyncMode) error {
 	head := dl.peers[id].chain.CurrentBlock()
-	// if td == nil {
-	// 	// If no particular TD was requested, load from the peer's blockchain
-	// 	td = dl.peers[id].chain.GetTd(head.Hash(), head.Number.Uint64())
-	// }
+
 	// Synchronise with the chosen peer and ensure proper cleanup afterwards
 	err := dl.downloader.synchronise(id, head.Hash(), mode, nil)
 	select {

@@ -87,7 +87,6 @@ const (
 	EXTCODEHASH    OpCode = 0x3f
 )
 
-// TODO(rgeraldes24)
 // 0x40 range - block operations.
 const (
 	BLOCKHASH   OpCode = 0x40
@@ -101,7 +100,6 @@ const (
 	CHAINID     OpCode = 0x46
 	SELFBALANCE OpCode = 0x47
 	BASEFEE     OpCode = 0x48
-	BLOBHASH    OpCode = 0x49
 )
 
 // 0x50 range - 'storage' and execution.
@@ -288,8 +286,6 @@ var opCodeToString = map[OpCode]string{
 	CHAINID:     "CHAINID",
 	SELFBALANCE: "SELFBALANCE",
 	BASEFEE:     "BASEFEE",
-	// TODO(rgeraldes24)
-	BLOBHASH: "BLOBHASH",
 
 	// 0x50 range - 'storage' and execution.
 	POP:      "POP",
@@ -446,7 +442,6 @@ var stringToOp = map[string]OpCode{
 	"CALLDATACOPY":   CALLDATACOPY,
 	"CHAINID":        CHAINID,
 	"BASEFEE":        BASEFEE,
-	"BLOBHASH":       BLOBHASH,
 	"DELEGATECALL":   DELEGATECALL,
 	"STATICCALL":     STATICCALL,
 	"CODESIZE":       CODESIZE,

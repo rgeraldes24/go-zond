@@ -241,12 +241,9 @@ func TestRlpDecodeParentHash(t *testing.T) {
 		}
 	}
 	// And a maximum one
-	// | Difficulty  | dynamic| *big.Int       | 0x5ad3c2c71bbff854908 (current mainnet TD: 76 bits) |
 	// | Number      | dynamic| *big.Int       | 64 bits               |
 	// | Extra       | dynamic| []byte         | 65+32 byte (clique)   |
 	// | BaseFee     | dynamic| *big.Int       | 64 bits               |
-	mainnetTd := new(big.Int)
-	mainnetTd.SetString("5ad3c2c71bbff854908", 16)
 	if rlpData, err := rlp.EncodeToBytes(&Header{
 		ParentHash: want,
 		Number:     new(big.Int).SetUint64(math.MaxUint64),
