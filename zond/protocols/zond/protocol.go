@@ -49,13 +49,11 @@ const maxMessageSize = 10 * 1024 * 1024
 
 const (
 	StatusMsg                     = 0x00
-	NewBlockHashesMsg             = 0x01
 	TransactionsMsg               = 0x02
 	GetBlockHeadersMsg            = 0x03
 	BlockHeadersMsg               = 0x04
 	GetBlockBodiesMsg             = 0x05
 	BlockBodiesMsg                = 0x06
-	NewBlockMsg                   = 0x07
 	NewPooledTransactionHashesMsg = 0x08
 	GetPooledTransactionsMsg      = 0x09
 	PooledTransactionsMsg         = 0x0a
@@ -311,9 +309,6 @@ type PooledTransactionsRLPPacket66 struct {
 func (*StatusPacket) Name() string { return "Status" }
 func (*StatusPacket) Kind() byte   { return StatusMsg }
 
-func (*NewBlockHashesPacket) Name() string { return "NewBlockHashes" }
-func (*NewBlockHashesPacket) Kind() byte   { return NewBlockHashesMsg }
-
 func (*TransactionsPacket) Name() string { return "Transactions" }
 func (*TransactionsPacket) Kind() byte   { return TransactionsMsg }
 
@@ -328,9 +323,6 @@ func (*GetBlockBodiesPacket) Kind() byte   { return GetBlockBodiesMsg }
 
 func (*BlockBodiesPacket) Name() string { return "BlockBodies" }
 func (*BlockBodiesPacket) Kind() byte   { return BlockBodiesMsg }
-
-func (*NewBlockPacket) Name() string { return "NewBlock" }
-func (*NewBlockPacket) Kind() byte   { return NewBlockMsg }
 
 func (*NewPooledTransactionHashesPacket66) Name() string { return "NewPooledTransactionHashes" }
 func (*NewPooledTransactionHashesPacket66) Kind() byte   { return NewPooledTransactionHashesMsg }

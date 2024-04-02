@@ -40,9 +40,8 @@ import (
 // testZondHandler is a mock event handler to listen for inbound network requests
 // on the `zond` protocol and convert them into a more easily testable form.
 type testZondHandler struct {
-	blockBroadcasts event.Feed
-	txAnnounces     event.Feed
-	txBroadcasts    event.Feed
+	txAnnounces  event.Feed
+	txBroadcasts event.Feed
 }
 
 func (h *testZondHandler) Chain() *core.BlockChain                { panic("no backing chain") }
@@ -53,14 +52,6 @@ func (h *testZondHandler) PeerInfo(enode.ID) interface{}          { panic("not u
 
 func (h *testZondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 	switch packet := packet.(type) {
-	case *zond.NewBlockPacket:
-		h.blockBroadcasts.Send(packet.Block)
-		return nil
-
-	case *zond.NewPooledTransactionHashesPacket66:
-		h.txAnnounces.Send(([]common.Hash)(*packet))
-		return nil
-
 	case *zond.NewPooledTransactionHashesPacket68:
 		h.txAnnounces.Send(packet.Hashes)
 		return nil
@@ -437,156 +428,3 @@ func testTransactionPropagation(t *testing.T, protocol uint) {
 		}
 	}
 }
-
-/*
-// Tests that blocks are broadcast to a sqrt number of peers only.
-func TestBroadcastBlock1Peer(t *testing.T)    { testBroadcastBlock(t, 1, 1) }
-func TestBroadcastBlock2Peers(t *testing.T)   { testBroadcastBlock(t, 2, 1) }
-func TestBroadcastBlock3Peers(t *testing.T)   { testBroadcastBlock(t, 3, 1) }
-func TestBroadcastBlock4Peers(t *testing.T)   { testBroadcastBlock(t, 4, 2) }
-func TestBroadcastBlock5Peers(t *testing.T)   { testBroadcastBlock(t, 5, 2) }
-func TestBroadcastBlock8Peers(t *testing.T)   { testBroadcastBlock(t, 9, 3) }
-func TestBroadcastBlock12Peers(t *testing.T)  { testBroadcastBlock(t, 12, 3) }
-func TestBroadcastBlock16Peers(t *testing.T)  { testBroadcastBlock(t, 16, 4) }
-func TestBroadcastBloc26Peers(t *testing.T)   { testBroadcastBlock(t, 26, 5) }
-func TestBroadcastBlock100Peers(t *testing.T) { testBroadcastBlock(t, 100, 10) }
-
-func testBroadcastBlock(t *testing.T, peers, bcasts int) {
-	t.Parallel()
-
-	// Create a source handler to broadcast blocks from and a number of sinks
-	// to receive them.
-	source := newTestHandlerWithBlocks(1)
-	defer source.close()
-
-	sinks := make([]*testEthHandler, peers)
-	for i := 0; i < len(sinks); i++ {
-		sinks[i] = new(testEthHandler)
-	}
-	// Interconnect all the sink handlers with the source handler
-	var (
-		genesis = source.chain.Genesis()
-	)
-	for i, sink := range sinks {
-		sink := sink // Closure for gorotuine below
-
-		sourcePipe, sinkPipe := p2p.MsgPipe()
-		defer sourcePipe.Close()
-		defer sinkPipe.Close()
-
-		sourcePeer := zond.NewPeer(zond.ETH66, p2p.NewPeerPipe(enode.ID{byte(i)}, "", nil, sourcePipe), sourcePipe, nil)
-		sinkPeer := zond.NewPeer(zond.ETH66, p2p.NewPeerPipe(enode.ID{0}, "", nil, sinkPipe), sinkPipe, nil)
-		defer sourcePeer.Close()
-		defer sinkPeer.Close()
-
-		go source.handler.runEthPeer(sourcePeer, func(peer *zond.Peer) error {
-			return zond.Handle((*ethHandler)(source.handler), peer)
-		})
-		if err := sinkPeer.Handshake(1, genesis.Hash(), genesis.Hash(), forkid.NewIDWithChain(source.chain), forkid.NewFilter(source.chain)); err != nil {
-			t.Fatalf("failed to run protocol handshake")
-		}
-		go zond.Handle(sink, sinkPeer)
-	}
-	// Subscribe to all the transaction pools
-	blockChs := make([]chan *types.Block, len(sinks))
-	for i := 0; i < len(sinks); i++ {
-		blockChs[i] = make(chan *types.Block, 1)
-		defer close(blockChs[i])
-
-		sub := sinks[i].blockBroadcasts.Subscribe(blockChs[i])
-		defer sub.Unsubscribe()
-	}
-	// Initiate a block propagation across the peers
-	time.Sleep(100 * time.Millisecond)
-	header := source.chain.CurrentBlock()
-	source.handler.BroadcastBlock(source.chain.GetBlock(header.Hash(), header.Number.Uint64()), true)
-
-	// Iterate through all the sinks and ensure the correct number got the block
-	done := make(chan struct{}, peers)
-	for _, ch := range blockChs {
-		ch := ch
-		go func() {
-			<-ch
-			done <- struct{}{}
-		}()
-	}
-	var received int
-	for {
-		select {
-		case <-done:
-			received++
-
-		case <-time.After(100 * time.Millisecond):
-			if received != bcasts {
-				t.Errorf("broadcast count mismatch: have %d, want %d", received, bcasts)
-			}
-			return
-		}
-	}
-}
-
-// Tests that a propagated malformed block (transactions don't match
-// with the hashes in the header) gets discarded and not broadcast forward.
-func TestBroadcastMalformedBlock68(t *testing.T) { testBroadcastMalformedBlock(t, zond.ETH68) }
-
-func testBroadcastMalformedBlock(t *testing.T, protocol uint) {
-	t.Parallel()
-
-	// Create a source handler to broadcast blocks from and a number of sinks
-	// to receive them.
-	source := newTestHandlerWithBlocks(1)
-	defer source.close()
-
-	// Create a source handler to send messages through and a sink peer to receive them
-	p2pSrc, p2pSink := p2p.MsgPipe()
-	defer p2pSrc.Close()
-	defer p2pSink.Close()
-
-	src := zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pSrc), p2pSrc, source.txpool)
-	sink := zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pSink), p2pSink, source.txpool)
-	defer src.Close()
-	defer sink.Close()
-
-	go source.handler.runEthPeer(src, func(peer *zond.Peer) error {
-		return zond.Handle((*ethHandler)(source.handler), peer)
-	})
-	// Run the handshake locally to avoid spinning up a sink handler
-	var (
-		genesis = source.chain.Genesis()
-	)
-	if err := sink.Handshake(1, genesis.Hash(), genesis.Hash(), forkid.NewIDWithChain(source.chain), forkid.NewFilter(source.chain)); err != nil {
-		t.Fatalf("failed to run protocol handshake")
-	}
-	// After the handshake completes, the source handler should stream the sink
-	// the blocks, subscribe to inbound network events
-	backend := new(testEthHandler)
-
-	blocks := make(chan *types.Block, 1)
-	sub := backend.blockBroadcasts.Subscribe(blocks)
-	defer sub.Unsubscribe()
-
-	go zond.Handle(backend, sink)
-
-	// Create various combinations of malformed blocks
-	head := source.chain.CurrentBlock()
-	block := source.chain.GetBlock(head.Hash(), head.Number.Uint64())
-
-	malformedTransactions := head
-	malformedTransactions.TxHash[0]++
-	malformedEverything := head
-	malformedEverything.TxHash[0]++
-
-	// Try to broadcast all malformations and ensure they all get discarded
-	for _, header := range []*types.Header{malformedTransactions, malformedEverything} {
-		block := types.NewBlockWithHeader(header).WithBody(block.Transactions())
-		if err := src.SendNewBlock(block, big.NewInt(131136)); err != nil {
-			t.Fatalf("failed to broadcast block: %v", err)
-		}
-		select {
-		case <-blocks:
-			t.Fatalf("malformed block forwarded")
-		case <-time.After(100 * time.Millisecond):
-		}
-	}
-}
-*/

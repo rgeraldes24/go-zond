@@ -160,8 +160,6 @@ type Decoder interface {
 }
 
 var eth68 = map[uint64]msgHandler{
-	NewBlockHashesMsg:             handleNewBlockhashes,
-	NewBlockMsg:                   handleNewBlock,
 	TransactionsMsg:               handleTransactions,
 	NewPooledTransactionHashesMsg: handleNewPooledTransactionHashes68,
 	GetBlockHeadersMsg:            handleGetBlockHeaders66,

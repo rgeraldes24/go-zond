@@ -19,9 +19,7 @@ package zond
 import (
 	"fmt"
 
-	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core"
-	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/p2p/enode"
 	"github.com/theQRL/go-zond/zond/protocols/zond"
 )
@@ -57,16 +55,6 @@ func (h *zondHandler) AcceptTxs() bool {
 func (h *zondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 	// Consume any broadcasts and announces, forwarding the rest to the downloader
 	switch packet := packet.(type) {
-	case *zond.NewBlockHashesPacket:
-		hashes, numbers := packet.Unpack()
-		return h.handleBlockAnnounces(peer, hashes, numbers)
-
-	case *zond.NewBlockPacket:
-		return h.handleBlockBroadcast(peer, packet.Block)
-
-	case *zond.NewPooledTransactionHashesPacket66:
-		return h.txFetcher.Notify(peer.ID(), *packet)
-
 	case *zond.NewPooledTransactionHashesPacket68:
 		return h.txFetcher.Notify(peer.ID(), packet.Hashes)
 
@@ -79,20 +67,4 @@ func (h *zondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 	default:
 		return fmt.Errorf("unexpected zond packet type: %T", packet)
 	}
-}
-
-// handleBlockAnnounces is invoked from a peer's message handler when it transmits a
-// batch of block announcements for the local node to process.
-func (h *zondHandler) handleBlockAnnounces(peer *zond.Peer, hashes []common.Hash, numbers []uint64) error {
-	// TODO (MariusVanDerWijden) drop non-updated peers after the merge
-	return nil
-	// return errors.New("unexpected block announces")
-}
-
-// handleBlockBroadcast is invoked from a peer's message handler when it transmits a
-// block broadcast for the local node to process.
-func (h *zondHandler) handleBlockBroadcast(peer *zond.Peer, block *types.Block) error {
-	// TODO (MariusVanDerWijden) drop non-updated peers after the merge
-	return nil
-	// return errors.New("unexpected block announces")
 }

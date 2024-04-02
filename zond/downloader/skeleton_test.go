@@ -30,6 +30,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/zond/protocols/zond"
+	zondproto "github.com/theQRL/go-zond/zond/protocols/zond"
 )
 
 // hookedBackfiller is a tester backfiller with all interface methods mocked and
@@ -188,7 +189,7 @@ func (p *skeletonTestPeer) RequestHeadersByNumber(origin uint64, amount int, ski
 	return req, nil
 }
 
-func (p *skeletonTestPeer) Head() (common.Hash, *big.Int) {
+func (p *skeletonTestPeer) Head() common.Hash {
 	panic("skeleton sync must not request the remote head")
 }
 
@@ -810,9 +811,9 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 
 		// Create a peer set to feed headers through
 		peerset := newPeerSet()
-		// for _, peer := range tt.peers {
-		// 	peerset.Register(newPeerConnection(peer.id, zond.ETH66, peer, log.New("id", peer.id)))
-		// }
+		for _, peer := range tt.peers {
+			peerset.Register(newPeerConnection(peer.id, zondproto.ETH68, peer, log.New("id", peer.id)))
+		}
 		// Create a peer dropper to track malicious peers
 		dropped := make(map[string]int)
 		drop := func(peer string) {
@@ -913,9 +914,9 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 			skeleton.Sync(tt.newHead, nil, true)
 		}
 		if tt.newPeer != nil {
-			// if err := peerset.Register(newPeerConnection(tt.newPeer.id, zond.ETH66, tt.newPeer, log.New("id", tt.newPeer.id))); err != nil {
-			// 	t.Errorf("test %d: failed to register new peer: %v", i, err)
-			// }
+			if err := peerset.Register(newPeerConnection(tt.newPeer.id, zondproto.ETH68, tt.newPeer, log.New("id", tt.newPeer.id))); err != nil {
+				t.Errorf("test %d: failed to register new peer: %v", i, err)
+			}
 		}
 		// Wait a bit (bleah) for the second sync loop to go to idle. This might
 		// be either a finish or a never-start hence why there's no event to hook.
