@@ -28,7 +28,7 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
-	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
@@ -121,9 +121,7 @@ func (b *testBackend) teardown() {
 // after use, otherwise the blockchain instance will mem-leak via goroutines.
 func newTestBackend(t *testing.T, londonBlock *big.Int, pending bool) *testBackend {
 	var (
-		// key, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		// addr   = crypto.PubkeyToAddress(key.PublicKey)
-		key, _ = crypto.GenerateDilithiumKey()
+		key, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr   = key.GetAddress()
 		config = *params.TestChainConfig // needs copy because it is modified below
 		gspec  = &core.Genesis{
