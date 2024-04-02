@@ -119,9 +119,11 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 		}, {
 			Namespace: "zond",
 			Service:   NewZondAccountAPI(apiBackend.AccountManager()),
-		}, {
-			Namespace: "personal",
-			Service:   NewPersonalAccountAPI(apiBackend, nonceLock),
 		},
+		// TODO(rgeraldes24): deprecated
+		// {
+		// 	Namespace: "personal",
+		// 	Service:   NewPersonalAccountAPI(apiBackend, nonceLock),
+		// },
 	}
 }

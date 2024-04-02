@@ -249,6 +249,7 @@ func (c *Console) initAdmin(vm *goja.Runtime, bridge *bridge) {
 	}
 }
 
+// TODO(rgeraldes24): deprecated
 // initPersonal redirects account-related API methods through the bridge.
 //
 // If the console is in interactive mode and the 'personal' API is available, override
