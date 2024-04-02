@@ -239,13 +239,6 @@ func GenerateChain(config *params.ChainConfig, parent *types.Block, engine conse
 		b := &BlockGen{i: i, chain: blocks, parent: parent, statedb: statedb, config: config, engine: engine}
 		b.header = makeHeader(chainreader, parent, statedb, b.engine)
 
-		// Set the difficulty for clique block. The chain maker doesn't have access
-		// to a chain, so the difficulty will be left unset (nil). Set it here to the
-		// correct value.
-		// if b.header.Difficulty == nil {
-		// 	b.header.Difficulty = big.NewInt(0)
-		// }
-
 		// Execute any user modifications to the block
 		if gen != nil {
 			gen(i, b)
