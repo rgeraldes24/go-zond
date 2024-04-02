@@ -31,7 +31,7 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
-	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/trie"
@@ -50,8 +50,8 @@ func BenchmarkFilters(b *testing.B) {
 	var (
 		db, _   = rawdb.NewLevelDBDatabase(b.TempDir(), 0, 0, "", false)
 		_, sys  = newTestFilterSystem(b, db, Config{})
-		key1, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		addr1   = crypto.PubkeyToAddress(key1.PublicKey)
+		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		addr1   = key1.GetAddress()
 		addr2   = common.BytesToAddress([]byte("jeff"))
 		addr3   = common.BytesToAddress([]byte("zond"))
 		addr4   = common.BytesToAddress([]byte("random addresses please"))
@@ -111,9 +111,7 @@ func TestFilters(t *testing.T) {
 		db     = rawdb.NewMemoryDatabase()
 		_, sys = newTestFilterSystem(t, db, Config{})
 		// Sender account
-		// key1, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		// addr    = crypto.PubkeyToAddress(key1.PublicKey)
-		key1, _ = crypto.GenerateDilithiumKey()
+		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr    = key1.GetAddress()
 		signer  = types.NewLondonSigner(big.NewInt(1))
 		// Logging contract
