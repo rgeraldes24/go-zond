@@ -28,7 +28,7 @@ import (
 	"github.com/theQRL/go-zond/core/txpool"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
-	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/zond/downloader"
@@ -37,11 +37,9 @@ import (
 
 var (
 	// testKey is a private key to use for funding a tester account.
-	// testKey, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-	testKey, _ = crypto.GenerateDilithiumKey()
+	testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
 	// testAddr is the Zond address of the tester account.
-	// testAddr = crypto.PubkeyToAddress(testKey.PublicKey)
 	testAddr = testKey.GetAddress()
 )
 
