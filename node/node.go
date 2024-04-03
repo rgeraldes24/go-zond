@@ -377,7 +377,6 @@ func (n *Node) obtainJWTSecret(cliParam string) ([]byte, error) {
 // startup. It's not meant to be called at any time afterwards as it makes certain
 // assumptions about the state of the node.
 func (n *Node) startRPC() error {
-	// Filter out personal api
 	var apis []rpc.API
 	apis = append(apis, n.rpcAPIs...)
 	if err := n.startInProc(apis); err != nil {

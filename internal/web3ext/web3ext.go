@@ -613,57 +613,6 @@ web3._extend({
 });
 `
 
-const PersonalJs = `
-web3._extend({
-	property: 'personal',
-	methods: [
-		new web3._extend.Method({
-			name: 'importRawKey',
-			call: 'personal_importRawKey',
-			params: 2
-		}),
-		new web3._extend.Method({
-			name: 'sign',
-			call: 'personal_sign',
-			params: 3,
-			inputFormatter: [null, web3._extend.formatters.inputAddressFormatter, null]
-		}),
-		new web3._extend.Method({
-			name: 'openWallet',
-			call: 'personal_openWallet',
-			params: 2
-		}),
-		new web3._extend.Method({
-			name: 'deriveAccount',
-			call: 'personal_deriveAccount',
-			params: 3
-		}),
-		new web3._extend.Method({
-			name: 'signTransaction',
-			call: 'personal_signTransaction',
-			params: 2,
-			inputFormatter: [web3._extend.formatters.inputTransactionFormatter, null]
-		}),
-		new web3._extend.Method({
-			name: 'unpair',
-			call: 'personal_unpair',
-			params: 2
-		}),
-		new web3._extend.Method({
-			name: 'initializeWallet',
-			call: 'personal_initializeWallet',
-			params: 1
-		})
-	],
-	properties: [
-		new web3._extend.Property({
-			name: 'listWallets',
-			getter: 'personal_listWallets'
-		}),
-	]
-})
-`
-
 const RpcJs = `
 web3._extend({
 	property: 'rpc',
