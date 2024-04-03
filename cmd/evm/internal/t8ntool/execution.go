@@ -177,12 +177,6 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 		// Receipt:
 		{
 			var root []byte
-			// TODO(rgeraldes24)
-			// if chainConfig.IsByzantium(vmContext.BlockNumber) {
-			// 	statedb.Finalise(true)
-			// } else {
-			// 	root = statedb.IntermediateRoot(chainConfig.IsEIP158(vmContext.BlockNumber)).Bytes()
-			// }
 			statedb.Finalise(true)
 
 			// Create a new receipt for the transaction, storing the intermediate root and
