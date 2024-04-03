@@ -493,7 +493,6 @@ func (rw *protoRW) ReadMsg() (Msg, error) {
 // peer. Sub-protocol independent fields are contained and initialized here, with
 // protocol specifics delegated to all connected sub-protocols.
 type PeerInfo struct {
-	// TODO(rgeraldes24)
 	ENR     string   `json:"enr,omitempty"` // Ethereum Node Record
 	Enode   string   `json:"enode"`         // Node URL
 	ID      string   `json:"id"`            // Unique node identifier

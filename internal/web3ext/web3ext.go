@@ -25,7 +25,6 @@ var Modules = map[string]string{
 	"net":    NetJs,
 	"rpc":    RpcJs,
 	"txpool": TxpoolJs,
-	"vflux":  VfluxJs,
 	"dev":    DevJs,
 }
 
@@ -705,37 +704,6 @@ web3._extend({
 			name: 'contentFrom',
 			call: 'txpool_contentFrom',
 			params: 1,
-		}),
-	]
-});
-`
-
-const VfluxJs = `
-web3._extend({
-	property: 'vflux',
-	methods:
-	[
-		new web3._extend.Method({
-			name: 'distribution',
-			call: 'vflux_distribution',
-			params: 2
-		}),
-		new web3._extend.Method({
-			name: 'timeout',
-			call: 'vflux_timeout',
-			params: 2
-		}),
-		new web3._extend.Method({
-			name: 'value',
-			call: 'vflux_value',
-			params: 2
-		}),
-	],
-	properties:
-	[
-		new web3._extend.Property({
-			name: 'requestStats',
-			getter: 'vflux_requestStats'
 		}),
 	]
 });

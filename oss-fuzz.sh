@@ -101,7 +101,6 @@ compile_fuzzer tests/fuzzers/trie       Fuzz fuzzTrie
 compile_fuzzer tests/fuzzers/stacktrie  Fuzz fuzzStackTrie
 compile_fuzzer tests/fuzzers/abi        Fuzz fuzzAbi
 compile_fuzzer tests/fuzzers/secp256k1  Fuzz fuzzSecp256k1
-compile_fuzzer tests/fuzzers/vflux      FuzzClientPool fuzzClientPool
 
 compile_fuzzer tests/fuzzers/snap  FuzzARange fuzz_account_range
 compile_fuzzer tests/fuzzers/snap  FuzzSRange fuzz_storage_range

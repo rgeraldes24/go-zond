@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"net"
 
-	// TODO(rgeraldes24)
 	"github.com/theQRL/go-zond/cmd/devp2p/internal/zondtest"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/p2p"
