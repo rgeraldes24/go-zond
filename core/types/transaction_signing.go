@@ -36,7 +36,7 @@ type sigCache struct {
 	from   common.Address
 }
 
-// TODO(rgeraldes24): merge all the signers into the London signer
+// TODO(theQRL/go-zond/issues/39)
 // MakeSigner returns a Signer based on the given chain config and block number.
 func MakeSigner(config *params.ChainConfig, blockNumber *big.Int, blockTime uint64) Signer {
 	return NewLondonSigner(config.ChainID)
