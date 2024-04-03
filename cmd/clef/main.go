@@ -269,7 +269,9 @@ func init() {
 		configdirFlag,
 		chainIdFlag,
 		utils.LightKDFFlag,
+		// TODO(theQRL/go-zond/issues/37)
 		// utils.USBFlag,
+		// TODO(theQRL/go-zond/issues/38)
 		// utils.SmartCardDaemonPathFlag,
 		utils.HTTPListenAddrFlag,
 		utils.HTTPVirtualHostsFlag,

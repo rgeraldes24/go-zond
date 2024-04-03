@@ -61,7 +61,9 @@ var (
 		utils.MinFreeDiskSpaceFlag,
 		utils.KeyStoreDirFlag,
 		utils.ExternalSignerFlag,
+		// TODO(theQRL/go-zond/issues/37)
 		// utils.USBFlag,
+		// TODO(theQRL/go-zond/issues/38)
 		// utils.SmartCardDaemonPathFlag,
 		utils.TxPoolLocalsFlag,
 		utils.TxPoolNoLocalsFlag,
