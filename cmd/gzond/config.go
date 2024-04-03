@@ -168,10 +168,6 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gzondConfig) {
 // makeFullNode loads gzond configuration and creates the Zond backend.
 func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
 	stack, cfg := makeConfigNode(ctx)
-	// if ctx.IsSet(utils.OverrideCancun.Name) {
-	// 	v := ctx.Uint64(utils.OverrideCancun.Name)
-	// 	cfg.Eth.OverrideCancun = &v
-	// }
 	backend, zond := utils.RegisterZondService(stack, &cfg.Zond)
 
 	// Create gauge with gzond system and build information
