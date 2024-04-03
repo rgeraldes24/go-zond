@@ -28,10 +28,10 @@ import (
 )
 
 var (
+	// TODO(theQRL/go-zond/issues/36)
 	VersionCheckUrlFlag = &cli.StringFlag{
 		Name:  "check.url",
 		Usage: "URL to use when checking vulnerabilities",
-		// TODO(rgeraldes24)
 		Value: "https://geth.ethereum.org/docs/vulnerabilities/vulnerabilities.json",
 	}
 	VersionCheckVersionFlag = &cli.StringFlag{
