@@ -17,9 +17,7 @@
 package t8ntool
 
 import (
-	"crypto/ecdsa"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"math/big"
 	"os"
@@ -28,7 +26,6 @@ import (
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/core/types"
-	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/urfave/cli/v2"
@@ -67,38 +64,6 @@ type bbInput struct {
 	Withdrawals []*types.Withdrawal `json:"withdrawals,omitempty"`
 
 	Txs []*types.Transaction `json:"-"`
-}
-
-type cliqueInput struct {
-	Key       *ecdsa.PrivateKey
-	Voted     *common.Address
-	Authorize *bool
-	Vanity    common.Hash
-}
-
-// UnmarshalJSON implements json.Unmarshaler interface.
-func (c *cliqueInput) UnmarshalJSON(input []byte) error {
-	var x struct {
-		Key       *common.Hash    `json:"secretKey"`
-		Voted     *common.Address `json:"voted"`
-		Authorize *bool           `json:"authorize"`
-		Vanity    common.Hash     `json:"vanity"`
-	}
-	if err := json.Unmarshal(input, &x); err != nil {
-		return err
-	}
-	if x.Key == nil {
-		return errors.New("missing required field 'secretKey' for cliqueInput")
-	}
-	if ecdsaKey, err := crypto.ToECDSA(x.Key[:]); err != nil {
-		return err
-	} else {
-		c.Key = ecdsaKey
-	}
-	c.Voted = x.Voted
-	c.Authorize = x.Authorize
-	c.Vanity = x.Vanity
-	return nil
 }
 
 // ToBlock converts i into a *types.Block
