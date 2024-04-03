@@ -600,6 +600,7 @@ func testBoundedForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 	}
 	assertOwnChain(t, tester, len(chainA.blocks))
 
+	// TODO(rgeraldes24)
 	// Synchronise with the second peer and ensure that the fork is rejected to being too old
 	// if err := tester.sync("rewriter", mode); err != errInvalidAncestor {
 	// 	t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
@@ -609,10 +610,10 @@ func testBoundedForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 // Tests that chain forks are contained within a certain interval of the current
 // chain head for short but heavy forks too. These are a bit special because they
 // take different ancestor lookup paths.
-func TestBoundedHeavyForkedSync67Full(t *testing.T) {
+func TestBoundedHeavyForkedSync68Full(t *testing.T) {
 	testBoundedHeavyForkedSync(t, zondproto.ETH68, FullSync)
 }
-func TestBoundedHeavyForkedSync67Snap(t *testing.T) {
+func TestBoundedHeavyForkedSync68Snap(t *testing.T) {
 	testBoundedHeavyForkedSync(t, zondproto.ETH68, SnapSync)
 }
 
@@ -632,6 +633,7 @@ func testBoundedHeavyForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 	assertOwnChain(t, tester, len(chainA.blocks))
 
 	tester.newPeer("heavy-rewriter", protocol, chainB.blocks[1:])
+	// TODO(rgeraldes24)
 	// Synchronise with the second peer and ensure that the fork is rejected to being too old
 	// if err := tester.sync("heavy-rewriter", mode); err != errInvalidAncestor {
 	// 	t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
@@ -830,92 +832,6 @@ func testShiftedHeaderAttack(t *testing.T, protocol uint, mode SyncMode) {
 	assertOwnChain(t, tester, len(chain.blocks))
 }
 
-// Tests that upon detecting an invalid header, the recent ones are rolled back
-// for various failure scenarios. Afterwards a full sync is attempted to make
-// sure no state was corrupted.
-// func TestInvalidHeaderRollback66Snap(t *testing.T) {
-// 	testInvalidHeaderRollback(t, zond.ETH66, SnapSync)
-// }
-// func TestInvalidHeaderRollback67Snap(t *testing.T) {
-// 	testInvalidHeaderRollback(t, zond.ETH67, SnapSync)
-// }
-// TODO(rgeraldes24): check test validity
-/*
-func testInvalidHeaderRollback(t *testing.T, protocol uint, mode SyncMode) {
-	tester := newTester(t)
-	defer tester.terminate()
-
-	// Create a small enough block chain to download
-	targetBlocks := 3*fsHeaderSafetyNet + 256 + fsMinFullBlocks
-	chain := testChainBase.shorten(targetBlocks)
-
-	// Attempt to sync with an attacker that feeds junk during the fast sync phase.
-	// This should result in the last fsHeaderSafetyNet headers being rolled back.
-	missing := fsHeaderSafetyNet + MaxHeaderFetch + 1
-
-	fastAttacker := tester.newPeer("fast-attack", protocol, chain.blocks[1:])
-	fastAttacker.withholdHeaders[chain.blocks[missing].Hash()] = struct{}{}
-
-	if err := tester.sync("fast-attack", mode); err == nil {
-		t.Fatalf("succeeded fast attacker synchronisation")
-	}
-	if head := tester.chain.CurrentHeader().Number.Int64(); int(head) > MaxHeaderFetch {
-		t.Errorf("rollback head mismatch: have %v, want at most %v", head, MaxHeaderFetch)
-	}
-	// Attempt to sync with an attacker that feeds junk during the block import phase.
-	// This should result in both the last fsHeaderSafetyNet number of headers being
-	// rolled back, and also the pivot point being reverted to a non-block status.
-	missing = 3*fsHeaderSafetyNet + MaxHeaderFetch + 1
-
-	blockAttacker := tester.newPeer("block-attack", protocol, chain.blocks[1:])
-	fastAttacker.withholdHeaders[chain.blocks[missing].Hash()] = struct{}{} // Make sure the fast-attacker doesn't fill in
-	blockAttacker.withholdHeaders[chain.blocks[missing].Hash()] = struct{}{}
-
-	if err := tester.sync("block-attack", mode); err == nil {
-		t.Fatalf("succeeded block attacker synchronisation")
-	}
-	if head := tester.chain.CurrentHeader().Number.Int64(); int(head) > 2*fsHeaderSafetyNet+MaxHeaderFetch {
-		t.Errorf("rollback head mismatch: have %v, want at most %v", head, 2*fsHeaderSafetyNet+MaxHeaderFetch)
-	}
-	if mode == SnapSync {
-		if head := tester.chain.CurrentBlock().Number.Uint64(); head != 0 {
-			t.Errorf("fast sync pivot block #%d not rolled back", head)
-		}
-	}
-	// Attempt to sync with an attacker that withholds promised blocks after the
-	// fast sync pivot point. This could be a trial to leave the node with a bad
-	// but already imported pivot block.
-	withholdAttacker := tester.newPeer("withhold-attack", protocol, chain.blocks[1:])
-
-	tester.downloader.syncInitHook = func(uint64, uint64) {
-		for i := missing; i < len(chain.blocks); i++ {
-			withholdAttacker.withholdHeaders[chain.blocks[i].Hash()] = struct{}{}
-		}
-		tester.downloader.syncInitHook = nil
-	}
-	if err := tester.sync("withhold-attack", mode); err == nil {
-		t.Fatalf("succeeded withholding attacker synchronisation")
-	}
-	if head := tester.chain.CurrentHeader().Number.Int64(); int(head) > 2*fsHeaderSafetyNet+MaxHeaderFetch {
-		t.Errorf("rollback head mismatch: have %v, want at most %v", head, 2*fsHeaderSafetyNet+MaxHeaderFetch)
-	}
-	if mode == SnapSync {
-		if head := tester.chain.CurrentBlock().Number.Uint64(); head != 0 {
-			t.Errorf("fast sync pivot block #%d not rolled back", head)
-		}
-	}
-	// Synchronise with the valid peer and make sure sync succeeds. Since the last rollback
-	// should also disable fast syncing for this process, verify that we did a fresh full
-	// sync. Note, we can't assert anything about the receipts since we won't purge the
-	// database of them, hence we can't use assertOwnChain.
-	tester.newPeer("valid", protocol, chain.blocks[1:])
-	if err := tester.sync("valid", mode); err != nil {
-		t.Fatalf("failed to synchronise blocks: %v", err)
-	}
-	assertOwnChain(t, tester, len(chain.blocks))
-}
-*/
-
 // Tests that misbehaving peers are disconnected, whilst behaving ones are not.
 func TestBlockHeaderAttackerDropping68(t *testing.T) {
 	testBlockHeaderAttackerDropping(t, zondproto.ETH68)
@@ -962,8 +878,8 @@ func testBlockHeaderAttackerDropping(t *testing.T, protocol uint) {
 
 // Tests that synchronisation progress (origin block number, current block number
 // and highest block number) is tracked and updated correctly.
-func TestSyncProgress67Full(t *testing.T) { testSyncProgress(t, zondproto.ETH68, FullSync) }
-func TestSyncProgress67Snap(t *testing.T) { testSyncProgress(t, zondproto.ETH68, SnapSync) }
+func TestSyncProgress68Full(t *testing.T) { testSyncProgress(t, zondproto.ETH68, FullSync) }
+func TestSyncProgress68Snap(t *testing.T) { testSyncProgress(t, zondproto.ETH68, SnapSync) }
 
 func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	tester := newTester(t)

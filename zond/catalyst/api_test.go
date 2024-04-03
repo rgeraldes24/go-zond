@@ -59,9 +59,7 @@ var (
 
 func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 	config := *params.AllBeaconProtocolChanges
-	// TODO(rgeraldes24)
-	// engine := consensus.Engine(beaconConsensus.New())
-	engine := beaconConsensus.NewFaker()
+	engine := beaconConsensus.New()
 	genesis := &core.Genesis{
 		Config: &config,
 		Alloc: core.GenesisAlloc{
