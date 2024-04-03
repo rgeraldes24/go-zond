@@ -694,14 +694,12 @@ func signer(c *cli.Context) error {
 		}
 	}
 	var (
-		chainId  = c.Int64(chainIdFlag.Name)
-		ksLoc    = c.String(keystoreFlag.Name)
-		lightKdf = c.Bool(utils.LightKDFFlag.Name)
-		advanced = c.Bool(advancedMode.Name)
-		// usbEnabled = c.Bool(utils.USBFlag.Name)
-		// scpath     = c.String(utils.SmartCardDaemonPathFlag.Name)
-		usbEnabled = false
-		scpath     = ""
+		chainId    = c.Int64(chainIdFlag.Name)
+		ksLoc      = c.String(keystoreFlag.Name)
+		lightKdf   = c.Bool(utils.LightKDFFlag.Name)
+		advanced   = c.Bool(advancedMode.Name)
+		usbEnabled = c.Bool(utils.USBFlag.Name)
+		scpath     = c.String(utils.SmartCardDaemonPathFlag.Name)
 	)
 	log.Info("Starting signer", "chainid", chainId, "keystore", ksLoc,
 		"light-kdf", lightKdf, "advanced", advanced)
