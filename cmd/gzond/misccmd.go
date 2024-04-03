@@ -89,7 +89,6 @@ func printVersion(ctx *cli.Context) error {
 	return nil
 }
 
-// TODO(rgeraldes24)
 func license(_ *cli.Context) error {
 	fmt.Println(`Gzond is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
