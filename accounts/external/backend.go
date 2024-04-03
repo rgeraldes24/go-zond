@@ -163,10 +163,7 @@ func (api *ExternalSigner) SignData(account accounts.Account, mimeType string, d
 		hexutil.Encode(data)); err != nil {
 		return nil, err
 	}
-	// If V is on 27/28-form, convert to 0/1 for Clique
-	if mimeType == accounts.MimetypeClique && (res[64] == 27 || res[64] == 28) {
-		res[64] -= 27 // Transform V from 27/28 to 0/1 for Clique use
-	}
+
 	return res, nil
 }
 
@@ -179,12 +176,7 @@ func (api *ExternalSigner) SignText(account accounts.Account, text []byte) ([]by
 		hexutil.Encode(text)); err != nil {
 		return nil, err
 	}
-	// TODO(rgeraldes24)
-	if signature[64] == 27 || signature[64] == 28 {
-		// If clef is used as a backend, it may already have transformed
-		// the signature to ethereum-type signature.
-		signature[64] -= 27 // Transform V from Ethereum-legacy to 0/1
-	}
+
 	return signature, nil
 }
 

@@ -119,28 +119,6 @@ func testFork(t *testing.T, blockchain *BlockChain, i, n int, full bool, compara
 			t.Fatalf("failed to insert forking chain: %v", err)
 		}
 	}
-	// Sanity check that the forked chain can be imported into the original
-	// var tdPre, tdPost *big.Int
-
-	// if full {
-	// 	cur := blockchain.CurrentBlock()
-	// 	tdPre = blockchain.GetTd(cur.Hash(), cur.Number.Uint64())
-	// 	if err := testBlockChainImport(blockChainB, blockchain); err != nil {
-	// 		t.Fatalf("failed to import forked block chain: %v", err)
-	// 	}
-	// 	last := blockChainB[len(blockChainB)-1]
-	// 	tdPost = blockchain.GetTd(last.Hash(), last.NumberU64())
-	// } else {
-	// 	cur := blockchain.CurrentHeader()
-	// 	tdPre = blockchain.GetTd(cur.Hash(), cur.Number.Uint64())
-	// 	if err := testHeaderChainImport(headerChainB, blockchain); err != nil {
-	// 		t.Fatalf("failed to import forked header chain: %v", err)
-	// 	}
-	// 	last := headerChainB[len(headerChainB)-1]
-	// 	tdPost = blockchain.GetTd(last.Hash(), last.Number.Uint64())
-	// }
-	// // Compare the total difficulties of the chains
-	// comparator(tdPre, tdPost)
 }
 
 // testBlockChainImport tries to process a chain of blocks, writing them into
@@ -2152,11 +2130,6 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 	// Activate the transition since genesis if required
 	if mergePoint == 0 {
 		mergeBlock = 0
-		// merger.ReachTTD()
-		// merger.FinalizePoS()
-
-		// Set the terminal total difficulty in the config
-		// gspec.Config.TerminalTotalDifficulty = big.NewInt(0)
 	}
 	genDb, blocks, _ := GenerateChainWithGenesis(gspec, engine, 2*TriesInMemory, func(i int, gen *BlockGen) {
 		tx, err := types.SignTx(types.NewTransaction(nonce, common.HexToAddress("deadbeef"), big.NewInt(100), 21000, big.NewInt(int64(i+1)*params.GWei), nil), signer, key)
@@ -2164,9 +2137,6 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 			t.Fatalf("failed to create tx: %v", err)
 		}
 		gen.AddTx(tx)
-		if int(gen.header.Number.Uint64()) >= mergeBlock {
-			// gen.SetPoS()
-		}
 		nonce++
 	})
 	if n, err := chain.InsertChain(blocks); err != nil {

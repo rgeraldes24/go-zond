@@ -979,7 +979,6 @@ func APIs(backend Backend) []rpc.API {
 
 // overrideConfig returns a copy of original with forks enabled by override enabled,
 // along with a boolean that indicates whether the copy is canonical (equivalent to the original).
-// Note: the Clique-part is _not_ deep copied
 func overrideConfig(original *params.ChainConfig, override *params.ChainConfig) (*params.ChainConfig, bool) {
 	copy := new(params.ChainConfig)
 	*copy = *original
