@@ -227,7 +227,7 @@ func newHomesteadInstructionSet() JumpTable {
 	return validate(instructionSet)
 }
 
-// TODO(rgeraldes24): move under shangai
+// TODO(theQRL/go-zond/issues/40)
 // newFrontierInstructionSet returns the frontier instructions
 // that can be executed during the frontier phase.
 func newFrontierInstructionSet() JumpTable {
