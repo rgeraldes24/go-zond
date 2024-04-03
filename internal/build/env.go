@@ -70,9 +70,8 @@ func Env() Environment {
 			Tag:           os.Getenv("CIRCLE_TAG"),
 			Buildnum:      os.Getenv("CIRCLE_BUILD_NUM"),
 			IsPullRequest: os.Getenv("CIRCLE_PR_NUMBER") != "",
-			IsCronJob:     false,
-			// TODO(rgeraldes24)
-			// IsCronJob:     os.Getenv("APPVEYOR_SCHEDULED_BUILD") == "True",
+			// NOTE(rgeraldes24): no cron jobs for now + circle ci does not have an env var for this field
+			IsCronJob: false,
 		}
 	default:
 		return LocalEnv()
