@@ -473,6 +473,7 @@ type setupTransport struct {
 	closeErr error
 }
 
+// TODO(theQRL/go-zond/issues/45)
 func (c *setupTransport) doEncHandshake(prv *ecdsa.PrivateKey) (*ecdsa.PublicKey, error) {
 	c.calls += "doEncHandshake,"
 	return c.pubkey, c.encHandshakeErr

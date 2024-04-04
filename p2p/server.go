@@ -72,6 +72,7 @@ var (
 
 // Config holds Server options.
 type Config struct {
+	// TODO(theQRL/go-zond/issues/45)
 	// This field must be set to a valid secp256k1 private key.
 	PrivateKey *ecdsa.PrivateKey `toml:"-"`
 

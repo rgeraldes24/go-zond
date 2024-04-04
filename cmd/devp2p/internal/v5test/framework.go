@@ -56,7 +56,8 @@ const waitTime = 300 * time.Millisecond
 
 // conn is a connection to the node under test.
 type conn struct {
-	localNode  *enode.LocalNode
+	localNode *enode.LocalNode
+	// TODO(theQRL/go-zond/issues/45)
 	localKey   *ecdsa.PrivateKey
 	remote     *enode.Node
 	remoteAddr *net.UDPAddr

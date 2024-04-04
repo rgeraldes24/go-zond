@@ -146,6 +146,7 @@ func (msg PooledTransactions) ReqID() uint64 { return msg.RequestId }
 // Conn represents an individual connection with a peer
 type Conn struct {
 	*rlpx.Conn
+	// TODO(theQRL/go-zond/issues/45)
 	ourKey                     *ecdsa.PrivateKey
 	negotiatedProtoVersion     uint
 	negotiatedSnapProtoVersion uint

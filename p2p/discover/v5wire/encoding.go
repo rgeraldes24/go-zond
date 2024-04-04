@@ -143,8 +143,9 @@ var (
 // Codec encodes and decodes Discovery v5 packets.
 // This type is not safe for concurrent use.
 type Codec struct {
-	sha256     hash.Hash
-	localnode  *enode.LocalNode
+	sha256    hash.Hash
+	localnode *enode.LocalNode
+	// TODO(theQRL/go-zond/issues/45)
 	privkey    *ecdsa.PrivateKey
 	sc         *SessionCache
 	protocolID [6]byte

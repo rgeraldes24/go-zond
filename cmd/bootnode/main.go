@@ -47,6 +47,7 @@ func main() {
 		verbosity   = flag.Int("verbosity", int(log.LvlInfo), "log verbosity (0-5)")
 		vmodule     = flag.String("vmodule", "", "log verbosity pattern")
 
+		// TODO(theQRL/go-zond/issues/45)
 		nodeKey *ecdsa.PrivateKey
 		err     error
 	)

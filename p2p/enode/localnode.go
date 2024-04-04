@@ -47,7 +47,8 @@ const (
 type LocalNode struct {
 	cur atomic.Value // holds a non-nil node pointer while the record is up-to-date
 
-	id  ID
+	id ID
+	// TODO(theQRL/go-zond/issues/45)
 	key *ecdsa.PrivateKey
 	db  *DB
 

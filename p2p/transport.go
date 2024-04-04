@@ -126,6 +126,7 @@ func (t *rlpxTransport) close(err error) {
 	t.conn.Close()
 }
 
+// TODO(theQRL/go-zond/issues/45)
 func (t *rlpxTransport) doEncHandshake(prv *ecdsa.PrivateKey) (*ecdsa.PublicKey, error) {
 	t.conn.SetDeadline(time.Now().Add(handshakeTimeout))
 	return t.conn.Handshake(prv)

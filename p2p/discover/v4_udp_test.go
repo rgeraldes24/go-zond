@@ -48,12 +48,13 @@ var (
 )
 
 type udpTest struct {
-	t                   *testing.T
-	pipe                *dgramPipe
-	table               *Table
-	db                  *enode.DB
-	udp                 *UDPv4
-	sent                [][]byte
+	t     *testing.T
+	pipe  *dgramPipe
+	table *Table
+	db    *enode.DB
+	udp   *UDPv4
+	sent  [][]byte
+	// TODO(theQRL/go-zond/issues/45)
 	localkey, remotekey *ecdsa.PrivateKey
 	remoteaddr          *net.UDPAddr
 }

@@ -38,6 +38,7 @@ type UDPConn interface {
 
 // Config holds settings for the discovery listener.
 type Config struct {
+	// TODO(theQRL/go-zond/issues/45)
 	// These settings are required and configure the UDP listener:
 	PrivateKey *ecdsa.PrivateKey
 

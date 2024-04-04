@@ -897,8 +897,9 @@ func setNodeKey(ctx *cli.Context, cfg *p2p.Config) {
 	var (
 		hex  = ctx.String(NodeKeyHexFlag.Name)
 		file = ctx.String(NodeKeyFileFlag.Name)
-		key  *ecdsa.PrivateKey
-		err  error
+		// TODO(theQRL/go-zond/issues/45)
+		key *ecdsa.PrivateKey
+		err error
 	)
 	switch {
 	case file != "" && hex != "":

@@ -68,12 +68,13 @@ type UDPv4 struct {
 	conn        UDPConn
 	log         log.Logger
 	netrestrict *netutil.Netlist
-	priv        *ecdsa.PrivateKey
-	localNode   *enode.LocalNode
-	db          *enode.DB
-	tab         *Table
-	closeOnce   sync.Once
-	wg          sync.WaitGroup
+	// TODO(theQRL/go-zond/issues/45)
+	priv      *ecdsa.PrivateKey
+	localNode *enode.LocalNode
+	db        *enode.DB
+	tab       *Table
+	closeOnce sync.Once
+	wg        sync.WaitGroup
 
 	addReplyMatcher chan *replyMatcher
 	gotreply        chan reply

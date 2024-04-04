@@ -60,9 +60,10 @@ type codecV5 interface {
 // UDPv5 is the implementation of protocol version 5.
 type UDPv5 struct {
 	// static fields
-	conn         UDPConn
-	tab          *Table
-	netrestrict  *netutil.Netlist
+	conn        UDPConn
+	tab         *Table
+	netrestrict *netutil.Netlist
+	// TODO(theQRL/go-zond/issues/45)
 	priv         *ecdsa.PrivateKey
 	localNode    *enode.LocalNode
 	db           *enode.DB

@@ -82,6 +82,7 @@ type NodeConfig struct {
 	// simulation network
 	ID enode.ID
 
+	// TODO(theQRL/go-zond/issues/45)
 	// PrivateKey is the node's private key which is used by the devp2p
 	// stack to encrypt communications
 	PrivateKey *ecdsa.PrivateKey

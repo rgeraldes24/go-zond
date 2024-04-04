@@ -687,11 +687,12 @@ func TestUDPv5_PingWithIPV4MappedAddress(t *testing.T) {
 // udpV5Test is the framework for all tests above.
 // It runs the UDPv5 transport on a virtual socket and allows testing outgoing packets.
 type udpV5Test struct {
-	t                   *testing.T
-	pipe                *dgramPipe
-	table               *Table
-	db                  *enode.DB
-	udp                 *UDPv5
+	t     *testing.T
+	pipe  *dgramPipe
+	table *Table
+	db    *enode.DB
+	udp   *UDPv5
+	// TODO(theQRL/go-zond/issues/45)
 	localkey, remotekey *ecdsa.PrivateKey
 	remoteaddr          *net.UDPAddr
 	nodesByID           map[enode.ID]*enode.LocalNode

@@ -30,7 +30,8 @@ import (
 const waitTime = 300 * time.Millisecond
 
 type testenv struct {
-	l1, l2     net.PacketConn
+	l1, l2 net.PacketConn
+	// TODO(theQRL/go-zond/issues/45)
 	key        *ecdsa.PrivateKey
 	remote     *enode.Node
 	remoteAddr *net.UDPAddr
