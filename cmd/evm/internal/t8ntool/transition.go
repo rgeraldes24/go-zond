@@ -204,16 +204,14 @@ func Transition(ctx *cli.Context) error {
 // txWithKey is a helper-struct, to allow us to use the types.Transaction along with
 // a `secretKey`-field, for input
 type txWithKey struct {
-	key       *dilithium.Dilithium
-	tx        *types.Transaction
-	protected bool
+	key *dilithium.Dilithium
+	tx  *types.Transaction
 }
 
 func (t *txWithKey) UnmarshalJSON(input []byte) error {
 	// Read the metadata, if present
 	type txMetadata struct {
-		Key       *common.Hash `json:"secretKey"`
-		Protected *bool        `json:"protected"`
+		Key *common.Hash `json:"secretKey"`
 	}
 	var data txMetadata
 	if err := json.Unmarshal(input, &data); err != nil {
@@ -226,11 +224,6 @@ func (t *txWithKey) UnmarshalJSON(input []byte) error {
 		} else {
 			t.key = dilithiumKey
 		}
-	}
-	if data.Protected != nil {
-		t.protected = *data.Protected
-	} else {
-		t.protected = true
 	}
 	// Now, read the transaction itself
 	var tx types.Transaction
@@ -268,11 +261,7 @@ func signUnsignedTransactions(txs []*txWithKey, signer types.Signer) (types.Tran
 			continue
 		}
 		// This transaction needs to be signed
-		if tx.protected {
-			signed, err = types.SignTx(tx.tx, signer, tx.key)
-		} else {
-			signed, err = types.SignTx(tx.tx, types.FrontierSigner{}, tx.key)
-		}
+		signed, err = types.SignTx(tx.tx, signer, tx.key)
 		if err != nil {
 			return nil, NewError(ErrorJson, fmt.Errorf("tx %d: failed to sign tx: %v", i, err))
 		}

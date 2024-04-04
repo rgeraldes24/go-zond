@@ -199,7 +199,7 @@ func TestTraceCall(t *testing.T) {
 		},
 	}
 	genBlocks := 10
-	signer := types.HomesteadSigner{}
+	signer := types.NewShangaiSigner(common.Big1)
 	backend := newTestBackend(t, genBlocks, genesis, func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
 		//    value: 1000 wei
@@ -333,7 +333,7 @@ func TestTraceTransaction(t *testing.T) {
 		},
 	}
 	target := common.Hash{}
-	signer := types.HomesteadSigner{}
+	signer := types.NewShangaiSigner(common.Big1)
 	backend := newTestBackend(t, 1, genesis, func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
 		//    value: 1000 wei
@@ -382,7 +382,7 @@ func TestTraceBlock(t *testing.T) {
 		},
 	}
 	genBlocks := 10
-	signer := types.HomesteadSigner{}
+	signer := types.NewShangaiSigner(common.Big1)
 	var txHash common.Hash
 	backend := newTestBackend(t, genBlocks, genesis, func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
@@ -473,7 +473,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 	}
 	genBlocks := 10
-	signer := types.HomesteadSigner{}
+	signer := types.NewShangaiSigner(common.Big1)
 	backend := newTestBackend(t, genBlocks, genesis, func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
 		//    value: 1000 wei
@@ -827,7 +827,7 @@ func TestTraceChain(t *testing.T) {
 		},
 	}
 	genBlocks := 50
-	signer := types.HomesteadSigner{}
+	signer := types.NewShangaiSigner(common.Big1)
 
 	var (
 		ref   atomic.Uint32 // total refs has made

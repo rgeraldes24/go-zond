@@ -551,7 +551,7 @@ func TestEstimateGas(t *testing.T) {
 			},
 		}
 		genBlocks      = 10
-		signer         = types.HomesteadSigner{}
+		signer         = types.NewShangaiSigner(common.Big1)
 		randomAccounts = newAccounts(2)
 	)
 	api := NewBlockChainAPI(newTestBackend(t, genBlocks, genesis, beacon.NewFaker(), func(i int, b *core.BlockGen) {
@@ -655,7 +655,7 @@ func TestCall(t *testing.T) {
 			},
 		}
 		genBlocks = 10
-		signer    = types.HomesteadSigner{}
+		signer    = types.NewShangaiSigner(common.Big1)
 	)
 	api := NewBlockChainAPI(newTestBackend(t, genBlocks, genesis, beacon.NewFaker(), func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
@@ -1056,7 +1056,7 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 			},
 		}
 		genBlocks = 10
-		signer    = types.HomesteadSigner{}
+		signer    = types.NewShangaiSigner(common.Big1)
 		tx        = types.NewTx(&types.LegacyTx{
 			Nonce:    11,
 			GasPrice: big.NewInt(11111),
@@ -1336,7 +1336,7 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 		switch i {
 		case 0:
 			// transfer 1000wei
-			tx, err = types.SignTx(types.NewTx(&types.LegacyTx{Nonce: uint64(i), To: &acc2Addr, Value: big.NewInt(1000), Gas: params.TxGas, GasPrice: b.BaseFee(), Data: nil}), types.HomesteadSigner{}, acc1Key)
+			tx, err = types.SignTx(types.NewTx(&types.LegacyTx{Nonce: uint64(i), To: &acc2Addr, Value: big.NewInt(1000), Gas: params.TxGas, GasPrice: b.BaseFee(), Data: nil}), types.NewShangaiSigner(common.Big1), acc1Key)
 		case 1:
 			// create contract
 			tx, err = types.SignTx(types.NewTx(&types.LegacyTx{Nonce: uint64(i), To: nil, Gas: 53100, GasPrice: b.BaseFee(), Data: common.FromHex("0x60806040")}), signer, acc1Key)

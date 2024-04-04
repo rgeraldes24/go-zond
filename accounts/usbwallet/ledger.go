@@ -378,12 +378,13 @@ func (w *ledgerDriver) ledgerSign(derivationPath []uint32, tx *types.Transaction
 
 	// Create the correct signer and signature transform based on the chain ID
 	var signer types.Signer
-	if chainID == nil {
-		signer = new(types.HomesteadSigner)
-	} else {
-		signer = types.NewEIP155Signer(chainID)
-		signature[64] -= byte(chainID.Uint64()*2 + 35)
-	}
+	// TODO(theQRL/go-zond/issues/37)
+	// if chainID == nil {
+	// 	signer = new(types.HomesteadSigner)
+	// } else {
+	// 	signer = types.NewEIP155Signer(chainID)
+	// 	signature[64] -= byte(chainID.Uint64()*2 + 35)
+	// }
 	// TODO (cyyber): intentionally added pk as nil, fix this issue later
 	signed, err := tx.WithSignatureAndPublicKey(signer, signature, nil)
 	if err != nil {

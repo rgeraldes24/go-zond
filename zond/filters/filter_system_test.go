@@ -753,7 +753,7 @@ func TestLightFilterLogs(t *testing.T) {
 		db           = rawdb.NewMemoryDatabase()
 		backend, sys = newTestFilterSystem(t, db, Config{})
 		api          = NewFilterAPI(sys)
-		signer       = types.HomesteadSigner{}
+		signer       = types.NewShangaiSigner(common.Big1)
 
 		firstAddr      = common.HexToAddress("0x1111111111111111111111111111111111111111")
 		secondAddr     = common.HexToAddress("0x2222222222222222222222222222222222222222")

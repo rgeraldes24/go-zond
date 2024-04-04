@@ -16,6 +16,8 @@
 
 package tests
 
+// TODO(rgeraldes24): migrate to shangai signer
+/*
 import (
 	"fmt"
 
@@ -44,6 +46,7 @@ type ttFork struct {
 	Hash   common.UnprefixedHash    `json:"hash"`
 }
 
+/*
 func (tt *TransactionTest) Run(config *params.ChainConfig) error {
 	validateTx := func(rlpData hexutil.Bytes, signer types.Signer, isHomestead bool, isIstanbul bool) (*common.Address, *common.Hash, error) {
 		tx := new(types.Transaction)
@@ -108,3 +111,4 @@ func (tt *TransactionTest) Run(config *params.ChainConfig) error {
 	}
 	return nil
 }
+*/
