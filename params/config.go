@@ -106,7 +106,6 @@ func (c *ChainConfig) Description() string {
 
 	banner += "Hard forks (timestamp based):\n"
 	if c.ShanghaiTime != nil {
-		// TODO(rgeraldes24): change description
 		banner += fmt.Sprintf(" - Shanghai:                    @%-10v (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/shanghai.md)\n", *c.ShanghaiTime)
 	}
 	return banner
