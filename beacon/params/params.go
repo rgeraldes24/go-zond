@@ -17,9 +17,8 @@
 package params
 
 const (
-	// TODO(rgeraldes24): review values
-	EpochLength      = 32
-	SyncPeriodLength = 8192
+	EpochLength      = 128
+	SyncPeriodLength = 1024
 
 	DilithiumSignatureSize = 4595
 	DilithiumPubkeySize    = 2592

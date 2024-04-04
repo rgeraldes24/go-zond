@@ -32,7 +32,7 @@ import (
 	"github.com/theQRL/go-zond/zond"
 )
 
-const devEpochLength = 32
+const devEpochLength = 128
 
 // withdrawalQueue implements a FIFO queue which holds withdrawals that are
 // pending inclusion.
