@@ -126,6 +126,7 @@ type Wallet struct {
 	deriveQuit      chan chan error           // Channel to terminate the self-deriver with
 }
 
+// TODO(theQRL/go-zond/issues/38)
 // NewWallet constructs and returns a new Wallet instance.
 func NewWallet(hub *Hub, card *pcsc.Card) *Wallet {
 	wallet := &Wallet{
@@ -1051,12 +1052,11 @@ func (s *Session) sign(path accounts.DerivationPath, hash []byte) ([]byte, error
 	copy(sig[32-len(rbytes):32], rbytes)
 	copy(sig[64-len(sbytes):64], sbytes)
 
-	// TODO(rgeraldes24)
 	// Recover the V value.
-	// sig, err = makeRecoverableSignature(hash, sig, sigdata.PublicKey)
-	// if err != nil {
-	// 	return nil, err
-	// }
+	sig, err = makeRecoverableSignature(hash, sig, sigdata.PublicKey)
+	if err != nil {
+		return nil, err
+	}
 
 	log.Debug("Signed using smartcard", "deriveTime", deriveTime.Sub(startTime), "signingTime", time.Since(deriveTime))
 
@@ -1065,29 +1065,26 @@ func (s *Session) sign(path accounts.DerivationPath, hash []byte) ([]byte, error
 
 // confirmPublicKey confirms that the given signature belongs to the specified key.
 func confirmPublicKey(sig, pubkey []byte) error {
-	// TODO(rgeraldes24)
-	// _, err := makeRecoverableSignature(DerivationSignatureHash[:], sig, pubkey)
-	// return err
-	return nil
+	_, err := makeRecoverableSignature(DerivationSignatureHash[:], sig, pubkey)
+	return err
 }
 
-// TODO(rgeraldes24): ecrecover
 // makeRecoverableSignature uses a signature and an expected public key to
 // recover the v value and produce a recoverable signature.
-// func makeRecoverableSignature(hash, sig, expectedPubkey []byte) ([]byte, error) {
-// 	var libraryError error
-// 	for v := 0; v < 2; v++ {
-// 		sig[64] = byte(v)
-// 		if pubkey, err := crypto.Ecrecover(hash, sig); err == nil {
-// 			if bytes.Equal(pubkey, expectedPubkey) {
-// 				return sig, nil
-// 			}
-// 		} else {
-// 			libraryError = err
-// 		}
-// 	}
-// 	if libraryError != nil {
-// 		return nil, libraryError
-// 	}
-// 	return nil, ErrPubkeyMismatch
-// }
+func makeRecoverableSignature(hash, sig, expectedPubkey []byte) ([]byte, error) {
+	var libraryError error
+	for v := 0; v < 2; v++ {
+		sig[64] = byte(v)
+		if pubkey, err := crypto.Ecrecover(hash, sig); err == nil {
+			if bytes.Equal(pubkey, expectedPubkey) {
+				return sig, nil
+			}
+		} else {
+			libraryError = err
+		}
+	}
+	if libraryError != nil {
+		return nil, libraryError
+	}
+	return nil, ErrPubkeyMismatch
+}
