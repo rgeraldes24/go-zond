@@ -134,7 +134,6 @@ func (api *SignerAPI) determineSignatureFormat(ctx context.Context, contentType 
 			return nil, err
 		}
 	default: // also case TextPlain.Mime:
-		// TODO(rgeraldes24)
 		// Calculates a Zond Dilithium signature for:
 		// hash = keccak256("\x19Zond Signed Message:\n${message length}${message}")
 		// We expect input to be a hex-encoded string
