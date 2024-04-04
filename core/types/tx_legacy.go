@@ -26,6 +26,7 @@ import (
 
 // LegacyTx is the transaction data of the original Zond transactions.
 type LegacyTx struct {
+	ChainID   *big.Int        // TODO(rgeraldes24)
 	Nonce     uint64          // nonce of sender account
 	GasPrice  *big.Int        // wei per gas
 	Gas       uint64          // gas limit
@@ -70,12 +71,16 @@ func (tx *LegacyTx) copy() TxData {
 		Gas:   tx.Gas,
 		// These are initialized below.
 		Value:     new(big.Int),
+		ChainID:   new(big.Int),
 		GasPrice:  new(big.Int),
 		PublicKey: make([]byte, pqcrypto.DilithiumPublicKeyLength),
 		Signature: make([]byte, pqcrypto.DilithiumSignatureLength),
 	}
 	if tx.Value != nil {
 		cpy.Value.Set(tx.Value)
+	}
+	if tx.ChainID != nil {
+		cpy.ChainID.Set(tx.ChainID)
 	}
 	if tx.GasPrice != nil {
 		cpy.GasPrice.Set(tx.GasPrice)
@@ -91,7 +96,7 @@ func (tx *LegacyTx) copy() TxData {
 
 // accessors for innerTx.
 func (tx *LegacyTx) txType() byte           { return LegacyTxType }
-func (tx *LegacyTx) chainID() *big.Int      { return deriveChainId(big.NewInt(100)) }
+func (tx *LegacyTx) chainID() *big.Int      { return tx.ChainID }
 func (tx *LegacyTx) accessList() AccessList { return nil }
 func (tx *LegacyTx) data() []byte           { return tx.Data }
 func (tx *LegacyTx) gas() uint64            { return tx.Gas }
@@ -115,8 +120,7 @@ func (tx *LegacyTx) rawPublicKeyValue() (publicKey []byte) {
 }
 
 func (tx *LegacyTx) setSignatureAndPublicKeyValues(chainID *big.Int, signature, publicKey []byte) {
-	tx.PublicKey = publicKey
-	tx.Signature = signature
+	tx.ChainID, tx.PublicKey, tx.Signature = chainID, publicKey, signature
 }
 
 func (tx *LegacyTx) encode(*bytes.Buffer) error {

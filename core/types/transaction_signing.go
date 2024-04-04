@@ -162,9 +162,6 @@ func NewLondonSigner(chainId *big.Int) Signer {
 }
 
 func (s londonSigner) Sender(tx *Transaction) (common.Address, error) {
-	if tx.Type() != DynamicFeeTxType {
-		return s.eip2930Signer.Sender(tx)
-	}
 	if tx.ChainId().Cmp(s.chainId) != 0 {
 		return common.Address{}, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, tx.ChainId(), s.chainId)
 	}
@@ -177,14 +174,10 @@ func (s londonSigner) Equal(s2 Signer) bool {
 }
 
 func (s londonSigner) SignatureAndPublicKeyValues(tx *Transaction, sig, pk []byte) (Signature, PublicKey []byte, err error) {
-	txdata, ok := tx.inner.(*DynamicFeeTx)
-	if !ok {
-		return s.eip2930Signer.SignatureAndPublicKeyValues(tx, sig, pk)
-	}
 	// Check that chain ID of tx matches the signer. We also accept ID zero here,
 	// because it indicates that the chain ID was not specified in the tx.
-	if txdata.ChainID.Sign() != 0 && txdata.ChainID.Cmp(s.chainId) != 0 {
-		return nil, nil, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, txdata.ChainID, s.chainId)
+	if chainID := tx.ChainId(); chainID.Sign() != 0 && chainID.Cmp(s.chainId) != 0 {
+		return nil, nil, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, chainID, s.chainId)
 	}
 	Signature = decodeSignature(sig)
 	PublicKey = decodePublicKey(pk)
@@ -428,17 +421,4 @@ func decodePublicKey(pk []byte) (publicKey []byte) {
 	publicKey = make([]byte, pqcrypto.DilithiumPublicKeyLength)
 	copy(publicKey, pk)
 	return publicKey
-}
-
-// deriveChainId derives the chain id from the given v parameter
-func deriveChainId(v *big.Int) *big.Int {
-	if v.BitLen() <= 64 {
-		v := v.Uint64()
-		if v == 27 || v == 28 {
-			return new(big.Int)
-		}
-		return new(big.Int).SetUint64((v - 35) / 2)
-	}
-	v = new(big.Int).Sub(v, big.NewInt(35))
-	return v.Div(v, big.NewInt(2))
 }

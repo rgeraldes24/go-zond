@@ -139,13 +139,6 @@ func (tx *Transaction) UnmarshalJSON(input []byte) error {
 			return errors.New("missing required field 'signature' in transaction")
 		}
 		itx.Signature = *dec.Signature
-		// TODO (cyyber): add sanity check later
-		//withSignature := itx.Signature.Sign() != 0
-		//if withSignature {
-		//	if err := sanityCheckSignature(itx.V, itx.R, itx.S, true); err != nil {
-		//		return err
-		//	}
-		//}
 
 	case AccessListTxType:
 		var itx AccessListTx
@@ -188,13 +181,6 @@ func (tx *Transaction) UnmarshalJSON(input []byte) error {
 			return errors.New("missing required field 'signature' in transaction")
 		}
 		itx.Signature = *dec.Signature
-		// TODO (cyyber): add sanity check later
-		//withSignature := itx.V.Sign() != 0 || itx.R.Sign() != 0 || itx.S.Sign() != 0
-		//if withSignature {
-		//	if err := sanityCheckSignature(itx.V, itx.R, itx.S, false); err != nil {
-		//		return err
-		//	}
-		//}
 
 	case DynamicFeeTxType:
 		var itx DynamicFeeTx
@@ -241,13 +227,6 @@ func (tx *Transaction) UnmarshalJSON(input []byte) error {
 			return errors.New("missing required field 'signature' in transaction")
 		}
 		itx.Signature = *dec.Signature
-		// TODO (cyyber): add sanity check later
-		//withSignature := itx.V.Sign() != 0 || itx.R.Sign() != 0 || itx.S.Sign() != 0
-		//if withSignature {
-		//	if err := sanityCheckSignature(itx.V, itx.R, itx.S, false); err != nil {
-		//		return err
-		//	}
-		//}
 
 	default:
 		return ErrTxTypeNotSupported
