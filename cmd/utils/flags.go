@@ -623,11 +623,6 @@ var (
 		Usage:    "Comma separated list of JavaScript files to preload into the console",
 		Category: flags.APICategory,
 	}
-	AllowUnprotectedTxs = &cli.BoolFlag{
-		Name:     "rpc.allow-unprotected-txs",
-		Usage:    "Allow for unprotected (non EIP155 signed) transactions to be submitted via RPC",
-		Category: flags.APICategory,
-	}
 	BatchRequestLimit = &cli.IntFlag{
 		Name:     "rpc.batch-request-limit",
 		Usage:    "Maximum number of requests in a batch",
@@ -1051,9 +1046,6 @@ func setHTTP(ctx *cli.Context, cfg *node.Config) {
 
 	if ctx.IsSet(HTTPPathPrefixFlag.Name) {
 		cfg.HTTPPathPrefix = ctx.String(HTTPPathPrefixFlag.Name)
-	}
-	if ctx.IsSet(AllowUnprotectedTxs.Name) {
-		cfg.AllowUnprotectedTxs = ctx.Bool(AllowUnprotectedTxs.Name)
 	}
 
 	if ctx.IsSet(BatchRequestLimit.Name) {

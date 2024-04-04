@@ -213,15 +213,6 @@ func loadKeyStoreTestV1(file string, t *testing.T) map[string]KeyStoreTestV1 {
 	return tests
 }
 
-// TODO (cyyber): Look into need of DirectICAP and fix this test
-//func TestKeyForDirectICAP(t *testing.T) {
-//	t.Parallel()
-//	key := NewKeyForDirectICAP(rand.Reader)
-//	if !strings.HasPrefix(key.Address.Hex(), "0x00") {
-//		t.Errorf("Expected first address byte to be zero, have: %s", key.Address.Hex())
-//	}
-//}
-
 func TestV3_31_Byte_Key(t *testing.T) {
 	t.Parallel()
 	tests := loadKeyStoreTestV3("testdata/v3_test_vector.json", t)

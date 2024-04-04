@@ -43,10 +43,9 @@ import (
 
 // ZondAPIBackend implements zondapi.Backend for full nodes
 type ZondAPIBackend struct {
-	extRPCEnabled       bool
-	allowUnprotectedTxs bool
-	zond                *Zond
-	gpo                 *gasprice.Oracle
+	extRPCEnabled bool
+	zond          *Zond
+	gpo           *gasprice.Oracle
 }
 
 // ChainConfig returns the active chain configuration.
@@ -355,10 +354,6 @@ func (b *ZondAPIBackend) AccountManager() *accounts.Manager {
 
 func (b *ZondAPIBackend) ExtRPCEnabled() bool {
 	return b.extRPCEnabled
-}
-
-func (b *ZondAPIBackend) UnprotectedAllowed() bool {
-	return b.allowUnprotectedTxs
 }
 
 func (b *ZondAPIBackend) RPCGasCap() uint64 {

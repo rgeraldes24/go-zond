@@ -215,10 +215,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	zond.miner = miner.New(zond, &config.Miner, zond.blockchain.Config(), zond.EventMux(), zond.engine, zond.isLocalBlock)
 	zond.miner.SetExtra(makeExtraData(config.Miner.ExtraData))
 
-	zond.APIBackend = &ZondAPIBackend{stack.Config().ExtRPCEnabled(), stack.Config().AllowUnprotectedTxs, zond, nil}
-	if zond.APIBackend.allowUnprotectedTxs {
-		log.Info("Unprotected transactions allowed")
-	}
+	zond.APIBackend = &ZondAPIBackend{stack.Config().ExtRPCEnabled(), zond, nil}
 	gpoParams := config.GPO
 	if gpoParams.Default == nil {
 		gpoParams.Default = config.Miner.GasPrice

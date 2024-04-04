@@ -171,14 +171,14 @@ func TestT8n(t *testing.T) {
 			output: t8nOutput{result: true},
 			expOut: "exp2.json",
 		},
-		{ // Sign unprotected (pre-EIP155) transaction
-			base: "./testdata/23",
-			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Berlin", "",
-			},
-			output: t8nOutput{result: true},
-			expOut: "exp.json",
-		},
+		// { // Sign unprotected (pre-EIP155) transaction
+		// 	base: "./testdata/23",
+		// 	input: t8nInput{
+		// 		"alloc.json", "txs.json", "env.json", "Berlin", "",
+		// 	},
+		// 	output: t8nOutput{result: true},
+		// 	expOut: "exp.json",
+		// },
 		{ // Test post-merge transition
 			base: "./testdata/24",
 			input: t8nInput{

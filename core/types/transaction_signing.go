@@ -62,6 +62,7 @@ func LatestSigner(config *params.ChainConfig) Signer {
 // If you have a ChainConfig and know the current block number, use MakeSigner instead.
 func LatestSignerForChainID(chainID *big.Int) Signer {
 	if chainID == nil {
+		// TODO(rgeraldes24): return error instead
 		return HomesteadSigner{}
 	}
 	return NewLondonSigner(chainID)
@@ -309,9 +310,6 @@ func (s EIP155Signer) Equal(s2 Signer) bool {
 func (s EIP155Signer) Sender(tx *Transaction) (common.Address, error) {
 	if tx.Type() != LegacyTxType {
 		return common.Address{}, ErrTxTypeNotSupported
-	}
-	if !tx.Protected() {
-		return HomesteadSigner{}.Sender(tx)
 	}
 	if tx.ChainId().Cmp(s.chainId) != 0 {
 		return common.Address{}, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, tx.ChainId(), s.chainId)

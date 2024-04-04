@@ -216,7 +216,7 @@ func (tx *Transaction) setDecoded(inner TxData, size uint64) {
 	}
 }
 
-// TODO(rgeraldes24): remove: unused
+// TODO(rgeraldes24)
 /*
 func sanityCheckSignature(v *big.Int, r *big.Int, s *big.Int, maybeProtected bool) error {
 	if isProtectedV(v) && !maybeProtected {
@@ -254,26 +254,13 @@ func isProtectedV(V *big.Int) bool {
 }
 */
 
-// Protected says whether the transaction is replay-protected.
-func (tx *Transaction) Protected() bool {
-	switch tx.inner.(type) {
-	case *LegacyTx:
-		// TODO (cyyber): Remove support for Legacy Tx
-		//return tx.V != nil && isProtectedV(tx.V)
-		return true
-	default:
-		return true
-	}
-}
-
 // Type returns the transaction type.
 func (tx *Transaction) Type() uint8 {
 	return tx.inner.txType()
 }
 
 // ChainId returns the EIP155 chain ID of the transaction. The return value will always be
-// non-nil. For legacy transactions which are not replay-protected, the return value is
-// zero.
+// non-nil.
 func (tx *Transaction) ChainId() *big.Int {
 	return tx.inner.chainID()
 }
