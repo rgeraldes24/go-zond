@@ -1057,7 +1057,6 @@ func (s *Session) sign(path accounts.DerivationPath, hash []byte) ([]byte, error
 	if err != nil {
 		return nil, err
 	}
-
 	log.Debug("Signed using smartcard", "deriveTime", deriveTime.Sub(startTime), "signingTime", time.Since(deriveTime))
 
 	return sig, nil
