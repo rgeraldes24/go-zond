@@ -193,6 +193,8 @@ contract OpCodes {
      //number
      assembly {  pop(number())}
 
+     // TODO(rgeraldes24): add prevrandao instead of difficulty?
+
      //gaslimit
      assembly {  pop(gaslimit())}
 
