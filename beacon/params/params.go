@@ -19,6 +19,7 @@ package params
 const (
 	EpochLength      = 128
 	SyncPeriodLength = 1024
+	SecondsPerSlot   = 60
 
 	DilithiumSignatureSize = 4595
 	DilithiumPubkeySize    = 2592
