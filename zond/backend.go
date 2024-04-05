@@ -390,12 +390,3 @@ func (s *Zond) SyncMode() downloader.SyncMode {
 	// Nope, we're really full syncing
 	return downloader.FullSync
 }
-
-// isLocalBlock checks whether the specified block is mined
-// by local miner accounts.
-//
-// We regard two types of accounts as local miner account: etherbase
-// and accounts specified via `txpool.locals` flag.
-func (s *Zond) isLocalBlock(header *types.Header) bool {
-	return false
-}

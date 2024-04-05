@@ -621,19 +621,6 @@ func testReorg(t *testing.T, first, second []int64, td int64, full bool, scheme 
 			}
 		}
 	}
-	// Make sure the chain total difficulty is the correct one
-	// want := new(big.Int).Add(blockchain.genesisBlock.Difficulty(), big.NewInt(td))
-	if full {
-		// cur := blockchain.CurrentBlock()
-		// if have := blockchain.GetTd(cur.Hash(), cur.Number.Uint64()); have.Cmp(want) != 0 {
-		// 	t.Errorf("total difficulty mismatch: have %v, want %v", have, want)
-		// }
-	} else {
-		// cur := blockchain.CurrentHeader()
-		// if have := blockchain.GetTd(cur.Hash(), cur.Number.Uint64()); have.Cmp(want) != 0 {
-		// 	t.Errorf("total difficulty mismatch: have %v, want %v", have, want)
-		// }
-	}
 }
 
 // Tests that the insertion functions detect banned hashes.

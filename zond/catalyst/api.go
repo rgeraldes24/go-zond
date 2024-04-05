@@ -208,7 +208,6 @@ func (api *ConsensusAPI) forkchoiceUpdated(update engine.ForkchoiceStateV1, payl
 		// potentially more data to the freezer from the get go.
 		finalized := api.remoteBlocks.get(update.FinalizedBlockHash)
 
-		// TODO(rgeraldes24): do we need the downloader?
 		api.zond.Downloader().Cancel()
 
 		context := []interface{}{"number", header.Number, "hash", header.Hash()}

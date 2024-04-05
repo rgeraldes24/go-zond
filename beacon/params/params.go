@@ -17,29 +17,5 @@
 package params
 
 const (
-	EpochLength      = 128
-	SyncPeriodLength = 1024
-	SecondsPerSlot   = 60
-
-	DilithiumSignatureSize = 4595
-	DilithiumPubkeySize    = 2592
-
-	SyncCommitteeSize          = 128
-	SyncCommitteeBitmaskSize   = SyncCommitteeSize / 8
-	SyncCommitteeSupermajority = (SyncCommitteeSize*2 + 2) / 3
-)
-
-const (
-	StateIndexGenesisTime       = 32
-	StateIndexGenesisValidators = 33
-	StateIndexForkVersion       = 141
-	StateIndexLatestHeader      = 36
-	StateIndexBlockRoots        = 37
-	StateIndexStateRoots        = 38
-	StateIndexHistoricRoots     = 39
-	StateIndexFinalBlock        = 105
-	StateIndexSyncCommittee     = 54
-	StateIndexNextSyncCommittee = 55
-	StateIndexExecPayload       = 56
-	StateIndexExecHead          = 908
+	SecondsPerSlot = 60
 )
