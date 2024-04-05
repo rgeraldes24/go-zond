@@ -39,9 +39,9 @@ type PrecompiledContract interface {
 	Run(input []byte) ([]byte, error) // Run runs the precompiled contract
 }
 
-// PrecompiledContractsShangai contains the default set of pre-compiled Zond
-// contracts used in the Shangai release.
-var PrecompiledContractsShangai = map[common.Address]PrecompiledContract{
+// PrecompiledContractsShanghai contains the default set of pre-compiled Zond
+// contracts used in the Shanghai release.
+var PrecompiledContractsShanghai = map[common.Address]PrecompiledContract{
 	common.BytesToAddress([]byte{1}): &depositroot{},
 	common.BytesToAddress([]byte{2}): &sha256hash{},
 	common.BytesToAddress([]byte{4}): &dataCopy{},
@@ -52,12 +52,12 @@ var PrecompiledContractsShangai = map[common.Address]PrecompiledContract{
 }
 
 var (
-	PrecompiledAddressesShangai []common.Address
+	PrecompiledAddressesShanghai []common.Address
 )
 
 func init() {
-	for k := range PrecompiledContractsShangai {
-		PrecompiledAddressesShangai = append(PrecompiledAddressesShangai, k)
+	for k := range PrecompiledContractsShanghai {
+		PrecompiledAddressesShanghai = append(PrecompiledAddressesShanghai, k)
 	}
 }
 
@@ -67,7 +67,7 @@ func ActivePrecompiles(rules params.Rules) []common.Address {
 	// case rules.IsBerlin:
 	// 	return PrecompiledAddressesBerlin
 	default:
-		return PrecompiledAddressesShangai
+		return PrecompiledAddressesShanghai
 	}
 }
 

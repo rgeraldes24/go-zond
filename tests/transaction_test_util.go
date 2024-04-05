@@ -16,7 +16,7 @@
 
 package tests
 
-// TODO(rgeraldes24): migrate to shangai signer
+// TODO(rgeraldes24): migrate to shanghai signer
 /*
 import (
 	"fmt"

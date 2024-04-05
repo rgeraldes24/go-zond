@@ -42,7 +42,7 @@ type sigCache struct {
 // TODO(theQRL/go-zond/issues/39)
 // MakeSigner returns a Signer based on the given chain config and block number.
 func MakeSigner(config *params.ChainConfig, blockNumber *big.Int, blockTime uint64) Signer {
-	return NewShangaiSigner(config.ChainID)
+	return NewShanghaiSigner(config.ChainID)
 }
 
 // LatestSigner returns the 'most permissive' Signer available for the given chain
@@ -53,7 +53,7 @@ func MakeSigner(config *params.ChainConfig, blockNumber *big.Int, blockTime uint
 // Use this in transaction-handling code where the current block number is unknown. If you
 // have the current block number available, use MakeSigner instead.
 func LatestSigner(config *params.ChainConfig) Signer {
-	return NewShangaiSigner(config.ChainID)
+	return NewShanghaiSigner(config.ChainID)
 }
 
 // LatestSignerForChainID returns the 'most permissive' Signer available. Specifically,
@@ -67,7 +67,7 @@ func LatestSignerForChainID(chainID *big.Int) (Signer, error) {
 	if chainID == nil {
 		return nil, ErrNoChainID
 	}
-	return NewShangaiSigner(chainID), nil
+	return NewShanghaiSigner(chainID), nil
 }
 
 // SignTx signs the transaction using the given dilithium signer and private key.
@@ -152,31 +152,31 @@ type Signer interface {
 	Equal(Signer) bool
 }
 
-type shangaiSigner struct {
+type shanghaiSigner struct {
 	chainId *big.Int
 }
 
-// NewShangaiSigner returns a signer that accepts
+// NewShanghaiSigner returns a signer that accepts
 // - EIP-1559 dynamic fee transactions,
 // - EIP-2930 access list transactions,
 // - EIP-155 replay protected transactions
-func NewShangaiSigner(chainId *big.Int) Signer {
-	return shangaiSigner{chainId: chainId}
+func NewShanghaiSigner(chainId *big.Int) Signer {
+	return shanghaiSigner{chainId: chainId}
 }
 
-func (s shangaiSigner) Sender(tx *Transaction) (common.Address, error) {
+func (s shanghaiSigner) Sender(tx *Transaction) (common.Address, error) {
 	if tx.ChainId().Cmp(s.chainId) != 0 {
 		return common.Address{}, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, tx.ChainId(), s.chainId)
 	}
 	return pqcrypto.DilithiumPKToAddress(tx.RawPublicKeyValue()), nil
 }
 
-func (s shangaiSigner) Equal(s2 Signer) bool {
-	x, ok := s2.(shangaiSigner)
+func (s shanghaiSigner) Equal(s2 Signer) bool {
+	x, ok := s2.(shanghaiSigner)
 	return ok && x.chainId.Cmp(s.chainId) == 0
 }
 
-func (s shangaiSigner) SignatureAndPublicKeyValues(tx *Transaction, sig, pk []byte) (Signature, PublicKey []byte, err error) {
+func (s shanghaiSigner) SignatureAndPublicKeyValues(tx *Transaction, sig, pk []byte) (Signature, PublicKey []byte, err error) {
 	// Check that chain ID of tx matches the signer. We also accept ID zero here,
 	// because it indicates that the chain ID was not specified in the tx.
 	if chainID := tx.ChainId(); chainID.Sign() != 0 && chainID.Cmp(s.chainId) != 0 {
@@ -189,7 +189,7 @@ func (s shangaiSigner) SignatureAndPublicKeyValues(tx *Transaction, sig, pk []by
 
 // Hash returns the hash to be signed by the sender.
 // It does not uniquely identify the transaction.
-func (s shangaiSigner) Hash(tx *Transaction) common.Hash {
+func (s shanghaiSigner) Hash(tx *Transaction) common.Hash {
 	switch tx.Type() {
 	case DynamicFeeTxType:
 		return prefixedRlpHash(
@@ -237,7 +237,7 @@ func (s shangaiSigner) Hash(tx *Transaction) common.Hash {
 	}
 }
 
-func (s shangaiSigner) ChainID() *big.Int {
+func (s shanghaiSigner) ChainID() *big.Int {
 	return s.chainId
 }
 

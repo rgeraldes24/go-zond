@@ -111,11 +111,6 @@ func (c *ChainConfig) Description() string {
 	return banner
 }
 
-// IsShanghai returns whether time is either equal to the Shanghai fork time or greater.
-func (c *ChainConfig) IsShanghai(time uint64) bool {
-	return isTimestampForked(c.ShanghaiTime, time)
-}
-
 // CheckCompatible checks whether scheduled fork transitions have been imported
 // with a mismatching chain configuration.
 func (c *ChainConfig) CheckCompatible(newcfg *ChainConfig, height uint64, time uint64) *ConfigCompatError {
@@ -287,8 +282,7 @@ func (err *ConfigCompatError) Error() string {
 // Rules is a one time interface meaning that it shouldn't be used in between transition
 // phases.
 type Rules struct {
-	ChainID    *big.Int
-	IsShanghai bool
+	ChainID *big.Int
 }
 
 // Rules ensures c's ChainID is not nil.
@@ -298,7 +292,6 @@ func (c *ChainConfig) Rules(num *big.Int, timestamp uint64) Rules {
 		chainID = new(big.Int)
 	}
 	return Rules{
-		ChainID:    new(big.Int).Set(chainID),
-		IsShanghai: c.IsShanghai(timestamp),
+		ChainID: new(big.Int).Set(chainID),
 	}
 }

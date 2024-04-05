@@ -51,7 +51,7 @@ var (
 		big.NewInt(1),
 		common.FromHex("5544"),
 	).WithSignatureAndPublicKey(
-		NewShangaiSigner(common.Big1),
+		NewShanghaiSigner(common.Big1),
 		common.Hex2Bytes("98ff921201554726367d2be8c804a7ff89ccf285ebc57dff8ae4c44b9c19ac4a8887321be575c8095f789dd4c743dfe42c1820f9231f98a962b210e3ac2452a301"),
 		nil,
 	)
@@ -67,7 +67,7 @@ var (
 	})
 
 	signedEip2718Tx, _ = emptyEip2718Tx.WithSignatureAndPublicKey(
-		NewShangaiSigner(common.Big1),
+		NewShanghaiSigner(common.Big1),
 		common.Hex2Bytes("c9519f4f2b30335884581971573fadf60c6204f59a911df35ee8a540456b266032f1e8e2c5dd761f9e4f88f41c8310aeaba26a8bfcdacfedfa12ec3862d3752101"),
 		nil,
 	)
@@ -82,7 +82,7 @@ func TestDecodeEmptyTypedTx(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): migrate to shangai signer
+// TODO(rgeraldes24): migrate to shanghai signer
 /*
 func TestTransactionSigHash(t *testing.T) {
 	var homestead HomesteadSigner
@@ -106,7 +106,7 @@ func TestTransactionEncode(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): migrate to shangai signer
+// TODO(rgeraldes24): migrate to shanghai signer
 /*
 func TestEIP2718TransactionSigHash(t *testing.T) {
 	s := NewEIP2930Signer(big.NewInt(1))
@@ -119,7 +119,7 @@ func TestEIP2718TransactionSigHash(t *testing.T) {
 }
 */
 
-// TODO(rgeraldes24): migrate to shangai signer
+// TODO(rgeraldes24): migrate to shanghai signer
 /*
 // This test checks signature operations on access list transactions.
 func TestEIP2930Signer(t *testing.T) {
@@ -237,7 +237,7 @@ func defaultTestKey() (*dilithium.Dilithium, common.Address) {
 	return key, addr
 }
 
-// TODO(rgeraldes24): migrate to shangai signer
+// TODO(rgeraldes24): migrate to shanghai signer
 /*
 func TestRecipientEmpty(t *testing.T) {
 	_, addr := defaultTestKey()
@@ -401,7 +401,7 @@ func assertEqual(orig *Transaction, cpy *Transaction) error {
 }
 
 func TestTransactionSizes(t *testing.T) {
-	signer := NewShangaiSigner(big.NewInt(123))
+	signer := NewShanghaiSigner(big.NewInt(123))
 	key, _ := pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	to := common.HexToAddress("0x01")
 	for i, txdata := range []TxData{

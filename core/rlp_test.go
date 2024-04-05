@@ -52,7 +52,7 @@ func getBlock(transactions int, uncles int, dataSize int) *types.Block {
 				// Add transactions and stuff on the last block
 				for i := 0; i < transactions; i++ {
 					tx, _ := types.SignTx(types.NewTransaction(uint64(i), aa,
-						big.NewInt(0), 50000, b.header.BaseFee, make([]byte, dataSize)), types.NewShangaiSigner(common.Big1), d)
+						big.NewInt(0), 50000, b.header.BaseFee, make([]byte, dataSize)), types.NewShanghaiSigner(common.Big1), d)
 					b.AddTx(tx)
 				}
 			}

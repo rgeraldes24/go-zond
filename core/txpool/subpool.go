@@ -20,6 +20,7 @@ import (
 	"math/big"
 	"time"
 
+	"github.com/holiman/uint256"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/types"
@@ -34,9 +35,11 @@ type LazyTransaction struct {
 	Hash common.Hash        // Transaction hash to pull up if needed
 	Tx   *types.Transaction // Transaction if already resolved
 
-	Time      time.Time // Time when the transaction was first seen
-	GasFeeCap *big.Int  // Maximum fee per gas the transaction may consume
-	GasTipCap *big.Int  // Maximum miner tip per gas the transaction can pay
+	Time      time.Time    // Time when the transaction was first seen
+	GasFeeCap *uint256.Int // Maximum fee per gas the transaction may consume
+	GasTipCap *uint256.Int // Maximum miner tip per gas the transaction can pay
+
+	Gas uint64 // Amount of gas required by the transaction
 }
 
 // Resolve retrieves the full transaction belonging to a lazy handle if it is still
@@ -51,6 +54,21 @@ func (ltx *LazyTransaction) Resolve() *types.Transaction {
 // AddressReserver is passed by the main transaction pool to subpools, so they
 // may request (and relinquish) exclusive access to certain addresses.
 type AddressReserver func(addr common.Address, reserve bool) error
+
+// PendingFilter is a collection of filter rules to allow retrieving a subset
+// of transactions for announcement or mining.
+//
+// Note, the entries here are not arbitrary useful filters, rather each one has
+// a very specific call site in mind and each one can be evaluated very cheaply
+// by the pool implementations. Only add new ones that satisfy those constraints.
+type PendingFilter struct {
+	MinTip  *uint256.Int // Minimum miner tip required to include a transaction
+	BaseFee *uint256.Int // Minimum 1559 basefee needed to include a transaction
+	BlobFee *uint256.Int // Minimum 4844 blobfee needed to include a blob transaction
+
+	OnlyPlainTxs bool // Return only plain EVM transactions (peer-join announces, block space filling)
+	OnlyBlobTxs  bool // Return only blob transactions (block blob-space filling)
+}
 
 // SubPool represents a specialized transaction pool that lives on its own (e.g.
 // blob pool). Since independent of how many specialized pools we have, they do
@@ -69,7 +87,7 @@ type SubPool interface {
 	// These should not be passed as a constructor argument - nor should the pools
 	// start by themselves - in order to keep multiple subpools in lockstep with
 	// one another.
-	Init(gasTip *big.Int, head *types.Header, reserve AddressReserver) error
+	Init(gasTip uint64, head *types.Header, reserve AddressReserver) error
 
 	// Close terminates any background processing threads and releases any held
 	// resources.
@@ -97,7 +115,7 @@ type SubPool interface {
 
 	// Pending retrieves all currently processable transactions, grouped by origin
 	// account and sorted by nonce.
-	Pending(enforceTips bool) map[common.Address][]*LazyTransaction
+	Pending(filter PendingFilter) map[common.Address][]*LazyTransaction
 
 	// SubscribeTransactions subscribes to new transaction events.
 	SubscribeTransactions(ch chan<- core.NewTxsEvent) event.Subscription

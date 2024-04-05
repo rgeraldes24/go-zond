@@ -157,22 +157,17 @@ func (api *ConsensusAPI) ForkchoiceUpdatedV2(update engine.ForkchoiceStateV1, pa
 }
 
 func (api *ConsensusAPI) verifyPayloadAttributes(attr *engine.PayloadAttributes) error {
-	c := api.zond.BlockChain().Config()
-
 	// Verify withdrawals attribute for Shanghai.
-	if err := checkAttribute(c.IsShanghai, attr.Withdrawals != nil, attr.Timestamp); err != nil {
+	if err := checkAttribute(attr.Withdrawals != nil /*, attr.Timestamp */); err != nil {
 		return fmt.Errorf("invalid withdrawals: %w", err)
 	}
 
 	return nil
 }
 
-func checkAttribute(active func(uint64) bool, exists bool, time uint64) error {
-	if active(time) && !exists {
+func checkAttribute(exists bool /*, time uint64 */) error {
+	if !exists {
 		return errors.New("fork active, missing expected attribute")
-	}
-	if !active(time) && exists {
-		return errors.New("fork inactive, unexpected attribute set")
 	}
 	return nil
 }
@@ -326,12 +321,8 @@ func (api *ConsensusAPI) getPayload(payloadID engine.PayloadID, full bool) (*eng
 
 // NewPayloadV2 creates a Zond execution block, inserts it in the chain, and returns the status of the chain.
 func (api *ConsensusAPI) NewPayloadV2(params engine.ExecutableData) (engine.PayloadStatusV1, error) {
-	if api.zond.BlockChain().Config().IsShanghai(params.Timestamp) {
-		if params.Withdrawals == nil {
-			return engine.PayloadStatusV1{Status: engine.INVALID}, engine.InvalidParams.With(errors.New("nil withdrawals post-shanghai"))
-		}
-	} else if params.Withdrawals != nil {
-		return engine.PayloadStatusV1{Status: engine.INVALID}, engine.InvalidParams.With(errors.New("non-nil withdrawals pre-shanghai"))
+	if params.Withdrawals == nil {
+		return engine.PayloadStatusV1{Status: engine.INVALID}, engine.InvalidParams.With(errors.New("nil withdrawals post-shanghai"))
 	}
 
 	return api.newPayload(params)
@@ -510,16 +501,10 @@ func (api *ConsensusAPI) checkInvalidAncestor(check common.Hash, head common.Has
 		}
 		api.invalidTipsets[head] = invalid
 	}
-	// If the last valid hash is the terminal pow block, return 0x0 for latest valid hash
-	lastValid := &invalid.ParentHash
-	// TODO(rgeraldes24)
-	// if header := api.zond.BlockChain().GetHeader(invalid.ParentHash, invalid.Number.Uint64()-1); header != nil && header.Difficulty.Sign() != 0 {
-	// 	lastValid = &common.Hash{}
-	// }
 	failure := "links to previously rejected block"
 	return &engine.PayloadStatusV1{
 		Status:          engine.INVALID,
-		LatestValidHash: lastValid,
+		LatestValidHash: &invalid.ParentHash,
 		ValidationError: &failure,
 	}
 }
@@ -529,13 +514,6 @@ func (api *ConsensusAPI) checkInvalidAncestor(check common.Hash, head common.Has
 func (api *ConsensusAPI) invalid(err error, latestValid *types.Header) engine.PayloadStatusV1 {
 	currentHash := api.zond.BlockChain().CurrentBlock().Hash()
 	if latestValid != nil {
-		// TODO(rgeraldes24)
-		// Set latest valid hash to 0x0 if parent is PoW block
-		// currentHash = common.Hash{}
-		// if latestValid.Difficulty.BitLen() == 0 {
-		// 	// Otherwise set latest valid hash to parent hash
-		// 	currentHash = latestValid.Hash()
-		// }
 		currentHash = latestValid.Hash()
 	}
 	errorMsg := err.Error()
@@ -604,7 +582,7 @@ func (api *ConsensusAPI) heartbeat() {
 			}
 			offlineLogged = time.Now()
 		}
-		// TODO(rgeraldes24)
+
 		continue
 	}
 }

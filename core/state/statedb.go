@@ -1331,9 +1331,8 @@ func (s *StateDB) Prepare(rules params.Rules, sender, coinbase common.Address, d
 			al.AddSlot(el.Address, key)
 		}
 	}
-	if rules.IsShanghai { // EIP-3651: warm coinbase
-		al.AddAddress(coinbase)
-	}
+	al.AddAddress(coinbase)
+
 	// Reset transient storage at the beginning of transaction execution
 	s.transientStorage = newTransientStorage()
 }

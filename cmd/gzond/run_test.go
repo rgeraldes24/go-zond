@@ -66,6 +66,7 @@ func runGzond(t *testing.T, args ...string) *testgzond {
 			if i < len(args)-1 {
 				tt.Datadir = args[i+1]
 			}
+		// TODO(rgeraldes24): deprecated
 		case "--miner.etherbase":
 			if i < len(args)-1 {
 				tt.Etherbase = args[i+1]

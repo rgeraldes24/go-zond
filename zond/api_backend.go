@@ -65,7 +65,7 @@ func (b *ZondAPIBackend) SetHead(number uint64) {
 func (b *ZondAPIBackend) HeaderByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Header, error) {
 	// Pending block is only known by the miner
 	if number == rpc.PendingBlockNumber {
-		block := b.zond.miner.PendingBlock()
+		block, _, _ := b.zond.miner.Pending()
 		if block == nil {
 			return nil, errors.New("pending block is not available")
 		}
@@ -116,7 +116,7 @@ func (b *ZondAPIBackend) HeaderByHash(ctx context.Context, hash common.Hash) (*t
 func (b *ZondAPIBackend) BlockByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Block, error) {
 	// Pending block is only known by the miner
 	if number == rpc.PendingBlockNumber {
-		block := b.zond.miner.PendingBlock()
+		block, _, _ := b.zond.miner.Pending()
 		if block == nil {
 			return nil, errors.New("pending block is not available")
 		}
@@ -180,14 +180,14 @@ func (b *ZondAPIBackend) BlockByNumberOrHash(ctx context.Context, blockNrOrHash 
 	return nil, errors.New("invalid arguments; neither block nor hash specified")
 }
 
-func (b *ZondAPIBackend) PendingBlockAndReceipts() (*types.Block, types.Receipts) {
-	return b.zond.miner.PendingBlockAndReceipts()
+func (b *ZondAPIBackend) Pending() (*types.Block, types.Receipts, *state.StateDB) {
+	return b.zond.miner.Pending()
 }
 
 func (b *ZondAPIBackend) StateAndHeaderByNumber(ctx context.Context, number rpc.BlockNumber) (*state.StateDB, *types.Header, error) {
 	// Pending state is only known by the miner
 	if number == rpc.PendingBlockNumber {
-		block, state := b.zond.miner.Pending()
+		block, _, state := b.zond.miner.Pending()
 		if block == nil || state == nil {
 			return nil, nil, errors.New("pending state is not available")
 		}
@@ -258,10 +258,6 @@ func (b *ZondAPIBackend) SubscribeRemovedLogsEvent(ch chan<- core.RemovedLogsEve
 	return b.zond.BlockChain().SubscribeRemovedLogsEvent(ch)
 }
 
-func (b *ZondAPIBackend) SubscribePendingLogsEvent(ch chan<- []*types.Log) event.Subscription {
-	return b.zond.miner.SubscribePendingLogs(ch)
-}
-
 func (b *ZondAPIBackend) SubscribeChainEvent(ch chan<- core.ChainEvent) event.Subscription {
 	return b.zond.BlockChain().SubscribeChainEvent(ch)
 }
@@ -283,7 +279,7 @@ func (b *ZondAPIBackend) SendTx(ctx context.Context, signedTx *types.Transaction
 }
 
 func (b *ZondAPIBackend) GetPoolTransactions() (types.Transactions, error) {
-	pending := b.zond.txPool.Pending(false)
+	pending := b.zond.txPool.Pending(txpool.PendingFilter{})
 	var txs types.Transactions
 	for _, batch := range pending {
 		for _, lazy := range batch {

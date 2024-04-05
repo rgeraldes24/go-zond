@@ -16,7 +16,7 @@
 
 package types
 
-// TODO(rgeraldes24): migrate tests to the shangai signer
+// TODO(rgeraldes24): migrate tests to the shanghai signer
 /*
 func TestEIP155Signing(t *testing.T) {
 	key, _ := crypto.GenerateDilithiumKey()

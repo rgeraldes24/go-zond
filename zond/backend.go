@@ -193,7 +193,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	}
 	legacyPool := legacypool.New(config.TxPool, zond.blockchain)
 
-	zond.txPool, err = txpool.New(new(big.Int).SetUint64(config.TxPool.PriceLimit), zond.blockchain, []txpool.SubPool{legacyPool})
+	zond.txPool, err = txpool.New(config.TxPool.PriceLimit, zond.blockchain, []txpool.SubPool{legacyPool})
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +212,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 		return nil, err
 	}
 
-	zond.miner = miner.New(zond, &config.Miner, zond.blockchain.Config(), zond.EventMux(), zond.engine, zond.isLocalBlock)
+	zond.miner = miner.New(zond, config.Miner, zond.engine)
 	zond.miner.SetExtra(makeExtraData(config.Miner.ExtraData))
 
 	zond.APIBackend = &ZondAPIBackend{stack.Config().ExtRPCEnabled(), zond, nil}

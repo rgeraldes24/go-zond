@@ -88,7 +88,7 @@ func TestEth2AssembleBlock(t *testing.T) {
 	defer n.Close()
 
 	api := NewConsensusAPI(zondservice)
-	signer := types.NewShangaiSigner(zondservice.BlockChain().Config().ChainID)
+	signer := types.NewShanghaiSigner(zondservice.BlockChain().Config().ChainID)
 	tx, err := types.SignTx(types.NewTransaction(uint64(10), blocks[9].Coinbase(), big.NewInt(1000), params.TxGas, big.NewInt(params.InitialBaseFee), nil), signer, testKey)
 	if err != nil {
 		t.Fatalf("error signing transaction, err=%v", err)

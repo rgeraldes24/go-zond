@@ -600,11 +600,10 @@ func testBoundedForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 	}
 	assertOwnChain(t, tester, len(chainA.blocks))
 
-	// TODO(rgeraldes24)
 	// Synchronise with the second peer and ensure that the fork is rejected to being too old
-	// if err := tester.sync("rewriter", mode); err != errInvalidAncestor {
-	// 	t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
-	// }
+	if err := tester.sync("rewriter", mode); err != errInvalidAncestor {
+		t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
+	}
 }
 
 // Tests that chain forks are contained within a certain interval of the current
@@ -633,11 +632,10 @@ func testBoundedHeavyForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 	assertOwnChain(t, tester, len(chainA.blocks))
 
 	tester.newPeer("heavy-rewriter", protocol, chainB.blocks[1:])
-	// TODO(rgeraldes24)
 	// Synchronise with the second peer and ensure that the fork is rejected to being too old
-	// if err := tester.sync("heavy-rewriter", mode); err != errInvalidAncestor {
-	// 	t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
-	// }
+	if err := tester.sync("heavy-rewriter", mode); err != errInvalidAncestor {
+		t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
+	}
 }
 
 // // Tests that a canceled download wipes all previously accumulated state.

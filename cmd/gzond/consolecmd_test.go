@@ -130,6 +130,7 @@ func testAttachWelcome(t *testing.T, gzond *testgzond, endpoint, apis string) {
 	attach.SetTemplateFunc("goarch", func() string { return runtime.GOARCH })
 	attach.SetTemplateFunc("gover", runtime.Version)
 	attach.SetTemplateFunc("gzondver", func() string { return params.VersionWithCommit("", "") })
+	// TODO(rgeraldes24)
 	attach.SetTemplateFunc("etherbase", func() string { return gzond.Etherbase })
 	attach.SetTemplateFunc("niltime", func() string {
 		return time.Unix(1548854791, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")

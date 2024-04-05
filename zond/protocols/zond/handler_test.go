@@ -97,7 +97,7 @@ func newTestBackendWithGenerator(blocks int, shanghai bool, generator func(int, 
 	txconfig.Journal = "" // Don't litter the disk with test journals
 
 	pool := legacypool.New(txconfig, chain)
-	txpool, _ := txpool.New(new(big.Int).SetUint64(txconfig.PriceLimit), chain, []txpool.SubPool{pool})
+	txpool, _ := txpool.New(txconfig.PriceLimit, chain, []txpool.SubPool{pool})
 
 	return &testBackend{
 		db:     db,
@@ -420,7 +420,7 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 	acc1Addr := acc1Key.GetAddress()
 	acc2Addr := acc2Key.GetAddress()
 
-	signer := types.NewShangaiSigner(common.Big1)
+	signer := types.NewShanghaiSigner(common.Big1)
 	// Create a chain generator with some simple transactions (blatantly stolen from @fjl/chain_markets_test)
 	generator := func(i int, block *core.BlockGen) {
 		switch i {
@@ -440,7 +440,6 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 			block.SetCoinbase(acc2Addr)
 			block.SetExtra([]byte("yeehaw"))
 		case 3:
-			// TODO(rgeraldes24): fix: uncles are not available anymore
 			// Block 4 includes blocks 2 and 3 as uncle headers (with modified extra data).
 			b2 := block.PrevBlock(1).Header()
 			b2.Extra = []byte("foo")

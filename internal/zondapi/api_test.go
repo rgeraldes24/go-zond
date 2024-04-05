@@ -466,7 +466,7 @@ func (b testBackend) StateAndHeaderByNumberOrHash(ctx context.Context, blockNrOr
 	}
 	panic("only implemented for number")
 }
-func (b testBackend) PendingBlockAndReceipts() (*types.Block, types.Receipts) { panic("implement me") }
+func (b testBackend) Pending() (*types.Block, types.Receipts, *state.StateDB) { panic("implement me") }
 func (b testBackend) GetReceipts(ctx context.Context, hash common.Hash) (types.Receipts, error) {
 	header, err := b.HeaderByHash(ctx, hash)
 	if header == nil || err != nil {
@@ -530,9 +530,6 @@ func (b testBackend) SubscribeRemovedLogsEvent(ch chan<- core.RemovedLogsEvent) 
 func (b testBackend) SubscribeLogsEvent(ch chan<- []*types.Log) event.Subscription {
 	panic("implement me")
 }
-func (b testBackend) SubscribePendingLogsEvent(ch chan<- []*types.Log) event.Subscription {
-	panic("implement me")
-}
 func (b testBackend) BloomStatus() (uint64, uint64) { panic("implement me") }
 func (b testBackend) ServiceFilter(ctx context.Context, session *bloombits.MatcherSession) {
 	panic("implement me")
@@ -551,7 +548,7 @@ func TestEstimateGas(t *testing.T) {
 			},
 		}
 		genBlocks      = 10
-		signer         = types.NewShangaiSigner(common.Big1)
+		signer         = types.NewShanghaiSigner(common.Big1)
 		randomAccounts = newAccounts(2)
 	)
 	api := NewBlockChainAPI(newTestBackend(t, genBlocks, genesis, beacon.NewFaker(), func(i int, b *core.BlockGen) {
@@ -655,7 +652,7 @@ func TestCall(t *testing.T) {
 			},
 		}
 		genBlocks = 10
-		signer    = types.NewShangaiSigner(common.Big1)
+		signer    = types.NewShanghaiSigner(common.Big1)
 	)
 	api := NewBlockChainAPI(newTestBackend(t, genBlocks, genesis, beacon.NewFaker(), func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
@@ -1056,7 +1053,7 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 			},
 		}
 		genBlocks = 10
-		signer    = types.NewShangaiSigner(common.Big1)
+		signer    = types.NewShanghaiSigner(common.Big1)
 		tx        = types.NewTx(&types.LegacyTx{
 			Nonce:    11,
 			GasPrice: big.NewInt(11111),
@@ -1336,7 +1333,7 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 		switch i {
 		case 0:
 			// transfer 1000wei
-			tx, err = types.SignTx(types.NewTx(&types.LegacyTx{Nonce: uint64(i), To: &acc2Addr, Value: big.NewInt(1000), Gas: params.TxGas, GasPrice: b.BaseFee(), Data: nil}), types.NewShangaiSigner(common.Big1), acc1Key)
+			tx, err = types.SignTx(types.NewTx(&types.LegacyTx{Nonce: uint64(i), To: &acc2Addr, Value: big.NewInt(1000), Gas: params.TxGas, GasPrice: b.BaseFee(), Data: nil}), types.NewShanghaiSigner(common.Big1), acc1Key)
 		case 1:
 			// create contract
 			tx, err = types.SignTx(types.NewTx(&types.LegacyTx{Nonce: uint64(i), To: nil, Gas: 53100, GasPrice: b.BaseFee(), Data: common.FromHex("0x60806040")}), signer, acc1Key)

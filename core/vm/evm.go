@@ -41,7 +41,7 @@ func (evm *EVM) precompile(addr common.Address) (PrecompiledContract, bool) {
 	var precompiles map[common.Address]PrecompiledContract
 	switch {
 	default:
-		precompiles = PrecompiledContractsShangai
+		precompiles = PrecompiledContractsShanghai
 	}
 	p, ok := precompiles[addr]
 	return p, ok

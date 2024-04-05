@@ -96,7 +96,7 @@ func newTester(t *testing.T, confOverride func(*zondconfig.Config)) *tester {
 	zondConf := &zondconfig.Config{
 		Genesis: core.DeveloperGenesisBlock(11_500_000, common.Address{}),
 		Miner: miner.Config{
-			Etherbase: common.HexToAddress(testAddress),
+			PendingFeeRecipient: common.HexToAddress(testAddress),
 		},
 	}
 	if confOverride != nil {
