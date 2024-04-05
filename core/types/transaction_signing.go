@@ -29,6 +29,9 @@ import (
 
 var ErrInvalidChainId = errors.New("invalid chain id for signer")
 
+// ErrNoChainID is returned whenever the user failed to specify a chain id.
+var ErrNoChainID = errors.New("no chain id specified")
+
 // sigCache is used to cache the derived sender and contains
 // the signer used to derive it.
 type sigCache struct {
@@ -60,12 +63,11 @@ func LatestSigner(config *params.ChainConfig) Signer {
 // Use this in transaction-handling code where the current block number and fork
 // configuration are unknown. If you have a ChainConfig, use LatestSigner instead.
 // If you have a ChainConfig and know the current block number, use MakeSigner instead.
-func LatestSignerForChainID(chainID *big.Int) Signer {
+func LatestSignerForChainID(chainID *big.Int) (Signer, error) {
 	if chainID == nil {
-		// TODO(rgeraldes24): return error instead
-		return nil
+		return nil, ErrNoChainID
 	}
-	return NewShangaiSigner(chainID)
+	return NewShangaiSigner(chainID), nil
 }
 
 // SignTx signs the transaction using the given dilithium signer and private key.

@@ -290,7 +290,11 @@ func (ks *KeyStore) SignTx(a accounts.Account, tx *types.Transaction, chainID *b
 		return nil, ErrLocked
 	}
 	// Depending on the presence of the chain ID, sign with 2718 or homestead
-	signer := types.LatestSignerForChainID(chainID)
+	signer, err := types.LatestSignerForChainID(chainID)
+	if err != nil {
+		return nil, err
+	}
+
 	return types.SignTx(tx, signer, unlockedKey.Dilithium)
 }
 
@@ -315,7 +319,11 @@ func (ks *KeyStore) SignTxWithPassphrase(a accounts.Account, passphrase string, 
 	}
 	defer zeroKey(&key.Dilithium)
 	// Depending on the presence of the chain ID, sign with or without replay protection.
-	signer := types.LatestSignerForChainID(chainID)
+	signer, err := types.LatestSignerForChainID(chainID)
+	if err != nil {
+		return nil, err
+	}
+
 	return types.SignTx(tx, signer, key.Dilithium)
 }
 

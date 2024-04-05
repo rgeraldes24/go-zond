@@ -319,7 +319,7 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 	}
 	// Create transaction
 	tx := types.NewTransaction(0, common.Address{1}, big.NewInt(1), 22000, big.NewInt(1), nil)
-	signer := types.LatestSignerForChainID(chainID)
+	signer, _ := types.LatestSignerForChainID(chainID)
 	signature, err := crypto.SignDilithium(signer.Hash(tx).Bytes(), testKey)
 	if err != nil {
 		t.Fatal(err)
@@ -354,7 +354,7 @@ func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
 	}
 	// Create transaction
 	tx := types.NewTransaction(1, common.Address{1}, big.NewInt(1), 22000, big.NewInt(1), nil)
-	signer := types.LatestSignerForChainID(chainID)
+	signer, _ := types.LatestSignerForChainID(chainID)
 	signature, err := crypto.SignDilithium(signer.Hash(tx).Bytes(), testKey)
 	if err != nil {
 		t.Fatal(err)
