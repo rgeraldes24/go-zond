@@ -28,8 +28,8 @@ import (
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/types"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/log"
-	"github.com/theQRL/go-zond/pqcrypto"
 )
 
 // ErrNoChainID is returned whenever the user failed to specify a chain id.
