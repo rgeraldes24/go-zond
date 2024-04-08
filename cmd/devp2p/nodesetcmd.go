@@ -139,7 +139,6 @@ var filterFlags = map[string]nodeFilterC{
 	"-ip":           {1, ipFilter},
 	"-min-age":      {1, minAgeFilter},
 	"-zond-network": {1, ethFilter},
-	"-les-server":   {0, lesFilter},
 	"-snap":         {0, snapFilter},
 }
 
