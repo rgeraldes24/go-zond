@@ -1360,9 +1360,6 @@ func SetNodeConfig(ctx *cli.Context, cfg *node.Config) {
 	if ctx.IsSet(LightKDFFlag.Name) {
 		cfg.UseLightweightKDF = ctx.Bool(LightKDFFlag.Name)
 	}
-	if ctx.IsSet(NoUSBFlag.Name) || cfg.NoUSB {
-		log.Warn("Option nousb is deprecated and USB is deactivated by default. Use --usb to enable")
-	}
 	if ctx.IsSet(USBFlag.Name) {
 		cfg.USB = ctx.Bool(USBFlag.Name)
 	}
@@ -1495,12 +1492,7 @@ func setMiner(ctx *cli.Context, cfg *miner.Config) {
 func setRequiredBlocks(ctx *cli.Context, cfg *ethconfig.Config) {
 	requiredBlocks := ctx.String(EthRequiredBlocksFlag.Name)
 	if requiredBlocks == "" {
-		if ctx.IsSet(LegacyWhitelistFlag.Name) {
-			log.Warn("The flag --whitelist is deprecated and will be removed, please use --zond.requiredblocks")
-			requiredBlocks = ctx.String(LegacyWhitelistFlag.Name)
-		} else {
-			return
-		}
+		return
 	}
 	cfg.RequiredBlocks = make(map[uint64]common.Hash)
 	for _, entry := range strings.Split(requiredBlocks, ",") {
@@ -1635,17 +1627,8 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *ethconfig.Config) {
 	}
 	cfg.StateScheme = scheme
 
-	// Parse transaction history flag, if user is still using legacy config
-	// file with 'TxLookupLimit' configured, copy the value to 'TransactionHistory'.
-	if cfg.TransactionHistory == ethconfig.Defaults.TransactionHistory && cfg.TxLookupLimit != ethconfig.Defaults.TxLookupLimit {
-		log.Warn("The config option 'TxLookupLimit' is deprecated and will be removed, please use 'TransactionHistory'")
-		cfg.TransactionHistory = cfg.TxLookupLimit
-	}
 	if ctx.IsSet(TransactionHistoryFlag.Name) {
 		cfg.TransactionHistory = ctx.Uint64(TransactionHistoryFlag.Name)
-	} else if ctx.IsSet(TxLookupLimitFlag.Name) {
-		log.Warn("The flag --txlookuplimit is deprecated and will be removed, please use --history.transactions")
-		cfg.TransactionHistory = ctx.Uint64(TxLookupLimitFlag.Name)
 	}
 	if ctx.String(GCModeFlag.Name) == "archive" && cfg.TransactionHistory != 0 {
 		cfg.TransactionHistory = 0
