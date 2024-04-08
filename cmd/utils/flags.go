@@ -224,7 +224,7 @@ var (
 		Usage:    "Reduce key-derivation RAM & CPU usage at some expense of KDF strength",
 		Category: flags.AccountCategory,
 	}
-	EthRequiredBlocksFlag = &cli.StringFlag{
+	ZondRequiredBlocksFlag = &cli.StringFlag{
 		Name:     "zond.requiredblocks",
 		Usage:    "Comma separated block number-to-hash mappings to require for peering (<number>=<hash>)",
 		Category: flags.EthCategory,
@@ -233,16 +233,6 @@ var (
 		Name:     "bloomfilter.size",
 		Usage:    "Megabytes of memory allocated to bloom-filter for pruning",
 		Value:    2048,
-		Category: flags.EthCategory,
-	}
-	OverrideCancun = &cli.Uint64Flag{
-		Name:     "override.cancun",
-		Usage:    "Manually specify the Cancun fork timestamp, overriding the bundled setting",
-		Category: flags.EthCategory,
-	}
-	OverrideVerkle = &cli.Uint64Flag{
-		Name:     "override.verkle",
-		Usage:    "Manually specify the Verkle fork timestamp, overriding the bundled setting",
 		Category: flags.EthCategory,
 	}
 	SyncModeFlag = &flags.TextMarshalerFlag{
@@ -536,7 +526,7 @@ var (
 	}
 
 	// Logging and debug settings
-	EthStatsURLFlag = &cli.StringFlag{
+	ZondStatsURLFlag = &cli.StringFlag{
 		Name:     "zondstats",
 		Usage:    "Reporting URL of a zondstats service (nodename:secret@host:port)",
 		Category: flags.MetricsCategory,
@@ -1442,7 +1432,7 @@ func setMiner(ctx *cli.Context, cfg *miner.Config) {
 }
 
 func setRequiredBlocks(ctx *cli.Context, cfg *ethconfig.Config) {
-	requiredBlocks := ctx.String(EthRequiredBlocksFlag.Name)
+	requiredBlocks := ctx.String(ZondRequiredBlocksFlag.Name)
 	if requiredBlocks == "" {
 		return
 	}

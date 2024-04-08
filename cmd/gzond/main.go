@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-// geth is the official command-line client for Ethereum.
+// gzond is the official command-line client for Zond.
 package main
 
 import (
@@ -36,7 +36,6 @@ import (
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/node"
-	"github.com/theQRL/go-zond/zond"
 	"github.com/theQRL/go-zond/zond/downloader"
 	"github.com/theQRL/go-zond/zondclient"
 
@@ -62,10 +61,10 @@ var (
 		utils.MinFreeDiskSpaceFlag,
 		utils.KeyStoreDirFlag,
 		utils.ExternalSignerFlag,
-		utils.USBFlag,
-		utils.SmartCardDaemonPathFlag,
-		utils.OverrideCancun,
-		utils.OverrideVerkle,
+		// TODO(theQRL/go-zond/issues/37)
+		// utils.USBFlag,
+		// TODO(theQRL/go-zond/issues/38)
+		// utils.SmartCardDaemonPathFlag,
 		utils.TxPoolLocalsFlag,
 		utils.TxPoolNoLocalsFlag,
 		utils.TxPoolJournalFlag,
@@ -77,9 +76,6 @@ var (
 		utils.TxPoolAccountQueueFlag,
 		utils.TxPoolGlobalQueueFlag,
 		utils.TxPoolLifetimeFlag,
-		utils.BlobPoolDataDirFlag,
-		utils.BlobPoolDataCapFlag,
-		utils.BlobPoolPriceBumpFlag,
 		utils.SyncModeFlag,
 		utils.SyncTargetFlag,
 		utils.ExitWhenSyncedFlag,
@@ -89,7 +85,7 @@ var (
 		utils.StateSchemeFlag,
 		utils.StateHistoryFlag,
 		utils.LightKDFFlag,
-		utils.EthRequiredBlocksFlag,
+		utils.ZondRequiredBlocksFlag,
 		utils.BloomFilterSizeFlag,
 		utils.CacheFlag,
 		utils.CacheDatabaseFlag,
@@ -100,18 +96,14 @@ var (
 		utils.CachePreimagesFlag,
 		utils.CacheLogSizeFlag,
 		utils.FDLimitFlag,
-		utils.CryptoKZGFlag,
 		utils.ListenPortFlag,
 		utils.DiscoveryPortFlag,
 		utils.MaxPeersFlag,
 		utils.MaxPendingPeersFlag,
-		utils.MiningEnabledFlag,
 		utils.MinerGasLimitFlag,
 		utils.MinerGasPriceFlag,
-		utils.MinerEtherbaseFlag,
 		utils.MinerExtraDataFlag,
 		utils.MinerRecommitIntervalFlag,
-		utils.MinerNewPayloadTimeout,
 		utils.NATFlag,
 		utils.NoDiscoverFlag,
 		utils.DiscoveryV4Flag,
@@ -125,7 +117,7 @@ var (
 		utils.DeveloperPeriodFlag,
 		utils.VMEnableDebugFlag,
 		utils.NetworkIdFlag,
-		utils.EthStatsURLFlag,
+		utils.ZondStatsURLFlag,
 		utils.NoCompactionFlag,
 		utils.GpoBlocksFlag,
 		utils.GpoPercentileFlag,
@@ -161,7 +153,6 @@ var (
 		utils.RPCGlobalGasCapFlag,
 		utils.RPCGlobalEVMTimeoutFlag,
 		utils.RPCGlobalTxFeeCapFlag,
-		utils.AllowUnprotectedTxs,
 		utils.BatchRequestLimit,
 		utils.BatchResponseMaxSize,
 	}
@@ -184,12 +175,12 @@ var (
 	}
 )
 
-var app = flags.NewApp("the go-ethereum command line interface")
+var app = flags.NewApp("the go-zond command line interface")
 
 func init() {
-	// Initialize the CLI app and start Geth
-	app.Action = geth
-	app.Copyright = "Copyright 2013-2023 The go-ethereum Authors"
+	// Initialize the CLI app and start Gzond
+	app.Action = gzond
+	app.Copyright = "Copyright 2013-2023 The go-zond Authors"
 	app.Commands = []*cli.Command{
 		// See chaincmd.go:
 		initCommand,
@@ -215,8 +206,6 @@ func init() {
 		utils.ShowDeprecated,
 		// See snapshot.go
 		snapshotCommand,
-		// See verkle.go
-		verkleCommand,
 	}
 	sort.Sort(cli.CommandsByName(app.Commands))
 
@@ -258,11 +247,11 @@ func prepare(ctx *cli.Context) {
 	// If we're running a known preset, log it for convenience.
 	switch {
 	case ctx.IsSet(utils.BetaNetFlag.Name):
-		log.Info("Starting Geth on BetaNet testnet...")
+		log.Info("Starting Gzond on BetaNet testnet...")
 
 	case ctx.IsSet(utils.DeveloperFlag.Name):
-		log.Info("Starting Geth in ephemeral dev mode...")
-		log.Warn(`You are running Geth in --dev mode. Please note the following:
+		log.Info("Starting Gzond in ephemeral dev mode...")
+		log.Warn(`You are running Gzond in --dev mode. Please note the following:
 
   1. This mode is only intended for fast, iterative development without assumptions on
      security or persistence.
@@ -279,7 +268,7 @@ func prepare(ctx *cli.Context) {
 `)
 
 	case !ctx.IsSet(utils.NetworkIdFlag.Name):
-		log.Info("Starting Geth on Ethereum mainnet...")
+		log.Info("Starting Gzond on Ethereum mainnet...")
 	}
 	// If we're a full node on mainnet without --cache specified, bump default cache allowance
 	if !ctx.IsSet(utils.CacheFlag.Name) && !ctx.IsSet(utils.NetworkIdFlag.Name) {
@@ -298,10 +287,10 @@ func prepare(ctx *cli.Context) {
 	go metrics.CollectProcessMetrics(3 * time.Second)
 }
 
-// geth is the main entry point into the system if no special subcommand is run.
+// gzond is the main entry point into the system if no special subcommand is run.
 // It creates a default node based on the command line arguments and runs it in
 // blocking mode, waiting for it to be shut down.
-func geth(ctx *cli.Context) error {
+func gzond(ctx *cli.Context) error {
 	if args := ctx.Args().Slice(); len(args) > 0 {
 		return fmt.Errorf("invalid command: %q", args[0])
 	}
@@ -331,9 +320,9 @@ func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isCon
 	events := make(chan accounts.WalletEvent, 16)
 	stack.AccountManager().Subscribe(events)
 
-	// Create a client to interact with local geth node.
+	// Create a client to interact with local gzond node.
 	rpcClient := stack.Attach()
-	ethClient := zondclient.NewClient(rpcClient)
+	zondClient := zondclient.NewClient(rpcClient)
 
 	go func() {
 		// Open any wallets already attached
@@ -359,7 +348,7 @@ func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isCon
 				}
 				derivationPaths = append(derivationPaths, accounts.DefaultBaseDerivationPath)
 
-				event.Wallet.SelfDerive(derivationPaths, ethClient)
+				event.Wallet.SelfDerive(derivationPaths, zondClient)
 
 			case accounts.WalletDropped:
 				log.Info("Old wallet dropped", "url", event.Wallet.URL())
@@ -390,20 +379,6 @@ func startNode(ctx *cli.Context, stack *node.Node, backend ethapi.Backend, isCon
 				}
 			}
 		}()
-	}
-
-	// Start auxiliary services if enabled
-	if ctx.Bool(utils.MiningEnabledFlag.Name) {
-		ethBackend, ok := backend.(*zond.EthAPIBackend)
-		if !ok {
-			utils.Fatalf("Ethereum service not running")
-		}
-		// Set the gas price to the limits from the CLI and start mining
-		gasprice := flags.GlobalBig(ctx, utils.MinerGasPriceFlag.Name)
-		ethBackend.TxPool().SetGasTip(gasprice)
-		if err := ethBackend.StartMining(); err != nil {
-			utils.Fatalf("Failed to start mining: %v", err)
-		}
 	}
 }
 
