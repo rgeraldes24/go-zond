@@ -144,6 +144,24 @@ func (n *Node) Record() *enr.Record {
 	return &cpy
 }
 
+// ValidateComplete checks whether n has a valid IP and UDP port.
+// Deprecated: don't use this method.
+func (n *Node) ValidateComplete() error {
+	if n.Incomplete() {
+		return errors.New("missing IP address")
+	}
+	if n.UDP() == 0 {
+		return errors.New("missing UDP port")
+	}
+	ip := n.IP()
+	if ip.IsMulticast() || ip.IsUnspecified() {
+		return errors.New("invalid IP (multicast/unspecified)")
+	}
+	// Validate the node key (on curve, etc.).
+	var key Secp256k1
+	return n.Load(&key)
+}
+
 // String returns the text representation of the record.
 func (n *Node) String() string {
 	if isNewV4(n) {
