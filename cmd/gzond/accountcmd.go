@@ -18,7 +18,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/accounts/keystore"
@@ -29,39 +28,6 @@ import (
 )
 
 var (
-	walletCommand = &cli.Command{
-		Name:      "wallet",
-		Usage:     "Manage Ethereum presale wallets",
-		ArgsUsage: "",
-		Description: `
-    geth wallet import /path/to/my/presale.wallet
-
-will prompt for your password and imports your ether presale account.
-It can be used non-interactively with the --password option taking a
-passwordfile as argument containing the wallet password in plaintext.`,
-		Subcommands: []*cli.Command{
-			{
-
-				Name:      "import",
-				Usage:     "Import Ethereum presale wallet",
-				ArgsUsage: "<keyFile>",
-				Action:    importWallet,
-				Flags: []cli.Flag{
-					utils.DataDirFlag,
-					utils.KeyStoreDirFlag,
-					utils.PasswordFileFlag,
-					utils.LightKDFFlag,
-				},
-				Description: `
-	geth wallet [options] /path/to/my/presale.wallet
-
-will prompt for your password and imports your ether presale account.
-It can be used non-interactively with the --password option taking a
-passwordfile as argument containing the wallet password in plaintext.`,
-			},
-		},
-	}
-
 	accountCommand = &cli.Command{
 		Name:  "account",
 		Usage: "Manage accounts",
@@ -329,32 +295,6 @@ func accountUpdate(ctx *cli.Context) error {
 			utils.Fatalf("Could not update the account: %v", err)
 		}
 	}
-	return nil
-}
-
-func importWallet(ctx *cli.Context) error {
-	if ctx.Args().Len() != 1 {
-		utils.Fatalf("keyfile must be given as the only argument")
-	}
-	keyfile := ctx.Args().First()
-	keyJSON, err := os.ReadFile(keyfile)
-	if err != nil {
-		utils.Fatalf("Could not read wallet file: %v", err)
-	}
-
-	am := makeAccountManager(ctx)
-	backends := am.Backends(keystore.KeyStoreType)
-	if len(backends) == 0 {
-		utils.Fatalf("Keystore is not available")
-	}
-	ks := backends[0].(*keystore.KeyStore)
-	passphrase := utils.GetPassPhraseWithList("", false, 0, utils.MakePasswordList(ctx))
-
-	acct, err := ks.ImportPreSaleKey(keyJSON, passphrase)
-	if err != nil {
-		utils.Fatalf("%v", err)
-	}
-	fmt.Printf("Address: {%x}\n", acct.Address)
 	return nil
 }
 
