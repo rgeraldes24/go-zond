@@ -193,11 +193,11 @@ func initGenesis(ctx *cli.Context) error {
 	if err := json.NewDecoder(file).Decode(genesis); err != nil {
 		utils.Fatalf("invalid genesis file: %v", err)
 	}
-	// Open and initialise both full and light databases
+	// Open and initialise both full node database
 	stack, _ := makeConfigNode(ctx)
 	defer stack.Close()
 
-	for _, name := range []string{"chaindata", "lightchaindata"} {
+	for _, name := range []string{"chaindata"} {
 		chaindb, err := stack.OpenDatabaseWithFreezer(name, 0, 0, ctx.String(utils.AncientFlag.Name), "", false)
 		if err != nil {
 			utils.Fatalf("Failed to open database: %v", err)
@@ -227,7 +227,7 @@ func dumpGenesis(ctx *cli.Context) error {
 	}
 	// dump whatever already exists in the datadir
 	stack, _ := makeConfigNode(ctx)
-	for _, name := range []string{"chaindata", "lightchaindata"} {
+	for _, name := range []string{"chaindata"} {
 		db, err := stack.OpenDatabase(name, 0, 0, "", true)
 		if err != nil {
 			if !os.IsNotExist(err) {

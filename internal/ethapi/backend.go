@@ -38,7 +38,7 @@ import (
 )
 
 // Backend interface provides the common API services (that are provided by
-// both full and light clients) with access to necessary functions.
+// full clients) with access to necessary functions.
 type Backend interface {
 	// General Zond API
 	SyncProgress() zond.SyncProgress

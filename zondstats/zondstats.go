@@ -38,7 +38,6 @@ import (
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/event"
-	"github.com/theQRL/go-zond/les"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/miner"
 	"github.com/theQRL/go-zond/node"
@@ -480,7 +479,7 @@ func (s *Service) login(conn *connWrapper) error {
 	if info := infos.Protocols["eth"]; info != nil {
 		network = fmt.Sprintf("%d", info.(*ethproto.NodeInfo).Network)
 	} else {
-		network = fmt.Sprintf("%d", infos.Protocols["les"].(*les.NodeInfo).Network)
+		return errors.New("zond protocol not available")
 	}
 	auth := &authMsg{
 		ID: s.node,
