@@ -384,11 +384,6 @@ var (
 	}
 
 	// Miner settings
-	MiningEnabledFlag = &cli.BoolFlag{
-		Name:     "mine",
-		Usage:    "Enable mining",
-		Category: flags.MinerCategory,
-	}
 	MinerGasLimitFlag = &cli.Uint64Flag{
 		Name:     "miner.gaslimit",
 		Usage:    "Target gas ceiling for mined blocks",
