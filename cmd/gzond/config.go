@@ -89,14 +89,14 @@ type ethstatsConfig struct {
 	URL string `toml:",omitempty"`
 }
 
-type gethConfig struct {
-	Eth      zondconfig.Config
-	Node     node.Config
-	Ethstats ethstatsConfig
-	Metrics  metrics.Config
+type gzondConfig struct {
+	Zond      zondconfig.Config
+	Node      node.Config
+	Zondstats ethstatsConfig
+	Metrics   metrics.Config
 }
 
-func loadConfig(file string, cfg *gethConfig) error {
+func loadConfig(file string, cfg *gzondConfig) error {
 	f, err := os.Open(file)
 	if err != nil {
 		return err
@@ -124,10 +124,10 @@ func defaultNodeConfig() node.Config {
 
 // loadBaseConfig loads the gethConfig based on the given command line
 // parameters and config file.
-func loadBaseConfig(ctx *cli.Context) gethConfig {
+func loadBaseConfig(ctx *cli.Context) gzondConfig {
 	// Load defaults.
-	cfg := gethConfig{
-		Eth:     zondconfig.Defaults,
+	cfg := gzondConfig{
+		Zond:    zondconfig.Defaults,
 		Node:    defaultNodeConfig(),
 		Metrics: metrics.DefaultConfig,
 	}
@@ -145,7 +145,7 @@ func loadBaseConfig(ctx *cli.Context) gethConfig {
 }
 
 // makeConfigNode loads geth configuration and creates a blank node instance.
-func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
+func makeConfigNode(ctx *cli.Context) (*node.Node, gzondConfig) {
 	cfg := loadBaseConfig(ctx)
 	stack, err := node.New(&cfg.Node)
 	if err != nil {
@@ -156,9 +156,9 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 		utils.Fatalf("Failed to set account manager backends: %v", err)
 	}
 
-	utils.SetEthConfig(ctx, stack, &cfg.Eth)
+	utils.SetZondConfig(ctx, stack, &cfg.Zond)
 	if ctx.IsSet(utils.ZondStatsURLFlag.Name) {
-		cfg.Ethstats.URL = ctx.String(utils.ZondStatsURLFlag.Name)
+		cfg.Zondstats.URL = ctx.String(utils.ZondStatsURLFlag.Name)
 	}
 	applyMetricConfig(ctx, &cfg)
 
@@ -168,12 +168,12 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 // makeFullNode loads geth configuration and creates the Ethereum backend.
 func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
 	stack, cfg := makeConfigNode(ctx)
-	backend, eth := utils.RegisterZondService(stack, &cfg.Eth)
+	backend, zond := utils.RegisterZondService(stack, &cfg.Zond)
 
 	// Create gauge with geth system and build information
-	if eth != nil {
+	if zond != nil {
 		var protos []string
-		for _, p := range eth.Protocols() {
+		for _, p := range zond.Protocols() {
 			protos = append(protos, fmt.Sprintf("%v/%d", p.Name, p.Version))
 		}
 		metrics.NewRegisteredGaugeInfo("geth/info", nil).Update(metrics.GaugeInfoValue{
@@ -185,7 +185,7 @@ func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
 	}
 
 	// Configure log filter RPC API.
-	filterSystem := utils.RegisterFilterAPI(stack, backend, &cfg.Eth)
+	filterSystem := utils.RegisterFilterAPI(stack, backend, &cfg.Zond)
 
 	// Configure GraphQL if requested.
 	if ctx.IsSet(utils.GraphQLEnabledFlag.Name) {
@@ -193,26 +193,26 @@ func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
 	}
 
 	// Add the Ethereum Stats daemon if requested.
-	if cfg.Ethstats.URL != "" {
-		utils.RegisterEthStatsService(stack, backend, cfg.Ethstats.URL)
+	if cfg.Zondstats.URL != "" {
+		utils.RegisterZondStatsService(stack, backend, cfg.Zondstats.URL)
 	}
 
 	// Configure full-sync tester service if requested
-	if ctx.IsSet(utils.SyncTargetFlag.Name) && cfg.Eth.SyncMode == downloader.FullSync {
-		utils.RegisterFullSyncTester(stack, eth, ctx.Path(utils.SyncTargetFlag.Name))
+	if ctx.IsSet(utils.SyncTargetFlag.Name) && cfg.Zond.SyncMode == downloader.FullSync {
+		utils.RegisterFullSyncTester(stack, zond, ctx.Path(utils.SyncTargetFlag.Name))
 	}
 
 	// Start the dev mode if requested, or launch the engine API for
 	// interacting with external consensus client.
 	if ctx.IsSet(utils.DeveloperFlag.Name) {
-		simBeacon, err := catalyst.NewSimulatedBeacon(ctx.Uint64(utils.DeveloperPeriodFlag.Name), eth)
+		simBeacon, err := catalyst.NewSimulatedBeacon(ctx.Uint64(utils.DeveloperPeriodFlag.Name), zond)
 		if err != nil {
 			utils.Fatalf("failed to register dev mode catalyst service: %v", err)
 		}
 		catalyst.RegisterSimulatedBeaconAPIs(stack, simBeacon)
 		stack.RegisterLifecycle(simBeacon)
 	} else {
-		err := catalyst.Register(stack, eth)
+		err := catalyst.Register(stack, zond)
 		if err != nil {
 			utils.Fatalf("failed to register catalyst service: %v", err)
 		}
@@ -225,8 +225,8 @@ func dumpConfig(ctx *cli.Context) error {
 	_, cfg := makeConfigNode(ctx)
 	comment := ""
 
-	if cfg.Eth.Genesis != nil {
-		cfg.Eth.Genesis = nil
+	if cfg.Zond.Genesis != nil {
+		cfg.Zond.Genesis = nil
 		comment += "# Note: this config doesn't contain the genesis block.\n\n"
 	}
 
@@ -249,7 +249,7 @@ func dumpConfig(ctx *cli.Context) error {
 	return nil
 }
 
-func applyMetricConfig(ctx *cli.Context, cfg *gethConfig) {
+func applyMetricConfig(ctx *cli.Context, cfg *gzondConfig) {
 	if ctx.IsSet(utils.MetricsEnabledFlag.Name) {
 		cfg.Metrics.Enabled = ctx.Bool(utils.MetricsEnabledFlag.Name)
 	}

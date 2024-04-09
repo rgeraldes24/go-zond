@@ -76,7 +76,7 @@ func (p *hookedPrompter) SetWordCompleter(completer prompt.WordCompleter) {}
 type tester struct {
 	workspace string
 	stack     *node.Node
-	ethereum  *zond.Ethereum
+	zond      *zond.Zond
 	console   *Console
 	input     *hookedPrompter
 	output    *bytes.Buffer
@@ -102,7 +102,7 @@ func newTester(t *testing.T, confOverride func(*zondconfig.Config)) *tester {
 	if confOverride != nil {
 		confOverride(ethConf)
 	}
-	ethBackend, err := zond.New(stack, ethConf)
+	zondBackend, err := zond.New(stack, ethConf)
 	if err != nil {
 		t.Fatalf("failed to register Ethereum protocol: %v", err)
 	}
@@ -133,7 +133,7 @@ func newTester(t *testing.T, confOverride func(*zondconfig.Config)) *tester {
 	return &tester{
 		workspace: workspace,
 		stack:     stack,
-		ethereum:  ethBackend,
+		zond:      zondBackend,
 		console:   console,
 		input:     prompter,
 		output:    printer,

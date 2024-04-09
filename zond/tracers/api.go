@@ -94,7 +94,7 @@ type API struct {
 	backend Backend
 }
 
-// NewAPI creates a new API definition for the tracing methods of the Ethereum service.
+// NewAPI creates a new API definition for the tracing methods of the Zond service.
 func NewAPI(backend Backend) *API {
 	return &API{backend: backend}
 }
@@ -133,9 +133,6 @@ func (api *API) blockByHash(ctx context.Context, hash common.Hash) (*types.Block
 
 // blockByNumberAndHash is the wrapper of the chain access function offered by
 // the backend. It will return an error if the block is not found.
-//
-// Note this function is friendly for the light client which can only retrieve the
-// historical(before the CHT) header/block by number.
 func (api *API) blockByNumberAndHash(ctx context.Context, number rpc.BlockNumber, hash common.Hash) (*types.Block, error) {
 	block, err := api.blockByNumber(ctx, number)
 	if err != nil {
@@ -980,7 +977,6 @@ func APIs(backend Backend) []rpc.API {
 
 // overrideConfig returns a copy of original with forks enabled by override enabled,
 // along with a boolean that indicates whether the copy is canonical (equivalent to the original).
-// Note: the Clique-part is _not_ deep copied
 func overrideConfig(original *params.ChainConfig, override *params.ChainConfig) (*params.ChainConfig, bool) {
 	copy := new(params.ChainConfig)
 	*copy = *original

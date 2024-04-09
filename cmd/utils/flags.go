@@ -140,7 +140,7 @@ var (
 	}
 	MainnetFlag = &cli.BoolFlag{
 		Name:     "mainnet",
-		Usage:    "Ethereum mainnet",
+		Usage:    "Zond mainnet",
 		Category: flags.ZondCategory,
 	}
 	BetaNetFlag = &cli.BoolFlag{
@@ -1454,8 +1454,8 @@ func CheckExclusive(ctx *cli.Context, args ...interface{}) {
 	}
 }
 
-// SetEthConfig applies eth-related command line flags to the config.
-func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *zondconfig.Config) {
+// SetZondConfig applies zond-related command line flags to the config.
+func SetZondConfig(ctx *cli.Context, stack *node.Node, cfg *zondconfig.Config) {
 	// Avoid conflicting network flags
 	CheckExclusive(ctx, MainnetFlag, DeveloperFlag, BetaNetFlag)
 	CheckExclusive(ctx, DeveloperFlag, ExternalSignerFlag) // Can't use both ephemeral unlocked and external signer
@@ -1579,13 +1579,13 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *zondconfig.Config) {
 		cfg.RPCTxFeeCap = ctx.Float64(RPCGlobalTxFeeCapFlag.Name)
 	}
 	if ctx.IsSet(NoDiscoverFlag.Name) {
-		cfg.EthDiscoveryURLs, cfg.SnapDiscoveryURLs = []string{}, []string{}
+		cfg.ZondDiscoveryURLs, cfg.SnapDiscoveryURLs = []string{}, []string{}
 	} else if ctx.IsSet(DNSDiscoveryFlag.Name) {
 		urls := ctx.String(DNSDiscoveryFlag.Name)
 		if urls == "" {
-			cfg.EthDiscoveryURLs = []string{}
+			cfg.ZondDiscoveryURLs = []string{}
 		} else {
-			cfg.EthDiscoveryURLs = SplitAndTrim(urls)
+			cfg.ZondDiscoveryURLs = SplitAndTrim(urls)
 		}
 	}
 	// Override any default configs for hard coded networks.
@@ -1672,30 +1672,30 @@ func SetEthConfig(ctx *cli.Context, stack *node.Node, cfg *zondconfig.Config) {
 // SetDNSDiscoveryDefaults configures DNS discovery with the given URL if
 // no URLs are set.
 func SetDNSDiscoveryDefaults(cfg *zondconfig.Config, genesis common.Hash) {
-	if cfg.EthDiscoveryURLs != nil {
+	if cfg.ZondDiscoveryURLs != nil {
 		return // already set through flags/config
 	}
 	protocol := "all"
 	if url := params.KnownDNSNetwork(genesis, protocol); url != "" {
-		cfg.EthDiscoveryURLs = []string{url}
-		cfg.SnapDiscoveryURLs = cfg.EthDiscoveryURLs
+		cfg.ZondDiscoveryURLs = []string{url}
+		cfg.SnapDiscoveryURLs = cfg.ZondDiscoveryURLs
 	}
 }
 
 // RegisterZondService adds a Zond client to the stack.
-func RegisterZondService(stack *node.Node, cfg *zondconfig.Config) (zondapi.Backend, *zond.Ethereum) {
+func RegisterZondService(stack *node.Node, cfg *zondconfig.Config) (zondapi.Backend, *zond.Zond) {
 	backend, err := zond.New(stack, cfg)
 	if err != nil {
-		Fatalf("Failed to register the Ethereum service: %v", err)
+		Fatalf("Failed to register the Zond service: %v", err)
 	}
 	stack.RegisterAPIs(tracers.APIs(backend.APIBackend))
 	return backend.APIBackend, backend
 }
 
-// RegisterEthStatsService configures the Ethereum Stats daemon and adds it to the node.
-func RegisterEthStatsService(stack *node.Node, backend zondapi.Backend, url string) {
+// RegisterZondStatsService configures the Zond Stats daemon and adds it to the node.
+func RegisterZondStatsService(stack *node.Node, backend zondapi.Backend, url string) {
 	if err := zondstats.New(stack, backend, backend.Engine(), url); err != nil {
-		Fatalf("Failed to register the Ethereum Stats service: %v", err)
+		Fatalf("Failed to register the Zond Stats service: %v", err)
 	}
 }
 
@@ -1708,9 +1708,9 @@ func RegisterGraphQLService(stack *node.Node, backend zondapi.Backend, filterSys
 }
 
 // RegisterFilterAPI adds the zond log filtering RPC API to the node.
-func RegisterFilterAPI(stack *node.Node, backend zondapi.Backend, ethcfg *zondconfig.Config) *filters.FilterSystem {
+func RegisterFilterAPI(stack *node.Node, backend zondapi.Backend, zondcfg *zondconfig.Config) *filters.FilterSystem {
 	filterSystem := filters.NewFilterSystem(backend, filters.Config{
-		LogCacheSize: ethcfg.FilterLogCacheSize,
+		LogCacheSize: zondcfg.FilterLogCacheSize,
 	})
 	stack.RegisterAPIs([]rpc.API{{
 		Namespace: "zond",
@@ -1720,7 +1720,7 @@ func RegisterFilterAPI(stack *node.Node, backend zondapi.Backend, ethcfg *zondco
 }
 
 // RegisterFullSyncTester adds the full-sync tester service into node.
-func RegisterFullSyncTester(stack *node.Node, eth *zond.Ethereum, path string) {
+func RegisterFullSyncTester(stack *node.Node, zond *zond.Zond, path string) {
 	blob, err := os.ReadFile(path)
 	if err != nil {
 		Fatalf("Failed to read block file: %v", err)
@@ -1733,7 +1733,7 @@ func RegisterFullSyncTester(stack *node.Node, eth *zond.Ethereum, path string) {
 	if err := rlp.DecodeBytes(rlpBlob, &block); err != nil {
 		Fatalf("Failed to decode block: %v", err)
 	}
-	catalyst.RegisterFullSyncTester(stack, eth, &block)
+	catalyst.RegisterFullSyncTester(stack, zond, &block)
 	log.Info("Registered full-sync tester", "number", block.NumberU64(), "hash", block.Hash())
 }
 

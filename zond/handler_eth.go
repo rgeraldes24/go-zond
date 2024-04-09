@@ -28,20 +28,20 @@ import (
 	"github.com/theQRL/go-zond/zond/protocols/zond"
 )
 
-// ethHandler implements the zond.Backend interface to handle the various network
+// zondHandler implements the zond.Backend interface to handle the various network
 // packets that are sent as replies or broadcasts.
-type ethHandler handler
+type zondHandler handler
 
-func (h *ethHandler) Chain() *core.BlockChain { return h.chain }
-func (h *ethHandler) TxPool() zond.TxPool     { return h.txpool }
+func (h *zondHandler) Chain() *core.BlockChain { return h.chain }
+func (h *zondHandler) TxPool() zond.TxPool     { return h.txpool }
 
 // RunPeer is invoked when a peer joins on the `zond` protocol.
-func (h *ethHandler) RunPeer(peer *zond.Peer, hand zond.Handler) error {
-	return (*handler)(h).runEthPeer(peer, hand)
+func (h *zondHandler) RunPeer(peer *zond.Peer, hand zond.Handler) error {
+	return (*handler)(h).runZondPeer(peer, hand)
 }
 
 // PeerInfo retrieves all known `eth` information about a peer.
-func (h *ethHandler) PeerInfo(id enode.ID) interface{} {
+func (h *zondHandler) PeerInfo(id enode.ID) interface{} {
 	if p := h.peers.peer(id.String()); p != nil {
 		return p.info()
 	}
@@ -50,13 +50,13 @@ func (h *ethHandler) PeerInfo(id enode.ID) interface{} {
 
 // AcceptTxs retrieves whether transaction processing is enabled on the node
 // or if inbound transactions should simply be dropped.
-func (h *ethHandler) AcceptTxs() bool {
+func (h *zondHandler) AcceptTxs() bool {
 	return h.acceptTxs.Load()
 }
 
 // Handle is invoked from a peer's message handler when it receives a new remote
 // message that the handler couldn't consume and serve itself.
-func (h *ethHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
+func (h *zondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 	// Consume any broadcasts and announces, forwarding the rest to the downloader
 	switch packet := packet.(type) {
 	case *zond.NewBlockHashesPacket:
@@ -85,7 +85,7 @@ func (h *ethHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 
 // handleBlockAnnounces is invoked from a peer's message handler when it transmits a
 // batch of block announcements for the local node to process.
-func (h *ethHandler) handleBlockAnnounces(peer *zond.Peer, hashes []common.Hash, numbers []uint64) error {
+func (h *zondHandler) handleBlockAnnounces(peer *zond.Peer, hashes []common.Hash, numbers []uint64) error {
 	// Drop all incoming block announces from the p2p network if
 	// the chain already entered the pos stage and disconnect the
 	// remote peer.
@@ -113,7 +113,7 @@ func (h *ethHandler) handleBlockAnnounces(peer *zond.Peer, hashes []common.Hash,
 
 // handleBlockBroadcast is invoked from a peer's message handler when it transmits a
 // block broadcast for the local node to process.
-func (h *ethHandler) handleBlockBroadcast(peer *zond.Peer, block *types.Block, td *big.Int) error {
+func (h *zondHandler) handleBlockBroadcast(peer *zond.Peer, block *types.Block, td *big.Int) error {
 	// Drop all incoming block announces from the p2p network if
 	// the chain already entered the pos stage and disconnect the
 	// remote peer.

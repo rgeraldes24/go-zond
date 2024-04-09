@@ -81,8 +81,6 @@ func (h *testEthHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 
 // Tests that peers are correctly accepted (or rejected) based on the advertised
 // fork IDs in the protocol handshake.
-func TestForkIDSplit66(t *testing.T) { testForkIDSplit(t, zond.ETH66) }
-func TestForkIDSplit67(t *testing.T) { testForkIDSplit(t, zond.ETH67) }
 func TestForkIDSplit68(t *testing.T) { testForkIDSplit(t, zond.ETH68) }
 
 func testForkIDSplit(t *testing.T, protocol uint) {
@@ -111,7 +109,7 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 		_, blocksNoFork, _  = core.GenerateChainWithGenesis(gspecNoFork, engine, 2, nil)
 		_, blocksProFork, _ = core.GenerateChainWithGenesis(gspecProFork, engine, 2, nil)
 
-		ethNoFork, _ = newHandler(&handlerConfig{
+		zondNoFork, _ = newHandler(&handlerConfig{
 			Database:   dbNoFork,
 			Chain:      chainNoFork,
 			TxPool:     newTestTxPool(),
@@ -120,7 +118,7 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 			Sync:       downloader.FullSync,
 			BloomCache: 1,
 		})
-		ethProFork, _ = newHandler(&handlerConfig{
+		zondProFork, _ = newHandler(&handlerConfig{
 			Database:   dbProFork,
 			Chain:      chainProFork,
 			TxPool:     newTestTxPool(),
@@ -130,15 +128,15 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 			BloomCache: 1,
 		})
 	)
-	ethNoFork.Start(1000)
-	ethProFork.Start(1000)
+	zondNoFork.Start(1000)
+	zondProFork.Start(1000)
 
 	// Clean up everything after ourselves
 	defer chainNoFork.Stop()
 	defer chainProFork.Stop()
 
-	defer ethNoFork.Stop()
-	defer ethProFork.Stop()
+	defer zondNoFork.Stop()
+	defer zondProFork.Stop()
 
 	// Both nodes should allow the other to connect (same genesis, next fork is the same)
 	p2pNoFork, p2pProFork := p2p.MsgPipe()
@@ -152,10 +150,10 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 
 	errc := make(chan error, 2)
 	go func(errc chan error) {
-		errc <- ethNoFork.runEthPeer(peerProFork, func(peer *zond.Peer) error { return nil })
+		errc <- zondNoFork.runZondPeer(peerProFork, func(peer *zond.Peer) error { return nil })
 	}(errc)
 	go func(errc chan error) {
-		errc <- ethProFork.runEthPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
+		errc <- zondProFork.runZondPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
 	}(errc)
 
 	for i := 0; i < 2; i++ {
@@ -183,10 +181,10 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 
 	errc = make(chan error, 2)
 	go func(errc chan error) {
-		errc <- ethNoFork.runEthPeer(peerProFork, func(peer *zond.Peer) error { return nil })
+		errc <- zondNoFork.runZondPeer(peerProFork, func(peer *zond.Peer) error { return nil })
 	}(errc)
 	go func(errc chan error) {
-		errc <- ethProFork.runEthPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
+		errc <- zondProFork.runZondPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
 	}(errc)
 
 	for i := 0; i < 2; i++ {
@@ -214,10 +212,10 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 
 	errc = make(chan error, 2)
 	go func(errc chan error) {
-		errc <- ethNoFork.runEthPeer(peerProFork, func(peer *zond.Peer) error { return nil })
+		errc <- zondNoFork.runZondPeer(peerProFork, func(peer *zond.Peer) error { return nil })
 	}(errc)
 	go func(errc chan error) {
-		errc <- ethProFork.runEthPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
+		errc <- zondProFork.runZondPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
 	}(errc)
 
 	var successes int
@@ -237,8 +235,6 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 }
 
 // Tests that received transactions are added to the local pool.
-func TestRecvTransactions66(t *testing.T) { testRecvTransactions(t, zond.ETH66) }
-func TestRecvTransactions67(t *testing.T) { testRecvTransactions(t, zond.ETH67) }
 func TestRecvTransactions68(t *testing.T) { testRecvTransactions(t, zond.ETH68) }
 
 func testRecvTransactions(t *testing.T, protocol uint) {
@@ -264,8 +260,8 @@ func testRecvTransactions(t *testing.T, protocol uint) {
 	defer src.Close()
 	defer sink.Close()
 
-	go handler.handler.runEthPeer(sink, func(peer *zond.Peer) error {
-		return zond.Handle((*ethHandler)(handler.handler), peer)
+	go handler.handler.runZondPeer(sink, func(peer *zond.Peer) error {
+		return zond.Handle((*zondHandler)(handler.handler), peer)
 	})
 	// Run the handshake locally to avoid spinning up a source handler
 	var (
@@ -296,8 +292,6 @@ func testRecvTransactions(t *testing.T, protocol uint) {
 }
 
 // This test checks that pending transactions are sent.
-func TestSendTransactions66(t *testing.T) { testSendTransactions(t, zond.ETH66) }
-func TestSendTransactions67(t *testing.T) { testSendTransactions(t, zond.ETH67) }
 func TestSendTransactions68(t *testing.T) { testSendTransactions(t, zond.ETH68) }
 
 func testSendTransactions(t *testing.T, protocol uint) {
@@ -328,8 +322,8 @@ func testSendTransactions(t *testing.T, protocol uint) {
 	defer src.Close()
 	defer sink.Close()
 
-	go handler.handler.runEthPeer(src, func(peer *zond.Peer) error {
-		return zond.Handle((*ethHandler)(handler.handler), peer)
+	go handler.handler.runZondPeer(src, func(peer *zond.Peer) error {
+		return zond.Handle((*zondHandler)(handler.handler), peer)
 	})
 	// Run the handshake locally to avoid spinning up a source handler
 	var (
@@ -384,8 +378,6 @@ func testSendTransactions(t *testing.T, protocol uint) {
 
 // Tests that transactions get propagated to all attached peers, either via direct
 // broadcasts or via announcements/retrievals.
-func TestTransactionPropagation66(t *testing.T) { testTransactionPropagation(t, zond.ETH66) }
-func TestTransactionPropagation67(t *testing.T) { testTransactionPropagation(t, zond.ETH67) }
 func TestTransactionPropagation68(t *testing.T) { testTransactionPropagation(t, zond.ETH68) }
 
 func testTransactionPropagation(t *testing.T, protocol uint) {
@@ -418,11 +410,11 @@ func testTransactionPropagation(t *testing.T, protocol uint) {
 		defer sourcePeer.Close()
 		defer sinkPeer.Close()
 
-		go source.handler.runEthPeer(sourcePeer, func(peer *zond.Peer) error {
-			return zond.Handle((*ethHandler)(source.handler), peer)
+		go source.handler.runZondPeer(sourcePeer, func(peer *zond.Peer) error {
+			return zond.Handle((*zondHandler)(source.handler), peer)
 		})
-		go sink.handler.runEthPeer(sinkPeer, func(peer *zond.Peer) error {
-			return zond.Handle((*ethHandler)(sink.handler), peer)
+		go sink.handler.runZondPeer(sinkPeer, func(peer *zond.Peer) error {
+			return zond.Handle((*zondHandler)(sink.handler), peer)
 		})
 	}
 	// Subscribe to all the transaction pools
@@ -494,13 +486,13 @@ func testBroadcastBlock(t *testing.T, peers, bcasts int) {
 		defer sourcePipe.Close()
 		defer sinkPipe.Close()
 
-		sourcePeer := zond.NewPeer(zond.ETH66, p2p.NewPeerPipe(enode.ID{byte(i)}, "", nil, sourcePipe), sourcePipe, nil)
-		sinkPeer := zond.NewPeer(zond.ETH66, p2p.NewPeerPipe(enode.ID{0}, "", nil, sinkPipe), sinkPipe, nil)
+		sourcePeer := zond.NewPeer(zond.ETH68, p2p.NewPeerPipe(enode.ID{byte(i)}, "", nil, sourcePipe), sourcePipe, nil)
+		sinkPeer := zond.NewPeer(zond.ETH68, p2p.NewPeerPipe(enode.ID{0}, "", nil, sinkPipe), sinkPipe, nil)
 		defer sourcePeer.Close()
 		defer sinkPeer.Close()
 
-		go source.handler.runEthPeer(sourcePeer, func(peer *zond.Peer) error {
-			return zond.Handle((*ethHandler)(source.handler), peer)
+		go source.handler.runZondPeer(sourcePeer, func(peer *zond.Peer) error {
+			return zond.Handle((*zondHandler)(source.handler), peer)
 		})
 		if err := sinkPeer.Handshake(1, td, genesis.Hash(), genesis.Hash(), forkid.NewIDWithChain(source.chain), forkid.NewFilter(source.chain)); err != nil {
 			t.Fatalf("failed to run protocol handshake")
@@ -547,8 +539,6 @@ func testBroadcastBlock(t *testing.T, peers, bcasts int) {
 
 // Tests that a propagated malformed block (uncles or transactions don't match
 // with the hashes in the header) gets discarded and not broadcast forward.
-func TestBroadcastMalformedBlock66(t *testing.T) { testBroadcastMalformedBlock(t, zond.ETH66) }
-func TestBroadcastMalformedBlock67(t *testing.T) { testBroadcastMalformedBlock(t, zond.ETH67) }
 func TestBroadcastMalformedBlock68(t *testing.T) { testBroadcastMalformedBlock(t, zond.ETH68) }
 
 func testBroadcastMalformedBlock(t *testing.T, protocol uint) {
@@ -569,8 +559,8 @@ func testBroadcastMalformedBlock(t *testing.T, protocol uint) {
 	defer src.Close()
 	defer sink.Close()
 
-	go source.handler.runEthPeer(src, func(peer *zond.Peer) error {
-		return zond.Handle((*ethHandler)(source.handler), peer)
+	go source.handler.runZondPeer(src, func(peer *zond.Peer) error {
+		return zond.Handle((*zondHandler)(source.handler), peer)
 	})
 	// Run the handshake locally to avoid spinning up a sink handler
 	var (
