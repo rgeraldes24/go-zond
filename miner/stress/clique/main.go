@@ -41,7 +41,6 @@ import (
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/zond"
 	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zond/ethconfig"
 )
 
 func main() {
@@ -200,14 +199,14 @@ func makeSealer(genesis *core.Genesis) (*node.Node, *zond.Ethereum, error) {
 		return nil, nil, err
 	}
 	// Create and register the backend
-	ethBackend, err := zond.New(stack, &ethconfig.Config{
+	ethBackend, err := zond.New(stack, &zondconfigConfig{
 		Genesis:         genesis,
 		NetworkId:       genesis.Config.ChainID.Uint64(),
 		SyncMode:        downloader.FullSync,
 		DatabaseCache:   256,
 		DatabaseHandles: 256,
 		TxPool:          legacypool.DefaultConfig,
-		GPO:             ethconfig.Defaults.GPO,
+		GPO:             zondconfigDefaults.GPO,
 		Miner: miner.Config{
 			GasCeil:  genesis.GasLimit * 11 / 10,
 			GasPrice: big.NewInt(1),

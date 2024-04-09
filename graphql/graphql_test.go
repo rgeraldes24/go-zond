@@ -27,6 +27,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ethereum/go-ethereum/eth"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus"
 	"github.com/theQRL/go-zond/consensus/beacon"
@@ -37,8 +38,6 @@ import (
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/ethconfig"
 	"github.com/theQRL/go-zond/zond/filters"
 
 	"github.com/stretchr/testify/assert"
@@ -437,7 +436,7 @@ func createNode(t *testing.T) *node.Node {
 }
 
 func newGQLService(t *testing.T, stack *node.Node, shanghai bool, gspec *core.Genesis, genBlocks int, genfunc func(i int, gen *core.BlockGen)) (*handler, []*types.Block) {
-	ethConf := &ethconfig.Config{
+	ethConf := &zondconfigConfig{
 		Genesis:        gspec,
 		NetworkId:      1337,
 		TrieCleanCache: 5,

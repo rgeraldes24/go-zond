@@ -32,9 +32,9 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
-	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/ethconfig"
+	zondsvc "github.com/theQRL/go-zond/zond"
 	"github.com/theQRL/go-zond/zond/filters"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 	"github.com/theQRL/go-zond/zondclient"
 )
 
@@ -54,16 +54,16 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 	if err != nil {
 		t.Fatalf("can't create new node: %v", err)
 	}
-	// Create Ethereum Service
-	config := &ethconfig.Config{Genesis: genesis}
-	ethservice, err := zond.New(n, config)
+	// Create Zond Service
+	config := &zondconfig.Config{Genesis: genesis}
+	ethservice, err := zondsvc.New(n, config)
 	if err != nil {
 		t.Fatalf("can't create new ethereum service: %v", err)
 	}
 	filterSystem := filters.NewFilterSystem(ethservice.APIBackend, filters.Config{})
 	n.RegisterAPIs([]rpc.API{{
 		Namespace: "zond",
-		Service:   filters.NewFilterAPI(filterSystem, false),
+		Service:   filters.NewFilterAPI(filterSystem),
 	}})
 
 	// Import the test chain.

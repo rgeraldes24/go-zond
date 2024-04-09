@@ -29,7 +29,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/holiman/uint256"
 	"github.com/stretchr/testify/require"
 	"github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/accounts"
@@ -96,15 +95,6 @@ func TestTransaction_RoundTripRpcJSON(t *testing.T) {
 		tests  = allTransactionTypes(common.Address{0xde, 0xad}, config)
 	)
 	testTransactionMarshal(t, tests, config)
-}
-
-func TestTransactionBlobTx(t *testing.T) {
-	config := *params.TestChainConfig
-	config.ShanghaiTime = new(uint64)
-	config.CancunTime = new(uint64)
-	tests := allBlobTxs(common.Address{0xde, 0xad}, &config)
-
-	testTransactionMarshal(t, tests, &config)
 }
 
 type txData struct {
@@ -357,52 +347,6 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 	}
 }
 
-func allBlobTxs(addr common.Address, config *params.ChainConfig) []txData {
-	return []txData{
-		{
-			Tx: &types.BlobTx{
-				Nonce:      6,
-				GasTipCap:  uint256.NewInt(1),
-				GasFeeCap:  uint256.NewInt(5),
-				Gas:        6,
-				To:         addr,
-				BlobFeeCap: uint256.NewInt(1),
-				BlobHashes: []common.Hash{{1}},
-				Value:      new(uint256.Int),
-				V:          uint256.NewInt(32),
-				R:          uint256.NewInt(10),
-				S:          uint256.NewInt(11),
-			},
-			Want: `{
-                "blockHash": null,
-                "blockNumber": null,
-                "from": "0x71562b71999873db5b286df957af199ec94617f7",
-                "gas": "0x6",
-                "gasPrice": "0x5",
-                "maxFeePerGas": "0x5",
-                "maxPriorityFeePerGas": "0x1",
-                "maxFeePerBlobGas": "0x1",
-                "hash": "0x1f2b59a20e61efc615ad0cbe936379d6bbea6f938aafaf35eb1da05d8e7f46a3",
-                "input": "0x",
-                "nonce": "0x6",
-                "to": "0xdead000000000000000000000000000000000000",
-                "transactionIndex": null,
-                "value": "0x0",
-                "type": "0x3",
-                "accessList": [],
-                "chainId": "0x1",
-                "blobVersionedHashes": [
-                    "0x0100000000000000000000000000000000000000000000000000000000000000"
-                ],
-                "v": "0x0",
-                "r": "0x618be8908e0e5320f8f3b48042a079fe5a335ebd4ed1422a7d2207cd45d872bc",
-                "s": "0x27b2bc6c80e849a8e8b764d4549d8c2efac3441e73cf37054eb0a9b9f8e89b27",
-                "yParity": "0x0"
-            }`,
-		},
-	}
-}
-
 type testBackend struct {
 	db      zonddb.Database
 	chain   *core.BlockChain
@@ -445,7 +389,7 @@ func (b testBackend) SuggestGasTipCap(ctx context.Context) (*big.Int, error) {
 func (b testBackend) FeeHistory(ctx context.Context, blockCount uint64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*big.Int, [][]*big.Int, []*big.Int, []float64, error) {
 	return nil, nil, nil, nil, nil
 }
-func (b testBackend) ChainDb() zonddb.Database           { return b.db }
+func (b testBackend) ChainDb() zonddb.Database          { return b.db }
 func (b testBackend) AccountManager() *accounts.Manager { return nil }
 func (b testBackend) ExtRPCEnabled() bool               { return false }
 func (b testBackend) RPCGasCap() uint64                 { return 10000000 }
@@ -1361,7 +1305,6 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Hash) {
 	config := *params.TestChainConfig
 	config.ShanghaiTime = new(uint64)
-	config.CancunTime = new(uint64)
 	var (
 		acc1Key, _ = crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		acc2Key, _ = crypto.HexToECDSA("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
@@ -1369,9 +1312,7 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 		acc2Addr   = crypto.PubkeyToAddress(acc2Key.PublicKey)
 		contract   = common.HexToAddress("0000000000000000000000000000000000031ec7")
 		genesis    = &core.Genesis{
-			Config:        &config,
-			ExcessBlobGas: new(uint64),
-			BlobGasUsed:   new(uint64),
+			Config: &config,
 			Alloc: core.GenesisAlloc{
 				acc1Addr: {Balance: big.NewInt(params.Ether)},
 				acc2Addr: {Balance: big.NewInt(params.Ether)},
@@ -1426,20 +1367,6 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 				StorageKeys: []common.Hash{{0}},
 			}}
 			tx, err = types.SignTx(types.NewTx(&types.AccessListTx{Nonce: uint64(i), To: nil, Gas: 58100, GasPrice: b.BaseFee(), Data: common.FromHex("0x60806040"), AccessList: accessList}), signer, acc1Key)
-		case 5:
-			// blob tx
-			fee := big.NewInt(500)
-			fee.Add(fee, b.BaseFee())
-			tx, err = types.SignTx(types.NewTx(&types.BlobTx{
-				Nonce:      uint64(i),
-				GasTipCap:  uint256.NewInt(1),
-				GasFeeCap:  uint256.MustFromBig(fee),
-				Gas:        params.TxGas,
-				To:         acc2Addr,
-				BlobFeeCap: uint256.NewInt(1),
-				BlobHashes: []common.Hash{{1}},
-				Value:      new(uint256.Int),
-			}), signer, acc1Key)
 		}
 		if err != nil {
 			t.Errorf("failed to sign tx: %v", err)
@@ -1447,9 +1374,6 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 		if tx != nil {
 			b.AddTx(tx)
 			txHashes[i] = tx.Hash()
-		}
-		if i == 5 {
-			b.SetBlobGas(params.BlobTxBlobGasPerBlob)
 		}
 		b.SetPoS()
 	})
@@ -1502,11 +1426,6 @@ func TestRPCGetTransactionReceipt(t *testing.T) {
 		{
 			txHash: common.HexToHash("deadbeef"),
 			file:   "txhash-notfound",
-		},
-		// 7. blob tx
-		{
-			txHash: txHashes[5],
-			file:   "blob-tx",
 		},
 	}
 
@@ -1600,11 +1519,6 @@ func TestRPCGetBlockReceipts(t *testing.T) {
 		{
 			test: rpc.BlockNumberOrHashWithNumber(rpc.BlockNumber(genBlocks + 1)),
 			file: "block-notfound",
-		},
-		// 11. block with blob tx
-		{
-			test: rpc.BlockNumberOrHashWithNumber(rpc.BlockNumber(6)),
-			file: "block-with-blob-tx",
 		},
 	}
 

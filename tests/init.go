@@ -316,7 +316,6 @@ var Forks = map[string]*params.ChainConfig{
 		MergeNetsplitBlock:      big.NewInt(0),
 		TerminalTotalDifficulty: big.NewInt(0),
 		ShanghaiTime:            u64(0),
-		CancunTime:              u64(0),
 	},
 	"ShanghaiToCancunAtTime15k": {
 		ChainID:                 big.NewInt(1),
@@ -335,7 +334,6 @@ var Forks = map[string]*params.ChainConfig{
 		MergeNetsplitBlock:      big.NewInt(0),
 		TerminalTotalDifficulty: big.NewInt(0),
 		ShanghaiTime:            u64(0),
-		CancunTime:              u64(15_000),
 	},
 }
 

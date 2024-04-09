@@ -56,7 +56,6 @@ var (
 	londonInstructionSet           = newLondonInstructionSet()
 	mergeInstructionSet            = newMergeInstructionSet()
 	shanghaiInstructionSet         = newShanghaiInstructionSet()
-	cancunInstructionSet           = newCancunInstructionSet()
 )
 
 // JumpTable contains the EVM opcodes supported at a given fork.
@@ -80,6 +79,8 @@ func validate(jt JumpTable) JumpTable {
 	return jt
 }
 
+// TODO(rgeraldes24): check if we need to support any of these
+/*
 func newCancunInstructionSet() JumpTable {
 	instructionSet := newShanghaiInstructionSet()
 	enable4844(&instructionSet) // EIP-4844 (DATAHASH opcode)
@@ -88,6 +89,7 @@ func newCancunInstructionSet() JumpTable {
 	enable6780(&instructionSet) // EIP-6780 SELFDESTRUCT only in same transaction
 	return validate(instructionSet)
 }
+*/
 
 func newShanghaiInstructionSet() JumpTable {
 	instructionSet := newMergeInstructionSet()

@@ -42,7 +42,6 @@ import (
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/zond/catalyst"
 	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zond/ethconfig"
 	"github.com/urfave/cli/v2"
 )
 
@@ -59,7 +58,7 @@ var (
 	configFileFlag = &cli.StringFlag{
 		Name:     "config",
 		Usage:    "TOML configuration file",
-		Category: flags.EthCategory,
+		Category: flags.ZondCategory,
 	}
 )
 
@@ -90,7 +89,7 @@ type ethstatsConfig struct {
 }
 
 type gethConfig struct {
-	Eth      ethconfig.Config
+	Eth      zondconfigConfig
 	Node     node.Config
 	Ethstats ethstatsConfig
 	Metrics  metrics.Config
@@ -127,7 +126,7 @@ func defaultNodeConfig() node.Config {
 func loadBaseConfig(ctx *cli.Context) gethConfig {
 	// Load defaults.
 	cfg := gethConfig{
-		Eth:     ethconfig.Defaults,
+		Eth:     zondconfigDefaults,
 		Node:    defaultNodeConfig(),
 		Metrics: metrics.DefaultConfig,
 	}
@@ -168,7 +167,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 // makeFullNode loads geth configuration and creates the Ethereum backend.
 func makeFullNode(ctx *cli.Context) (*node.Node, ethapi.Backend) {
 	stack, cfg := makeConfigNode(ctx)
-	backend, eth := utils.RegisterEthService(stack, &cfg.Eth)
+	backend, eth := utils.RegisterZondService(stack, &cfg.Eth)
 
 	// Create gauge with geth system and build information
 	if eth != nil {
@@ -296,13 +295,13 @@ func applyMetricConfig(ctx *cli.Context, cfg *gethConfig) {
 
 func deprecated(field string) bool {
 	switch field {
-	case "ethconfig.Config.EVMInterpreter":
+	case "zondconfigConfig.EVMInterpreter":
 		return true
-	case "ethconfig.Config.EWASMInterpreter":
+	case "zondconfigConfig.EWASMInterpreter":
 		return true
-	case "ethconfig.Config.TrieCleanCacheJournal":
+	case "zondconfigConfig.TrieCleanCacheJournal":
 		return true
-	case "ethconfig.Config.TrieCleanCacheRejournal":
+	case "zondconfigConfig.TrieCleanCacheRejournal":
 		return true
 	default:
 		return false
