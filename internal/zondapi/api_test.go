@@ -14,11 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package ethapi
+package zondapi
 
 import (
 	"context"
-	"crypto/ecdsa"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -30,6 +29,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
+	"github.com/theQRL/go-qrllib/dilithium"
 	"github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
@@ -44,6 +44,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/internal/blocktest"
 	"github.com/theQRL/go-zond/params"
@@ -56,7 +57,7 @@ func testTransactionMarshal(t *testing.T, tests []txData, config *params.ChainCo
 	t.Parallel()
 	var (
 		signer = types.LatestSigner(config)
-		key, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	)
 
 	for i, tt := range tests {
@@ -112,9 +113,9 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 				To:       &addr,
 				Value:    big.NewInt(8),
 				Data:     []byte{0, 1, 2, 3, 4},
-				V:        big.NewInt(9),
-				R:        big.NewInt(10),
-				S:        big.NewInt(11),
+				// V:        big.NewInt(9),
+				// R:        big.NewInt(10),
+				// S:        big.NewInt(11),
 			},
 			Want: `{
 				"blockHash": null,
@@ -142,9 +143,9 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 				To:       nil,
 				Value:    big.NewInt(8),
 				Data:     []byte{0, 1, 2, 3, 4},
-				V:        big.NewInt(32),
-				R:        big.NewInt(10),
-				S:        big.NewInt(11),
+				// V:        big.NewInt(32),
+				// R:        big.NewInt(10),
+				// S:        big.NewInt(11),
 			},
 			Want: `{
 				"blockHash": null,
@@ -180,9 +181,9 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 						StorageKeys: []common.Hash{types.EmptyRootHash},
 					},
 				},
-				V: big.NewInt(32),
-				R: big.NewInt(10),
-				S: big.NewInt(11),
+				// V: big.NewInt(32),
+				// R: big.NewInt(10),
+				// S: big.NewInt(11),
 			},
 			Want: `{
 				"blockHash": null,
@@ -226,9 +227,9 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 						StorageKeys: []common.Hash{types.EmptyRootHash},
 					},
 				},
-				V: big.NewInt(32),
-				R: big.NewInt(10),
-				S: big.NewInt(11),
+				// V: big.NewInt(32),
+				// R: big.NewInt(10),
+				// S: big.NewInt(11),
 			},
 			Want: `{
 				"blockHash": null,
@@ -273,9 +274,9 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 						StorageKeys: []common.Hash{types.EmptyRootHash},
 					},
 				},
-				V: big.NewInt(32),
-				R: big.NewInt(10),
-				S: big.NewInt(11),
+				// V: big.NewInt(32),
+				// R: big.NewInt(10),
+				// S: big.NewInt(11),
 			},
 			Want: `{
 				"blockHash": null,
@@ -317,9 +318,9 @@ func allTransactionTypes(addr common.Address, config *params.ChainConfig) []txDa
 				Value:      big.NewInt(8),
 				Data:       []byte{0, 1, 2, 3, 4},
 				AccessList: types.AccessList{},
-				V:          big.NewInt(32),
-				R:          big.NewInt(10),
-				S:          big.NewInt(11),
+				// V:          big.NewInt(32),
+				// R:          big.NewInt(10),
+				// S:          big.NewInt(11),
 			},
 			Want: `{
 				"blockHash": null,
@@ -366,7 +367,7 @@ func newTestBackend(t *testing.T, n int, gspec *core.Genesis, engine consensus.E
 	// Generate blocks for testing
 	db, blocks, _ := core.GenerateChainWithGenesis(gspec, engine, n, generator)
 	txlookupLimit := uint64(0)
-	chain, err := core.NewBlockChain(db, cacheConfig, gspec, nil, engine, vm.Config{}, nil, &txlookupLimit)
+	chain, err := core.NewBlockChain(db, cacheConfig, gspec, engine, vm.Config{}, nil, &txlookupLimit)
 	if err != nil {
 		t.Fatalf("failed to create tester chain: %v", err)
 	}
@@ -395,7 +396,6 @@ func (b testBackend) ExtRPCEnabled() bool               { return false }
 func (b testBackend) RPCGasCap() uint64                 { return 10000000 }
 func (b testBackend) RPCEVMTimeout() time.Duration      { return time.Second }
 func (b testBackend) RPCTxFeeCap() float64              { return 0 }
-func (b testBackend) UnprotectedAllowed() bool          { return false }
 func (b testBackend) SetHead(number uint64)             {}
 func (b testBackend) HeaderByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Header, error) {
 	if number == rpc.LatestBlockNumber {
@@ -815,14 +815,14 @@ func TestCall(t *testing.T) {
 }
 
 type Account struct {
-	key  *ecdsa.PrivateKey
+	key  *dilithium.Dilithium
 	addr common.Address
 }
 
 func newAccounts(n int) (accounts []Account) {
 	for i := 0; i < n; i++ {
-		key, _ := crypto.GenerateKey()
-		addr := crypto.PubkeyToAddress(key.PublicKey)
+		key, _ := crypto.GenerateDilithiumKey()
+		addr := key.GetAddress()
 		accounts = append(accounts, Account{key: key, addr: addr})
 	}
 	slices.SortFunc(accounts, func(a, b Account) int { return a.addr.Cmp(b.addr) })
@@ -1053,11 +1053,11 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 
 	// Initialize test accounts
 	var (
-		acc1Key, _ = crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-		acc2Key, _ = crypto.HexToECDSA("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
-		acc1Addr   = crypto.PubkeyToAddress(acc1Key.PublicKey)
-		acc2Addr   = crypto.PubkeyToAddress(acc2Key.PublicKey)
-		genesis    = &core.Genesis{
+		acc1Key, _                = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		acc2Key, _                = pqcrypto.HexToDilithium("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
+		acc1Addr                  = acc1Key.GetAddress()
+		acc2Addr   common.Address = acc2Key.GetAddress()
+		genesis                   = &core.Genesis{
 			Config: params.TestChainConfig,
 			Alloc: core.GenesisAlloc{
 				acc1Addr: {Balance: big.NewInt(params.Ether)},
@@ -1306,12 +1306,12 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 	config := *params.TestChainConfig
 	config.ShanghaiTime = new(uint64)
 	var (
-		acc1Key, _ = crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-		acc2Key, _ = crypto.HexToECDSA("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
-		acc1Addr   = crypto.PubkeyToAddress(acc1Key.PublicKey)
-		acc2Addr   = crypto.PubkeyToAddress(acc2Key.PublicKey)
-		contract   = common.HexToAddress("0000000000000000000000000000000000031ec7")
-		genesis    = &core.Genesis{
+		acc1Key, _                = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		acc2Key, _                = pqcrypto.HexToDilithium("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
+		acc1Addr                  = acc1Key.GetAddress()
+		acc2Addr   common.Address = acc2Key.GetAddress()
+		contract                  = common.HexToAddress("0000000000000000000000000000000000031ec7")
+		genesis                   = &core.Genesis{
 			Config: &config,
 			Alloc: core.GenesisAlloc{
 				acc1Addr: {Balance: big.NewInt(params.Ether)},

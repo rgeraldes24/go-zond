@@ -33,15 +33,16 @@ import (
 	"github.com/theQRL/go-zond/accounts/scwallet"
 	"github.com/theQRL/go-zond/accounts/usbwallet"
 	"github.com/theQRL/go-zond/cmd/utils"
-	"github.com/theQRL/go-zond/internal/ethapi"
 	"github.com/theQRL/go-zond/internal/flags"
 	"github.com/theQRL/go-zond/internal/version"
+	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/zond/catalyst"
 	"github.com/theQRL/go-zond/zond/downloader"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 	"github.com/urfave/cli/v2"
 )
 
@@ -89,7 +90,7 @@ type ethstatsConfig struct {
 }
 
 type gethConfig struct {
-	Eth      zondconfigConfig
+	Eth      zondconfig.Config
 	Node     node.Config
 	Ethstats ethstatsConfig
 	Metrics  metrics.Config
@@ -126,7 +127,7 @@ func defaultNodeConfig() node.Config {
 func loadBaseConfig(ctx *cli.Context) gethConfig {
 	// Load defaults.
 	cfg := gethConfig{
-		Eth:     zondconfigDefaults,
+		Eth:     zondconfig.Defaults,
 		Node:    defaultNodeConfig(),
 		Metrics: metrics.DefaultConfig,
 	}
@@ -165,7 +166,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 }
 
 // makeFullNode loads geth configuration and creates the Ethereum backend.
-func makeFullNode(ctx *cli.Context) (*node.Node, ethapi.Backend) {
+func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
 	stack, cfg := makeConfigNode(ctx)
 	backend, eth := utils.RegisterZondService(stack, &cfg.Eth)
 

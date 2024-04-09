@@ -89,7 +89,6 @@ type environment struct {
 	header   *types.Header
 	txs      []*types.Transaction
 	receipts []*types.Receipt
-	sidecars []*types.BlobTxSidecar
 	blobs    int
 }
 
@@ -109,9 +108,6 @@ func (env *environment) copy() *environment {
 	}
 	cpy.txs = make([]*types.Transaction, len(env.txs))
 	copy(cpy.txs, env.txs)
-
-	cpy.sidecars = make([]*types.BlobTxSidecar, len(env.sidecars))
-	copy(cpy.sidecars, env.sidecars)
 
 	return cpy
 }
@@ -149,10 +145,9 @@ type newWorkReq struct {
 
 // newPayloadResult is the result of payload generation.
 type newPayloadResult struct {
-	err      error
-	block    *types.Block
-	fees     *big.Int               // total block fees
-	sidecars []*types.BlobTxSidecar // collected blobs of blob transactions
+	err   error
+	block *types.Block
+	fees  *big.Int // total block fees
 }
 
 // getWorkReq represents a request for getting a new sealing work with provided parameters.
@@ -541,7 +536,7 @@ func (w *worker) mainLoop() {
 					acc, _ := types.Sender(w.current.signer, tx)
 					txs[acc] = append(txs[acc], &txpool.LazyTransaction{
 						Hash:      tx.Hash(),
-						Tx:        tx.WithoutBlobTxSidecar(),
+						Tx:        tx,
 						Time:      tx.Time(),
 						GasFeeCap: tx.GasFeeCap(),
 						GasTipCap: tx.GasTipCap(),
@@ -976,9 +971,8 @@ func (w *worker) generateWork(params *generateParams) *newPayloadResult {
 		return &newPayloadResult{err: err}
 	}
 	return &newPayloadResult{
-		block:    block,
-		fees:     totalFees(block, work.receipts),
-		sidecars: work.sidecars,
+		block: block,
+		fees:  totalFees(block, work.receipts),
 	}
 }
 

@@ -32,6 +32,7 @@ import (
 	"github.com/theQRL/go-zond/miner"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/zond"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 )
 
 const (
@@ -83,7 +84,7 @@ type tester struct {
 
 // newTester creates a test environment based on which the console can operate.
 // Please ensure you call Close() on the returned tester to avoid leaks.
-func newTester(t *testing.T, confOverride func(*zondconfigConfig)) *tester {
+func newTester(t *testing.T, confOverride func(*zondconfig.Config)) *tester {
 	// Create a temporary storage for the node keys and initialize it
 	workspace := t.TempDir()
 
@@ -92,7 +93,7 @@ func newTester(t *testing.T, confOverride func(*zondconfigConfig)) *tester {
 	if err != nil {
 		t.Fatalf("failed to create node: %v", err)
 	}
-	ethConf := &zondconfigConfig{
+	ethConf := &zondconfig.Config{
 		Genesis: core.DeveloperGenesisBlock(11_500_000, common.Address{}),
 		Miner: miner.Config{
 			Etherbase: common.HexToAddress(testAddress),

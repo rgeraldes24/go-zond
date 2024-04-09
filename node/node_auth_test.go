@@ -123,16 +123,12 @@ func TestAuthEndpoints(t *testing.T) {
 	node.RegisterAPIs([]rpc.API{
 		{
 			Namespace:     "engine",
-			Version:       "1.0",
 			Service:       helloRPC("hello engine"),
-			Public:        true,
 			Authenticated: true,
 		},
 		{
 			Namespace:     "zond",
-			Version:       "1.0",
 			Service:       helloRPC("hello zond"),
-			Public:        true,
 			Authenticated: true,
 		},
 	})

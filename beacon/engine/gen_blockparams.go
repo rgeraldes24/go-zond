@@ -56,8 +56,5 @@ func (p *PayloadAttributes) UnmarshalJSON(input []byte) error {
 	if dec.Withdrawals != nil {
 		p.Withdrawals = dec.Withdrawals
 	}
-	if dec.BeaconRoot != nil {
-		p.BeaconRoot = dec.BeaconRoot
-	}
 	return nil
 }

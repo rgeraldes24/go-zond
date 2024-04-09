@@ -35,6 +35,7 @@ import (
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
 	zondsvc "github.com/theQRL/go-zond/zond"
+	"github.com/theQRL/go-zond/zond/zondconfig"
 )
 
 // Verify that Client implements the zond interfaces.
@@ -218,7 +219,7 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 		t.Fatalf("can't create new node: %v", err)
 	}
 	// Create Zond Service
-	config := &zondconfigConfig{Genesis: genesis}
+	config := &zondconfig.Config{Genesis: genesis}
 	zondservice, err := zondsvc.New(n, config)
 	if err != nil {
 		t.Fatalf("can't create new zond service: %v", err)
