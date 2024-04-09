@@ -326,7 +326,7 @@ func NewBlockChain(db zonddb.Database, cacheConfig *CacheConfig, genesis *Genesi
 	// Update chain info data metrics
 	chainInfoGauge.Update(metrics.GaugeInfoValue{"chain_id": bc.chainConfig.ChainID.String()})
 
-	// If Geth is initialized with an external ancient store, re-initialize the
+	// If Gzond is initialized with an external ancient store, re-initialize the
 	// missing chain indexes and chain flags. This procedure can survive crash
 	// and can be resumed in next restart since chain flags are updated in last step.
 	if bc.empty() {
@@ -1195,7 +1195,7 @@ func (bc *BlockChain) InsertReceiptChain(blockChain types.Blocks, receiptChain [
 		// * If block number is large enough to be regarded as a recent block
 		// It means blocks below the ancientLimit-txlookupLimit won't be indexed.
 		//
-		// But if the `TxIndexTail` is not nil, e.g. Geth is initialized with
+		// But if the `TxIndexTail` is not nil, e.g. Gzond is initialized with
 		// an external ancient database, during the setup, blockchain will start
 		// a background routine to re-indexed all indices in [ancients - txlookupLimit, ancients)
 		// range. In this case, all tx indices of newly imported blocks should be
@@ -1541,7 +1541,7 @@ func (bc *BlockChain) writeBlockAndSetHead(block *types.Block, receipts []*types
 // ahead and was not added.
 //
 // TODO after the transition, the future block shouldn't be kept. Because
-// it's not checked in the Geth side anymore.
+// it's not checked in the Gzond side anymore.
 func (bc *BlockChain) addFutureBlock(block *types.Block) error {
 	max := uint64(time.Now().Unix() + maxTimeFutureBlocks)
 	if block.Time() > max {
@@ -2477,7 +2477,7 @@ func (bc *BlockChain) indexBlocks(tail *uint64, head uint64, done chan struct{})
 // all tx indices will be reserved.
 //
 // The user can adjust the txlookuplimit value for each launch after sync,
-// Geth will automatically construct the missing indices or delete the extra
+// Gzond will automatically construct the missing indices or delete the extra
 // indices.
 func (bc *BlockChain) maintainTxIndex() {
 	defer bc.wg.Done()

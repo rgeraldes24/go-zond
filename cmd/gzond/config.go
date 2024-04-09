@@ -144,7 +144,7 @@ func loadBaseConfig(ctx *cli.Context) gzondConfig {
 	return cfg
 }
 
-// makeConfigNode loads geth configuration and creates a blank node instance.
+// makeConfigNode loads gzond configuration and creates a blank node instance.
 func makeConfigNode(ctx *cli.Context) (*node.Node, gzondConfig) {
 	cfg := loadBaseConfig(ctx)
 	stack, err := node.New(&cfg.Node)
@@ -165,18 +165,18 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gzondConfig) {
 	return stack, cfg
 }
 
-// makeFullNode loads geth configuration and creates the Ethereum backend.
+// makeFullNode loads gzond configuration and creates the Ethereum backend.
 func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
 	stack, cfg := makeConfigNode(ctx)
 	backend, zond := utils.RegisterZondService(stack, &cfg.Zond)
 
-	// Create gauge with geth system and build information
+	// Create gauge with gzond system and build information
 	if zond != nil {
 		var protos []string
 		for _, p := range zond.Protocols() {
 			protos = append(protos, fmt.Sprintf("%v/%d", p.Name, p.Version))
 		}
-		metrics.NewRegisteredGaugeInfo("geth/info", nil).Update(metrics.GaugeInfoValue{
+		metrics.NewRegisteredGaugeInfo("gzond/info", nil).Update(metrics.GaugeInfoValue{
 			"arch":      runtime.GOARCH,
 			"os":        runtime.GOOS,
 			"version":   cfg.Node.Version,

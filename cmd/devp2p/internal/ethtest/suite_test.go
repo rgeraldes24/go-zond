@@ -34,14 +34,14 @@ var (
 	fullchainFile = "./testdata/chain.rlp"
 )
 
-func TestEthSuite(t *testing.T) {
-	geth, err := runGeth()
+func TestZondSuite(t *testing.T) {
+	gzond, err := runGzond()
 	if err != nil {
-		t.Fatalf("could not run geth: %v", err)
+		t.Fatalf("could not run gzond: %v", err)
 	}
-	defer geth.Close()
+	defer gzond.Close()
 
-	suite, err := NewSuite(geth.Server().Self(), fullchainFile, genesisFile)
+	suite, err := NewSuite(gzond.Server().Self(), fullchainFile, genesisFile)
 	if err != nil {
 		t.Fatalf("could not create new test suite: %v", err)
 	}
@@ -56,13 +56,13 @@ func TestEthSuite(t *testing.T) {
 }
 
 func TestSnapSuite(t *testing.T) {
-	geth, err := runGeth()
+	gzond, err := runGzond()
 	if err != nil {
-		t.Fatalf("could not run geth: %v", err)
+		t.Fatalf("could not run gzond: %v", err)
 	}
-	defer geth.Close()
+	defer gzond.Close()
 
-	suite, err := NewSuite(geth.Server().Self(), fullchainFile, genesisFile)
+	suite, err := NewSuite(gzond.Server().Self(), fullchainFile, genesisFile)
 	if err != nil {
 		t.Fatalf("could not create new test suite: %v", err)
 	}
@@ -76,8 +76,8 @@ func TestSnapSuite(t *testing.T) {
 	}
 }
 
-// runGeth creates and starts a geth node
-func runGeth() (*node.Node, error) {
+// runGzond creates and starts a gzond node
+func runGzond() (*node.Node, error) {
 	stack, err := node.New(&node.Config{
 		P2P: p2p.Config{
 			ListenAddr:  "127.0.0.1:0",
