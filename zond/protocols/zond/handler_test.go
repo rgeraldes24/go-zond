@@ -34,6 +34,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/p2p/enode"
 	"github.com/theQRL/go-zond/params"
@@ -42,10 +43,10 @@ import (
 
 var (
 	// testKey is a private key to use for funding a tester account.
-	testKey, _ = crypto.HexToECDSA("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
 	// testAddr is the Ethereum address of the tester account.
-	testAddr = crypto.PubkeyToAddress(testKey.PublicKey)
+	testAddr = testKey.GetAddress()
 )
 
 func u64(val uint64) *uint64 { return &val }
@@ -105,7 +106,7 @@ func newTestBackendWithGenerator(blocks int, shanghai bool, generator func(int, 
 		Config: config,
 		Alloc:  core.GenesisAlloc{testAddr: {Balance: big.NewInt(100_000_000_000_000_000)}},
 	}
-	chain, _ := core.NewBlockChain(db, nil, gspec, nil, engine, vm.Config{}, nil, nil)
+	chain, _ := core.NewBlockChain(db, nil, gspec, engine, vm.Config{}, nil, nil)
 
 	_, bs, _ := core.GenerateChainWithGenesis(gspec, engine, blocks, generator)
 	if _, err := chain.InsertChain(bs); err != nil {
@@ -442,10 +443,10 @@ func testGetNodeData(t *testing.T, protocol uint, drop bool) {
 	t.Parallel()
 
 	// Define three accounts to simulate transactions with
-	acc1Key, _ := crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-	acc2Key, _ := crypto.HexToECDSA("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
-	acc1Addr := crypto.PubkeyToAddress(acc1Key.PublicKey)
-	acc2Addr := crypto.PubkeyToAddress(acc2Key.PublicKey)
+	acc1Key, _ := pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+	acc2Key, _ := pqcrypto.HexToDilithium("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
+	acc1Addr := acc1Key.GetAddress()
+	acc2Addr := acc2Key.GetAddress()
 
 	signer := types.HomesteadSigner{}
 	// Create a chain generator with some simple transactions (blatantly stolen from @fjl/chain_makers_test)
@@ -560,10 +561,10 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 	t.Parallel()
 
 	// Define three accounts to simulate transactions with
-	acc1Key, _ := crypto.HexToECDSA("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-	acc2Key, _ := crypto.HexToECDSA("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
-	acc1Addr := crypto.PubkeyToAddress(acc1Key.PublicKey)
-	acc2Addr := crypto.PubkeyToAddress(acc2Key.PublicKey)
+	acc1Key, _ := pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+	acc2Key, _ := pqcrypto.HexToDilithium("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
+	acc1Addr := acc1Key.GetAddress()
+	acc2Addr := acc2Key.GetAddress()
 
 	signer := types.HomesteadSigner{}
 	// Create a chain generator with some simple transactions (blatantly stolen from @fjl/chain_markets_test)
