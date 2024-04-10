@@ -127,7 +127,6 @@ func (s *stateObject) touch() {
 	s.db.journal.append(touchChange{
 		account: &s.address,
 	})
-
 }
 
 // getTrie returns the associated storage trie. The trie will be opened

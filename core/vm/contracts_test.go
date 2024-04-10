@@ -35,6 +35,8 @@ type precompiledTest struct {
 	NoBenchmark     bool // Benchmark primarily the worst-cases
 }
 
+// NOTE(rgeraldes24): unused at the moment
+/*
 // precompiledFailureTest defines the input/error pairs for precompiled
 // contract failure tests.
 type precompiledFailureTest struct {
@@ -42,6 +44,7 @@ type precompiledFailureTest struct {
 	ExpectedError string
 	Name          string
 }
+*/
 
 // allPrecompiles does not map to the actual set of precompiles, as it also contains
 // repriced versions of precompiles at certain slots
@@ -95,6 +98,8 @@ func testPrecompiledOOG(addr string, test precompiledTest, t *testing.T) {
 	})
 }
 
+// NOTE(rgeraldes): unused at the moment
+/*
 func testPrecompiledFailure(addr string, test precompiledFailureTest, t *testing.T) {
 	p := allPrecompiles[common.HexToAddress(addr)]
 	in := common.Hex2Bytes(test.Input)
@@ -111,6 +116,7 @@ func testPrecompiledFailure(addr string, test precompiledFailureTest, t *testing
 		}
 	})
 }
+*/
 
 func benchmarkPrecompiled(addr string, test precompiledTest, bench *testing.B) {
 	if test.NoBenchmark {
@@ -221,6 +227,8 @@ func testJson(name, addr string, t *testing.T) {
 	}
 }
 
+// NOTE(rgeraldes24): unused at the moment
+/*
 func testJsonFail(name, addr string, t *testing.T) {
 	tests, err := loadJsonFail(name)
 	if err != nil {
@@ -230,6 +238,7 @@ func testJsonFail(name, addr string, t *testing.T) {
 		testPrecompiledFailure(addr, test, t)
 	}
 }
+*/
 
 func benchJson(name, addr string, b *testing.B) {
 	tests, err := loadJson(name)
@@ -255,6 +264,8 @@ func loadJson(name string) ([]precompiledTest, error) {
 	return testcases, err
 }
 
+// NOTE(rgeraldes24): unused at the moment
+/*
 func loadJsonFail(name string) ([]precompiledFailureTest, error) {
 	data, err := os.ReadFile(fmt.Sprintf("testdata/precompiles/fail-%v.json", name))
 	if err != nil {
@@ -264,3 +275,4 @@ func loadJsonFail(name string) ([]precompiledFailureTest, error) {
 	err = json.Unmarshal(data, &testcases)
 	return testcases, err
 }
+*/

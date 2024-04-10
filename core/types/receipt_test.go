@@ -87,8 +87,6 @@ var (
 	to3 = common.HexToAddress("0x3")
 	to4 = common.HexToAddress("0x4")
 	to5 = common.HexToAddress("0x5")
-	to6 = common.HexToAddress("0x6")
-	to7 = common.HexToAddress("0x7")
 	txs = Transactions{
 		NewTx(&LegacyTx{
 			Nonce:    1,

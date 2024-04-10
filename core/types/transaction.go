@@ -26,7 +26,6 @@ import (
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
-	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/rlp"
 )
 
@@ -216,6 +215,8 @@ func (tx *Transaction) setDecoded(inner TxData, size uint64) {
 	}
 }
 
+// NOTE(rgeraldes24): unused at the moment
+/*
 func sanityCheckSignature(v *big.Int, r *big.Int, s *big.Int, maybeProtected bool) error {
 	if isProtectedV(v) && !maybeProtected {
 		return ErrUnexpectedProtection
@@ -250,6 +251,7 @@ func isProtectedV(V *big.Int) bool {
 	// anything not 27 or 28 is considered protected
 	return true
 }
+*/
 
 // Protected says whether the transaction is replay-protected.
 func (tx *Transaction) Protected() bool {

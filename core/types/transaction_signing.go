@@ -329,8 +329,6 @@ func (s EIP155Signer) Equal(s2 Signer) bool {
 	return ok && eip155.chainId.Cmp(s.chainId) == 0
 }
 
-var big8 = big.NewInt(8)
-
 func (s EIP155Signer) Sender(tx *Transaction) (common.Address, error) {
 	if tx.Type() != LegacyTxType {
 		return common.Address{}, ErrTxTypeNotSupported

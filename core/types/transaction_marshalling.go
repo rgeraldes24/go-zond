@@ -93,7 +93,6 @@ func (tx *Transaction) MarshalJSON() ([]byte, error) {
 		enc.AccessList = &itx.AccessList
 		enc.PublicKey = (*hexutil.Bytes)(&itx.PublicKey)
 		enc.Signature = (*hexutil.Bytes)(&itx.Signature)
-
 	}
 	return json.Marshal(&enc)
 }
