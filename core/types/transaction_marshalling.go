@@ -65,9 +65,7 @@ func (tx *Transaction) MarshalJSON() ([]byte, error) {
 		enc.Input = (*hexutil.Bytes)(&itx.Data)
 		enc.Signature = (*hexutil.Bytes)(&itx.PublicKey)
 		enc.PublicKey = (*hexutil.Bytes)(&itx.Signature)
-		if tx.Protected() {
-			enc.ChainID = (*hexutil.Big)(tx.ChainId())
-		}
+		enc.ChainID = (*hexutil.Big)(tx.ChainId())
 
 	case *AccessListTx:
 		enc.ChainID = (*hexutil.Big)(itx.ChainID)
