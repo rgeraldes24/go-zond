@@ -258,7 +258,6 @@ func GenerateKey() (*ecdsa.PrivateKey, error) {
 	return ecdsa.GenerateKey(S256(), rand.Reader)
 }
 
-// TODO(rgeraldes24): move to GenerateKey
 // GenerateDilihtiumKey generates a new private key.
 func GenerateDilithiumKey() (*dilithium.Dilithium, error) {
 	return dilithium.New()

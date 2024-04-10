@@ -58,10 +58,6 @@ import (
 	"github.com/theQRL/go-zond/zonddb"
 )
 
-// Config contains the configuration options of the ETH protocol.
-// Deprecated: use zondconfigConfig instead.
-type Config = zondconfig.Config
-
 // Zond implements the Zond full node service.
 type Zond struct {
 	config *zondconfig.Config

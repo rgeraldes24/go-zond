@@ -268,7 +268,7 @@ func minerTestGenesisBlock(period uint64, gasLimit uint64, faucet common.Address
 		BaseFee:    big.NewInt(params.InitialBaseFee),
 		Difficulty: big.NewInt(1),
 		Alloc: map[common.Address]core.GenesisAccount{
-			common.BytesToAddress([]byte{1}): {Balance: big.NewInt(1)}, // ECRecover
+			common.BytesToAddress([]byte{1}): {Balance: big.NewInt(1)}, // Depositroot
 			common.BytesToAddress([]byte{2}): {Balance: big.NewInt(1)}, // SHA256
 			common.BytesToAddress([]byte{4}): {Balance: big.NewInt(1)}, // Identity
 			common.BytesToAddress([]byte{5}): {Balance: big.NewInt(1)}, // ModExp
