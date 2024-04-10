@@ -396,6 +396,11 @@ var (
 		Value:    zondconfig.Defaults.Miner.GasPrice,
 		Category: flags.MinerCategory,
 	}
+	MinerEtherbaseFlag = &cli.StringFlag{
+		Name:     "miner.etherbase",
+		Usage:    "0x prefixed public address for block mining rewards",
+		Category: flags.MinerCategory,
+	}
 	MinerExtraDataFlag = &cli.StringFlag{
 		Name:     "miner.extradata",
 		Usage:    "Block extra data set by the miner (default = client version)",
@@ -405,11 +410,6 @@ var (
 		Name:     "miner.recommit",
 		Usage:    "Time interval to recreate the block being mined",
 		Value:    zondconfig.Defaults.Miner.Recommit,
-		Category: flags.MinerCategory,
-	}
-	MinerPendingFeeRecipientFlag = &cli.StringFlag{
-		Name:     "miner.pending.feeRecipient",
-		Usage:    "0x prefixed public address for the pending block producer (not used for actual block production)",
 		Category: flags.MinerCategory,
 	}
 
@@ -1159,19 +1159,18 @@ func MakeAddress(ks *keystore.KeyStore, account string) (accounts.Account, error
 
 // setEtherbase retrieves the etherbase from the directly specified command line flags.
 func setEtherbase(ctx *cli.Context, cfg *zondconfig.Config) {
-	if !ctx.IsSet(MinerPendingFeeRecipientFlag.Name) {
+	if !ctx.IsSet(MinerEtherbaseFlag.Name) {
 		return
 	}
-	addr := ctx.String(MinerPendingFeeRecipientFlag.Name)
+	addr := ctx.String(MinerEtherbaseFlag.Name)
 	if strings.HasPrefix(addr, "0x") || strings.HasPrefix(addr, "0X") {
 		addr = addr[2:]
 	}
 	b, err := hex.DecodeString(addr)
 	if err != nil || len(b) != common.AddressLength {
-		Fatalf("-%s: invalid pending block producer address %q", MinerPendingFeeRecipientFlag.Name, addr)
+		Fatalf("-%s: invalid etherbase address %q", MinerEtherbaseFlag.Name, addr)
 		return
 	}
-	// TODO(rgeraldes24): cfg.Miner.PendingFeeRecipient = common.BytesToAddress(b)
 	cfg.Miner.Etherbase = common.BytesToAddress(b)
 }
 
