@@ -1202,7 +1202,6 @@ func SetP2PConfig(ctx *cli.Context, cfg *p2p.Config) {
 
 	if ctx.IsSet(MaxPeersFlag.Name) {
 		cfg.MaxPeers = ctx.Int(MaxPeersFlag.Name)
-
 	}
 	zondPeers := cfg.MaxPeers
 	log.Info("Maximum peer count", "ZOND", zondPeers, "total", cfg.MaxPeers)
