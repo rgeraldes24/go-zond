@@ -32,7 +32,6 @@ import (
 	"github.com/theQRL/go-zond/console/prompt"
 	"github.com/theQRL/go-zond/internal/debug"
 	"github.com/theQRL/go-zond/internal/flags"
-	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/node"
@@ -296,10 +295,10 @@ func gzond(ctx *cli.Context) error {
 	}
 
 	prepare(ctx)
-	stack, backend := makeFullNode(ctx)
+	stack, _ := makeFullNode(ctx)
 	defer stack.Close()
 
-	startNode(ctx, stack, backend, false)
+	startNode(ctx, stack, false)
 	stack.Wait()
 	return nil
 }
@@ -307,7 +306,7 @@ func gzond(ctx *cli.Context) error {
 // startNode boots up the system node and all registered protocols, after which
 // it unlocks any requested accounts, and starts the RPC/IPC interfaces and the
 // miner.
-func startNode(ctx *cli.Context, stack *node.Node, backend zondapi.Backend, isConsole bool) {
+func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
 	debug.Memsize.Add("node", stack)
 
 	// Start up the node itself

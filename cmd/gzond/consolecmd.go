@@ -58,8 +58,8 @@ This command allows to open a console on a running gzond node.`,
 func localConsole(ctx *cli.Context) error {
 	// Create and start the node based on the CLI flags
 	prepare(ctx)
-	stack, backend := makeFullNode(ctx)
-	startNode(ctx, stack, backend, true)
+	stack, _ := makeFullNode(ctx)
+	startNode(ctx, stack, true)
 	defer stack.Close()
 
 	// Attach to the newly started node and create the JavaScript console.
