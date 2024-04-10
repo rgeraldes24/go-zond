@@ -119,6 +119,7 @@ func TestGzondClient(t *testing.T) {
 			"TestGetNodeInfo",
 			func(t *testing.T) { testGetNodeInfo(t, client) },
 		},
+		// TODO(rgeraldes24): review
 		// {
 		// 	"TestSubscribePendingTxHashes",
 		// 	func(t *testing.T) { testSubscribePendingTransactions(t, client) },
