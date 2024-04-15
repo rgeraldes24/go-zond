@@ -273,10 +273,6 @@ func (ethash *Ethash) verifyHeader(chain consensus.ChainHeaderReader, header, pa
 	if ethash.fakeFail != nil && *ethash.fakeFail == header.Number.Uint64() {
 		return errors.New("invalid tester pow")
 	}
-	// If all checks passed, validate any special fields for hard forks
-	if err := misc.VerifyDAOHeaderExtraData(chain.Config(), header); err != nil {
-		return err
-	}
 	return nil
 }
 

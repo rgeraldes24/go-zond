@@ -369,8 +369,6 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 			return &params.ChainConfig{
 				ChainID:                       big.NewInt(1337),
 				HomesteadBlock:                big.NewInt(0),
-				DAOForkBlock:                  nil,
-				DAOForkSupport:                true,
 				EIP150Block:                   big.NewInt(0),
 				EIP155Block:                   big.NewInt(0),
 				EIP158Block:                   big.NewInt(0),

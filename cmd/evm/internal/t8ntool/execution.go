@@ -23,7 +23,6 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/consensus/ethash"
-	"github.com/theQRL/go-zond/consensus/misc"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/state"
@@ -154,13 +153,6 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 		vmContext.Random = &rnd
 	}
 
-	// If DAO is supported/enabled, we need to handle it here. In gzond 'proper', it's
-	// done in StateProcessor.Process(block, ...), right before transactions are applied.
-	if chainConfig.DAOForkSupport &&
-		chainConfig.DAOForkBlock != nil &&
-		chainConfig.DAOForkBlock.Cmp(new(big.Int).SetUint64(pre.Env.Number)) == 0 {
-		misc.ApplyDAOHardFork(statedb)
-	}
 	for i, tx := range txs {
 		msg, err := core.TransactionToMessage(tx, signer, pre.Env.BaseFee)
 		if err != nil {
