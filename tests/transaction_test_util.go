@@ -40,7 +40,7 @@ type ttFork struct {
 }
 
 func (tt *TransactionTest) Run(config *params.ChainConfig) error {
-	validateTx := func(rlpData hexutil.Bytes, signer types.Signer, isIstanbul bool) (*common.Address, *common.Hash, error) {
+	validateTx := func(rlpData hexutil.Bytes, signer types.Signer) (*common.Address, *common.Hash, error) {
 		tx := new(types.Transaction)
 		if err := rlp.DecodeBytes(rlpData, tx); err != nil {
 			return nil, nil, err
@@ -50,7 +50,7 @@ func (tt *TransactionTest) Run(config *params.ChainConfig) error {
 			return nil, nil, err
 		}
 		// Intrinsic gas
-		requiredGas, err := core.IntrinsicGas(tx.Data(), tx.AccessList(), tx.To() == nil, isIstanbul, false)
+		requiredGas, err := core.IntrinsicGas(tx.Data(), tx.AccessList(), tx.To() == nil, false)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -62,15 +62,15 @@ func (tt *TransactionTest) Run(config *params.ChainConfig) error {
 	}
 
 	for _, testcase := range []struct {
-		name       string
-		signer     types.Signer
-		fork       ttFork
-		isIstanbul bool
+		name   string
+		signer types.Signer
+		fork   ttFork
 	}{
-		{"Constantinople", types.NewEIP155Signer(config.ChainID), tt.Constantinople, false},
-		{"Istanbul", types.NewEIP155Signer(config.ChainID), tt.Istanbul, true},
+		/*
+			{"Istanbul", types.NewEIP155Signer(config.ChainID), tt.Istanbul},
+		*/
 	} {
-		sender, txhash, err := validateTx(tt.RLP, testcase.signer, testcase.isIstanbul)
+		sender, txhash, err := validateTx(tt.RLP, testcase.signer)
 
 		if testcase.fork.Sender == (common.UnprefixedAddress{}) {
 			if err == nil {

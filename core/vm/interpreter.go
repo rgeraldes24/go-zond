@@ -64,8 +64,6 @@ func NewEVMInterpreter(evm *EVM) *EVMInterpreter {
 		table = &londonInstructionSet
 	case evm.chainRules.IsBerlin:
 		table = &berlinInstructionSet
-	case evm.chainRules.IsIstanbul:
-		table = &istanbulInstructionSet
 	default:
 		table = &frontierInstructionSet
 	}
