@@ -388,7 +388,7 @@ func gasCall(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize
 		return 0, ErrGasUintOverflow
 	}
 
-	evm.callGasTemp, err = callGas(true, contract.Gas, gas, stack.Back(0))
+	evm.callGasTemp, err = callGas(contract.Gas, gas, stack.Back(0))
 	if err != nil {
 		return 0, err
 	}
@@ -413,7 +413,7 @@ func gasCallCode(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memory
 	if gas, overflow = math.SafeAdd(gas, memoryGas); overflow {
 		return 0, ErrGasUintOverflow
 	}
-	evm.callGasTemp, err = callGas(true, contract.Gas, gas, stack.Back(0))
+	evm.callGasTemp, err = callGas(contract.Gas, gas, stack.Back(0))
 	if err != nil {
 		return 0, err
 	}
