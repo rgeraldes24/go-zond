@@ -4189,10 +4189,10 @@ func TestCreateThenDeletePreByzantium(t *testing.T) {
 	// deliberate: we want to use pre-byz rules where we have intermediate state roots
 	// between transactions.
 	testCreateThenDelete(t, &params.ChainConfig{
-		ChainID:        big.NewInt(3),
-		ByzantiumBlock: big.NewInt(1_700_000),
+		ChainID: big.NewInt(3),
 	})
 }
+
 func TestCreateThenDeletePostByzantium(t *testing.T) {
 	testCreateThenDelete(t, params.TestChainConfig)
 }

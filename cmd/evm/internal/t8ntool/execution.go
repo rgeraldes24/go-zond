@@ -192,11 +192,7 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 		// Receipt:
 		{
 			var root []byte
-			if chainConfig.IsByzantium(vmContext.BlockNumber) {
-				statedb.Finalise(true)
-			} else {
-				root = statedb.IntermediateRoot(true).Bytes()
-			}
+			statedb.Finalise(true)
 
 			// Create a new receipt for the transaction, storing the intermediate root and
 			// gas used by the tx.

@@ -39,18 +39,6 @@ type PrecompiledContract interface {
 	Run(input []byte) ([]byte, error) // Run runs the precompiled contract
 }
 
-// PrecompiledContractsByzantium contains the default set of pre-compiled Ethereum
-// contracts used in the Byzantium release.
-var PrecompiledContractsByzantium = map[common.Address]PrecompiledContract{
-	common.BytesToAddress([]byte{1}): &depositroot{},
-	common.BytesToAddress([]byte{2}): &sha256hash{},
-	common.BytesToAddress([]byte{4}): &dataCopy{},
-	common.BytesToAddress([]byte{5}): &bigModExp{eip2565: false},
-	common.BytesToAddress([]byte{6}): &bn256AddByzantium{},
-	common.BytesToAddress([]byte{7}): &bn256ScalarMulByzantium{},
-	common.BytesToAddress([]byte{8}): &bn256PairingByzantium{},
-}
-
 // PrecompiledContractsIstanbul contains the default set of pre-compiled Ethereum
 // contracts used in the Istanbul release.
 var PrecompiledContractsIstanbul = map[common.Address]PrecompiledContract{
@@ -76,15 +64,11 @@ var PrecompiledContractsBerlin = map[common.Address]PrecompiledContract{
 }
 
 var (
-	PrecompiledAddressesBerlin    []common.Address
-	PrecompiledAddressesIstanbul  []common.Address
-	PrecompiledAddressesByzantium []common.Address
+	PrecompiledAddressesBerlin   []common.Address
+	PrecompiledAddressesIstanbul []common.Address
 )
 
 func init() {
-	for k := range PrecompiledContractsByzantium {
-		PrecompiledAddressesByzantium = append(PrecompiledAddressesByzantium, k)
-	}
 	for k := range PrecompiledContractsIstanbul {
 		PrecompiledAddressesIstanbul = append(PrecompiledAddressesIstanbul, k)
 	}
@@ -98,10 +82,8 @@ func ActivePrecompiles(rules params.Rules) []common.Address {
 	switch {
 	case rules.IsBerlin:
 		return PrecompiledAddressesBerlin
-	case rules.IsIstanbul:
-		return PrecompiledAddressesIstanbul
 	default:
-		return PrecompiledAddressesByzantium
+		return PrecompiledAddressesIstanbul
 	}
 }
 
@@ -481,19 +463,6 @@ func (c *bn256AddIstanbul) Run(input []byte) ([]byte, error) {
 	return runBn256Add(input)
 }
 
-// bn256AddByzantium implements a native elliptic curve point addition
-// conforming to Byzantium consensus rules.
-type bn256AddByzantium struct{}
-
-// RequiredGas returns the gas required to execute the pre-compiled contract.
-func (c *bn256AddByzantium) RequiredGas(input []byte) uint64 {
-	return params.Bn256AddGasByzantium
-}
-
-func (c *bn256AddByzantium) Run(input []byte) ([]byte, error) {
-	return runBn256Add(input)
-}
-
 // runBn256ScalarMul implements the Bn256ScalarMul precompile, referenced by
 // both Byzantium and Istanbul operations.
 func runBn256ScalarMul(input []byte) ([]byte, error) {
@@ -516,19 +485,6 @@ func (c *bn256ScalarMulIstanbul) RequiredGas(input []byte) uint64 {
 }
 
 func (c *bn256ScalarMulIstanbul) Run(input []byte) ([]byte, error) {
-	return runBn256ScalarMul(input)
-}
-
-// bn256ScalarMulByzantium implements a native elliptic curve scalar
-// multiplication conforming to Byzantium consensus rules.
-type bn256ScalarMulByzantium struct{}
-
-// RequiredGas returns the gas required to execute the pre-compiled contract.
-func (c *bn256ScalarMulByzantium) RequiredGas(input []byte) uint64 {
-	return params.Bn256ScalarMulGasByzantium
-}
-
-func (c *bn256ScalarMulByzantium) Run(input []byte) ([]byte, error) {
 	return runBn256ScalarMul(input)
 }
 
@@ -584,18 +540,5 @@ func (c *bn256PairingIstanbul) RequiredGas(input []byte) uint64 {
 }
 
 func (c *bn256PairingIstanbul) Run(input []byte) ([]byte, error) {
-	return runBn256Pairing(input)
-}
-
-// bn256PairingByzantium implements a pairing pre-compile for the bn256 curve
-// conforming to Byzantium consensus rules.
-type bn256PairingByzantium struct{}
-
-// RequiredGas returns the gas required to execute the pre-compiled contract.
-func (c *bn256PairingByzantium) RequiredGas(input []byte) uint64 {
-	return params.Bn256PairingBaseGasByzantium + uint64(len(input)/192)*params.Bn256PairingPerPointGasByzantium
-}
-
-func (c *bn256PairingByzantium) Run(input []byte) ([]byte, error) {
 	return runBn256Pairing(input)
 }

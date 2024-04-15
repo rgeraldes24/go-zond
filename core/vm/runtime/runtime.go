@@ -55,7 +55,6 @@ func setDefaults(cfg *Config) {
 	if cfg.ChainConfig == nil {
 		cfg.ChainConfig = &params.ChainConfig{
 			ChainID:             big.NewInt(1),
-			ByzantiumBlock:      new(big.Int),
 			ConstantinopleBlock: new(big.Int),
 			PetersburgBlock:     new(big.Int),
 			IstanbulBlock:       new(big.Int),
