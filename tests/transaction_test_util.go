@@ -29,9 +29,9 @@ import (
 
 // TransactionTest checks RLP decoding and sender derivation of transactions.
 type TransactionTest struct {
-	RLP            hexutil.Bytes `json:"rlp"`
-	Constantinople ttFork
-	Istanbul       ttFork
+	RLP hexutil.Bytes `json:"rlp"`
+	// TODO(rgeraldes24)
+	// Istanbul       ttFork
 }
 
 type ttFork struct {
