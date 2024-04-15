@@ -215,8 +215,6 @@ type backendMock struct {
 func newBackendMock() *backendMock {
 	config := &params.ChainConfig{
 		ChainID:             big.NewInt(42),
-		EIP150Block:         big.NewInt(0),
-		EIP155Block:         big.NewInt(0),
 		EIP158Block:         big.NewInt(0),
 		ByzantiumBlock:      big.NewInt(0),
 		ConstantinopleBlock: big.NewInt(0),

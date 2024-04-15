@@ -76,8 +76,6 @@ func newTestBackendWithGenerator(blocks int, shanghai bool, generator func(int, 
 	if shanghai {
 		config = &params.ChainConfig{
 			ChainID:                       big.NewInt(1),
-			EIP150Block:                   big.NewInt(0),
-			EIP155Block:                   big.NewInt(0),
 			EIP158Block:                   big.NewInt(0),
 			ByzantiumBlock:                big.NewInt(0),
 			ConstantinopleBlock:           big.NewInt(0),

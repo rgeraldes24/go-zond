@@ -24,7 +24,6 @@ import (
 
 	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/consensus"
 	"github.com/theQRL/go-zond/consensus/misc"
 	"github.com/theQRL/go-zond/consensus/misc/eip1559"
@@ -38,8 +37,6 @@ import (
 
 // Ethash proof-of-work protocol constants.
 var (
-	FrontierBlockReward           = big.NewInt(5e+18) // Block reward in wei for successfully mining a block
-	ByzantiumBlockReward          = big.NewInt(3e+18) // Block reward in wei for successfully mining a block upward from Byzantium
 	ConstantinopleBlockReward     = big.NewInt(2e+18) // Block reward in wei for successfully mining a block upward from Constantinople
 	maxUncles                     = 2                 // Maximum number of uncles allowed in a single block
 	allowedFutureBlockTimeSeconds = int64(15)         // Max seconds from current time allowed for blocks, before they're considered future blocks
@@ -299,10 +296,8 @@ func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Heade
 		return calcDifficultyEip2384(time, parent)
 	case config.IsConstantinople(next):
 		return calcDifficultyConstantinople(time, parent)
-	case config.IsByzantium(next):
-		return calcDifficultyByzantium(time, parent)
 	default:
-		return calcDifficultyFrontier(time, parent)
+		return calcDifficultyByzantium(time, parent)
 	}
 }
 
@@ -312,7 +307,6 @@ var (
 	big1          = big.NewInt(1)
 	big2          = big.NewInt(2)
 	big9          = big.NewInt(9)
-	big10         = big.NewInt(10)
 	bigMinus99    = big.NewInt(-99)
 )
 
@@ -379,41 +373,7 @@ func makeDifficultyCalculator(bombDelay *big.Int) func(time uint64, parent *type
 	}
 }
 
-// calcDifficultyFrontier is the difficulty adjustment algorithm. It returns the
-// difficulty that a new block should have when created at time given the parent
-// block's time and difficulty. The calculation uses the Frontier rules.
-func calcDifficultyFrontier(time uint64, parent *types.Header) *big.Int {
-	diff := new(big.Int)
-	adjust := new(big.Int).Div(parent.Difficulty, params.DifficultyBoundDivisor)
-	bigTime := new(big.Int)
-	bigParentTime := new(big.Int)
-
-	bigTime.SetUint64(time)
-	bigParentTime.SetUint64(parent.Time)
-
-	if bigTime.Sub(bigTime, bigParentTime).Cmp(params.DurationLimit) < 0 {
-		diff.Add(parent.Difficulty, adjust)
-	} else {
-		diff.Sub(parent.Difficulty, adjust)
-	}
-	if diff.Cmp(params.MinimumDifficulty) < 0 {
-		diff.Set(params.MinimumDifficulty)
-	}
-
-	periodCount := new(big.Int).Add(parent.Number, big1)
-	periodCount.Div(periodCount, expDiffPeriod)
-	if periodCount.Cmp(big1) > 0 {
-		// diff = diff + 2^(periodCount - 2)
-		expDiff := periodCount.Sub(periodCount, big2)
-		expDiff.Exp(big2, expDiff, nil)
-		diff.Add(diff, expDiff)
-		diff = math.BigMax(diff, params.MinimumDifficulty)
-	}
-	return diff
-}
-
 // Exported for fuzzing
-var FrontierDifficultyCalculator = calcDifficultyFrontier
 var DynamicDifficultyCalculator = makeDifficultyCalculator
 
 // Prepare implements consensus.Engine, initializing the difficulty field of a
@@ -430,7 +390,7 @@ func (ethash *Ethash) Prepare(chain consensus.ChainHeaderReader, header *types.H
 // Finalize implements consensus.Engine, accumulating the block and uncle rewards.
 func (ethash *Ethash) Finalize(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, txs []*types.Transaction, uncles []*types.Header, withdrawals []*types.Withdrawal) {
 	// Accumulate any block and uncle rewards
-	accumulateRewards(chain.Config(), state, header, uncles)
+	accumulateRewards(state, header, uncles)
 }
 
 // FinalizeAndAssemble implements consensus.Engine, accumulating the block and
@@ -488,15 +448,10 @@ var (
 // AccumulateRewards credits the coinbase of the given block with the mining
 // reward. The total reward consists of the static block reward and rewards for
 // included uncles. The coinbase of each uncle block is also rewarded.
-func accumulateRewards(config *params.ChainConfig, state *state.StateDB, header *types.Header, uncles []*types.Header) {
+func accumulateRewards(state *state.StateDB, header *types.Header, uncles []*types.Header) {
 	// Select the correct block reward based on chain progression
-	blockReward := FrontierBlockReward
-	if config.IsByzantium(header.Number) {
-		blockReward = ByzantiumBlockReward
-	}
-	if config.IsConstantinople(header.Number) {
-		blockReward = ConstantinopleBlockReward
-	}
+	blockReward := ConstantinopleBlockReward
+
 	// Accumulate the rewards for the miner and any included uncles
 	reward := new(big.Int).Set(blockReward)
 	r := new(big.Int)

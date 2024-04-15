@@ -37,8 +37,8 @@ func TestCheckCompatible(t *testing.T) {
 		{stored: AllEthashProtocolChanges, new: AllEthashProtocolChanges, headBlock: 0, headTimestamp: uint64(time.Now().Unix()), wantErr: nil},
 		{stored: AllEthashProtocolChanges, new: AllEthashProtocolChanges, headBlock: 100, wantErr: nil},
 		{
-			stored:    &ChainConfig{EIP150Block: big.NewInt(10)},
-			new:       &ChainConfig{EIP150Block: big.NewInt(20)},
+			stored:    &ChainConfig{},
+			new:       &ChainConfig{},
 			headBlock: 9,
 			wantErr:   nil,
 		},
@@ -65,8 +65,8 @@ func TestCheckCompatible(t *testing.T) {
 			},
 		},
 		{
-			stored:    &ChainConfig{EIP150Block: big.NewInt(10)},
-			new:       &ChainConfig{EIP150Block: big.NewInt(20)},
+			stored:    &ChainConfig{},
+			new:       &ChainConfig{},
 			headBlock: 25,
 			wantErr: &ConfigCompatError{
 				What:          "EIP150 fork block",

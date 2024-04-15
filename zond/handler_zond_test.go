@@ -91,8 +91,6 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 
 		configNoFork  = &params.ChainConfig{}
 		configProFork = &params.ChainConfig{
-			EIP150Block:    big.NewInt(2),
-			EIP155Block:    big.NewInt(2),
 			EIP158Block:    big.NewInt(2),
 			ByzantiumBlock: big.NewInt(3),
 		}
