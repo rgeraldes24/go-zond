@@ -295,7 +295,7 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 	statedb.AddBalance(block.Coinbase(), new(big.Int))
 
 	// Commit state mutations into database.
-	root, _ := statedb.Commit(block.NumberU64(), config.IsEIP158(block.Number()))
+	root, _ := statedb.Commit(block.NumberU64(), true)
 	return triedb, snaps, statedb, root, err
 }
 

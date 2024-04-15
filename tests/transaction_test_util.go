@@ -33,7 +33,6 @@ type TransactionTest struct {
 	Byzantium      ttFork
 	Constantinople ttFork
 	Istanbul       ttFork
-	EIP158         ttFork
 }
 
 type ttFork struct {
@@ -69,7 +68,6 @@ func (tt *TransactionTest) Run(config *params.ChainConfig) error {
 		fork       ttFork
 		isIstanbul bool
 	}{
-		{"EIP158", types.NewEIP155Signer(config.ChainID), tt.EIP158, false},
 		{"Byzantium", types.NewEIP155Signer(config.ChainID), tt.Byzantium, false},
 		{"Constantinople", types.NewEIP155Signer(config.ChainID), tt.Constantinople, false},
 		{"Istanbul", types.NewEIP155Signer(config.ChainID), tt.Istanbul, true},

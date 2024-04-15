@@ -70,8 +70,6 @@ func NewEVMInterpreter(evm *EVM) *EVMInterpreter {
 		table = &constantinopleInstructionSet
 	case evm.chainRules.IsByzantium:
 		table = &byzantiumInstructionSet
-	case evm.chainRules.IsEIP158:
-		table = &spuriousDragonInstructionSet
 	default:
 		table = &frontierInstructionSet
 	}

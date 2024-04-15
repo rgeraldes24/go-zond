@@ -369,11 +369,7 @@ func gasCall(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize
 		transfersValue = !stack.Back(2).IsZero()
 		address        = common.Address(stack.Back(1).Bytes20())
 	)
-	if evm.chainRules.IsEIP158 {
-		if transfersValue && evm.StateDB.Empty(address) {
-			gas += params.CallNewAccountGas
-		}
-	} else if !evm.StateDB.Exist(address) {
+	if transfersValue && evm.StateDB.Empty(address) {
 		gas += params.CallNewAccountGas
 	}
 	if transfersValue {
@@ -461,12 +457,8 @@ func gasSelfdestruct(evm *EVM, contract *Contract, stack *Stack, mem *Memory, me
 	gas = params.SelfdestructGasEIP150
 	var address = common.Address(stack.Back(0).Bytes20())
 
-	if evm.chainRules.IsEIP158 {
-		// if empty and transfers value
-		if evm.StateDB.Empty(address) && evm.StateDB.GetBalance(contract.Address()).Sign() != 0 {
-			gas += params.CreateBySelfdestructGas
-		}
-	} else if !evm.StateDB.Exist(address) {
+	// if empty and transfers value
+	if evm.StateDB.Empty(address) && evm.StateDB.GetBalance(contract.Address()).Sign() != 0 {
 		gas += params.CreateBySelfdestructGas
 	}
 

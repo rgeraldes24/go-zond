@@ -1582,8 +1582,7 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 		theAddr = common.Address{1}
 		gspec   = &Genesis{
 			Config: &params.ChainConfig{
-				ChainID:     big.NewInt(1),
-				EIP158Block: big.NewInt(2),
+				ChainID: big.NewInt(1),
 			},
 			Alloc: GenesisAlloc{address: {Balance: funds}},
 		}
@@ -4191,7 +4190,6 @@ func TestCreateThenDeletePreByzantium(t *testing.T) {
 	// between transactions.
 	testCreateThenDelete(t, &params.ChainConfig{
 		ChainID:        big.NewInt(3),
-		EIP158Block:    big.NewInt(10),
 		ByzantiumBlock: big.NewInt(1_700_000),
 	})
 }

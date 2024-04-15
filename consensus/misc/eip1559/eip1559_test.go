@@ -30,7 +30,6 @@ import (
 func copyConfig(original *params.ChainConfig) *params.ChainConfig {
 	return &params.ChainConfig{
 		ChainID:                 original.ChainID,
-		EIP158Block:             original.EIP158Block,
 		ByzantiumBlock:          original.ByzantiumBlock,
 		ConstantinopleBlock:     original.ConstantinopleBlock,
 		PetersburgBlock:         original.PetersburgBlock,

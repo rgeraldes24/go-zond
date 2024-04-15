@@ -37,7 +37,6 @@ var (
 	// MainnetChainConfig is the chain parameters to run a node on the main network.
 	MainnetChainConfig = &ChainConfig{
 		ChainID:                       big.NewInt(1),
-		EIP158Block:                   big.NewInt(2_675_000),
 		ByzantiumBlock:                big.NewInt(4_370_000),
 		ConstantinopleBlock:           big.NewInt(7_280_000),
 		PetersburgBlock:               big.NewInt(7_280_000),
@@ -55,7 +54,6 @@ var (
 	// BetaNetChainConfig contains the chain parameters to run a node on the BetaNet test network.
 	BetaNetChainConfig = &ChainConfig{
 		ChainID:                       big.NewInt(32382),
-		EIP158Block:                   big.NewInt(0),
 		ByzantiumBlock:                big.NewInt(0),
 		ConstantinopleBlock:           big.NewInt(0),
 		PetersburgBlock:               big.NewInt(0),
@@ -74,7 +72,6 @@ var (
 	// and accepted by the Ethereum core developers into the Ethash consensus.
 	AllEthashProtocolChanges = &ChainConfig{
 		ChainID:                       big.NewInt(1337),
-		EIP158Block:                   big.NewInt(0),
 		ByzantiumBlock:                big.NewInt(0),
 		ConstantinopleBlock:           big.NewInt(0),
 		PetersburgBlock:               big.NewInt(0),
@@ -94,7 +91,6 @@ var (
 
 	AllDevChainProtocolChanges = &ChainConfig{
 		ChainID:                       big.NewInt(1337),
-		EIP158Block:                   big.NewInt(0),
 		ByzantiumBlock:                big.NewInt(0),
 		ConstantinopleBlock:           big.NewInt(0),
 		PetersburgBlock:               big.NewInt(0),
@@ -114,7 +110,6 @@ var (
 	// and accepted by the Ethereum core developers into the Clique consensus.
 	AllCliqueProtocolChanges = &ChainConfig{
 		ChainID:                       big.NewInt(1337),
-		EIP158Block:                   big.NewInt(0),
 		ByzantiumBlock:                big.NewInt(0),
 		ConstantinopleBlock:           big.NewInt(0),
 		PetersburgBlock:               big.NewInt(0),
@@ -136,7 +131,6 @@ var (
 	// and accepted by the Ethereum core developers for testing proposes.
 	TestChainConfig = &ChainConfig{
 		ChainID:                       big.NewInt(1),
-		EIP158Block:                   big.NewInt(0),
 		ByzantiumBlock:                big.NewInt(0),
 		ConstantinopleBlock:           big.NewInt(0),
 		PetersburgBlock:               big.NewInt(0),
@@ -159,7 +153,6 @@ var (
 	NonActivatedConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
 
-		EIP158Block:                   nil,
 		ByzantiumBlock:                nil,
 		ConstantinopleBlock:           nil,
 		PetersburgBlock:               nil,
@@ -191,8 +184,6 @@ var NetworkNames = map[string]string{
 // set of configuration options.
 type ChainConfig struct {
 	ChainID *big.Int `json:"chainId"` // chainId identifies the current chain and is used for replay protection
-
-	EIP158Block *big.Int `json:"eip158Block,omitempty"` // EIP158 HF block
 
 	ByzantiumBlock      *big.Int `json:"byzantiumBlock,omitempty"`      // Byzantium switch block (nil = no fork, 0 = already on byzantium)
 	ConstantinopleBlock *big.Int `json:"constantinopleBlock,omitempty"` // Constantinople switch block (nil = no fork, 0 = already activated)
@@ -318,11 +309,6 @@ func (c *ChainConfig) Description() string {
 	return banner
 }
 
-// IsEIP158 returns whether num is either equal to the EIP158 fork block or greater.
-func (c *ChainConfig) IsEIP158(num *big.Int) bool {
-	return isBlockForked(c.EIP158Block, num)
-}
-
 // IsByzantium returns whether num is either equal to the Byzantium fork block or greater.
 func (c *ChainConfig) IsByzantium(num *big.Int) bool {
 	return isBlockForked(c.ByzantiumBlock, num)
@@ -419,7 +405,6 @@ func (c *ChainConfig) CheckConfigForkOrder() error {
 	}
 	var lastFork fork
 	for _, cur := range []fork{
-		{name: "eip158Block", block: c.EIP158Block},
 		{name: "byzantiumBlock", block: c.ByzantiumBlock},
 		{name: "constantinopleBlock", block: c.ConstantinopleBlock},
 		{name: "petersburgBlock", block: c.PetersburgBlock},
@@ -470,12 +455,10 @@ func (c *ChainConfig) CheckConfigForkOrder() error {
 }
 
 func (c *ChainConfig) checkCompatible(newcfg *ChainConfig, headNumber *big.Int, headTimestamp uint64) *ConfigCompatError {
-	if isForkBlockIncompatible(c.EIP158Block, newcfg.EIP158Block, headNumber) {
-		return newBlockCompatError("EIP158 fork block", c.EIP158Block, newcfg.EIP158Block)
-	}
-	if c.IsEIP158(headNumber) && !configBlockEqual(c.ChainID, newcfg.ChainID) {
-		return newBlockCompatError("EIP158 chain ID", c.EIP158Block, newcfg.EIP158Block)
-	}
+	// TODO(rgeraldes24)
+	// if c.IsEIP158(headNumber) && !configBlockEqual(c.ChainID, newcfg.ChainID) {
+	// 	return newBlockCompatError("EIP158 chain ID", c.EIP158Block, newcfg.EIP158Block)
+	// }
 	if isForkBlockIncompatible(c.ByzantiumBlock, newcfg.ByzantiumBlock, headNumber) {
 		return newBlockCompatError("Byzantium fork block", c.ByzantiumBlock, newcfg.ByzantiumBlock)
 	}
@@ -654,7 +637,6 @@ func (err *ConfigCompatError) Error() string {
 // phases.
 type Rules struct {
 	ChainID                                                 *big.Int
-	IsEIP158                                                bool
 	IsByzantium, IsConstantinople, IsPetersburg, IsIstanbul bool
 	IsBerlin, IsLondon                                      bool
 	IsMerge, IsShanghai                                     bool
@@ -668,7 +650,6 @@ func (c *ChainConfig) Rules(num *big.Int, isMerge bool, timestamp uint64) Rules 
 	}
 	return Rules{
 		ChainID:          new(big.Int).Set(chainID),
-		IsEIP158:         c.IsEIP158(num),
 		IsByzantium:      c.IsByzantium(num),
 		IsConstantinople: c.IsConstantinople(num),
 		IsPetersburg:     c.IsPetersburg(num),
