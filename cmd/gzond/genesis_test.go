@@ -61,7 +61,6 @@ var customGenesisTests = []struct {
 			"parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"timestamp"  : "0x00",
 			"config"     : {
-				"homesteadBlock"                : 42,
 				"terminalTotalDifficultyPassed" : true
 			}
 		}`,

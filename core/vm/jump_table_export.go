@@ -42,8 +42,6 @@ func LookupInstructionSet(rules params.Rules) (JumpTable, error) {
 		return newSpuriousDragonInstructionSet(), nil
 	case rules.IsEIP150:
 		return newTangerineWhistleInstructionSet(), nil
-	case rules.IsHomestead:
-		return newHomesteadInstructionSet(), nil
 	}
 	return newFrontierInstructionSet(), nil
 }

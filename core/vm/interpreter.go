@@ -74,8 +74,6 @@ func NewEVMInterpreter(evm *EVM) *EVMInterpreter {
 		table = &spuriousDragonInstructionSet
 	case evm.chainRules.IsEIP150:
 		table = &tangerineWhistleInstructionSet
-	case evm.chainRules.IsHomestead:
-		table = &homesteadInstructionSet
 	default:
 		table = &frontierInstructionSet
 	}

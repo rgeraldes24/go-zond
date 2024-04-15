@@ -26,7 +26,6 @@ import (
 var (
 	mainnetChainConfig = params.ChainConfig{
 		ChainID:        big.NewInt(1),
-		HomesteadBlock: big.NewInt(1150000),
 		EIP150Block:    big.NewInt(2463000),
 		EIP155Block:    big.NewInt(2675000),
 		EIP158Block:    big.NewInt(2675000),
@@ -35,7 +34,6 @@ var (
 
 	ropstenChainConfig = params.ChainConfig{
 		ChainID:                       big.NewInt(3),
-		HomesteadBlock:                big.NewInt(0),
 		EIP150Block:                   big.NewInt(0),
 		EIP155Block:                   big.NewInt(10),
 		EIP158Block:                   big.NewInt(10),
@@ -63,15 +61,8 @@ func TestDifficulty(t *testing.T) {
 	dt.skipLoad("keyaddrtest\\.json")
 	dt.skipLoad("txtest\\.json")
 
-	// files are 2 years old, contains strange values
-	dt.skipLoad("difficultyCustomHomestead\\.json")
-
 	dt.config("Ropsten", ropstenChainConfig)
 	dt.config("Frontier", params.ChainConfig{})
-
-	dt.config("Homestead", params.ChainConfig{
-		HomesteadBlock: big.NewInt(0),
-	})
 
 	dt.config("Byzantium", params.ChainConfig{
 		ByzantiumBlock: big.NewInt(0),

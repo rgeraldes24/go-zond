@@ -1581,10 +1581,9 @@ func testEIP155Transition(t *testing.T, scheme string) {
 		deleteAddr = common.Address{1}
 		gspec      = &Genesis{
 			Config: &params.ChainConfig{
-				ChainID:        big.NewInt(1),
-				EIP150Block:    big.NewInt(0),
-				EIP155Block:    big.NewInt(2),
-				HomesteadBlock: new(big.Int),
+				ChainID:     big.NewInt(1),
+				EIP150Block: big.NewInt(0),
+				EIP155Block: big.NewInt(2),
 			},
 			Alloc: GenesisAlloc{address: {Balance: funds}, deleteAddr: {Balance: new(big.Int)}},
 		}
@@ -1658,10 +1657,9 @@ func testEIP155Transition(t *testing.T, scheme string) {
 
 	// generate an invalid chain id transaction
 	config := &params.ChainConfig{
-		ChainID:        big.NewInt(2),
-		EIP150Block:    big.NewInt(0),
-		EIP155Block:    big.NewInt(2),
-		HomesteadBlock: new(big.Int),
+		ChainID:     big.NewInt(2),
+		EIP150Block: big.NewInt(0),
+		EIP155Block: big.NewInt(2),
 	}
 	blocks, _ = GenerateChain(config, blocks[len(blocks)-1], ethash.NewFaker(), genDb, 4, func(i int, block *BlockGen) {
 		var (
@@ -1698,11 +1696,10 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 		theAddr = common.Address{1}
 		gspec   = &Genesis{
 			Config: &params.ChainConfig{
-				ChainID:        big.NewInt(1),
-				HomesteadBlock: new(big.Int),
-				EIP155Block:    new(big.Int),
-				EIP150Block:    new(big.Int),
-				EIP158Block:    big.NewInt(2),
+				ChainID:     big.NewInt(1),
+				EIP155Block: new(big.Int),
+				EIP150Block: new(big.Int),
+				EIP158Block: big.NewInt(2),
 			},
 			Alloc: GenesisAlloc{address: {Balance: funds}},
 		}
@@ -4310,7 +4307,6 @@ func TestCreateThenDeletePreByzantium(t *testing.T) {
 	// between transactions.
 	testCreateThenDelete(t, &params.ChainConfig{
 		ChainID:        big.NewInt(3),
-		HomesteadBlock: big.NewInt(0),
 		EIP150Block:    big.NewInt(0),
 		EIP155Block:    big.NewInt(10),
 		EIP158Block:    big.NewInt(10),

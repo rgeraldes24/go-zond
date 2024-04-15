@@ -39,15 +39,6 @@ type PrecompiledContract interface {
 	Run(input []byte) ([]byte, error) // Run runs the precompiled contract
 }
 
-// PrecompiledContractsHomestead contains the default set of pre-compiled Ethereum
-// contracts used in the Frontier and Homestead releases.
-var PrecompiledContractsHomestead = map[common.Address]PrecompiledContract{
-	// common.BytesToAddress([]byte{1}): &ecrecover{},
-	common.BytesToAddress([]byte{1}): &depositroot{},
-	common.BytesToAddress([]byte{2}): &sha256hash{},
-	common.BytesToAddress([]byte{4}): &dataCopy{},
-}
-
 // PrecompiledContractsByzantium contains the default set of pre-compiled Ethereum
 // contracts used in the Byzantium release.
 var PrecompiledContractsByzantium = map[common.Address]PrecompiledContract{
@@ -88,13 +79,9 @@ var (
 	PrecompiledAddressesBerlin    []common.Address
 	PrecompiledAddressesIstanbul  []common.Address
 	PrecompiledAddressesByzantium []common.Address
-	PrecompiledAddressesHomestead []common.Address
 )
 
 func init() {
-	for k := range PrecompiledContractsHomestead {
-		PrecompiledAddressesHomestead = append(PrecompiledAddressesHomestead, k)
-	}
 	for k := range PrecompiledContractsByzantium {
 		PrecompiledAddressesByzantium = append(PrecompiledAddressesByzantium, k)
 	}
@@ -113,10 +100,8 @@ func ActivePrecompiles(rules params.Rules) []common.Address {
 		return PrecompiledAddressesBerlin
 	case rules.IsIstanbul:
 		return PrecompiledAddressesIstanbul
-	case rules.IsByzantium:
-		return PrecompiledAddressesByzantium
 	default:
-		return PrecompiledAddressesHomestead
+		return PrecompiledAddressesByzantium
 	}
 }
 
