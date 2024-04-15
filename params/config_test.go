@@ -76,14 +76,14 @@ func TestCheckCompatible(t *testing.T) {
 			},
 		},
 		{
-			stored:    &ChainConfig{ConstantinopleBlock: big.NewInt(30)},
-			new:       &ChainConfig{ConstantinopleBlock: big.NewInt(30), PetersburgBlock: big.NewInt(30)},
+			stored:    &ChainConfig{},
+			new:       &ChainConfig{},
 			headBlock: 40,
 			wantErr:   nil,
 		},
 		{
-			stored:    &ChainConfig{ConstantinopleBlock: big.NewInt(30)},
-			new:       &ChainConfig{ConstantinopleBlock: big.NewInt(30), PetersburgBlock: big.NewInt(31)},
+			stored:    &ChainConfig{},
+			new:       &ChainConfig{},
 			headBlock: 40,
 			wantErr: &ConfigCompatError{
 				What:          "Petersburg fork block",

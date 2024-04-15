@@ -34,8 +34,6 @@ func LookupInstructionSet(rules params.Rules) (JumpTable, error) {
 		return newBerlinInstructionSet(), nil
 	case rules.IsIstanbul:
 		return newIstanbulInstructionSet(), nil
-	case rules.IsConstantinople:
-		return newConstantinopleInstructionSet(), nil
 	}
 	return newFrontierInstructionSet(), nil
 }

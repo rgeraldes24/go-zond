@@ -37,8 +37,6 @@ var (
 	// MainnetChainConfig is the chain parameters to run a node on the main network.
 	MainnetChainConfig = &ChainConfig{
 		ChainID:                       big.NewInt(1),
-		ConstantinopleBlock:           big.NewInt(7_280_000),
-		PetersburgBlock:               big.NewInt(7_280_000),
 		IstanbulBlock:                 big.NewInt(9_069_000),
 		MuirGlacierBlock:              big.NewInt(9_200_000),
 		BerlinBlock:                   big.NewInt(12_244_000),
@@ -53,8 +51,6 @@ var (
 	// BetaNetChainConfig contains the chain parameters to run a node on the BetaNet test network.
 	BetaNetChainConfig = &ChainConfig{
 		ChainID:                       big.NewInt(32382),
-		ConstantinopleBlock:           big.NewInt(0),
-		PetersburgBlock:               big.NewInt(0),
 		IstanbulBlock:                 big.NewInt(0),
 		MuirGlacierBlock:              big.NewInt(0),
 		BerlinBlock:                   big.NewInt(0),
@@ -70,8 +66,6 @@ var (
 	// and accepted by the Ethereum core developers into the Ethash consensus.
 	AllEthashProtocolChanges = &ChainConfig{
 		ChainID:                       big.NewInt(1337),
-		ConstantinopleBlock:           big.NewInt(0),
-		PetersburgBlock:               big.NewInt(0),
 		IstanbulBlock:                 big.NewInt(0),
 		MuirGlacierBlock:              big.NewInt(0),
 		BerlinBlock:                   big.NewInt(0),
@@ -88,8 +82,6 @@ var (
 
 	AllDevChainProtocolChanges = &ChainConfig{
 		ChainID:                       big.NewInt(1337),
-		ConstantinopleBlock:           big.NewInt(0),
-		PetersburgBlock:               big.NewInt(0),
 		IstanbulBlock:                 big.NewInt(0),
 		MuirGlacierBlock:              big.NewInt(0),
 		BerlinBlock:                   big.NewInt(0),
@@ -106,8 +98,6 @@ var (
 	// and accepted by the Ethereum core developers into the Clique consensus.
 	AllCliqueProtocolChanges = &ChainConfig{
 		ChainID:                       big.NewInt(1337),
-		ConstantinopleBlock:           big.NewInt(0),
-		PetersburgBlock:               big.NewInt(0),
 		IstanbulBlock:                 big.NewInt(0),
 		MuirGlacierBlock:              big.NewInt(0),
 		BerlinBlock:                   big.NewInt(0),
@@ -126,8 +116,6 @@ var (
 	// and accepted by the Ethereum core developers for testing proposes.
 	TestChainConfig = &ChainConfig{
 		ChainID:                       big.NewInt(1),
-		ConstantinopleBlock:           big.NewInt(0),
-		PetersburgBlock:               big.NewInt(0),
 		IstanbulBlock:                 big.NewInt(0),
 		MuirGlacierBlock:              big.NewInt(0),
 		BerlinBlock:                   big.NewInt(0),
@@ -147,8 +135,6 @@ var (
 	NonActivatedConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
 
-		ConstantinopleBlock:           nil,
-		PetersburgBlock:               nil,
 		IstanbulBlock:                 nil,
 		MuirGlacierBlock:              nil,
 		BerlinBlock:                   nil,
@@ -178,15 +164,13 @@ var NetworkNames = map[string]string{
 type ChainConfig struct {
 	ChainID *big.Int `json:"chainId"` // chainId identifies the current chain and is used for replay protection
 
-	ConstantinopleBlock *big.Int `json:"constantinopleBlock,omitempty"` // Constantinople switch block (nil = no fork, 0 = already activated)
-	PetersburgBlock     *big.Int `json:"petersburgBlock,omitempty"`     // Petersburg switch block (nil = same as Constantinople)
-	IstanbulBlock       *big.Int `json:"istanbulBlock,omitempty"`       // Istanbul switch block (nil = no fork, 0 = already on istanbul)
-	MuirGlacierBlock    *big.Int `json:"muirGlacierBlock,omitempty"`    // Eip-2384 (bomb delay) switch block (nil = no fork, 0 = already activated)
-	BerlinBlock         *big.Int `json:"berlinBlock,omitempty"`         // Berlin switch block (nil = no fork, 0 = already on berlin)
-	LondonBlock         *big.Int `json:"londonBlock,omitempty"`         // London switch block (nil = no fork, 0 = already on london)
-	ArrowGlacierBlock   *big.Int `json:"arrowGlacierBlock,omitempty"`   // Eip-4345 (bomb delay) switch block (nil = no fork, 0 = already activated)
-	GrayGlacierBlock    *big.Int `json:"grayGlacierBlock,omitempty"`    // Eip-5133 (bomb delay) switch block (nil = no fork, 0 = already activated)
-	MergeNetsplitBlock  *big.Int `json:"mergeNetsplitBlock,omitempty"`  // Virtual fork after The Merge to use as a network splitter
+	IstanbulBlock      *big.Int `json:"istanbulBlock,omitempty"`      // Istanbul switch block (nil = no fork, 0 = already on istanbul)
+	MuirGlacierBlock   *big.Int `json:"muirGlacierBlock,omitempty"`   // Eip-2384 (bomb delay) switch block (nil = no fork, 0 = already activated)
+	BerlinBlock        *big.Int `json:"berlinBlock,omitempty"`        // Berlin switch block (nil = no fork, 0 = already on berlin)
+	LondonBlock        *big.Int `json:"londonBlock,omitempty"`        // London switch block (nil = no fork, 0 = already on london)
+	ArrowGlacierBlock  *big.Int `json:"arrowGlacierBlock,omitempty"`  // Eip-4345 (bomb delay) switch block (nil = no fork, 0 = already activated)
+	GrayGlacierBlock   *big.Int `json:"grayGlacierBlock,omitempty"`   // Eip-5133 (bomb delay) switch block (nil = no fork, 0 = already activated)
+	MergeNetsplitBlock *big.Int `json:"mergeNetsplitBlock,omitempty"` // Virtual fork after The Merge to use as a network splitter
 
 	// Fork scheduling was switched from blocks to timestamps here
 
@@ -261,8 +245,6 @@ func (c *ChainConfig) Description() string {
 	// makes sense for mainnet should be optional at printing to avoid bloating
 	// the output for testnets and private networks.
 	banner += "Pre-Merge hard forks (block based):\n"
-	banner += fmt.Sprintf(" - Constantinople:              #%-8v (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/constantinople.md)\n", c.ConstantinopleBlock)
-	banner += fmt.Sprintf(" - Petersburg:                  #%-8v (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/petersburg.md)\n", c.PetersburgBlock)
 	banner += fmt.Sprintf(" - Istanbul:                    #%-8v (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/istanbul.md)\n", c.IstanbulBlock)
 	if c.MuirGlacierBlock != nil {
 		banner += fmt.Sprintf(" - Muir Glacier:                #%-8v (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/muir-glacier.md)\n", c.MuirGlacierBlock)
@@ -300,21 +282,9 @@ func (c *ChainConfig) Description() string {
 	return banner
 }
 
-// IsConstantinople returns whether num is either equal to the Constantinople fork block or greater.
-func (c *ChainConfig) IsConstantinople(num *big.Int) bool {
-	return isBlockForked(c.ConstantinopleBlock, num)
-}
-
 // IsMuirGlacier returns whether num is either equal to the Muir Glacier (EIP-2384) fork block or greater.
 func (c *ChainConfig) IsMuirGlacier(num *big.Int) bool {
 	return isBlockForked(c.MuirGlacierBlock, num)
-}
-
-// IsPetersburg returns whether num is either
-// - equal to or greater than the PetersburgBlock fork block,
-// - OR is nil, and Constantinople is active
-func (c *ChainConfig) IsPetersburg(num *big.Int) bool {
-	return isBlockForked(c.PetersburgBlock, num) || c.PetersburgBlock == nil && isBlockForked(c.ConstantinopleBlock, num)
 }
 
 // IsIstanbul returns whether num is either equal to the Istanbul fork block or greater.
@@ -391,8 +361,6 @@ func (c *ChainConfig) CheckConfigForkOrder() error {
 	}
 	var lastFork fork
 	for _, cur := range []fork{
-		{name: "constantinopleBlock", block: c.ConstantinopleBlock},
-		{name: "petersburgBlock", block: c.PetersburgBlock},
 		{name: "istanbulBlock", block: c.IstanbulBlock},
 		{name: "muirGlacierBlock", block: c.MuirGlacierBlock, optional: true},
 		{name: "berlinBlock", block: c.BerlinBlock},
@@ -444,16 +412,6 @@ func (c *ChainConfig) checkCompatible(newcfg *ChainConfig, headNumber *big.Int, 
 	// if c.IsEIP158(headNumber) && !configBlockEqual(c.ChainID, newcfg.ChainID) {
 	// 	return newBlockCompatError("EIP158 chain ID", c.EIP158Block, newcfg.EIP158Block)
 	// }
-	if isForkBlockIncompatible(c.ConstantinopleBlock, newcfg.ConstantinopleBlock, headNumber) {
-		return newBlockCompatError("Constantinople fork block", c.ConstantinopleBlock, newcfg.ConstantinopleBlock)
-	}
-	if isForkBlockIncompatible(c.PetersburgBlock, newcfg.PetersburgBlock, headNumber) {
-		// the only case where we allow Petersburg to be set in the past is if it is equal to Constantinople
-		// mainly to satisfy fork ordering requirements which state that Petersburg fork be set if Constantinople fork is set
-		if isForkBlockIncompatible(c.ConstantinopleBlock, newcfg.PetersburgBlock, headNumber) {
-			return newBlockCompatError("Petersburg fork block", c.PetersburgBlock, newcfg.PetersburgBlock)
-		}
-	}
 	if isForkBlockIncompatible(c.IstanbulBlock, newcfg.IstanbulBlock, headNumber) {
 		return newBlockCompatError("Istanbul fork block", c.IstanbulBlock, newcfg.IstanbulBlock)
 	}
@@ -618,10 +576,10 @@ func (err *ConfigCompatError) Error() string {
 // Rules is a one time interface meaning that it shouldn't be used in between transition
 // phases.
 type Rules struct {
-	ChainID                                    *big.Int
-	IsConstantinople, IsPetersburg, IsIstanbul bool
-	IsBerlin, IsLondon                         bool
-	IsMerge, IsShanghai                        bool
+	ChainID             *big.Int
+	IsIstanbul          bool
+	IsBerlin, IsLondon  bool
+	IsMerge, IsShanghai bool
 }
 
 // Rules ensures c's ChainID is not nil.
@@ -631,13 +589,11 @@ func (c *ChainConfig) Rules(num *big.Int, isMerge bool, timestamp uint64) Rules 
 		chainID = new(big.Int)
 	}
 	return Rules{
-		ChainID:          new(big.Int).Set(chainID),
-		IsConstantinople: c.IsConstantinople(num),
-		IsPetersburg:     c.IsPetersburg(num),
-		IsIstanbul:       c.IsIstanbul(num),
-		IsBerlin:         c.IsBerlin(num),
-		IsLondon:         c.IsLondon(num),
-		IsMerge:          isMerge,
-		IsShanghai:       c.IsShanghai(num, timestamp),
+		ChainID:    new(big.Int).Set(chainID),
+		IsIstanbul: c.IsIstanbul(num),
+		IsBerlin:   c.IsBerlin(num),
+		IsLondon:   c.IsLondon(num),
+		IsMerge:    isMerge,
+		IsShanghai: c.IsShanghai(num, timestamp),
 	}
 }

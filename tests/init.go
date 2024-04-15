@@ -30,8 +30,6 @@ func u64(val uint64) *uint64 { return &val }
 var Forks = map[string]*params.ChainConfig{
 	"Shanghai": {
 		ChainID:                 big.NewInt(1),
-		ConstantinopleBlock:     big.NewInt(0),
-		PetersburgBlock:         big.NewInt(0),
 		IstanbulBlock:           big.NewInt(0),
 		MuirGlacierBlock:        big.NewInt(0),
 		BerlinBlock:             big.NewInt(0),
