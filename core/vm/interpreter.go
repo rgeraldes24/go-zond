@@ -61,7 +61,7 @@ func NewEVMInterpreter(evm *EVM) *EVMInterpreter {
 	case evm.chainRules.IsMerge:
 		table = &mergeInstructionSet
 	default:
-		table = &frontierInstructionSet
+		table = &londonInstructionSet
 	}
 	var extraEips []int
 	if len(evm.Config.ExtraEips) > 0 {

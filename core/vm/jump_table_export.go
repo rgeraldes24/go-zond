@@ -29,7 +29,7 @@ func LookupInstructionSet(rules params.Rules) (JumpTable, error) {
 	case rules.IsMerge:
 		return newMergeInstructionSet(), nil
 	}
-	return newFrontierInstructionSet(), nil
+	return newLondonInstructionSet(), nil
 }
 
 // Stack returns the mininum and maximum stack requirements.

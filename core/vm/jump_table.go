@@ -45,11 +45,9 @@ type operation struct {
 }
 
 var (
-	frontierInstructionSet       = newFrontierInstructionSet()
-	constantinopleInstructionSet = newConstantinopleInstructionSet()
-	istanbulInstructionSet       = newIstanbulInstructionSet()
-	mergeInstructionSet          = newMergeInstructionSet()
-	shanghaiInstructionSet       = newShanghaiInstructionSet()
+	londonInstructionSet   = newLondonInstructionSet()
+	mergeInstructionSet    = newMergeInstructionSet()
+	shanghaiInstructionSet = newShanghaiInstructionSet()
 )
 
 // JumpTable contains the EVM opcodes supported at a given fork.
