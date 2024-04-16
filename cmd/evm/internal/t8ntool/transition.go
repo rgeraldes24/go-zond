@@ -324,9 +324,6 @@ func loadTransactions(txStr string, inputData *input, env stEnv, chainConfig *pa
 }
 
 func applyLondonChecks(env *stEnv, chainConfig *params.ChainConfig) error {
-	if !chainConfig.IsLondon(big.NewInt(int64(env.Number))) {
-		return nil
-	}
 	// Sanity check, to not `panic` in state_transition
 	if env.BaseFee != nil {
 		// Already set, base fee has precedent over parent base fee.

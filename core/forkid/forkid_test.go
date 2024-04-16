@@ -368,7 +368,6 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 		config     = func(shanghai, cancun uint64) *params.ChainConfig {
 			return &params.ChainConfig{
 				ChainID:                       big.NewInt(1337),
-				LondonBlock:                   big.NewInt(0),
 				TerminalTotalDifficulty:       big.NewInt(0),
 				TerminalTotalDifficultyPassed: true,
 				MergeNetsplitBlock:            big.NewInt(0),

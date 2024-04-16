@@ -20,7 +20,6 @@ package catalyst
 import (
 	"errors"
 	"fmt"
-	"math/big"
 	"sync"
 	"time"
 
@@ -169,7 +168,7 @@ func (api *ConsensusAPI) ForkchoiceUpdatedV1(update engine.ForkchoiceStateV1, pa
 		if payloadAttributes.Withdrawals != nil {
 			return engine.STATUS_INVALID, engine.InvalidParams.With(errors.New("withdrawals not supported in V1"))
 		}
-		if api.zond.BlockChain().Config().IsShanghai(api.zond.BlockChain().Config().LondonBlock, payloadAttributes.Timestamp) {
+		if api.zond.BlockChain().Config().IsShanghai(payloadAttributes.Timestamp) {
 			return engine.STATUS_INVALID, engine.InvalidParams.With(errors.New("forkChoiceUpdateV1 called post-shanghai"))
 		}
 	}
@@ -200,17 +199,17 @@ func (api *ConsensusAPI) verifyPayloadAttributes(attr *engine.PayloadAttributes)
 	c := api.zond.BlockChain().Config()
 
 	// Verify withdrawals attribute for Shanghai.
-	if err := checkAttribute(c.IsShanghai, attr.Withdrawals != nil, c.LondonBlock, attr.Timestamp); err != nil {
+	if err := checkAttribute(c.IsShanghai, attr.Withdrawals != nil, attr.Timestamp); err != nil {
 		return fmt.Errorf("invalid withdrawals: %w", err)
 	}
 	return nil
 }
 
-func checkAttribute(active func(*big.Int, uint64) bool, exists bool, block *big.Int, time uint64) error {
-	if active(block, time) && !exists {
+func checkAttribute(active func(uint64) bool, exists bool, time uint64) error {
+	if active(time) && !exists {
 		return errors.New("fork active, missing expected attribute")
 	}
-	if !active(block, time) && exists {
+	if !active(time) && exists {
 		return errors.New("fork inactive, unexpected attribute set")
 	}
 	return nil
@@ -423,7 +422,7 @@ func (api *ConsensusAPI) getPayload(payloadID engine.PayloadID, full bool) (*eng
 
 // NewPayloadV2 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
 func (api *ConsensusAPI) NewPayloadV2(params engine.ExecutableData) (engine.PayloadStatusV1, error) {
-	if api.zond.BlockChain().Config().IsShanghai(new(big.Int).SetUint64(params.Number), params.Timestamp) {
+	if api.zond.BlockChain().Config().IsShanghai(params.Timestamp) {
 		if params.Withdrawals == nil {
 			return engine.PayloadStatusV1{Status: engine.INVALID}, engine.InvalidParams.With(errors.New("nil withdrawals post-shanghai"))
 		}

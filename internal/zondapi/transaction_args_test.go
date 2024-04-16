@@ -44,7 +44,7 @@ import (
 func TestSetFeeDefaults(t *testing.T) {
 	type test struct {
 		name     string
-		isLondon bool
+		isLondon bool // TODO(rgeraldes24)
 		in       *TransactionArgs
 		want     *TransactionArgs
 		err      error
@@ -214,8 +214,7 @@ type backendMock struct {
 
 func newBackendMock() *backendMock {
 	config := &params.ChainConfig{
-		ChainID:     big.NewInt(42),
-		LondonBlock: big.NewInt(1000),
+		ChainID: big.NewInt(42),
 	}
 	return &backendMock{
 		current: &types.Header{

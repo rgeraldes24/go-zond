@@ -176,8 +176,7 @@ aware of and agree upon. This consists of a small JSON file (e.g. call it `genes
 ```json
 {
   "config": {
-    "chainId": <arbitrary positive integer>,
-    "londonBlock": 0
+    "chainId": <arbitrary positive integer>
   },
   "alloc": {},
   "coinbase": "0x0000000000000000000000000000000000000000",

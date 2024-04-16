@@ -219,13 +219,11 @@ func runBenchmark(b *testing.B, t *StateTest) {
 			defer triedb.Close()
 
 			var baseFee *big.Int
-			if rules.IsLondon {
-				baseFee = t.json.Env.BaseFee
-				if baseFee == nil {
-					// Retesteth uses `0x10` for genesis baseFee. Therefore, it defaults to
-					// parent - 2 : 0xa as the basefee for 'this' context.
-					baseFee = big.NewInt(0x0a)
-				}
+			baseFee = t.json.Env.BaseFee
+			if baseFee == nil {
+				// Retesteth uses `0x10` for genesis baseFee. Therefore, it defaults to
+				// parent - 2 : 0xa as the basefee for 'this' context.
+				baseFee = big.NewInt(0x0a)
 			}
 			post := t.json.Post[subtest.Fork][subtest.Index]
 			msg, err := t.json.Tx.toMessage(post, baseFee)

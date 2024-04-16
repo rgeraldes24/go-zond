@@ -3673,7 +3673,6 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 		}
 	)
 
-	gspec.Config.LondonBlock = common.Big0
 	signer := types.LatestSigner(gspec.Config)
 
 	genDb, blocks, _ := GenerateChainWithGenesis(gspec, engine, 1, func(i int, b *BlockGen) {
@@ -4527,7 +4526,6 @@ func TestEIP3651(t *testing.T) {
 		}
 	)
 
-	gspec.Config.LondonBlock = common.Big0
 	gspec.Config.TerminalTotalDifficulty = common.Big0
 	gspec.Config.TerminalTotalDifficultyPassed = true
 	gspec.Config.ShanghaiTime = u64(0)
