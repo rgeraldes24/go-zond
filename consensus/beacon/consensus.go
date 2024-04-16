@@ -261,12 +261,8 @@ func (beacon *Beacon) verifyHeader(chain consensus.ChainHeaderReader, header, pa
 		return err
 	}
 	// Verify existence / non-existence of withdrawalsHash.
-	shanghai := chain.Config().IsShanghai(header.Time)
-	if shanghai && header.WithdrawalsHash == nil {
+	if header.WithdrawalsHash == nil {
 		return errors.New("missing withdrawalsHash")
-	}
-	if !shanghai && header.WithdrawalsHash != nil {
-		return fmt.Errorf("invalid withdrawalsHash: have %x, expected nil", header.WithdrawalsHash)
 	}
 
 	return nil
@@ -349,16 +345,9 @@ func (beacon *Beacon) FinalizeAndAssemble(chain consensus.ChainHeaderReader, hea
 	if !beacon.IsPoSHeader(header) {
 		return beacon.ethone.FinalizeAndAssemble(chain, header, state, txs, uncles, receipts, nil)
 	}
-	shanghai := chain.Config().IsShanghai(header.Time)
-	if shanghai {
-		// All blocks after Shanghai must include a withdrawals root.
-		if withdrawals == nil {
-			withdrawals = make([]*types.Withdrawal, 0)
-		}
-	} else {
-		if len(withdrawals) > 0 {
-			return nil, errors.New("withdrawals set before Shanghai activation")
-		}
+	// All blocks after Shanghai must include a withdrawals root.
+	if withdrawals == nil {
+		withdrawals = make([]*types.Withdrawal, 0)
 	}
 	// Finalize and assemble the block.
 	beacon.Finalize(chain, header, state, txs, uncles, withdrawals)

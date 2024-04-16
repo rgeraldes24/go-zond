@@ -149,6 +149,7 @@ func newConsensusAPIWithoutHeartbeat(zond *zond.Zond) *ConsensusAPI {
 	return api
 }
 
+// TODO(rgeraldes24): desc
 // ForkchoiceUpdatedV1 has several responsibilities:
 //
 // We try to set our blockchain to the headBlock.
@@ -163,18 +164,6 @@ func newConsensusAPIWithoutHeartbeat(zond *zond.Zond) *ConsensusAPI {
 //
 // If there are payloadAttributes: we try to assemble a block with the payloadAttributes
 // and return its payloadID.
-func (api *ConsensusAPI) ForkchoiceUpdatedV1(update engine.ForkchoiceStateV1, payloadAttributes *engine.PayloadAttributes) (engine.ForkChoiceResponse, error) {
-	if payloadAttributes != nil {
-		if payloadAttributes.Withdrawals != nil {
-			return engine.STATUS_INVALID, engine.InvalidParams.With(errors.New("withdrawals not supported in V1"))
-		}
-		if api.zond.BlockChain().Config().IsShanghai(payloadAttributes.Timestamp) {
-			return engine.STATUS_INVALID, engine.InvalidParams.With(errors.New("forkChoiceUpdateV1 called post-shanghai"))
-		}
-	}
-	return api.forkchoiceUpdated(update, payloadAttributes)
-}
-
 // ForkchoiceUpdatedV2 is equivalent to V1 with the addition of withdrawals in the payload attributes.
 func (api *ConsensusAPI) ForkchoiceUpdatedV2(update engine.ForkchoiceStateV1, payloadAttributes *engine.PayloadAttributes) (engine.ForkChoiceResponse, error) {
 	if payloadAttributes != nil {
@@ -185,21 +174,9 @@ func (api *ConsensusAPI) ForkchoiceUpdatedV2(update engine.ForkchoiceStateV1, pa
 	return api.forkchoiceUpdated(update, payloadAttributes)
 }
 
-// ForkchoiceUpdatedV3 is equivalent to V2 with the addition of parent beacon block root in the payload attributes.
-func (api *ConsensusAPI) ForkchoiceUpdatedV3(update engine.ForkchoiceStateV1, payloadAttributes *engine.PayloadAttributes) (engine.ForkChoiceResponse, error) {
-	if payloadAttributes != nil {
-		if err := api.verifyPayloadAttributes(payloadAttributes); err != nil {
-			return engine.STATUS_INVALID, engine.InvalidParams.With(err)
-		}
-	}
-	return api.forkchoiceUpdated(update, payloadAttributes)
-}
-
 func (api *ConsensusAPI) verifyPayloadAttributes(attr *engine.PayloadAttributes) error {
-	c := api.zond.BlockChain().Config()
-
 	// Verify withdrawals attribute for Shanghai.
-	if err := checkAttribute(c.IsShanghai, attr.Withdrawals != nil, attr.Timestamp); err != nil {
+	if err := checkAttribute(func(uint64) bool { return true }, attr.Withdrawals != nil, attr.Timestamp); err != nil {
 		return fmt.Errorf("invalid withdrawals: %w", err)
 	}
 	return nil
@@ -422,12 +399,8 @@ func (api *ConsensusAPI) getPayload(payloadID engine.PayloadID, full bool) (*eng
 
 // NewPayloadV2 creates an Eth1 block, inserts it in the chain, and returns the status of the chain.
 func (api *ConsensusAPI) NewPayloadV2(params engine.ExecutableData) (engine.PayloadStatusV1, error) {
-	if api.zond.BlockChain().Config().IsShanghai(params.Timestamp) {
-		if params.Withdrawals == nil {
-			return engine.PayloadStatusV1{Status: engine.INVALID}, engine.InvalidParams.With(errors.New("nil withdrawals post-shanghai"))
-		}
-	} else if params.Withdrawals != nil {
-		return engine.PayloadStatusV1{Status: engine.INVALID}, engine.InvalidParams.With(errors.New("non-nil withdrawals pre-shanghai"))
+	if params.Withdrawals == nil {
+		return engine.PayloadStatusV1{Status: engine.INVALID}, engine.InvalidParams.With(errors.New("nil withdrawals post-shanghai"))
 	}
 
 	return api.newPayload(params, nil, nil)

@@ -342,9 +342,6 @@ func applyLondonChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 }
 
 func applyShanghaiChecks(env *stEnv, chainConfig *params.ChainConfig) error {
-	if !chainConfig.IsShanghai(big.NewInt(int64(env.Number)), env.Timestamp) {
-		return nil
-	}
 	if env.Withdrawals == nil {
 		return NewError(ErrorConfig, errors.New("Shanghai config but missing 'withdrawals' in env section"))
 	}

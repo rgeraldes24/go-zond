@@ -45,8 +45,6 @@ type operation struct {
 }
 
 var (
-	londonInstructionSet   = newLondonInstructionSet()
-	mergeInstructionSet    = newMergeInstructionSet()
 	shanghaiInstructionSet = newShanghaiInstructionSet()
 )
 

@@ -64,7 +64,7 @@ func (result *ExecutionResult) Revert() []byte {
 }
 
 // IntrinsicGas computes the 'intrinsic gas' for a message with the given data.
-func IntrinsicGas(data []byte, accessList types.AccessList, isContractCreation bool, isEIP3860 bool) (uint64, error) {
+func IntrinsicGas(data []byte, accessList types.AccessList, isContractCreation bool) (uint64, error) {
 	// Set the starting gas for the raw transaction
 	var gas uint64
 	if isContractCreation {
@@ -95,7 +95,7 @@ func IntrinsicGas(data []byte, accessList types.AccessList, isContractCreation b
 		}
 		gas += z * params.TxDataZeroGas
 
-		if isContractCreation && isEIP3860 {
+		if isContractCreation {
 			lenWords := toWordSize(dataLen)
 			if (math.MaxUint64-gas)/params.InitCodeWordGas < lenWords {
 				return 0, ErrGasUintOverflow
@@ -330,12 +330,12 @@ func (st *StateTransition) TransitionDb() (*ExecutionResult, error) {
 	var (
 		msg              = st.msg
 		sender           = vm.AccountRef(msg.From)
-		rules            = st.evm.ChainConfig().Rules(st.evm.Context.BlockNumber, st.evm.Context.Random != nil, st.evm.Context.Time)
+		rules            = st.evm.ChainConfig().Rules(st.evm.Context.BlockNumber, st.evm.Context.Time)
 		contractCreation = msg.To == nil
 	)
 
 	// Check clauses 4-5, subtract intrinsic gas if everything is correct
-	gas, err := IntrinsicGas(msg.Data, msg.AccessList, contractCreation, rules.IsShanghai)
+	gas, err := IntrinsicGas(msg.Data, msg.AccessList, contractCreation)
 	if err != nil {
 		return nil, err
 	}
@@ -350,7 +350,7 @@ func (st *StateTransition) TransitionDb() (*ExecutionResult, error) {
 	}
 
 	// Check whether the init code size has been exceeded.
-	if rules.IsShanghai && contractCreation && len(msg.Data) > params.MaxInitCodeSize {
+	if contractCreation && len(msg.Data) > params.MaxInitCodeSize {
 		return nil, fmt.Errorf("%w: code size %v limit %v", ErrMaxInitCodeSizeExceeded, len(msg.Data), params.MaxInitCodeSize)
 	}
 

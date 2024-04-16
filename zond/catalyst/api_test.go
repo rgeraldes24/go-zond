@@ -1037,9 +1037,6 @@ func TestSimultaneousNewBlock(t *testing.T) {
 // includes zero withdrawals and the second includes two.
 func TestWithdrawals(t *testing.T) {
 	genesis, blocks := generateMergeChain(10, true)
-	// Set shanghai time to last block + 5 seconds (first post-merge block)
-	time := blocks[len(blocks)-1].Time() + 5
-	genesis.Config.ShanghaiTime = &time
 
 	n, ethservice := startEthService(t, genesis, blocks)
 	ethservice.Merger().ReachTTD()
@@ -1151,9 +1148,6 @@ func TestWithdrawals(t *testing.T) {
 
 func TestNilWithdrawals(t *testing.T) {
 	genesis, blocks := generateMergeChain(10, true)
-	// Set shanghai time to last block + 4 seconds (first post-merge block)
-	time := blocks[len(blocks)-1].Time() + 4
-	genesis.Config.ShanghaiTime = &time
 
 	n, ethservice := startEthService(t, genesis, blocks)
 	ethservice.Merger().ReachTTD()
@@ -1263,9 +1257,6 @@ func TestNilWithdrawals(t *testing.T) {
 
 func setupBodies(t *testing.T) (*node.Node, *zond.Zond, []*types.Block) {
 	genesis, blocks := generateMergeChain(10, true)
-	// enable shanghai on the last block
-	time := blocks[len(blocks)-1].Header().Time + 1
-	genesis.Config.ShanghaiTime = &time
 	n, ethservice := startEthService(t, genesis, blocks)
 
 	var (

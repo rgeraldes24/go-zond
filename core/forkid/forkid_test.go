@@ -93,7 +93,6 @@ func TestCreation(t *testing.T) {
 func TestValidation(t *testing.T) {
 	// Config that has not timestamp enabled
 	legacyConfig := *params.MainnetChainConfig
-	legacyConfig.ShanghaiTime = nil
 
 	tests := []struct {
 		config *params.ChainConfig
@@ -370,7 +369,6 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 				ChainID:                       big.NewInt(1337),
 				TerminalTotalDifficulty:       big.NewInt(0),
 				TerminalTotalDifficultyPassed: true,
-				ShanghaiTime:                  &shanghai,
 				Ethash:                        new(params.EthashConfig),
 			}
 		}

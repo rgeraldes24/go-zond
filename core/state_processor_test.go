@@ -49,7 +49,6 @@ func TestStateProcessorErrors(t *testing.T) {
 			Ethash:                        new(params.EthashConfig),
 			TerminalTotalDifficulty:       big.NewInt(0),
 			TerminalTotalDifficultyPassed: true,
-			ShanghaiTime:                  new(uint64),
 		}
 		signer = types.LatestSigner(config)
 		d1, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
@@ -333,9 +332,7 @@ func GenerateBadBlock(parent *types.Block, engine consensus.Engine, txs types.Tr
 		UncleHash:  types.EmptyUncleHash,
 	}
 	header.BaseFee = eip1559.CalcBaseFee(config, parent.Header())
-	if config.IsShanghai(header.Time) {
-		header.WithdrawalsHash = &types.EmptyWithdrawalsHash
-	}
+	header.WithdrawalsHash = &types.EmptyWithdrawalsHash
 	var receipts []*types.Receipt
 	// The post-state result doesn't need to be correct (this is a bad block), but we do need something there
 	// Preferably something unique. So let's use a combo of blocknum + txhash
@@ -352,9 +349,6 @@ func GenerateBadBlock(parent *types.Block, engine consensus.Engine, txs types.Tr
 		cumulativeGas += tx.Gas()
 	}
 	header.Root = common.BytesToHash(hasher.Sum(nil))
-	// Assemble and return the final block for sealing
-	if config.IsShanghai(header.Time) {
-		return types.NewBlockWithWithdrawals(header, txs, nil, receipts, []*types.Withdrawal{}, trie.NewStackTrie(nil))
-	}
-	return types.NewBlock(header, txs, nil, receipts, trie.NewStackTrie(nil))
+
+	return types.NewBlockWithWithdrawals(header, txs, nil, receipts, []*types.Withdrawal{}, trie.NewStackTrie(nil))
 }

@@ -223,9 +223,10 @@ func (ethash *Ethash) verifyHeader(chain consensus.ChainHeaderReader, header, pa
 	if diff := new(big.Int).Sub(header.Number, parent.Number); diff.Cmp(big.NewInt(1)) != 0 {
 		return consensus.ErrInvalidNumber
 	}
-	if chain.Config().IsShanghai(header.Time) {
-		return errors.New("ethash does not support shanghai fork")
-	}
+	//  TODO(rgeraldes24)
+	// if chain.Config().IsShanghai(header.Time) {
+	// 	return errors.New("ethash does not support shanghai fork")
+	// }
 	// Add some fake checks for tests
 	if ethash.fakeDelay != nil {
 		time.Sleep(*ethash.fakeDelay)

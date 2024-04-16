@@ -23,13 +23,7 @@ import (
 // LookupInstructionSet returns the instructionset for the fork configured by
 // the rules.
 func LookupInstructionSet(rules params.Rules) (JumpTable, error) {
-	switch {
-	case rules.IsShanghai:
-		return newShanghaiInstructionSet(), nil
-	case rules.IsMerge:
-		return newMergeInstructionSet(), nil
-	}
-	return newLondonInstructionSet(), nil
+	return newShanghaiInstructionSet(), nil
 }
 
 // Stack returns the mininum and maximum stack requirements.

@@ -31,7 +31,6 @@ var Forks = map[string]*params.ChainConfig{
 	"Shanghai": {
 		ChainID:                 big.NewInt(1),
 		TerminalTotalDifficulty: big.NewInt(0),
-		ShanghaiTime:            u64(0),
 	},
 }
 

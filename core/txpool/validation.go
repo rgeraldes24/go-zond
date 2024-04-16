@@ -55,7 +55,7 @@ func ValidateTransaction(tx *types.Transaction, head *types.Header, signer types
 		return fmt.Errorf("%w: transaction size %v, limit %v", ErrOversizedData, tx.Size(), opts.MaxSize)
 	}
 	// Check whether the init code size has been exceeded
-	if opts.Config.IsShanghai(head.Time) && tx.To() == nil && len(tx.Data()) > params.MaxInitCodeSize {
+	if tx.To() == nil && len(tx.Data()) > params.MaxInitCodeSize {
 		return fmt.Errorf("%w: code size %v, limit %v", core.ErrMaxInitCodeSizeExceeded, len(tx.Data()), params.MaxInitCodeSize)
 	}
 	// Transactions can't be negative. This may never happen using RLP decoded
@@ -84,7 +84,7 @@ func ValidateTransaction(tx *types.Transaction, head *types.Header, signer types
 	}
 	// Ensure the transaction has more gas than the bare minimum needed to cover
 	// the transaction metadata
-	intrGas, err := core.IntrinsicGas(tx.Data(), tx.AccessList(), tx.To() == nil, opts.Config.IsShanghai(head.Time))
+	intrGas, err := core.IntrinsicGas(tx.Data(), tx.AccessList(), tx.To() == nil)
 	if err != nil {
 		return err
 	}

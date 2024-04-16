@@ -39,7 +39,6 @@ var (
 		ChainID:                       big.NewInt(1),
 		TerminalTotalDifficulty:       MainnetTerminalTotalDifficulty, // 58_750_000_000_000_000_000_000
 		TerminalTotalDifficultyPassed: true,
-		ShanghaiTime:                  newUint64(1681338455),
 		Ethash:                        new(EthashConfig),
 	}
 	// BetaNetChainConfig contains the chain parameters to run a node on the BetaNet test network.
@@ -47,14 +46,12 @@ var (
 		ChainID:                       big.NewInt(32382),
 		TerminalTotalDifficulty:       big.NewInt(0),
 		TerminalTotalDifficultyPassed: true,
-		ShanghaiTime:                  newUint64(1705841668),
 		Ethash:                        new(EthashConfig),
 	}
 	// AllEthashProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Ethash consensus.
 	AllEthashProtocolChanges = &ChainConfig{
 		ChainID:                       big.NewInt(1337),
-		ShanghaiTime:                  nil,
 		TerminalTotalDifficulty:       nil,
 		TerminalTotalDifficultyPassed: true,
 		Ethash:                        new(EthashConfig),
@@ -63,7 +60,6 @@ var (
 
 	AllDevChainProtocolChanges = &ChainConfig{
 		ChainID:                       big.NewInt(1337),
-		ShanghaiTime:                  newUint64(0),
 		TerminalTotalDifficulty:       big.NewInt(0),
 		TerminalTotalDifficultyPassed: true,
 		IsDevMode:                     true,
@@ -73,7 +69,6 @@ var (
 	// and accepted by the Ethereum core developers into the Clique consensus.
 	AllCliqueProtocolChanges = &ChainConfig{
 		ChainID:                       big.NewInt(1337),
-		ShanghaiTime:                  nil,
 		TerminalTotalDifficulty:       nil,
 		TerminalTotalDifficultyPassed: false,
 		Ethash:                        nil,
@@ -84,7 +79,6 @@ var (
 	// and accepted by the Ethereum core developers for testing proposes.
 	TestChainConfig = &ChainConfig{
 		ChainID:                       big.NewInt(1),
-		ShanghaiTime:                  nil,
 		TerminalTotalDifficulty:       nil,
 		TerminalTotalDifficultyPassed: false,
 		Ethash:                        new(EthashConfig),
@@ -96,13 +90,12 @@ var (
 	NonActivatedConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
 
-		ShanghaiTime:                  nil,
 		TerminalTotalDifficulty:       nil,
 		TerminalTotalDifficultyPassed: false,
 		Ethash:                        new(EthashConfig),
 		Clique:                        nil,
 	}
-	TestRules = TestChainConfig.Rules(new(big.Int), false, 0)
+	TestRules = TestChainConfig.Rules(new(big.Int), 0)
 )
 
 // NetworkNames are user friendly names to use in the chain spec banner.
@@ -118,9 +111,6 @@ var NetworkNames = map[string]string{
 type ChainConfig struct {
 	ChainID *big.Int `json:"chainId"` // chainId identifies the current chain and is used for replay protection
 
-	// Fork scheduling was switched from blocks to timestamps here
-
-	ShanghaiTime *uint64 `json:"shanghaiTime,omitempty"` // Shanghai switch time (nil = no fork, 0 = already on shanghai)
 	// TerminalTotalDifficulty is the amount of total difficulty reached by
 	// the network that triggers the consensus upgrade.
 	TerminalTotalDifficulty *big.Int `json:"terminalTotalDifficulty,omitempty"`
@@ -199,11 +189,6 @@ func (c *ChainConfig) Description() string {
 	}
 	banner += "\n"
 
-	// Create a list of forks post-merge
-	banner += "Post-Merge hard forks (timestamp based):\n"
-	if c.ShanghaiTime != nil {
-		banner += fmt.Sprintf(" - Shanghai:                    @%-10v (https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/shanghai.md)\n", *c.ShanghaiTime)
-	}
 	return banner
 }
 
@@ -213,11 +198,6 @@ func (c *ChainConfig) IsTerminalPoWBlock(parentTotalDiff *big.Int, totalDiff *bi
 		return false
 	}
 	return parentTotalDiff.Cmp(c.TerminalTotalDifficulty) < 0 && totalDiff.Cmp(c.TerminalTotalDifficulty) >= 0
-}
-
-// IsShanghai returns whether time is either equal to the Shanghai fork time or greater.
-func (c *ChainConfig) IsShanghai(time uint64) bool {
-	return isTimestampForked(c.ShanghaiTime, time)
 }
 
 // CheckCompatible checks whether scheduled fork transitions have been imported
@@ -255,9 +235,7 @@ func (c *ChainConfig) CheckConfigForkOrder() error {
 		optional  bool     // if true, the fork may be nil and next fork is still allowed
 	}
 	var lastFork fork
-	for _, cur := range []fork{
-		{name: "shanghaiTime", timestamp: c.ShanghaiTime},
-	} {
+	for _, cur := range []fork{} {
 		if lastFork.name != "" {
 			switch {
 			// Non-optional forks must all be present in the chain config up to the last defined fork
@@ -300,9 +278,7 @@ func (c *ChainConfig) checkCompatible(newcfg *ChainConfig, headNumber *big.Int, 
 	// if c.IsEIP158(headNumber) && !configBlockEqual(c.ChainID, newcfg.ChainID) {
 	// 	return newBlockCompatError("EIP158 chain ID", c.EIP158Block, newcfg.EIP158Block)
 	// }
-	if isForkTimestampIncompatible(c.ShanghaiTime, newcfg.ShanghaiTime, headTimestamp) {
-		return newTimestampCompatError("Shanghai fork timestamp", c.ShanghaiTime, newcfg.ShanghaiTime)
-	}
+
 	return nil
 }
 
@@ -443,19 +419,16 @@ func (err *ConfigCompatError) Error() string {
 // Rules is a one time interface meaning that it shouldn't be used in between transition
 // phases.
 type Rules struct {
-	ChainID             *big.Int
-	IsMerge, IsShanghai bool
+	ChainID *big.Int
 }
 
 // Rules ensures c's ChainID is not nil.
-func (c *ChainConfig) Rules(num *big.Int, isMerge bool, timestamp uint64) Rules {
+func (c *ChainConfig) Rules(num *big.Int, timestamp uint64) Rules {
 	chainID := c.ChainID
 	if chainID == nil {
 		chainID = new(big.Int)
 	}
 	return Rules{
-		ChainID:    new(big.Int).Set(chainID),
-		IsMerge:    isMerge,
-		IsShanghai: c.IsShanghai(timestamp),
+		ChainID: new(big.Int).Set(chainID),
 	}
 }

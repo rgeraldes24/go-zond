@@ -60,12 +60,14 @@ type testBackend struct {
 
 // newTestBackend creates an empty chain and wraps it into a mock backend.
 func newTestBackend(blocks int) *testBackend {
-	return newTestBackendWithGenerator(blocks, false, nil)
+	// TODO(rgeraldes24)
+	// return newTestBackendWithGenerator(blocks, false, nil)
+	return newTestBackendWithGenerator(blocks, nil)
 }
 
 // newTestBackend creates a chain with a number of explicitly defined blocks and
 // wraps it into a mock backend.
-func newTestBackendWithGenerator(blocks int, shanghai bool, generator func(int, *core.BlockGen)) *testBackend {
+func newTestBackendWithGenerator(blocks int, generator func(int, *core.BlockGen)) *testBackend {
 	var (
 		// Create a database pre-initialize with a genesis block
 		db                      = rawdb.NewMemoryDatabase()
@@ -73,16 +75,13 @@ func newTestBackendWithGenerator(blocks int, shanghai bool, generator func(int, 
 		engine consensus.Engine = ethash.NewFaker()
 	)
 
-	if shanghai {
-		config = &params.ChainConfig{
-			ChainID:                       big.NewInt(1),
-			ShanghaiTime:                  u64(0),
-			TerminalTotalDifficulty:       big.NewInt(0),
-			TerminalTotalDifficultyPassed: true,
-			Ethash:                        new(params.EthashConfig),
-		}
-		engine = beacon.NewFaker()
+	config = &params.ChainConfig{
+		ChainID:                       big.NewInt(1),
+		TerminalTotalDifficulty:       big.NewInt(0),
+		TerminalTotalDifficultyPassed: true,
+		Ethash:                        new(params.EthashConfig),
 	}
+	engine = beacon.NewFaker()
 
 	gspec := &core.Genesis{
 		Config: config,
@@ -334,7 +333,7 @@ func testGetBlockBodies(t *testing.T, protocol uint) {
 		}
 	}
 
-	backend := newTestBackendWithGenerator(maxBodiesServe+15, true, gen)
+	backend := newTestBackendWithGenerator(maxBodiesServe+15, gen)
 	defer backend.close()
 
 	peer, _ := newTestPeer("peer", protocol, backend)
@@ -454,7 +453,9 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 		}
 	}
 	// Assemble the test environment
-	backend := newTestBackendWithGenerator(4, false, generator)
+	// TODO(rgeraldes24)
+	// backend := newTestBackendWithGenerator(4, false, generator)
+	backend := newTestBackendWithGenerator(4, generator)
 	defer backend.close()
 
 	peer, _ := newTestPeer("peer", protocol, backend)
