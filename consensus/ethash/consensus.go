@@ -45,11 +45,6 @@ var (
 	// Specification EIP-5133: https://eips.ethereum.org/EIPS/eip-5133
 	calcDifficultyEip5133 = makeDifficultyCalculator(big.NewInt(11_400_000))
 
-	// calcDifficultyEip4345 is the difficulty adjustment algorithm as specified by EIP 4345.
-	// It offsets the bomb a total of 10.7M blocks.
-	// Specification EIP-4345: https://eips.ethereum.org/EIPS/eip-4345
-	calcDifficultyEip4345 = makeDifficultyCalculator(big.NewInt(10_700_000))
-
 	// calcDifficultyEip2384 is the difficulty adjustment algorithm as specified by EIP 2384.
 	// It offsets the bomb 4M blocks from Constantinople, so in total 9M blocks.
 	// Specification EIP-2384: https://eips.ethereum.org/EIPS/eip-2384
@@ -261,8 +256,6 @@ func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Heade
 	switch {
 	case config.IsGrayGlacier(next):
 		return calcDifficultyEip5133(time, parent)
-	case config.IsArrowGlacier(next):
-		return calcDifficultyEip4345(time, parent)
 	default:
 		return calcDifficultyEip2384(time, parent)
 	}
