@@ -370,7 +370,6 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 				ChainID:                       big.NewInt(1337),
 				TerminalTotalDifficulty:       big.NewInt(0),
 				TerminalTotalDifficultyPassed: true,
-				MergeNetsplitBlock:            big.NewInt(0),
 				ShanghaiTime:                  &shanghai,
 				Ethash:                        new(params.EthashConfig),
 			}
