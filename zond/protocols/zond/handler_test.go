@@ -76,7 +76,6 @@ func newTestBackendWithGenerator(blocks int, shanghai bool, generator func(int, 
 	if shanghai {
 		config = &params.ChainConfig{
 			ChainID:                       big.NewInt(1),
-			GrayGlacierBlock:              big.NewInt(0),
 			MergeNetsplitBlock:            big.NewInt(0),
 			ShanghaiTime:                  u64(0),
 			TerminalTotalDifficulty:       big.NewInt(0),

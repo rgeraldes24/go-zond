@@ -44,11 +44,6 @@ var (
 	// It offsets the bomb a total of 11.4M blocks.
 	// Specification EIP-5133: https://eips.ethereum.org/EIPS/eip-5133
 	calcDifficultyEip5133 = makeDifficultyCalculator(big.NewInt(11_400_000))
-
-	// calcDifficultyEip2384 is the difficulty adjustment algorithm as specified by EIP 2384.
-	// It offsets the bomb 4M blocks from Constantinople, so in total 9M blocks.
-	// Specification EIP-2384: https://eips.ethereum.org/EIPS/eip-2384
-	calcDifficultyEip2384 = makeDifficultyCalculator(big.NewInt(9000000))
 )
 
 // Various error messages to mark blocks invalid. These should be private to
@@ -252,13 +247,7 @@ func (ethash *Ethash) CalcDifficulty(chain consensus.ChainHeaderReader, time uin
 // the difficulty that a new block should have when created at time
 // given the parent block's time and difficulty.
 func CalcDifficulty(config *params.ChainConfig, time uint64, parent *types.Header) *big.Int {
-	next := new(big.Int).Add(parent.Number, big1)
-	switch {
-	case config.IsGrayGlacier(next):
-		return calcDifficultyEip5133(time, parent)
-	default:
-		return calcDifficultyEip2384(time, parent)
-	}
+	return calcDifficultyEip5133(time, parent)
 }
 
 // Some weird constants to avoid constant memory allocs for them.

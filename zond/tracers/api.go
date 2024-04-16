@@ -982,10 +982,6 @@ func overrideConfig(original *params.ChainConfig, override *params.ChainConfig) 
 	canon := true
 
 	// Apply forks (after Berlin) to the copy.
-	if block := override.GrayGlacierBlock; block != nil {
-		copy.GrayGlacierBlock = block
-		canon = false
-	}
 	if block := override.MergeNetsplitBlock; block != nil {
 		copy.MergeNetsplitBlock = block
 		canon = false
