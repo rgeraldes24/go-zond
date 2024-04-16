@@ -30,8 +30,6 @@ import (
 func copyConfig(original *params.ChainConfig) *params.ChainConfig {
 	return &params.ChainConfig{
 		ChainID:                 original.ChainID,
-		MuirGlacierBlock:        original.MuirGlacierBlock,
-		BerlinBlock:             original.BerlinBlock,
 		LondonBlock:             original.LondonBlock,
 		TerminalTotalDifficulty: original.TerminalTotalDifficulty,
 		Ethash:                  original.Ethash,

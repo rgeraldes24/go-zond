@@ -46,8 +46,6 @@ func TestStateProcessorErrors(t *testing.T) {
 	var (
 		config = &params.ChainConfig{
 			ChainID:                       big.NewInt(1),
-			MuirGlacierBlock:              big.NewInt(0),
-			BerlinBlock:                   big.NewInt(0),
 			LondonBlock:                   big.NewInt(0),
 			Ethash:                        new(params.EthashConfig),
 			TerminalTotalDifficulty:       big.NewInt(0),
@@ -237,8 +235,7 @@ func TestStateProcessorErrors(t *testing.T) {
 			db    = rawdb.NewMemoryDatabase()
 			gspec = &Genesis{
 				Config: &params.ChainConfig{
-					ChainID:          big.NewInt(1),
-					MuirGlacierBlock: big.NewInt(0),
+					ChainID: big.NewInt(1),
 				},
 				Alloc: GenesisAlloc{
 					common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7"): GenesisAccount{

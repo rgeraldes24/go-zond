@@ -48,7 +48,6 @@ var (
 	frontierInstructionSet       = newFrontierInstructionSet()
 	constantinopleInstructionSet = newConstantinopleInstructionSet()
 	istanbulInstructionSet       = newIstanbulInstructionSet()
-	berlinInstructionSet         = newBerlinInstructionSet()
 	londonInstructionSet         = newLondonInstructionSet()
 	mergeInstructionSet          = newMergeInstructionSet()
 	shanghaiInstructionSet       = newShanghaiInstructionSet()

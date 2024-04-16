@@ -42,8 +42,6 @@ func MakeSigner(config *params.ChainConfig, blockNumber *big.Int, blockTime uint
 	switch {
 	case config.IsLondon(blockNumber):
 		signer = NewLondonSigner(config.ChainID)
-	case config.IsBerlin(blockNumber):
-		signer = NewEIP2930Signer(config.ChainID)
 	default:
 		signer = FrontierSigner{}
 	}
@@ -61,9 +59,6 @@ func LatestSigner(config *params.ChainConfig) Signer {
 	if config.ChainID != nil {
 		if config.LondonBlock != nil {
 			return NewLondonSigner(config.ChainID)
-		}
-		if config.BerlinBlock != nil {
-			return NewEIP2930Signer(config.ChainID)
 		}
 	}
 	return HomesteadSigner{}

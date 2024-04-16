@@ -982,10 +982,6 @@ func overrideConfig(original *params.ChainConfig, override *params.ChainConfig) 
 	canon := true
 
 	// Apply forks (after Berlin) to the copy.
-	if block := override.BerlinBlock; block != nil {
-		copy.BerlinBlock = block
-		canon = false
-	}
 	if block := override.LondonBlock; block != nil {
 		copy.LondonBlock = block
 		canon = false
