@@ -53,8 +53,6 @@ func TestGenerateWithdrawalChain(t *testing.T) {
 		db     = rawdb.NewMemoryDatabase()
 	)
 
-	config.TerminalTotalDifficulty = common.Big0
-
 	// init 0xaa with some storage elements
 	storage := make(map[common.Hash]common.Hash)
 	storage[common.Hash{0x00}] = common.Hash{0x00}

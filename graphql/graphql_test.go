@@ -446,8 +446,6 @@ func newGQLService(t *testing.T, stack *node.Node, gspec *core.Genesis, genBlock
 		SnapshotCache:  5,
 	}
 	var engine consensus.Engine = beacon.NewFaker()
-	chainCfg := gspec.Config
-	chainCfg.TerminalTotalDifficulty = common.Big0
 	zondBackend, err := zond.New(stack, ethConf)
 	if err != nil {
 		t.Fatalf("could not create eth backend: %v", err)

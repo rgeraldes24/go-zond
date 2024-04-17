@@ -189,11 +189,7 @@ func newHandler(config *handlerConfig) (*handler, error) {
 	}
 	// Construct the downloader (long sync)
 	h.downloader = downloader.New(config.Database, h.eventMux, h.chain, nil, h.removePeer, success)
-	if ttd := h.chain.Config().TerminalTotalDifficulty; ttd != nil {
-		log.Info("Chain post-merge, sync via beacon client")
-	} else {
-		log.Error("Chain configured post-merge, but without TTD. Are you debugging sync?")
-	}
+	log.Info("Chain post-merge, sync via beacon client")
 	// Construct the fetcher (short sync)
 	validator := func(header *types.Header) error {
 		// All the block fetcher activities should be disabled
@@ -250,11 +246,6 @@ func newHandler(config *handlerConfig) (*handler, error) {
 			for i, block := range blocks {
 				ptd := h.chain.GetTd(block.ParentHash(), block.NumberU64()-1)
 				if ptd == nil {
-					return 0, nil
-				}
-				td := new(big.Int).Add(ptd, block.Difficulty())
-				if !h.chain.Config().IsTerminalPoWBlock(ptd, td) {
-					log.Info("Filtered out non-termimal pow block", "number", block.NumberU64(), "hash", block.Hash())
 					return 0, nil
 				}
 				if err := h.chain.InsertBlockWithoutSetHead(block); err != nil {

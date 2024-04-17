@@ -29,8 +29,7 @@ func u64(val uint64) *uint64 { return &val }
 // Forks table defines supported forks and their chain config.
 var Forks = map[string]*params.ChainConfig{
 	"Shanghai": {
-		ChainID:                 big.NewInt(1),
-		TerminalTotalDifficulty: big.NewInt(0),
+		ChainID: big.NewInt(1),
 	},
 }
 

@@ -31,9 +31,7 @@ import (
 	"github.com/theQRL/go-zond/beacon/engine"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
-	"github.com/theQRL/go-zond/consensus"
 	beaconConsensus "github.com/theQRL/go-zond/consensus/beacon"
-	"github.com/theQRL/go-zond/consensus/ethash"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
@@ -59,13 +57,9 @@ var (
 	testBalance = big.NewInt(2e18)
 )
 
-func generateMergeChain(n int, merged bool) (*core.Genesis, []*types.Block) {
+func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 	config := *params.AllEthashProtocolChanges
-	engine := consensus.Engine(beaconConsensus.New(ethash.NewFaker()))
-	if merged {
-		config.TerminalTotalDifficulty = common.Big0
-		engine = beaconConsensus.NewFaker()
-	}
+	engine := beaconConsensus.NewFaker()
 	genesis := &core.Genesis{
 		Config: &config,
 		Alloc: core.GenesisAlloc{
@@ -87,19 +81,11 @@ func generateMergeChain(n int, merged bool) (*core.Genesis, []*types.Block) {
 	}
 	_, blocks, _ := core.GenerateChainWithGenesis(genesis, engine, n, generate)
 
-	if !merged {
-		totalDifficulty := big.NewInt(0)
-		for _, b := range blocks {
-			totalDifficulty.Add(totalDifficulty, b.Difficulty())
-		}
-		config.TerminalTotalDifficulty = totalDifficulty
-	}
-
 	return genesis, blocks
 }
 
 func TestEth2AssembleBlock(t *testing.T) {
-	genesis, blocks := generateMergeChain(10, false)
+	genesis, blocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, blocks)
 	defer n.Close()
 
@@ -138,7 +124,7 @@ func assembleWithTransactions(api *ConsensusAPI, parentHash common.Hash, params 
 }
 
 func TestEth2AssembleBlockWithAnotherBlocksTxs(t *testing.T) {
-	genesis, blocks := generateMergeChain(10, false)
+	genesis, blocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, blocks[:9])
 	defer n.Close()
 
@@ -158,7 +144,7 @@ func TestEth2AssembleBlockWithAnotherBlocksTxs(t *testing.T) {
 }
 
 func TestSetHeadBeforeTotalDifficulty(t *testing.T) {
-	genesis, blocks := generateMergeChain(10, false)
+	genesis, blocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, blocks)
 	defer n.Close()
 
@@ -168,7 +154,7 @@ func TestSetHeadBeforeTotalDifficulty(t *testing.T) {
 		SafeBlockHash:      common.Hash{},
 		FinalizedBlockHash: common.Hash{},
 	}
-	if resp, err := api.ForkchoiceUpdatedV1(fcState, nil); err != nil {
+	if resp, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 		t.Errorf("fork choice updated should not error: %v", err)
 	} else if resp.PayloadStatus.Status != engine.INVALID_TERMINAL_BLOCK.Status {
 		t.Errorf("fork choice updated before total terminal difficulty should be INVALID")
@@ -176,9 +162,8 @@ func TestSetHeadBeforeTotalDifficulty(t *testing.T) {
 }
 
 func TestEth2PrepareAndGetPayload(t *testing.T) {
-	genesis, blocks := generateMergeChain(10, false)
+	genesis, blocks := generateMergeChain(10)
 	// We need to properly set the terminal total difficulty
-	genesis.Config.TerminalTotalDifficulty.Sub(genesis.Config.TerminalTotalDifficulty, blocks[9].Difficulty())
 	n, ethservice := startEthService(t, genesis, blocks[:9])
 	defer n.Close()
 
@@ -195,7 +180,7 @@ func TestEth2PrepareAndGetPayload(t *testing.T) {
 		SafeBlockHash:      common.Hash{},
 		FinalizedBlockHash: common.Hash{},
 	}
-	_, err := api.ForkchoiceUpdatedV1(fcState, &blockParams)
+	_, err := api.ForkchoiceUpdatedV2(fcState, &blockParams)
 	if err != nil {
 		t.Fatalf("error preparing payload, err=%v", err)
 	}
@@ -243,7 +228,7 @@ func checkLogEvents(t *testing.T, logsCh <-chan []*types.Log, rmLogsCh <-chan co
 }
 
 func TestInvalidPayloadTimestamp(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10, false)
+	genesis, preMergeBlocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, preMergeBlocks)
 	defer n.Close()
 	var (
@@ -276,7 +261,7 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 				SafeBlockHash:      common.Hash{},
 				FinalizedBlockHash: common.Hash{},
 			}
-			_, err := api.ForkchoiceUpdatedV1(fcState, &params)
+			_, err := api.ForkchoiceUpdatedV2(fcState, &params)
 			if test.shouldErr && err == nil {
 				t.Fatalf("expected error preparing payload with invalid timestamp, err=%v", err)
 			} else if !test.shouldErr && err != nil {
@@ -287,7 +272,7 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 }
 
 func TestEth2NewBlock(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10, false)
+	genesis, preMergeBlocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, preMergeBlocks)
 	defer n.Close()
 
@@ -335,7 +320,7 @@ func TestEth2NewBlock(t *testing.T) {
 			SafeBlockHash:      block.Hash(),
 			FinalizedBlockHash: block.Hash(),
 		}
-		if _, err := api.ForkchoiceUpdatedV1(fcState, nil); err != nil {
+		if _, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
 		if have, want := ethservice.BlockChain().CurrentBlock().Number.Uint64(), block.NumberU64(); have != want {
@@ -375,7 +360,7 @@ func TestEth2NewBlock(t *testing.T) {
 			SafeBlockHash:      block.Hash(),
 			FinalizedBlockHash: block.Hash(),
 		}
-		if _, err := api.ForkchoiceUpdatedV1(fcState, nil); err != nil {
+		if _, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
 		if ethservice.BlockChain().CurrentBlock().Number.Uint64() != block.NumberU64() {
@@ -464,7 +449,7 @@ func startEthService(t *testing.T, genesis *core.Genesis, blocks []*types.Block)
 }
 
 func TestFullAPI(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10, false)
+	genesis, preMergeBlocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, preMergeBlocks)
 	defer n.Close()
 	var (
@@ -506,7 +491,7 @@ func setupBlocks(t *testing.T, ethservice *zond.Zond, n int, parent *types.Heade
 			SafeBlockHash:      payload.ParentHash,
 			FinalizedBlockHash: payload.ParentHash,
 		}
-		if _, err := api.ForkchoiceUpdatedV1(fcState, nil); err != nil {
+		if _, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
 		if ethservice.BlockChain().CurrentBlock().Number.Uint64() != payload.Number {
@@ -519,50 +504,6 @@ func setupBlocks(t *testing.T, ethservice *zond.Zond, n int, parent *types.Heade
 		blocks = append(blocks, parent)
 	}
 	return blocks
-}
-
-func TestExchangeTransitionConfig(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10, false)
-	n, ethservice := startEthService(t, genesis, preMergeBlocks)
-	defer n.Close()
-
-	// invalid ttd
-	api := NewConsensusAPI(ethservice)
-	config := engine.TransitionConfigurationV1{
-		TerminalTotalDifficulty: (*hexutil.Big)(big.NewInt(0)),
-		TerminalBlockHash:       common.Hash{},
-		TerminalBlockNumber:     0,
-	}
-	if _, err := api.ExchangeTransitionConfigurationV1(config); err == nil {
-		t.Fatal("expected error on invalid config, invalid ttd")
-	}
-	// invalid terminal block hash
-	config = engine.TransitionConfigurationV1{
-		TerminalTotalDifficulty: (*hexutil.Big)(genesis.Config.TerminalTotalDifficulty),
-		TerminalBlockHash:       common.Hash{1},
-		TerminalBlockNumber:     0,
-	}
-	if _, err := api.ExchangeTransitionConfigurationV1(config); err == nil {
-		t.Fatal("expected error on invalid config, invalid hash")
-	}
-	// valid config
-	config = engine.TransitionConfigurationV1{
-		TerminalTotalDifficulty: (*hexutil.Big)(genesis.Config.TerminalTotalDifficulty),
-		TerminalBlockHash:       common.Hash{},
-		TerminalBlockNumber:     0,
-	}
-	if _, err := api.ExchangeTransitionConfigurationV1(config); err != nil {
-		t.Fatalf("expected no error on valid config, got %v", err)
-	}
-	// valid config
-	config = engine.TransitionConfigurationV1{
-		TerminalTotalDifficulty: (*hexutil.Big)(genesis.Config.TerminalTotalDifficulty),
-		TerminalBlockHash:       preMergeBlocks[5].Hash(),
-		TerminalBlockNumber:     6,
-	}
-	if _, err := api.ExchangeTransitionConfigurationV1(config); err != nil {
-		t.Fatalf("expected no error on valid config, got %v", err)
-	}
 }
 
 /*
@@ -583,7 +524,7 @@ We expect
 	                └── P1''
 */
 func TestNewPayloadOnInvalidChain(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10, false)
+	genesis, preMergeBlocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, preMergeBlocks)
 	defer n.Close()
 
@@ -620,7 +561,7 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 			err     error
 		)
 		for i := 0; ; i++ {
-			if resp, err = api.ForkchoiceUpdatedV1(fcState, &params); err != nil {
+			if resp, err = api.ForkchoiceUpdatedV2(fcState, &params); err != nil {
 				t.Fatalf("error preparing payload, err=%v", err)
 			}
 			if resp.PayloadStatus.Status != engine.VALID {
@@ -652,7 +593,7 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 			SafeBlockHash:      payload.ParentHash,
 			FinalizedBlockHash: payload.ParentHash,
 		}
-		if _, err := api.ForkchoiceUpdatedV1(fcState, nil); err != nil {
+		if _, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
 		if ethservice.BlockChain().CurrentBlock().Number.Uint64() != payload.Number {
@@ -678,7 +619,7 @@ func assembleBlock(api *ConsensusAPI, parentHash common.Hash, params *engine.Pay
 }
 
 func TestEmptyBlocks(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10, false)
+	genesis, preMergeBlocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, preMergeBlocks)
 	defer n.Close()
 
@@ -794,7 +735,7 @@ func decodeTransactions(enc [][]byte) ([]*types.Transaction, error) {
 
 func TestTrickRemoteBlockCache(t *testing.T) {
 	// Setup two nodes
-	genesis, preMergeBlocks := generateMergeChain(10, false)
+	genesis, preMergeBlocks := generateMergeChain(10)
 	nodeA, ethserviceA := startEthService(t, genesis, preMergeBlocks)
 	nodeB, ethserviceB := startEthService(t, genesis, preMergeBlocks)
 	defer nodeA.Close()
@@ -845,7 +786,7 @@ func TestTrickRemoteBlockCache(t *testing.T) {
 			t.Error("invalid status: VALID on an invalid chain")
 		}
 		// Now reorg to the head of the invalid chain
-		resp, err := apiB.ForkchoiceUpdatedV1(engine.ForkchoiceStateV1{HeadBlockHash: payload.BlockHash, SafeBlockHash: payload.BlockHash, FinalizedBlockHash: payload.ParentHash}, nil)
+		resp, err := apiB.ForkchoiceUpdatedV2(engine.ForkchoiceStateV1{HeadBlockHash: payload.BlockHash, SafeBlockHash: payload.BlockHash, FinalizedBlockHash: payload.ParentHash}, nil)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -857,7 +798,7 @@ func TestTrickRemoteBlockCache(t *testing.T) {
 }
 
 func TestInvalidBloom(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10, false)
+	genesis, preMergeBlocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, preMergeBlocks)
 	ethservice.Merger().ReachTTD()
 	defer n.Close()
@@ -881,7 +822,7 @@ func TestInvalidBloom(t *testing.T) {
 }
 
 func TestNewPayloadOnInvalidTerminalBlock(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(100, false)
+	genesis, preMergeBlocks := generateMergeChain(100)
 	n, ethservice := startEthService(t, genesis, preMergeBlocks)
 	defer n.Close()
 	api := NewConsensusAPI(ethservice)
@@ -893,7 +834,7 @@ func TestNewPayloadOnInvalidTerminalBlock(t *testing.T) {
 		SafeBlockHash:      common.Hash{},
 		FinalizedBlockHash: common.Hash{},
 	}
-	resp, err := api.ForkchoiceUpdatedV1(fcState, nil)
+	resp, err := api.ForkchoiceUpdatedV2(fcState, nil)
 	if err != nil {
 		t.Fatalf("error sending forkchoice, err=%v", err)
 	}
@@ -948,7 +889,7 @@ func TestNewPayloadOnInvalidTerminalBlock(t *testing.T) {
 // newPayLoad and forkchoiceUpdate. This is to test that the api behaves
 // well even of the caller is not being 'serial'.
 func TestSimultaneousNewBlock(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10, false)
+	genesis, preMergeBlocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, preMergeBlocks)
 	defer n.Close()
 
@@ -1013,7 +954,7 @@ func TestSimultaneousNewBlock(t *testing.T) {
 			for ii := 0; ii < 10; ii++ {
 				go func() {
 					defer wg.Done()
-					if _, err := api.ForkchoiceUpdatedV1(fcState, nil); err != nil {
+					if _, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 						errMu.Lock()
 						testErr = fmt.Errorf("Failed to insert block: %w", err)
 						errMu.Unlock()
@@ -1035,7 +976,7 @@ func TestSimultaneousNewBlock(t *testing.T) {
 // TestWithdrawals creates and verifies two post-Shanghai blocks. The first
 // includes zero withdrawals and the second includes two.
 func TestWithdrawals(t *testing.T) {
-	genesis, blocks := generateMergeChain(10, true)
+	genesis, blocks := generateMergeChain(10)
 
 	n, ethservice := startEthService(t, genesis, blocks)
 	ethservice.Merger().ReachTTD()
@@ -1146,7 +1087,7 @@ func TestWithdrawals(t *testing.T) {
 }
 
 func TestNilWithdrawals(t *testing.T) {
-	genesis, blocks := generateMergeChain(10, true)
+	genesis, blocks := generateMergeChain(10)
 
 	n, ethservice := startEthService(t, genesis, blocks)
 	ethservice.Merger().ReachTTD()
@@ -1255,7 +1196,7 @@ func TestNilWithdrawals(t *testing.T) {
 }
 
 func setupBodies(t *testing.T) (*node.Node, *zond.Zond, []*types.Block) {
-	genesis, blocks := generateMergeChain(10, true)
+	genesis, blocks := generateMergeChain(10)
 	n, ethservice := startEthService(t, genesis, blocks)
 
 	var (

@@ -29,10 +29,9 @@ import (
 // do not use e.g. SetInt() on the numbers. For testing only
 func copyConfig(original *params.ChainConfig) *params.ChainConfig {
 	return &params.ChainConfig{
-		ChainID:                 original.ChainID,
-		TerminalTotalDifficulty: original.TerminalTotalDifficulty,
-		Ethash:                  original.Ethash,
-		Clique:                  original.Clique,
+		ChainID: original.ChainID,
+		Ethash:  original.Ethash,
+		Clique:  original.Clique,
 	}
 }
 

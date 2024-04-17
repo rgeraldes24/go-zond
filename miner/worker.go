@@ -1037,28 +1037,6 @@ func (w *worker) commit(env *environment, interval func(), update bool, start ti
 		if interval != nil {
 			interval()
 		}
-		// Create a local environment copy, avoid the data race with snapshot state.
-		// https://github.com/theQRL/go-zond/issues/24299
-		env := env.copy()
-		// Withdrawals are set to nil here, because this is only called in PoW.
-		block, err := w.engine.FinalizeAndAssemble(w.chain, env.header, env.state, env.txs, nil, env.receipts, nil)
-		if err != nil {
-			return err
-		}
-		// If we're post merge, just ignore
-		if !w.isTTDReached(block.Header()) {
-			select {
-			case w.taskCh <- &task{receipts: env.receipts, state: env.state, block: block, createdAt: time.Now()}:
-				fees := totalFees(block, env.receipts)
-				feesInEther := new(big.Float).Quo(new(big.Float).SetInt(fees), big.NewFloat(params.Ether))
-				log.Info("Commit new sealing work", "number", block.Number(), "sealhash", w.engine.SealHash(block.Header()),
-					"txs", env.tcount, "gas", block.GasUsed(), "fees", feesInEther,
-					"elapsed", common.PrettyDuration(time.Since(start)))
-
-			case <-w.exitCh:
-				log.Info("Worker has exited")
-			}
-		}
 	}
 	if update {
 		w.updateSnapshot(env)
@@ -1080,13 +1058,6 @@ func (w *worker) getSealingBlock(params *generateParams) *newPayloadResult {
 	case <-w.exitCh:
 		return &newPayloadResult{err: errors.New("miner closed")}
 	}
-}
-
-// isTTDReached returns the indicator if the given block has reached the total
-// terminal difficulty for The Merge transition.
-func (w *worker) isTTDReached(header *types.Header) bool {
-	td, ttd := w.chain.GetTd(header.ParentHash, header.Number.Uint64()-1), w.chain.Config().TerminalTotalDifficulty
-	return td != nil && ttd != nil && td.Cmp(ttd) >= 0
 }
 
 // copyReceipts makes a deep copy of the given receipts.

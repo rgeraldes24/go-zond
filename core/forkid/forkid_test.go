@@ -366,9 +366,8 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 		forkidHash = checksumToBytes(crc32.ChecksumIEEE(genesis.Hash().Bytes()))
 		config     = func(shanghai, cancun uint64) *params.ChainConfig {
 			return &params.ChainConfig{
-				ChainID:                 big.NewInt(1337),
-				TerminalTotalDifficulty: big.NewInt(0),
-				Ethash:                  new(params.EthashConfig),
+				ChainID: big.NewInt(1337),
+				Ethash:  new(params.EthashConfig),
 			}
 		}
 	)

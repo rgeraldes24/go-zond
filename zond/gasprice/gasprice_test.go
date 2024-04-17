@@ -131,7 +131,6 @@ func newTestBackend(t *testing.T, pending bool) *testBackend {
 		signer = types.LatestSigner(gspec.Config)
 	)
 
-	config.TerminalTotalDifficulty = common.Big0
 	engine := ethash.NewFaker()
 
 	// Generate testing blocks

@@ -36,47 +36,41 @@ var (
 
 	// MainnetChainConfig is the chain parameters to run a node on the main network.
 	MainnetChainConfig = &ChainConfig{
-		ChainID:                 big.NewInt(1),
-		TerminalTotalDifficulty: MainnetTerminalTotalDifficulty, // 58_750_000_000_000_000_000_000
-		Ethash:                  new(EthashConfig),
+		ChainID: big.NewInt(1),
+		Ethash:  new(EthashConfig),
 	}
 	// BetaNetChainConfig contains the chain parameters to run a node on the BetaNet test network.
 	BetaNetChainConfig = &ChainConfig{
-		ChainID:                 big.NewInt(32382),
-		TerminalTotalDifficulty: big.NewInt(0),
-		Ethash:                  new(EthashConfig),
+		ChainID: big.NewInt(32382),
+		Ethash:  new(EthashConfig),
 	}
 	// AllEthashProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Ethash consensus.
 	AllEthashProtocolChanges = &ChainConfig{
-		ChainID:                 big.NewInt(1337),
-		TerminalTotalDifficulty: nil,
-		Ethash:                  new(EthashConfig),
-		Clique:                  nil,
+		ChainID: big.NewInt(1337),
+		Ethash:  new(EthashConfig),
+		Clique:  nil,
 	}
 
 	AllDevChainProtocolChanges = &ChainConfig{
-		ChainID:                 big.NewInt(1337),
-		TerminalTotalDifficulty: big.NewInt(0),
-		IsDevMode:               true,
+		ChainID:   big.NewInt(1337),
+		IsDevMode: true,
 	}
 
 	// AllCliqueProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Clique consensus.
 	AllCliqueProtocolChanges = &ChainConfig{
-		ChainID:                 big.NewInt(1337),
-		TerminalTotalDifficulty: nil,
-		Ethash:                  nil,
-		Clique:                  &CliqueConfig{Period: 0, Epoch: 30000},
+		ChainID: big.NewInt(1337),
+		Ethash:  nil,
+		Clique:  &CliqueConfig{Period: 0, Epoch: 30000},
 	}
 
 	// TestChainConfig contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers for testing proposes.
 	TestChainConfig = &ChainConfig{
-		ChainID:                 big.NewInt(1),
-		TerminalTotalDifficulty: nil,
-		Ethash:                  new(EthashConfig),
-		Clique:                  nil,
+		ChainID: big.NewInt(1),
+		Ethash:  new(EthashConfig),
+		Clique:  nil,
 	}
 
 	// NonActivatedConfig defines the chain configuration without activating
@@ -84,9 +78,8 @@ var (
 	NonActivatedConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
 
-		TerminalTotalDifficulty: nil,
-		Ethash:                  new(EthashConfig),
-		Clique:                  nil,
+		Ethash: new(EthashConfig),
+		Clique: nil,
 	}
 	TestRules = TestChainConfig.Rules(new(big.Int), 0)
 )
@@ -103,10 +96,6 @@ var NetworkNames = map[string]string{
 // set of configuration options.
 type ChainConfig struct {
 	ChainID *big.Int `json:"chainId"` // chainId identifies the current chain and is used for replay protection
-
-	// TerminalTotalDifficulty is the amount of total difficulty reached by
-	// the network that triggers the consensus upgrade.
-	TerminalTotalDifficulty *big.Int `json:"terminalTotalDifficulty,omitempty"`
 
 	// Various consensus engines
 	Ethash    *EthashConfig `json:"ethash,omitempty"`
@@ -145,42 +134,15 @@ func (c *ChainConfig) Description() string {
 	banner += fmt.Sprintf("Chain ID:  %v (%s)\n", c.ChainID, network)
 	switch {
 	case c.Ethash != nil:
-		if c.TerminalTotalDifficulty == nil {
-			banner += "Consensus: Ethash (proof-of-work)\n"
-		} else {
-			banner += "Consensus: Beacon (proof-of-stake), merged from Ethash (proof-of-work)\n"
-		}
+		banner += "Consensus: Beacon (proof-of-stake), merged from Ethash (proof-of-work)\n"
 	case c.Clique != nil:
-		if c.TerminalTotalDifficulty == nil {
-			banner += "Consensus: Clique (proof-of-authority)\n"
-		} else {
-			banner += "Consensus: Beacon (proof-of-stake), merged from Clique (proof-of-authority)\n"
-		}
+		banner += "Consensus: Beacon (proof-of-stake), merged from Clique (proof-of-authority)\n"
 	default:
 		banner += "Consensus: unknown\n"
 	}
 	banner += "\n"
 
-	// Add a special section for the merge as it's non-obvious
-	if c.TerminalTotalDifficulty == nil {
-		banner += "The Merge is not yet available for this network!\n"
-		banner += " - Hard-fork specification: https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/paris.md\n"
-	} else {
-		banner += "Merge configured:\n"
-		banner += " - Hard-fork specification:    https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/paris.md\n"
-		banner += fmt.Sprintf(" - Total terminal difficulty:  %v\n", c.TerminalTotalDifficulty)
-	}
-	banner += "\n"
-
 	return banner
-}
-
-// IsTerminalPoWBlock returns whether the given block is the last block of PoW stage.
-func (c *ChainConfig) IsTerminalPoWBlock(parentTotalDiff *big.Int, totalDiff *big.Int) bool {
-	if c.TerminalTotalDifficulty == nil {
-		return false
-	}
-	return parentTotalDiff.Cmp(c.TerminalTotalDifficulty) < 0 && totalDiff.Cmp(c.TerminalTotalDifficulty) >= 0
 }
 
 // CheckCompatible checks whether scheduled fork transitions have been imported

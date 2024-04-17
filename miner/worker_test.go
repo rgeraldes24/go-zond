@@ -356,7 +356,6 @@ func TestGetSealingWorkClique(t *testing.T) {
 func TestGetSealingWorkPostMerge(t *testing.T) {
 	local := new(params.ChainConfig)
 	*local = *ethashChainConfig
-	local.TerminalTotalDifficulty = big.NewInt(0)
 	testGetSealingWork(t, local, ethash.NewFaker())
 }
 

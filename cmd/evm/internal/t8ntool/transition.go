@@ -349,26 +349,6 @@ func applyShanghaiChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 }
 
 func applyMergeChecks(env *stEnv, chainConfig *params.ChainConfig) error {
-	isMerged := chainConfig.TerminalTotalDifficulty != nil && chainConfig.TerminalTotalDifficulty.BitLen() == 0
-	if !isMerged {
-		// pre-merge: If difficulty was not provided by caller, we need to calculate it.
-		if env.Difficulty != nil {
-			// already set
-			return nil
-		}
-		switch {
-		case env.ParentDifficulty == nil:
-			return NewError(ErrorConfig, errors.New("currentDifficulty was not provided, and cannot be calculated due to missing parentDifficulty"))
-		case env.Number == 0:
-			return NewError(ErrorConfig, errors.New("currentDifficulty needs to be provided for block number 0"))
-		case env.Timestamp <= env.ParentTimestamp:
-			return NewError(ErrorConfig, fmt.Errorf("currentDifficulty cannot be calculated -- currentTime (%d) needs to be after parent time (%d)",
-				env.Timestamp, env.ParentTimestamp))
-		}
-		env.Difficulty = calcDifficulty(chainConfig, env.Number, env.Timestamp,
-			env.ParentTimestamp, env.ParentDifficulty, env.ParentUncleHash)
-		return nil
-	}
 	// post-merge:
 	// - random must be supplied
 	// - difficulty must be zero
