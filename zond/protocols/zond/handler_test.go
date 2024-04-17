@@ -46,8 +46,6 @@ var (
 	testAddr = testKey.GetAddress()
 )
 
-func u64(val uint64) *uint64 { return &val }
-
 // testBackend is a mock implementation of the live Zond message handler. Its
 // purpose is to allow testing the request/reply workflows and wire serialization
 // in the `zond` protocol without actually doing any data processing.
@@ -70,14 +68,9 @@ func newTestBackendWithGenerator(blocks int, generator func(int, *core.BlockGen)
 	var (
 		// Create a database pre-initialize with a genesis block
 		db                      = rawdb.NewMemoryDatabase()
-		config                  = params.TestChainConfig
+		config                  = &params.ChainConfig{ChainID: big.NewInt(1)}
 		engine consensus.Engine = beacon.NewFaker()
 	)
-
-	config = &params.ChainConfig{
-		ChainID: big.NewInt(1),
-	}
-	engine = beacon.NewFaker()
 
 	gspec := &core.Genesis{
 		Config: config,

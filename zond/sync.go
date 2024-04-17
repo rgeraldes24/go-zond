@@ -219,17 +219,5 @@ func (h *handler) doSync(op *chainSyncOp) error {
 	// from the network.
 	h.acceptTxs.Store(true)
 
-	head := h.chain.CurrentBlock()
-	if head.Number.Uint64() > 0 {
-		// We've completed a sync cycle, notify all peers of new state. This path is
-		// essential in star-topology networks where a gateway node needs to notify
-		// all its out-of-date peers of the availability of a new block. This failure
-		// scenario will most often crop up in private and hackathon networks with
-		// degenerate connectivity, but it should be healthy for the mainnet too to
-		// more reliably update peers or the local TD state.
-		if block := h.chain.GetBlock(head.Hash(), head.Number.Uint64()); block != nil {
-			h.BroadcastBlock(block, false)
-		}
-	}
 	return nil
 }

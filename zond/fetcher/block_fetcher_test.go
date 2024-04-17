@@ -101,7 +101,7 @@ func newTester(light bool) *fetcherTester {
 		blocks:  map[common.Hash]*types.Block{genesis.Hash(): genesis},
 		drops:   make(map[string]bool),
 	}
-	tester.fetcher = NewBlockFetcher(light, tester.getHeader, tester.getBlock, tester.verifyHeader, tester.broadcastBlock, tester.chainHeight, tester.insertHeaders, tester.insertChain, tester.dropPeer)
+	tester.fetcher = NewBlockFetcher(light, tester.getHeader, tester.getBlock, tester.verifyHeader, tester.chainHeight, tester.insertHeaders, tester.insertChain, tester.dropPeer)
 	tester.fetcher.Start()
 
 	return tester
@@ -126,10 +126,6 @@ func (f *fetcherTester) getBlock(hash common.Hash) *types.Block {
 // verifyHeader is a nop placeholder for the block header verification.
 func (f *fetcherTester) verifyHeader(header *types.Header) error {
 	return nil
-}
-
-// broadcastBlock is a nop placeholder for the block broadcasting.
-func (f *fetcherTester) broadcastBlock(block *types.Block, propagate bool) {
 }
 
 // chainHeight retrieves the current height (block number) of the chain.

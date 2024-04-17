@@ -89,7 +89,6 @@ type environment struct {
 	header   *types.Header
 	txs      []*types.Transaction
 	receipts []*types.Receipt
-	blobs    int
 }
 
 // copy creates a deep copy of environment.

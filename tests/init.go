@@ -24,8 +24,6 @@ import (
 	"github.com/theQRL/go-zond/params"
 )
 
-func u64(val uint64) *uint64 { return &val }
-
 // Forks table defines supported forks and their chain config.
 var Forks = map[string]*params.ChainConfig{
 	"Shanghai": {
