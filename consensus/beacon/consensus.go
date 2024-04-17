@@ -60,7 +60,6 @@ var (
 // is only used for necessary consensus checks. The legacy consensus engine can be any
 // engine implements the consensus interface (except the beacon itself).
 type Beacon struct {
-	// TODO(rgeraldes): add logic from ethash
 	fakeFail  *uint64        // Block number which fails PoW check even in fake mode
 	fakeDelay *time.Duration // Time delay to sleep for before returning from verify
 	fakeFull  bool           // Accepts everything as valid
