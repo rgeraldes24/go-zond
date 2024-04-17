@@ -244,6 +244,7 @@ func (t *txWithKey) UnmarshalJSON(input []byte) error {
 	return nil
 }
 
+// TODO(rgeraldes24)
 // signUnsignedTransactions converts the input txs to canonical transactions.
 //
 // The transactions can have two forms, either
@@ -256,6 +257,7 @@ func (t *txWithKey) UnmarshalJSON(input []byte) error {
 //
 // To manage this, we read the transactions twice, first trying to read the secretKeys,
 // and secondly to read them with the standard tx json format
+/*
 func signUnsignedTransactions(txs []*txWithKey, signer types.Signer) (types.Transactions, error) {
 	var signedTxs []*types.Transaction
 	for i, tx := range txs {
@@ -282,6 +284,7 @@ func signUnsignedTransactions(txs []*txWithKey, signer types.Signer) (types.Tran
 	}
 	return signedTxs, nil
 }
+*/
 
 func loadTransactions(txStr string, inputData *input, env stEnv, chainConfig *params.ChainConfig) (types.Transactions, error) {
 	var txsWithKeys []*txWithKey
@@ -319,8 +322,10 @@ func loadTransactions(txStr string, inputData *input, env stEnv, chainConfig *pa
 		txsWithKeys = inputData.Txs
 	}
 	// We may have to sign the transactions.
-	signer := types.MakeSigner(chainConfig, big.NewInt(int64(env.Number)), env.Timestamp)
-	return signUnsignedTransactions(txsWithKeys, signer)
+	// TODO(rgeraldes24)
+	// signer := types.MakeSigner(chainConfig, big.NewInt(int64(env.Number)), env.Timestamp)
+	// return signUnsignedTransactions(txsWithKeys, signer)
+	return nil, nil
 }
 
 func applyLondonChecks(env *stEnv, chainConfig *params.ChainConfig) error {

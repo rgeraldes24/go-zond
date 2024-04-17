@@ -23,7 +23,7 @@ import (
 	"testing"
 
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/consensus/ethash"
+	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
@@ -131,7 +131,7 @@ func newTestBackend(t *testing.T, pending bool) *testBackend {
 		signer = types.LatestSigner(gspec.Config)
 	)
 
-	engine := ethash.NewFaker()
+	engine := beacon.NewFaker()
 
 	// Generate testing blocks
 	_, blocks, _ := core.GenerateChainWithGenesis(gspec, engine, testHead+1, func(i int, b *core.BlockGen) {

@@ -28,8 +28,6 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/consensus"
-	"github.com/theQRL/go-zond/consensus/beacon"
-	"github.com/theQRL/go-zond/consensus/clique"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/bloombits"
 	"github.com/theQRL/go-zond/core/rawdb"
@@ -350,25 +348,6 @@ func (s *Zond) isLocalBlock(header *types.Header) bool {
 // during the chain reorg depending on whether the author of block
 // is a local account.
 func (zond *Zond) shouldPreserve(header *types.Header) bool {
-	// The reason we need to disable the self-reorg preserving for clique
-	// is it can be probable to introduce a deadlock.
-	//
-	// e.g. If there are 7 available signers
-	//
-	// r1   A
-	// r2     B
-	// r3       C
-	// r4         D
-	// r5   A      [X] F G
-	// r6    [X]
-	//
-	// In the round5, the inturn signer E is offline, so the worst case
-	// is A, F and G sign the block of round5 and reject the block of opponents
-	// and in the round6, the last available signer B is offline, the whole
-	// network is stuck.
-	if _, ok := zond.engine.(*clique.Clique); ok {
-		return false
-	}
 	return zond.isLocalBlock(header)
 }
 
@@ -379,63 +358,6 @@ func (zond *Zond) SetEtherbase(etherbase common.Address) {
 	zond.lock.Unlock()
 
 	zond.miner.SetEtherbase(etherbase)
-}
-
-// StartMining starts the miner with the given number of CPU threads. If mining
-// is already running, this method adjust the number of threads allowed to use
-// and updates the minimum price required by the transaction pool.
-func (zond *Zond) StartMining() error {
-	// If the miner was not running, initialize it
-	if !zond.IsMining() {
-		// Propagate the initial price point to the transaction pool
-		zond.lock.RLock()
-		price := zond.gasPrice
-		zond.lock.RUnlock()
-		zond.txPool.SetGasTip(price)
-
-		// Configure the local mining address
-		eb, err := zond.Etherbase()
-		if err != nil {
-			log.Error("Cannot start mining without etherbase", "err", err)
-			return fmt.Errorf("etherbase missing: %v", err)
-		}
-		var cli *clique.Clique
-		if c, ok := zond.engine.(*clique.Clique); ok {
-			cli = c
-		} else if cl, ok := zond.engine.(*beacon.Beacon); ok {
-			if c, ok := cl.InnerEngine().(*clique.Clique); ok {
-				cli = c
-			}
-		}
-		if cli != nil {
-			wallet, err := zond.accountManager.Find(accounts.Account{Address: eb})
-			if wallet == nil || err != nil {
-				log.Error("Etherbase account unavailable locally", "err", err)
-				return fmt.Errorf("signer missing: %v", err)
-			}
-			cli.Authorize(eb, wallet.SignData)
-		}
-		// If mining is started, we can disable the transaction rejection mechanism
-		// introduced to speed sync times.
-		zond.handler.enableSyncedFeatures()
-
-		go zond.miner.Start()
-	}
-	return nil
-}
-
-// StopMining terminates the miner, both at the consensus engine level as well as
-// at the block creation level.
-func (zond *Zond) StopMining() {
-	// Update the thread count within the consensus engine
-	type threaded interface {
-		SetThreads(threads int)
-	}
-	if th, ok := zond.engine.(threaded); ok {
-		th.SetThreads(-1)
-	}
-	// Stop the block creating itself
-	zond.miner.Stop()
 }
 
 func (s *Zond) IsMining() bool      { return s.miner.Mining() }

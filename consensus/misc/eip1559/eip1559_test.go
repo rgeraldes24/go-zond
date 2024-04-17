@@ -30,8 +30,6 @@ import (
 func copyConfig(original *params.ChainConfig) *params.ChainConfig {
 	return &params.ChainConfig{
 		ChainID: original.ChainID,
-		Ethash:  original.Ethash,
-		Clique:  original.Clique,
 	}
 }
 

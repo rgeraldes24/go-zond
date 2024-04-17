@@ -65,7 +65,7 @@ func TestGraphQLBlockSerialization(t *testing.T) {
 	stack := createNode(t)
 	defer stack.Close()
 	genesis := &core.Genesis{
-		Config:     params.AllEthashProtocolChanges,
+		Config:     params.AllBeaconProtocolChanges,
 		GasLimit:   11500000,
 		Difficulty: big.NewInt(1048576),
 	}
@@ -178,7 +178,7 @@ func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 	stack := createNode(t)
 	defer stack.Close()
 	genesis := &core.Genesis{
-		Config:     params.AllEthashProtocolChanges,
+		Config:     params.AllBeaconProtocolChanges,
 		GasLimit:   11500000,
 		Difficulty: big.NewInt(1048576),
 		Alloc: core.GenesisAlloc{
@@ -275,7 +275,7 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 		dadStr  = "0x0000000000000000000000000000000000000dad"
 		dad     = common.HexToAddress(dadStr)
 		genesis = &core.Genesis{
-			Config:     params.AllEthashProtocolChanges,
+			Config:     params.AllBeaconProtocolChanges,
 			GasLimit:   11500000,
 			Difficulty: big.NewInt(1048576),
 			Alloc: core.GenesisAlloc{
@@ -368,7 +368,7 @@ func TestWithdrawals(t *testing.T) {
 		addr   = key.GetAddress()
 
 		genesis = &core.Genesis{
-			Config:     params.AllEthashProtocolChanges,
+			Config:     params.AllBeaconProtocolChanges,
 			GasLimit:   11500000,
 			Difficulty: common.Big1,
 			Alloc: core.GenesisAlloc{
@@ -451,7 +451,7 @@ func newGQLService(t *testing.T, stack *node.Node, gspec *core.Genesis, genBlock
 		t.Fatalf("could not create eth backend: %v", err)
 	}
 	// Create some blocks and import them
-	chain, _ := core.GenerateChain(params.AllEthashProtocolChanges, zondBackend.BlockChain().Genesis(),
+	chain, _ := core.GenerateChain(params.AllBeaconProtocolChanges, zondBackend.BlockChain().Genesis(),
 		engine, zondBackend.ChainDb(), genBlocks, genfunc)
 	_, err = zondBackend.BlockChain().InsertChain(chain)
 	if err != nil {

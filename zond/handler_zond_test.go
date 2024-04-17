@@ -23,7 +23,7 @@ import (
 	"time"
 
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/consensus/ethash"
+	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/forkid"
 	"github.com/theQRL/go-zond/core/rawdb"
@@ -86,7 +86,7 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 	t.Parallel()
 
 	var (
-		engine = ethash.NewFaker()
+		engine = beacon.NewFaker()
 
 		configNoFork  = &params.ChainConfig{}
 		configProFork = &params.ChainConfig{}

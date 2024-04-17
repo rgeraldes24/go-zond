@@ -32,24 +32,20 @@ var (
 func newUint64(val uint64) *uint64 { return &val }
 
 var (
-	MainnetTerminalTotalDifficulty, _ = new(big.Int).SetString("58_750_000_000_000_000_000_000", 0)
-
 	// MainnetChainConfig is the chain parameters to run a node on the main network.
 	MainnetChainConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
-		Ethash:  new(EthashConfig),
 	}
 	// BetaNetChainConfig contains the chain parameters to run a node on the BetaNet test network.
 	BetaNetChainConfig = &ChainConfig{
 		ChainID: big.NewInt(32382),
-		Ethash:  new(EthashConfig),
 	}
-	// AllEthashProtocolChanges contains every protocol change (EIPs) introduced
-	// and accepted by the Ethereum core developers into the Ethash consensus.
-	AllEthashProtocolChanges = &ChainConfig{
+
+	// TODO(rgeraldes24): desc
+	// AllBeaconProtocolChanges contains every protocol change (EIPs) introduced
+	// and accepted by the Ethereum core developers into the Beacon consensus.
+	AllBeaconProtocolChanges = &ChainConfig{
 		ChainID: big.NewInt(1337),
-		Ethash:  new(EthashConfig),
-		Clique:  nil,
 	}
 
 	AllDevChainProtocolChanges = &ChainConfig{
@@ -57,29 +53,16 @@ var (
 		IsDevMode: true,
 	}
 
-	// AllCliqueProtocolChanges contains every protocol change (EIPs) introduced
-	// and accepted by the Ethereum core developers into the Clique consensus.
-	AllCliqueProtocolChanges = &ChainConfig{
-		ChainID: big.NewInt(1337),
-		Ethash:  nil,
-		Clique:  &CliqueConfig{Period: 0, Epoch: 30000},
-	}
-
 	// TestChainConfig contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers for testing proposes.
 	TestChainConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
-		Ethash:  new(EthashConfig),
-		Clique:  nil,
 	}
 
 	// NonActivatedConfig defines the chain configuration without activating
 	// any protocol change (EIPs).
 	NonActivatedConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
-
-		Ethash: new(EthashConfig),
-		Clique: nil,
 	}
 	TestRules = TestChainConfig.Rules(new(big.Int), 0)
 )
@@ -97,29 +80,7 @@ var NetworkNames = map[string]string{
 type ChainConfig struct {
 	ChainID *big.Int `json:"chainId"` // chainId identifies the current chain and is used for replay protection
 
-	// Various consensus engines
-	Ethash    *EthashConfig `json:"ethash,omitempty"`
-	Clique    *CliqueConfig `json:"clique,omitempty"`
-	IsDevMode bool          `json:"isDev,omitempty"`
-}
-
-// EthashConfig is the consensus engine configs for proof-of-work based sealing.
-type EthashConfig struct{}
-
-// String implements the stringer interface, returning the consensus engine details.
-func (c *EthashConfig) String() string {
-	return "ethash"
-}
-
-// CliqueConfig is the consensus engine configs for proof-of-authority based sealing.
-type CliqueConfig struct {
-	Period uint64 `json:"period"` // Number of seconds between blocks to enforce
-	Epoch  uint64 `json:"epoch"`  // Epoch length to reset votes and checkpoint
-}
-
-// String implements the stringer interface, returning the consensus engine details.
-func (c *CliqueConfig) String() string {
-	return "clique"
+	IsDevMode bool `json:"isDev,omitempty"`
 }
 
 // Description returns a human-readable description of ChainConfig.
@@ -132,14 +93,7 @@ func (c *ChainConfig) Description() string {
 		network = "unknown"
 	}
 	banner += fmt.Sprintf("Chain ID:  %v (%s)\n", c.ChainID, network)
-	switch {
-	case c.Ethash != nil:
-		banner += "Consensus: Beacon (proof-of-stake), merged from Ethash (proof-of-work)\n"
-	case c.Clique != nil:
-		banner += "Consensus: Beacon (proof-of-stake), merged from Clique (proof-of-authority)\n"
-	default:
-		banner += "Consensus: unknown\n"
-	}
+	banner += "Consensus: Beacon (proof-of-stake)\n"
 	banner += "\n"
 
 	return banner

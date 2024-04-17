@@ -364,10 +364,9 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 		time       = uint64(1690475657)
 		genesis    = types.NewBlockWithHeader(&types.Header{Time: time})
 		forkidHash = checksumToBytes(crc32.ChecksumIEEE(genesis.Hash().Bytes()))
-		config     = func(shanghai, cancun uint64) *params.ChainConfig {
+		config     = func() *params.ChainConfig {
 			return &params.ChainConfig{
 				ChainID: big.NewInt(1337),
-				Ethash:  new(params.EthashConfig),
 			}
 		}
 	)
@@ -376,13 +375,13 @@ func TestTimeBasedForkInGenesis(t *testing.T) {
 		want   ID
 	}{
 		// Shanghai active before genesis, skip
-		{config(time-1, time+1), ID{Hash: forkidHash, Next: time + 1}},
+		{config(), ID{Hash: forkidHash, Next: time + 1}},
 
 		// Shanghai active at genesis, skip
-		{config(time, time+1), ID{Hash: forkidHash, Next: time + 1}},
+		{config(), ID{Hash: forkidHash, Next: time + 1}},
 
 		// Shanghai not active, skip
-		{config(time+1, time+2), ID{Hash: forkidHash, Next: time + 1}},
+		{config(), ID{Hash: forkidHash, Next: time + 1}},
 	}
 	for _, tt := range tests {
 		if have := NewID(tt.config, genesis, 0, time); have != tt.want {

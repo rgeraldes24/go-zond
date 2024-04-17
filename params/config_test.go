@@ -31,9 +31,9 @@ func TestCheckCompatible(t *testing.T) {
 		wantErr       *ConfigCompatError
 	}
 	tests := []test{
-		{stored: AllEthashProtocolChanges, new: AllEthashProtocolChanges, headBlock: 0, headTimestamp: 0, wantErr: nil},
-		{stored: AllEthashProtocolChanges, new: AllEthashProtocolChanges, headBlock: 0, headTimestamp: uint64(time.Now().Unix()), wantErr: nil},
-		{stored: AllEthashProtocolChanges, new: AllEthashProtocolChanges, headBlock: 100, wantErr: nil},
+		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 0, headTimestamp: 0, wantErr: nil},
+		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 0, headTimestamp: uint64(time.Now().Unix()), wantErr: nil},
+		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 100, wantErr: nil},
 		{
 			stored:    &ChainConfig{},
 			new:       &ChainConfig{},
@@ -41,7 +41,7 @@ func TestCheckCompatible(t *testing.T) {
 			wantErr:   nil,
 		},
 		{
-			stored:    AllEthashProtocolChanges,
+			stored:    AllBeaconProtocolChanges,
 			new:       &ChainConfig{},
 			headBlock: 3,
 			wantErr: &ConfigCompatError{
@@ -52,7 +52,7 @@ func TestCheckCompatible(t *testing.T) {
 			},
 		},
 		{
-			stored:    AllEthashProtocolChanges,
+			stored:    AllBeaconProtocolChanges,
 			new:       &ChainConfig{},
 			headBlock: 3,
 			wantErr: &ConfigCompatError{

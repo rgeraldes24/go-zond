@@ -22,7 +22,6 @@ import (
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
-	"github.com/theQRL/go-zond/consensus/ethash"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/state"
@@ -305,24 +304,4 @@ func rlpHash(x interface{}) (h common.Hash) {
 	rlp.Encode(hw, x)
 	hw.Sum(h[:0])
 	return h
-}
-
-// calcDifficulty is based on ethash.CalcDifficulty. This method is used in case
-// the caller does not provide an explicit difficulty, but instead provides only
-// parent timestamp + difficulty.
-// Note: this method only works for ethash engine.
-func calcDifficulty(config *params.ChainConfig, number, currentTime, parentTime uint64,
-	parentDifficulty *big.Int, parentUncleHash common.Hash) *big.Int {
-	uncleHash := parentUncleHash
-	if uncleHash == (common.Hash{}) {
-		uncleHash = types.EmptyUncleHash
-	}
-	parent := &types.Header{
-		ParentHash: common.Hash{},
-		UncleHash:  uncleHash,
-		Difficulty: parentDifficulty,
-		Number:     new(big.Int).SetUint64(number - 1),
-		Time:       parentTime,
-	}
-	return ethash.CalcDifficulty(config, currentTime, parent)
 }

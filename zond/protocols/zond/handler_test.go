@@ -25,7 +25,6 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus"
 	"github.com/theQRL/go-zond/consensus/beacon"
-	"github.com/theQRL/go-zond/consensus/ethash"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/txpool"
@@ -72,12 +71,11 @@ func newTestBackendWithGenerator(blocks int, generator func(int, *core.BlockGen)
 		// Create a database pre-initialize with a genesis block
 		db                      = rawdb.NewMemoryDatabase()
 		config                  = params.TestChainConfig
-		engine consensus.Engine = ethash.NewFaker()
+		engine consensus.Engine = beacon.NewFaker()
 	)
 
 	config = &params.ChainConfig{
 		ChainID: big.NewInt(1),
-		Ethash:  new(params.EthashConfig),
 	}
 	engine = beacon.NewFaker()
 
