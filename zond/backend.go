@@ -69,7 +69,6 @@ type Zond struct {
 	handler            *handler
 	ethDialCandidates  enode.Iterator
 	snapDialCandidates enode.Iterator
-	merger             *consensus.Merger
 
 	// DB interfaces
 	chainDb zonddb.Database // Block chain database
@@ -142,7 +141,6 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	}
 	zond := &Zond{
 		config:            config,
-		merger:            consensus.NewMerger(chainDb),
 		chainDb:           chainDb,
 		eventMux:          stack.EventMux(),
 		accountManager:    stack.AccountManager(),
@@ -211,7 +209,6 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 		Database:       chainDb,
 		Chain:          zond.blockchain,
 		TxPool:         zond.txPool,
-		Merger:         zond.merger,
 		Network:        config.NetworkId,
 		Sync:           config.SyncMode,
 		BloomCache:     uint64(cacheLimit),
@@ -456,7 +453,6 @@ func (s *Zond) Synced() bool                       { return s.handler.acceptTxs.
 func (s *Zond) SetSynced()                         { s.handler.enableSyncedFeatures() }
 func (s *Zond) ArchiveMode() bool                  { return s.config.NoPruning }
 func (s *Zond) BloomIndexer() *core.ChainIndexer   { return s.bloomIndexer }
-func (s *Zond) Merger() *consensus.Merger          { return s.merger }
 func (s *Zond) SyncMode() downloader.SyncMode {
 	mode, _ := s.handler.chainSync.modeAndLocalHead()
 	return mode

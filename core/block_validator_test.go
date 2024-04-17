@@ -94,7 +94,6 @@ func testHeaderVerificationForMerging(t *testing.T, isClique bool) {
 		preBlocks  []*types.Block
 		postBlocks []*types.Block
 		engine     consensus.Engine
-		merger     = consensus.NewMerger(rawdb.NewMemoryDatabase())
 	)
 	if isClique {
 		var (
@@ -184,9 +183,10 @@ func testHeaderVerificationForMerging(t *testing.T, isClique bool) {
 		chain.InsertChain(preBlocks[i : i+1])
 	}
 
+	// TODO(rgeraldes24): remove
 	// Make the transition
-	merger.ReachTTD()
-	merger.FinalizePoS()
+	// merger.ReachTTD()
+	// merger.FinalizePoS()
 
 	// Verify the blocks after the merging
 	for i := 0; i < len(postBlocks); i++ {
