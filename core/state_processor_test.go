@@ -45,10 +45,9 @@ func u64(val uint64) *uint64 { return &val }
 func TestStateProcessorErrors(t *testing.T) {
 	var (
 		config = &params.ChainConfig{
-			ChainID:                       big.NewInt(1),
-			Ethash:                        new(params.EthashConfig),
-			TerminalTotalDifficulty:       big.NewInt(0),
-			TerminalTotalDifficultyPassed: true,
+			ChainID:                 big.NewInt(1),
+			Ethash:                  new(params.EthashConfig),
+			TerminalTotalDifficulty: big.NewInt(0),
 		}
 		signer = types.LatestSigner(config)
 		d1, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
@@ -313,14 +312,6 @@ func TestStateProcessorErrors(t *testing.T) {
 // - valid pow (fake), ancestry, difficulty, gaslimit etc
 func GenerateBadBlock(parent *types.Block, engine consensus.Engine, txs types.Transactions, config *params.ChainConfig) *types.Block {
 	difficulty := big.NewInt(0)
-	if !config.TerminalTotalDifficultyPassed {
-		difficulty = engine.CalcDifficulty(&fakeChainReader{config}, parent.Time()+10, &types.Header{
-			Number:     parent.Number(),
-			Time:       parent.Time(),
-			Difficulty: parent.Difficulty(),
-			UncleHash:  parent.UncleHash(),
-		})
-	}
 
 	header := &types.Header{
 		ParentHash: parent.Hash(),

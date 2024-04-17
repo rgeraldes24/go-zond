@@ -4527,7 +4527,6 @@ func TestEIP3651(t *testing.T) {
 	)
 
 	gspec.Config.TerminalTotalDifficulty = common.Big0
-	gspec.Config.TerminalTotalDifficultyPassed = true
 	signer := types.LatestSigner(gspec.Config)
 
 	_, blocks, _ := GenerateChainWithGenesis(gspec, engine, 1, func(i int, b *BlockGen) {

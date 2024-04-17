@@ -1334,7 +1334,6 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 
 	// Set the terminal total difficulty in the config
 	genesis.Config.TerminalTotalDifficulty = big.NewInt(0)
-	genesis.Config.TerminalTotalDifficultyPassed = true
 	backend := newTestBackend(t, genBlocks, genesis, beacon.New(ethash.NewFaker()), func(i int, b *core.BlockGen) {
 		var (
 			tx  *types.Transaction

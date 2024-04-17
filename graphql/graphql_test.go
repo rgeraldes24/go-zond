@@ -447,7 +447,6 @@ func newGQLService(t *testing.T, stack *node.Node, gspec *core.Genesis, genBlock
 	}
 	var engine consensus.Engine = beacon.NewFaker()
 	chainCfg := gspec.Config
-	chainCfg.TerminalTotalDifficultyPassed = true
 	chainCfg.TerminalTotalDifficulty = common.Big0
 	zondBackend, err := zond.New(stack, ethConf)
 	if err != nil {

@@ -36,53 +36,47 @@ var (
 
 	// MainnetChainConfig is the chain parameters to run a node on the main network.
 	MainnetChainConfig = &ChainConfig{
-		ChainID:                       big.NewInt(1),
-		TerminalTotalDifficulty:       MainnetTerminalTotalDifficulty, // 58_750_000_000_000_000_000_000
-		TerminalTotalDifficultyPassed: true,
-		Ethash:                        new(EthashConfig),
+		ChainID:                 big.NewInt(1),
+		TerminalTotalDifficulty: MainnetTerminalTotalDifficulty, // 58_750_000_000_000_000_000_000
+		Ethash:                  new(EthashConfig),
 	}
 	// BetaNetChainConfig contains the chain parameters to run a node on the BetaNet test network.
 	BetaNetChainConfig = &ChainConfig{
-		ChainID:                       big.NewInt(32382),
-		TerminalTotalDifficulty:       big.NewInt(0),
-		TerminalTotalDifficultyPassed: true,
-		Ethash:                        new(EthashConfig),
+		ChainID:                 big.NewInt(32382),
+		TerminalTotalDifficulty: big.NewInt(0),
+		Ethash:                  new(EthashConfig),
 	}
 	// AllEthashProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Ethash consensus.
 	AllEthashProtocolChanges = &ChainConfig{
-		ChainID:                       big.NewInt(1337),
-		TerminalTotalDifficulty:       nil,
-		TerminalTotalDifficultyPassed: true,
-		Ethash:                        new(EthashConfig),
-		Clique:                        nil,
+		ChainID:                 big.NewInt(1337),
+		TerminalTotalDifficulty: nil,
+		Ethash:                  new(EthashConfig),
+		Clique:                  nil,
 	}
 
 	AllDevChainProtocolChanges = &ChainConfig{
-		ChainID:                       big.NewInt(1337),
-		TerminalTotalDifficulty:       big.NewInt(0),
-		TerminalTotalDifficultyPassed: true,
-		IsDevMode:                     true,
+		ChainID:                 big.NewInt(1337),
+		TerminalTotalDifficulty: big.NewInt(0),
+		IsDevMode:               true,
 	}
 
 	// AllCliqueProtocolChanges contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers into the Clique consensus.
 	AllCliqueProtocolChanges = &ChainConfig{
-		ChainID:                       big.NewInt(1337),
-		TerminalTotalDifficulty:       nil,
-		TerminalTotalDifficultyPassed: false,
-		Ethash:                        nil,
-		Clique:                        &CliqueConfig{Period: 0, Epoch: 30000},
+		ChainID:                 big.NewInt(1337),
+		TerminalTotalDifficulty: nil,
+		Ethash:                  nil,
+		Clique:                  &CliqueConfig{Period: 0, Epoch: 30000},
 	}
 
 	// TestChainConfig contains every protocol change (EIPs) introduced
 	// and accepted by the Ethereum core developers for testing proposes.
 	TestChainConfig = &ChainConfig{
-		ChainID:                       big.NewInt(1),
-		TerminalTotalDifficulty:       nil,
-		TerminalTotalDifficultyPassed: false,
-		Ethash:                        new(EthashConfig),
-		Clique:                        nil,
+		ChainID:                 big.NewInt(1),
+		TerminalTotalDifficulty: nil,
+		Ethash:                  new(EthashConfig),
+		Clique:                  nil,
 	}
 
 	// NonActivatedConfig defines the chain configuration without activating
@@ -90,10 +84,9 @@ var (
 	NonActivatedConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
 
-		TerminalTotalDifficulty:       nil,
-		TerminalTotalDifficultyPassed: false,
-		Ethash:                        new(EthashConfig),
-		Clique:                        nil,
+		TerminalTotalDifficulty: nil,
+		Ethash:                  new(EthashConfig),
+		Clique:                  nil,
 	}
 	TestRules = TestChainConfig.Rules(new(big.Int), 0)
 )
@@ -114,11 +107,6 @@ type ChainConfig struct {
 	// TerminalTotalDifficulty is the amount of total difficulty reached by
 	// the network that triggers the consensus upgrade.
 	TerminalTotalDifficulty *big.Int `json:"terminalTotalDifficulty,omitempty"`
-
-	// TerminalTotalDifficultyPassed is a flag specifying that the network already
-	// passed the terminal total difficulty. Its purpose is to disable legacy sync
-	// even without having seen the TTD locally (safer long term).
-	TerminalTotalDifficultyPassed bool `json:"terminalTotalDifficultyPassed,omitempty"`
 
 	// Various consensus engines
 	Ethash    *EthashConfig `json:"ethash,omitempty"`
@@ -159,16 +147,12 @@ func (c *ChainConfig) Description() string {
 	case c.Ethash != nil:
 		if c.TerminalTotalDifficulty == nil {
 			banner += "Consensus: Ethash (proof-of-work)\n"
-		} else if !c.TerminalTotalDifficultyPassed {
-			banner += "Consensus: Beacon (proof-of-stake), merging from Ethash (proof-of-work)\n"
 		} else {
 			banner += "Consensus: Beacon (proof-of-stake), merged from Ethash (proof-of-work)\n"
 		}
 	case c.Clique != nil:
 		if c.TerminalTotalDifficulty == nil {
 			banner += "Consensus: Clique (proof-of-authority)\n"
-		} else if !c.TerminalTotalDifficultyPassed {
-			banner += "Consensus: Beacon (proof-of-stake), merging from Clique (proof-of-authority)\n"
 		} else {
 			banner += "Consensus: Beacon (proof-of-stake), merged from Clique (proof-of-authority)\n"
 		}
@@ -184,7 +168,6 @@ func (c *ChainConfig) Description() string {
 	} else {
 		banner += "Merge configured:\n"
 		banner += " - Hard-fork specification:    https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/paris.md\n"
-		banner += fmt.Sprintf(" - Network known to be merged: %v\n", c.TerminalTotalDifficultyPassed)
 		banner += fmt.Sprintf(" - Total terminal difficulty:  %v\n", c.TerminalTotalDifficulty)
 	}
 	banner += "\n"

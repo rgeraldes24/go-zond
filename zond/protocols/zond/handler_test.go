@@ -76,10 +76,9 @@ func newTestBackendWithGenerator(blocks int, generator func(int, *core.BlockGen)
 	)
 
 	config = &params.ChainConfig{
-		ChainID:                       big.NewInt(1),
-		TerminalTotalDifficulty:       big.NewInt(0),
-		TerminalTotalDifficultyPassed: true,
-		Ethash:                        new(params.EthashConfig),
+		ChainID:                 big.NewInt(1),
+		TerminalTotalDifficulty: big.NewInt(0),
+		Ethash:                  new(params.EthashConfig),
 	}
 	engine = beacon.NewFaker()
 

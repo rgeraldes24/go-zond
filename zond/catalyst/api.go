@@ -659,26 +659,24 @@ func (api *ConsensusAPI) heartbeat() {
 
 		// If there have been no updates for the past while, warn the user
 		// that the beacon client is probably offline
-		if api.zond.BlockChain().Config().TerminalTotalDifficultyPassed || api.zond.Merger().TDDReached() {
-			if time.Since(lastForkchoiceUpdate) <= beaconUpdateConsensusTimeout || time.Since(lastNewPayloadUpdate) <= beaconUpdateConsensusTimeout {
-				offlineLogged = time.Time{}
-				continue
-			}
-
-			if time.Since(offlineLogged) > beaconUpdateWarnFrequency {
-				if lastForkchoiceUpdate.IsZero() && lastNewPayloadUpdate.IsZero() {
-					if lastTransitionUpdate.IsZero() {
-						log.Warn("Post-merge network, but no beacon client seen. Please launch one to follow the chain!")
-					} else {
-						log.Warn("Beacon client online, but never received consensus updates. Please ensure your beacon client is operational to follow the chain!")
-					}
-				} else {
-					log.Warn("Beacon client online, but no consensus updates received in a while. Please fix your beacon client to follow the chain!")
-				}
-				offlineLogged = time.Now()
-			}
+		if time.Since(lastForkchoiceUpdate) <= beaconUpdateConsensusTimeout || time.Since(lastNewPayloadUpdate) <= beaconUpdateConsensusTimeout {
+			offlineLogged = time.Time{}
 			continue
 		}
+
+		if time.Since(offlineLogged) > beaconUpdateWarnFrequency {
+			if lastForkchoiceUpdate.IsZero() && lastNewPayloadUpdate.IsZero() {
+				if lastTransitionUpdate.IsZero() {
+					log.Warn("Post-merge network, but no beacon client seen. Please launch one to follow the chain!")
+				} else {
+					log.Warn("Beacon client online, but never received consensus updates. Please ensure your beacon client is operational to follow the chain!")
+				}
+			} else {
+				log.Warn("Beacon client online, but no consensus updates received in a while. Please fix your beacon client to follow the chain!")
+			}
+			offlineLogged = time.Now()
+		}
+		continue
 	}
 }
 
