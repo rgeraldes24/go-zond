@@ -368,8 +368,11 @@ func testGetSealingWork(t *testing.T, chainConfig *params.ChainConfig, engine co
 			// is even smaller than parent block's. It's OK.
 			t.Logf("Invalid timestamp, want %d, get %d", timestamp, block.Time())
 		}
-		if block.Coinbase() != (common.Address{}) {
-			t.Error("Unexpected coinbase")
+		if len(block.Extra()) != 2 {
+			t.Error("Unexpected extra field")
+		}
+		if block.Coinbase() != coinbase {
+			t.Errorf("Unexpected coinbase got %x want %x", block.Coinbase(), coinbase)
 		}
 		if block.MixDigest() != random {
 			t.Error("Unexpected mix digest")
