@@ -182,7 +182,6 @@ func (beacon *Beacon) verifyHeader(chain consensus.ChainHeaderReader, header, pa
 		return errors.New("missing withdrawalsHash")
 	}
 
-	// TODO(rgeraldes24)
 	if beacon.fakeDelay != nil {
 		time.Sleep(*beacon.fakeDelay)
 	}
@@ -288,8 +287,6 @@ func (beacon *Beacon) Seal(chain consensus.ChainHeaderReader, block *types.Block
 	return nil
 }
 
-// TODO(rgeraldes24)
-// NOTE(rgeraldes24): ethash
 // SealHash returns the hash of a block prior to it being sealed.
 func (beacon *Beacon) SealHash(header *types.Header) (hash common.Hash) {
 	hasher := sha3.NewLegacyKeccak256()
@@ -336,17 +333,3 @@ func (beacon *Beacon) APIs(chain consensus.ChainHeaderReader) []rpc.API {
 func (beacon *Beacon) Close() error {
 	return nil
 }
-
-// TODO(rgeraldes24)
-/*
-// SetThreads updates the mining threads. Delegate the call
-// to the eth1 engine if it's threaded.
-func (beacon *Beacon) SetThreads(threads int) {
-	type threaded interface {
-		SetThreads(threads int)
-	}
-	if th, ok := beacon.ethone.(threaded); ok {
-		th.SetThreads(threads)
-	}
-}
-*/
