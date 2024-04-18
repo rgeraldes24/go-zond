@@ -2034,9 +2034,6 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 	// Activate the transition since genesis if required
 	if mergePoint == 0 {
 		mergeBlock = 0
-		// TODO(rgeraldes24)
-		// merger.ReachTTD()
-		// merger.FinalizePoS()
 	}
 	genDb, blocks, _ := GenerateChainWithGenesis(gspec, engine, 2*TriesInMemory, func(i int, gen *BlockGen) {
 		tx, err := types.SignTx(types.NewTransaction(nonce, common.HexToAddress("deadbeef"), big.NewInt(100), 21000, big.NewInt(int64(i+1)*params.GWei), nil), signer, key)
@@ -2068,12 +2065,7 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 
 	// Activate the transition in the middle of the chain
 	if mergePoint == 1 {
-		// TODO(rgeraldes24)
-		// merger.ReachTTD()
-		// merger.FinalizePoS()
 		// Set the terminal total difficulty in the config
-		ttd := big.NewInt(int64(len(blocks)))
-		ttd.Mul(ttd, params.GenesisDifficulty)
 		mergeBlock = len(blocks)
 	}
 
