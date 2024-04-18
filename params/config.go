@@ -173,10 +173,9 @@ func (c *ChainConfig) CheckConfigForkOrder() error {
 }
 
 func (c *ChainConfig) checkCompatible(newcfg *ChainConfig, headNumber *big.Int, headTimestamp uint64) *ConfigCompatError {
-	// TODO(rgeraldes24)
-	// if c.IsEIP158(headNumber) && !configBlockEqual(c.ChainID, newcfg.ChainID) {
-	// 	return newBlockCompatError("EIP158 chain ID", c.EIP158Block, newcfg.EIP158Block)
-	// }
+	if !configBlockEqual(c.ChainID, newcfg.ChainID) {
+		return newBlockCompatError("chain ID", c.ChainID, newcfg.ChainID)
+	}
 
 	return nil
 }
