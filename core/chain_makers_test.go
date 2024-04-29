@@ -47,9 +47,9 @@ func TestGenerateWithdrawalChain(t *testing.T) {
 			Difficulty: common.Big1,
 			GasLimit:   5_000_000,
 		}
-		gendb  = rawdb.NewMemoryDatabase()
-		signer = types.LatestSigner(gspec.Config)
-		db     = rawdb.NewMemoryDatabase()
+		gendb     = rawdb.NewMemoryDatabase()
+		signer, _ = types.LatestSigner(gspec.Config)
+		db        = rawdb.NewMemoryDatabase()
 	)
 
 	// init 0xaa with some storage elements
@@ -154,7 +154,7 @@ func ExampleGenerateChain() {
 	// This call generates a chain of 5 blocks. The function runs for
 	// each block and adds different features to gen based on the
 	// block index.
-	signer := types.HomesteadSigner{}
+	signer := types.ShanghaiSigner{ChainId: big.NewInt(0)}
 	chain, _ := GenerateChain(gspec.Config, genesis, beacon.NewFaker(), genDb, 5, func(i int, gen *BlockGen) {
 		switch i {
 		case 0:

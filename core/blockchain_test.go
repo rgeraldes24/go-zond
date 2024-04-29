@@ -841,7 +841,7 @@ func testFastVsFullChains(t *testing.T, scheme string) {
 			Alloc:   GenesisAlloc{address: {Balance: funds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		signer = types.LatestSigner(gspec.Config)
+		signer, _ = types.LatestSigner(gspec.Config)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 1024, func(i int, block *BlockGen) {
 		block.SetCoinbase(common.Address{0x00})
@@ -1097,7 +1097,7 @@ func testChainTxReorgs(t *testing.T, scheme string) {
 				addr3: {Balance: big.NewInt(1000000000000000)},
 			},
 		}
-		signer = types.LatestSigner(gspec.Config)
+		signer, _ = types.LatestSigner(gspec.Config)
 	)
 
 	// Create two transactions shared between the chains:
@@ -1205,9 +1205,9 @@ func testLogReorgs(t *testing.T, scheme string) {
 		addr1   = key1.GetAddress()
 
 		// this code generates a log
-		code   = common.Hex2Bytes("60606040525b7f24ec1d3ff24c2f6ff210738839dbc339cd45a5294d85c79361016243157aae7b60405180905060405180910390a15b600a8060416000396000f360606040526008565b00")
-		gspec  = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{addr1: {Balance: big.NewInt(10000000000000000)}}}
-		signer = types.LatestSigner(gspec.Config)
+		code      = common.Hex2Bytes("60606040525b7f24ec1d3ff24c2f6ff210738839dbc339cd45a5294d85c79361016243157aae7b60405180905060405180910390a15b600a8060416000396000f360606040526008565b00")
+		gspec     = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{addr1: {Balance: big.NewInt(10000000000000000)}}}
+		signer, _ = types.LatestSigner(gspec.Config)
 	)
 
 	blockchain, _ := NewBlockChain(rawdb.NewMemoryDatabase(), DefaultCacheConfigWithScheme(scheme), gspec, beacon.NewFaker(), vm.Config{}, nil, nil)
@@ -1264,7 +1264,7 @@ func testLogRebirth(t *testing.T, scheme string) {
 		key1, _       = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1         = key1.GetAddress()
 		gspec         = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{addr1: {Balance: big.NewInt(10000000000000000)}}}
-		signer        = types.LatestSigner(gspec.Config)
+		signer, _     = types.LatestSigner(gspec.Config)
 		engine        = beacon.NewFaker()
 		blockchain, _ = NewBlockChain(rawdb.NewMemoryDatabase(), DefaultCacheConfigWithScheme(scheme), gspec, engine, vm.Config{}, nil, nil)
 	)
@@ -1346,7 +1346,7 @@ func testSideLogRebirth(t *testing.T, scheme string) {
 		key1, _       = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1         = key1.GetAddress()
 		gspec         = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{addr1: {Balance: big.NewInt(10000000000000000)}}}
-		signer        = types.LatestSigner(gspec.Config)
+		signer, _     = types.LatestSigner(gspec.Config)
 		blockchain, _ = NewBlockChain(rawdb.NewMemoryDatabase(), DefaultCacheConfigWithScheme(scheme), gspec, beacon.NewFaker(), vm.Config{}, nil, nil)
 	)
 	defer blockchain.Stop()
@@ -1444,7 +1444,7 @@ func testReorgSideEvent(t *testing.T, scheme string) {
 			Config: params.TestChainConfig,
 			Alloc:  GenesisAlloc{addr1: {Balance: big.NewInt(10000000000000000)}},
 		}
-		signer = types.LatestSigner(gspec.Config)
+		signer, _ = types.LatestSigner(gspec.Config)
 	)
 	blockchain, _ := NewBlockChain(rawdb.NewMemoryDatabase(), DefaultCacheConfigWithScheme(scheme), gspec, beacon.NewFaker(), vm.Config{}, nil, nil)
 	defer blockchain.Stop()
@@ -1588,9 +1588,9 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 	)
 	_, blocks, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 3, func(i int, block *BlockGen) {
 		var (
-			tx     *types.Transaction
-			err    error
-			signer = types.LatestSigner(gspec.Config)
+			tx        *types.Transaction
+			err       error
+			signer, _ = types.LatestSigner(gspec.Config)
 		)
 		switch i {
 		case 0:
@@ -2021,7 +2021,7 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 			Alloc:   GenesisAlloc{addr: {Balance: big.NewInt(math.MaxInt64)}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		signer     = types.LatestSigner(gspec.Config)
+		signer, _  = types.LatestSigner(gspec.Config)
 		mergeBlock = math.MaxInt32
 	)
 	// Generate and import the canonical chain
@@ -2603,7 +2603,7 @@ func TestTransactionIndices(t *testing.T) {
 			Alloc:   GenesisAlloc{address: {Balance: funds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		signer = types.LatestSigner(gspec.Config)
+		signer, _ = types.LatestSigner(gspec.Config)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 128, func(i int, block *BlockGen) {
 		tx, err := types.SignTx(types.NewTransaction(block.TxNonce(address), common.Address{0x00}, big.NewInt(1000), params.TxGas, block.header.BaseFee, nil), signer, key)
@@ -2700,11 +2700,11 @@ func TestSkipStaleTxIndicesInSnapSync(t *testing.T) {
 func testSkipStaleTxIndicesInSnapSync(t *testing.T, scheme string) {
 	// Configure and generate a sample block chain
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address = key.GetAddress()
-		funds   = big.NewInt(100000000000000000)
-		gspec   = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{address: {Balance: funds}}}
-		signer  = types.LatestSigner(gspec.Config)
+		key, _    = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		address   = key.GetAddress()
+		funds     = big.NewInt(100000000000000000)
+		gspec     = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{address: {Balance: funds}}}
+		signer, _ = types.LatestSigner(gspec.Config)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 128, func(i int, block *BlockGen) {
 		tx, err := types.SignTx(types.NewTransaction(block.TxNonce(address), common.Address{0x00}, big.NewInt(1000), params.TxGas, block.header.BaseFee, nil), signer, key)
@@ -2780,7 +2780,7 @@ func testSkipStaleTxIndicesInSnapSync(t *testing.T, scheme string) {
 // Benchmarks large blocks with value transfers to non-existing accounts
 func benchmarkLargeNumberOfValueToNonexisting(b *testing.B, numTxs, numBlocks int, recipientFn func(uint64) common.Address) {
 	var (
-		signer          = types.HomesteadSigner{}
+		signer          = types.ShanghaiSigner{}
 		testBankKey, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		testBankAddress = testBankKey.GetAddress()
 		bankFunds       = big.NewInt(100000000000000000)
@@ -2987,11 +2987,11 @@ func testDeleteCreateRevert(t *testing.T, scheme string) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to AAAA
 		tx, _ := types.SignTx(types.NewTransaction(0, aa,
-			big.NewInt(0), 50000, b.header.BaseFee, nil), types.HomesteadSigner{}, key)
+			big.NewInt(0), 50000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 		// One transaction to BBBB
 		tx, _ = types.SignTx(types.NewTransaction(1, bb,
-			big.NewInt(0), 100000, b.header.BaseFee, nil), types.HomesteadSigner{}, key)
+			big.NewInt(0), 100000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 	})
 	// Import the canonical chain
@@ -3100,11 +3100,11 @@ func testDeleteRecreateSlots(t *testing.T, scheme string) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to AA, to kill it
 		tx, _ := types.SignTx(types.NewTransaction(0, aa,
-			big.NewInt(0), 50000, b.header.BaseFee, nil), types.HomesteadSigner{}, key)
+			big.NewInt(0), 50000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 		// One transaction to BB, to recreate AA
 		tx, _ = types.SignTx(types.NewTransaction(1, bb,
-			big.NewInt(0), 100000, b.header.BaseFee, nil), types.HomesteadSigner{}, key)
+			big.NewInt(0), 100000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 	})
 	// Import the canonical chain
@@ -3182,11 +3182,11 @@ func testDeleteRecreateAccount(t *testing.T, scheme string) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to AA, to kill it
 		tx, _ := types.SignTx(types.NewTransaction(0, aa,
-			big.NewInt(0), 50000, b.header.BaseFee, nil), types.HomesteadSigner{}, key)
+			big.NewInt(0), 50000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 		// One transaction to AA, to recreate it (but without storage
 		tx, _ = types.SignTx(types.NewTransaction(1, aa,
-			big.NewInt(1), 100000, b.header.BaseFee, nil), types.HomesteadSigner{}, key)
+			big.NewInt(1), 100000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 	})
 	// Import the canonical chain
@@ -3318,7 +3318,7 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 	var expectations []*expectation
 	var newDestruct = func(e *expectation, b *BlockGen) *types.Transaction {
 		tx, _ := types.SignTx(types.NewTransaction(nonce, aa,
-			big.NewInt(0), 50000, b.header.BaseFee, nil), types.HomesteadSigner{}, key)
+			big.NewInt(0), 50000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
 		nonce++
 		if e.exist {
 			e.exist = false
@@ -3329,7 +3329,7 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 	}
 	var newResurrect = func(e *expectation, b *BlockGen) *types.Transaction {
 		tx, _ := types.SignTx(types.NewTransaction(nonce, bb,
-			big.NewInt(0), 100000, b.header.BaseFee, nil), types.HomesteadSigner{}, key)
+			big.NewInt(0), 100000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
 		nonce++
 		if !e.exist {
 			e.exist = true
@@ -3497,7 +3497,7 @@ func testInitThenFailCreateContract(t *testing.T, scheme string) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to BB
 		tx, _ := types.SignTx(types.NewTransaction(nonce, bb,
-			big.NewInt(0), 100000, b.header.BaseFee, nil), types.HomesteadSigner{}, key)
+			big.NewInt(0), 100000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 		nonce++
 	})
@@ -3577,7 +3577,7 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 		b.SetCoinbase(common.Address{1})
 
 		// One transaction to 0xAAAA
-		signer := types.LatestSigner(gspec.Config)
+		signer, _ := types.LatestSigner(gspec.Config)
 		tx, _ := types.SignNewTx(key, signer, &types.AccessListTx{
 			ChainID:  gspec.Config.ChainID,
 			Nonce:    0,
@@ -3659,7 +3659,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 		}
 	)
 
-	signer := types.LatestSigner(gspec.Config)
+	signer, _ := types.LatestSigner(gspec.Config)
 
 	genDb, blocks, _ := GenerateChainWithGenesis(gspec, engine, 1, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{1})
@@ -3787,8 +3787,8 @@ func testSetCanonical(t *testing.T, scheme string) {
 			Alloc:   GenesisAlloc{address: {Balance: funds}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		signer = types.LatestSigner(gspec.Config)
-		engine = beacon.NewFaker()
+		signer, _ = types.LatestSigner(gspec.Config)
+		engine    = beacon.NewFaker()
 	)
 	// Generate and import the canonical chain
 	_, canon, _ := GenerateChainWithGenesis(gspec, engine, 2*TriesInMemory, func(i int, gen *BlockGen) {
@@ -3982,7 +3982,7 @@ func TestTxIndexer(t *testing.T) {
 		nonce  = uint64(0)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, engine, 128, func(i int, gen *BlockGen) {
-		tx, _ := types.SignTx(types.NewTransaction(nonce, common.HexToAddress("0xdeadbeef"), big.NewInt(1000), params.TxGas, big.NewInt(10*params.InitialBaseFee), nil), types.HomesteadSigner{}, testBankKey)
+		tx, _ := types.SignTx(types.NewTransaction(nonce, common.HexToAddress("0xdeadbeef"), big.NewInt(1000), params.TxGas, big.NewInt(10*params.InitialBaseFee), nil), types.ShanghaiSigner{}, testBankKey)
 		gen.AddTx(tx)
 		nonce += 1
 	})
@@ -4221,7 +4221,7 @@ func testCreateThenDelete(t *testing.T, config *params.ChainConfig) {
 		},
 	}
 	nonce := uint64(0)
-	signer := types.HomesteadSigner{}
+	signer := types.ShanghaiSigner{}
 	_, blocks, _ := GenerateChainWithGenesis(gspec, engine, 2, func(i int, b *BlockGen) {
 		fee := big.NewInt(1)
 		if b.header.BaseFee != nil {
@@ -4307,7 +4307,7 @@ func TestDeleteThenCreate(t *testing.T) {
 		},
 	}
 	nonce := uint64(0)
-	signer := types.HomesteadSigner{}
+	signer := types.ShanghaiSigner{}
 	_, blocks, _ := GenerateChainWithGenesis(gspec, engine, 2, func(i int, b *BlockGen) {
 		fee := big.NewInt(1)
 		if b.header.BaseFee != nil {
@@ -4419,7 +4419,7 @@ func TestTransientStorageReset(t *testing.T) {
 		},
 	}
 	nonce := uint64(0)
-	signer := types.HomesteadSigner{}
+	signer := types.ShanghaiSigner{}
 	_, blocks, _ := GenerateChainWithGenesis(gspec, engine, 1, func(i int, b *BlockGen) {
 		fee := big.NewInt(1)
 		if b.header.BaseFee != nil {
@@ -4516,7 +4516,7 @@ func TestEIP3651(t *testing.T) {
 		}
 	)
 
-	signer := types.LatestSigner(gspec.Config)
+	signer, _ := types.LatestSigner(gspec.Config)
 
 	_, blocks, _ := GenerateChainWithGenesis(gspec, engine, 1, func(i int, b *BlockGen) {
 		b.SetCoinbase(aa)

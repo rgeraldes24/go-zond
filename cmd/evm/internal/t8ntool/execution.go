@@ -122,7 +122,6 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 	}
 	var (
 		statedb     = MakePreState(rawdb.NewMemoryDatabase(), pre.Pre)
-		signer      = types.MakeSigner(chainConfig, new(big.Int).SetUint64(pre.Env.Number), pre.Env.Timestamp)
 		gaspool     = new(core.GasPool)
 		blockHash   = common.Hash{0x13, 0x37}
 		rejectedTxs []*rejectedTx
@@ -131,6 +130,11 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 		receipts    = make(types.Receipts, 0)
 		txIndex     = 0
 	)
+	signer, err := types.MakeSigner(chainConfig)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	gaspool.AddGas(pre.Env.GasLimit)
 	vmContext := vm.BlockContext{
 		CanTransfer: core.CanTransfer,

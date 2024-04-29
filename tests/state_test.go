@@ -241,7 +241,13 @@ func runBenchmark(b *testing.B, t *StateTest) {
 					return
 				}
 
-				if _, err := types.Sender(types.LatestSigner(config), &ttx); err != nil {
+				signer, err := types.LatestSigner(config)
+				if err != nil {
+					b.Error(err)
+					return
+				}
+
+				if _, err := types.Sender(signer, &ttx); err != nil {
 					b.Error(err)
 					return
 				}

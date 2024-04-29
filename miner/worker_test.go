@@ -75,7 +75,7 @@ func init() {
 	beaconChainConfig = new(params.ChainConfig)
 	*beaconChainConfig = *params.TestChainConfig
 
-	signer := types.LatestSigner(params.TestChainConfig)
+	signer, _ := types.LatestSigner(params.TestChainConfig)
 	tx1 := types.MustSignNewTx(testBankKey, signer, &types.AccessListTx{
 		ChainID:  params.TestChainConfig.ChainID,
 		Nonce:    0,
@@ -131,9 +131,9 @@ func (b *testWorkerBackend) newRandomTx(creation bool) *types.Transaction {
 	var tx *types.Transaction
 	gasPrice := big.NewInt(10 * params.InitialBaseFee)
 	if creation {
-		tx, _ = types.SignTx(types.NewContractCreation(b.txPool.Nonce(testBankAddress), big.NewInt(0), testGas, gasPrice, common.FromHex(testCode)), types.HomesteadSigner{}, testBankKey)
+		tx, _ = types.SignTx(types.NewContractCreation(b.txPool.Nonce(testBankAddress), big.NewInt(0), testGas, gasPrice, common.FromHex(testCode)), types.ShanghaiSigner{ChainId: big.NewInt(0)}, testBankKey)
 	} else {
-		tx, _ = types.SignTx(types.NewTransaction(b.txPool.Nonce(testBankAddress), testUserAddress, big.NewInt(1000), params.TxGas, gasPrice, nil), types.HomesteadSigner{}, testBankKey)
+		tx, _ = types.SignTx(types.NewTransaction(b.txPool.Nonce(testBankAddress), testUserAddress, big.NewInt(1000), params.TxGas, gasPrice, nil), types.ShanghaiSigner{ChainId: big.NewInt(0)}, testBankKey)
 	}
 	return tx
 }

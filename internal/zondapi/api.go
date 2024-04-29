@@ -588,7 +588,10 @@ func (s *BlockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rpc.
 	}
 
 	// Derive the sender.
-	signer := types.MakeSigner(s.b.ChainConfig(), block.Number(), block.Time())
+	signer, err := types.MakeSigner(s.b.ChainConfig())
+	if err != nil {
+		return nil, err
+	}
 
 	result := make([]map[string]interface{}, len(receipts))
 	for i, receipt := range receipts {
@@ -1093,7 +1096,8 @@ type RPCTransaction struct {
 // newRPCTransaction returns a transaction that will serialize to the RPC
 // representation, with the given location metadata set (if available).
 func newRPCTransaction(tx *types.Transaction, blockHash common.Hash, blockNumber uint64, blockTime uint64, index uint64, baseFee *big.Int, config *params.ChainConfig) *RPCTransaction {
-	signer := types.MakeSigner(config, new(big.Int).SetUint64(blockNumber), blockTime)
+	// TODO(rgeraldes24)
+	signer, _ := types.MakeSigner(config)
 	from, _ := types.Sender(signer, tx)
 	publicKey := tx.RawPublicKeyValue()
 	signature := tx.RawSignatureValue()
@@ -1291,7 +1295,7 @@ type TransactionAPI struct {
 func NewTransactionAPI(b Backend, nonceLock *AddrLocker) *TransactionAPI {
 	// The signer used by the API should always be the 'latest' known one because we expect
 	// signers to be backwards-compatible with old transactions.
-	signer := types.LatestSigner(b.ChainConfig())
+	signer, _ := types.LatestSigner(b.ChainConfig())
 	return &TransactionAPI{b, nonceLock, signer}
 }
 
@@ -1412,10 +1416,6 @@ func (s *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash common.
 		// as per specification.
 		return nil, nil
 	}
-	header, err := s.b.HeaderByHash(ctx, blockHash)
-	if err != nil {
-		return nil, err
-	}
 	receipts, err := s.b.GetReceipts(ctx, blockHash)
 	if err != nil {
 		return nil, err
@@ -1426,7 +1426,10 @@ func (s *TransactionAPI) GetTransactionReceipt(ctx context.Context, hash common.
 	receipt := receipts[index]
 
 	// Derive the sender.
-	signer := types.MakeSigner(s.b.ChainConfig(), header.Number, header.Time)
+	signer, err := types.MakeSigner(s.b.ChainConfig())
+	if err != nil {
+		return nil, err
+	}
 	return marshalReceipt(receipt, blockHash, blockNumber, signer, tx, int(index)), nil
 }
 
@@ -1491,8 +1494,10 @@ func SubmitTransaction(ctx context.Context, b Backend, tx *types.Transaction) (c
 		return common.Hash{}, err
 	}
 	// Print a log with full tx details for manual investigations and interventions
-	head := b.CurrentBlock()
-	signer := types.MakeSigner(b.ChainConfig(), head.Number, head.Time)
+	signer, err := types.MakeSigner(b.ChainConfig())
+	if err != nil {
+		return common.Hash{}, err
+	}
 	from, err := types.Sender(signer, tx)
 	if err != nil {
 		return common.Hash{}, err

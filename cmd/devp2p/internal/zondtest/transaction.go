@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-package ethtest
+package zondtest
 
 import (
 	"errors"
@@ -438,7 +438,7 @@ func hugeData(s *Suite) *types.Transaction {
 }
 
 func signWithFaucet(chainConfig *params.ChainConfig, tx *types.Transaction) *types.Transaction {
-	signer := types.LatestSigner(chainConfig)
+	signer, _ := types.LatestSigner(chainConfig)
 	signedTx, err := types.SignTx(tx, signer, faucetKey)
 	if err != nil {
 		return nil

@@ -389,18 +389,22 @@ func (t *Transaction) To(ctx context.Context, args BlockNumberArgs) *Account {
 	}
 }
 
-func (t *Transaction) From(ctx context.Context, args BlockNumberArgs) *Account {
+func (t *Transaction) From(ctx context.Context, args BlockNumberArgs) (*Account, error) {
 	tx, _ := t.resolve(ctx)
 	if tx == nil {
-		return nil
+		return nil, nil
 	}
-	signer := types.LatestSigner(t.r.backend.ChainConfig())
+	signer, err := types.LatestSigner(t.r.backend.ChainConfig())
+	if err != nil {
+		return nil, err
+	}
+
 	from, _ := types.Sender(signer, tx)
 	return &Account{
 		r:             t.r,
 		address:       from,
 		blockNrOrHash: args.NumberOrLatest(),
-	}
+	}, nil
 }
 
 func (t *Transaction) Block(ctx context.Context) *Block {

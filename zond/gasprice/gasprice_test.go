@@ -128,7 +128,7 @@ func newTestBackend(t *testing.T, pending bool) *testBackend {
 			Config: &config,
 			Alloc:  core.GenesisAlloc{addr: {Balance: big.NewInt(math.MaxInt64)}},
 		}
-		signer = types.LatestSigner(gspec.Config)
+		signer, _ = types.LatestSigner(gspec.Config)
 	)
 
 	engine := beacon.NewFaker()

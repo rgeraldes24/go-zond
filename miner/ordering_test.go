@@ -48,7 +48,7 @@ func testTransactionPriceNonceSort(t *testing.T, baseFee *big.Int) {
 	for i := 0; i < len(keys); i++ {
 		keys[i], _ = crypto.GenerateDilithiumKey()
 	}
-	signer := types.LatestSignerForChainID(common.Big1)
+	signer, _ := types.LatestSignerForChainID(common.Big1)
 
 	// Generate a batch of transactions with overlapping values, but shifted nonces
 	groups := map[common.Address][]*txpool.LazyTransaction{}
@@ -141,7 +141,7 @@ func TestTransactionTimeSort(t *testing.T) {
 	for i := 0; i < len(keys); i++ {
 		keys[i], _ = crypto.GenerateDilithiumKey()
 	}
-	signer := types.HomesteadSigner{}
+	signer := types.ShanghaiSigner{ChainId: big.NewInt(0)}
 
 	// Generate a batch of transactions with overlapping prices, but different creation times
 	groups := map[common.Address][]*txpool.LazyTransaction{}

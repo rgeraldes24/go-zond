@@ -44,9 +44,9 @@ func TestStateProcessorErrors(t *testing.T) {
 		config = &params.ChainConfig{
 			ChainID: big.NewInt(1),
 		}
-		signer = types.LatestSigner(config)
-		d1, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		d2, _  = pqcrypto.HexToDilithium("0202020202020202020202020202020202020202020202020202002020202020")
+		signer, _ = types.LatestSigner(config)
+		d1, _     = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		d2, _     = pqcrypto.HexToDilithium("0202020202020202020202020202020202020202020202020202002020202020")
 	)
 	var makeTx = func(d *dilithium.Dilithium, nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte) *types.Transaction {
 		tx, _ := types.SignTx(types.NewTransaction(nonce, to, amount, gasLimit, gasPrice, data), signer, d)

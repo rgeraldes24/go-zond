@@ -192,7 +192,10 @@ func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 		},
 		BaseFee: big.NewInt(params.InitialBaseFee),
 	}
-	signer := types.LatestSigner(genesis.Config)
+	signer, err := types.LatestSigner(genesis.Config)
+	if err != nil {
+		t.Fatalf("could not pick a signer: %v", err)
+	}
 	newGQLService(t, stack, genesis, 1, func(i int, gen *core.BlockGen) {
 		gen.SetCoinbase(common.Address{1})
 		tx, _ := types.SignNewTx(key, signer, &types.LegacyTx{
@@ -288,9 +291,14 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 				},
 			},
 		}
-		signer = types.LatestSigner(genesis.Config)
-		stack  = createNode(t)
+
+		stack = createNode(t)
 	)
+	signer, err := types.LatestSigner(genesis.Config)
+	if err != nil {
+		t.Fatalf("could not pick a signer: %v", err)
+	}
+
 	defer stack.Close()
 
 	var tx *types.Transaction
@@ -375,9 +383,14 @@ func TestWithdrawals(t *testing.T) {
 				addr: {Balance: big.NewInt(params.Ether)},
 			},
 		}
-		signer = types.LatestSigner(genesis.Config)
-		stack  = createNode(t)
+
+		stack = createNode(t)
 	)
+	signer, err := types.LatestSigner(genesis.Config)
+	if err != nil {
+		t.Fatalf("could not pick a signer: %v", err)
+	}
+
 	defer stack.Close()
 
 	handler, _ := newGQLService(t, stack, genesis, 1, func(i int, gen *core.BlockGen) {

@@ -55,7 +55,7 @@ func TestBlockEncoding(t *testing.T) {
 	check("Size", block.Size(), uint64(len(blockEnc)))
 
 	tx1 := NewTransaction(0, common.HexToAddress("095e7baea6a6c7c4c2dfeb977efac326af552d87"), big.NewInt(10), 50000, big.NewInt(10), nil)
-	tx1, _ = tx1.WithSignatureAndPublicKey(HomesteadSigner{}, common.Hex2Bytes("9bea4c4daac7c7c52e093e6a4c35dbbcf8856f1af7b059ba20253e70848d094f8a8fae537ce25ed8cb5af9adac3f141af69bd515bd2ba031522df09b97dd72b100"), nil)
+	tx1, _ = tx1.WithSignatureAndPublicKey(ShanghaiSigner{ChainId: big.NewInt(0)}, common.Hex2Bytes("9bea4c4daac7c7c52e093e6a4c35dbbcf8856f1af7b059ba20253e70848d094f8a8fae537ce25ed8cb5af9adac3f141af69bd515bd2ba031522df09b97dd72b100"), nil)
 	check("len(Transactions)", len(block.Transactions()), 1)
 	check("Transactions[0].Hash", block.Transactions()[0].Hash(), tx1.Hash())
 	ourBlockEnc, err := rlp.EncodeToBytes(&block)
@@ -93,7 +93,7 @@ func TestEIP1559BlockEncoding(t *testing.T) {
 	check("BaseFee", block.BaseFee(), new(big.Int).SetUint64(params.InitialBaseFee))
 
 	tx1 := NewTransaction(0, common.HexToAddress("095e7baea6a6c7c4c2dfeb977efac326af552d87"), big.NewInt(10), 50000, big.NewInt(10), nil)
-	tx1, _ = tx1.WithSignatureAndPublicKey(HomesteadSigner{}, common.Hex2Bytes("9bea4c4daac7c7c52e093e6a4c35dbbcf8856f1af7b059ba20253e70848d094f8a8fae537ce25ed8cb5af9adac3f141af69bd515bd2ba031522df09b97dd72b100"), nil)
+	tx1, _ = tx1.WithSignatureAndPublicKey(ShanghaiSigner{ChainId: big.NewInt(0)}, common.Hex2Bytes("9bea4c4daac7c7c52e093e6a4c35dbbcf8856f1af7b059ba20253e70848d094f8a8fae537ce25ed8cb5af9adac3f141af69bd515bd2ba031522df09b97dd72b100"), nil)
 
 	addr := common.HexToAddress("0x0000000000000000000000000000000000000001")
 	accesses := AccessList{AccessTuple{
@@ -114,7 +114,8 @@ func TestEIP1559BlockEncoding(t *testing.T) {
 		Data:       []byte{},
 	}
 	tx2 := NewTx(txdata)
-	tx2, err := tx2.WithSignatureAndPublicKey(LatestSignerForChainID(big.NewInt(1)), common.Hex2Bytes("fe38ca4e44a30002ac54af7cf922a6ac2ba11b7d22f548e8ecb3f51f41cb31b06de6a5cbae13c0c856e33acf021b51819636cfc009d39eafb9f606d546e305a800"), nil)
+	signer, _ := LatestSignerForChainID(big.NewInt(1))
+	tx2, err := tx2.WithSignatureAndPublicKey(signer, common.Hex2Bytes("fe38ca4e44a30002ac54af7cf922a6ac2ba11b7d22f548e8ecb3f51f41cb31b06de6a5cbae13c0c856e33acf021b51819636cfc009d39eafb9f606d546e305a800"), nil)
 	if err != nil {
 		t.Fatal("invalid signature error: ", err)
 	}
@@ -164,7 +165,7 @@ func TestEIP2718BlockEncoding(t *testing.T) {
 		GasPrice: big.NewInt(10),
 	})
 	sig := common.Hex2Bytes("9bea4c4daac7c7c52e093e6a4c35dbbcf8856f1af7b059ba20253e70848d094f8a8fae537ce25ed8cb5af9adac3f141af69bd515bd2ba031522df09b97dd72b100")
-	tx1, _ = tx1.WithSignatureAndPublicKey(HomesteadSigner{}, sig, nil)
+	tx1, _ = tx1.WithSignatureAndPublicKey(ShanghaiSigner{ChainId: big.NewInt(0)}, sig, nil)
 
 	// Create ACL tx.
 	addr := common.HexToAddress("0x0000000000000000000000000000000000000001")
@@ -177,7 +178,7 @@ func TestEIP2718BlockEncoding(t *testing.T) {
 		AccessList: AccessList{{Address: addr, StorageKeys: []common.Hash{{0}}}},
 	})
 	sig2 := common.Hex2Bytes("3dbacc8d0259f2508625e97fdfc57cd85fdd16e5821bc2c10bdd1a52649e8335476e10695b183a87b0aa292a7f4b78ef0c3fbe62aa2c42c84e1d9c3da159ef1401")
-	tx2, _ = tx2.WithSignatureAndPublicKey(NewEIP2930Signer(big.NewInt(1)), sig2, nil)
+	tx2, _ = tx2.WithSignatureAndPublicKey(NewShanghaiSigner(big.NewInt(1)), sig2, nil)
 
 	check("len(Transactions)", len(block.Transactions()), 2)
 	check("Transactions[0].Hash", block.Transactions()[0].Hash(), tx1.Hash())
@@ -218,11 +219,11 @@ func BenchmarkEncodeBlock(b *testing.B) {
 
 func makeBenchBlock() *Block {
 	var (
-		key, _   = pqcrypto.GenerateDilithiumKey()
-		txs      = make([]*Transaction, 70)
-		receipts = make([]*Receipt, len(txs))
-		signer   = LatestSigner(params.TestChainConfig)
-		uncles   = make([]*Header, 3)
+		key, _    = pqcrypto.GenerateDilithiumKey()
+		txs       = make([]*Transaction, 70)
+		receipts  = make([]*Receipt, len(txs))
+		signer, _ = LatestSigner(params.TestChainConfig)
+		uncles    = make([]*Header, 3)
 	)
 	header := &Header{
 		Difficulty: math.BigPow(11, 11),

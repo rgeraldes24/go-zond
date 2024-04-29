@@ -55,9 +55,12 @@ import (
 func testTransactionMarshal(t *testing.T, tests []txData, config *params.ChainConfig) {
 	t.Parallel()
 	var (
-		signer = types.LatestSigner(config)
 		key, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	)
+	signer, err := types.LatestSigner(config)
+	if err != nil {
+		t.Fatalf("failed to pick a signer: %v", err)
+	}
 
 	for i, tt := range tests {
 		var tx2 types.Transaction
@@ -554,7 +557,7 @@ func TestEstimateGas(t *testing.T) {
 			},
 		}
 		genBlocks      = 10
-		signer         = types.HomesteadSigner{}
+		signer         = types.ShanghaiSigner{ChainId: big.NewInt(0)}
 		randomAccounts = newAccounts(2)
 	)
 	api := NewBlockChainAPI(newTestBackend(t, genBlocks, genesis, beacon.NewFaker(), func(i int, b *core.BlockGen) {
@@ -658,7 +661,7 @@ func TestCall(t *testing.T) {
 			},
 		}
 		genBlocks = 10
-		signer    = types.HomesteadSigner{}
+		signer    = types.ShanghaiSigner{ChainId: big.NewInt(0)}
 	)
 	api := NewBlockChainAPI(newTestBackend(t, genBlocks, genesis, beacon.NewFaker(), func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
@@ -1064,7 +1067,7 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 			},
 		}
 		genBlocks = 10
-		signer    = types.HomesteadSigner{}
+		signer    = types.ShanghaiSigner{ChainId: big.NewInt(0)}
 		tx        = types.NewTx(&types.LegacyTx{
 			Nonce:    11,
 			GasPrice: big.NewInt(11111),
@@ -1327,8 +1330,8 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 				contract: {Balance: big.NewInt(params.Ether), Code: common.FromHex("0x608060405234801561001057600080fd5b506004361061002b5760003560e01c8063a9059cbb14610030575b600080fd5b61004a6004803603810190610045919061016a565b610060565b60405161005791906101c5565b60405180910390f35b60008273ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef846040516100bf91906101ef565b60405180910390a36001905092915050565b600080fd5b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000610101826100d6565b9050919050565b610111816100f6565b811461011c57600080fd5b50565b60008135905061012e81610108565b92915050565b6000819050919050565b61014781610134565b811461015257600080fd5b50565b6000813590506101648161013e565b92915050565b60008060408385031215610181576101806100d1565b5b600061018f8582860161011f565b92505060206101a085828601610155565b9150509250929050565b60008115159050919050565b6101bf816101aa565b82525050565b60006020820190506101da60008301846101b6565b92915050565b6101e981610134565b82525050565b600060208201905061020460008301846101e0565b9291505056fea2646970667358221220b469033f4b77b9565ee84e0a2f04d496b18160d26034d54f9487e57788fd36d564736f6c63430008120033")},
 			},
 		}
-		signer   = types.LatestSignerForChainID(params.TestChainConfig.ChainID)
-		txHashes = make([]common.Hash, genBlocks)
+		signer, _ = types.LatestSignerForChainID(params.TestChainConfig.ChainID)
+		txHashes  = make([]common.Hash, genBlocks)
 	)
 
 	backend := newTestBackend(t, genBlocks, genesis, beacon.New(), func(i int, b *core.BlockGen) {
@@ -1339,7 +1342,7 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 		switch i {
 		case 0:
 			// transfer 1000wei
-			tx, err = types.SignTx(types.NewTx(&types.LegacyTx{Nonce: uint64(i), To: &acc2Addr, Value: big.NewInt(1000), Gas: params.TxGas, GasPrice: b.BaseFee(), Data: nil}), types.HomesteadSigner{}, acc1Key)
+			tx, err = types.SignTx(types.NewTx(&types.LegacyTx{Nonce: uint64(i), To: &acc2Addr, Value: big.NewInt(1000), Gas: params.TxGas, GasPrice: b.BaseFee(), Data: nil}), types.ShanghaiSigner{ChainId: big.NewInt(0)}, acc1Key)
 		case 1:
 			// create contract
 			tx, err = types.SignTx(types.NewTx(&types.LegacyTx{Nonce: uint64(i), To: nil, Gas: 53100, GasPrice: b.BaseFee(), Data: common.FromHex("0x60806040")}), signer, acc1Key)

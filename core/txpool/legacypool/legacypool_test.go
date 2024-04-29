@@ -99,7 +99,7 @@ func transaction(nonce uint64, gaslimit uint64, key *dilithium.Dilithium) *types
 }
 
 func pricedTransaction(nonce uint64, gaslimit uint64, gasprice *big.Int, key *dilithium.Dilithium) *types.Transaction {
-	tx, _ := types.SignTx(types.NewTransaction(nonce, common.Address{}, big.NewInt(100), gaslimit, gasprice, nil), types.HomesteadSigner{}, key)
+	tx, _ := types.SignTx(types.NewTransaction(nonce, common.Address{}, big.NewInt(100), gaslimit, gasprice, nil), types.ShanghaiSigner{ChainId: big.NewInt(0)}, key)
 	return tx
 }
 
@@ -107,12 +107,13 @@ func pricedDataTransaction(nonce uint64, gaslimit uint64, gasprice *big.Int, key
 	data := make([]byte, bytes)
 	crand.Read(data)
 
-	tx, _ := types.SignTx(types.NewTransaction(nonce, common.Address{}, big.NewInt(0), gaslimit, gasprice, data), types.HomesteadSigner{}, key)
+	tx, _ := types.SignTx(types.NewTransaction(nonce, common.Address{}, big.NewInt(0), gaslimit, gasprice, data), types.ShanghaiSigner{ChainId: big.NewInt(0)}, key)
 	return tx
 }
 
 func dynamicFeeTx(nonce uint64, gaslimit uint64, gasFee *big.Int, tip *big.Int, key *dilithium.Dilithium) *types.Transaction {
-	tx, _ := types.SignNewTx(key, types.LatestSignerForChainID(params.TestChainConfig.ChainID), &types.DynamicFeeTx{
+	signer, _ := types.LatestSignerForChainID(params.TestChainConfig.ChainID)
+	tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{
 		ChainID:    params.TestChainConfig.ChainID,
 		Nonce:      nonce,
 		GasTipCap:  tip,
@@ -232,7 +233,7 @@ func validateEvents(events chan core.NewTxsEvent, count int) error {
 }
 
 func deriveSender(tx *types.Transaction) (common.Address, error) {
-	return types.Sender(types.HomesteadSigner{}, tx)
+	return types.Sender(types.ShanghaiSigner{ChainId: big.NewInt(0)}, tx)
 }
 
 type testChain struct {
@@ -418,7 +419,7 @@ func TestNegativeValue(t *testing.T) {
 	pool, key := setupPool()
 	defer pool.Close()
 
-	tx, _ := types.SignTx(types.NewTransaction(0, common.Address{}, big.NewInt(-1), 100, big.NewInt(1), nil), types.HomesteadSigner{}, key)
+	tx, _ := types.SignTx(types.NewTransaction(0, common.Address{}, big.NewInt(-1), 100, big.NewInt(1), nil), types.ShanghaiSigner{ChainId: big.NewInt(0)}, key)
 	from, _ := deriveSender(tx)
 	testAddBalance(pool, from, big.NewInt(1))
 	if err := pool.addRemote(tx); err != txpool.ErrNegativeValue {
@@ -504,7 +505,7 @@ func TestDoubleNonce(t *testing.T) {
 	}
 	resetState()
 
-	signer := types.HomesteadSigner{}
+	signer := types.ShanghaiSigner{ChainId: big.NewInt(0)}
 	tx1, _ := types.SignTx(types.NewTransaction(0, common.Address{}, big.NewInt(100), 100000, big.NewInt(1), nil), signer, key)
 	tx2, _ := types.SignTx(types.NewTransaction(0, common.Address{}, big.NewInt(100), 1000000, big.NewInt(2), nil), signer, key)
 	tx3, _ := types.SignTx(types.NewTransaction(0, common.Address{}, big.NewInt(100), 1000000, big.NewInt(1), nil), signer, key)
