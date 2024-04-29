@@ -88,16 +88,12 @@ type Env struct {
     CurrentTimestamp uint64              `json:"currentTimestamp"`
     Withdrawals      []*Withdrawal       `json:"withdrawals"`
     // optional
-    CurrentDifficulty *big.Int           `json:"currentDifficuly"`
     CurrentRandom     *big.Int           `json:"currentRandom"`
     CurrentBaseFee    *big.Int           `json:"currentBaseFee"`
-    ParentDifficulty  *big.Int           `json:"parentDifficulty"`
     ParentGasUsed     uint64             `json:"parentGasUsed"`
     ParentGasLimit    uint64             `json:"parentGasLimit"`
     ParentTimestamp   uint64             `json:"parentTimestamp"`
     BlockHashes       map[uint64]common.Hash `json:"blockHashes"`
-    ParentUncleHash   common.Hash        `json:"parentUncleHash"`
-    Ommers            []Ommer            `json:"ommers"`
 }
 type Ommer struct {
     Delta   uint64         `json:"delta"`
@@ -179,7 +175,6 @@ type ExecutionResult struct {
     Bloom       types.Bloom    `json:"logsBloom"`
     Receipts    types.Receipts `json:"receipts"`
     Rejected    []*rejectedTx  `json:"rejected,omitempty"`
-    Difficulty  *big.Int       `json:"currentDifficulty"`
     GasUsed     uint64         `json:"gasUsed"`
     BaseFee     *big.Int       `json:"currentBaseFee,omitempty"`
 }
@@ -269,7 +264,6 @@ Two resulting files:
    "error": "nonce too low: address 0x8A8eAFb1cf62BfBeb1741769DAE1a9dd47996192, tx: 0 state: 1"
   }
  ],
- "currentDifficulty": "0x20000",
  "gasUsed": "0x5208"
 }
 ```
@@ -320,7 +314,6 @@ Output:
         "error": "nonce too low: address 0x8A8eAFb1cf62BfBeb1741769DAE1a9dd47996192, tx: 0 state: 1"
       }
     ],
-    "currentDifficulty": "0x20000",
     "gasUsed": "0x5208"
   }
 }
@@ -345,16 +338,12 @@ To make `t8n` apply these, the following inputs are required:
 - For each ommer, the tool needs to be given an `address\` and a `delta`. This
   is done via the `ommers` field in `env`.
 
-Note: the tool does not verify that e.g. the normal uncle rules apply,
-and allows e.g two uncles at the same height, or the uncle-distance. This means that
-the tool allows for negative uncle reward (distance > 8)
 
 Example:
 `./testdata/5/env.json`:
 ```json
 {
   "currentCoinbase": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-  "currentDifficulty": "0x20000",
   "currentGasLimit": "0x750a163df65e8a",
   "currentNumber": "1",
   "currentTimestamp": "1000",
@@ -549,13 +538,11 @@ The `header` object is a consensus header.
 ```go=
 type Header struct {
         ParentHash  common.Hash       `json:"parentHash"`
-        OmmerHash   *common.Hash      `json:"sha3Uncles"`
         Coinbase    *common.Address   `json:"miner"`
         Root        common.Hash       `json:"stateRoot"         gencodec:"required"`
         TxHash      *common.Hash      `json:"transactionsRoot"`
         ReceiptHash *common.Hash      `json:"receiptsRoot"`
         Bloom       types.Bloom       `json:"logsBloom"`
-        Difficulty  *big.Int          `json:"difficulty"`
         Number      *big.Int          `json:"number"            gencodec:"required"`
         GasLimit    uint64            `json:"gasLimit"          gencodec:"required"`
         GasUsed     uint64            `json:"gasUsed"`

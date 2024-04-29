@@ -608,7 +608,7 @@ func (b *Block) resolve(ctx context.Context) (*types.Block, error) {
 
 // resolveHeader returns the internal Header object for this block, fetching it
 // if necessary. Call this function instead of `resolve` unless you need the
-// additional data (transactions and uncles).
+// additional data (transactions).
 func (b *Block) resolveHeader(ctx context.Context) (*types.Header, error) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
@@ -719,14 +719,6 @@ func (b *Block) Parent(ctx context.Context) (*Block, error) {
 	}, nil
 }
 
-func (b *Block) Difficulty(ctx context.Context) (hexutil.Big, error) {
-	header, err := b.resolveHeader(ctx)
-	if err != nil {
-		return hexutil.Big{}, err
-	}
-	return hexutil.Big(*header.Difficulty), nil
-}
-
 func (b *Block) Timestamp(ctx context.Context) (hexutil.Uint64, error) {
 	header, err := b.resolveHeader(ctx)
 	if err != nil {
@@ -775,41 +767,6 @@ func (b *Block) ReceiptsRoot(ctx context.Context) (common.Hash, error) {
 	return header.ReceiptHash, nil
 }
 
-func (b *Block) OmmerHash(ctx context.Context) (common.Hash, error) {
-	header, err := b.resolveHeader(ctx)
-	if err != nil {
-		return common.Hash{}, err
-	}
-	return header.UncleHash, nil
-}
-
-func (b *Block) OmmerCount(ctx context.Context) (*hexutil.Uint64, error) {
-	block, err := b.resolve(ctx)
-	if err != nil || block == nil {
-		return nil, err
-	}
-	count := hexutil.Uint64(len(block.Uncles()))
-	return &count, err
-}
-
-func (b *Block) Ommers(ctx context.Context) (*[]*Block, error) {
-	block, err := b.resolve(ctx)
-	if err != nil || block == nil {
-		return nil, err
-	}
-	ret := make([]*Block, 0, len(block.Uncles()))
-	for _, uncle := range block.Uncles() {
-		blockNumberOrHash := rpc.BlockNumberOrHashWithHash(uncle.Hash(), false)
-		ret = append(ret, &Block{
-			r:            b.r,
-			numberOrHash: &blockNumberOrHash,
-			header:       uncle,
-			hash:         uncle.Hash(),
-		})
-	}
-	return &ret, nil
-}
-
 func (b *Block) ExtraData(ctx context.Context) (hexutil.Bytes, error) {
 	header, err := b.resolveHeader(ctx)
 	if err != nil {
@@ -824,18 +781,6 @@ func (b *Block) LogsBloom(ctx context.Context) (hexutil.Bytes, error) {
 		return hexutil.Bytes{}, err
 	}
 	return header.Bloom.Bytes(), nil
-}
-
-func (b *Block) TotalDifficulty(ctx context.Context) (hexutil.Big, error) {
-	hash, err := b.Hash(ctx)
-	if err != nil {
-		return hexutil.Big{}, err
-	}
-	td := b.r.backend.GetTd(ctx, hash)
-	if td == nil {
-		return hexutil.Big{}, fmt.Errorf("total difficulty not found %x", hash)
-	}
-	return hexutil.Big(*td), nil
 }
 
 func (b *Block) RawHeader(ctx context.Context) (hexutil.Bytes, error) {
@@ -933,25 +878,6 @@ func (b *Block) TransactionAt(ctx context.Context, args struct{ Index Long }) (*
 		tx:    tx,
 		block: b,
 		index: uint64(args.Index),
-	}, nil
-}
-
-func (b *Block) OmmerAt(ctx context.Context, args struct{ Index Long }) (*Block, error) {
-	block, err := b.resolve(ctx)
-	if err != nil || block == nil {
-		return nil, err
-	}
-	uncles := block.Uncles()
-	if args.Index < 0 || int(args.Index) >= len(uncles) {
-		return nil, nil
-	}
-	uncle := uncles[args.Index]
-	blockNumberOrHash := rpc.BlockNumberOrHashWithHash(uncle.Hash(), false)
-	return &Block{
-		r:            b.r,
-		numberOrHash: &blockNumberOrHash,
-		header:       uncle,
-		hash:         uncle.Hash(),
 	}, nil
 }
 

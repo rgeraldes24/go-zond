@@ -627,7 +627,7 @@ func (s *Suite) hashAnnounce() error {
 	case *NewBlock:
 		// node should only propagate NewBlock without having requested the body if the body is empty
 		nextBlockBody := nextBlock.Body()
-		if len(nextBlockBody.Transactions) != 0 || len(nextBlockBody.Uncles) != 0 {
+		if len(nextBlockBody.Transactions) != 0 {
 			return fmt.Errorf("unexpected non-empty new block propagated: %s", pretty.Sdump(msg))
 		}
 		if msg.Block.Hash() != nextBlock.Hash() {

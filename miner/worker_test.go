@@ -377,9 +377,6 @@ func testGetSealingWork(t *testing.T, chainConfig *params.ChainConfig, engine co
 		if block.MixDigest() != random {
 			t.Error("Unexpected mix digest")
 		}
-		if block.Nonce() != 0 {
-			t.Error("Unexpected block nonce")
-		}
 		if block.NumberU64() != number {
 			t.Errorf("Mismatched block number, want %d got %d", number, block.NumberU64())
 		}

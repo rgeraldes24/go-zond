@@ -51,7 +51,6 @@ type ExecutionResult struct {
 	Bloom           types.Bloom           `json:"logsBloom"        gencodec:"required"`
 	Receipts        types.Receipts        `json:"receipts"`
 	Rejected        []*rejectedTx         `json:"rejected,omitempty"`
-	Difficulty      *math.HexOrDecimal256 `json:"currentDifficulty" gencodec:"required"`
 	GasUsed         math.HexOrDecimal64   `json:"gasUsed"`
 	BaseFee         *math.HexOrDecimal256 `json:"currentBaseFee,omitempty"`
 	WithdrawalsRoot *common.Hash          `json:"withdrawalsRoot,omitempty"`
@@ -64,37 +63,32 @@ type ommer struct {
 
 //go:generate go run github.com/fjl/gencodec -type stEnv -field-override stEnvMarshaling -out gen_stenv.go
 type stEnv struct {
-	Coinbase         common.Address                      `json:"currentCoinbase"   gencodec:"required"`
-	Difficulty       *big.Int                            `json:"currentDifficulty"`
-	Random           *big.Int                            `json:"currentRandom"`
-	ParentDifficulty *big.Int                            `json:"parentDifficulty"`
-	ParentBaseFee    *big.Int                            `json:"parentBaseFee,omitempty"`
-	ParentGasUsed    uint64                              `json:"parentGasUsed,omitempty"`
-	ParentGasLimit   uint64                              `json:"parentGasLimit,omitempty"`
-	GasLimit         uint64                              `json:"currentGasLimit"   gencodec:"required"`
-	Number           uint64                              `json:"currentNumber"     gencodec:"required"`
-	Timestamp        uint64                              `json:"currentTimestamp"  gencodec:"required"`
-	ParentTimestamp  uint64                              `json:"parentTimestamp,omitempty"`
-	BlockHashes      map[math.HexOrDecimal64]common.Hash `json:"blockHashes,omitempty"`
-	Ommers           []ommer                             `json:"ommers,omitempty"`
-	Withdrawals      []*types.Withdrawal                 `json:"withdrawals,omitempty"`
-	BaseFee          *big.Int                            `json:"currentBaseFee,omitempty"`
-	ParentUncleHash  common.Hash                         `json:"parentUncleHash"`
+	Coinbase        common.Address                      `json:"currentCoinbase"   gencodec:"required"`
+	Random          *big.Int                            `json:"currentRandom"`
+	ParentBaseFee   *big.Int                            `json:"parentBaseFee,omitempty"`
+	ParentGasUsed   uint64                              `json:"parentGasUsed,omitempty"`
+	ParentGasLimit  uint64                              `json:"parentGasLimit,omitempty"`
+	GasLimit        uint64                              `json:"currentGasLimit"   gencodec:"required"`
+	Number          uint64                              `json:"currentNumber"     gencodec:"required"`
+	Timestamp       uint64                              `json:"currentTimestamp"  gencodec:"required"`
+	ParentTimestamp uint64                              `json:"parentTimestamp,omitempty"`
+	BlockHashes     map[math.HexOrDecimal64]common.Hash `json:"blockHashes,omitempty"`
+	Ommers          []ommer                             `json:"ommers,omitempty"`
+	Withdrawals     []*types.Withdrawal                 `json:"withdrawals,omitempty"`
+	BaseFee         *big.Int                            `json:"currentBaseFee,omitempty"`
 }
 
 type stEnvMarshaling struct {
-	Coinbase         common.UnprefixedAddress
-	Difficulty       *math.HexOrDecimal256
-	Random           *math.HexOrDecimal256
-	ParentDifficulty *math.HexOrDecimal256
-	ParentBaseFee    *math.HexOrDecimal256
-	ParentGasUsed    math.HexOrDecimal64
-	ParentGasLimit   math.HexOrDecimal64
-	GasLimit         math.HexOrDecimal64
-	Number           math.HexOrDecimal64
-	Timestamp        math.HexOrDecimal64
-	ParentTimestamp  math.HexOrDecimal64
-	BaseFee          *math.HexOrDecimal256
+	Coinbase        common.UnprefixedAddress
+	Random          *math.HexOrDecimal256
+	ParentBaseFee   *math.HexOrDecimal256
+	ParentGasUsed   math.HexOrDecimal64
+	ParentGasLimit  math.HexOrDecimal64
+	GasLimit        math.HexOrDecimal64
+	Number          math.HexOrDecimal64
+	Timestamp       math.HexOrDecimal64
+	ParentTimestamp math.HexOrDecimal64
+	BaseFee         *math.HexOrDecimal256
 }
 
 type rejectedTx struct {
@@ -142,7 +136,6 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 		Coinbase:    pre.Env.Coinbase,
 		BlockNumber: new(big.Int).SetUint64(pre.Env.Number),
 		Time:        pre.Env.Timestamp,
-		Difficulty:  pre.Env.Difficulty,
 		GasLimit:    pre.Env.GasLimit,
 		GetHash:     getHash,
 	}
@@ -269,7 +262,6 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 		LogsHash:    rlpHash(statedb.Logs()),
 		Receipts:    receipts,
 		Rejected:    rejectedTxs,
-		Difficulty:  (*math.HexOrDecimal256)(vmContext.Difficulty),
 		GasUsed:     (math.HexOrDecimal64)(gasUsed),
 		BaseFee:     (*math.HexOrDecimal256)(vmContext.BaseFee),
 	}

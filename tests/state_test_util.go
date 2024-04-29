@@ -83,13 +83,12 @@ type stPostState struct {
 //go:generate go run github.com/fjl/gencodec -type stEnv -field-override stEnvMarshaling -out gen_stenv.go
 
 type stEnv struct {
-	Coinbase   common.Address `json:"currentCoinbase"   gencodec:"required"`
-	Difficulty *big.Int       `json:"currentDifficulty" gencodec:"optional"`
-	Random     *big.Int       `json:"currentRandom"     gencodec:"optional"`
-	GasLimit   uint64         `json:"currentGasLimit"   gencodec:"required"`
-	Number     uint64         `json:"currentNumber"     gencodec:"required"`
-	Timestamp  uint64         `json:"currentTimestamp"  gencodec:"required"`
-	BaseFee    *big.Int       `json:"currentBaseFee"    gencodec:"optional"`
+	Coinbase  common.Address `json:"currentCoinbase"   gencodec:"required"`
+	Random    *big.Int       `json:"currentRandom"     gencodec:"optional"`
+	GasLimit  uint64         `json:"currentGasLimit"   gencodec:"required"`
+	Number    uint64         `json:"currentNumber"     gencodec:"required"`
+	Timestamp uint64         `json:"currentTimestamp"  gencodec:"required"`
+	BaseFee   *big.Int       `json:"currentBaseFee"    gencodec:"optional"`
 }
 
 type stEnvMarshaling struct {
@@ -274,13 +273,9 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 	context.GetHash = vmTestBlockHash
 	context.BaseFee = baseFee
 	context.Random = nil
-	if t.json.Env.Difficulty != nil {
-		context.Difficulty = new(big.Int).Set(t.json.Env.Difficulty)
-	}
 	if t.json.Env.Random != nil {
 		rnd := common.BigToHash(t.json.Env.Random)
 		context.Random = &rnd
-		context.Difficulty = big.NewInt(0)
 	}
 	evm := vm.NewEVM(context, txContext, statedb, config, vmconfig)
 

@@ -147,10 +147,7 @@ func decodeTransactions(enc [][]byte) ([]*types.Transaction, error) {
 // ExecutableDataToBlock constructs a block from executable data.
 // It verifies that the following fields:
 //
-//		len(extraData) <= 32
-//		uncleHash = emptyUncleHash
-//		difficulty = 0
-//	 	if versionedHashes != nil, versionedHashes match to blob transactions
+//	len(extraData) <= 32
 //
 // and that the blockhash of the constructed block matches the parameters. Nil
 // Withdrawals value will propagate through the returned block. Empty
@@ -180,13 +177,11 @@ func ExecutableDataToBlock(params ExecutableData) (*types.Block, error) {
 	}
 	header := &types.Header{
 		ParentHash:      params.ParentHash,
-		UncleHash:       types.EmptyUncleHash,
 		Coinbase:        params.FeeRecipient,
 		Root:            params.StateRoot,
 		TxHash:          types.DeriveSha(types.Transactions(txs), trie.NewStackTrie(nil)),
 		ReceiptHash:     params.ReceiptsRoot,
 		Bloom:           types.BytesToBloom(params.LogsBloom),
-		Difficulty:      common.Big0,
 		Number:          new(big.Int).SetUint64(params.Number),
 		GasLimit:        params.GasLimit,
 		GasUsed:         params.GasUsed,
@@ -196,7 +191,7 @@ func ExecutableDataToBlock(params ExecutableData) (*types.Block, error) {
 		MixDigest:       params.Random,
 		WithdrawalsHash: withdrawalsRoot,
 	}
-	block := types.NewBlockWithHeader(header).WithBody(txs, nil /* uncles */).WithWithdrawals(params.Withdrawals)
+	block := types.NewBlockWithHeader(header).WithBody(txs).WithWithdrawals(params.Withdrawals)
 	if block.Hash() != params.BlockHash {
 		return nil, fmt.Errorf("blockhash mismatch, want %x, got %x", params.BlockHash, block.Hash())
 	}

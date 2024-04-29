@@ -90,7 +90,7 @@ func runGzond() (*node.Node, error) {
 		return nil, err
 	}
 
-	err = setupGeth(stack)
+	err = setupGzond(stack)
 	if err != nil {
 		stack.Close()
 		return nil, err
@@ -102,7 +102,7 @@ func runGzond() (*node.Node, error) {
 	return stack, nil
 }
 
-func setupGeth(stack *node.Node) error {
+func setupGzond(stack *node.Node) error {
 	chain, err := loadChain(halfchainFile, genesisFile)
 	if err != nil {
 		return err

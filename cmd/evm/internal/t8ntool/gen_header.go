@@ -19,7 +19,6 @@ var _ = (*headerMarshaling)(nil)
 func (h header) MarshalJSON() ([]byte, error) {
 	type header struct {
 		ParentHash      common.Hash           `json:"parentHash"`
-		OmmerHash       *common.Hash          `json:"sha3Uncles"`
 		Coinbase        *common.Address       `json:"miner"`
 		Root            common.Hash           `json:"stateRoot"        gencodec:"required"`
 		TxHash          *common.Hash          `json:"transactionsRoot"`
@@ -61,7 +60,6 @@ func (h header) MarshalJSON() ([]byte, error) {
 func (h *header) UnmarshalJSON(input []byte) error {
 	type header struct {
 		ParentHash      *common.Hash          `json:"parentHash"`
-		OmmerHash       *common.Hash          `json:"sha3Uncles"`
 		Coinbase        *common.Address       `json:"miner"`
 		Root            *common.Hash          `json:"stateRoot"        gencodec:"required"`
 		TxHash          *common.Hash          `json:"transactionsRoot"`

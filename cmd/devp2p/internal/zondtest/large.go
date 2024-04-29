@@ -70,11 +70,9 @@ func largeHeader() *types.Header {
 		GasUsed:     0,
 		Coinbase:    common.Address{},
 		GasLimit:    0,
-		UncleHash:   types.EmptyUncleHash,
 		Time:        1337,
 		ParentHash:  randHash(),
 		Root:        randHash(),
 		Number:      largeNumber(2),
-		Difficulty:  largeNumber(2),
 	}
 }

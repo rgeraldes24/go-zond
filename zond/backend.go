@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package zond implements the Ethereum protocol.
+// Package zond implements the Zond protocol.
 package zond
 
 import (
@@ -95,8 +95,8 @@ type Zond struct {
 	shutdownTracker *shutdowncheck.ShutdownTracker // Tracks if and when the node has shutdown ungracefully
 }
 
-// New creates a new Ethereum object (including the
-// initialisation of the common Ethereum object)
+// New creates a new Zond object (including the
+// initialisation of the common Zond object)
 func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	// Ensure configuration values are compatible and sane
 	if !config.SyncMode.IsValid() {
@@ -117,7 +117,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	}
 	log.Info("Allocated trie memory caches", "clean", common.StorageSize(config.TrieCleanCache)*1024*1024, "dirty", common.StorageSize(config.TrieDirtyCache)*1024*1024)
 
-	// Assemble the Ethereum object
+	// Assemble the Zond object
 	chainDb, err := stack.OpenDatabaseWithFreezer("chaindata", config.DatabaseCache, config.DatabaseHandles, config.DatabaseFreezer, "eth/db/chaindata/", false)
 	if err != nil {
 		return nil, err
@@ -157,7 +157,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	if bcVersion != nil {
 		dbVer = fmt.Sprintf("%d", *bcVersion)
 	}
-	log.Info("Initialising Ethereum protocol", "network", config.NetworkId, "dbversion", dbVer)
+	log.Info("Initialising Zond protocol", "network", config.NetworkId, "dbversion", dbVer)
 
 	if !config.SkipBcVersionCheck {
 		if bcVersion != nil && *bcVersion > core.BlockChainVersion {
@@ -375,10 +375,6 @@ func (s *Zond) Synced() bool                       { return s.handler.acceptTxs.
 func (s *Zond) SetSynced()                         { s.handler.enableSyncedFeatures() }
 func (s *Zond) ArchiveMode() bool                  { return s.config.NoPruning }
 func (s *Zond) BloomIndexer() *core.ChainIndexer   { return s.bloomIndexer }
-func (s *Zond) SyncMode() downloader.SyncMode {
-	mode, _ := s.handler.chainSync.modeAndLocalHead()
-	return mode
-}
 
 // Protocols returns all the currently configured
 // network protocols to start.
@@ -391,7 +387,7 @@ func (s *Zond) Protocols() []p2p.Protocol {
 }
 
 // Start implements node.Lifecycle, starting all internal goroutines needed by the
-// Ethereum protocol implementation.
+// Zond protocol implementation.
 func (s *Zond) Start() error {
 	zond.StartENRUpdater(s.blockchain, s.p2pServer.LocalNode())
 
@@ -410,7 +406,7 @@ func (s *Zond) Start() error {
 }
 
 // Stop implements node.Lifecycle, terminating all internal goroutines used by the
-// Ethereum protocol.
+// Zond protocol.
 func (s *Zond) Stop() error {
 	// Stop all the peer-related stuff first.
 	s.ethDialCandidates.Close()

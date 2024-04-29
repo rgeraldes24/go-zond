@@ -476,12 +476,7 @@ func (b testBackend) GetReceipts(ctx context.Context, hash common.Hash) (types.R
 	receipts := rawdb.ReadReceipts(b.db, hash, header.Number.Uint64(), header.Time, b.chain.Config())
 	return receipts, nil
 }
-func (b testBackend) GetTd(ctx context.Context, hash common.Hash) *big.Int {
-	if b.pending != nil && hash == b.pending.Hash() {
-		return nil
-	}
-	return big.NewInt(1)
-}
+
 func (b testBackend) GetEVM(ctx context.Context, msg *core.Message, state *state.StateDB, header *types.Header, vmConfig *vm.Config, blockContext *vm.BlockContext) (*vm.EVM, func() error) {
 	vmError := func() error { return nil }
 	if vmConfig == nil {
@@ -871,7 +866,7 @@ func TestRPCMarshalBlock(t *testing.T) {
 		}
 		txs = append(txs, tx)
 	}
-	block := types.NewBlock(&types.Header{Number: big.NewInt(100)}, txs, nil, nil, blocktest.NewHasher())
+	block := types.NewBlock(&types.Header{Number: big.NewInt(100)}, txs, nil, blocktest.NewHasher())
 
 	var testSuite = []struct {
 		inclTx bool
@@ -895,7 +890,6 @@ func TestRPCMarshalBlock(t *testing.T) {
 				"number": "0x64",
 				"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-				"sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
 				"size": "0x296",
 				"stateRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"timestamp": "0x0",
@@ -920,7 +914,6 @@ func TestRPCMarshalBlock(t *testing.T) {
 				"number": "0x64",
 				"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-				"sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
 				"size": "0x296",
 				"stateRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"timestamp": "0x0",
@@ -951,7 +944,6 @@ func TestRPCMarshalBlock(t *testing.T) {
 				"number": "0x64",
 				"parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-				"sha3Uncles": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
 				"size": "0x296",
 				"stateRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
 				"timestamp": "0x0",
@@ -1082,7 +1074,7 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 			Address:   common.Address{0x12, 0x34},
 			Amount:    10,
 		}
-		pending = types.NewBlockWithWithdrawals(&types.Header{Number: big.NewInt(11), Time: 42}, []*types.Transaction{tx}, nil, nil, []*types.Withdrawal{withdrawal}, blocktest.NewHasher())
+		pending = types.NewBlockWithWithdrawals(&types.Header{Number: big.NewInt(11), Time: 42}, []*types.Transaction{tx}, nil, []*types.Withdrawal{withdrawal}, blocktest.NewHasher())
 	)
 	backend := newTestBackend(t, genBlocks, genesis, beacon.NewFaker(), func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
@@ -1373,7 +1365,6 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 			b.AddTx(tx)
 			txHashes[i] = tx.Hash()
 		}
-		b.SetPoS()
 	})
 	return backend, txHashes
 }

@@ -75,7 +75,6 @@ type btHeader struct {
 	Bloom            types.Bloom
 	Coinbase         common.Address
 	MixHash          common.Hash
-	Nonce            types.BlockNonce
 	Number           *big.Int
 	Hash             common.Hash
 	ParentHash       common.Hash
@@ -84,7 +83,6 @@ type btHeader struct {
 	TransactionsTrie common.Hash
 	UncleHash        common.Hash
 	ExtraData        []byte
-	Difficulty       *big.Int
 	GasLimit         uint64
 	GasUsed          uint64
 	Timestamp        uint64
@@ -175,13 +173,11 @@ func (t *BlockTest) Run(snapshotter bool, scheme string, tracer vm.EVMLogger) er
 func (t *BlockTest) genesis(config *params.ChainConfig) *core.Genesis {
 	return &core.Genesis{
 		Config:     config,
-		Nonce:      t.json.Genesis.Nonce.Uint64(),
 		Timestamp:  t.json.Genesis.Timestamp,
 		ParentHash: t.json.Genesis.ParentHash,
 		ExtraData:  t.json.Genesis.ExtraData,
 		GasLimit:   t.json.Genesis.GasLimit,
 		GasUsed:    t.json.Genesis.GasUsed,
-		Difficulty: t.json.Genesis.Difficulty,
 		Mixhash:    t.json.Genesis.MixHash,
 		Coinbase:   t.json.Genesis.Coinbase,
 		Alloc:      t.json.Pre,
@@ -252,9 +248,6 @@ func validateHeader(h *btHeader, h2 *types.Header) error {
 	if h.MixHash != h2.MixDigest {
 		return fmt.Errorf("MixHash: want: %x have: %x", h.MixHash, h2.MixDigest)
 	}
-	if h.Nonce != h2.Nonce {
-		return fmt.Errorf("nonce: want: %x have: %x", h.Nonce, h2.Nonce)
-	}
 	if h.Number.Cmp(h2.Number) != 0 {
 		return fmt.Errorf("number: want: %v have: %v", h.Number, h2.Number)
 	}
@@ -270,14 +263,8 @@ func validateHeader(h *btHeader, h2 *types.Header) error {
 	if h.StateRoot != h2.Root {
 		return fmt.Errorf("state hash: want: %x have: %x", h.StateRoot, h2.Root)
 	}
-	if h.UncleHash != h2.UncleHash {
-		return fmt.Errorf("uncle hash: want: %x have: %x", h.UncleHash, h2.UncleHash)
-	}
 	if !bytes.Equal(h.ExtraData, h2.Extra) {
 		return fmt.Errorf("extra data: want: %x have: %x", h.ExtraData, h2.Extra)
-	}
-	if h.Difficulty.Cmp(h2.Difficulty) != 0 {
-		return fmt.Errorf("difficulty: want: %v have: %v", h.Difficulty, h2.Difficulty)
 	}
 	if h.GasLimit != h2.GasLimit {
 		return fmt.Errorf("gasLimit: want: %d have: %d", h.GasLimit, h2.GasLimit)

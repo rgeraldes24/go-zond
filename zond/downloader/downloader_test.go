@@ -97,12 +97,9 @@ func (dl *downloadTester) terminate() {
 // sync starts synchronizing with a remote peer, blocking until it completes.
 func (dl *downloadTester) sync(id string, td *big.Int, mode SyncMode) error {
 	head := dl.peers[id].chain.CurrentBlock()
-	if td == nil {
-		// If no particular TD was requested, load from the peer's blockchain
-		td = dl.peers[id].chain.GetTd(head.Hash(), head.Number.Uint64())
-	}
+
 	// Synchronise with the chosen peer and ensure proper cleanup afterwards
-	err := dl.downloader.synchronise(id, head.Hash(), td, nil, mode, false, nil)
+	err := dl.downloader.synchronise(id, head.Hash(), mode, nil)
 	select {
 	case <-dl.downloader.cancelCh:
 		// Ok, downloader fully cancelled after sync cycle
@@ -155,9 +152,9 @@ type downloadTesterPeer struct {
 
 // Head constructs a function to retrieve a peer's current head hash
 // and total difficulty.
-func (dlp *downloadTesterPeer) Head() (common.Hash, *big.Int) {
+func (dlp *downloadTesterPeer) Head() common.Hash {
 	head := dlp.chain.CurrentBlock()
-	return head.Hash(), dlp.chain.GetTd(head.Hash(), head.Number.Uint64())
+	return head.Hash()
 }
 
 func unmarshalRlpHeaders(rlpdata []rlp.RawValue) []*types.Header {
@@ -273,13 +270,11 @@ func (dlp *downloadTesterPeer) RequestBodies(hashes []common.Hash, sink chan *zo
 	}
 	var (
 		txsHashes        = make([]common.Hash, len(bodies))
-		uncleHashes      = make([]common.Hash, len(bodies))
 		withdrawalHashes = make([]common.Hash, len(bodies))
 	)
 	hasher := trie.NewStackTrie(nil)
 	for i, body := range bodies {
 		txsHashes[i] = types.DeriveSha(types.Transactions(body.Transactions), hasher)
-		uncleHashes[i] = types.CalcUncleHash(body.Uncles)
 	}
 	req := &zondproto.Request{
 		Peer: dlp.id,
@@ -287,7 +282,7 @@ func (dlp *downloadTesterPeer) RequestBodies(hashes []common.Hash, sink chan *zo
 	res := &zondproto.Response{
 		Req:  req,
 		Res:  (*zondproto.BlockBodiesPacket)(&bodies),
-		Meta: [][]common.Hash{txsHashes, uncleHashes, withdrawalHashes},
+		Meta: [][]common.Hash{txsHashes, withdrawalHashes},
 		Time: 1,
 		Done: make(chan error, 1), // Ignore the returned status
 	}
@@ -760,7 +755,7 @@ func testEmptyShortCircuit(t *testing.T, protocol uint, mode SyncMode) {
 	// Validate the number of block bodies that should have been requested
 	bodiesNeeded, receiptsNeeded := 0, 0
 	for _, block := range chain.blocks[1:] {
-		if len(block.Transactions()) > 0 || len(block.Uncles()) > 0 {
+		if len(block.Transactions()) > 0 {
 			bodiesNeeded++
 		}
 	}
@@ -979,10 +974,11 @@ func testBlockHeaderAttackerDropping(t *testing.T, protocol uint) {
 		// Simulate a synchronisation and check the required result
 		tester.downloader.synchroniseMock = func(string, common.Hash) error { return tt.result }
 
-		tester.downloader.LegacySync(id, tester.chain.Genesis().Hash(), big.NewInt(1000), nil, FullSync)
-		if _, ok := tester.peers[id]; !ok != tt.drop {
-			t.Errorf("test %d: peer drop mismatch for %v: have %v, want %v", i, tt.result, !ok, tt.drop)
-		}
+		// TODO(rgeraldes24): not available
+		// tester.downloader.LegacySync(id, tester.chain.Genesis().Hash(), big.NewInt(1000), nil, FullSync)
+		// if _, ok := tester.peers[id]; !ok != tt.drop {
+		// 	t.Errorf("test %d: peer drop mismatch for %v: have %v, want %v", i, tt.result, !ok, tt.drop)
+		// }
 	}
 }
 
