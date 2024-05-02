@@ -34,7 +34,7 @@ const (
 )
 
 // chainFreezerNoSnappy configures whether compression is disabled for the ancient-tables.
-// Hashes and difficulties don't compress well.
+// Hashes don't compress well.
 var chainFreezerNoSnappy = map[string]bool{
 	ChainFreezerHeaderTable:  false,
 	ChainFreezerHashTable:    true,
