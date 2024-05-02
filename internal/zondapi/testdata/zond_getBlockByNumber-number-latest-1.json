@@ -1,6 +1,5 @@
 {
   "baseFeePerGas": "0x121a9cca",
-  "difficulty": "0x20000",
   "extraData": "0x",
   "gasLimit": "0x47e7c4",
   "gasUsed": "0x5208",
@@ -15,7 +14,6 @@
   "size": "0x26a",
   "stateRoot": "0xbd4aa2c2873df709151075250a8c01c9a14d2b0e2f715dbdd16e0ef8030c2cf0",
   "timestamp": "0x5a",
-  "totalDifficulty": "0x1",
   "transactions": [
     {
       "blockHash": "0xda97ed946e0d502fb898b0ac881bd44da3c7fee5eaf184431e1ec3d361dad17e",
@@ -35,6 +33,5 @@
       "s": "0xeb6adcaaae3bed489c6cce4435f9db05d23a52820c78bd350e31eec65ed809d"
     }
   ],
-  "transactionsRoot": "0x0767ed8359337dc6a8fdc77fe52db611bed1be87aac73c4556b1bf1dd3d190a5",
-  "uncles": []
+  "transactionsRoot": "0x0767ed8359337dc6a8fdc77fe52db611bed1be87aac73c4556b1bf1dd3d190a5"
 }

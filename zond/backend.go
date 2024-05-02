@@ -429,3 +429,29 @@ func (s *Zond) Stop() error {
 
 	return nil
 }
+
+// SyncMode retrieves the current sync mode, either explicitly set, or derived
+// from the chain status.
+func (s *Zond) SyncMode() downloader.SyncMode {
+	// If we're in snap sync mode, return that directly
+	if s.handler.snapSync.Load() {
+		return downloader.SnapSync
+	}
+	// We are probably in full sync, but we might have rewound to before the
+	// snap sync pivot, check if we should re-enable snap sync.
+	head := s.blockchain.CurrentBlock()
+	if pivot := rawdb.ReadLastPivotNumber(s.chainDb); pivot != nil {
+		if head.Number.Uint64() < *pivot {
+			return downloader.SnapSync
+		}
+	}
+	// We are in a full sync, but the associated head state is missing. To complete
+	// the head state, forcefully rerun the snap sync. Note it doesn't mean the
+	// persistent state is corrupted, just mismatch with the head block.
+	if !s.blockchain.HasState(head.Root) {
+		log.Info("Reenabled snap sync as chain is stateless")
+		return downloader.SnapSync
+	}
+	// Nope, we're really full syncing
+	return downloader.FullSync
+}

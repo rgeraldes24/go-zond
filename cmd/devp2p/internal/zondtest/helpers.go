@@ -21,11 +21,9 @@ import (
 	"fmt"
 	"net"
 	"reflect"
-	"strings"
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/internal/utesting"
@@ -164,9 +162,6 @@ loop:
 				return nil, fmt.Errorf("wrong head block in status, want:  %#x (block %d) have %#x",
 					want, chain.blocks[chain.Len()-1].NumberU64(), have)
 			}
-			if have, want := msg.TD.Cmp(chain.TD()), 0; have != want {
-				return nil, fmt.Errorf("wrong TD in status: have %v want %v", have, want)
-			}
 			if have, want := msg.ForkID, chain.ForkID(); !reflect.DeepEqual(have, want) {
 				return nil, fmt.Errorf("wrong fork ID in status: have %v, want %v", have, want)
 			}
@@ -193,7 +188,6 @@ loop:
 		status = &Status{
 			ProtocolVersion: uint32(c.negotiatedProtoVersion),
 			NetworkID:       chain.chainConfig.ChainID.Uint64(),
-			TD:              chain.TD(),
 			Head:            chain.blocks[chain.Len()-1].Hash(),
 			Genesis:         chain.blocks[0].Hash(),
 			ForkID:          chain.ForkID(),
@@ -296,70 +290,9 @@ func (c *Conn) waitForResponse(chain *Chain, timeout time.Duration, requestID ui
 	}
 }
 
-// sendNextBlock broadcasts the next block in the chain and waits
-// for the node to propagate the block and import it into its chain.
-func (s *Suite) sendNextBlock() error {
-	// set up sending and receiving connections
-	sendConn, recvConn, err := s.createSendAndRecvConns()
-	if err != nil {
-		return err
-	}
-	defer sendConn.Close()
-	defer recvConn.Close()
-	if err = sendConn.peer(s.chain, nil); err != nil {
-		return fmt.Errorf("peering failed: %v", err)
-	}
-	if err = recvConn.peer(s.chain, nil); err != nil {
-		return fmt.Errorf("peering failed: %v", err)
-	}
-	// create new block announcement
-	nextBlock := s.fullChain.blocks[s.chain.Len()]
-	blockAnnouncement := &NewBlock{
-		Block: nextBlock,
-		TD:    s.fullChain.TotalDifficultyAt(s.chain.Len()),
-	}
-	// send announcement and wait for node to request the header
-	if err = s.testAnnounce(sendConn, recvConn, blockAnnouncement); err != nil {
-		return fmt.Errorf("failed to announce block: %v", err)
-	}
-	// wait for client to update its chain
-	if err = s.waitForBlockImport(recvConn, nextBlock); err != nil {
-		return fmt.Errorf("failed to receive confirmation of block import: %v", err)
-	}
-	// update test suite chain
-	s.chain.blocks = append(s.chain.blocks, nextBlock)
-	return nil
-}
-
-// testAnnounce writes a block announcement to the node and waits for the node
-// to propagate it.
-func (s *Suite) testAnnounce(sendConn, receiveConn *Conn, blockAnnouncement *NewBlock) error {
-	if err := sendConn.Write(blockAnnouncement); err != nil {
-		return fmt.Errorf("could not write to connection: %v", err)
-	}
-	return s.waitAnnounce(receiveConn, blockAnnouncement)
-}
-
-// waitAnnounce waits for a NewBlock or NewBlockHashes announcement from the node.
-func (s *Suite) waitAnnounce(conn *Conn, blockAnnouncement *NewBlock) error {
+func (s *Suite) waitAnnounce(conn *Conn) error {
 	for {
 		switch msg := conn.readAndServe(s.chain, timeout).(type) {
-		case *NewBlock:
-			if !reflect.DeepEqual(blockAnnouncement.Block.Header(), msg.Block.Header()) {
-				return fmt.Errorf("wrong header in block announcement: \nexpected %v "+
-					"\ngot %v", blockAnnouncement.Block.Header(), msg.Block.Header())
-			}
-			if !reflect.DeepEqual(blockAnnouncement.TD, msg.TD) {
-				return fmt.Errorf("wrong TD in announcement: expected %v, got %v", blockAnnouncement.TD, msg.TD)
-			}
-			return nil
-		case *NewBlockHashes:
-			hashes := *msg
-			if blockAnnouncement.Block.Hash() != hashes[0].Hash {
-				return fmt.Errorf("wrong block hash in announcement: expected %v, got %v", blockAnnouncement.Block.Hash(), hashes[0].Hash)
-			}
-			return nil
-
 		// ignore tx announcements from previous tests
 		case *NewPooledTransactionHashes66:
 			continue
@@ -405,6 +338,7 @@ func (s *Suite) waitForBlockImport(conn *Conn, block *types.Block) error {
 	}
 }
 
+/*
 func (s *Suite) oldAnnounce() error {
 	sendConn, receiveConn, err := s.createSendAndRecvConns()
 	if err != nil {
@@ -421,7 +355,6 @@ func (s *Suite) oldAnnounce() error {
 	// create old block announcement
 	oldBlockAnnounce := &NewBlock{
 		Block: s.chain.blocks[len(s.chain.blocks)/2],
-		TD:    s.chain.blocks[len(s.chain.blocks)/2].Difficulty(),
 	}
 	if err := sendConn.Write(oldBlockAnnounce); err != nil {
 		return fmt.Errorf("could not write to connection: %v", err)
@@ -451,6 +384,7 @@ func (s *Suite) oldAnnounce() error {
 	}
 	return nil
 }
+*/
 
 func (s *Suite) maliciousHandshakes(t *utesting.T) error {
 	conn, err := s.dial()
@@ -534,7 +468,6 @@ func (s *Suite) maliciousStatus(conn *Conn) error {
 	status := &Status{
 		ProtocolVersion: uint32(conn.negotiatedProtoVersion),
 		NetworkID:       s.chain.chainConfig.ChainID.Uint64(),
-		TD:              largeNumber(2),
 		Head:            s.chain.blocks[s.chain.Len()-1].Hash(),
 		Genesis:         s.chain.blocks[0].Hash(),
 		ForkID:          s.chain.ForkID(),
@@ -562,6 +495,7 @@ func (s *Suite) maliciousStatus(conn *Conn) error {
 	}
 }
 
+/*
 func (s *Suite) hashAnnounce() error {
 	// create connections
 	sendConn, recvConn, err := s.createSendAndRecvConns()
@@ -649,3 +583,4 @@ func (s *Suite) hashAnnounce() error {
 	s.chain.blocks = append(s.chain.blocks, nextBlock)
 	return nil
 }
+*/

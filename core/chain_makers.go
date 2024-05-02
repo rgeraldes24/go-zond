@@ -44,7 +44,6 @@ type BlockGen struct {
 	gasPool     *GasPool
 	txs         []*types.Transaction
 	receipts    []*types.Receipt
-	uncles      []*types.Header
 	withdrawals []*types.Withdrawal
 
 	config *params.ChainConfig

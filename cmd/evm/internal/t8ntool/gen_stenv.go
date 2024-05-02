@@ -27,7 +27,6 @@ func (s stEnv) MarshalJSON() ([]byte, error) {
 		Timestamp             math.HexOrDecimal64                 `json:"currentTimestamp"  gencodec:"required"`
 		ParentTimestamp       math.HexOrDecimal64                 `json:"parentTimestamp,omitempty"`
 		BlockHashes           map[math.HexOrDecimal64]common.Hash `json:"blockHashes,omitempty"`
-		Ommers                []ommer                             `json:"ommers,omitempty"`
 		Withdrawals           []*types.Withdrawal                 `json:"withdrawals,omitempty"`
 		BaseFee               *math.HexOrDecimal256               `json:"currentBaseFee,omitempty"`
 	}
@@ -42,7 +41,6 @@ func (s stEnv) MarshalJSON() ([]byte, error) {
 	enc.Timestamp = math.HexOrDecimal64(s.Timestamp)
 	enc.ParentTimestamp = math.HexOrDecimal64(s.ParentTimestamp)
 	enc.BlockHashes = s.BlockHashes
-	enc.Ommers = s.Ommers
 	enc.Withdrawals = s.Withdrawals
 	enc.BaseFee = (*math.HexOrDecimal256)(s.BaseFee)
 	return json.Marshal(&enc)
@@ -61,7 +59,6 @@ func (s *stEnv) UnmarshalJSON(input []byte) error {
 		Timestamp             *math.HexOrDecimal64                `json:"currentTimestamp"  gencodec:"required"`
 		ParentTimestamp       *math.HexOrDecimal64                `json:"parentTimestamp,omitempty"`
 		BlockHashes           map[math.HexOrDecimal64]common.Hash `json:"blockHashes,omitempty"`
-		Ommers                []ommer                             `json:"ommers,omitempty"`
 		Withdrawals           []*types.Withdrawal                 `json:"withdrawals,omitempty"`
 		BaseFee               *math.HexOrDecimal256               `json:"currentBaseFee,omitempty"`
 	}
@@ -102,9 +99,6 @@ func (s *stEnv) UnmarshalJSON(input []byte) error {
 	}
 	if dec.BlockHashes != nil {
 		s.BlockHashes = dec.BlockHashes
-	}
-	if dec.Ommers != nil {
-		s.Ommers = dec.Ommers
 	}
 	if dec.Withdrawals != nil {
 		s.Withdrawals = dec.Withdrawals

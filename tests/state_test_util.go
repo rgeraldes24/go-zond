@@ -92,13 +92,12 @@ type stEnv struct {
 }
 
 type stEnvMarshaling struct {
-	Coinbase   common.UnprefixedAddress
-	Difficulty *math.HexOrDecimal256
-	Random     *math.HexOrDecimal256
-	GasLimit   math.HexOrDecimal64
-	Number     math.HexOrDecimal64
-	Timestamp  math.HexOrDecimal64
-	BaseFee    *math.HexOrDecimal256
+	Coinbase  common.UnprefixedAddress
+	Random    *math.HexOrDecimal256
+	GasLimit  math.HexOrDecimal64
+	Number    math.HexOrDecimal64
+	Timestamp math.HexOrDecimal64
+	BaseFee   *math.HexOrDecimal256
 }
 
 //go:generate go run github.com/fjl/gencodec -type stTransaction -field-override stTransactionMarshaling -out gen_sttransaction.go
@@ -340,18 +339,16 @@ func MakePreState(db zonddb.Database, accounts core.GenesisAlloc, snapshotter bo
 
 func (t *StateTest) genesis(config *params.ChainConfig) *core.Genesis {
 	genesis := &core.Genesis{
-		Config:     config,
-		Coinbase:   t.json.Env.Coinbase,
-		Difficulty: t.json.Env.Difficulty,
-		GasLimit:   t.json.Env.GasLimit,
-		Number:     t.json.Env.Number,
-		Timestamp:  t.json.Env.Timestamp,
-		Alloc:      t.json.Pre,
+		Config:    config,
+		Coinbase:  t.json.Env.Coinbase,
+		GasLimit:  t.json.Env.GasLimit,
+		Number:    t.json.Env.Number,
+		Timestamp: t.json.Env.Timestamp,
+		Alloc:     t.json.Pre,
 	}
 	if t.json.Env.Random != nil {
 		// Post-Merge
 		genesis.Mixhash = common.BigToHash(t.json.Env.Random)
-		genesis.Difficulty = big.NewInt(0)
 	}
 	return genesis
 }

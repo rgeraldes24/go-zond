@@ -28,7 +28,6 @@ func (h Header) MarshalJSON() ([]byte, error) {
 		Time             hexutil.Uint64  `json:"timestamp"        gencodec:"required"`
 		Extra            hexutil.Bytes   `json:"extraData"        gencodec:"required"`
 		MixDigest        common.Hash     `json:"mixHash"`
-		Nonce            BlockNonce      `json:"nonce"`
 		BaseFee          *hexutil.Big    `json:"baseFeePerGas" rlp:"optional"`
 		WithdrawalsHash  *common.Hash    `json:"withdrawalsRoot" rlp:"optional"`
 		Hash             common.Hash     `json:"hash"`
@@ -46,7 +45,6 @@ func (h Header) MarshalJSON() ([]byte, error) {
 	enc.Time = hexutil.Uint64(h.Time)
 	enc.Extra = h.Extra
 	enc.MixDigest = h.MixDigest
-	enc.Nonce = h.Nonce
 	enc.BaseFee = (*hexutil.Big)(h.BaseFee)
 	enc.WithdrawalsHash = h.WithdrawalsHash
 	enc.Hash = h.Hash()
@@ -68,7 +66,6 @@ func (h *Header) UnmarshalJSON(input []byte) error {
 		Time             *hexutil.Uint64 `json:"timestamp"        gencodec:"required"`
 		Extra            *hexutil.Bytes  `json:"extraData"        gencodec:"required"`
 		MixDigest        *common.Hash    `json:"mixHash"`
-		Nonce            *BlockNonce     `json:"nonce"`
 		BaseFee          *hexutil.Big    `json:"baseFeePerGas" rlp:"optional"`
 		WithdrawalsHash  *common.Hash    `json:"withdrawalsRoot" rlp:"optional"`
 	}
@@ -121,9 +118,6 @@ func (h *Header) UnmarshalJSON(input []byte) error {
 	h.Extra = *dec.Extra
 	if dec.MixDigest != nil {
 		h.MixDigest = *dec.MixDigest
-	}
-	if dec.Nonce != nil {
-		h.Nonce = *dec.Nonce
 	}
 	if dec.BaseFee != nil {
 		h.BaseFee = (*big.Int)(dec.BaseFee)

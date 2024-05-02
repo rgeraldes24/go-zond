@@ -87,12 +87,6 @@ type Status zond.StatusPacket
 func (msg Status) Code() int     { return 16 }
 func (msg Status) ReqID() uint64 { return 0 }
 
-// NewBlockHashes is the network packet for the block announcements.
-type NewBlockHashes zond.NewBlockHashesPacket
-
-func (msg NewBlockHashes) Code() int     { return 17 }
-func (msg NewBlockHashes) ReqID() uint64 { return 0 }
-
 type Transactions zond.TransactionsPacket
 
 func (msg Transactions) Code() int     { return 18 }
@@ -120,12 +114,6 @@ type BlockBodies zond.BlockBodiesPacket66
 
 func (msg BlockBodies) Code() int     { return 22 }
 func (msg BlockBodies) ReqID() uint64 { return msg.RequestId }
-
-// NewBlock is the network packet for the block propagation message.
-type NewBlock zond.NewBlockPacket
-
-func (msg NewBlock) Code() int     { return 23 }
-func (msg NewBlock) ReqID() uint64 { return 0 }
 
 // NewPooledTransactionHashes66 is the network packet for the tx hash propagation message.
 type NewPooledTransactionHashes66 zond.NewPooledTransactionHashesPacket66
@@ -203,10 +191,6 @@ func (c *Conn) Read() Message {
 			return errorf("could not rlp decode message: %v", err)
 		}
 		return (*BlockBodies)(ethMsg)
-	case (NewBlock{}).Code():
-		msg = new(NewBlock)
-	case (NewBlockHashes{}).Code():
-		msg = new(NewBlockHashes)
 	case (Transactions{}).Code():
 		msg = new(Transactions)
 	case (NewPooledTransactionHashes66{}).Code():

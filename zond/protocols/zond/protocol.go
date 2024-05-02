@@ -87,27 +87,6 @@ type StatusPacket struct {
 	ForkID          forkid.ID
 }
 
-// TODO(rgeraldes24): remove?
-// NewBlockHashesPacket is the network packet for the block announcements.
-type NewBlockHashesPacket []struct {
-	Hash   common.Hash // Hash of one particular block being announced
-	Number uint64      // Number of one particular block being announced
-}
-
-// Unpack retrieves the block hashes and numbers from the announcement packet
-// and returns them in a split flat format that's more consistent with the
-// internal data structures.
-func (p *NewBlockHashesPacket) Unpack() ([]common.Hash, []uint64) {
-	var (
-		hashes  = make([]common.Hash, len(*p))
-		numbers = make([]uint64, len(*p))
-	)
-	for i, body := range *p {
-		hashes[i], numbers[i] = body.Hash, body.Number
-	}
-	return hashes, numbers
-}
-
 // TransactionsPacket is the network packet for broadcasting new transactions.
 type TransactionsPacket []*types.Transaction
 
@@ -178,21 +157,6 @@ type BlockHeadersRLPPacket []rlp.RawValue
 type BlockHeadersRLPPacket66 struct {
 	RequestId uint64
 	BlockHeadersRLPPacket
-}
-
-// TODO(rgeraldes24): remove?
-// NewBlockPacket is the network packet for the block propagation message.
-type NewBlockPacket struct {
-	Block *types.Block
-}
-
-// sanityCheck verifies that the values are reasonable, as a DoS protection
-func (request *NewBlockPacket) sanityCheck() error {
-	if err := request.Block.SanityCheck(); err != nil {
-		return err
-	}
-
-	return nil
 }
 
 // GetBlockBodiesPacket represents a block body query.

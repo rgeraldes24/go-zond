@@ -201,14 +201,9 @@ func (hc *HeaderChain) WriteHeaders(headers []*types.Header) (int, error) {
 	if len(headers) == 0 {
 		return 0, nil
 	}
-	ptd := hc.GetTd(headers[0].ParentHash, headers[0].Number.Uint64()-1)
-	if ptd == nil {
-		return 0, consensus.ErrUnknownAncestor
-	}
 	var (
-		newTD       = new(big.Int).Set(ptd) // Total difficulty of inserted chain
-		inserted    []rawdb.NumberHash      // Ephemeral lookup of number/hash for the chain
-		parentKnown = true                  // Set to true to force hc.HasHeader check the first iteration
+		inserted    []rawdb.NumberHash // Ephemeral lookup of number/hash for the chain
+		parentKnown = true             // Set to true to force hc.HasHeader check the first iteration
 		batch       = hc.chainDb.NewBatch()
 	)
 	for i, header := range headers {
@@ -620,7 +615,6 @@ func (hc *HeaderChain) setHead(headBlock uint64, headTime uint64, updateFn Updat
 					delFn(batch, hash, num)
 				}
 				rawdb.DeleteHeader(batch, hash, num)
-				rawdb.DeleteTd(batch, hash, num)
 			}
 			rawdb.DeleteCanonicalHash(batch, num)
 		}
@@ -631,7 +625,6 @@ func (hc *HeaderChain) setHead(headBlock uint64, headTime uint64, updateFn Updat
 	}
 	// Clear out any stale content from the caches
 	hc.headerCache.Purge()
-	hc.tdCache.Purge()
 	hc.numberCache.Purge()
 }
 

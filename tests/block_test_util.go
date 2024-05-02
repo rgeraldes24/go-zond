@@ -66,7 +66,6 @@ type btBlock struct {
 	BlockHeader     *btHeader
 	ExpectException string
 	Rlp             string
-	UncleHeaders    []*btHeader
 }
 
 //go:generate go run github.com/fjl/gencodec -type btHeader -field-override btHeaderMarshaling -out gen_btheader.go
@@ -81,7 +80,6 @@ type btHeader struct {
 	ReceiptTrie      common.Hash
 	StateRoot        common.Hash
 	TransactionsTrie common.Hash
-	UncleHash        common.Hash
 	ExtraData        []byte
 	GasLimit         uint64
 	GasUsed          uint64
@@ -93,7 +91,6 @@ type btHeader struct {
 type btHeaderMarshaling struct {
 	ExtraData     hexutil.Bytes
 	Number        *math.HexOrDecimal256
-	Difficulty    *math.HexOrDecimal256
 	GasLimit      math.HexOrDecimal64
 	GasUsed       math.HexOrDecimal64
 	Timestamp     math.HexOrDecimal64

@@ -434,7 +434,7 @@ func isCanon(reader zonddb.AncientReaderOp, number uint64, hash common.Hash) boo
 	return bytes.Equal(h, hash[:])
 }
 
-// ReadBodyRLP retrieves the block body (transactions and uncles) in RLP encoding.
+// ReadBodyRLP retrieves the block body (transactions) in RLP encoding.
 func ReadBodyRLP(db zonddb.Reader, hash common.Hash, number uint64) rlp.RawValue {
 	// First try to look up the data in ancient database. Extra hash
 	// comparison is necessary since ancient database only maintains
@@ -453,7 +453,7 @@ func ReadBodyRLP(db zonddb.Reader, hash common.Hash, number uint64) rlp.RawValue
 	return data
 }
 
-// ReadCanonicalBodyRLP retrieves the block body (transactions and uncles) for the canonical
+// ReadCanonicalBodyRLP retrieves the block body (transactions) for the canonical
 // block at number, in RLP encoding.
 func ReadCanonicalBodyRLP(db zonddb.Reader, number uint64) rlp.RawValue {
 	var data []byte
@@ -727,7 +727,7 @@ func WriteAncientBlocks(db zonddb.AncientWriter, blocks []*types.Block, receipts
 	)
 	return db.ModifyAncients(func(op zonddb.AncientWriteOp) error {
 		for i, block := range blocks {
-			// Convert receipts to storage format and sum up total difficulty.
+			// Convert receipts to storage format.
 			stReceipts = stReceipts[:0]
 			for _, receipt := range receipts[i] {
 				stReceipts = append(stReceipts, (*types.ReceiptForStorage)(receipt))

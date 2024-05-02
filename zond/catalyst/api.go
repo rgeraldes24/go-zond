@@ -515,9 +515,10 @@ func (api *ConsensusAPI) checkInvalidAncestor(check common.Hash, head common.Has
 	}
 	// If the last valid hash is the terminal pow block, return 0x0 for latest valid hash
 	lastValid := &invalid.ParentHash
-	if header := api.zond.BlockChain().GetHeader(invalid.ParentHash, invalid.Number.Uint64()-1); header != nil && header.Difficulty.Sign() != 0 {
-		lastValid = &common.Hash{}
-	}
+	// TODO(rgeraldes24)
+	// if header := api.zond.BlockChain().GetHeader(invalid.ParentHash, invalid.Number.Uint64()-1); header != nil && header.Difficulty.Sign() != 0 {
+	// 	lastValid = &common.Hash{}
+	// }
 	failure := "links to previously rejected block"
 	return &engine.PayloadStatusV1{
 		Status:          engine.INVALID,
@@ -533,10 +534,11 @@ func (api *ConsensusAPI) invalid(err error, latestValid *types.Header) engine.Pa
 	if latestValid != nil {
 		// Set latest valid hash to 0x0 if parent is PoW block
 		currentHash = common.Hash{}
-		if latestValid.Difficulty.BitLen() == 0 {
-			// Otherwise set latest valid hash to parent hash
-			currentHash = latestValid.Hash()
-		}
+		// TODO(rgeraldes24)
+		// if latestValid.Difficulty.BitLen() == 0 {
+		// 	// Otherwise set latest valid hash to parent hash
+		// 	currentHash = latestValid.Hash()
+		// }
 	}
 	errorMsg := err.Error()
 	return engine.PayloadStatusV1{Status: engine.INVALID, LatestValidHash: &currentHash, ValidationError: &errorMsg}

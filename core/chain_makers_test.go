@@ -41,11 +41,10 @@ func TestGenerateWithdrawalChain(t *testing.T) {
 		funds   = big.NewInt(0).Mul(big.NewInt(1337), big.NewInt(params.Ether))
 		config  = *params.AllBeaconProtocolChanges
 		gspec   = &Genesis{
-			Config:     &config,
-			Alloc:      GenesisAlloc{address: {Balance: funds}},
-			BaseFee:    big.NewInt(params.InitialBaseFee),
-			Difficulty: common.Big1,
-			GasLimit:   5_000_000,
+			Config:   &config,
+			Alloc:    GenesisAlloc{address: {Balance: funds}},
+			BaseFee:  big.NewInt(params.InitialBaseFee),
+			GasLimit: 5_000_000,
 		}
 		gendb     = rawdb.NewMemoryDatabase()
 		signer, _ = types.LatestSigner(gspec.Config)

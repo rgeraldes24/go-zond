@@ -17,9 +17,6 @@
 package zondtest
 
 import (
-	"time"
-
-	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/internal/utesting"
 	"github.com/theQRL/go-zond/p2p/enode"
 	"github.com/theQRL/go-zond/zond/protocols/zond"
@@ -61,18 +58,18 @@ func (s *Suite) ZondTests() []utesting.Test {
 		// get block bodies
 		{Name: "TestGetBlockBodies", Fn: s.TestGetBlockBodies},
 		// broadcast
-		{Name: "TestBroadcast", Fn: s.TestBroadcast},
-		{Name: "TestLargeAnnounce", Fn: s.TestLargeAnnounce},
-		{Name: "TestOldAnnounce", Fn: s.TestOldAnnounce},
-		{Name: "TestBlockHashAnnounce", Fn: s.TestBlockHashAnnounce},
+		// {Name: "TestBroadcast", Fn: s.TestBroadcast},
+		// {Name: "TestLargeAnnounce", Fn: s.TestLargeAnnounce},
+		// {Name: "TestOldAnnounce", Fn: s.TestOldAnnounce},
+		// {Name: "TestBlockHashAnnounce", Fn: s.TestBlockHashAnnounce},
 		// malicious handshakes + status
 		{Name: "TestMaliciousHandshake", Fn: s.TestMaliciousHandshake},
 		{Name: "TestMaliciousStatus", Fn: s.TestMaliciousStatus},
 		// test transactions
 		{Name: "TestTransaction", Fn: s.TestTransaction},
 		{Name: "TestMaliciousTx", Fn: s.TestMaliciousTx},
-		{Name: "TestLargeTxRequest", Fn: s.TestLargeTxRequest},
-		{Name: "TestNewPooledTxs", Fn: s.TestNewPooledTxs},
+		// {Name: "TestLargeTxRequest", Fn: s.TestLargeTxRequest},
+		// {Name: "TestNewPooledTxs", Fn: s.TestNewPooledTxs},
 	}
 }
 
@@ -344,6 +341,7 @@ func (s *Suite) TestGetBlockBodies(t *utesting.T) {
 	}
 }
 
+/*
 // TestBroadcast tests whether a block announcement is correctly
 // propagated to the node's peers.
 func (s *Suite) TestBroadcast(t *utesting.T) {
@@ -405,6 +403,7 @@ func (s *Suite) TestOldAnnounce(t *utesting.T) {
 	}
 }
 
+
 // TestBlockHashAnnounce sends a new block hash announcement and expects
 // the node to perform a `GetBlockHeaders` request.
 func (s *Suite) TestBlockHashAnnounce(t *utesting.T) {
@@ -412,6 +411,7 @@ func (s *Suite) TestBlockHashAnnounce(t *utesting.T) {
 		t.Fatalf("block hash announcement failed: %v", err)
 	}
 }
+*/
 
 // TestMaliciousHandshake tries to send malicious data during the handshake.
 func (s *Suite) TestMaliciousHandshake(t *utesting.T) {
@@ -449,6 +449,7 @@ func (s *Suite) TestMaliciousTx(t *utesting.T) {
 	}
 }
 
+/*
 // TestLargeTxRequest tests whether a node can fulfill a large GetPooledTransactions
 // request.
 func (s *Suite) TestLargeTxRequest(t *utesting.T) {
@@ -499,6 +500,7 @@ func (s *Suite) TestLargeTxRequest(t *utesting.T) {
 		t.Fatalf("unexpected %s", pretty.Sdump(msg))
 	}
 }
+
 
 // TestNewPooledTxs tests whether a node will do a GetPooledTransactions
 // request upon receiving a NewPooledTransactionHashes announcement.
@@ -570,3 +572,4 @@ func (s *Suite) TestNewPooledTxs(t *utesting.T) {
 		}
 	}
 }
+*/

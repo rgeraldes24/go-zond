@@ -3838,9 +3838,6 @@ var outputBlockFormatter = function(block) {
     if(block.number !== null)
         block.number = utils.toDecimal(block.number);
 
-    block.difficulty = utils.toBigNumber(block.difficulty);
-    block.totalDifficulty = utils.toBigNumber(block.totalDifficulty);
-
     if (utils.isArray(block.transactions)) {
         block.transactions.forEach(function(item){
             if(!utils.isString(item))
@@ -5232,16 +5229,8 @@ var transactionFromBlockCall = function (args) {
     return (utils.isString(args[0]) && args[0].indexOf('0x') === 0) ? 'zond_getTransactionByBlockHashAndIndex' : 'zond_getTransactionByBlockNumberAndIndex';
 };
 
-var uncleCall = function (args) {
-    return (utils.isString(args[0]) && args[0].indexOf('0x') === 0) ? 'zond_getUncleByBlockHashAndIndex' : 'zond_getUncleByBlockNumberAndIndex';
-};
-
 var getBlockTransactionCountCall = function (args) {
     return (utils.isString(args[0]) && args[0].indexOf('0x') === 0) ? 'zond_getBlockTransactionCountByHash' : 'zond_getBlockTransactionCountByNumber';
-};
-
-var uncleCountCall = function (args) {
-    return (utils.isString(args[0]) && args[0].indexOf('0x') === 0) ? 'zond_getUncleCountByBlockHash' : 'zond_getUncleCountByBlockNumber';
 };
 
 function Zond(web3) {
@@ -5315,15 +5304,6 @@ var methods = function () {
         outputFormatter: formatters.outputBlockFormatter
     });
 
-    var getUncle = new Method({
-        name: 'getUncle',
-        call: uncleCall,
-        params: 2,
-        inputFormatter: [formatters.inputBlockNumberFormatter, utils.toHex],
-        outputFormatter: formatters.outputBlockFormatter,
-
-    });
-
     var getCompilers = new Method({
         name: 'getCompilers',
         call: 'zond_getCompilers',
@@ -5333,14 +5313,6 @@ var methods = function () {
     var getBlockTransactionCount = new Method({
         name: 'getBlockTransactionCount',
         call: getBlockTransactionCountCall,
-        params: 1,
-        inputFormatter: [formatters.inputBlockNumberFormatter],
-        outputFormatter: utils.toDecimal
-    });
-
-    var getBlockUncleCount = new Method({
-        name: 'getBlockUncleCount',
-        call: uncleCountCall,
         params: 1,
         inputFormatter: [formatters.inputBlockNumberFormatter],
         outputFormatter: utils.toDecimal
@@ -5454,10 +5426,8 @@ var methods = function () {
         getStorageAt,
         getCode,
         getBlock,
-        getUncle,
         getCompilers,
         getBlockTransactionCount,
-        getBlockUncleCount,
         getTransaction,
         getTransactionFromBlock,
         getTransactionReceipt,

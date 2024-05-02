@@ -66,10 +66,9 @@ func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 			testAddr:                         {Balance: testBalance},
 			params.BeaconRootsStorageAddress: {Balance: common.Big0, Code: common.Hex2Bytes("3373fffffffffffffffffffffffffffffffffffffffe14604457602036146024575f5ffd5b620180005f350680545f35146037575f5ffd5b6201800001545f5260205ff35b6201800042064281555f359062018000015500")},
 		},
-		ExtraData:  []byte("test genesis"),
-		Timestamp:  9000,
-		BaseFee:    big.NewInt(params.InitialBaseFee),
-		Difficulty: big.NewInt(0),
+		ExtraData: []byte("test genesis"),
+		Timestamp: 9000,
+		BaseFee:   big.NewInt(params.InitialBaseFee),
 	}
 	testNonce := uint64(0)
 	signer, _ := types.LatestSigner(&config)
@@ -711,13 +710,11 @@ func setBlockhash(data *engine.ExecutableData) *engine.ExecutableData {
 	number.SetUint64(data.Number)
 	header := &types.Header{
 		ParentHash:  data.ParentHash,
-		UncleHash:   types.EmptyUncleHash,
 		Coinbase:    data.FeeRecipient,
 		Root:        data.StateRoot,
 		TxHash:      types.DeriveSha(types.Transactions(txs), trie.NewStackTrie(nil)),
 		ReceiptHash: data.ReceiptsRoot,
 		Bloom:       types.BytesToBloom(data.LogsBloom),
-		Difficulty:  common.Big0,
 		Number:      number,
 		GasLimit:    data.GasLimit,
 		GasUsed:     data.GasUsed,
@@ -726,7 +723,7 @@ func setBlockhash(data *engine.ExecutableData) *engine.ExecutableData {
 		Extra:       data.ExtraData,
 		MixDigest:   data.Random,
 	}
-	block := types.NewBlockWithHeader(header).WithBody(txs, nil /* uncles */)
+	block := types.NewBlockWithHeader(header).WithBody(txs)
 	data.BlockHash = block.Hash()
 	return data
 }
@@ -867,13 +864,11 @@ func TestNewPayloadOnInvalidTerminalBlock(t *testing.T) {
 	txs, _ := decodeTransactions(data.Transactions)
 	header := &types.Header{
 		ParentHash:  data.ParentHash,
-		UncleHash:   types.EmptyUncleHash,
 		Coinbase:    data.FeeRecipient,
 		Root:        data.StateRoot,
 		TxHash:      types.DeriveSha(types.Transactions(txs), trie.NewStackTrie(nil)),
 		ReceiptHash: data.ReceiptsRoot,
 		Bloom:       types.BytesToBloom(data.LogsBloom),
-		Difficulty:  common.Big0,
 		Number:      new(big.Int).SetUint64(data.Number),
 		GasLimit:    data.GasLimit,
 		GasUsed:     data.GasUsed,
@@ -882,7 +877,7 @@ func TestNewPayloadOnInvalidTerminalBlock(t *testing.T) {
 		Extra:       data.ExtraData,
 		MixDigest:   data.Random,
 	}
-	block := types.NewBlockWithHeader(header).WithBody(txs, nil /* uncles */)
+	block := types.NewBlockWithHeader(header).WithBody(txs)
 	data.BlockHash = block.Hash()
 	// Send the new payload
 	resp2, err := api.NewPayloadV2(data)

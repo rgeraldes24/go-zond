@@ -415,19 +415,17 @@ func TestB11r(t *testing.T) {
 		{ // clique test seal
 			base: "./testdata/21",
 			input: b11rInput{
-				inEnv:       "header.json",
-				inOmmersRlp: "ommers.json",
-				inTxsRlp:    "txs.rlp",
-				inClique:    "clique.json",
+				inEnv:    "header.json",
+				inTxsRlp: "txs.rlp",
+				inClique: "clique.json",
 			},
 			expOut: "exp-clique.json",
 		},
 		{ // block with ommers
 			base: "./testdata/22",
 			input: b11rInput{
-				inEnv:       "header.json",
-				inOmmersRlp: "ommers.json",
-				inTxsRlp:    "txs.rlp",
+				inEnv:    "header.json",
+				inTxsRlp: "txs.rlp",
 			},
 			expOut: "exp.json",
 		},
@@ -435,7 +433,6 @@ func TestB11r(t *testing.T) {
 			base: "./testdata/27",
 			input: b11rInput{
 				inEnv:         "header.json",
-				inOmmersRlp:   "ommers.json",
 				inWithdrawals: "withdrawals.json",
 				inTxsRlp:      "txs.rlp",
 			},
