@@ -193,9 +193,11 @@ contract OpCodes {
      //number
      assembly {  pop(number())}
 
-     // TODO(rgeraldes24)
-     //difficulty
-     //assembly {  pop(difficulty())}
+     //prevrandao
+     //assembly {  pop(prevrandao())}
+
+     //random
+     //assembly {  pop(random())}
 
      //gaslimit
      assembly {  pop(gaslimit())}
