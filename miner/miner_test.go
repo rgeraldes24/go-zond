@@ -297,7 +297,7 @@ func createMiner(t *testing.T) (*Miner, *event.TypeMux, func(skipMiner bool)) {
 	statedb, _ := state.New(bc.Genesis().Root(), bc.StateCache(), nil)
 	blockchain := &testBlockChain{chainConfig, statedb, 10000000, new(event.Feed)}
 
-	pool := legacypool.New(testTxPoolConfig, blockchain)
+	pool, _ := legacypool.New(testTxPoolConfig, blockchain)
 	txpool, _ := txpool.New(new(big.Int).SetUint64(testTxPoolConfig.PriceLimit), blockchain, []txpool.SubPool{pool})
 
 	backend := NewMockBackend(bc, txpool)
