@@ -374,8 +374,8 @@ func testGetSealingWork(t *testing.T, chainConfig *params.ChainConfig, engine co
 		if block.Coinbase() != coinbase {
 			t.Errorf("Unexpected coinbase got %x want %x", block.Coinbase(), coinbase)
 		}
-		if block.MixDigest() != random {
-			t.Error("Unexpected mix digest")
+		if block.Random() != random {
+			t.Error("Unexpected random field")
 		}
 		if block.NumberU64() != number {
 			t.Errorf("Mismatched block number, want %d got %d", number, block.NumberU64())

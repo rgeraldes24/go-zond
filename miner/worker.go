@@ -877,7 +877,7 @@ func (w *worker) prepareWork(genParams *generateParams) (*environment, error) {
 	}
 	// Set the randomness field from the beacon chain if it's available.
 	if genParams.random != (common.Hash{}) {
-		header.MixDigest = genParams.random
+		header.Random = genParams.random
 	}
 	// Set baseFee and GasLimit if we are on an EIP-1559 chain
 	header.BaseFee = eip1559.CalcBaseFee(w.chainConfig, parent)

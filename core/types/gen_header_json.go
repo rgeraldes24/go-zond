@@ -27,7 +27,7 @@ func (h Header) MarshalJSON() ([]byte, error) {
 		GasUsed          hexutil.Uint64  `json:"gasUsed"          gencodec:"required"`
 		Time             hexutil.Uint64  `json:"timestamp"        gencodec:"required"`
 		Extra            hexutil.Bytes   `json:"extraData"        gencodec:"required"`
-		MixDigest        common.Hash     `json:"mixHash"`
+		Random        common.Hash     `json:"prevRandao"`
 		BaseFee          *hexutil.Big    `json:"baseFeePerGas" rlp:"optional"`
 		WithdrawalsHash  *common.Hash    `json:"withdrawalsRoot" rlp:"optional"`
 		Hash             common.Hash     `json:"hash"`
@@ -44,7 +44,7 @@ func (h Header) MarshalJSON() ([]byte, error) {
 	enc.GasUsed = hexutil.Uint64(h.GasUsed)
 	enc.Time = hexutil.Uint64(h.Time)
 	enc.Extra = h.Extra
-	enc.MixDigest = h.MixDigest
+	enc.Random = h.Random
 	enc.BaseFee = (*hexutil.Big)(h.BaseFee)
 	enc.WithdrawalsHash = h.WithdrawalsHash
 	enc.Hash = h.Hash()
@@ -65,7 +65,7 @@ func (h *Header) UnmarshalJSON(input []byte) error {
 		GasUsed          *hexutil.Uint64 `json:"gasUsed"          gencodec:"required"`
 		Time             *hexutil.Uint64 `json:"timestamp"        gencodec:"required"`
 		Extra            *hexutil.Bytes  `json:"extraData"        gencodec:"required"`
-		MixDigest        *common.Hash    `json:"mixHash"`
+		Random        *common.Hash    `json:"prevRandao"`
 		BaseFee          *hexutil.Big    `json:"baseFeePerGas" rlp:"optional"`
 		WithdrawalsHash  *common.Hash    `json:"withdrawalsRoot" rlp:"optional"`
 	}
@@ -116,8 +116,8 @@ func (h *Header) UnmarshalJSON(input []byte) error {
 		return errors.New("missing required field 'extraData' for Header")
 	}
 	h.Extra = *dec.Extra
-	if dec.MixDigest != nil {
-		h.MixDigest = *dec.MixDigest
+	if dec.Random != nil {
+		h.Random = *dec.Random
 	}
 	if dec.BaseFee != nil {
 		h.BaseFee = (*big.Int)(dec.BaseFee)

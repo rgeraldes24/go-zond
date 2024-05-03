@@ -44,7 +44,7 @@ type header struct {
 	GasUsed         uint64          `json:"gasUsed"`
 	Time            uint64          `json:"timestamp"        gencodec:"required"`
 	Extra           []byte          `json:"extraData"`
-	MixDigest       common.Hash     `json:"mixHash"`
+	Random          common.Hash     `json:"prevRandao"`
 	BaseFee         *big.Int        `json:"baseFeePerGas" rlp:"optional"`
 	WithdrawalsHash *common.Hash    `json:"withdrawalsRoot" rlp:"optional"`
 }
@@ -81,7 +81,7 @@ func (i *bbInput) ToBlock() *types.Block {
 		GasUsed:         i.Header.GasUsed,
 		Time:            i.Header.Time,
 		Extra:           i.Header.Extra,
-		MixDigest:       i.Header.MixDigest,
+		Random:          i.Header.Random,
 		BaseFee:         i.Header.BaseFee,
 		WithdrawalsHash: i.Header.WithdrawalsHash,
 	}

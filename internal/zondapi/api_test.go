@@ -59,7 +59,7 @@ func testTransactionMarshal(t *testing.T, tests []txData, config *params.ChainCo
 	)
 	signer, err := types.LatestSigner(config)
 	if err != nil {
-		t.Fatalf("failed to pick a signer: %v", err)
+		t.Fatalf("failed to create signer: %v", err)
 	}
 
 	for i, tt := range tests {

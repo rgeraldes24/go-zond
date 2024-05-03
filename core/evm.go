@@ -61,7 +61,7 @@ func NewEVMBlockContext(header *types.Header, chain ChainContext, author *common
 		Time:        header.Time,
 		BaseFee:     baseFee,
 		GasLimit:    header.GasLimit,
-		Random:      &header.MixDigest,
+		Random:      &header.Random,
 	}
 }
 

@@ -727,12 +727,12 @@ func (b *Block) Timestamp(ctx context.Context) (hexutil.Uint64, error) {
 	return hexutil.Uint64(header.Time), nil
 }
 
-func (b *Block) MixHash(ctx context.Context) (common.Hash, error) {
+func (b *Block) Random(ctx context.Context) (common.Hash, error) {
 	header, err := b.resolveHeader(ctx)
 	if err != nil {
 		return common.Hash{}, err
 	}
-	return header.MixDigest, nil
+	return header.Random, nil
 }
 
 func (b *Block) TransactionsRoot(ctx context.Context) (common.Hash, error) {

@@ -26,7 +26,7 @@ func (obj *Header) EncodeRLP(_w io.Writer) error {
 	w.WriteUint64(obj.GasUsed)
 	w.WriteUint64(obj.Time)
 	w.WriteBytes(obj.Extra)
-	w.WriteBytes(obj.MixDigest[:])
+	w.WriteBytes(obj.Random[:])
 	_tmp1 := obj.BaseFee != nil
 	_tmp2 := obj.WithdrawalsHash != nil
 	if _tmp1 || _tmp2  {

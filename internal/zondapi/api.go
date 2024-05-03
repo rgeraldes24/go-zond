@@ -943,7 +943,7 @@ func RPCMarshalHeader(head *types.Header) map[string]interface{} {
 		"number":           (*hexutil.Big)(head.Number),
 		"hash":             head.Hash(),
 		"parentHash":       head.ParentHash,
-		"mixHash":          head.MixDigest,
+		"prevRandao":       head.Random,
 		"logsBloom":        head.Bloom,
 		"stateRoot":        head.Root,
 		"miner":            head.Coinbase,

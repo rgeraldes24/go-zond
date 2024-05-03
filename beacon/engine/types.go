@@ -188,7 +188,7 @@ func ExecutableDataToBlock(params ExecutableData) (*types.Block, error) {
 		Time:            params.Timestamp,
 		BaseFee:         params.BaseFeePerGas,
 		Extra:           params.ExtraData,
-		MixDigest:       params.Random,
+		Random:          params.Random,
 		WithdrawalsHash: withdrawalsRoot,
 	}
 	block := types.NewBlockWithHeader(header).WithBody(txs).WithWithdrawals(params.Withdrawals)
@@ -214,7 +214,7 @@ func BlockToExecutableData(block *types.Block, fees *big.Int) *ExecutionPayloadE
 		ReceiptsRoot:  block.ReceiptHash(),
 		LogsBloom:     block.Bloom().Bytes(),
 		Transactions:  encodeTransactions(block.Transactions()),
-		Random:        block.MixDigest(),
+		Random:        block.Random(),
 		ExtraData:     block.Extra(),
 		Withdrawals:   block.Withdrawals(),
 	}

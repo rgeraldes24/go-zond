@@ -29,7 +29,7 @@ func (h header) MarshalJSON() ([]byte, error) {
 		GasUsed         math.HexOrDecimal64   `json:"gasUsed"`
 		Time            math.HexOrDecimal64   `json:"timestamp"        gencodec:"required"`
 		Extra           hexutil.Bytes         `json:"extraData"`
-		MixDigest       common.Hash           `json:"mixHash"`
+		Random       common.Hash           `json:"prevRandao"`
 		BaseFee         *math.HexOrDecimal256 `json:"baseFeePerGas" rlp:"optional"`
 		WithdrawalsHash *common.Hash          `json:"withdrawalsRoot" rlp:"optional"`
 	}
@@ -45,7 +45,7 @@ func (h header) MarshalJSON() ([]byte, error) {
 	enc.GasUsed = math.HexOrDecimal64(h.GasUsed)
 	enc.Time = math.HexOrDecimal64(h.Time)
 	enc.Extra = h.Extra
-	enc.MixDigest = h.MixDigest
+	enc.Random = h.Random
 	enc.BaseFee = (*math.HexOrDecimal256)(h.BaseFee)
 	enc.WithdrawalsHash = h.WithdrawalsHash
 	return json.Marshal(&enc)
@@ -65,7 +65,7 @@ func (h *header) UnmarshalJSON(input []byte) error {
 		GasUsed         *math.HexOrDecimal64  `json:"gasUsed"`
 		Time            *math.HexOrDecimal64  `json:"timestamp"        gencodec:"required"`
 		Extra           *hexutil.Bytes        `json:"extraData"`
-		MixDigest       *common.Hash          `json:"mixHash"`
+		Random       *common.Hash          `json:"prevRandao"`
 		BaseFee         *math.HexOrDecimal256 `json:"baseFeePerGas" rlp:"optional"`
 		WithdrawalsHash *common.Hash          `json:"withdrawalsRoot" rlp:"optional"`
 	}
@@ -110,8 +110,8 @@ func (h *header) UnmarshalJSON(input []byte) error {
 	if dec.Extra != nil {
 		h.Extra = *dec.Extra
 	}
-	if dec.MixDigest != nil {
-		h.MixDigest = *dec.MixDigest
+	if dec.Random != nil {
+		h.Random = *dec.Random
 	}
 	if dec.BaseFee != nil {
 		h.BaseFee = (*big.Int)(dec.BaseFee)

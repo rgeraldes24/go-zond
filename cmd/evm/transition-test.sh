@@ -445,7 +445,7 @@ type Header struct {
         GasUsed     uint64            `json:"gasUsed"`
         Time        uint64            `json:"timestamp"         gencodec:"required"`
         Extra       []byte            `json:"extraData"`
-        MixDigest   common.Hash       `json:"mixHash"`
+        Random      common.Hash       `json:"prevRandao"`
         Nonce       *types.BlockNonce `json:"nonce"`
         BaseFee     *big.Int          `json:"baseFeePerGas"`
 }

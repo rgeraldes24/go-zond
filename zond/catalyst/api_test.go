@@ -721,7 +721,7 @@ func setBlockhash(data *engine.ExecutableData) *engine.ExecutableData {
 		Time:        data.Timestamp,
 		BaseFee:     data.BaseFeePerGas,
 		Extra:       data.ExtraData,
-		MixDigest:   data.Random,
+		Random:      data.Random,
 	}
 	block := types.NewBlockWithHeader(header).WithBody(txs)
 	data.BlockHash = block.Hash()
@@ -875,7 +875,7 @@ func TestNewPayloadOnInvalidTerminalBlock(t *testing.T) {
 		Time:        data.Timestamp,
 		BaseFee:     data.BaseFeePerGas,
 		Extra:       data.ExtraData,
-		MixDigest:   data.Random,
+		Random:      data.Random,
 	}
 	block := types.NewBlockWithHeader(header).WithBody(txs)
 	data.BlockHash = block.Hash()

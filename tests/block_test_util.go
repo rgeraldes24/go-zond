@@ -242,8 +242,8 @@ func validateHeader(h *btHeader, h2 *types.Header) error {
 	if h.Coinbase != h2.Coinbase {
 		return fmt.Errorf("coinbase: want: %x have: %x", h.Coinbase, h2.Coinbase)
 	}
-	if h.MixHash != h2.MixDigest {
-		return fmt.Errorf("MixHash: want: %x have: %x", h.MixHash, h2.MixDigest)
+	if h.MixHash != h2.Random {
+		return fmt.Errorf("MixHash: want: %x have: %x", h.MixHash, h2.Random)
 	}
 	if h.Number.Cmp(h2.Number) != 0 {
 		return fmt.Errorf("number: want: %v have: %v", h.Number, h2.Number)

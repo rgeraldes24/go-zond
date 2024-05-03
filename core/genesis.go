@@ -89,7 +89,7 @@ func ReadGenesis(db zonddb.Database) (*Genesis, error) {
 	genesis.Timestamp = genesisHeader.Time
 	genesis.ExtraData = genesisHeader.Extra
 	genesis.GasLimit = genesisHeader.GasLimit
-	genesis.Mixhash = genesisHeader.MixDigest
+	genesis.Mixhash = genesisHeader.Random
 	genesis.Coinbase = genesisHeader.Coinbase
 	genesis.BaseFee = genesisHeader.BaseFee
 
@@ -418,7 +418,7 @@ func (g *Genesis) ToBlock() *types.Block {
 		GasLimit:   g.GasLimit,
 		GasUsed:    g.GasUsed,
 		BaseFee:    g.BaseFee,
-		MixDigest:  g.Mixhash,
+		Random:     g.Mixhash,
 		Coinbase:   g.Coinbase,
 		Root:       root,
 	}
