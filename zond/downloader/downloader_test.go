@@ -95,7 +95,7 @@ func (dl *downloadTester) terminate() {
 }
 
 // sync starts synchronizing with a remote peer, blocking until it completes.
-func (dl *downloadTester) sync(id string, td *big.Int, mode SyncMode) error {
+func (dl *downloadTester) sync(id string, mode SyncMode) error {
 	head := dl.peers[id].chain.CurrentBlock()
 
 	// Synchronise with the chosen peer and ensure proper cleanup afterwards
@@ -441,7 +441,7 @@ func testCanonSync(t *testing.T, protocol uint, mode SyncMode) {
 	tester.newPeer("peer", protocol, chain.blocks[1:])
 
 	// Synchronise with the peer and make sure all relevant data was retrieved
-	if err := tester.sync("peer", nil, mode); err != nil {
+	if err := tester.sync("peer", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chain.blocks))
@@ -470,7 +470,7 @@ func testThrottling(t *testing.T, protocol uint, mode SyncMode) {
 	// Start a synchronisation concurrently
 	errc := make(chan error, 1)
 	go func() {
-		errc <- tester.sync("peer", nil, mode)
+		errc <- tester.sync("peer", mode)
 	}()
 	// Iteratively take some blocks, always checking the retrieval count
 	for {
@@ -541,13 +541,13 @@ func testForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 	tester.newPeer("fork A", protocol, chainA.blocks[1:])
 	tester.newPeer("fork B", protocol, chainB.blocks[1:])
 	// Synchronise with the peer and make sure all blocks were retrieved
-	if err := tester.sync("fork A", nil, mode); err != nil {
+	if err := tester.sync("fork A", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chainA.blocks))
 
 	// Synchronise with the second peer and make sure that fork is pulled too
-	if err := tester.sync("fork B", nil, mode); err != nil {
+	if err := tester.sync("fork B", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chainB.blocks))
@@ -568,13 +568,13 @@ func testHeavyForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 	tester.newPeer("heavy", protocol, chainB.blocks[1:])
 
 	// Synchronise with the peer and make sure all blocks were retrieved
-	if err := tester.sync("light", nil, mode); err != nil {
+	if err := tester.sync("light", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chainA.blocks))
 
 	// Synchronise with the second peer and make sure that fork is pulled too
-	if err := tester.sync("heavy", nil, mode); err != nil {
+	if err := tester.sync("heavy", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chainB.blocks))
@@ -596,13 +596,13 @@ func testBoundedForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 	tester.newPeer("rewriter", protocol, chainB.blocks[1:])
 
 	// Synchronise with the peer and make sure all blocks were retrieved
-	if err := tester.sync("original", nil, mode); err != nil {
+	if err := tester.sync("original", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chainA.blocks))
 
 	// Synchronise with the second peer and ensure that the fork is rejected to being too old
-	if err := tester.sync("rewriter", nil, mode); err != errInvalidAncestor {
+	if err := tester.sync("rewriter", mode); err != errInvalidAncestor {
 		t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
 	}
 }
@@ -627,14 +627,14 @@ func testBoundedHeavyForkedSync(t *testing.T, protocol uint, mode SyncMode) {
 	tester.newPeer("original", protocol, chainA.blocks[1:])
 
 	// Synchronise with the peer and make sure all blocks were retrieved
-	if err := tester.sync("original", nil, mode); err != nil {
+	if err := tester.sync("original", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chainA.blocks))
 
 	tester.newPeer("heavy-rewriter", protocol, chainB.blocks[1:])
 	// Synchronise with the second peer and ensure that the fork is rejected to being too old
-	if err := tester.sync("heavy-rewriter", nil, mode); err != errInvalidAncestor {
+	if err := tester.sync("heavy-rewriter", mode); err != errInvalidAncestor {
 		t.Fatalf("sync failure mismatch: have %v, want %v", err, errInvalidAncestor)
 	}
 }
@@ -656,7 +656,7 @@ func testCancel(t *testing.T, protocol uint, mode SyncMode) {
 		t.Errorf("download queue not idle")
 	}
 	// Synchronise with the peer, but cancel afterwards
-	if err := tester.sync("peer", nil, mode); err != nil {
+	if err := tester.sync("peer", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	tester.downloader.Cancel()
@@ -685,7 +685,7 @@ func testMultiSynchronisation(t *testing.T, protocol uint, mode SyncMode) {
 		id := fmt.Sprintf("peer #%d", i)
 		tester.newPeer(id, protocol, chain.shorten(len(chain.blocks) / (i + 1)).blocks[1:])
 	}
-	if err := tester.sync("peer #0", nil, mode); err != nil {
+	if err := tester.sync("peer #0", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chain.blocks))
@@ -711,7 +711,7 @@ func testMultiProtoSync(t *testing.T, protocol uint, mode SyncMode) {
 	tester.newPeer("peer 68", zondproto.ETH68, chain.blocks[1:])
 
 	// Synchronise with the requested peer and make sure all blocks were retrieved
-	if err := tester.sync(fmt.Sprintf("peer %d", protocol), nil, mode); err != nil {
+	if err := tester.sync(fmt.Sprintf("peer %d", protocol), mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chain.blocks))
@@ -747,7 +747,7 @@ func testEmptyShortCircuit(t *testing.T, protocol uint, mode SyncMode) {
 		receiptsHave.Add(int32(len(headers)))
 	}
 	// Synchronise with the peer and make sure all blocks were retrieved
-	if err := tester.sync("peer", nil, mode); err != nil {
+	if err := tester.sync("peer", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chain.blocks))
@@ -790,12 +790,12 @@ func testMissingHeaderAttack(t *testing.T, protocol uint, mode SyncMode) {
 	attacker := tester.newPeer("attack", protocol, chain.blocks[1:])
 	attacker.withholdHeaders[chain.blocks[len(chain.blocks)/2-1].Hash()] = struct{}{}
 
-	if err := tester.sync("attack", nil, mode); err == nil {
+	if err := tester.sync("attack", mode); err == nil {
 		t.Fatalf("succeeded attacker synchronisation")
 	}
 	// Synchronise with the valid peer and make sure sync succeeds
 	tester.newPeer("valid", protocol, chain.blocks[1:])
-	if err := tester.sync("valid", nil, mode); err != nil {
+	if err := tester.sync("valid", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chain.blocks))
@@ -820,12 +820,12 @@ func testShiftedHeaderAttack(t *testing.T, protocol uint, mode SyncMode) {
 	attacker := tester.newPeer("attack", protocol, chain.blocks[1:])
 	attacker.withholdHeaders[chain.blocks[1].Hash()] = struct{}{}
 
-	if err := tester.sync("attack", nil, mode); err == nil {
+	if err := tester.sync("attack", mode); err == nil {
 		t.Fatalf("succeeded attacker synchronisation")
 	}
 	// Synchronise with the valid peer and make sure sync succeeds
 	tester.newPeer("valid", protocol, chain.blocks[1:])
-	if err := tester.sync("valid", nil, mode); err != nil {
+	if err := tester.sync("valid", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chain.blocks))
@@ -853,7 +853,7 @@ func testInvalidHeaderRollback(t *testing.T, protocol uint, mode SyncMode) {
 	fastAttacker := tester.newPeer("fast-attack", protocol, chain.blocks[1:])
 	fastAttacker.withholdHeaders[chain.blocks[missing].Hash()] = struct{}{}
 
-	if err := tester.sync("fast-attack", nil, mode); err == nil {
+	if err := tester.sync("fast-attack", mode); err == nil {
 		t.Fatalf("succeeded fast attacker synchronisation")
 	}
 	if head := tester.chain.CurrentHeader().Number.Int64(); int(head) > MaxHeaderFetch {
@@ -868,7 +868,7 @@ func testInvalidHeaderRollback(t *testing.T, protocol uint, mode SyncMode) {
 	fastAttacker.withholdHeaders[chain.blocks[missing].Hash()] = struct{}{} // Make sure the fast-attacker doesn't fill in
 	blockAttacker.withholdHeaders[chain.blocks[missing].Hash()] = struct{}{}
 
-	if err := tester.sync("block-attack", nil, mode); err == nil {
+	if err := tester.sync("block-attack", mode); err == nil {
 		t.Fatalf("succeeded block attacker synchronisation")
 	}
 	if head := tester.chain.CurrentHeader().Number.Int64(); int(head) > 2*fsHeaderSafetyNet+MaxHeaderFetch {
@@ -890,7 +890,7 @@ func testInvalidHeaderRollback(t *testing.T, protocol uint, mode SyncMode) {
 		}
 		tester.downloader.syncInitHook = nil
 	}
-	if err := tester.sync("withhold-attack", nil, mode); err == nil {
+	if err := tester.sync("withhold-attack", mode); err == nil {
 		t.Fatalf("succeeded withholding attacker synchronisation")
 	}
 	if head := tester.chain.CurrentHeader().Number.Int64(); int(head) > 2*fsHeaderSafetyNet+MaxHeaderFetch {
@@ -906,7 +906,7 @@ func testInvalidHeaderRollback(t *testing.T, protocol uint, mode SyncMode) {
 	// sync. Note, we can't assert anything about the receipts since we won't purge the
 	// database of them, hence we can't use assertOwnChain.
 	tester.newPeer("valid", protocol, chain.blocks[1:])
-	if err := tester.sync("valid", nil, mode); err != nil {
+	if err := tester.sync("valid", mode); err != nil {
 		t.Fatalf("failed to synchronise blocks: %v", err)
 	}
 	assertOwnChain(t, tester, len(chain.blocks))
@@ -927,11 +927,12 @@ func testHighTDStarvationAttack(t *testing.T, protocol uint, mode SyncMode) {
 
 	chain := testChainBase.shorten(1)
 	tester.newPeer("attack", protocol, chain.blocks[1:])
-	if err := tester.sync("attack", big.NewInt(1000000), mode); err != errStallingPeer {
+	if err := tester.sync("attack", mode); err != errStallingPeer {
 		t.Fatalf("synchronisation error mismatch: have %v, want %v", err, errStallingPeer)
 	}
 }
 
+/*
 // Tests that misbehaving peers are disconnected, whilst behaving ones are not.
 func TestBlockHeaderAttackerDropping68(t *testing.T) {
 	testBlockHeaderAttackerDropping(t, zondproto.ETH68)
@@ -974,13 +975,13 @@ func testBlockHeaderAttackerDropping(t *testing.T, protocol uint) {
 		// Simulate a synchronisation and check the required result
 		tester.downloader.synchroniseMock = func(string, common.Hash) error { return tt.result }
 
-		// TODO(rgeraldes24): not available
 		// tester.downloader.LegacySync(id, tester.chain.Genesis().Hash(), big.NewInt(1000), nil, FullSync)
 		// if _, ok := tester.peers[id]; !ok != tt.drop {
 		// 	t.Errorf("test %d: peer drop mismatch for %v: have %v, want %v", i, tt.result, !ok, tt.drop)
 		// }
 	}
 }
+*/
 
 // Tests that synchronisation progress (origin block number, current block number
 // and highest block number) is tracked and updated correctly.
@@ -1010,7 +1011,7 @@ func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 
 	go func() {
 		defer pending.Done()
-		if err := tester.sync("peer-half", nil, mode); err != nil {
+		if err := tester.sync("peer-half", mode); err != nil {
 			panic(fmt.Sprintf("failed to synchronise blocks: %v", err))
 		}
 	}()
@@ -1026,7 +1027,7 @@ func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	pending.Add(1)
 	go func() {
 		defer pending.Done()
-		if err := tester.sync("peer-full", nil, mode); err != nil {
+		if err := tester.sync("peer-full", mode); err != nil {
 			panic(fmt.Sprintf("failed to synchronise blocks: %v", err))
 		}
 	}()
@@ -1086,7 +1087,7 @@ func testForkedSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	pending.Add(1)
 	go func() {
 		defer pending.Done()
-		if err := tester.sync("fork A", nil, mode); err != nil {
+		if err := tester.sync("fork A", mode); err != nil {
 			panic(fmt.Sprintf("failed to synchronise blocks: %v", err))
 		}
 	}()
@@ -1106,7 +1107,7 @@ func testForkedSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	pending.Add(1)
 	go func() {
 		defer pending.Done()
-		if err := tester.sync("fork B", nil, mode); err != nil {
+		if err := tester.sync("fork B", mode); err != nil {
 			panic(fmt.Sprintf("failed to synchronise blocks: %v", err))
 		}
 	}()
@@ -1159,7 +1160,7 @@ func testFailedSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	pending.Add(1)
 	go func() {
 		defer pending.Done()
-		if err := tester.sync("faulty", nil, mode); err == nil {
+		if err := tester.sync("faulty", mode); err == nil {
 			panic("succeeded faulty synchronisation")
 		}
 	}()
@@ -1177,7 +1178,7 @@ func testFailedSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	pending.Add(1)
 	go func() {
 		defer pending.Done()
-		if err := tester.sync("valid", nil, mode); err != nil {
+		if err := tester.sync("valid", mode); err != nil {
 			panic(fmt.Sprintf("failed to synchronise blocks: %v", err))
 		}
 	}()
@@ -1223,7 +1224,7 @@ func testFakedSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	pending.Add(1)
 	go func() {
 		defer pending.Done()
-		if err := tester.sync("attack", nil, mode); err == nil {
+		if err := tester.sync("attack", mode); err == nil {
 			panic("succeeded attacker synchronisation")
 		}
 	}()
@@ -1243,7 +1244,7 @@ func testFakedSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 
 	go func() {
 		defer pending.Done()
-		if err := tester.sync("valid", nil, mode); err != nil {
+		if err := tester.sync("valid", mode); err != nil {
 			panic(fmt.Sprintf("failed to synchronise blocks: %v", err))
 		}
 	}()
