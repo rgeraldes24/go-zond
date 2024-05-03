@@ -237,7 +237,7 @@ func GenerateChain(config *params.ChainConfig, parent *types.Block, engine conse
 	chainreader := &fakeChainReader{config: config}
 	genblock := func(i int, parent *types.Block, triedb *trie.Database, statedb *state.StateDB) (*types.Block, types.Receipts) {
 		b := &BlockGen{i: i, chain: blocks, parent: parent, statedb: statedb, config: config, engine: engine}
-		b.header = makeHeader(chainreader, parent, statedb, b.engine)
+		b.header = makeHeader(chainreader, parent, statedb)
 
 		// Execute any user modifications to the block
 		if gen != nil {
@@ -293,7 +293,7 @@ func GenerateChainWithGenesis(genesis *Genesis, engine consensus.Engine, n int, 
 	return db, blocks, receipts
 }
 
-func makeHeader(chain consensus.ChainReader, parent *types.Block, state *state.StateDB, engine consensus.Engine) *types.Header {
+func makeHeader(chain consensus.ChainReader, parent *types.Block, state *state.StateDB) *types.Header {
 	var time uint64
 	if parent.Time() == 0 {
 		time = 10

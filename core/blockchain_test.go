@@ -83,7 +83,7 @@ func newGwei(n int64) *big.Int {
 }
 
 // Test fork of length N starting from block i
-func testFork(t *testing.T, blockchain *BlockChain, i, n int, full bool, comparator func(td1, td2 *big.Int), scheme string) {
+func testFork(t *testing.T, blockchain *BlockChain, i, n int, full bool, scheme string) {
 	// Copy old chain up to #i into a new db
 	genDb, _, blockchain2, err := newCanonical(beacon.NewFaker(), i, full, scheme)
 	if err != nil {
@@ -119,13 +119,6 @@ func testFork(t *testing.T, blockchain *BlockChain, i, n int, full bool, compara
 			t.Fatalf("failed to insert forking chain: %v", err)
 		}
 	}
-	// TODO(rgeraldes24)
-	// Sanity check that the forked chain can be imported into the original
-	// var tdPre, tdPost *big.Int
-
-	// TODO(rgeraldes24)
-	// Compare the total difficulties of the chains
-	// comparator(tdPre, tdPost)
 }
 
 // testBlockChainImport tries to process a chain of blocks, writing them into
@@ -272,17 +265,11 @@ func testExtendCanonical(t *testing.T, full bool, scheme string) {
 	}
 	defer processor.Stop()
 
-	// Define the difficulty comparator
-	better := func(td1, td2 *big.Int) {
-		if td2.Cmp(td1) <= 0 {
-			t.Errorf("total difficulty mismatch: have %v, expected more than %v", td2, td1)
-		}
-	}
 	// Start fork from current height
-	testFork(t, processor, length, 1, full, better, scheme)
-	testFork(t, processor, length, 2, full, better, scheme)
-	testFork(t, processor, length, 5, full, better, scheme)
-	testFork(t, processor, length, 10, full, better, scheme)
+	testFork(t, processor, length, 1, full, scheme)
+	testFork(t, processor, length, 2, full, scheme)
+	testFork(t, processor, length, 5, full, scheme)
+	testFork(t, processor, length, 10, full, scheme)
 }
 
 // Tests that given a starting canonical chain of a given size, it can be extended
@@ -331,19 +318,13 @@ func testShorterFork(t *testing.T, full bool, scheme string) {
 	}
 	defer processor.Stop()
 
-	// Define the difficulty comparator
-	worse := func(td1, td2 *big.Int) {
-		if td2.Cmp(td1) >= 0 {
-			t.Errorf("total difficulty mismatch: have %v, expected less than %v", td2, td1)
-		}
-	}
 	// Sum of numbers must be less than `length` for this to be a shorter fork
-	testFork(t, processor, 0, 3, full, worse, scheme)
-	testFork(t, processor, 0, 7, full, worse, scheme)
-	testFork(t, processor, 1, 1, full, worse, scheme)
-	testFork(t, processor, 1, 7, full, worse, scheme)
-	testFork(t, processor, 5, 3, full, worse, scheme)
-	testFork(t, processor, 5, 4, full, worse, scheme)
+	testFork(t, processor, 0, 3, full, scheme)
+	testFork(t, processor, 0, 7, full, scheme)
+	testFork(t, processor, 1, 1, full, scheme)
+	testFork(t, processor, 1, 7, full, scheme)
+	testFork(t, processor, 5, 3, full, scheme)
+	testFork(t, processor, 5, 4, full, scheme)
 }
 
 // Tests that given a starting canonical chain of a given size, creating shorter
@@ -454,19 +435,13 @@ func testEqualFork(t *testing.T, full bool, scheme string) {
 	}
 	defer processor.Stop()
 
-	// Define the difficulty comparator
-	equal := func(td1, td2 *big.Int) {
-		if td2.Cmp(td1) != 0 {
-			t.Errorf("total difficulty mismatch: have %v, want %v", td2, td1)
-		}
-	}
 	// Sum of numbers must be equal to `length` for this to be an equal fork
-	testFork(t, processor, 0, 10, full, equal, scheme)
-	testFork(t, processor, 1, 9, full, equal, scheme)
-	testFork(t, processor, 2, 8, full, equal, scheme)
-	testFork(t, processor, 5, 5, full, equal, scheme)
-	testFork(t, processor, 6, 4, full, equal, scheme)
-	testFork(t, processor, 9, 1, full, equal, scheme)
+	testFork(t, processor, 0, 10, full, scheme)
+	testFork(t, processor, 1, 9, full, scheme)
+	testFork(t, processor, 2, 8, full, scheme)
+	testFork(t, processor, 5, 5, full, scheme)
+	testFork(t, processor, 6, 4, full, scheme)
+	testFork(t, processor, 9, 1, full, scheme)
 }
 
 // Tests that given a starting canonical chain of a given size, creating equal
@@ -1981,7 +1956,7 @@ func testLowDiffLongChain(t *testing.T, scheme string) {
 // -1: the transition won't happen
 // 0:  the transition happens since genesis
 // 1:  the transition happens after some chain segments
-func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommonAncestorAndPruneblock int, mergePoint int) {
+func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommonAncestorAndPruneblock int) {
 	// Generate a canonical chain to act as the main dataset
 	chainConfig := *params.TestChainConfig
 	var (
@@ -1995,8 +1970,7 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 			Alloc:   GenesisAlloc{addr: {Balance: big.NewInt(math.MaxInt64)}},
 			BaseFee: big.NewInt(params.InitialBaseFee),
 		}
-		signer, _  = types.LatestSigner(gspec.Config)
-		mergeBlock = math.MaxInt32
+		signer, _ = types.LatestSigner(gspec.Config)
 	)
 	// Generate and import the canonical chain
 	chain, err := NewBlockChain(rawdb.NewMemoryDatabase(), nil, gspec, engine, vm.Config{}, nil, nil)
@@ -2005,20 +1979,12 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 	}
 	defer chain.Stop()
 
-	// Activate the transition since genesis if required
-	if mergePoint == 0 {
-		mergeBlock = 0
-	}
 	genDb, blocks, _ := GenerateChainWithGenesis(gspec, engine, 2*TriesInMemory, func(i int, gen *BlockGen) {
 		tx, err := types.SignTx(types.NewTransaction(nonce, common.HexToAddress("deadbeef"), big.NewInt(100), 21000, big.NewInt(int64(i+1)*params.GWei), nil), signer, key)
 		if err != nil {
 			t.Fatalf("failed to create tx: %v", err)
 		}
 		gen.AddTx(tx)
-		if int(gen.header.Number.Uint64()) >= mergeBlock {
-			// TODO(rgeraldes24)
-			// gen.SetPoS()
-		}
 		nonce++
 	})
 	if n, err := chain.InsertChain(blocks); err != nil {
@@ -2038,12 +2004,6 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 		t.Errorf("Block %d pruned", firstNonPrunedBlock.NumberU64())
 	}
 
-	// Activate the transition in the middle of the chain
-	if mergePoint == 1 {
-		// Set the terminal total difficulty in the config
-		mergeBlock = len(blocks)
-	}
-
 	// Generate the sidechain
 	// First block should be a known block, block after should be a pruned block. So
 	// canon(pruned), side, side...
@@ -2053,10 +2013,6 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 	parent := blocks[parentIndex]
 	fork, _ := GenerateChain(gspec.Config, parent, engine, genDb, 2*TriesInMemory, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{2})
-		if int(b.header.Number.Uint64()) >= mergeBlock {
-			// TODO(rgeraldes24)
-			// gen.SetPoS()
-		}
 	})
 	// Prepend the parent(s)
 	var sidechain []*types.Block
@@ -2089,28 +2045,28 @@ func TestPrunedImportSide(t *testing.T) {
 	//glogger := log.NewGlogHandler(log.StreamHandler(os.Stdout, log.TerminalFormat(false)))
 	//glogger.Verbosity(3)
 	//log.Root().SetHandler(log.Handler(glogger))
-	testSideImport(t, 3, 3, -1)
-	testSideImport(t, 3, -3, -1)
-	testSideImport(t, 10, 0, -1)
-	testSideImport(t, 1, 10, -1)
-	testSideImport(t, 1, -10, -1)
+	testSideImport(t, 3, 3)
+	testSideImport(t, 3, -3)
+	testSideImport(t, 10, 0)
+	testSideImport(t, 1, 10)
+	testSideImport(t, 1, -10)
 }
 
 func TestPrunedImportSideWithMerging(t *testing.T) {
 	//glogger := log.NewGlogHandler(log.StreamHandler(os.Stdout, log.TerminalFormat(false)))
 	//glogger.Verbosity(3)
 	//log.Root().SetHandler(log.Handler(glogger))
-	testSideImport(t, 3, 3, 0)
-	testSideImport(t, 3, -3, 0)
-	testSideImport(t, 10, 0, 0)
-	testSideImport(t, 1, 10, 0)
-	testSideImport(t, 1, -10, 0)
+	testSideImport(t, 3, 3)
+	testSideImport(t, 3, -3)
+	testSideImport(t, 10, 0)
+	testSideImport(t, 1, 10)
+	testSideImport(t, 1, -10)
 
-	testSideImport(t, 3, 3, 1)
-	testSideImport(t, 3, -3, 1)
-	testSideImport(t, 10, 0, 1)
-	testSideImport(t, 1, 10, 1)
-	testSideImport(t, 1, -10, 1)
+	testSideImport(t, 3, 3)
+	testSideImport(t, 3, -3)
+	testSideImport(t, 10, 0)
+	testSideImport(t, 1, 10)
+	testSideImport(t, 1, -10)
 }
 
 func TestInsertKnownHeaders(t *testing.T) {
@@ -2192,7 +2148,7 @@ func testInsertKnownChainData(t *testing.T, typ string, scheme string) {
 			}
 		}
 	} else {
-		inserter = func(blocks []*types.Block, receipts []types.Receipts) error {
+		inserter = func(blocks []*types.Block, _ []types.Receipts) error {
 			_, err := chain.InsertChain(blocks)
 			return err
 		}
@@ -2245,28 +2201,28 @@ func testInsertKnownChainData(t *testing.T, typ string, scheme string) {
 }
 
 func TestInsertKnownHeadersWithMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "headers", 0)
+	testInsertKnownChainDataWithMerging(t, "headers")
 }
 func TestInsertKnownReceiptChainWithMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "receipts", 0)
+	testInsertKnownChainDataWithMerging(t, "receipts")
 }
 func TestInsertKnownBlocksWithMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "blocks", 0)
+	testInsertKnownChainDataWithMerging(t, "blocks")
 }
 func TestInsertKnownHeadersAfterMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "headers", 1)
+	testInsertKnownChainDataWithMerging(t, "headers")
 }
 func TestInsertKnownReceiptChainAfterMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "receipts", 1)
+	testInsertKnownChainDataWithMerging(t, "receipts")
 }
 func TestInsertKnownBlocksAfterMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "blocks", 1)
+	testInsertKnownChainDataWithMerging(t, "blocks")
 }
 
 // mergeHeight can be assigned in these values:
 // 0: means the merging is applied since genesis
 // 1: means the merging is applied after the first segment
-func testInsertKnownChainDataWithMerging(t *testing.T, typ string, mergeHeight int) {
+func testInsertKnownChainDataWithMerging(t *testing.T, typ string) {
 	// Copy the TestChainConfig so we can modify it during tests
 	chainConfig := *params.TestChainConfig
 	var (
@@ -2274,42 +2230,21 @@ func testInsertKnownChainDataWithMerging(t *testing.T, typ string, mergeHeight i
 			BaseFee: big.NewInt(params.InitialBaseFee),
 			Config:  &chainConfig,
 		}
-		engine     = beacon.New()
-		mergeBlock = uint64(math.MaxUint64)
+		engine = beacon.New()
 	)
-	// Apply merging since genesis
-	if mergeHeight == 0 {
-		mergeBlock = uint64(0)
-	}
 
 	genDb, blocks, receipts := GenerateChainWithGenesis(genesis, engine, 32,
 		func(i int, b *BlockGen) {
-			if b.header.Number.Uint64() >= mergeBlock {
-				// TODO(rgeraldes24)
-				// gen.SetPoS()
-			}
 			b.SetCoinbase(common.Address{1})
 		})
 
-	// Apply merging after the first segment
-	if mergeHeight == 1 {
-		mergeBlock = uint64(len(blocks))
-	}
 	// Longer chain and shorter chain
 	blocks2, receipts2 := GenerateChain(genesis.Config, blocks[len(blocks)-1], engine, genDb, 65, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{1})
-		if b.header.Number.Uint64() >= mergeBlock {
-			// TODO(rgeraldes24)
-			// gen.SetPoS()
-		}
 	})
 	blocks3, receipts3 := GenerateChain(genesis.Config, blocks[len(blocks)-1], engine, genDb, 64, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{1})
 		b.OffsetTime(-9) // Time shifted, difficulty shouldn't be changed
-		if b.header.Number.Uint64() >= mergeBlock {
-			// TODO(rgeraldes24)
-			// gen.SetPoS()
-		}
 	})
 	// Import the shared chain and the original canonical one
 	chaindb, err := rawdb.NewDatabaseWithFreezer(rawdb.NewMemoryDatabase(), t.TempDir(), "", false)
@@ -2364,7 +2299,7 @@ func testInsertKnownChainDataWithMerging(t *testing.T, typ string, mergeHeight i
 			}
 		}
 	} else {
-		inserter = func(blocks []*types.Block, receipts []types.Receipts) error {
+		inserter = func(blocks []*types.Block, _ []types.Receipts) error {
 			i, err := chain.InsertChain(blocks)
 			if err != nil {
 				return fmt.Errorf("index %d: %w", i, err)

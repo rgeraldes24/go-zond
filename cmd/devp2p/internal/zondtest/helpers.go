@@ -265,7 +265,7 @@ func (c *Conn) headersRequest(request *GetBlockHeaders, chain *Chain, reqID uint
 	return headers, nil
 }
 
-func (c *Conn) snapRequest(msg Message, id uint64, chain *Chain) (Message, error) {
+func (c *Conn) snapRequest(msg Message, id uint64) (Message, error) {
 	defer c.SetReadDeadline(time.Time{})
 	c.SetReadDeadline(time.Now().Add(5 * time.Second))
 	if err := c.Write(msg); err != nil {

@@ -486,7 +486,7 @@ func (s *Suite) snapGetAccountRange(t *utesting.T, tc *accRangeTest) error {
 		Limit:  tc.limit,
 		Bytes:  tc.nBytes,
 	}
-	resp, err := conn.snapRequest(req, req.ID, s.chain)
+	resp, err := conn.snapRequest(req, req.ID)
 	if err != nil {
 		return fmt.Errorf("account range request failed: %v", err)
 	}
@@ -562,7 +562,7 @@ func (s *Suite) snapGetStorageRanges(t *utesting.T, tc *stRangesTest) error {
 		Limit:    tc.limit,
 		Bytes:    tc.nBytes,
 	}
-	resp, err := conn.snapRequest(req, req.ID, s.chain)
+	resp, err := conn.snapRequest(req, req.ID)
 	if err != nil {
 		return fmt.Errorf("account range request failed: %v", err)
 	}
@@ -603,7 +603,7 @@ func (s *Suite) snapGetByteCodes(t *utesting.T, tc *byteCodesTest) error {
 		Hashes: tc.hashes,
 		Bytes:  tc.nBytes,
 	}
-	resp, err := conn.snapRequest(req, req.ID, s.chain)
+	resp, err := conn.snapRequest(req, req.ID)
 	if err != nil {
 		return fmt.Errorf("getBytecodes request failed: %v", err)
 	}
@@ -665,7 +665,7 @@ func (s *Suite) snapGetTrieNodes(t *utesting.T, tc *trieNodesTest) error {
 		Paths: tc.paths,
 		Bytes: tc.nBytes,
 	}
-	resp, err := conn.snapRequest(req, req.ID, s.chain)
+	resp, err := conn.snapRequest(req, req.ID)
 	if err != nil {
 		if tc.expReject {
 			return nil

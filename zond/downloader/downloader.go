@@ -57,14 +57,9 @@ var (
 
 var (
 	errBusy                    = errors.New("busy")
-	errUnknownPeer             = errors.New("peer is unknown or unhealthy")
 	errBadPeer                 = errors.New("action from bad peer ignored")
 	errStallingPeer            = errors.New("peer is stalling")
-	errUnsyncedPeer            = errors.New("unsynced peer")
-	errNoPeers                 = errors.New("no peers to keep download active")
 	errTimeout                 = errors.New("timeout")
-	errEmptyHeaderSet          = errors.New("empty header set by peer")
-	errPeersUnavailable        = errors.New("no peers available or all tried for download")
 	errInvalidAncestor         = errors.New("retrieved ancestor is invalid")
 	errInvalidChain            = errors.New("retrieved hash chain is invalid")
 	errInvalidBody             = errors.New("retrieved block body is invalid")
@@ -397,13 +392,10 @@ func (d *Downloader) synchronise(id string, hash common.Hash, mode SyncMode, bea
 	// Atomically set the requested sync mode
 	d.mode.Store(uint32(mode))
 
-	// Retrieve the origin peer and initiate the downloading process
-	var p *peerConnection
-
 	if beaconPing != nil {
 		close(beaconPing)
 	}
-	return d.syncWithPeer(p, hash)
+	return d.syncWithPeer()
 }
 
 func (d *Downloader) getMode() SyncMode {
@@ -412,7 +404,7 @@ func (d *Downloader) getMode() SyncMode {
 
 // syncWithPeer starts a block synchronization based on the hash chain from the
 // specified peer and head hash.
-func (d *Downloader) syncWithPeer(p *peerConnection, hash common.Hash) (err error) {
+func (d *Downloader) syncWithPeer() (err error) {
 	d.mux.Post(StartEvent{})
 	defer func() {
 		// reset on error
@@ -791,9 +783,6 @@ func (d *Downloader) processHeaders(origin uint64) error {
 					// Although the received headers might be all valid, a legacy
 					// PoW/PoA sync must not accept post-merge headers. Make sure
 					// that any transition is rejected at this point.
-					var (
-						rejected []*types.Header
-					)
 					if len(chunkHeaders) > 0 {
 						if n, err := d.lightchain.InsertHeaderChain(chunkHeaders); err != nil {
 							rollbackErr = err
@@ -814,13 +803,6 @@ func (d *Downloader) processHeaders(origin uint64) error {
 								rollback = 1
 							}
 						}
-					}
-					if len(rejected) != 0 {
-						// Merge threshold reached, stop importing, but don't roll back
-						rollback = 0
-
-						log.Info("Legacy sync reached merge threshold", "number", rejected[0].Number, "hash", rejected[0].Hash())
-						return ErrMergeTransition
 					}
 				}
 				// Unless we're doing light chains, schedule the headers for associated content retrieval
@@ -873,19 +855,8 @@ func (d *Downloader) processFullSyncContent() error {
 		if d.chainInsertHook != nil {
 			d.chainInsertHook(results)
 		}
-		// Although the received blocks might be all valid, a legacy PoW/PoA sync
-		// must not accept post-merge blocks. Make sure that pre-merge blocks are
-		// imported, but post-merge ones are rejected.
-		var (
-			rejected []*fetchResult
-		)
-
 		if err := d.importBlockResults(results); err != nil {
 			return err
-		}
-		if len(rejected) != 0 {
-			log.Info("Legacy sync reached merge threshold", "number", rejected[0].Header.Number, "hash", rejected[0].Header.Hash())
-			return ErrMergeTransition
 		}
 	}
 }

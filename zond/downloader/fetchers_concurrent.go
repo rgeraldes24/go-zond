@@ -156,7 +156,6 @@ func (d *Downloader) concurrentFetch(queue typedQueue) error {
 
 			var (
 				throttled bool
-				queued    = queue.pending()
 			)
 			for _, peer := range idles {
 				// Short circuit if throttling activated or there are no more
@@ -164,7 +163,7 @@ func (d *Downloader) concurrentFetch(queue typedQueue) error {
 				if throttled {
 					break
 				}
-				if queued = queue.pending(); queued == 0 {
+				if queued := queue.pending(); queued == 0 {
 					break
 				}
 				// Reserve a chunk of fetches for a peer. A nil can mean either that
