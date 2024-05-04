@@ -285,11 +285,9 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 				},
 			},
 		}
-
-		stack = createNode(t)
+		signer = types.LatestSigner(genesis.Config)
+		stack  = createNode(t)
 	)
-	signer := types.LatestSigner(genesis.Config)
-
 	defer stack.Close()
 
 	var tx *types.Transaction
@@ -373,11 +371,9 @@ func TestWithdrawals(t *testing.T) {
 				addr: {Balance: big.NewInt(params.Ether)},
 			},
 		}
-
-		stack = createNode(t)
+		signer = types.LatestSigner(genesis.Config)
+		stack  = createNode(t)
 	)
-	signer := types.LatestSigner(genesis.Config)
-
 	defer stack.Close()
 
 	handler, _ := newGQLService(t, stack, genesis, 1, func(i int, gen *core.BlockGen) {
