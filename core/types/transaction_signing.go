@@ -56,12 +56,8 @@ func MakeSigner(config *params.ChainConfig) (Signer, error) {
 //
 // Use this in transaction-handling code where the current block number is unknown. If you
 // have the current block number available, use MakeSigner instead.
-func LatestSigner(config *params.ChainConfig) (Signer, error) {
-	if config.ChainID == nil {
-		return nil, ErrNoChainID
-	}
-
-	return NewShanghaiSigner(config.ChainID), nil
+func LatestSigner(config *params.ChainConfig) Signer {
+	return NewShanghaiSigner(config.ChainID)
 }
 
 // LatestSignerForChainID returns the 'most permissive' Signer available. Specifically,
@@ -71,11 +67,8 @@ func LatestSigner(config *params.ChainConfig) (Signer, error) {
 // Use this in transaction-handling code where the current block number and fork
 // configuration are unknown. If you have a ChainConfig, use LatestSigner instead.
 // If you have a ChainConfig and know the current block number, use MakeSigner instead.
-func LatestSignerForChainID(chainID *big.Int) (Signer, error) {
-	if chainID == nil {
-		return nil, ErrNoChainID
-	}
-	return NewShanghaiSigner(chainID), nil
+func LatestSignerForChainID(chainID *big.Int) Signer {
+	return NewShanghaiSigner(chainID)
 }
 
 // SignTx signs the transaction using the given dilithium signer and private key.

@@ -75,7 +75,7 @@ func init() {
 	beaconChainConfig = new(params.ChainConfig)
 	*beaconChainConfig = *params.TestChainConfig
 
-	signer, _ := types.LatestSigner(params.TestChainConfig)
+	signer := types.LatestSigner(params.TestChainConfig)
 	tx1 := types.MustSignNewTx(testBankKey, signer, &types.AccessListTx{
 		ChainID:  params.TestChainConfig.ChainID,
 		Nonce:    0,

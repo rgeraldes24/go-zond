@@ -438,8 +438,7 @@ func hugeData(s *Suite) *types.Transaction {
 }
 
 func signWithFaucet(chainConfig *params.ChainConfig, tx *types.Transaction) *types.Transaction {
-	signer, _ := types.LatestSigner(chainConfig)
-	signedTx, err := types.SignTx(tx, signer, faucetKey)
+	signedTx, err := types.SignTx(tx, types.LatestSigner(chainConfig), faucetKey)
 	if err != nil {
 		return nil
 	}

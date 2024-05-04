@@ -190,10 +190,7 @@ func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 		},
 		BaseFee: big.NewInt(params.InitialBaseFee),
 	}
-	signer, err := types.LatestSigner(genesis.Config)
-	if err != nil {
-		t.Fatalf("failed to create signer: %v", err)
-	}
+	signer := types.LatestSigner(genesis.Config)
 	newGQLService(t, stack, genesis, 1, func(i int, gen *core.BlockGen) {
 		gen.SetCoinbase(common.Address{1})
 		tx, _ := types.SignNewTx(key, signer, &types.LegacyTx{
@@ -291,10 +288,7 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 
 		stack = createNode(t)
 	)
-	signer, err := types.LatestSigner(genesis.Config)
-	if err != nil {
-		t.Fatalf("failed to create signer: %v", err)
-	}
+	signer := types.LatestSigner(genesis.Config)
 
 	defer stack.Close()
 
@@ -382,10 +376,7 @@ func TestWithdrawals(t *testing.T) {
 
 		stack = createNode(t)
 	)
-	signer, err := types.LatestSigner(genesis.Config)
-	if err != nil {
-		t.Fatalf("failed to create signer: %v", err)
-	}
+	signer := types.LatestSigner(genesis.Config)
 
 	defer stack.Close()
 

@@ -46,9 +46,9 @@ func TestGenerateWithdrawalChain(t *testing.T) {
 			BaseFee:  big.NewInt(params.InitialBaseFee),
 			GasLimit: 5_000_000,
 		}
-		gendb     = rawdb.NewMemoryDatabase()
-		signer, _ = types.LatestSigner(gspec.Config)
-		db        = rawdb.NewMemoryDatabase()
+		gendb  = rawdb.NewMemoryDatabase()
+		signer = types.LatestSigner(gspec.Config)
+		db     = rawdb.NewMemoryDatabase()
 	)
 
 	// init 0xaa with some storage elements

@@ -110,8 +110,7 @@ func TestEIP1559BlockEncoding(t *testing.T) {
 		Data:       []byte{},
 	}
 	tx2 := NewTx(txdata)
-	signer, _ := LatestSignerForChainID(big.NewInt(1))
-	tx2, err := tx2.WithSignatureAndPublicKey(signer, common.Hex2Bytes("fe38ca4e44a30002ac54af7cf922a6ac2ba11b7d22f548e8ecb3f51f41cb31b06de6a5cbae13c0c856e33acf021b51819636cfc009d39eafb9f606d546e305a800"), nil)
+	tx2, err := tx2.WithSignatureAndPublicKey(LatestSignerForChainID(big.NewInt(1)), common.Hex2Bytes("fe38ca4e44a30002ac54af7cf922a6ac2ba11b7d22f548e8ecb3f51f41cb31b06de6a5cbae13c0c856e33acf021b51819636cfc009d39eafb9f606d546e305a800"), nil)
 	if err != nil {
 		t.Fatal("invalid signature error: ", err)
 	}
@@ -204,10 +203,10 @@ func BenchmarkEncodeBlock(b *testing.B) {
 
 func makeBenchBlock() *Block {
 	var (
-		key, _    = pqcrypto.GenerateDilithiumKey()
-		txs       = make([]*Transaction, 70)
-		receipts  = make([]*Receipt, len(txs))
-		signer, _ = LatestSigner(params.TestChainConfig)
+		key, _   = pqcrypto.GenerateDilithiumKey()
+		txs      = make([]*Transaction, 70)
+		receipts = make([]*Receipt, len(txs))
+		signer   = LatestSigner(params.TestChainConfig)
 	)
 	header := &Header{
 		Number:   math.BigPow(2, 9),

@@ -71,7 +71,7 @@ func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 		BaseFee:   big.NewInt(params.InitialBaseFee),
 	}
 	testNonce := uint64(0)
-	signer, _ := types.LatestSigner(&config)
+	signer := types.LatestSigner(&config)
 
 	generate := func(i int, g *core.BlockGen) {
 		g.OffsetTime(5)
@@ -296,7 +296,7 @@ func TestEth2NewBlock(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		statedb, _ := zondservice.BlockChain().StateAt(parent.Root())
 		nonce := statedb.GetNonce(testAddr)
-		signer, _ := types.LatestSigner(zondservice.BlockChain().Config())
+		signer := types.LatestSigner(zondservice.BlockChain().Config())
 		tx, _ := types.SignTx(types.NewContractCreation(nonce, new(big.Int), 1000000, big.NewInt(2*params.InitialBaseFee), logCode), signer, testKey)
 		zondservice.TxPool().Add([]*types.Transaction{tx}, true, false)
 
@@ -466,7 +466,7 @@ func TestFullAPI(t *testing.T) {
 	callback := func(parent *types.Header) {
 		statedb, _ := zondservice.BlockChain().StateAt(parent.Root)
 		nonce := statedb.GetNonce(testAddr)
-		signer, _ := types.LatestSigner(zondservice.BlockChain().Config())
+		signer := types.LatestSigner(zondservice.BlockChain().Config())
 		tx, _ := types.SignTx(types.NewContractCreation(nonce, new(big.Int), 1000000, big.NewInt(2*params.InitialBaseFee), logCode), signer, testKey)
 		zondservice.TxPool().Add([]*types.Transaction{tx}, true, false)
 	}
@@ -1210,7 +1210,7 @@ func setupBodies(t *testing.T) (*node.Node, *zond.Zond, []*types.Block) {
 	callback := func(parent *types.Header) {
 		statedb, _ := zondservice.BlockChain().StateAt(parent.Root)
 		nonce := statedb.GetNonce(testAddr)
-		signer, _ := types.LatestSigner(zondservice.BlockChain().Config())
+		signer := types.LatestSigner(zondservice.BlockChain().Config())
 		tx, _ := types.SignTx(types.NewContractCreation(nonce, new(big.Int), 1000000, big.NewInt(2*params.InitialBaseFee), logCode), signer, testKey)
 		zondservice.TxPool().Add([]*types.Transaction{tx}, false, false)
 	}

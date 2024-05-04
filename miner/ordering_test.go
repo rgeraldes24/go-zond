@@ -48,7 +48,7 @@ func testTransactionPriceNonceSort(t *testing.T, baseFee *big.Int) {
 	for i := 0; i < len(keys); i++ {
 		keys[i], _ = crypto.GenerateDilithiumKey()
 	}
-	signer, _ := types.LatestSignerForChainID(common.Big1)
+	signer := types.LatestSignerForChainID(common.Big1)
 
 	// Generate a batch of transactions with overlapping values, but shifted nonces
 	groups := map[common.Address][]*txpool.LazyTransaction{}

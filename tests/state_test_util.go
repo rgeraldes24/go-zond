@@ -254,13 +254,7 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 			return nil, nil, nil, common.Hash{}, err
 		}
 
-		signer, err := types.LatestSigner(config)
-		if err != nil {
-			triedb.Close()
-			return nil, nil, nil, common.Hash{}, err
-		}
-
-		if _, err := types.Sender(signer, &ttx); err != nil {
+		if _, err := types.Sender(types.LatestSigner(config), &ttx); err != nil {
 			triedb.Close()
 			return nil, nil, nil, common.Hash{}, err
 		}

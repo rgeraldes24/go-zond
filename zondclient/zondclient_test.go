@@ -695,11 +695,7 @@ func sendTransaction(ec *Client) error {
 		return err
 	}
 
-	signer, err := types.LatestSignerForChainID(chainID)
-	if err != nil {
-		return err
-	}
-	tx, err := types.SignNewTx(testKey, signer, &types.LegacyTx{
+	tx, err := types.SignNewTx(testKey, types.LatestSignerForChainID(chainID), &types.LegacyTx{
 		Nonce:    nonce,
 		To:       &common.Address{2},
 		Value:    big.NewInt(1),

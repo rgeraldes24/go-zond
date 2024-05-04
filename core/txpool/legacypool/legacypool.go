@@ -247,17 +247,12 @@ func New(config Config, chain BlockChain) (*LegacyPool, error) {
 	// Sanitize the input to ensure no vulnerable gas prices are set
 	config = (&config).sanitize()
 
-	signer, err := types.LatestSigner(chain.Config())
-	if err != nil {
-		return nil, err
-	}
-
 	// Create the transaction pool with its initial settings
 	pool := &LegacyPool{
 		config:          config,
 		chain:           chain,
 		chainconfig:     chain.Config(),
-		signer:          signer,
+		signer:          types.LatestSigner(chain.Config()),
 		pending:         make(map[common.Address]*list),
 		queue:           make(map[common.Address]*list),
 		beats:           make(map[common.Address]time.Time),

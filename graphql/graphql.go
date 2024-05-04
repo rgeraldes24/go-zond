@@ -394,12 +394,7 @@ func (t *Transaction) From(ctx context.Context, args BlockNumberArgs) (*Account,
 	if tx == nil {
 		return nil, nil
 	}
-	signer, err := types.LatestSigner(t.r.backend.ChainConfig())
-	if err != nil {
-		return nil, err
-	}
-
-	from, _ := types.Sender(signer, tx)
+	from, _ := types.Sender(types.LatestSigner(t.r.backend.ChainConfig()), tx)
 	return &Account{
 		r:             t.r,
 		address:       from,

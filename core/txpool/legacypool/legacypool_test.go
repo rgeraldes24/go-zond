@@ -112,8 +112,7 @@ func pricedDataTransaction(nonce uint64, gaslimit uint64, gasprice *big.Int, key
 }
 
 func dynamicFeeTx(nonce uint64, gaslimit uint64, gasFee *big.Int, tip *big.Int, key *dilithium.Dilithium) *types.Transaction {
-	signer, _ := types.LatestSignerForChainID(params.TestChainConfig.ChainID)
-	tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{
+	tx, _ := types.SignNewTx(key, types.LatestSignerForChainID(params.TestChainConfig.ChainID), &types.DynamicFeeTx{
 		ChainID:    params.TestChainConfig.ChainID,
 		Nonce:      nonce,
 		GasTipCap:  tip,

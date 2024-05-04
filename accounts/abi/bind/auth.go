@@ -57,7 +57,7 @@ func NewKeyStoreTransactorWithChainID(keystore *keystore.KeyStore, account accou
 	if chainID == nil {
 		return nil, ErrNoChainID
 	}
-	signer, _ := types.LatestSignerForChainID(chainID)
+	signer := types.LatestSignerForChainID(chainID)
 	return &TransactOpts{
 		From: account.Address,
 		Signer: func(address common.Address, tx *types.Transaction) (*types.Transaction, error) {
@@ -85,7 +85,7 @@ func NewKeyedTransactorWithChainID(d *dilithium.Dilithium, chainID *big.Int) (*T
 	if chainID == nil {
 		return nil, ErrNoChainID
 	}
-	signer, _ := types.LatestSignerForChainID(chainID)
+	signer := types.LatestSignerForChainID(chainID)
 	return &TransactOpts{
 		From: keyAddr,
 		Signer: func(address common.Address, tx *types.Transaction) (*types.Transaction, error) {
