@@ -243,7 +243,7 @@ type txpoolResetRequest struct {
 
 // New creates a new transaction pool to gather, sort and filter inbound
 // transactions from the network.
-func New(config Config, chain BlockChain) (*LegacyPool, error) {
+func New(config Config, chain BlockChain) *LegacyPool {
 	// Sanitize the input to ensure no vulnerable gas prices are set
 	config = (&config).sanitize()
 
@@ -274,7 +274,7 @@ func New(config Config, chain BlockChain) (*LegacyPool, error) {
 	if !config.NoLocals && config.Journal != "" {
 		pool.journal = newTxJournal(config.Journal)
 	}
-	return pool, nil
+	return pool
 }
 
 // Filter returns whether the given transaction can be consumed by the legacy

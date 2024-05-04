@@ -195,11 +195,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	if config.TxPool.Journal != "" {
 		config.TxPool.Journal = stack.ResolvePath(config.TxPool.Journal)
 	}
-	legacyPool, err := legacypool.New(config.TxPool, zond.blockchain)
-	if err != nil {
-		return nil, err
-	}
-
+	legacyPool := legacypool.New(config.TxPool, zond.blockchain)
 	zond.txPool, err = txpool.New(new(big.Int).SetUint64(config.TxPool.PriceLimit), zond.blockchain, []txpool.SubPool{legacyPool})
 	if err != nil {
 		return nil, err

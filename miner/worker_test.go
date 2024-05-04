@@ -113,7 +113,7 @@ func newTestWorkerBackend(t *testing.T, chainConfig *params.ChainConfig, engine 
 	if err != nil {
 		t.Fatalf("core.NewBlockChain failed: %v", err)
 	}
-	pool, _ := legacypool.New(testTxPoolConfig, chain)
+	pool := legacypool.New(testTxPoolConfig, chain)
 	txpool, _ := txpool.New(new(big.Int).SetUint64(testTxPoolConfig.PriceLimit), chain, []txpool.SubPool{pool})
 
 	return &testWorkerBackend{
