@@ -92,7 +92,7 @@ func (tx *LegacyTx) copy() TxData {
 // accessors for innerTx.
 func (tx *LegacyTx) txType() byte { return LegacyTxType }
 
-// TODO(rgeraldes24)
+// TODO(rgeraldes24): include chain id in the legacy tx
 func (tx *LegacyTx) chainID() *big.Int      { return /*deriveChainId(big.NewInt(100))*/ big.NewInt(1) }
 func (tx *LegacyTx) accessList() AccessList { return nil }
 func (tx *LegacyTx) data() []byte           { return tx.Data }
