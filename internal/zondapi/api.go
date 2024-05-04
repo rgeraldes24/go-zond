@@ -541,9 +541,6 @@ func (s *BlockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rpc.
 
 	// Derive the sender.
 	signer := types.MakeSigner(s.b.ChainConfig())
-	if err != nil {
-		return nil, err
-	}
 
 	result := make([]map[string]interface{}, len(receipts))
 	for i, receipt := range receipts {
@@ -1225,7 +1222,8 @@ type TransactionAPI struct {
 func NewTransactionAPI(b Backend, nonceLock *AddrLocker) *TransactionAPI {
 	// The signer used by the API should always be the 'latest' known one because we expect
 	// signers to be backwards-compatible with old transactions.
-	return &TransactionAPI{b, nonceLock, types.LatestSigner(b.ChainConfig())}
+	signer := types.LatestSigner(b.ChainConfig())
+	return &TransactionAPI{b, nonceLock, signer}
 }
 
 // GetBlockTransactionCountByNumber returns the number of transactions in the block with the given block number.
