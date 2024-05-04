@@ -55,10 +55,6 @@ func getBlock(transactions int, uncles int, dataSize int) *types.Block {
 						big.NewInt(0), 50000, b.header.BaseFee, make([]byte, dataSize)), types.ShanghaiSigner{ChainId: big.NewInt(0)}, d)
 					b.AddTx(tx)
 				}
-				for i := 0; i < uncles; i++ {
-					// TODO(rgeraldes24)
-					// b.AddUncle(&types.Header{ParentHash: b.PrevBlock(n - 1 - i).Hash(), Number: big.NewInt(int64(n - i))})
-				}
 			}
 		})
 	block := blocks[len(blocks)-1]
