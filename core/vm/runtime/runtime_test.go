@@ -69,8 +69,8 @@ func TestEVM(t *testing.T) {
 	}()
 
 	Execute([]byte{
-		// TODO(rgeraldes24)
-		// byte(vm.DIFFICULTY),
+		byte(vm.RANDOM),
+		byte(vm.PREVRANDAO),
 		byte(vm.TIMESTAMP),
 		byte(vm.GASLIMIT),
 		byte(vm.PUSH1),
