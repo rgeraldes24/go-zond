@@ -55,12 +55,13 @@ import (
 func testTransactionMarshal(t *testing.T, tests []txData, config *params.ChainConfig) {
 	t.Parallel()
 	var (
+		signer = types.LatestSigner(config)
 		key, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	)
 
 	for i, tt := range tests {
 		var tx2 types.Transaction
-		tx, err := types.SignNewTx(key, types.LatestSigner(config), tt.Tx)
+		tx, err := types.SignNewTx(key, signer, tt.Tx)
 		if err != nil {
 			t.Fatalf("test %d: signing failed: %v", i, err)
 		}
