@@ -66,10 +66,15 @@ func (p *StateProcessor) Process(block *types.Block, statedb *state.StateDB, cfg
 		gp          = new(GasPool).AddGas(block.GasLimit())
 	)
 	var (
-		context   = NewEVMBlockContext(header, p.bc, nil)
-		vmenv     = vm.NewEVM(context, vm.TxContext{}, statedb, p.config, cfg)
-		signer, _ = types.MakeSigner(p.config)
+		context = NewEVMBlockContext(header, p.bc, nil)
+		vmenv   = vm.NewEVM(context, vm.TxContext{}, statedb, p.config, cfg)
 	)
+
+	signer, err := types.MakeSigner(p.config)
+	if err != nil {
+		return nil, nil, 0, fmt.Errorf("could not create signer: %v", err)
+	}
+
 	// Iterate over and process the individual transactions
 	for i, tx := range block.Transactions() {
 		msg, err := TransactionToMessage(tx, signer, header.BaseFee)
