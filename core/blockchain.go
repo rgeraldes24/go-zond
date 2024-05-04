@@ -1860,12 +1860,6 @@ func (bc *BlockChain) insertSideChain(block *types.Block, it *insertIterator) (i
 			canonical := bc.GetBlockByNumber(number)
 			if canonical != nil && canonical.Hash() == block.Hash() {
 				// Not a sidechain block, this is a re-import of a canon block which has it's state pruned
-
-				// TODO(rgeraldes24)
-				// Collect the TD of the block. Since we know it's a canon one,
-				// we can get it directly, and not (like further below) use
-				// the parent and then add the block on top
-				// externTd = bc.GetTd(block.Hash(), block.NumberU64())
 				continue
 			}
 			if canonical != nil && canonical.Root() == block.Root() {
@@ -1908,9 +1902,7 @@ func (bc *BlockChain) insertSideChain(block *types.Block, it *insertIterator) (i
 		return it.index, err
 	}
 	if !reorg {
-		// TODO(rgeraldes24)
-		// localTd := bc.GetTd(current.Hash(), current.Number.Uint64())
-		// log.Info("Sidechain written to disk", "start", it.first().NumberU64(), "end", it.previous().Number, "sidetd", externTd, "localtd", localTd)
+		log.Info("Sidechain written to disk", "start", it.first().NumberU64(), "end", it.previous().Number)
 		return it.index, err
 	}
 	// Gather all the sidechain hashes (full blocks may be memory heavy)
