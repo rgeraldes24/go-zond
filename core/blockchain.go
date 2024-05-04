@@ -1535,10 +1535,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, setHead bool) (int, error)
 	}
 
 	// Start a parallel signature recovery (signer will fluke on fork transition, minimal perf loss)
-	signer, err := types.MakeSigner(bc.chainConfig)
-	if err != nil {
-		return 0, nil
-	}
+	signer := types.MakeSigner(bc.chainConfig)
 	SenderCacher.RecoverFromBlocks(signer, chain)
 
 	var (

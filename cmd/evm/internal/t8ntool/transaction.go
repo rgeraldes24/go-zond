@@ -112,10 +112,7 @@ func Transaction(ctx *cli.Context) error {
 			return NewError(ErrorIO, errors.New("only rlp supported"))
 		}
 	}
-	signer, err := types.MakeSigner(chainConfig)
-	if err != nil {
-		return err
-	}
+	signer := types.MakeSigner(chainConfig)
 	// We now have the transactions in 'body', which is supposed to be an
 	// rlp list of transactions
 	it, err := rlp.NewListIterator([]byte(body))

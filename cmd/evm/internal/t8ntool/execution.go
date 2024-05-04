@@ -118,10 +118,7 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 		receipts    = make(types.Receipts, 0)
 		txIndex     = 0
 	)
-	signer, err := types.MakeSigner(chainConfig)
-	if err != nil {
-		return nil, nil, err
-	}
+	signer := types.MakeSigner(chainConfig)
 
 	gaspool.AddGas(pre.Env.GasLimit)
 	vmContext := vm.BlockContext{

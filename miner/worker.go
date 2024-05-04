@@ -695,10 +695,7 @@ func (w *worker) makeEnv(parent *types.Header, header *types.Header, coinbase co
 	}
 	state.StartPrefetcher("miner")
 
-	signer, err := types.MakeSigner(w.chainConfig)
-	if err != nil {
-		return nil, err
-	}
+	signer := types.MakeSigner(w.chainConfig)
 
 	// Note the passed coinbase may be different with header.Coinbase.
 	env := &environment{

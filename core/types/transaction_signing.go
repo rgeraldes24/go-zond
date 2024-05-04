@@ -29,9 +29,6 @@ import (
 
 var ErrInvalidChainId = errors.New("invalid chain id for signer")
 
-// ErrNoChainID is returned whenever the user failed to specify a chain id.
-var ErrNoChainID = errors.New("no chain id specified")
-
 // sigCache is used to cache the derived sender and contains
 // the signer used to derive it.
 type sigCache struct {
@@ -41,12 +38,8 @@ type sigCache struct {
 
 // TODO(theQRL/go-zond/issues/39)
 // MakeSigner returns a Signer based on the given chain config and block number.
-func MakeSigner(config *params.ChainConfig) (Signer, error) {
-	if config.ChainID == nil {
-		return nil, ErrNoChainID
-	}
-
-	return NewShanghaiSigner(config.ChainID), nil
+func MakeSigner(config *params.ChainConfig) Signer {
+	return NewShanghaiSigner(config.ChainID)
 }
 
 // LatestSigner returns the 'most permissive' Signer available for the given chain

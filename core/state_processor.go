@@ -68,12 +68,8 @@ func (p *StateProcessor) Process(block *types.Block, statedb *state.StateDB, cfg
 	var (
 		context = NewEVMBlockContext(header, p.bc, nil)
 		vmenv   = vm.NewEVM(context, vm.TxContext{}, statedb, p.config, cfg)
+		signer  = types.MakeSigner(p.config)
 	)
-
-	signer, err := types.MakeSigner(p.config)
-	if err != nil {
-		return nil, nil, 0, fmt.Errorf("could not create signer: %v", err)
-	}
 
 	// Iterate over and process the individual transactions
 	for i, tx := range block.Transactions() {
@@ -142,10 +138,7 @@ func applyTransaction(msg *Message, gp *GasPool, statedb *state.StateDB, blockNu
 // for the transaction, gas used and an error if the transaction failed,
 // indicating the block was invalid.
 func ApplyTransaction(config *params.ChainConfig, bc ChainContext, author *common.Address, gp *GasPool, statedb *state.StateDB, header *types.Header, tx *types.Transaction, usedGas *uint64, cfg vm.Config) (*types.Receipt, error) {
-	signer, err := types.MakeSigner(config)
-	if err != nil {
-		return nil, err
-	}
+	signer := types.MakeSigner(config)
 	msg, err := TransactionToMessage(tx, signer, header.BaseFee)
 	if err != nil {
 		return nil, err
