@@ -426,12 +426,6 @@ web3._extend({
 			inputFormatter: [web3._extend.formatters.inputTransactionFormatter, web3._extend.utils.fromDecimal, web3._extend.utils.fromDecimal]
 		}),
 		new web3._extend.Method({
-			name: 'signTransaction',
-			call: 'zond_signTransaction',
-			params: 1,
-			inputFormatter: [web3._extend.formatters.inputTransactionFormatter]
-		}),
-		new web3._extend.Method({
 			name: 'estimateGas',
 			call: 'zond_estimateGas',
 			params: 2,

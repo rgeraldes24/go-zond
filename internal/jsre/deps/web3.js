@@ -5344,20 +5344,6 @@ var methods = function () {
         inputFormatter: [null]
     });
 
-    var sendTransaction = new Method({
-        name: 'sendTransaction',
-        call: 'zond_sendTransaction',
-        params: 1,
-        inputFormatter: [formatters.inputTransactionFormatter]
-    });
-
-    var signTransaction = new Method({
-        name: 'signTransaction',
-        call: 'zond_signTransaction',
-        params: 1,
-        inputFormatter: [formatters.inputTransactionFormatter]
-    });
-
     var sign = new Method({
         name: 'sign',
         call: 'zond_sign',
@@ -5425,7 +5411,6 @@ var methods = function () {
         estimateGas,
         sendRawTransaction,
         signTransaction,
-        sendTransaction,
         sign,
         compileSolidity,
         compileLLL,
@@ -6279,22 +6264,6 @@ var transfer = function (zond, from, to, value, callback) {
     
 };
 
-/**
- * Should be used to transfer funds to certain address
- *
- * @method transferToAddress
- * @param {String} from
- * @param {String} to
- * @param {Value} value to be tranfered
- * @param {Function} callback, callback
- */
-var transferToAddress = function (zond, from, to, value, callback) {
-    return zond.sendTransaction({
-        address: to,
-        from: from,
-        value: value
-    }, callback);
-};
 
 /**
  * Should be used to deposit funds to generic Exchange contract (must implement deposit(bytes32) method!)
