@@ -35,7 +35,6 @@ import (
 	"strings"
 	"time"
 
-	pcsclite "github.com/gballet/go-libpcsclite"
 	gopsutil "github.com/shirou/gopsutil/mem"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/accounts/keystore"
@@ -115,22 +114,6 @@ var (
 		Name:     "datadir.minfreedisk",
 		Usage:    "Minimum free disk space in MB, once reached triggers auto shut down (default = --cache.gc converted to MB, 0 = disabled)",
 		Category: flags.ZondCategory,
-	}
-	KeyStoreDirFlag = &flags.DirectoryFlag{
-		Name:     "keystore",
-		Usage:    "Directory for the keystore (default = inside the datadir)",
-		Category: flags.AccountCategory,
-	}
-	USBFlag = &cli.BoolFlag{
-		Name:     "usb",
-		Usage:    "Enable monitoring and management of USB hardware wallets",
-		Category: flags.AccountCategory,
-	}
-	SmartCardDaemonPathFlag = &cli.StringFlag{
-		Name:     "pcscdpath",
-		Usage:    "Path to the smartcard daemon (pcscd) socket file",
-		Value:    pcsclite.PCSCDSockName,
-		Category: flags.AccountCategory,
 	}
 	NetworkIdFlag = &cli.Uint64Flag{
 		Name:     "networkid",
@@ -218,11 +201,6 @@ var (
 		Usage:    `Enables snapshot-database mode (default = enable)`,
 		Value:    true,
 		Category: flags.ZondCategory,
-	}
-	LightKDFFlag = &cli.BoolFlag{
-		Name:     "lightkdf",
-		Usage:    "Reduce key-derivation RAM & CPU usage at some expense of KDF strength",
-		Category: flags.AccountCategory,
 	}
 	ZondRequiredBlocksFlag = &cli.StringFlag{
 		Name:     "zond.requiredblocks",
@@ -414,27 +392,10 @@ var (
 	}
 
 	// Account settings
-	UnlockedAccountFlag = &cli.StringFlag{
-		Name:     "unlock",
-		Usage:    "Comma separated list of accounts to unlock",
-		Value:    "",
-		Category: flags.AccountCategory,
-	}
-	PasswordFileFlag = &cli.PathFlag{
-		Name:      "password",
-		Usage:     "Password file to use for non-interactive password input",
-		TakesFile: true,
-		Category:  flags.AccountCategory,
-	}
 	ExternalSignerFlag = &cli.StringFlag{
 		Name:     "signer",
 		Usage:    "External signer (url or path to ipc file)",
 		Value:    "",
-		Category: flags.AccountCategory,
-	}
-	InsecureUnlockAllowedFlag = &cli.BoolFlag{
-		Name:     "allow-insecure-unlock",
-		Usage:    "Allow insecure account unlocking when account-related RPCs are exposed by http",
 		Category: flags.AccountCategory,
 	}
 
@@ -1174,24 +1135,6 @@ func setEtherbase(ctx *cli.Context, cfg *zondconfig.Config) {
 	cfg.Miner.Etherbase = common.BytesToAddress(b)
 }
 
-// MakePasswordList reads password lines from the file specified by the global --password flag.
-func MakePasswordList(ctx *cli.Context) []string {
-	path := ctx.Path(PasswordFileFlag.Name)
-	if path == "" {
-		return nil
-	}
-	text, err := os.ReadFile(path)
-	if err != nil {
-		Fatalf("Failed to read password file: %v", err)
-	}
-	lines := strings.Split(string(text), "\n")
-	// Sanitise DOS line endings.
-	for i := range lines {
-		lines[i] = strings.TrimRight(lines[i], "\r")
-	}
-	return lines
-}
-
 func SetP2PConfig(ctx *cli.Context, cfg *p2p.Config) {
 	setNodeKey(ctx, cfg)
 	setNAT(ctx, cfg)
@@ -1244,7 +1187,6 @@ func SetNodeConfig(ctx *cli.Context, cfg *node.Config) {
 	setWS(ctx, cfg)
 	setNodeUserIdent(ctx, cfg)
 	SetDataDir(ctx, cfg)
-	setSmartCard(ctx, cfg)
 
 	if ctx.IsSet(JWTSecretFlag.Name) {
 		cfg.JWTSecret = ctx.String(JWTSecretFlag.Name)
@@ -1254,21 +1196,6 @@ func SetNodeConfig(ctx *cli.Context, cfg *node.Config) {
 		cfg.ExternalSigner = ctx.String(ExternalSignerFlag.Name)
 	}
 
-	if ctx.IsSet(KeyStoreDirFlag.Name) {
-		cfg.KeyStoreDir = ctx.String(KeyStoreDirFlag.Name)
-	}
-	if ctx.IsSet(DeveloperFlag.Name) {
-		cfg.UseLightweightKDF = true
-	}
-	if ctx.IsSet(LightKDFFlag.Name) {
-		cfg.UseLightweightKDF = ctx.Bool(LightKDFFlag.Name)
-	}
-	if ctx.IsSet(USBFlag.Name) {
-		cfg.USB = ctx.Bool(USBFlag.Name)
-	}
-	if ctx.IsSet(InsecureUnlockAllowedFlag.Name) {
-		cfg.InsecureUnlockAllowed = ctx.Bool(InsecureUnlockAllowedFlag.Name)
-	}
 	if ctx.IsSet(DBEngineFlag.Name) {
 		dbEngine := ctx.String(DBEngineFlag.Name)
 		if dbEngine != "leveldb" && dbEngine != "pebble" {
@@ -1277,26 +1204,6 @@ func SetNodeConfig(ctx *cli.Context, cfg *node.Config) {
 		log.Info(fmt.Sprintf("Using %s as db engine", dbEngine))
 		cfg.DBEngine = dbEngine
 	}
-}
-
-func setSmartCard(ctx *cli.Context, cfg *node.Config) {
-	// Skip enabling smartcards if no path is set
-	path := ctx.String(SmartCardDaemonPathFlag.Name)
-	if path == "" {
-		return
-	}
-	// Sanity check that the smartcard path is valid
-	fi, err := os.Stat(path)
-	if err != nil {
-		log.Info("Smartcard socket not found, disabling", "err", err)
-		return
-	}
-	if fi.Mode()&os.ModeType != os.ModeSocket {
-		log.Error("Invalid smartcard daemon path", "path", path, "type", fi.Mode().String())
-		return
-	}
-	// Smartcard daemon path exists and is a socket, enable it
-	cfg.SmartCardDaemonPath = path
 }
 
 func SetDataDir(ctx *cli.Context, cfg *node.Config) {
@@ -1600,61 +1507,64 @@ func SetZondConfig(ctx *cli.Context, stack *node.Node, cfg *zondconfig.Config) {
 			cfg.NetworkId = 1337
 		}
 		cfg.SyncMode = downloader.FullSync
-		// Create new developer account or reuse existing one
-		var (
-			developer  accounts.Account
-			passphrase string
-			err        error
-		)
-		if list := MakePasswordList(ctx); len(list) > 0 {
-			// Just take the first value. Although the function returns a possible multiple values and
-			// some usages iterate through them as attempts, that doesn't make sense in this setting,
-			// when we're definitely concerned with only one account.
-			passphrase = list[0]
-		}
-
-		// Unlock the developer account by local keystore.
-		var ks *keystore.KeyStore
-		if keystores := stack.AccountManager().Backends(keystore.KeyStoreType); len(keystores) > 0 {
-			ks = keystores[0].(*keystore.KeyStore)
-		}
-		if ks == nil {
-			Fatalf("Keystore is not available")
-		}
-
-		// Figure out the dev account address.
-		// setEtherbase has been called above, configuring the miner address from command line flags.
-		if cfg.Miner.Etherbase != (common.Address{}) {
-			developer = accounts.Account{Address: cfg.Miner.Etherbase}
-		} else if accs := ks.Accounts(); len(accs) > 0 {
-			developer = ks.Accounts()[0]
-		} else {
-			developer, err = ks.NewAccount(passphrase)
-			if err != nil {
-				Fatalf("Failed to create developer account: %v", err)
+		// TODO(rgeraldes24)
+		/*
+			// Create new developer account or reuse existing one
+			var (
+				developer  accounts.Account
+				passphrase string
+				err        error
+			)
+			if list := MakePasswordList(ctx); len(list) > 0 {
+				// Just take the first value. Although the function returns a possible multiple values and
+				// some usages iterate through them as attempts, that doesn't make sense in this setting,
+				// when we're definitely concerned with only one account.
+				passphrase = list[0]
 			}
-		}
-		// Make sure the address is configured as fee recipient, otherwise
-		// the miner will fail to start.
-		cfg.Miner.Etherbase = developer.Address
 
-		if err := ks.Unlock(developer, passphrase); err != nil {
-			Fatalf("Failed to unlock developer account: %v", err)
-		}
-		log.Info("Using developer account", "address", developer.Address)
-
-		// Create a new developer genesis block or reuse existing one
-		cfg.Genesis = core.DeveloperGenesisBlock(ctx.Uint64(DeveloperGasLimitFlag.Name), developer.Address)
-		if ctx.IsSet(DataDirFlag.Name) {
-			chaindb := tryMakeReadOnlyDatabase(ctx, stack)
-			if rawdb.ReadCanonicalHash(chaindb, 0) != (common.Hash{}) {
-				cfg.Genesis = nil // fallback to db content
+			// Unlock the developer account by local keystore.
+			var ks *keystore.KeyStore
+			if keystores := stack.AccountManager().Backends(keystore.KeyStoreType); len(keystores) > 0 {
+				ks = keystores[0].(*keystore.KeyStore)
 			}
-			chaindb.Close()
-		}
-		if !ctx.IsSet(MinerGasPriceFlag.Name) {
-			cfg.Miner.GasPrice = big.NewInt(1)
-		}
+			if ks == nil {
+				Fatalf("Keystore is not available")
+			}
+
+			// Figure out the dev account address.
+			// setEtherbase has been called above, configuring the miner address from command line flags.
+			if cfg.Miner.Etherbase != (common.Address{}) {
+				developer = accounts.Account{Address: cfg.Miner.Etherbase}
+			} else if accs := ks.Accounts(); len(accs) > 0 {
+				developer = ks.Accounts()[0]
+			} else {
+				developer, err = ks.NewAccount(passphrase)
+				if err != nil {
+					Fatalf("Failed to create developer account: %v", err)
+				}
+			}
+			// Make sure the address is configured as fee recipient, otherwise
+			// the miner will fail to start.
+			cfg.Miner.Etherbase = developer.Address
+
+			if err := ks.Unlock(developer, passphrase); err != nil {
+				Fatalf("Failed to unlock developer account: %v", err)
+			}
+			log.Info("Using developer account", "address", developer.Address)
+
+			// Create a new developer genesis block or reuse existing one
+			cfg.Genesis = core.DeveloperGenesisBlock(ctx.Uint64(DeveloperGasLimitFlag.Name), developer.Address)
+			if ctx.IsSet(DataDirFlag.Name) {
+				chaindb := tryMakeReadOnlyDatabase(ctx, stack)
+				if rawdb.ReadCanonicalHash(chaindb, 0) != (common.Hash{}) {
+					cfg.Genesis = nil // fallback to db content
+				}
+				chaindb.Close()
+			}
+			if !ctx.IsSet(MinerGasPriceFlag.Name) {
+				cfg.Miner.GasPrice = big.NewInt(1)
+			}
+		*/
 	default:
 		if cfg.NetworkId == 1 {
 			SetDNSDiscoveryDefaults(cfg, params.MainnetGenesisHash)
