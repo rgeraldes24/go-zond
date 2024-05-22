@@ -2,7 +2,7 @@
 
 Clef can be used to sign transactions and data and is meant as a(n eventual) replacement for Gzond's account management. This allows DApps to not depend on Gzond's account management. When a DApp wants to sign data (or a transaction), it can send the content to Clef, which will then provide the user with context and asks for permission to sign the content. If the users grants the signing request, Clef will send the signature back to the DApp.
 
-This setup allows a DApp to connect to a remote Ethereum node and send transactions that are locally signed. This can help in situations when a DApp is connected to an untrusted remote Ethereum node, because a local one is not available, not synchronized with the chain, or is a node that has no built-in (or limited) account management.
+This setup allows a DApp to connect to a remote Zond node and send transactions that are locally signed. This can help in situations when a DApp is connected to an untrusted remote Zond node, because a local one is not available, not synchronized with the chain, or is a node that has no built-in (or limited) account management.
 
 Clef can run as a daemon on the same machine, off a usb-stick like [USB armory](https://inversepath.com/usbarmory), or even a separate VM in a [QubesOS](https://www.qubes-os.org/) type setup.
 
@@ -31,7 +31,7 @@ GLOBAL OPTIONS:
    --configdir value       Directory for Clef configuration (default: "$HOME/.clef")
    --chainid value         Chain id to use for signing (1=mainnet) (default: 1)
    --lightkdf              Reduce key-derivation RAM & CPU usage at some expense of KDF strength
-   --nousb                 Disables monitoring for and managing USB hardware wallets
+   --usb                   Enables monitoring and managing for USB hardware wallets
    --pcscdpath value       Path to the smartcard daemon (pcscd) socket file (default: "/run/pcscd/pcscd.comm")
    --http.addr value       HTTP-RPC server listening interface (default: "localhost")
    --http.vhosts value     Comma separated list of virtual hostnames from which to accept requests (server enforced). Accepts '*' wildcard. (default: "localhost")
@@ -735,7 +735,7 @@ Invoked when a request for account listing has been made.
       "messages": [
         {
           "name": "message",
-          "value": "\u0019Ethereum Signed Message:\n4\u0001\u0002\u0003\u0004",
+          "value": "\u0019Zond Signed Message:\n4\u0001\u0002\u0003\u0004",
           "type": "text/plain"
         }
       ],
@@ -898,7 +898,7 @@ A UI should conform to the following rules.
 * A UI MUST NOT load any external resources that were not embedded/part of the UI package.
   * For example, not load icons, stylesheets from the internet
   * Not load files from the filesystem, unless they reside in the same local directory (e.g. config files)
-* A Graphical UI MUST show the blocky-identicon for ethereum addresses.
+* A Graphical UI MUST show the blocky-identicon for zond addresses.
 * A UI MUST warn display appropriate warning if the destination-account is formatted with invalid checksum.
 * A UI MUST NOT open any ports or services
   * The signer opens the public port
