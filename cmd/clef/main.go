@@ -284,6 +284,7 @@ func init() {
 		configdirFlag,
 		chainIdFlag,
 		lightKDFFlag,
+		// TODO(rgeraldes24)
 		// usbFlag,
 		// smartCardDaemonPathFlag,
 		utils.HTTPListenAddrFlag,
@@ -424,6 +425,7 @@ func initInternalApi(c *cli.Context) (*core.UIServerAPI, core.UIClientAPI, error
 		lightKdf                  = c.Bool(lightKDFFlag.Name)
 	)
 	am := core.StartClefAccountManager(ksLoc /*false,*/, lightKdf /*""*/)
+	defer am.Close()
 	api := core.NewSignerAPI(am, 0 /*false,*/, ui, nil, false, pwStorage)
 	internalApi := core.NewUIServerAPI(api)
 	return internalApi, ui, nil
@@ -596,6 +598,7 @@ func accountImport(c *cli.Context) error {
 		return err
 	}
 	if first != second {
+		//lint:ignore ST1005 This is a message for the user
 		return errors.New("Passwords do not match")
 	}
 	acc, err := internalApi.ImportRawKey(hex.EncodeToString(crypto.FromECDSA(pKey)), first)
