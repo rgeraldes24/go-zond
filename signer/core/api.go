@@ -30,11 +30,11 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/common/math"
+	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/signer/core/apitypes"
 	"github.com/theQRL/go-zond/signer/storage"
-	"github.com/theQRL/go-zond/zondapi"
 )
 
 const (

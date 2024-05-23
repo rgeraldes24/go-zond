@@ -34,10 +34,10 @@ import (
 	"github.com/theQRL/go-zond/consensus/misc/eip1559"
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/types"
+	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/zond/filters"
-	"github.com/theQRL/go-zond/zondapi"
 )
 
 var (

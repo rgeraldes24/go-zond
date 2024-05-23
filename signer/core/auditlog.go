@@ -22,9 +22,9 @@ import (
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
+	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/signer/core/apitypes"
-	"github.com/theQRL/go-zond/zondapi"
 )
 
 type AuditLogger struct {

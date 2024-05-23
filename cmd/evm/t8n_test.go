@@ -26,7 +26,7 @@ import (
 
 	"github.com/docker/docker/pkg/reexec"
 	"github.com/theQRL/go-zond/cmd/evm/internal/t8ntool"
-	"github.com/theQRL/go-zond/pkg/cmdtest"
+	"github.com/theQRL/go-zond/internal/cmdtest"
 )
 
 func TestMain(m *testing.M) {

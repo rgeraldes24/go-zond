@@ -31,12 +31,12 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/core/types"
+	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/signer/core"
 	"github.com/theQRL/go-zond/signer/core/apitypes"
 	"github.com/theQRL/go-zond/signer/fourbyte"
 	"github.com/theQRL/go-zond/signer/storage"
-	"github.com/theQRL/go-zond/zondapi"
 )
 
 // Used for testing
