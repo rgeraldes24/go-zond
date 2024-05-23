@@ -184,7 +184,7 @@ func StartClefAccountManager(ksLocation string /*usbEnabled bool,*/, lightKDF bo
 	*/
 
 	// Clef doesn't allow insecure http account unlock.
-	return accounts.NewManager(backends...)
+	return accounts.NewManager(&accounts.Config{InsecureUnlockAllowed: false}, backends...)
 }
 
 // MetadataFromContext extracts Metadata from a given context.Context
@@ -336,7 +336,6 @@ func (api *SignerAPI) startUSBListener() {
 	for _, wallet := range am.Wallets() {
 		if err := wallet.Open(""); err != nil {
 			log.Warn("Failed to open wallet", "url", wallet.URL(), "err", err)
-			// TODO(rgeraldes24)
 			if err == usbwallet.ErrTrezorPINNeeded {
 				go api.openTrezor(wallet.URL())
 			}
@@ -344,9 +343,7 @@ func (api *SignerAPI) startUSBListener() {
 	}
 	go api.derivationLoop(eventCh)
 }
-*/
 
-/*
 // derivationLoop listens for wallet events
 func (api *SignerAPI) derivationLoop(events chan accounts.WalletEvent) {
 	// Listen for wallet event till termination
@@ -355,7 +352,6 @@ func (api *SignerAPI) derivationLoop(events chan accounts.WalletEvent) {
 		case accounts.WalletArrived:
 			if err := event.Wallet.Open(""); err != nil {
 				log.Warn("New wallet appeared, failed to open", "url", event.Wallet.URL(), "err", err)
-				// TODO(rgeraldes24)
 				if err == usbwallet.ErrTrezorPINNeeded {
 					go api.openTrezor(event.Wallet.URL())
 				}

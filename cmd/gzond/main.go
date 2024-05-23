@@ -22,8 +22,11 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
+	"github.com/theQRL/go-zond/accounts"
+	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/console/prompt"
@@ -33,6 +36,7 @@ import (
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/zond/downloader"
+	"github.com/theQRL/go-zond/zondclient"
 
 	// Force-load the tracer engines to trigger registration
 	_ "github.com/theQRL/go-zond/zond/tracers/js"
@@ -50,9 +54,16 @@ var (
 	// flags that configure the node
 	nodeFlags = flags.Merge([]cli.Flag{
 		utils.IdentityFlag,
+		utils.UnlockedAccountFlag,
+		utils.PasswordFileFlag,
 		utils.BootnodesFlag,
 		utils.MinFreeDiskSpaceFlag,
+		utils.KeyStoreDirFlag,
 		utils.ExternalSignerFlag,
+		// TODO(theQRL/go-zond/issues/37)
+		// utils.USBFlag,
+		// TODO(theQRL/go-zond/issues/38)
+		// utils.SmartCardDaemonPathFlag,
 		utils.TxPoolLocalsFlag,
 		utils.TxPoolNoLocalsFlag,
 		utils.TxPoolJournalFlag,
@@ -72,6 +83,7 @@ var (
 		utils.TransactionHistoryFlag,
 		utils.StateSchemeFlag,
 		utils.StateHistoryFlag,
+		utils.LightKDFFlag,
 		utils.ZondRequiredBlocksFlag,
 		utils.BloomFilterSizeFlag,
 		utils.CacheFlag,
@@ -136,6 +148,7 @@ var (
 		utils.WSPathPrefixFlag,
 		utils.IPCDisabledFlag,
 		utils.IPCPathFlag,
+		utils.InsecureUnlockAllowedFlag,
 		utils.RPCGlobalGasCapFlag,
 		utils.RPCGlobalEVMTimeoutFlag,
 		utils.RPCGlobalTxFeeCapFlag,
@@ -175,6 +188,8 @@ func init() {
 		removedbCommand,
 		dumpCommand,
 		dumpGenesisCommand,
+		// See accountcmd.go:
+		accountCommand,
 		// See consolecmd.go:
 		consoleCommand,
 		attachCommand,
@@ -297,51 +312,51 @@ func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
 	// Start up the node itself
 	utils.StartNode(ctx, stack, isConsole)
 
-	// TODO(rgeraldes24)
+	// Unlock any account specifically requested
+	unlockAccounts(ctx, stack)
+
 	// Register wallet event handlers to open and auto-derive wallets
-	// events := make(chan accounts.WalletEvent, 16)
-	// stack.AccountManager().Subscribe(events)
+	events := make(chan accounts.WalletEvent, 16)
+	stack.AccountManager().Subscribe(events)
 
 	// Create a client to interact with local gzond node.
-	// rpcClient := stack.Attach()
-	// zondClient := zondclient.NewClient(rpcClient)
+	rpcClient := stack.Attach()
+	zondClient := zondclient.NewClient(rpcClient)
 
-	/*
-		go func() {
-			// TODO(rgeraldes24): no longer needed
-			// Open any wallets already attached
-			// for _, wallet := range stack.AccountManager().Wallets() {
-			// 	if err := Failed to open wallet.Open(""); err != nil {
-			// 		log.Warn("Failed to open Failed to open wallet", "url", wallet.URL(), "err", err)
-			// 	}
-			// }
-			// Listen for wallet event till termination
-			for event := range events {
-				switch event.Kind {
-				case accounts.WalletArrived:
-					if err := event.Wallet.Open(""); err != nil {
-						log.Warn("New wallet appeared, failed to open", "url", event.Wallet.URL(), "err", err)
-					}
-				case accounts.WalletOpened:
-					status, _ := event.Wallet.Status()
-					log.Info("New wallet appeared", "url", event.Wallet.URL(), "status", status)
-
-					var derivationPaths []accounts.DerivationPath
-					if event.Wallet.URL().Scheme == "ledger" {
-						derivationPaths = append(derivationPaths, accounts.LegacyLedgerBaseDerivationPath)
-					}
-					derivationPaths = append(derivationPaths, accounts.DefaultBaseDerivationPath)
-
-					event.Wallet.SelfDerive(derivationPaths, zondClient)
-
-				case accounts.WalletDropped:
-					log.Info("Old wallet dropped", "url", event.Wallet.URL())
-					// TODO(rgeraldes24)
-					// event.Wallet.Close()
+	go func() {
+		// TODO(rgeraldes24): no longer needed
+		// Open any wallets already attached
+		// for _, wallet := range stack.AccountManager().Wallets() {
+		// 	if err := Failed to open wallet.Open(""); err != nil {
+		// 		log.Warn("Failed to open Failed to open wallet", "url", wallet.URL(), "err", err)
+		// 	}
+		// }
+		// Listen for wallet event till termination
+		for event := range events {
+			switch event.Kind {
+			case accounts.WalletArrived:
+				if err := event.Wallet.Open(""); err != nil {
+					log.Warn("New wallet appeared, failed to open", "url", event.Wallet.URL(), "err", err)
 				}
+			case accounts.WalletOpened:
+				status, _ := event.Wallet.Status()
+				log.Info("New wallet appeared", "url", event.Wallet.URL(), "status", status)
+
+				var derivationPaths []accounts.DerivationPath
+				if event.Wallet.URL().Scheme == "ledger" {
+					derivationPaths = append(derivationPaths, accounts.LegacyLedgerBaseDerivationPath)
+				}
+				derivationPaths = append(derivationPaths, accounts.DefaultBaseDerivationPath)
+
+				event.Wallet.SelfDerive(derivationPaths, zondClient)
+
+			case accounts.WalletDropped:
+				log.Info("Old wallet dropped", "url", event.Wallet.URL())
+				// TODO(rgeraldes24)
+				// event.Wallet.Close()
 			}
-		}()
-	*/
+		}
+	}()
 
 	// Spawn a standalone goroutine for status synchronization monitoring,
 	// close the node when synchronization is complete if user required.
@@ -365,5 +380,35 @@ func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
 				}
 			}
 		}()
+	}
+}
+
+// unlockAccounts unlocks any account specifically requested.
+func unlockAccounts(ctx *cli.Context, stack *node.Node) {
+	var unlocks []string
+	inputs := strings.Split(ctx.String(utils.UnlockedAccountFlag.Name), ",")
+	for _, input := range inputs {
+		if trimmed := strings.TrimSpace(input); trimmed != "" {
+			unlocks = append(unlocks, trimmed)
+		}
+	}
+	// Short circuit if there is no account to unlock.
+	if len(unlocks) == 0 {
+		return
+	}
+	// If insecure account unlocking is not allowed if node's APIs are exposed to external.
+	// Print warning log to user and skip unlocking.
+	if !stack.Config().InsecureUnlockAllowed && stack.Config().ExtRPCEnabled() {
+		utils.Fatalf("Account unlock with HTTP access is forbidden!")
+	}
+	backends := stack.AccountManager().Backends(keystore.KeyStoreType)
+	if len(backends) == 0 {
+		log.Warn("Failed to unlock accounts, keystore is not available")
+		return
+	}
+	ks := backends[0].(*keystore.KeyStore)
+	passwords := utils.MakePasswordList(ctx)
+	for i, account := range unlocks {
+		unlockAccount(ks, account, i, passwords)
 	}
 }

@@ -130,27 +130,10 @@ var (
 			"This means that an STDIN/STDOUT is used for RPC-communication with a e.g. a graphical user " +
 			"interface, and can be used when Clef is started by an external process.",
 	}
-	lightKDFFlag = &cli.BoolFlag{
-		Name:     "lightkdf",
-		Usage:    "Reduce key-derivation RAM & CPU usage at some expense of KDF strength",
-		Category: flags.AccountCategory,
-	}
 	testFlag = &cli.BoolFlag{
 		Name:  "stdio-ui-test",
 		Usage: "Mechanism to test interface between Clef and UI. Requires 'stdio-ui'.",
 	}
-	// TODO(rgeraldes24)
-	// usbFlag = &cli.BoolFlag{
-	// 	Name:     "usb",
-	// 	Usage:    "Enable monitoring and management of USB hardware wallets",
-	// 	Category: flags.AccountCategory,
-	// }
-	// smartCardDaemonPathFlag = &cli.StringFlag{
-	// 	Name:     "pcscdpath",
-	// 	Usage:    "Path to the smartcard daemon (pcscd) socket file",
-	// 	Value:    pcsclite.PCSCDSockName,
-	// 	Category: flags.AccountCategory,
-	// }
 	initCommand = &cli.Command{
 		Action:    initializeSecrets,
 		Name:      "init",
@@ -284,9 +267,9 @@ func init() {
 		configdirFlag,
 		chainIdFlag,
 		lightKDFFlag,
-		// TODO(rgeraldes24)
-		// usbFlag,
-		// smartCardDaemonPathFlag,
+		utils.LightKDFFlag,
+		utils.USBFlag,
+		utils.SmartCardDaemonPathFlag,
 		utils.HTTPListenAddrFlag,
 		utils.HTTPVirtualHostsFlag,
 		utils.IPCDisabledFlag,
@@ -346,7 +329,7 @@ func initializeSecrets(c *cli.Context) error {
 		return errors.New("failed to read enough random")
 	}
 	n, p := keystore.StandardScryptN, keystore.StandardScryptP
-	if c.Bool(lightKDFFlag.Name) {
+	if c.Bool(utils.LightKDFFlag.Name) {
 		n, p = keystore.LightScryptN, keystore.LightScryptP
 	}
 	text := "The master seed of clef will be locked with a password.\nPlease specify a password. Do not forget this password!"
@@ -422,7 +405,7 @@ func initInternalApi(c *cli.Context) (*core.UIServerAPI, core.UIClientAPI, error
 		ui                        = core.NewCommandlineUI()
 		pwStorage storage.Storage = &storage.NoStorage{}
 		ksLoc                     = c.String(keystoreFlag.Name)
-		lightKdf                  = c.Bool(lightKDFFlag.Name)
+		lightKdf                  = c.Bool(utils.LightKDFFlag.Name)
 	)
 	am := core.StartClefAccountManager(ksLoc /*false,*/, lightKdf /*""*/)
 	defer am.Close()
@@ -714,7 +697,7 @@ func signer(c *cli.Context) error {
 	var (
 		chainId  = c.Int64(chainIdFlag.Name)
 		ksLoc    = c.String(keystoreFlag.Name)
-		lightKdf = c.Bool(lightKDFFlag.Name)
+		lightKdf = c.Bool(utils.LightKDFFlag.Name)
 		advanced = c.Bool(advancedMode.Name)
 		// usbEnabled = c.Bool(utils.USBFlag.Name)
 		// scpath = c.String(utils.SmartCardDaemonPathFlag.Name)
