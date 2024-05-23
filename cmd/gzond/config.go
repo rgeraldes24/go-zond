@@ -307,5 +307,5 @@ func setAccountManagerBackends(conf *node.Config, am *accounts.Manager) error {
 		}
 	}
 
-	return errors.New("error connecting to external signer: external signer could not be found")
+	return nil
 }
