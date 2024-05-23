@@ -51,6 +51,7 @@ func NewExternalBackend(endpoint string) (*ExternalBackend, error) {
 	}, nil
 }
 
+// TODO(rgeraldes24): can be removed
 func (eb *ExternalBackend) Subscribe(sink chan<- accounts.WalletEvent) event.Subscription {
 	return event.NewSubscription(func(quit <-chan struct{}) error {
 		<-quit

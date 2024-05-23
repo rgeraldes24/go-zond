@@ -24,7 +24,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/cmd/utils"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/console/prompt"
@@ -34,7 +33,6 @@ import (
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zondclient"
 
 	// Force-load the tracer engines to trigger registration
 	_ "github.com/theQRL/go-zond/zond/tracers/js"
@@ -299,46 +297,51 @@ func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
 	// Start up the node itself
 	utils.StartNode(ctx, stack, isConsole)
 
+	// TODO(rgeraldes24)
 	// Register wallet event handlers to open and auto-derive wallets
-	events := make(chan accounts.WalletEvent, 16)
-	stack.AccountManager().Subscribe(events)
+	// events := make(chan accounts.WalletEvent, 16)
+	// stack.AccountManager().Subscribe(events)
 
 	// Create a client to interact with local gzond node.
-	rpcClient := stack.Attach()
-	zondClient := zondclient.NewClient(rpcClient)
+	// rpcClient := stack.Attach()
+	// zondClient := zondclient.NewClient(rpcClient)
 
-	go func() {
-		// Open any wallets already attached
-		for _, wallet := range stack.AccountManager().Wallets() {
-			if err := wallet.Open(""); err != nil {
-				log.Warn("Failed to open wallet", "url", wallet.URL(), "err", err)
-			}
-		}
-		// Listen for wallet event till termination
-		for event := range events {
-			switch event.Kind {
-			case accounts.WalletArrived:
-				if err := event.Wallet.Open(""); err != nil {
-					log.Warn("New wallet appeared, failed to open", "url", event.Wallet.URL(), "err", err)
+	/*
+		go func() {
+			// TODO(rgeraldes24): no longer needed
+			// Open any wallets already attached
+			// for _, wallet := range stack.AccountManager().Wallets() {
+			// 	if err := Failed to open wallet.Open(""); err != nil {
+			// 		log.Warn("Failed to open Failed to open wallet", "url", wallet.URL(), "err", err)
+			// 	}
+			// }
+			// Listen for wallet event till termination
+			for event := range events {
+				switch event.Kind {
+				case accounts.WalletArrived:
+					if err := event.Wallet.Open(""); err != nil {
+						log.Warn("New wallet appeared, failed to open", "url", event.Wallet.URL(), "err", err)
+					}
+				case accounts.WalletOpened:
+					status, _ := event.Wallet.Status()
+					log.Info("New wallet appeared", "url", event.Wallet.URL(), "status", status)
+
+					var derivationPaths []accounts.DerivationPath
+					if event.Wallet.URL().Scheme == "ledger" {
+						derivationPaths = append(derivationPaths, accounts.LegacyLedgerBaseDerivationPath)
+					}
+					derivationPaths = append(derivationPaths, accounts.DefaultBaseDerivationPath)
+
+					event.Wallet.SelfDerive(derivationPaths, zondClient)
+
+				case accounts.WalletDropped:
+					log.Info("Old wallet dropped", "url", event.Wallet.URL())
+					// TODO(rgeraldes24)
+					// event.Wallet.Close()
 				}
-			case accounts.WalletOpened:
-				status, _ := event.Wallet.Status()
-				log.Info("New wallet appeared", "url", event.Wallet.URL(), "status", status)
-
-				var derivationPaths []accounts.DerivationPath
-				if event.Wallet.URL().Scheme == "ledger" {
-					derivationPaths = append(derivationPaths, accounts.LegacyLedgerBaseDerivationPath)
-				}
-				derivationPaths = append(derivationPaths, accounts.DefaultBaseDerivationPath)
-
-				event.Wallet.SelfDerive(derivationPaths, zondClient)
-
-			case accounts.WalletDropped:
-				log.Info("Old wallet dropped", "url", event.Wallet.URL())
-				event.Wallet.Close()
 			}
-		}
-	}()
+		}()
+	*/
 
 	// Spawn a standalone goroutine for status synchronization monitoring,
 	// close the node when synchronization is complete if user required.
