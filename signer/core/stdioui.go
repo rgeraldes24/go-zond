@@ -19,9 +19,9 @@ package core
 import (
 	"context"
 
-	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/rpc"
+	"github.com/theQRL/go-zond/zondapi"
 )
 
 type StdIOUI struct {

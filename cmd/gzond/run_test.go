@@ -24,7 +24,7 @@ import (
 	"time"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/theQRL/go-zond/internal/cmdtest"
+	"github.com/theQRL/go-zond/pkg/cmdtest"
 	"github.com/theQRL/go-zond/rpc"
 )
 

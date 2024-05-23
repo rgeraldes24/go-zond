@@ -32,7 +32,6 @@ import (
 	"github.com/theQRL/go-zond/cmd/utils"
 	"github.com/theQRL/go-zond/internal/flags"
 	"github.com/theQRL/go-zond/internal/version"
-	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/node"
@@ -40,6 +39,7 @@ import (
 	"github.com/theQRL/go-zond/zond/catalyst"
 	"github.com/theQRL/go-zond/zond/downloader"
 	"github.com/theQRL/go-zond/zond/zondconfig"
+	"github.com/theQRL/go-zond/zondapi"
 	"github.com/urfave/cli/v2"
 )
 

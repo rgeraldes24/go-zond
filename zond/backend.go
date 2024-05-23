@@ -38,7 +38,6 @@ import (
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/internal/shutdowncheck"
-	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/miner"
 	"github.com/theQRL/go-zond/node"
@@ -53,6 +52,7 @@ import (
 	"github.com/theQRL/go-zond/zond/protocols/snap"
 	"github.com/theQRL/go-zond/zond/protocols/zond"
 	"github.com/theQRL/go-zond/zond/zondconfig"
+	"github.com/theQRL/go-zond/zondapi"
 	"github.com/theQRL/go-zond/zonddb"
 )
 

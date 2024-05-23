@@ -22,7 +22,7 @@ import (
 	"testing"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/theQRL/go-zond/internal/cmdtest"
+	"github.com/theQRL/go-zond/pkg/cmdtest"
 )
 
 const registeredName = "clef-test"

@@ -26,10 +26,10 @@ import (
 
 	"github.com/graph-gophers/graphql-go"
 	gqlErrors "github.com/graph-gophers/graphql-go/errors"
-	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/zond/filters"
+	"github.com/theQRL/go-zond/zondapi"
 )
 
 type handler struct {

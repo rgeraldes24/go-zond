@@ -44,7 +44,6 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/internal/flags"
-	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
@@ -54,6 +53,7 @@ import (
 	"github.com/theQRL/go-zond/signer/fourbyte"
 	"github.com/theQRL/go-zond/signer/rules"
 	"github.com/theQRL/go-zond/signer/storage"
+	"github.com/theQRL/go-zond/zondapi"
 	"github.com/urfave/cli/v2"
 )
 
