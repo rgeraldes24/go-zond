@@ -102,6 +102,7 @@ password to file or expose in any other way.
     gzond account update <address>
 
 Update an existing account.
+
 The account is saved in the newest version in encrypted format, you are prompted
 for a password to unlock the account and another to save the updated file.
 
@@ -110,7 +111,7 @@ format to the newest format or change the password for an account.
 
 For non-interactive use the password can be specified with the --password flag:
 
-	gzond account update [options] <address>
+gzond account update [options] <address>
 
 Since only one password can be given, only format update can be performed,
 changing your password is only possible interactively.
@@ -141,7 +142,7 @@ You must remember this password to unlock your account in the future.
 
 For non-interactive use the password can be specified with the -password flag:
 
-	gzond account import [options] <keyfile>
+gzond account import [options] <keyfile>
 
 Note:
 As you can directly copy your encrypted accounts to another zond instance,
