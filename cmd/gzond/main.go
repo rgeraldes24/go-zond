@@ -324,13 +324,12 @@ func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
 	zondClient := zondclient.NewClient(rpcClient)
 
 	go func() {
-		// TODO(rgeraldes24): no longer needed
 		// Open any wallets already attached
-		// for _, wallet := range stack.AccountManager().Wallets() {
-		// 	if err := Failed to open wallet.Open(""); err != nil {
-		// 		log.Warn("Failed to open Failed to open wallet", "url", wallet.URL(), "err", err)
-		// 	}
-		// }
+		for _, wallet := range stack.AccountManager().Wallets() {
+			if err := wallet.Open(""); err != nil {
+				log.Warn("Failed to open wallet", "url", wallet.URL(), "err", err)
+			}
+		}
 		// Listen for wallet event till termination
 		for event := range events {
 			switch event.Kind {
@@ -352,8 +351,7 @@ func startNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
 
 			case accounts.WalletDropped:
 				log.Info("Old wallet dropped", "url", event.Wallet.URL())
-				// TODO(rgeraldes24)
-				// event.Wallet.Close()
+				event.Wallet.Close()
 			}
 		}
 	}()

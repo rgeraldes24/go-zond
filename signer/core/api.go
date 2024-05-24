@@ -324,9 +324,7 @@ func (api *SignerAPI) openTrezor(url accounts.URL) {
 		return
 	}
 }
-*/
 
-/*
 // startUSBListener starts a listener for USB events, for hardware wallet interaction
 func (api *SignerAPI) startUSBListener() {
 	eventCh := make(chan accounts.WalletEvent, 16)
