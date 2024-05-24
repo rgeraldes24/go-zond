@@ -32,18 +32,24 @@ var (
 		Name:  "account",
 		Usage: "Manage accounts",
 		Description: `
+
 Manage accounts, list all existing accounts, import a private key into a new
 account, create a new account or update an existing account.
+
 It supports interactive mode, when you are prompted for password as well as
 non-interactive mode where passwords are supplied via a given password file.
 Non-interactive mode is only meant for scripted use on test networks or known
 safe environments.
+
 Make sure you remember the password you gave when creating a new account (with
 either new or import). Without it you are not able to unlock your account.
+
 Note that exporting your key in unencrypted format is NOT supported.
+
 Keys are stored under <DATADIR>/keystore.
 It is safe to transfer the entire directory or the individual keys therein
 between zond nodes by simply copying.
+
 Make sure you backup your keys regularly.`,
 		Subcommands: []*cli.Command{
 			{
@@ -69,10 +75,15 @@ Print a short summary of all accounts`,
 				},
 				Description: `
     gzond account new
+
 Creates a new account and prints the address.
+
 The account is saved in encrypted format, you are prompted for a password.
+
 You must remember this password to unlock your account in the future.
+
 For non-interactive use the password can be specified with the --password flag:
+
 Note, this is meant to be used for testing only, it is a bad idea to save your
 password to file or expose in any other way.
 `,

@@ -44,6 +44,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/internal/flags"
+	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
@@ -53,7 +54,6 @@ import (
 	"github.com/theQRL/go-zond/signer/fourbyte"
 	"github.com/theQRL/go-zond/signer/rules"
 	"github.com/theQRL/go-zond/signer/storage"
-	"github.com/theQRL/go-zond/zondapi"
 	"github.com/urfave/cli/v2"
 )
 
@@ -198,7 +198,7 @@ The delpw command removes a password for a given address (keyfile).
 		Flags: []cli.Flag{
 			logLevelFlag,
 			keystoreFlag,
-			lightKDFFlag,
+			utils.LightKDFFlag,
 			acceptFlag,
 		},
 		Description: `
@@ -219,7 +219,7 @@ The gendoc generates example structures of the json-rpc communication types.
 		Flags: []cli.Flag{
 			logLevelFlag,
 			keystoreFlag,
-			lightKDFFlag,
+			utils.LightKDFFlag,
 			acceptFlag,
 		},
 		Description: `
@@ -232,7 +232,7 @@ The gendoc generates example structures of the json-rpc communication types.
 		Flags: []cli.Flag{
 			logLevelFlag,
 			keystoreFlag,
-			lightKDFFlag,
+			utils.LightKDFFlag,
 			acceptFlag,
 		},
 		Description: `
@@ -246,7 +246,7 @@ The gendoc generates example structures of the json-rpc communication types.
 		Flags: []cli.Flag{
 			logLevelFlag,
 			keystoreFlag,
-			lightKDFFlag,
+			utils.LightKDFFlag,
 			acceptFlag,
 		},
 		Description: `
@@ -266,7 +266,6 @@ func init() {
 		keystoreFlag,
 		configdirFlag,
 		chainIdFlag,
-		lightKDFFlag,
 		utils.LightKDFFlag,
 		utils.USBFlag,
 		utils.SmartCardDaemonPathFlag,
@@ -562,7 +561,6 @@ func accountImport(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-
 	readPw := func(prompt string) (string, error) {
 		resp, err := ui.OnInputRequired(core.UserInputRequest{
 			Title:      "Password",

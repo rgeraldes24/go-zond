@@ -303,6 +303,7 @@ func setAccountManagerBackends(conf *node.Config, am *accounts.Manager, keydir s
 		scryptN = keystore.LightScryptN
 		scryptP = keystore.LightScryptP
 	}
+
 	// Assemble the supported backends
 	if len(conf.ExternalSigner) > 0 {
 		log.Info("Using external signer", "url", conf.ExternalSigner)
@@ -319,7 +320,6 @@ func setAccountManagerBackends(conf *node.Config, am *accounts.Manager, keydir s
 	// we can have both, but it's very confusing for the user to see the same
 	// accounts in both externally and locally, plus very racey.
 	am.AddBackend(keystore.NewKeyStore(keydir, scryptN, scryptP))
-
 	// TODO(rgeraldes24)
 	/*
 		if conf.USB {
