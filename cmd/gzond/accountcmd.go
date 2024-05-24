@@ -100,13 +100,18 @@ password to file or expose in any other way.
 				},
 				Description: `
     gzond account update <address>
+
 Update an existing account.
 The account is saved in the newest version in encrypted format, you are prompted
 for a password to unlock the account and another to save the updated file.
+
 This same command can therefore be used to migrate an account of a deprecated
 format to the newest format or change the password for an account.
+
 For non-interactive use the password can be specified with the --password flag:
-    gzond account update [options] <address>
+
+	gzond account update [options] <address>
+
 Since only one password can be given, only format update can be performed,
 changing your password is only possible interactively.
 `,
@@ -124,13 +129,20 @@ changing your password is only possible interactively.
 				ArgsUsage: "<keyFile>",
 				Description: `
     gzond account import <keyfile>
+
 Imports an unencrypted private key from <keyfile> and creates a new account.
 Prints the address.
+
 The keyfile is assumed to contain an unencrypted private key in hexadecimal format.
+
 The account is saved in encrypted format, you are prompted for a password.
+
 You must remember this password to unlock your account in the future.
+
 For non-interactive use the password can be specified with the -password flag:
-    gzond account import [options] <keyfile>
+
+	gzond account import [options] <keyfile>
+
 Note:
 As you can directly copy your encrypted accounts to another zond instance,
 this import mechanism is not needed when you transfer an account between
