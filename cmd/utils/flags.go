@@ -50,6 +50,7 @@ import (
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/graphql"
 	"github.com/theQRL/go-zond/internal/flags"
+	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/metrics/exp"
@@ -73,7 +74,6 @@ import (
 	"github.com/theQRL/go-zond/zond/gasprice"
 	"github.com/theQRL/go-zond/zond/tracers"
 	"github.com/theQRL/go-zond/zond/zondconfig"
-	"github.com/theQRL/go-zond/zondapi"
 	"github.com/theQRL/go-zond/zonddb"
 	"github.com/theQRL/go-zond/zonddb/remotedb"
 	"github.com/theQRL/go-zond/zondstats"
@@ -1655,7 +1655,6 @@ func SetZondConfig(ctx *cli.Context, stack *node.Node, cfg *zondconfig.Config) {
 		if !ctx.IsSet(MinerGasPriceFlag.Name) {
 			cfg.Miner.GasPrice = big.NewInt(1)
 		}
-
 	default:
 		if cfg.NetworkId == 1 {
 			SetDNSDiscoveryDefaults(cfg, params.MainnetGenesisHash)
