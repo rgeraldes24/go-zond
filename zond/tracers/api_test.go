@@ -204,8 +204,15 @@ func TestTraceCall(t *testing.T) {
 		// Transfer from account[0] to account[1]
 		//    value: 1000 wei
 		//    fee:   0 wei
-		tx, _ := types.SignTx(types.NewTransaction(uint64(i), accounts[1].addr, big.NewInt(1000), params.TxGas, b.BaseFee(), nil), signer, accounts[0].key)
-		b.AddTx(tx)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: uint64(i),
+			To:    &accounts[1].addr,
+			Value: big.NewInt(1000),
+			Gas:   params.TxGas,
+			Data:  nil,
+		})
+		signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
+		b.AddTx(signedTx)
 	})
 	defer backend.teardown()
 	api := NewAPI(backend)
@@ -338,9 +345,16 @@ func TestTraceTransaction(t *testing.T) {
 		// Transfer from account[0] to account[1]
 		//    value: 1000 wei
 		//    fee:   0 wei
-		tx, _ := types.SignTx(types.NewTransaction(uint64(i), accounts[1].addr, big.NewInt(1000), params.TxGas, b.BaseFee(), nil), signer, accounts[0].key)
-		b.AddTx(tx)
-		target = tx.Hash()
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: uint64(i),
+			To:    &accounts[1].addr,
+			Value: big.NewInt(1000),
+			Gas:   params.TxGas,
+			Data:  nil,
+		})
+		signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
+		b.AddTx(signedTx)
+		target = signedTx.Hash()
 	})
 	defer backend.chain.Stop()
 	api := NewAPI(backend)
@@ -388,9 +402,17 @@ func TestTraceBlock(t *testing.T) {
 		// Transfer from account[0] to account[1]
 		//    value: 1000 wei
 		//    fee:   0 wei
-		tx, _ := types.SignTx(types.NewTransaction(uint64(i), accounts[1].addr, big.NewInt(1000), params.TxGas, b.BaseFee(), nil), signer, accounts[0].key)
-		b.AddTx(tx)
-		txHash = tx.Hash()
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: uint64(i),
+			To:    &accounts[1].addr,
+			Value: big.NewInt(1000),
+			Gas:   params.TxGas,
+			Data:  nil,
+		})
+		signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
+
+		b.AddTx(signedTx)
+		txHash = signedTx.Hash()
 	})
 	defer backend.chain.Stop()
 	api := NewAPI(backend)
@@ -478,8 +500,15 @@ func TestTracingWithOverrides(t *testing.T) {
 		// Transfer from account[0] to account[1]
 		//    value: 1000 wei
 		//    fee:   0 wei
-		tx, _ := types.SignTx(types.NewTransaction(uint64(i), accounts[1].addr, big.NewInt(1000), params.TxGas, b.BaseFee(), nil), signer, accounts[0].key)
-		b.AddTx(tx)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: uint64(i),
+			To:    &accounts[1].addr,
+			Value: big.NewInt(1000),
+			Gas:   params.TxGas,
+			Data:  nil,
+		})
+		signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
+		b.AddTx(signedTx)
 	})
 	defer backend.chain.Stop()
 	api := NewAPI(backend)
@@ -839,8 +868,15 @@ func TestTraceChain(t *testing.T) {
 		//    value: 1000 wei
 		//    fee:   0 wei
 		for j := 0; j < i+1; j++ {
-			tx, _ := types.SignTx(types.NewTransaction(nonce, accounts[1].addr, big.NewInt(1000), params.TxGas, b.BaseFee(), nil), signer, accounts[0].key)
-			b.AddTx(tx)
+			tx := types.NewTx(&types.DynamicFeeTx{
+				Nonce: nonce,
+				To:    &accounts[1].addr,
+				Value: big.NewInt(1000),
+				Gas:   params.TxGas,
+				Data:  nil,
+			})
+			signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
+			b.AddTx(signedTx)
 			nonce += 1
 		}
 	})
