@@ -52,7 +52,14 @@ func TestBlockEncoding(t *testing.T) {
 	check("Time", block.Time(), uint64(1426516743))
 	check("Size", block.Size(), uint64(len(blockEnc)))
 
-	tx1 := NewTransaction(0, common.HexToAddress("095e7baea6a6c7c4c2dfeb977efac326af552d87"), big.NewInt(10), 50000, big.NewInt(10), nil)
+	to1 := common.HexToAddress("095e7baea6a6c7c4c2dfeb977efac326af552d87")
+	tx1 := NewTx(&DynamicFeeTx{
+		Nonce: 0,
+		To:    &to1,
+		Value: big.NewInt(10),
+		Gas:   50000,
+		Data:  nil,
+	})
 	tx1, _ = tx1.WithSignatureAndPublicKey(ShanghaiSigner{ChainId: big.NewInt(0)}, common.Hex2Bytes("9bea4c4daac7c7c52e093e6a4c35dbbcf8856f1af7b059ba20253e70848d094f8a8fae537ce25ed8cb5af9adac3f141af69bd515bd2ba031522df09b97dd72b100"), nil)
 	check("len(Transactions)", len(block.Transactions()), 1)
 	check("Transactions[0].Hash", block.Transactions()[0].Hash(), tx1.Hash())
@@ -88,7 +95,14 @@ func TestEIP1559BlockEncoding(t *testing.T) {
 	check("Size", block.Size(), uint64(len(blockEnc)))
 	check("BaseFee", block.BaseFee(), new(big.Int).SetUint64(params.InitialBaseFee))
 
-	tx1 := NewTransaction(0, common.HexToAddress("095e7baea6a6c7c4c2dfeb977efac326af552d87"), big.NewInt(10), 50000, big.NewInt(10), nil)
+	to1 := common.HexToAddress("095e7baea6a6c7c4c2dfeb977efac326af552d87")
+	tx1 := NewTx(&DynamicFeeTx{
+		Nonce: 0,
+		To:    &to1,
+		Value: big.NewInt(10),
+		Gas:   50000,
+		Data:  nil,
+	})
 	tx1, _ = tx1.WithSignatureAndPublicKey(ShanghaiSigner{ChainId: big.NewInt(0)}, common.Hex2Bytes("9bea4c4daac7c7c52e093e6a4c35dbbcf8856f1af7b059ba20253e70848d094f8a8fae537ce25ed8cb5af9adac3f141af69bd515bd2ba031522df09b97dd72b100"), nil)
 
 	addr := common.HexToAddress("0x0000000000000000000000000000000000000001")
@@ -217,15 +231,27 @@ func makeBenchBlock() *Block {
 	}
 	for i := range txs {
 		amount := math.BigPow(2, int64(i))
-		price := big.NewInt(300000)
+		// TODO(rgeraldes24)
+		// price := big.NewInt(300000)
 		data := make([]byte, 100)
-		tx := NewTransaction(uint64(i), common.Address{}, amount, 123457, price, data)
+		tx := NewTx(&DynamicFeeTx{
+			Nonce: uint64(i),
+			To:    &common.Address{},
+			Value: amount,
+			Gas:   123457,
+			Data:  data,
+		})
 		signedTx, err := SignTx(tx, signer, key)
 		if err != nil {
 			panic(err)
 		}
 		txs[i] = signedTx
-		receipts[i] = NewReceipt(make([]byte, 32), false, tx.Gas())
+		receipts[i] = &Receipt{
+			Type:              DynamicFeeTxType,
+			PostState:         common.CopyBytes(make([]byte, 32)),
+			CumulativeGasUsed: tx.Gas(),
+			Status:            ReceiptStatusSuccessful,
+		}
 	}
 
 	return NewBlock(header, txs, receipts, blocktest.NewHasher())
