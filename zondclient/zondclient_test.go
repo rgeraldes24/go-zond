@@ -193,20 +193,18 @@ var genesis = &core.Genesis{
 	BaseFee:   big.NewInt(params.InitialBaseFee),
 }
 
-var testTx1 = types.MustSignNewTx(testKey, types.ShanghaiSigner{ChainId: genesis.Config.ChainID}, &types.LegacyTx{
-	Nonce:    0,
-	Value:    big.NewInt(12),
-	GasPrice: big.NewInt(params.InitialBaseFee),
-	Gas:      params.TxGas,
-	To:       &common.Address{2},
+var testTx1 = types.MustSignNewTx(testKey, types.ShanghaiSigner{ChainId: genesis.Config.ChainID}, &types.DynamicFeeTx{
+	Nonce: 0,
+	Value: big.NewInt(12),
+	Gas:   params.TxGas,
+	To:    &common.Address{2},
 })
 
-var testTx2 = types.MustSignNewTx(testKey, types.ShanghaiSigner{ChainId: genesis.Config.ChainID}, &types.LegacyTx{
-	Nonce:    1,
-	Value:    big.NewInt(8),
-	GasPrice: big.NewInt(params.InitialBaseFee),
-	Gas:      params.TxGas,
-	To:       &common.Address{2},
+var testTx2 = types.MustSignNewTx(testKey, types.ShanghaiSigner{ChainId: genesis.Config.ChainID}, &types.DynamicFeeTx{
+	Nonce: 1,
+	Value: big.NewInt(8),
+	Gas:   params.TxGas,
+	To:    &common.Address{2},
 })
 
 func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
@@ -696,12 +694,11 @@ func sendTransaction(ec *Client) error {
 	}
 
 	signer := types.LatestSignerForChainID(chainID)
-	tx, err := types.SignNewTx(testKey, signer, &types.LegacyTx{
-		Nonce:    nonce,
-		To:       &common.Address{2},
-		Value:    big.NewInt(1),
-		Gas:      22000,
-		GasPrice: big.NewInt(params.InitialBaseFee),
+	tx, err := types.SignNewTx(testKey, signer, &types.DynamicFeeTx{
+		Nonce: nonce,
+		To:    &common.Address{2},
+		Value: big.NewInt(1),
+		Gas:   22000,
 	})
 	if err != nil {
 		return err
