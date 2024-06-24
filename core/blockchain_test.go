@@ -1177,7 +1177,13 @@ func testLogReorgs(t *testing.T, scheme string) {
 	blockchain.SubscribeRemovedLogsEvent(rmLogsCh)
 	_, chain, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 2, func(i int, gen *BlockGen) {
 		if i == 1 {
-			tx, err := types.SignTx(types.NewContractCreation(gen.TxNonce(addr1), new(big.Int), 1000000, gen.header.BaseFee, code), signer, key1)
+			tx := types.NewTx(&types.DynamicFeeTx{
+				Nonce: gen.TxNonce(addr1),
+				Value: new(big.Int),
+				Gas:   1000000,
+				Data:  code,
+			})
+			tx, err := types.SignTx(tx, signer, key1)
 			if err != nil {
 				t.Fatalf("failed to create tx: %v", err)
 			}
@@ -1329,7 +1335,13 @@ func testSideLogRebirth(t *testing.T, scheme string) {
 	// Generate side chain with lower difficulty
 	genDb, sideChain, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 2, func(i int, gen *BlockGen) {
 		if i == 1 {
-			tx, err := types.SignTx(types.NewContractCreation(gen.TxNonce(addr1), new(big.Int), 1000000, gen.header.BaseFee, logCode), signer, key1)
+			tx := types.NewTx(&types.DynamicFeeTx{
+				Nonce: gen.TxNonce(addr1),
+				Value: new(big.Int),
+				Gas:   1000000,
+				Data:  logCode,
+			})
+			tx, err := types.SignTx(tx, signer, key1)
 			if err != nil {
 				t.Fatalf("failed to create tx: %v", err)
 			}
@@ -1415,7 +1427,13 @@ func testReorgSideEvent(t *testing.T, scheme string) {
 	}
 
 	_, replacementBlocks, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 4, func(i int, gen *BlockGen) {
-		tx, err := types.SignTx(types.NewContractCreation(gen.TxNonce(addr1), new(big.Int), 1000000, gen.header.BaseFee, nil), signer, key1)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: gen.TxNonce(addr1),
+			Value: new(big.Int),
+			Gas:   1000000,
+			Data:  nil,
+		})
+		tx, err := types.SignTx(tx, signer, key1)
 		if i == 2 {
 			gen.OffsetTime(-9)
 		}
@@ -1552,13 +1570,35 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 			err    error
 			signer = types.LatestSigner(gspec.Config)
 		)
+
 		switch i {
 		case 0:
-			tx, err = types.SignTx(types.NewTransaction(block.TxNonce(address), theAddr, new(big.Int), 21000, new(big.Int), nil), signer, key)
+			tx = types.NewTx(&types.LegacyTx{
+				Nonce: block.TxNonce(address),
+				To:    &theAddr,
+				Value: new(big.Int),
+				Gas:   21000,
+				Data:  nil,
+			})
+			tx, err = types.SignTx(tx, signer, key)
 		case 1:
-			tx, err = types.SignTx(types.NewTransaction(block.TxNonce(address), theAddr, new(big.Int), 21000, new(big.Int), nil), signer, key)
+			tx = types.NewTx(&types.LegacyTx{
+				Nonce: block.TxNonce(address),
+				To:    &theAddr,
+				Value: new(big.Int),
+				Gas:   21000,
+				Data:  nil,
+			})
+			tx, err = types.SignTx(tx, signer, key)
 		case 2:
-			tx, err = types.SignTx(types.NewTransaction(block.TxNonce(address), theAddr, new(big.Int), 21000, new(big.Int), nil), signer, key)
+			tx = types.NewTx(&types.LegacyTx{
+				Nonce: block.TxNonce(address),
+				To:    &theAddr,
+				Value: new(big.Int),
+				Gas:   21000,
+				Data:  nil,
+			})
+			tx, err = types.SignTx(tx, signer, key)
 		}
 		if err != nil {
 			t.Fatal(err)
@@ -1991,7 +2031,15 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 	defer chain.Stop()
 
 	genDb, blocks, _ := GenerateChainWithGenesis(gspec, engine, 2*TriesInMemory, func(i int, gen *BlockGen) {
-		tx, err := types.SignTx(types.NewTransaction(nonce, common.HexToAddress("deadbeef"), big.NewInt(100), 21000, big.NewInt(int64(i+1)*params.GWei), nil), signer, key)
+		to := common.HexToAddress("deadbeef")
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: nonce,
+			To:    &to,
+			Value: big.NewInt(100),
+			Gas:   21000,
+			Data:  nil,
+		})
+		tx, err := types.SignTx(tx, signer, key)
 		if err != nil {
 			t.Fatalf("failed to create tx: %v", err)
 		}
@@ -2511,7 +2559,14 @@ func TestTransactionIndices(t *testing.T) {
 		signer = types.LatestSigner(gspec.Config)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 128, func(i int, block *BlockGen) {
-		tx, err := types.SignTx(types.NewTransaction(block.TxNonce(address), common.Address{0x00}, big.NewInt(1000), params.TxGas, block.header.BaseFee, nil), signer, key)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: block.TxNonce(address),
+			To:    &common.Address{0x00},
+			Value: big.NewInt(1000),
+			Gas:   params.TxGas,
+			Data:  nil,
+		})
+		tx, err := types.SignTx(tx, signer, key)
 		if err != nil {
 			panic(err)
 		}
@@ -2612,7 +2667,14 @@ func testSkipStaleTxIndicesInSnapSync(t *testing.T, scheme string) {
 		signer  = types.LatestSigner(gspec.Config)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 128, func(i int, block *BlockGen) {
-		tx, err := types.SignTx(types.NewTransaction(block.TxNonce(address), common.Address{0x00}, big.NewInt(1000), params.TxGas, block.header.BaseFee, nil), signer, key)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: block.TxNonce(address),
+			To:    &common.Address{0x00},
+			Value: big.NewInt(1000),
+			Gas:   params.TxGas,
+			Data:  nil,
+		})
+		tx, err := types.SignTx(tx, signer, key)
 		if err != nil {
 			panic(err)
 		}
@@ -2709,7 +2771,14 @@ func benchmarkLargeNumberOfValueToNonexisting(b *testing.B, numTxs, numBlocks in
 		for txi := 0; txi < numTxs; txi++ {
 			uniq := uint64(i*numTxs + txi)
 			recipient := recipientFn(uniq)
-			tx, err := types.SignTx(types.NewTransaction(uniq, recipient, big.NewInt(1), params.TxGas, block.header.BaseFee, nil), signer, testBankKey)
+			tx := types.NewTx(&types.DynamicFeeTx{
+				Nonce: uniq,
+				To:    &recipient,
+				Value: big.NewInt(1),
+				Gas:   params.TxGas,
+				Data:  nil,
+			})
+			tx, err := types.SignTx(tx, signer, testBankKey)
 			if err != nil {
 				b.Error(err)
 			}
@@ -2891,12 +2960,24 @@ func testDeleteCreateRevert(t *testing.T, scheme string) {
 	_, blocks, _ := GenerateChainWithGenesis(gspec, engine, 1, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to AAAA
-		tx, _ := types.SignTx(types.NewTransaction(0, aa,
-			big.NewInt(0), 50000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: 0,
+			To:    &aa,
+			Value: big.NewInt(0),
+			Gas:   50000,
+			Data:  nil,
+		})
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 		// One transaction to BBBB
-		tx, _ = types.SignTx(types.NewTransaction(1, bb,
-			big.NewInt(0), 100000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
+		tx = types.NewTx(&types.DynamicFeeTx{
+			Nonce: 1,
+			To:    &bb,
+			Value: big.NewInt(0),
+			Gas:   100000,
+			Data:  nil,
+		})
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 	})
 	// Import the canonical chain
@@ -3004,12 +3085,24 @@ func testDeleteRecreateSlots(t *testing.T, scheme string) {
 	_, blocks, _ := GenerateChainWithGenesis(gspec, engine, 1, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to AA, to kill it
-		tx, _ := types.SignTx(types.NewTransaction(0, aa,
-			big.NewInt(0), 50000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: 0,
+			To:    &aa,
+			Value: big.NewInt(0),
+			Gas:   50000,
+			Data:  nil,
+		})
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 		// One transaction to BB, to recreate AA
-		tx, _ = types.SignTx(types.NewTransaction(1, bb,
-			big.NewInt(0), 100000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
+		tx = types.NewTx(&types.DynamicFeeTx{
+			Nonce: 1,
+			To:    &bb,
+			Value: big.NewInt(0),
+			Gas:   100000,
+			Data:  nil,
+		})
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 	})
 	// Import the canonical chain
@@ -3086,12 +3179,24 @@ func testDeleteRecreateAccount(t *testing.T, scheme string) {
 	_, blocks, _ := GenerateChainWithGenesis(gspec, engine, 1, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to AA, to kill it
-		tx, _ := types.SignTx(types.NewTransaction(0, aa,
-			big.NewInt(0), 50000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: 0,
+			To:    &aa,
+			Value: big.NewInt(0),
+			Gas:   50000,
+			Data:  nil,
+		})
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 		// One transaction to AA, to recreate it (but without storage
-		tx, _ = types.SignTx(types.NewTransaction(1, aa,
-			big.NewInt(1), 100000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
+		tx = types.NewTx(&types.DynamicFeeTx{
+			Nonce: 1,
+			To:    &aa,
+			Value: big.NewInt(1),
+			Gas:   100000,
+			Data:  nil,
+		})
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 	})
 	// Import the canonical chain
@@ -3222,8 +3327,14 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 	}
 	var expectations []*expectation
 	var newDestruct = func(e *expectation, b *BlockGen) *types.Transaction {
-		tx, _ := types.SignTx(types.NewTransaction(nonce, aa,
-			big.NewInt(0), 50000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: nonce,
+			To:    &aa,
+			Value: big.NewInt(0),
+			Gas:   50000,
+			Data:  nil,
+		})
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
 		nonce++
 		if e.exist {
 			e.exist = false
@@ -3233,8 +3344,14 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 		return tx
 	}
 	var newResurrect = func(e *expectation, b *BlockGen) *types.Transaction {
-		tx, _ := types.SignTx(types.NewTransaction(nonce, bb,
-			big.NewInt(0), 100000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: nonce,
+			To:    &bb,
+			Value: big.NewInt(0),
+			Gas:   100000,
+			Data:  nil,
+		})
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
 		nonce++
 		if !e.exist {
 			e.exist = true
@@ -3401,8 +3518,14 @@ func testInitThenFailCreateContract(t *testing.T, scheme string) {
 	_, blocks, _ := GenerateChainWithGenesis(gspec, engine, 4, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to BB
-		tx, _ := types.SignTx(types.NewTransaction(nonce, bb,
-			big.NewInt(0), 100000, b.header.BaseFee, nil), types.ShanghaiSigner{}, key)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: nonce,
+			To:    &bb,
+			Value: big.NewInt(0),
+			Gas:   100000,
+			Data:  nil,
+		})
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
 		b.AddTx(tx)
 		nonce++
 	})
@@ -3697,7 +3820,14 @@ func testSetCanonical(t *testing.T, scheme string) {
 	)
 	// Generate and import the canonical chain
 	_, canon, _ := GenerateChainWithGenesis(gspec, engine, 2*TriesInMemory, func(i int, gen *BlockGen) {
-		tx, err := types.SignTx(types.NewTransaction(gen.TxNonce(address), common.Address{0x00}, big.NewInt(1000), params.TxGas, gen.header.BaseFee, nil), signer, key)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: gen.TxNonce(address),
+			To:    &common.Address{0x00},
+			Value: big.NewInt(1000),
+			Gas:   params.TxGas,
+			Data:  nil,
+		})
+		tx, err := types.SignTx(tx, signer, key)
 		if err != nil {
 			panic(err)
 		}
@@ -3718,7 +3848,14 @@ func testSetCanonical(t *testing.T, scheme string) {
 
 	// Generate the side chain and import them
 	_, side, _ := GenerateChainWithGenesis(gspec, engine, 2*TriesInMemory, func(i int, gen *BlockGen) {
-		tx, err := types.SignTx(types.NewTransaction(gen.TxNonce(address), common.Address{0x00}, big.NewInt(1), params.TxGas, gen.header.BaseFee, nil), signer, key)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: gen.TxNonce(address),
+			To:    &common.Address{0x00},
+			Value: big.NewInt(1),
+			Gas:   params.TxGas,
+			Data:  nil,
+		})
+		tx, err := types.SignTx(tx, signer, key)
 		if err != nil {
 			panic(err)
 		}
@@ -3887,7 +4024,15 @@ func TestTxIndexer(t *testing.T) {
 		nonce  = uint64(0)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, engine, 128, func(i int, gen *BlockGen) {
-		tx, _ := types.SignTx(types.NewTransaction(nonce, common.HexToAddress("0xdeadbeef"), big.NewInt(1000), params.TxGas, big.NewInt(10*params.InitialBaseFee), nil), types.ShanghaiSigner{}, testBankKey)
+		to := common.HexToAddress("0xdeadbeef")
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: nonce,
+			To:    &to,
+			Value: big.NewInt(1000),
+			Gas:   params.TxGas,
+			Data:  nil,
+		})
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, testBankKey)
 		gen.AddTx(tx)
 		nonce += 1
 	})
