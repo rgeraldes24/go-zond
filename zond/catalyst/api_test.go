@@ -74,7 +74,8 @@ func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 	generate := func(i int, g *core.BlockGen) {
 		g.OffsetTime(5)
 		g.SetExtra([]byte("test"))
-		tx, _ := types.SignTx(types.NewTransaction(testNonce, common.HexToAddress("0x9a9070028361F7AAbeB3f2F2Dc07F82C4a98A02a"), big.NewInt(1), params.TxGas, big.NewInt(params.InitialBaseFee*2), nil), types.LatestSigner(&config), testKey)
+		to := common.HexToAddress("0x9a9070028361F7AAbeB3f2F2Dc07F82C4a98A02a")
+		tx, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: testNonce, To: &to, Value: big.NewInt(1), Gas: params.TxGas, Data: nil}), types.LatestSigner(&config), testKey)
 		g.AddTx(tx)
 		testNonce++
 	}
@@ -90,7 +91,8 @@ func TestEth2AssembleBlock(t *testing.T) {
 
 	api := NewConsensusAPI(zondservice)
 	signer := types.NewShanghaiSigner(zondservice.BlockChain().Config().ChainID)
-	tx, err := types.SignTx(types.NewTransaction(uint64(10), blocks[9].Coinbase(), big.NewInt(1000), params.TxGas, big.NewInt(params.InitialBaseFee), nil), signer, testKey)
+	to := blocks[9].Coinbase()
+	tx, err := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: uint64(10), To: &to, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, testKey)
 	if err != nil {
 		t.Fatalf("error signing transaction, err=%v", err)
 	}
@@ -295,8 +297,14 @@ func TestEth2NewBlock(t *testing.T) {
 		statedb, _ := zondservice.BlockChain().StateAt(parent.Root())
 		nonce := statedb.GetNonce(testAddr)
 		signer := types.LatestSigner(zondservice.BlockChain().Config())
-		tx, _ := types.SignTx(types.NewContractCreation(nonce, new(big.Int), 1000000, big.NewInt(2*params.InitialBaseFee), logCode), signer, testKey)
-		zondservice.TxPool().Add([]*types.Transaction{tx}, true, false)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: nonce,
+			Value: new(big.Int),
+			Gas:   1000000,
+			Data:  logCode,
+		})
+		signedTx, _ := types.SignTx(tx, signer, testKey)
+		zondservice.TxPool().Add([]*types.Transaction{signedTx}, true, false)
 
 		execData, err := assembleWithTransactions(api, parent.Hash(), &engine.PayloadAttributes{
 			Timestamp: parent.Time() + 5,
@@ -465,8 +473,14 @@ func TestFullAPI(t *testing.T) {
 		statedb, _ := zondservice.BlockChain().StateAt(parent.Root)
 		nonce := statedb.GetNonce(testAddr)
 		signer := types.LatestSigner(zondservice.BlockChain().Config())
-		tx, _ := types.SignTx(types.NewContractCreation(nonce, new(big.Int), 1000000, big.NewInt(2*params.InitialBaseFee), logCode), signer, testKey)
-		zondservice.TxPool().Add([]*types.Transaction{tx}, true, false)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: nonce,
+			Value: new(big.Int),
+			Gas:   1000000,
+			Data:  logCode,
+		})
+		signedTx, _ := types.SignTx(tx, signer, testKey)
+		zondservice.TxPool().Add([]*types.Transaction{signedTx}, true, false)
 	}
 
 	setupBlocks(t, zondservice, 10, parent, callback, nil)
@@ -1209,8 +1223,14 @@ func setupBodies(t *testing.T) (*node.Node, *zond.Zond, []*types.Block) {
 		statedb, _ := zondservice.BlockChain().StateAt(parent.Root)
 		nonce := statedb.GetNonce(testAddr)
 		signer := types.LatestSigner(zondservice.BlockChain().Config())
-		tx, _ := types.SignTx(types.NewContractCreation(nonce, new(big.Int), 1000000, big.NewInt(2*params.InitialBaseFee), logCode), signer, testKey)
-		zondservice.TxPool().Add([]*types.Transaction{tx}, false, false)
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: nonce,
+			Value: new(big.Int),
+			Gas:   1000000,
+			Data:  logCode,
+		})
+		signedTx, _ := types.SignTx(tx, signer, testKey)
+		zondservice.TxPool().Add([]*types.Transaction{signedTx}, false, false)
 	}
 
 	withdrawals := make([][]*types.Withdrawal, 10)

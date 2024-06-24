@@ -129,11 +129,10 @@ func (b *testWorkerBackend) TxPool() *txpool.TxPool       { return b.txPool }
 
 func (b *testWorkerBackend) newRandomTx(creation bool) *types.Transaction {
 	var tx *types.Transaction
-	gasPrice := big.NewInt(10 * params.InitialBaseFee)
 	if creation {
-		tx, _ = types.SignTx(types.NewContractCreation(b.txPool.Nonce(testBankAddress), big.NewInt(0), testGas, gasPrice, common.FromHex(testCode)), types.ShanghaiSigner{ChainId: big.NewInt(0)}, testBankKey)
+		tx, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: b.txPool.Nonce(testBankAddress), Value: big.NewInt(0), Gas: testGas, Data: common.FromHex(testCode)}), types.ShanghaiSigner{ChainId: big.NewInt(0)}, testBankKey)
 	} else {
-		tx, _ = types.SignTx(types.NewTransaction(b.txPool.Nonce(testBankAddress), testUserAddress, big.NewInt(1000), params.TxGas, gasPrice, nil), types.ShanghaiSigner{ChainId: big.NewInt(0)}, testBankKey)
+		tx, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: b.txPool.Nonce(testBankAddress), To: &testUserAddress, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), types.ShanghaiSigner{ChainId: big.NewInt(0)}, testBankKey)
 	}
 	return tx
 }

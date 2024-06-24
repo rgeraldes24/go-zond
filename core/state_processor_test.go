@@ -49,8 +49,15 @@ func TestStateProcessorErrors(t *testing.T) {
 		d2, _  = pqcrypto.HexToDilithium("0202020202020202020202020202020202020202020202020202002020202020")
 	)
 	var makeTx = func(d *dilithium.Dilithium, nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte) *types.Transaction {
-		tx, _ := types.SignTx(types.NewTransaction(nonce, to, amount, gasLimit, gasPrice, data), signer, d)
-		return tx
+		tx := types.NewTx(&types.DynamicFeeTx{
+			Nonce: nonce,
+			To:    &to,
+			Value: amount,
+			Gas:   gasLimit,
+			Data:  data,
+		})
+		signedTx, _ := types.SignTx(tx, signer, d)
+		return signedTx
 	}
 	var mkDynamicTx = func(nonce uint64, to common.Address, gasLimit uint64, gasTipCap, gasFeeCap *big.Int) *types.Transaction {
 		tx, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{
@@ -324,7 +331,12 @@ func GenerateBadBlock(parent *types.Block, engine consensus.Engine, txs types.Tr
 	for _, tx := range txs {
 		txh := tx.Hash()
 		hasher.Write(txh[:])
-		receipt := types.NewReceipt(nil, false, cumulativeGas+tx.Gas())
+		receipt := &types.Receipt{
+			Type:              types.DynamicFeeTxType,
+			PostState:         common.CopyBytes(nil),
+			CumulativeGasUsed: cumulativeGas + tx.Gas(),
+			Status:            types.ReceiptStatusSuccessful,
+		}
 		receipt.TxHash = tx.Hash()
 		receipt.GasUsed = tx.Gas()
 		receipts = append(receipts, receipt)

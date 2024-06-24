@@ -51,9 +51,15 @@ func getBlock(transactions int, uncles int, dataSize int) *types.Block {
 			if n == uncles {
 				// Add transactions and stuff on the last block
 				for i := 0; i < transactions; i++ {
-					tx, _ := types.SignTx(types.NewTransaction(uint64(i), aa,
-						big.NewInt(0), 50000, b.header.BaseFee, make([]byte, dataSize)), types.ShanghaiSigner{ChainId: big.NewInt(0)}, d)
-					b.AddTx(tx)
+					tx := types.NewTx(&types.DynamicFeeTx{
+						Nonce: uint64(i),
+						To:    &aa,
+						Value: big.NewInt(0),
+						Gas:   50000,
+						Data:  make([]byte, dataSize),
+					})
+					signedTx, _ := types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(0)}, d)
+					b.AddTx(signedTx)
 				}
 			}
 		})

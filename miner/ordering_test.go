@@ -148,7 +148,7 @@ func TestTransactionTimeSort(t *testing.T) {
 	for start, key := range keys {
 		addr := key.GetAddress()
 
-		tx, _ := types.SignTx(types.NewTransaction(0, common.Address{}, big.NewInt(100), 100, big.NewInt(1), nil), signer, key)
+		tx, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &common.Address{}, Value: big.NewInt(100), Gas: 100, Data: nil}), signer, key)
 		tx.SetTime(time.Unix(0, int64(len(keys)-start)))
 
 		groups[addr] = append(groups[addr], &txpool.LazyTransaction{

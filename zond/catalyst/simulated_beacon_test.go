@@ -105,7 +105,7 @@ func TestSimulatedBeaconSendWithdrawals(t *testing.T) {
 	// generate a bunch of transactions
 	signer := types.NewShanghaiSigner(zondService.BlockChain().Config().ChainID)
 	for i := 0; i < 20; i++ {
-		tx, err := types.SignTx(types.NewTransaction(uint64(i), common.Address{}, big.NewInt(1000), params.TxGas, big.NewInt(params.InitialBaseFee), nil), signer, testKey)
+		tx, err := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: uint64(i), To: &common.Address{}, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, testKey)
 		if err != nil {
 			t.Fatalf("error signing transaction, err=%v", err)
 		}
