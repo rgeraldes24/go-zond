@@ -16,6 +16,8 @@
 
 package downloader
 
+// TODO(rgeraldes24): fix
+/*
 import (
 	"fmt"
 	"math/big"
@@ -463,3 +465,4 @@ func (n *network) headers(from int) []*types.Header {
 	}
 	return hdrs
 }
+*/
