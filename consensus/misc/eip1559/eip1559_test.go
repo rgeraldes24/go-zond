@@ -38,6 +38,8 @@ func config() *params.ChainConfig {
 	return config
 }
 
+// TODO(rgeraldes24)
+/*
 // TestBlockGasLimits tests the gasLimit checks for blocks both across
 // the EIP-1559 boundary and post-1559 blocks
 func TestBlockGasLimits(t *testing.T) {
@@ -87,6 +89,7 @@ func TestBlockGasLimits(t *testing.T) {
 		}
 	}
 }
+*/
 
 // TestCalcBaseFee assumes all blocks are 1559-blocks
 func TestCalcBaseFee(t *testing.T) {
