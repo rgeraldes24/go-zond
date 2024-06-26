@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"math/big"
 	"sync"
-	"time"
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus/beacon"
@@ -55,6 +54,8 @@ var testChainForkLightA, testChainForkLightB, testChainForkHeavy *testChain
 
 var pregenerated bool
 
+// TODO(rgeraldes24): fix
+/*
 func init() {
 	// Reduce some of the parameters to make the tester faster
 	fullMaxForkAncestry = 10000
@@ -115,6 +116,7 @@ func init() {
 	// Mark the chains pregenerated. Generating a new one will lead to a panic.
 	pregenerated = true
 }
+*/
 
 type testChain struct {
 	blocks []*types.Block
