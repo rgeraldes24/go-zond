@@ -434,7 +434,7 @@ func createNode(t *testing.T) *node.Node {
 }
 
 func newGQLService(t *testing.T, stack *node.Node, gspec *core.Genesis, genBlocks int, genfunc func(i int, gen *core.BlockGen)) (*handler, []*types.Block) {
-	ethConf := &zondconfig.Config{
+	zondConf := &zondconfig.Config{
 		Genesis:        gspec,
 		NetworkId:      1337,
 		TrieCleanCache: 5,
@@ -443,7 +443,7 @@ func newGQLService(t *testing.T, stack *node.Node, gspec *core.Genesis, genBlock
 		SnapshotCache:  5,
 	}
 	var engine consensus.Engine = beacon.NewFaker()
-	zondBackend, err := zond.New(stack, ethConf)
+	zondBackend, err := zond.New(stack, zondConf)
 	if err != nil {
 		t.Fatalf("could not create eth backend: %v", err)
 	}

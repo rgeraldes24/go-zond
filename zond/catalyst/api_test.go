@@ -443,22 +443,23 @@ func startZondService(t *testing.T, genesis *core.Genesis, blocks []*types.Block
 		t.Fatal("can't create node:", err)
 	}
 
-	ethcfg := &zondconfig.Config{Genesis: genesis, SyncMode: downloader.FullSync, TrieTimeout: time.Minute, TrieDirtyCache: 256, TrieCleanCache: 256}
-	ethservice, err := zond.New(n, ethcfg)
+	mcfg := miner.DefaultConfig
+	mcfg.PendingFeeRecipient = testAddr
+	zondcfg := &zondconfig.Config{Genesis: genesis, SyncMode: downloader.FullSync, TrieTimeout: time.Minute, TrieDirtyCache: 256, TrieCleanCache: 256, Miner: mcfg}
+	zondservice, err := zond.New(n, zondcfg)
 	if err != nil {
 		t.Fatal("can't create zond service:", err)
 	}
 	if err := n.Start(); err != nil {
 		t.Fatal("can't start node:", err)
 	}
-	if _, err := ethservice.BlockChain().InsertChain(blocks); err != nil {
+	if _, err := zondservice.BlockChain().InsertChain(blocks); err != nil {
 		n.Close()
 		t.Fatal("can't import test blocks:", err)
 	}
 
-	ethservice.SetEtherbase(testAddr)
-	ethservice.SetSynced()
-	return n, ethservice
+	zondservice.SetSynced()
+	return n, zondservice
 }
 
 // TODO(rgeraldes24): fix
@@ -1004,13 +1005,13 @@ func TestSimultaneousNewBlock(t *testing.T) {
 func TestWithdrawals(t *testing.T) {
 	genesis, blocks := generateMergeChain(10)
 
-	n, ethservice := startZondService(t, genesis, blocks)
+	n, zondservice := startZondService(t, genesis, blocks)
 	defer n.Close()
 
-	api := NewConsensusAPI(ethservice)
+	api := NewConsensusAPI(zondservice)
 
 	// 10: Build Shanghai block with no withdrawals.
-	parent := ethservice.BlockChain().CurrentHeader()
+	parent := zondservice.BlockChain().CurrentHeader()
 	blockParams := engine.PayloadAttributes{
 		Timestamp:   parent.Time + 5,
 		Withdrawals: make([]*types.Withdrawal, 0),
@@ -1099,7 +1100,7 @@ func TestWithdrawals(t *testing.T) {
 	}
 
 	// 11: verify withdrawals were processed.
-	db, _, err := ethservice.APIBackend.StateAndHeaderByNumber(context.Background(), rpc.BlockNumber(execData.ExecutionPayload.Number))
+	db, _, err := zondservice.APIBackend.StateAndHeaderByNumber(context.Background(), rpc.BlockNumber(execData.ExecutionPayload.Number))
 	if err != nil {
 		t.Fatalf("unable to load db: %v", err)
 	}
@@ -1281,8 +1282,8 @@ func allBodies(blocks []*types.Block) []*types.Body {
 // TODO(rgeraldes24): fix
 /*
 func TestGetBlockBodiesByHash(t *testing.T) {
-	node, eth, blocks := setupBodies(t)
-	api := NewConsensusAPI(eth)
+	node, zond, blocks := setupBodies(t)
+	api := NewConsensusAPI(zond)
 	defer node.Close()
 
 	tests := []struct {
@@ -1291,8 +1292,8 @@ func TestGetBlockBodiesByHash(t *testing.T) {
 	}{
 		// First pow block
 		{
-			results: []*types.Body{eth.BlockChain().GetBlockByNumber(0).Body()},
-			hashes:  []common.Hash{eth.BlockChain().GetBlockByNumber(0).Hash()},
+			results: []*types.Body{zond.BlockChain().GetBlockByNumber(0).Body()},
+			hashes:  []common.Hash{zond.BlockChain().GetBlockByNumber(0).Hash()},
 		},
 		// Last pow block
 		{
@@ -1337,8 +1338,8 @@ func TestGetBlockBodiesByHash(t *testing.T) {
 }
 
 func TestGetBlockBodiesByRange(t *testing.T) {
-	node, eth, blocks := setupBodies(t)
-	api := NewConsensusAPI(eth)
+	node, zond, blocks := setupBodies(t)
+	api := NewConsensusAPI(zond)
 	defer node.Close()
 
 	tests := []struct {
@@ -1418,8 +1419,8 @@ func TestGetBlockBodiesByRange(t *testing.T) {
 }
 
 func TestGetBlockBodiesByRangeInvalidParams(t *testing.T) {
-	node, eth, _ := setupBodies(t)
-	api := NewConsensusAPI(eth)
+	node, zond, _ := setupBodies(t)
+	api := NewConsensusAPI(zond)
 	defer node.Close()
 	tests := []struct {
 		start hexutil.Uint64

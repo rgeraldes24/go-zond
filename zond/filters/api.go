@@ -34,8 +34,9 @@ import (
 )
 
 var (
-	errInvalidTopic   = errors.New("invalid topic(s)")
-	errFilterNotFound = errors.New("filter not found")
+	errInvalidTopic           = errors.New("invalid topic(s)")
+	errFilterNotFound         = errors.New("filter not found")
+	errPendingLogsUnsupported = errors.New("pending logs are not supported")
 )
 
 // filter is a helper struct that holds meta information over the filter type

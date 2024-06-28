@@ -72,7 +72,6 @@ func TestConsoleWelcome(t *testing.T) {
 	//    Welcome to the Gzond JavaScript console!
 
 	//    instance: Gzond/v{{gzondver}}/{{goos}}-{{goarch}}/{{gover}}
-	//    coinbase: {{.Etherbase}}
 	//    at block: 0 ({{niltime}})
 	//     datadir: {{.Datadir}}
 	//     modules: {{apis}}
@@ -162,7 +161,6 @@ func testAttachWelcome(t *testing.T, gzond *testgzond, endpoint, apis string) {
 Welcome to the Gzond JavaScript console!
 
 instance: Gzond/v{{gzondver}}/{{goos}}-{{goarch}}/{{gover}}
-coinbase: {{etherbase}}
 at block: 0 ({{niltime}}){{if ipc}}
  datadir: {{datadir}}{{end}}
  modules: {{apis}}
