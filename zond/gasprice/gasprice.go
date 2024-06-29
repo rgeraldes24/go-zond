@@ -19,6 +19,7 @@ package gasprice
 import (
 	"context"
 	"math/big"
+	"slices"
 	"sync"
 
 	"github.com/theQRL/go-zond/common"
@@ -30,7 +31,6 @@ import (
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
-	"golang.org/x/exp/slices"
 )
 
 const sampleNumber = 3 // Number of transactions sampled in a block

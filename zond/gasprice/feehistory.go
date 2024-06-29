@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"slices"
 	"sync/atomic"
 
 	"github.com/theQRL/go-zond/common"
@@ -30,7 +31,6 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/rpc"
-	"golang.org/x/exp/slices"
 )
 
 var (

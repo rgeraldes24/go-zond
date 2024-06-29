@@ -21,6 +21,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"slices"
 	"testing"
 	"time"
 
@@ -38,7 +39,6 @@ import (
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/zonddb"
-	"golang.org/x/exp/slices"
 )
 
 var (

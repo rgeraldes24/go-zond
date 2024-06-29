@@ -24,6 +24,7 @@ import (
 	"math/big"
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
 	"time"
 
@@ -47,7 +48,6 @@ import (
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/zonddb"
-	"golang.org/x/exp/slices"
 )
 
 func testTransactionMarshal(t *testing.T, tests []txData, config *params.ChainConfig) {

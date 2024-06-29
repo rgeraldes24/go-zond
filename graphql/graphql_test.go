@@ -395,11 +395,16 @@ func TestWithdrawals(t *testing.T) {
 		want string
 	}{
 		// Genesis block has no withdrawals.
-		// TODO(rgeraldes24): have: {"block":{"withdrawalsRoot":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","withdrawals":[]}}
+		// NOTE(rgeraldes24): the original test is not valid anymore
+		// the withdrawals field is not nil in the genesis block post shanghai
 		// {
 		// 	body: "{block(number: 0) { withdrawalsRoot withdrawals { index } } }",
 		// 	want: `{"block":{"withdrawalsRoot":null,"withdrawals":null}}`,
 		// },
+		{
+			body: "{block(number: 0) { withdrawalsRoot withdrawals { index } } }",
+			want: `{"block":{"withdrawalsRoot":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","withdrawals":[]}}`,
+		},
 		{
 			body: "{block(number: 1) { withdrawalsRoot withdrawals { validator amount } } }",
 			want: `{"block":{"withdrawalsRoot":"0x8418fc1a48818928f6692f148e9b10e99a88edc093b095cb8ca97950284b553d","withdrawals":[{"validator":"0x5","amount":"0xa"}]}}`,
