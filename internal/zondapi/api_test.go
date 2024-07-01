@@ -1131,7 +1131,8 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 			reqHeader:   true,
 			file:        "tag-pending",
 		},
-		// TODO(rgeraldes24): fix
+		// TODO(rgeraldes24): removed the blob tx from the receipts backend for the block number 5
+		// hence why this test fails
 		/*
 			// 6. latest block
 			{
@@ -1468,7 +1469,8 @@ func TestRPCGetBlockReceipts(t *testing.T) {
 			test: rpc.BlockNumberOrHashWithNumber(rpc.EarliestBlockNumber),
 			file: "tag-earliest",
 		},
-		// TODO(rgeraldes24): fix
+		// TODO(rgeraldes24): removed the blob tx from the receipts backend for the block number 5
+		// hence why this test fails
 		/*
 			// 3. latest tag
 			{
