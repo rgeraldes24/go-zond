@@ -311,7 +311,7 @@ func TestHeadStorage(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): transaction type
+// TODO(rgeraldes24): fix: transaction type
 /*
 // Tests that receipts associated with a single block can be stored and retrieved.
 func TestBlockReceiptStorage(t *testing.T) {

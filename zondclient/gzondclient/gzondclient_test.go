@@ -99,8 +99,6 @@ func generateTestChain() (*core.Genesis, []*types.Block) {
 	return genesis, blocks
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestGzondClient(t *testing.T) {
 	backend, _ := newTestBackend(t)
 	client := backend.Attach()
@@ -112,22 +110,9 @@ func TestGzondClient(t *testing.T) {
 		test func(t *testing.T)
 	}{
 		{
-			"TestGetProof1",
-			func(t *testing.T) { testGetProof(t, client, testAddr) },
+			"TestGetProof",
+			func(t *testing.T) { testGetProof(t, client) },
 		},
-		{
-			"TestGetProof2",
-			func(t *testing.T) { testGetProof(t, client, testContract) },
-		},
-		{
-			"TestGetProofEmpty",
-			func(t *testing.T) { testGetProof(t, client, testEmpty) },
-		},
-		{
-			"TestGetProofNonExistent",
-			func(t *testing.T) { testGetProofNonExistent(t, client) },
-		},
-
 		{
 			"TestGetProofCanonicalizeKeys",
 			func(t *testing.T) { testGetProofCanonicalizeKeys(t, client) },
@@ -147,14 +132,16 @@ func TestGzondClient(t *testing.T) {
 		{
 			"TestSubscribePendingTxHashes",
 			func(t *testing.T) { testSubscribePendingTransactions(t, client) },
-		}, {
+		},
+		{
 			"TestSubscribePendingTxs",
 			func(t *testing.T) { testSubscribeFullPendingTransactions(t, client) },
 		},
 		{
 			"TestCallContract",
 			func(t *testing.T) { testCallContract(t, client) },
-		}, {
+		},
+		{
 			"TestCallContractWithBlockOverrides",
 			func(t *testing.T) { testCallContractWithBlockOverrides(t, client) },
 		},
@@ -174,7 +161,6 @@ func TestGzondClient(t *testing.T) {
 		t.Run(tt.name, tt.test)
 	}
 }
-*/
 
 func testAccessList(t *testing.T, client *rpc.Client) {
 	ec := New(client)
@@ -230,57 +216,54 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 	}
 }
 
-func testGetProof(t *testing.T, client *rpc.Client, addr common.Address) {
-	ec := New(client)
+func testGetProof(t *testing.T, client *rpc.Client) {
+	zc := New(client)
 	zondcl := zondclient.NewClient(client)
-	result, err := ec.GetProof(context.Background(), addr, []string{testSlot.String()}, nil)
+	result, err := zc.GetProof(context.Background(), testAddr, []string{testSlot.String()}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.Address != addr {
-		t.Fatalf("unexpected address, have: %v want: %v", result.Address, addr)
+	if !bytes.Equal(result.Address[:], testAddr[:]) {
+		t.Fatalf("unexpected address, want: %v got: %v", testAddr, result.Address)
 	}
 	// test nonce
-	if nonce, _ := zondcl.NonceAt(context.Background(), addr, nil); result.Nonce != nonce {
+	nonce, _ := zondcl.NonceAt(context.Background(), result.Address, nil)
+	if result.Nonce != nonce {
 		t.Fatalf("invalid nonce, want: %v got: %v", nonce, result.Nonce)
 	}
 	// test balance
-	if balance, _ := zondcl.BalanceAt(context.Background(), addr, nil); result.Balance.Cmp(balance) != 0 {
+	balance, _ := zondcl.BalanceAt(context.Background(), result.Address, nil)
+	if result.Balance.Cmp(balance) != 0 {
 		t.Fatalf("invalid balance, want: %v got: %v", balance, result.Balance)
 	}
+
 	// test storage
 	if len(result.StorageProof) != 1 {
 		t.Fatalf("invalid storage proof, want 1 proof, got %v proof(s)", len(result.StorageProof))
 	}
-	for _, proof := range result.StorageProof {
-		if proof.Key != testSlot.String() {
-			t.Fatalf("invalid storage proof key, want: %q, got: %q", testSlot.String(), proof.Key)
-		}
-		slotValue, _ := zondcl.StorageAt(context.Background(), addr, common.HexToHash(proof.Key), nil)
-		if have, want := common.BigToHash(proof.Value), common.BytesToHash(slotValue); have != want {
-			t.Fatalf("addr %x, invalid storage proof value: have: %v, want: %v", addr, have, want)
-		}
+	proof := result.StorageProof[0]
+	slotValue, _ := zondcl.StorageAt(context.Background(), testAddr, testSlot, nil)
+	if !bytes.Equal(slotValue, proof.Value.Bytes()) {
+		t.Fatalf("invalid storage proof value, want: %v, got: %v", slotValue, proof.Value.Bytes())
 	}
-	// test code
-	code, _ := zondcl.CodeAt(context.Background(), addr, nil)
-	if have, want := result.CodeHash, crypto.Keccak256Hash(code); have != want {
-		t.Fatalf("codehash wrong, have %v want %v ", have, want)
+	if proof.Key != testSlot.String() {
+		t.Fatalf("invalid storage proof key, want: %q, got: %q", testSlot.String(), proof.Key)
 	}
 }
 
 func testGetProofCanonicalizeKeys(t *testing.T, client *rpc.Client) {
-	ec := New(client)
+	zc := New(client)
 
 	// Tests with non-canon input for storage keys.
 	// Here we check that the storage key is canonicalized.
-	result, err := ec.GetProof(context.Background(), testAddr, []string{"0x0dEadbeef"}, nil)
+	result, err := zc.GetProof(context.Background(), testAddr, []string{"0x0dEadbeef"}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if result.StorageProof[0].Key != "0xdeadbeef" {
 		t.Fatalf("wrong storage key encoding in proof: %q", result.StorageProof[0].Key)
 	}
-	if result, err = ec.GetProof(context.Background(), testAddr, []string{"0x000deadbeef"}, nil); err != nil {
+	if result, err = zc.GetProof(context.Background(), testAddr, []string{"0x000deadbeef"}, nil); err != nil {
 		t.Fatal(err)
 	}
 	if result.StorageProof[0].Key != "0xdeadbeef" {
@@ -289,7 +272,7 @@ func testGetProofCanonicalizeKeys(t *testing.T, client *rpc.Client) {
 
 	// If the requested storage key is 32 bytes long, it will be returned as is.
 	hashSizedKey := "0x00000000000000000000000000000000000000000000000000000000deadbeef"
-	result, err = ec.GetProof(context.Background(), testAddr, []string{hashSizedKey}, nil)
+	result, err = zc.GetProof(context.Background(), testAddr, []string{hashSizedKey}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -381,13 +364,13 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 		t.Fatal(err)
 	}
 	// Create transaction
-	tx := types.NewTx(&types.LegacyTx{
-		Nonce:    0,
-		To:       &common.Address{1},
-		Value:    big.NewInt(1),
-		Gas:      22000,
-		GasPrice: big.NewInt(1),
-		Data:     nil,
+	tx := types.NewTx(&types.DynamicFeeTx{
+		Nonce:     0,
+		To:        &common.Address{1},
+		Value:     big.NewInt(1),
+		Gas:       22000,
+		GasFeeCap: big.NewInt(1),
+		Data:      nil,
 	})
 	signer := types.LatestSignerForChainID(chainID)
 	signedTx, err := types.SignTx(tx, signer, testKey)
@@ -418,13 +401,13 @@ func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
 		t.Fatal(err)
 	}
 	// Create transaction
-	tx := types.NewTx(&types.LegacyTx{
-		Nonce:    1,
-		To:       &common.Address{1},
-		Value:    big.NewInt(1),
-		Gas:      22000,
-		GasPrice: big.NewInt(1),
-		Data:     nil,
+	tx := types.NewTx(&types.DynamicFeeTx{
+		Nonce:     1,
+		To:        &common.Address{1},
+		Value:     big.NewInt(1),
+		Gas:       22000,
+		GasFeeCap: big.NewInt(1),
+		Data:      nil,
 	})
 	signer := types.LatestSignerForChainID(chainID)
 	signedTx, err := types.SignTx(tx, signer, testKey)
