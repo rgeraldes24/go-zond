@@ -17,11 +17,9 @@
 package legacypool
 
 import (
-	crand "crypto/rand"
 	"fmt"
 	"math/big"
 	"math/rand"
-	"os"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -94,35 +92,28 @@ func (bc *testBlockChain) SubscribeChainHeadEvent(ch chan<- core.ChainHeadEvent)
 }
 
 func transaction(nonce uint64, gaslimit uint64, key *dilithium.Dilithium) *types.Transaction {
+	return dynamicFeeTx(nonce, gaslimit, big.NewInt(1), big.NewInt(1), key)
+}
+
+// TODO(rgeraldes24): legacy tx
+/*
+func transaction(nonce uint64, gaslimit uint64, key *dilithium.Dilithium) *types.Transaction {
 	return pricedTransaction(nonce, gaslimit, big.NewInt(1), key)
 }
 
 func pricedTransaction(nonce uint64, gaslimit uint64, gasprice *big.Int, key *dilithium.Dilithium) *types.Transaction {
-	tx := types.NewTx(&types.DynamicFeeTx{
-		Nonce: nonce,
-		To:    &common.Address{},
-		Value: big.NewInt(100),
-		Gas:   gaslimit,
-		Data:  nil,
-	})
-	signedTx, _ := types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(0)}, key)
-	return signedTx
+	tx, _ := types.SignTx(types.NewTransaction(nonce, common.Address{}, big.NewInt(100), gaslimit, gasprice, nil), types.ShanghaiSigner{ChainId: big.NewInt(0)}, key)
+	return tx
 }
 
 func pricedDataTransaction(nonce uint64, gaslimit uint64, gasprice *big.Int, key *dilithium.Dilithium, bytes uint64) *types.Transaction {
 	data := make([]byte, bytes)
 	crand.Read(data)
 
-	tx := types.NewTx(&types.DynamicFeeTx{
-		Nonce: nonce,
-		To:    &common.Address{},
-		Value: big.NewInt(0),
-		Gas:   gaslimit,
-		Data:  data,
-	})
-	signedTx, _ := types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(0)}, key)
-	return signedTx
+	tx, _ := types.SignTx(types.NewTransaction(nonce, common.Address{}, big.NewInt(0), gaslimit, gasprice, data), types.ShanghaiSigner{ChainId: big.NewInt(0)}, key)
+	return tx
 }
+*/
 
 func dynamicFeeTx(nonce uint64, gaslimit uint64, gasFee *big.Int, tip *big.Int, key *dilithium.Dilithium) *types.Transaction {
 	tx, _ := types.SignNewTx(key, types.LatestSignerForChainID(params.TestChainConfig.ChainID), &types.DynamicFeeTx{
@@ -1037,6 +1028,7 @@ func testQueueGlobalLimiting(t *testing.T, nolocals bool) {
 // 	testQueueTimeLimiting(t, true)
 // }
 
+/*
 func testQueueTimeLimiting(t *testing.T, nolocals bool) {
 	// Reduce the eviction interval to a testable amount
 	defer func(old time.Duration) { evictionInterval = old }(evictionInterval)
@@ -1180,6 +1172,7 @@ func testQueueTimeLimiting(t *testing.T, nolocals bool) {
 		t.Fatalf("pool internal state corrupted: %v", err)
 	}
 }
+*/
 
 // TODO(rgeraldes24)
 /*
@@ -2361,10 +2354,10 @@ func TestReplacementDynamicFee(t *testing.T) {
 
 // Tests that local transactions are journaled to disk, but remote transactions
 // get discarded between restarts.
-// TODO(rgeraldes24): fix
 // func TestJournaling(t *testing.T)         { testJournaling(t, false) }
 // func TestJournalingNoLocals(t *testing.T) { testJournaling(t, true) }
 
+/*
 func testJournaling(t *testing.T, nolocals bool) {
 	t.Parallel()
 
@@ -2475,6 +2468,7 @@ func testJournaling(t *testing.T, nolocals bool) {
 	}
 	pool.Close()
 }
+*/
 
 // TODO(rgeraldes24): fix
 /*
@@ -2534,6 +2528,7 @@ func TestStatusCheck(t *testing.T) {
 }
 */
 
+/*
 // Test the transaction slots consumption is computed correctly
 func TestSlotCount(t *testing.T) {
 	t.Parallel()
@@ -2551,6 +2546,7 @@ func TestSlotCount(t *testing.T) {
 		t.Fatalf("big transactions slot count mismatch: have %d want %d", slots, 11)
 	}
 }
+*/
 
 // Benchmarks the speed of validating the contents of the pending queue of the
 // transaction pool.
@@ -2637,6 +2633,7 @@ func benchmarkBatchInsert(b *testing.B, size int, local bool) {
 	}
 }
 
+/*
 func BenchmarkInsertRemoteWithAllLocals(b *testing.B) {
 	// Allocate keys for testing
 	key, _ := crypto.GenerateDilithiumKey()
@@ -2671,6 +2668,7 @@ func BenchmarkInsertRemoteWithAllLocals(b *testing.B) {
 		pool.Close()
 	}
 }
+*/
 
 // Benchmarks the speed of batch transaction insertion in case of multiple accounts.
 func BenchmarkMultiAccountBatchInsert(b *testing.B) {

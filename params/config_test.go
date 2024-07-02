@@ -16,15 +16,14 @@
 
 package params
 
-// import (
-// 	"math/big"
-// 	"reflect"
-// 	"testing"
-// 	"time"
-// )
+import (
+	"fmt"
+	"reflect"
+	"testing"
+	"time"
+)
 
-// TODO(rgeraldes24): fix
-/*
+// TODO(rgeraldes24): add case for the chain id mismatch
 func TestCheckCompatible(t *testing.T) {
 	type test struct {
 		stored, new   *ChainConfig
@@ -37,88 +36,92 @@ func TestCheckCompatible(t *testing.T) {
 		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 0, headTimestamp: uint64(time.Now().Unix()), wantErr: nil},
 		{stored: AllBeaconProtocolChanges, new: AllBeaconProtocolChanges, headBlock: 100, wantErr: nil},
 		{
-			stored:    &ChainConfig{},
-			new:       &ChainConfig{},
-			headBlock: 9,
-			wantErr:   nil,
+			stored: &ChainConfig{},
+			new:    &ChainConfig{},
+			// headBlock: 9,
+			wantErr: nil,
 		},
-		{
-			stored:    AllBeaconProtocolChanges,
-			new:       &ChainConfig{},
-			headBlock: 3,
-			wantErr: &ConfigCompatError{
-				What:          "Homestead fork block",
-				StoredBlock:   big.NewInt(0),
-				NewBlock:      nil,
-				RewindToBlock: 0,
+		// NOTE(rgeraldes24): not valid at the moment
+		/*
+			{
+				stored:    AllBeaconProtocolChanges,
+				new:       &ChainConfig{},
+				headBlock: 3,
+				wantErr: &ConfigCompatError{
+					What:          "Homestead fork block",
+					StoredBlock:   big.NewInt(0),
+					NewBlock:      nil,
+					RewindToBlock: 0,
+				},
 			},
-		},
-		{
-			stored:    AllBeaconProtocolChanges,
-			new:       &ChainConfig{},
-			headBlock: 3,
-			wantErr: &ConfigCompatError{
-				What:          "Homestead fork block",
-				StoredBlock:   big.NewInt(0),
-				NewBlock:      big.NewInt(1),
-				RewindToBlock: 0,
+			{
+				stored:    AllBeaconProtocolChanges,
+				new:       &ChainConfig{},
+				headBlock: 3,
+				wantErr: &ConfigCompatError{
+					What:          "Homestead fork block",
+					StoredBlock:   big.NewInt(0),
+					NewBlock:      big.NewInt(1),
+					RewindToBlock: 0,
+				},
 			},
-		},
-		{
-			stored:    &ChainConfig{},
-			new:       &ChainConfig{},
-			headBlock: 25,
-			wantErr: &ConfigCompatError{
-				What:          "EIP150 fork block",
-				StoredBlock:   big.NewInt(10),
-				NewBlock:      big.NewInt(20),
-				RewindToBlock: 9,
+			{
+				stored:    &ChainConfig{},
+				new:       &ChainConfig{},
+				headBlock: 25,
+				wantErr: &ConfigCompatError{
+					What:          "EIP150 fork block",
+					StoredBlock:   big.NewInt(10),
+					NewBlock:      big.NewInt(20),
+					RewindToBlock: 9,
+				},
 			},
-		},
-		{
-			stored:    &ChainConfig{},
-			new:       &ChainConfig{},
-			headBlock: 40,
-			wantErr:   nil,
-		},
-		{
-			stored:    &ChainConfig{},
-			new:       &ChainConfig{},
-			headBlock: 40,
-			wantErr: &ConfigCompatError{
-				What:          "Petersburg fork block",
-				StoredBlock:   nil,
-				NewBlock:      big.NewInt(31),
-				RewindToBlock: 30,
+			{
+				stored:    &ChainConfig{},
+				new:       &ChainConfig{},
+				headBlock: 40,
+				wantErr:   nil,
 			},
-		},
-		{
-			stored:        &ChainConfig{},
-			new:           &ChainConfig{},
-			headTimestamp: 9,
-			wantErr:       nil,
-		},
-		{
-			stored:        &ChainConfig{},
-			new:           &ChainConfig{},
-			headTimestamp: 25,
-			wantErr: &ConfigCompatError{
-				What:         "Shanghai fork timestamp",
-				StoredTime:   newUint64(10),
-				NewTime:      newUint64(20),
-				RewindToTime: 9,
+			{
+				stored:    &ChainConfig{},
+				new:       &ChainConfig{},
+				headBlock: 40,
+				wantErr: &ConfigCompatError{
+					What:          "Petersburg fork block",
+					StoredBlock:   nil,
+					NewBlock:      big.NewInt(31),
+					RewindToBlock: 30,
+				},
 			},
-		},
+			{
+				stored:        &ChainConfig{},
+				new:           &ChainConfig{},
+				headTimestamp: 9,
+				wantErr:       nil,
+			},
+			{
+				stored:        &ChainConfig{},
+				new:           &ChainConfig{},
+				headTimestamp: 25,
+				wantErr: &ConfigCompatError{
+					What:         "Shanghai fork timestamp",
+					StoredTime:   newUint64(10),
+					NewTime:      newUint64(20),
+					RewindToTime: 9,
+				},
+			},
+		*/
 	}
 
 	for _, test := range tests {
 		err := test.stored.CheckCompatible(test.new, test.headBlock, test.headTimestamp)
+		fmt.Println(err)
+		fmt.Println(test.wantErr)
 		if !reflect.DeepEqual(err, test.wantErr) {
 			t.Errorf("error mismatch:\nstored: %v\nnew: %v\nheadBlock: %v\nheadTimestamp: %v\nerr: %v\nwant: %v", test.stored, test.new, test.headBlock, test.headTimestamp, err, test.wantErr)
 		}
 	}
 }
-*/
 
 // NOTE(rgeraldes24): not valid at the moment
 /*

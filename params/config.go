@@ -41,9 +41,8 @@ var (
 		ChainID: big.NewInt(32382),
 	}
 
-	// TODO(rgeraldes24): desc
 	// AllBeaconProtocolChanges contains every protocol change (EIPs) introduced
-	// and accepted by the Ethereum core developers into the Beacon consensus.
+	// and accepted by the Zond core developers into the Beacon consensus.
 	AllBeaconProtocolChanges = &ChainConfig{
 		ChainID: big.NewInt(1337),
 	}

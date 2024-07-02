@@ -238,7 +238,7 @@ func (miner *Miner) commitTransactions(env *environment, txs *transactionsByPric
 		if ltx == nil {
 			break
 		}
-		// TODO(rgeraldes24)
+		// TODO(rgeraldes24): included in the new version
 		/*
 			// If we don't have enough space for the next transaction, skip the account.
 			if env.gasPool.Gas() < ltx.Gas {
