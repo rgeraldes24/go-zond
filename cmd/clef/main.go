@@ -33,6 +33,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/mattn/go-colorable"
 	"github.com/mattn/go-isatty"
@@ -774,8 +775,7 @@ func signer(c *cli.Context) error {
 	}
 	if c.Bool(testFlag.Name) {
 		log.Info("Performing UI test")
-		// TODO(rgeraldes24)
-		// go testExternalUI(apiImpl)
+		go testExternalUI(apiImpl)
 	}
 	ui.OnSignerStartup(core.StartupInfo{
 		Info: map[string]interface{}{
@@ -894,8 +894,6 @@ func confirm(text string) bool {
 	return false
 }
 
-// TODO(rgeraldes24)
-/*
 func testExternalUI(api *core.SignerAPI) {
 	ctx := context.WithValue(context.Background(), "remote", "clef binary")
 	ctx = context.WithValue(ctx, "scheme", "in-proc")
@@ -944,30 +942,32 @@ func testExternalUI(api *core.SignerAPI) {
 		time.Sleep(delay)
 		expectResponse("showerror", "Did you see the message? [yes/no]", "yes")
 	}
-	{ // Sign data test - clique header
-		api.UI.ShowInfo("Please approve the next request for signing a clique header")
-		time.Sleep(delay)
-		cliqueHeader := types.Header{
-			ParentHash:  common.HexToHash("0000H45H"),
-			Coinbase:    common.HexToAddress("0000H45H"),
-			Root:        common.HexToHash("0000H00H"),
-			TxHash:      common.HexToHash("0000H45H"),
-			ReceiptHash: common.HexToHash("0000H45H"),
-			Number:      big.NewInt(1337),
-			GasLimit:    1338,
-			GasUsed:     1338,
-			Time:        1338,
-			Extra:       []byte("Extra data Extra data Extra data  Extra data  Extra data  Extra data  Extra data Extra data"),
-			Random:   common.HexToHash("0x0000H45H"),
+	/*
+		{ // Sign data test - clique header
+			api.UI.ShowInfo("Please approve the next request for signing a clique header")
+			time.Sleep(delay)
+			cliqueHeader := types.Header{
+				ParentHash:  common.HexToHash("0000H45H"),
+				Coinbase:    common.HexToAddress("0000H45H"),
+				Root:        common.HexToHash("0000H00H"),
+				TxHash:      common.HexToHash("0000H45H"),
+				ReceiptHash: common.HexToHash("0000H45H"),
+				Number:      big.NewInt(1337),
+				GasLimit:    1338,
+				GasUsed:     1338,
+				Time:        1338,
+				Extra:       []byte("Extra data Extra data Extra data  Extra data  Extra data  Extra data  Extra data Extra data"),
+				Random:      common.HexToHash("0x0000H45H"),
+			}
+			cliqueRlp, err := rlp.EncodeToBytes(cliqueHeader)
+			if err != nil {
+				utils.Fatalf("Should not error: %v", err)
+			}
+			addr, _ := common.NewMixedcaseAddressFromString("0x0011223344556677889900112233445566778899")
+			_, err = api.SignData(ctx, accounts.MimetypeClique, *addr, hexutil.Encode(cliqueRlp))
+			expectApprove("signdata - clique header", err)
 		}
-		cliqueRlp, err := rlp.EncodeToBytes(cliqueHeader)
-		if err != nil {
-			utils.Fatalf("Should not error: %v", err)
-		}
-		addr, _ := common.NewMixedcaseAddressFromString("0x0011223344556677889900112233445566778899")
-		_, err = api.SignData(ctx, accounts.MimetypeClique, *addr, hexutil.Encode(cliqueRlp))
-		expectApprove("signdata - clique header", err)
-	}
+	*/
 	{ // Sign data test - typed data
 		api.UI.ShowInfo("Please approve the next request for signing EIP-712 typed data")
 		time.Sleep(delay)
@@ -1037,7 +1037,6 @@ func testExternalUI(api *core.SignerAPI) {
 	result := fmt.Sprintf("Tests completed. %d errors:\n%s\n", len(errs), strings.Join(errs, "\n"))
 	api.UI.ShowInfo(result)
 }
-*/
 
 type encryptedSeedStorage struct {
 	Description string              `json:"description"`

@@ -59,8 +59,8 @@ func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 	genesis := &core.Genesis{
 		Config: &config,
 		Alloc: core.GenesisAlloc{
-			testAddr:                         {Balance: testBalance},
-			params.BeaconRootsStorageAddress: {Balance: common.Big0, Code: common.Hex2Bytes("3373fffffffffffffffffffffffffffffffffffffffe14604457602036146024575f5ffd5b620180005f350680545f35146037575f5ffd5b6201800001545f5260205ff35b6201800042064281555f359062018000015500")},
+			testAddr: {Balance: testBalance},
+			// params.BeaconRootsStorageAddress: {Balance: common.Big0, Code: common.Hex2Bytes("3373fffffffffffffffffffffffffffffffffffffffe14604457602036146024575f5ffd5b620180005f350680545f35146037575f5ffd5b6201800001545f5260205ff35b6201800042064281555f359062018000015500")},
 		},
 		ExtraData: []byte("test genesis"),
 		Timestamp: 9000,

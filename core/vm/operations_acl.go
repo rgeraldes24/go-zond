@@ -18,6 +18,7 @@ package vm
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
@@ -39,6 +40,7 @@ func makeGasSStoreFunc(clearingRefund uint64) gasFunc {
 		)
 		// Check slot presence in the access list
 		if addrPresent, slotPresent := evm.StateDB.SlotInAccessList(contract.Address(), slot); !slotPresent {
+			fmt.Println("test")
 			cost = params.ColdSloadCostEIP2929
 			// If the caller cannot afford the cost, this change will be rolled back
 			evm.StateDB.AddSlotToAccessList(contract.Address(), slot)
@@ -196,23 +198,8 @@ var (
 	gasDelegateCallEIP2929 = makeCallVariantGasCallEIP2929(gasDelegateCall)
 	gasStaticCallEIP2929   = makeCallVariantGasCallEIP2929(gasStaticCall)
 	gasCallCodeEIP2929     = makeCallVariantGasCallEIP2929(gasCallCode)
-	gasSelfdestructEIP2929 = makeSelfdestructGasFn(true)
 	// gasSelfdestructEIP3529 implements the changes in EIP-2539 (no refunds)
 	gasSelfdestructEIP3529 = makeSelfdestructGasFn(false)
-
-	// gasSStoreEIP2929 implements gas cost for SSTORE according to EIP-2929
-	//
-	// When calling SSTORE, check if the (address, storage_key) pair is in accessed_storage_keys.
-	// If it is not, charge an additional COLD_SLOAD_COST gas, and add the pair to accessed_storage_keys.
-	// Additionally, modify the parameters defined in EIP 2200 as follows:
-	//
-	// Parameter 	Old value 	New value
-	// SLOAD_GAS 	800 	= WARM_STORAGE_READ_COST
-	// SSTORE_RESET_GAS 	5000 	5000 - COLD_SLOAD_COST
-	//
-	//The other parameters defined in EIP 2200 are unchanged.
-	// see gasSStoreEIP2200(...) in core/vm/gas_table.go for more info about how EIP 2200 is specified
-	gasSStoreEIP2929 = makeGasSStoreFunc(params.SstoreClearsScheduleRefundEIP2200)
 
 	// gasSStoreEIP2539 implements gas cost for SSTORE according to EIP-2539
 	// Replace `SSTORE_CLEARS_SCHEDULE` with `SSTORE_RESET_GAS + ACCESS_LIST_STORAGE_KEY_COST` (4,800)

@@ -665,7 +665,7 @@ func TestColdAccountAccessCost(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24)
+// TODO(rgeraldes24): fix
 /*
 func TestRuntimeJSTracer(t *testing.T) {
 	jsTracers := []string{

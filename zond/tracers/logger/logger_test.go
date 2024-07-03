@@ -50,8 +50,10 @@ func (*dummyStatedb) GetRefund() uint64                                       { 
 func (*dummyStatedb) GetState(_ common.Address, _ common.Hash) common.Hash    { return common.Hash{} }
 func (*dummyStatedb) SetState(_ common.Address, _ common.Hash, _ common.Hash) {}
 
-// TODO(rgeraldes24): fix
 /*
+// TODO(rgeraldes24): different gas cost func: gas cost for SSTORE according to EIP-2929
+// Test in ethereum uses the frontier instruction set
+
 func TestStoreCapture(t *testing.T) {
 	var (
 		logger   = NewStructLogger(nil)

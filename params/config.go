@@ -29,7 +29,8 @@ var (
 	BetaNetGenesisHash = common.HexToHash("0xdbad833547c0da0aa80a33f575833fb6a5931e6d14060c96de96a681eefc669c")
 )
 
-func newUint64(val uint64) *uint64 { return &val }
+// NOTE(rgeraldes24): unused atm
+// func newUint64(val uint64) *uint64 { return &val }
 
 var (
 	// MainnetChainConfig is the chain parameters to run a node on the main network.
