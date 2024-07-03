@@ -52,7 +52,7 @@ type testcase struct {
 	Result       interface{}     `json:"result"`
 }
 
-// TODO(rgeraldes24): fix
+// TODO(rgeraldes24): fix: failed to parse testcase input: rlp: input list has too many elements for types.LegacyTx
 /*
 func TestPrestateTracerLegacy(t *testing.T) {
 	testPrestateDiffTracer("prestateTracerLegacy", "prestate_tracer_legacy", t)
