@@ -57,8 +57,6 @@ type testBackend struct {
 
 // newTestBackend creates an empty chain and wraps it into a mock backend.
 func newTestBackend(blocks int) *testBackend {
-	// TODO(rgeraldes24)
-	// return newTestBackendWithGenerator(blocks, false, nil)
 	return newTestBackendWithGenerator(blocks, nil)
 }
 
@@ -401,8 +399,7 @@ func testGetBlockBodies(t *testing.T, protocol uint) {
 }
 
 // Tests that the transaction receipts can be retrieved based on hashes.
-// TODO(rgeraldes24): fix
-// func TestGetBlockReceipts68(t *testing.T) { testGetBlockReceipts(t, ETH68) }
+func TestGetBlockReceipts68(t *testing.T) { testGetBlockReceipts(t, ETH68) }
 
 func testGetBlockReceipts(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -413,7 +410,7 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 	acc1Addr := acc1Key.GetAddress()
 	acc2Addr := acc2Key.GetAddress()
 
-	signer := types.ShanghaiSigner{ChainId: big.NewInt(0)}
+	signer := types.ShanghaiSigner{ChainId: big.NewInt(1)}
 	// Create a chain generator with some simple transactions (blatantly stolen from @fjl/chain_markets_test)
 	generator := func(i int, block *core.BlockGen) {
 		to1 := common.Address(acc1Addr)
@@ -422,11 +419,12 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 		case 0:
 			// In block 1, the test bank sends account #1 some ether.
 			tx := types.NewTx(&types.DynamicFeeTx{
-				Nonce: block.TxNonce(testAddr),
-				To:    &to1,
-				Value: big.NewInt(10_000_000_000_000_000),
-				Gas:   params.TxGas,
-				Data:  nil,
+				Nonce:     block.TxNonce(testAddr),
+				To:        &to1,
+				Value:     big.NewInt(10_000_000_000_000_000),
+				Gas:       params.TxGas,
+				GasFeeCap: big.NewInt(875000000),
+				Data:      nil,
 			})
 			signedTx, _ := types.SignTx(tx, signer, testKey)
 			block.AddTx(signedTx)
@@ -434,18 +432,20 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 			// In block 2, the test bank sends some more ether to account #1.
 			// acc1Addr passes it on to account #2.
 			tx1 := types.NewTx(&types.DynamicFeeTx{
-				Nonce: block.TxNonce(testAddr),
-				To:    &to1,
-				Value: big.NewInt(1_000_000_000_000_000),
-				Gas:   params.TxGas,
-				Data:  nil,
+				Nonce:     block.TxNonce(testAddr),
+				To:        &to1,
+				Value:     big.NewInt(1_000_000_000_000_000),
+				Gas:       params.TxGas,
+				GasFeeCap: big.NewInt(766599825),
+				Data:      nil,
 			})
 			tx2 := types.NewTx(&types.DynamicFeeTx{
-				Nonce: block.TxNonce(acc1Addr),
-				To:    &to2,
-				Value: big.NewInt(1_000_000_000_000_000),
-				Gas:   params.TxGas,
-				Data:  nil,
+				Nonce:     block.TxNonce(acc1Addr),
+				To:        &to2,
+				Value:     big.NewInt(1_000_000_000_000_000),
+				Gas:       params.TxGas,
+				GasFeeCap: big.NewInt(766599825),
+				Data:      nil,
 			})
 			signedTx1, _ := types.SignTx(tx1, signer, testKey)
 			signedTx2, _ := types.SignTx(tx2, signer, acc1Key)
@@ -458,8 +458,6 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 		}
 	}
 	// Assemble the test environment
-	// TODO(rgeraldes24)
-	// backend := newTestBackendWithGenerator(4, false, generator)
 	backend := newTestBackendWithGenerator(4, generator)
 	defer backend.close()
 
