@@ -520,7 +520,7 @@ func TestChainFork(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
+// TODO(rgeraldes24): fix: legacypool_test.go:549: second transaction insert failed (replacement transaction underpriced) or not reported replacement (false)
 /*
 func TestDoubleNonce(t *testing.T) {
 	t.Parallel()
@@ -1028,9 +1028,9 @@ func TestQueueTimeLimiting(t *testing.T) {
 	testQueueTimeLimiting(t, false)
 }
 
-// func TestQueueTimeLimitingNoLocals(t *testing.T) {
-// 	testQueueTimeLimiting(t, true)
-// }
+func TestQueueTimeLimitingNoLocals(t *testing.T) {
+	testQueueTimeLimiting(t, true)
+}
 
 func testQueueTimeLimiting(t *testing.T, nolocals bool) {
 	// Reduce the eviction interval to a testable amount
@@ -1439,8 +1439,8 @@ func TestPendingMinimumAllowance(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 /*
+TODO(rgeraldes24): repricing test for dynamic fee below
 // Tests that setting the transaction pool gas price to a higher value correctly
 // discards everything cheaper than that and moves any gapped transactions back
 // from the pending pool to the queue.
@@ -1565,7 +1565,10 @@ func TestRepricing(t *testing.T) {
 		t.Fatalf("pool internal state corrupted: %v", err)
 	}
 }
+*/
 
+// TODO(rgeraldes24): fix
+/*
 // Tests that setting the transaction pool gas price to a higher value correctly
 // discards everything cheaper (legacy & dynamic fee) than that and moves any
 // gapped transactions back from the pending pool to the queue.
@@ -1885,7 +1888,10 @@ func TestUnderpricing(t *testing.T) {
 		t.Fatalf("pool internal state corrupted: %v", err)
 	}
 }
+*/
 
+/*
+TODO(rgeraldes24): fix
 // Tests that more expensive transactions push out cheap ones from the pool, but
 // without producing instability by creating gaps that start jumping transactions
 // back and forth between queued/pending.
@@ -1953,7 +1959,10 @@ func TestStableUnderpricing(t *testing.T) {
 		t.Fatalf("pool internal state corrupted: %v", err)
 	}
 }
+*/
 
+/*
+TODO(rgeraldes24): fix
 // Tests that when the pool reaches its global transaction limit, underpriced
 // transactions (legacy & dynamic fee) are gradually shifted out for more
 // expensive ones and any gapped pending transactions are moved into the queue.
@@ -2189,6 +2198,7 @@ func TestDeduplication(t *testing.T) {
 	}
 }
 
+// TODO(rgeraldes24): fix
 // NOTE(rgeraldes24): skip: replacement test for dynamic fee tx below
 // Tests that the pool rejects replacement transactions that don't meet the minimum
 // price bump required.
@@ -2573,6 +2583,7 @@ func TestStatusCheck(t *testing.T) {
 }
 */
 
+// TODO(rgeraldes24): fix
 /*
 // Test the transaction slots consumption is computed correctly
 func TestSlotCount(t *testing.T) {

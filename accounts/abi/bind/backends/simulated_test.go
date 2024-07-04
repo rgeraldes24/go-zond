@@ -161,8 +161,6 @@ func TestAdjustTime(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestNewAdjustTimeFail(t *testing.T) {
 	testAddr := common.Address(testKey.GetAddress())
 	sim := simTestBackend(testAddr)
@@ -170,17 +168,20 @@ func TestNewAdjustTimeFail(t *testing.T) {
 
 	// Create tx and send
 	tx := types.NewTx(&types.DynamicFeeTx{
-		Nonce: 0,
-		To:    &testAddr,
-		Value: big.NewInt(1000),
-		Gas:   params.TxGas,
-		Data:  nil,
+		Nonce:     0,
+		To:        &testAddr,
+		Value:     big.NewInt(1000),
+		Gas:       params.TxGas,
+		GasFeeCap: big.NewInt(875000000),
+		Data:      nil,
 	})
-	signedTx, err := types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(0)}, testKey)
+	signedTx, err := types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1337)}, testKey)
 	if err != nil {
 		t.Errorf("could not sign tx: %v", err)
 	}
-	sim.SendTransaction(context.Background(), signedTx)
+	if err := sim.SendTransaction(context.Background(), signedTx); err != nil {
+		t.Error(err)
+	}
 	// AdjustTime should fail on non-empty block
 	if err := sim.AdjustTime(time.Second); err == nil {
 		t.Error("Expected adjust time to error on non-empty block")
@@ -197,24 +198,26 @@ func TestNewAdjustTimeFail(t *testing.T) {
 	}
 	// Put a transaction after adjusting time
 	tx2 := types.NewTx(&types.DynamicFeeTx{
-		Nonce: 1,
-		To:    &testAddr,
-		Value: big.NewInt(1000),
-		Gas:   params.TxGas,
-		Data:  nil,
+		Nonce:     1,
+		To:        &testAddr,
+		Value:     big.NewInt(1000),
+		Gas:       params.TxGas,
+		GasFeeCap: big.NewInt(766084375),
+		Data:      nil,
 	})
-	signedTx2, err := types.SignTx(tx2, types.ShanghaiSigner{ChainId: big.NewInt(0)}, testKey)
+	signedTx2, err := types.SignTx(tx2, types.ShanghaiSigner{ChainId: big.NewInt(1337)}, testKey)
 	if err != nil {
 		t.Errorf("could not sign tx: %v", err)
 	}
-	sim.SendTransaction(context.Background(), signedTx2)
+	if err := sim.SendTransaction(context.Background(), signedTx2); err != nil {
+		t.Error(err)
+	}
 	sim.Commit()
 	newTime = sim.pendingBlock.Time()
 	if newTime-prevTime >= uint64(time.Minute.Seconds()) {
 		t.Errorf("time adjusted, but shouldn't be: prev: %v, new: %v", prevTime, newTime)
 	}
 }
-*/
 
 func TestBalanceAt(t *testing.T) {
 	testAddr := testKey.GetAddress()

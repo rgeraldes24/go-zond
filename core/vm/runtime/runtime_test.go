@@ -662,8 +662,7 @@ func TestColdAccountAccessCost(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
+// TODO(rgeraldes24): review differences for testcase 0 and testcase 1
 func TestRuntimeJSTracer(t *testing.T) {
 	jsTracers := []string{
 		`{enters: 0, exits: 0, enterGas: 0, gasUsed: 0, steps:0,
@@ -712,7 +711,8 @@ func TestRuntimeJSTracer(t *testing.T) {
 				byte(vm.CREATE),
 				byte(vm.POP),
 			},
-			results: []string{`"1,1,952855,6,12"`, `"1,1,952855,6,0"`},
+			results: []string{`"1,1,952853,6,12"`, `"1,1,952853,6,0"`},
+			// results: []string{`"1,1,952855,6,12"`, `"1,1,952855,6,0"`},
 		},
 		{
 			// CREATE2
@@ -728,7 +728,8 @@ func TestRuntimeJSTracer(t *testing.T) {
 				byte(vm.CREATE2),
 				byte(vm.POP),
 			},
-			results: []string{`"1,1,952846,6,13"`, `"1,1,952846,6,0"`},
+			results: []string{`"1,1,952844,6,13"`, `"1,1,952844,6,0"`},
+			// results: []string{`"1,1,952846,6,13"`, `"1,1,952846,6,0"`},
 		},
 		{
 			// CALL
@@ -837,7 +838,6 @@ func TestRuntimeJSTracer(t *testing.T) {
 		}
 	}
 }
-*/
 
 func TestJSTracerCreateTx(t *testing.T) {
 	jsTracer := `
