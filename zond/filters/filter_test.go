@@ -22,6 +22,7 @@ import (
 	"math/big"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/theQRL/go-zond/accounts/abi"
 	"github.com/theQRL/go-zond/common"
@@ -384,19 +385,16 @@ func TestFilters(t *testing.T) {
 		}
 	}
 
-	// TODO(rgeraldes24): fix
-	/*
-		t.Run("timeout", func(t *testing.T) {
-			f := sys.NewRangeFilter(0, -1, nil, nil)
-			ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
-			defer cancel()
-			_, err := f.Logs(ctx)
-			if err == nil {
-				t.Fatal("expected error")
-			}
-			if err != context.DeadlineExceeded {
-				t.Fatalf("expected context.DeadlineExceeded, got %v", err)
-			}
-		})
-	*/
+	t.Run("timeout", func(t *testing.T) {
+		f := sys.NewRangeFilter(0, -2, nil, nil)
+		ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
+		defer cancel()
+		_, err := f.Logs(ctx)
+		if err == nil {
+			t.Fatal("expected error")
+		}
+		if err != context.DeadlineExceeded {
+			t.Fatalf("expected context.DeadlineExceeded, got %v", err)
+		}
+	})
 }

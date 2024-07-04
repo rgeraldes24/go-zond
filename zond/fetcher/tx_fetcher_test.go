@@ -502,6 +502,8 @@ func TestTransactionFetcherMissingRescheduling(t *testing.T) {
 */
 
 // TODO(rgeraldes24): fix
+// tx_fetcher_test.go:1400: step 7: peer A extra in announces
+// tx_fetcher_test.go:1425: step 7: peer A extra in requests
 /*
 // Tests that out of two transactions, if one is missing and the last is
 // delivered, the peer gets properly cleaned out from the internal state.

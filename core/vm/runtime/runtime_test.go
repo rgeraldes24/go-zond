@@ -61,8 +61,6 @@ func TestDefaults(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestEVM(t *testing.T) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -81,7 +79,6 @@ func TestEVM(t *testing.T) {
 		byte(vm.COINBASE),
 	}, nil, nil)
 }
-*/
 
 func TestExecute(t *testing.T) {
 	ret, _, err := Execute([]byte{

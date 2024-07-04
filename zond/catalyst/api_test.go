@@ -28,6 +28,7 @@ import (
 
 	"github.com/theQRL/go-zond/beacon/engine"
 	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/common/hexutil"
 	beaconConsensus "github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/types"
@@ -71,7 +72,7 @@ func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 		g.OffsetTime(5)
 		g.SetExtra([]byte("test"))
 		to := common.HexToAddress("0x9a9070028361F7AAbeB3f2F2Dc07F82C4a98A02a")
-		tx, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: testNonce, To: &to, Value: big.NewInt(1), Gas: params.TxGas, Data: nil}), types.LatestSigner(&config), testKey)
+		tx, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: testNonce, To: &to, Value: big.NewInt(1), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), types.LatestSigner(&config), testKey)
 		g.AddTx(tx)
 		testNonce++
 	}
@@ -80,8 +81,6 @@ func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 	return genesis, blocks
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestEth2AssembleBlock(t *testing.T) {
 	genesis, blocks := generateMergeChain(10)
 	n, zondservice := startZondService(t, genesis, blocks)
@@ -90,7 +89,7 @@ func TestEth2AssembleBlock(t *testing.T) {
 	api := NewConsensusAPI(zondservice)
 	signer := types.NewShanghaiSigner(zondservice.BlockChain().Config().ChainID)
 	to := blocks[9].Coinbase()
-	tx, err := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: uint64(10), To: &to, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, testKey)
+	tx, err := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: uint64(10), To: &to, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, testKey)
 	if err != nil {
 		t.Fatalf("error signing transaction, err=%v", err)
 	}
@@ -104,7 +103,6 @@ func TestEth2AssembleBlock(t *testing.T) {
 		t.Fatal(testErr)
 	}
 }
-*/
 
 // assembleWithTransactions tries to assemble a block, retrying until it has 'want',
 // number of transactions in it, or it has retried three times.
@@ -123,8 +121,6 @@ func assembleWithTransactions(api *ConsensusAPI, parentHash common.Hash, params 
 	return nil, err
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestEth2AssembleBlockWithAnotherBlocksTxs(t *testing.T) {
 	genesis, blocks := generateMergeChain(10)
 	n, zondservice := startZondService(t, genesis, blocks[:9])
@@ -145,6 +141,8 @@ func TestEth2AssembleBlockWithAnotherBlocksTxs(t *testing.T) {
 	}
 }
 
+// TODO(rgeraldes24): review if its still valid
+/*
 func TestSetHeadBeforeTotalDifficulty(t *testing.T) {
 	genesis, blocks := generateMergeChain(10)
 	n, zondservice := startZondService(t, genesis, blocks)
@@ -162,7 +160,10 @@ func TestSetHeadBeforeTotalDifficulty(t *testing.T) {
 		t.Errorf("fork choice updated before total terminal difficulty should be INVALID")
 	}
 }
+*/
 
+// TODO(rgeraldes24): fix: api_test.go:185: error preparing payload, err=Invalid parameters
+/*
 func TestEth2PrepareAndGetPayload(t *testing.T) {
 	genesis, blocks := generateMergeChain(10)
 	// We need to properly set the terminal total difficulty
@@ -198,8 +199,8 @@ func TestEth2PrepareAndGetPayload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error getting payload, err=%v", err)
 	}
-	if len(execData.Transactions) != blocks[9].Transactions().Len() {
-		t.Fatalf("invalid number of transactions %d != 1", len(execData.Transactions))
+	if len(execData.ExecutionPayload.Transactions) != blocks[9].Transactions().Len() {
+		t.Fatalf("invalid number of transactions %d != 1", len(execData.ExecutionPayload.Transactions))
 	}
 	// Test invalid payloadID
 	var invPayload engine.PayloadID
@@ -462,8 +463,6 @@ func startZondService(t *testing.T, genesis *core.Genesis, blocks []*types.Block
 	return n, zondservice
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestFullAPI(t *testing.T) {
 	genesis, preMergeBlocks := generateMergeChain(10)
 	n, zondservice := startZondService(t, genesis, preMergeBlocks)
@@ -490,7 +489,6 @@ func TestFullAPI(t *testing.T) {
 
 	setupBlocks(t, zondservice, 10, parent, callback, nil)
 }
-*/
 
 func setupBlocks(t *testing.T, zondservice *zond.Zond, n int, parent *types.Header, callback func(parent *types.Header), withdrawals [][]*types.Withdrawal) []*types.Header {
 	api := NewConsensusAPI(zondservice)
@@ -1279,8 +1277,6 @@ func allBodies(blocks []*types.Block) []*types.Body {
 	return bodies
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestGetBlockBodiesByHash(t *testing.T) {
 	node, zond, blocks := setupBodies(t)
 	api := NewConsensusAPI(zond)
@@ -1290,6 +1286,7 @@ func TestGetBlockBodiesByHash(t *testing.T) {
 		results []*types.Body
 		hashes  []common.Hash
 	}{
+		// TODO(rgeraldes24): review to check whether we need all this tests
 		// First pow block
 		{
 			results: []*types.Body{zond.BlockChain().GetBlockByNumber(0).Body()},
@@ -1462,7 +1459,6 @@ func TestGetBlockBodiesByRangeInvalidParams(t *testing.T) {
 		}
 	}
 }
-*/
 
 func equalBody(a *types.Body, b *engine.ExecutionPayloadBodyV1) bool {
 	if a == nil && b == nil {

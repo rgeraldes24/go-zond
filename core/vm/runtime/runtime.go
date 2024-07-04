@@ -77,6 +77,9 @@ func setDefaults(cfg *Config) {
 	if cfg.BaseFee == nil {
 		cfg.BaseFee = big.NewInt(params.InitialBaseFee)
 	}
+	if cfg.Random == nil {
+		cfg.Random = &(common.Hash{})
+	}
 }
 
 // Execute executes the code using the input as call data during the execution.

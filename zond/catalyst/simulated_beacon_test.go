@@ -63,7 +63,7 @@ func startSimulatedBeaconZondService(t *testing.T, genesis *core.Genesis) (*node
 	return n, zondservice, simBeacon
 }
 
-// TODO(rgeraldes24): fix
+// TODO(rgeraldes24): fix: timed out without including all withdrawals/txs
 /*
 // send 20 transactions, >10 withdrawals and ensure they are included in order
 // send enough transactions to fill multiple blocks

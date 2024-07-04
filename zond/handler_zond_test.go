@@ -75,7 +75,7 @@ func (h *testZondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 
 // Tests that peers are correctly accepted (or rejected) based on the advertised
 // fork IDs in the protocol handshake.
-// TODO(rgeraldes24): fix
+// TODO(rgeraldes24): fix: fork ID rejection didn't happen
 // func TestForkIDSplit68(t *testing.T) { testForkIDSplit(t, zond.ETH68) }
 
 func testForkIDSplit(t *testing.T, protocol uint) {

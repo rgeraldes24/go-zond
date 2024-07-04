@@ -16,8 +16,6 @@
 
 package downloader
 
-// TODO(rgeraldes24): fix
-/*
 import (
 	"fmt"
 	"math/big"
@@ -45,7 +43,7 @@ func makeChain(n int, seed byte, parent *types.Block, empty bool) ([]*types.Bloc
 		// Add one tx to every secondblock
 		if !empty && i%2 == 0 {
 			signer := types.MakeSigner(params.TestChainConfig)
-			tx, err := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: block.TxNonce(testAddress), To: &common.Address{seed}, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, testKey)
+			tx, err := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: block.TxNonce(testAddress), To: &common.Address{seed}, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, testKey)
 			if err != nil {
 				panic(err)
 			}
@@ -465,4 +463,3 @@ func (n *network) headers(from int) []*types.Header {
 	}
 	return hdrs
 }
-*/
