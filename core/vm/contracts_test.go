@@ -248,11 +248,6 @@ func benchJson(name, addr string, b *testing.B) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
-func TestPrecompiledPointEvaluation(t *testing.T) { testJson("pointEvaluation", "0a", t) }
-*/
-
 // Failure tests
 
 func loadJson(name string) ([]precompiledTest, error) {

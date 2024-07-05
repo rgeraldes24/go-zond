@@ -1355,10 +1355,11 @@ func TestRemoteHeaderRequestSpan(t *testing.T) {
 // being fast-synced from, avoiding potential cheap eclipse attacks.
 // TODO(rgeraldes24): fix
 // func TestBeaconSync68Full(t *testing.T) { testBeaconSync(t, zondproto.ETH68, FullSync) }
+
 // func TestBeaconSync68Snap(t *testing.T) { testBeaconSync(t, zondproto.ETH68, SnapSync) }
 
 func testBeaconSync(t *testing.T, protocol uint, mode SyncMode) {
-	//log.Root().SetHandler(log.LvlFilterHandler(log.LvlInfo, log.StreamHandler(os.Stderr, log.TerminalFormat(true))))
+	log.Root().SetHandler(log.LvlFilterHandler(log.LvlInfo, log.StreamHandler(os.Stderr, log.TerminalFormat(true))))
 
 	var cases = []struct {
 		name  string // The name of testing scenario

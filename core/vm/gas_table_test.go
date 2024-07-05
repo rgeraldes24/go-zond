@@ -17,8 +17,17 @@
 package vm
 
 import (
-	"math"
+	"bytes"
+	"math/big"
+	"sort"
 	"testing"
+
+	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/common/hexutil"
+	"github.com/theQRL/go-zond/core/rawdb"
+	"github.com/theQRL/go-zond/core/state"
+	"github.com/theQRL/go-zond/core/types"
+	"github.com/theQRL/go-zond/params"
 )
 
 func TestMemoryGasCost(t *testing.T) {
@@ -41,6 +50,8 @@ func TestMemoryGasCost(t *testing.T) {
 	}
 }
 
+// TODO(rgeraldes24): check the validity of this one
+/*
 var eip2200Tests = []struct {
 	original byte
 	gaspool  uint64
@@ -70,8 +81,6 @@ var eip2200Tests = []struct {
 	{1, 2307, "0x6001600055", 806, 0, nil},                                     // 1 -> 1 (2301 sentry + 2xPUSH)
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestEIP2200(t *testing.T) {
 	for i, tt := range eip2200Tests {
 		address := common.BytesToAddress([]byte("contract"))
@@ -86,7 +95,7 @@ func TestEIP2200(t *testing.T) {
 			CanTransfer: func(StateDB, common.Address, *big.Int) bool { return true },
 			Transfer:    func(StateDB, common.Address, common.Address, *big.Int) {},
 		}
-		vmenv := NewEVM(vmctx, TxContext{}, statedb, params.AllBeaconProtocolChanges, Config{ExtraEips: []int{2200}})
+		vmenv := NewEVM(vmctx, TxContext{}, statedb, params.AllBeaconProtocolChanges, Config{ExtraEips: []int{}})
 
 		_, gas, err := vmenv.Call(AccountRef(common.Address{}), address, nil, tt.gaspool, new(big.Int))
 		if err != tt.failure {
@@ -104,28 +113,21 @@ func TestEIP2200(t *testing.T) {
 
 var createGasTests = []struct {
 	code       string
-	eip3860    bool
 	gasUsed    uint64
 	minimumGas uint64
 }{
-	// legacy create(0, 0, 0xc000) without 3860 used
-	{"0x61C00060006000f0" + "600052" + "60206000F3", false, 41237, 41237},
 	// legacy create(0, 0, 0xc000) _with_ 3860
-	{"0x61C00060006000f0" + "600052" + "60206000F3", true, 44309, 44309},
-	// create2(0, 0, 0xc001, 0) without 3860
-	{"0x600061C00160006000f5" + "600052" + "60206000F3", false, 50471, 50471},
+	{"0x61C00060006000f0" + "600052" + "60206000F3", 44309, 44309},
 	// create2(0, 0, 0xc001, 0) (too large), with 3860
-	{"0x600061C00160006000f5" + "600052" + "60206000F3", true, 32012, 100_000},
+	{"0x600061C00160006000f5" + "600052" + "60206000F3", 32012, 100_000},
 	// create2(0, 0, 0xc000, 0)
 	// This case is trying to deploy code at (within) the limit
-	{"0x600061C00060006000f5" + "600052" + "60206000F3", true, 53528, 53528},
+	{"0x600061C00060006000f5" + "600052" + "60206000F3", 53528, 53528},
 	// create2(0, 0, 0xc001, 0)
 	// This case is trying to deploy code exceeding the limit
-	{"0x600061C00160006000f5" + "600052" + "60206000F3", true, 32024, 100000},
+	{"0x600061C00160006000f5" + "600052" + "60206000F3", 32024, 100000},
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestCreateGas(t *testing.T) {
 	for i, tt := range createGasTests {
 		var gasUsed = uint64(0)
@@ -141,9 +143,6 @@ func TestCreateGas(t *testing.T) {
 				BlockNumber: big.NewInt(0),
 			}
 			config := Config{}
-			if tt.eip3860 {
-				config.ExtraEips = []int{3860}
-			}
 
 			vmenv := NewEVM(vmctx, TxContext{}, statedb, params.AllBeaconProtocolChanges, config)
 			var startGas = uint64(testGas)
@@ -173,4 +172,3 @@ func TestCreateGas(t *testing.T) {
 		}
 	}
 }
-*/

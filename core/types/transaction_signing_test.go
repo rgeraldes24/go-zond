@@ -59,7 +59,7 @@ func TestEIP155ChainId(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
+// TODO(rgeraldes24): fix: review hex values
 /*
 func TestShaghaiSigningVitalik(t *testing.T) {
 	// Test vectors come from http://vitalik.ca/files/eip155_testvec.txt

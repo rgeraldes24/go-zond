@@ -18,12 +18,15 @@ package types
 
 import (
 	"bytes"
+	"encoding/json"
 	"math"
 	"math/big"
 	"reflect"
 	"testing"
 
+	"github.com/kylelemons/godebug/diff"
 	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
 )
 
@@ -156,8 +159,10 @@ var (
 				},
 			},
 			// derived fields:
-			TxHash:            txs[0].Hash(),
-			ContractAddress:   common.HexToAddress("0x5a443704dd4b594b382c22a083e2bd3090a6fef3"),
+			TxHash: txs[0].Hash(),
+			// TODO(rgeraldes24): original value
+			// ContractAddress:   common.HexToAddress("0x5a443704dd4b594b382c22a083e2bd3090a6fef3"),
+			ContractAddress:   common.HexToAddress("0x4406d56cda6075031b218c6c4d2d8854662329dd"),
 			GasUsed:           1,
 			EffectiveGasPrice: big.NewInt(11),
 			BlockHash:         blockHash,
@@ -248,8 +253,6 @@ func TestDecodeEmptyTypedReceipt(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
 // Tests that receipt data can be correctly derived from the contextual infos
 func TestDeriveFields(t *testing.T) {
 	// Re-derive receipts.
@@ -275,7 +278,6 @@ func TestDeriveFields(t *testing.T) {
 		t.Fatal("receipts differ:", d)
 	}
 }
-*/
 
 // Test that we can marshal/unmarshal receipts to/from json without errors.
 // This also confirms that our test receipts contain all the required fields.

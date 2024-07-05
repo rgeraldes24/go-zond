@@ -528,7 +528,7 @@ func setupBlocks(t *testing.T, zondservice *zond.Zond, n int, parent *types.Head
 	return blocks
 }
 
-// TODO(rgeraldes24)
+// TODO(rgeraldes24): fix
 /*
 TestNewPayloadOnInvalidChain sets up a valid chain and tries to feed blocks
 from an invalid chain to test if latestValidHash (LVH) works correctly.

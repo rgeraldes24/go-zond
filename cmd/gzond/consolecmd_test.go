@@ -19,7 +19,9 @@ package main
 import (
 	"crypto/rand"
 	"math/big"
+	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -29,7 +31,7 @@ import (
 
 const (
 	ipcAPIs  = "admin:1.0 debug:1.0 engine:1.0 miner:1.0 net:1.0 rpc:1.0 txpool:1.0 web3:1.0 zond:1.0"
-	httpAPIs = "zond:1.0 net:1.0 rpc:1.0 web3:1.0"
+	httpAPIs = "net:1.0 rpc:1.0 web3:1.0 zond:1.0"
 )
 
 // spawns gzond with the given command line args, using a set of flags to minimise
@@ -44,16 +46,10 @@ func runMinimalGzond(t *testing.T, args ...string) *testgzond {
 	return runGzond(t, append(allArgs, args...)...)
 }
 
-// TODO(rgeraldes24): fix
 // Tests that a node embedded within a console can be started up properly and
 // then terminated by closing the input stream.
-/*
 func TestConsoleWelcome(t *testing.T) {
-	// coinbase := "0x8605cdbbdb6d264aa742e77020dcbc58fcdce182"
-
 	// Start a gzond console, make sure it's cleaned up and terminate the console
-	// TODO(rgeraldes24)
-	// gzond := runMinimalGzond(t, "--miner.etherbase", coinbase, "console")
 	gzond := runMinimalGzond(t, "console")
 
 	// Gather all the infos the welcome message needs to contain
@@ -62,26 +58,13 @@ func TestConsoleWelcome(t *testing.T) {
 	gzond.SetTemplateFunc("gover", runtime.Version)
 	gzond.SetTemplateFunc("gzondver", func() string { return params.VersionWithCommit("", "") })
 	gzond.SetTemplateFunc("niltime", func() string {
-		return time.Unix(1548854791, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")
+		// TODO(rgeraldes24): we need to change the time based on the chain config selected
+		// return time.Unix(1548854791, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")
+		return time.Unix(0, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")
 	})
 	gzond.SetTemplateFunc("apis", func() string { return ipcAPIs })
 
 	// Verify the actual welcome message to the required template
-
-	//    	gzond.Expect(`
-	//    Welcome to the Gzond JavaScript console!
-
-	//    instance: Gzond/v{{gzondver}}/{{goos}}-{{goarch}}/{{gover}}
-	//    at block: 0 ({{niltime}})
-	//     datadir: {{.Datadir}}
-	//     modules: {{apis}}
-
-	//    To exit, press ctrl-d or type exit
-	//    > {{.InputLine "exit"}}
-	//    `)
-	//    	gzond.ExpectExit()
-	//    }
-
 	gzond.Expect(`
 Welcome to the Gzond JavaScript console!
 
@@ -95,10 +78,7 @@ To exit, press ctrl-d or type exit
 `)
 	gzond.ExpectExit()
 }
-*/
 
-// TODO(rgeraldes24): function "etherbase" not defined
-/*
 // Tests that a console can be attached to a running node via various means.
 func TestAttachWelcome(t *testing.T) {
 	var (
@@ -136,7 +116,6 @@ func TestAttachWelcome(t *testing.T) {
 	})
 	gzond.Kill()
 }
-*/
 
 func testAttachWelcome(t *testing.T, gzond *testgzond, endpoint, apis string) {
 	// Attach to a running gzond node and terminate immediately
@@ -150,7 +129,9 @@ func testAttachWelcome(t *testing.T, gzond *testgzond, endpoint, apis string) {
 	attach.SetTemplateFunc("gover", runtime.Version)
 	attach.SetTemplateFunc("gzondver", func() string { return params.VersionWithCommit("", "") })
 	attach.SetTemplateFunc("niltime", func() string {
-		return time.Unix(1548854791, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")
+		// TODO(rgeraldes24): we need to change the time based on the chain config selected
+		// return time.Unix(1548854791, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")
+		return time.Unix(0, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")
 	})
 	attach.SetTemplateFunc("ipc", func() bool { return strings.HasPrefix(endpoint, "ipc") })
 	attach.SetTemplateFunc("datadir", func() string { return gzond.Datadir })
