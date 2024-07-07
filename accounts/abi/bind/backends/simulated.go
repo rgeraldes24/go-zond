@@ -518,11 +518,7 @@ func (b *SimulatedBackend) EstimateGas(ctx context.Context, call zond.CallMsg) (
 	}
 	// Normalize the max fee per gas the call is willing to spend.
 	var feeCap *big.Int
-	if call.GasPrice != nil && (call.GasFeeCap != nil || call.GasTipCap != nil) {
-		return 0, errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified")
-	} else if call.GasPrice != nil {
-		feeCap = call.GasPrice
-	} else if call.GasFeeCap != nil {
+	if call.GasFeeCap != nil {
 		feeCap = call.GasFeeCap
 	} else {
 		feeCap = common.Big0
@@ -606,28 +602,12 @@ func (b *SimulatedBackend) EstimateGas(ctx context.Context, call zond.CallMsg) (
 // callContract implements common code between normal and pending contract calls.
 // state is modified during execution, make sure to copy it if necessary.
 func (b *SimulatedBackend) callContract(ctx context.Context, call zond.CallMsg, header *types.Header, stateDB *state.StateDB) (*core.ExecutionResult, error) {
-	// Gas prices post 1559 need to be initialized
-	if call.GasPrice != nil && (call.GasFeeCap != nil || call.GasTipCap != nil) {
-		return nil, errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified")
+	// User specified 1559 gas fields (or none), use those
+	if call.GasFeeCap == nil {
+		call.GasFeeCap = new(big.Int)
 	}
-	head := b.blockchain.CurrentHeader()
-	// A basefee is provided, necessitating 1559-type execution
-	if call.GasPrice != nil {
-		// User specified the legacy gas field, convert to 1559 gas typing
-		call.GasFeeCap, call.GasTipCap = call.GasPrice, call.GasPrice
-	} else {
-		// User specified 1559 gas fields (or none), use those
-		if call.GasFeeCap == nil {
-			call.GasFeeCap = new(big.Int)
-		}
-		if call.GasTipCap == nil {
-			call.GasTipCap = new(big.Int)
-		}
-		// Backfill the legacy gasPrice for EVM execution, unless we're all zeroes
-		call.GasPrice = new(big.Int)
-		if call.GasFeeCap.BitLen() > 0 || call.GasTipCap.BitLen() > 0 {
-			call.GasPrice = math.BigMin(new(big.Int).Add(call.GasTipCap, head.BaseFee), call.GasFeeCap)
-		}
+	if call.GasTipCap == nil {
+		call.GasTipCap = new(big.Int)
 	}
 
 	// Ensure message is initialized properly.
@@ -648,9 +628,9 @@ func (b *SimulatedBackend) callContract(ctx context.Context, call zond.CallMsg, 
 		To:                call.To,
 		Value:             call.Value,
 		GasLimit:          call.Gas,
-		GasPrice:          call.GasPrice,
 		GasFeeCap:         call.GasFeeCap,
 		GasTipCap:         call.GasTipCap,
+		GasPrice:          new(big.Int),
 		Data:              call.Data,
 		AccessList:        call.AccessList,
 		SkipAccountChecks: true,

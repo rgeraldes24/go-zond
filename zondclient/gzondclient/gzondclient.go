@@ -233,9 +233,6 @@ func toCallArg(msg zond.CallMsg) interface{} {
 	if msg.Gas != 0 {
 		arg["gas"] = hexutil.Uint64(msg.Gas)
 	}
-	if msg.GasPrice != nil {
-		arg["gasPrice"] = (*hexutil.Big)(msg.GasPrice)
-	}
 	if msg.GasFeeCap != nil {
 		arg["maxFeePerGas"] = (*hexutil.Big)(msg.GasFeeCap)
 	}

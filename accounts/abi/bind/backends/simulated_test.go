@@ -478,66 +478,66 @@ func TestEstimateGas(t *testing.T) {
 		expectData  interface{}
 	}{
 		{"plain transfer(valid)", zond.CallMsg{
-			From:     addr,
-			To:       &addr,
-			Gas:      0,
-			GasPrice: big.NewInt(0),
-			Value:    big.NewInt(1),
-			Data:     nil,
+			From:      addr,
+			To:        &addr,
+			Gas:       0,
+			GasFeeCap: big.NewInt(0),
+			Value:     big.NewInt(1),
+			Data:      nil,
 		}, params.TxGas, nil, nil},
 
 		{"plain transfer(invalid)", zond.CallMsg{
-			From:     addr,
-			To:       &contractAddr,
-			Gas:      0,
-			GasPrice: big.NewInt(0),
-			Value:    big.NewInt(1),
-			Data:     nil,
+			From:      addr,
+			To:        &contractAddr,
+			Gas:       0,
+			GasFeeCap: big.NewInt(0),
+			Value:     big.NewInt(1),
+			Data:      nil,
 		}, 0, errors.New("execution reverted"), nil},
 
 		{"Revert", zond.CallMsg{
-			From:     addr,
-			To:       &contractAddr,
-			Gas:      0,
-			GasPrice: big.NewInt(0),
-			Value:    nil,
-			Data:     common.Hex2Bytes("d8b98391"),
+			From:      addr,
+			To:        &contractAddr,
+			Gas:       0,
+			GasFeeCap: big.NewInt(0),
+			Value:     nil,
+			Data:      common.Hex2Bytes("d8b98391"),
 		}, 0, errors.New("execution reverted: revert reason"), "0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000d72657665727420726561736f6e00000000000000000000000000000000000000"},
 
 		{"PureRevert", zond.CallMsg{
-			From:     addr,
-			To:       &contractAddr,
-			Gas:      0,
-			GasPrice: big.NewInt(0),
-			Value:    nil,
-			Data:     common.Hex2Bytes("aa8b1d30"),
+			From:      addr,
+			To:        &contractAddr,
+			Gas:       0,
+			GasFeeCap: big.NewInt(0),
+			Value:     nil,
+			Data:      common.Hex2Bytes("aa8b1d30"),
 		}, 0, errors.New("execution reverted"), nil},
 
 		{"OOG", zond.CallMsg{
-			From:     addr,
-			To:       &contractAddr,
-			Gas:      100000,
-			GasPrice: big.NewInt(0),
-			Value:    nil,
-			Data:     common.Hex2Bytes("50f6fe34"),
+			From:      addr,
+			To:        &contractAddr,
+			Gas:       100000,
+			GasFeeCap: big.NewInt(0),
+			Value:     nil,
+			Data:      common.Hex2Bytes("50f6fe34"),
 		}, 0, errors.New("gas required exceeds allowance (100000)"), nil},
 
 		{"Assert", zond.CallMsg{
-			From:     addr,
-			To:       &contractAddr,
-			Gas:      100000,
-			GasPrice: big.NewInt(0),
-			Value:    nil,
-			Data:     common.Hex2Bytes("b9b046f9"),
+			From:      addr,
+			To:        &contractAddr,
+			Gas:       100000,
+			GasFeeCap: big.NewInt(0),
+			Value:     nil,
+			Data:      common.Hex2Bytes("b9b046f9"),
 		}, 0, errors.New("invalid opcode: INVALID"), nil},
 
 		{"Valid", zond.CallMsg{
-			From:     addr,
-			To:       &contractAddr,
-			Gas:      100000,
-			GasPrice: big.NewInt(0),
-			Value:    nil,
-			Data:     common.Hex2Bytes("e09fface"),
+			From:      addr,
+			To:        &contractAddr,
+			Gas:       100000,
+			GasFeeCap: big.NewInt(0),
+			Value:     nil,
+			Data:      common.Hex2Bytes("e09fface"),
 		}, 21275, nil, nil},
 	}
 	for _, c := range cases {
@@ -579,39 +579,39 @@ func TestEstimateGasWithPrice(t *testing.T) {
 		expectError error
 	}{
 		{"EstimateWithoutPrice", zond.CallMsg{
-			From:     addr,
-			To:       &recipient,
-			Gas:      0,
-			GasPrice: big.NewInt(0),
-			Value:    big.NewInt(100000000000),
-			Data:     nil,
+			From:      addr,
+			To:        &recipient,
+			Gas:       0,
+			GasFeeCap: big.NewInt(0),
+			Value:     big.NewInt(100000000000),
+			Data:      nil,
 		}, 21000, nil},
 
 		{"EstimateWithPrice", zond.CallMsg{
-			From:     addr,
-			To:       &recipient,
-			Gas:      0,
-			GasPrice: big.NewInt(100000000000),
-			Value:    big.NewInt(100000000000),
-			Data:     nil,
+			From:      addr,
+			To:        &recipient,
+			Gas:       0,
+			GasFeeCap: big.NewInt(100000000000),
+			Value:     big.NewInt(100000000000),
+			Data:      nil,
 		}, 21000, nil},
 
 		{"EstimateWithVeryHighPrice", zond.CallMsg{
-			From:     addr,
-			To:       &recipient,
-			Gas:      0,
-			GasPrice: big.NewInt(1e14), // gascost = 2.1ether
-			Value:    big.NewInt(1e17), // the remaining balance for fee is 2.1ether
-			Data:     nil,
+			From:      addr,
+			To:        &recipient,
+			Gas:       0,
+			GasFeeCap: big.NewInt(1e14), // gascost = 2.1ether
+			Value:     big.NewInt(1e17), // the remaining balance for fee is 2.1ether
+			Data:      nil,
 		}, 21000, nil},
 
 		{"EstimateWithSuperhighPrice", zond.CallMsg{
-			From:     addr,
-			To:       &recipient,
-			Gas:      0,
-			GasPrice: big.NewInt(2e14), // gascost = 4.2ether
-			Value:    big.NewInt(100000000000),
-			Data:     nil,
+			From:      addr,
+			To:        &recipient,
+			Gas:       0,
+			GasFeeCap: big.NewInt(2e14), // gascost = 4.2ether,
+			Value:     big.NewInt(100000000000),
+			Data:      nil,
 		}, 21000, errors.New("gas required exceeds allowance (10999)")}, // 10999=(2.2ether-1000wei)/(2e14)
 
 		{"EstimateEIP1559WithHighFees", zond.CallMsg{

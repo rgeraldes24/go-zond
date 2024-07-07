@@ -42,7 +42,6 @@ type mockTransactor struct {
 	gasTipCap              *big.Int
 	gasPrice               *big.Int
 	suggestGasTipCapCalled bool
-	suggestGasPriceCalled  bool
 }
 
 func (mt *mockTransactor) HeaderByNumber(ctx context.Context, number *big.Int) (*types.Header, error) {
@@ -55,11 +54,6 @@ func (mt *mockTransactor) PendingCodeAt(ctx context.Context, account common.Addr
 
 func (mt *mockTransactor) PendingNonceAt(ctx context.Context, account common.Address) (uint64, error) {
 	return 0, nil
-}
-
-func (mt *mockTransactor) SuggestGasPrice(ctx context.Context) (*big.Int, error) {
-	mt.suggestGasPriceCalled = true
-	return mt.gasPrice, nil
 }
 
 func (mt *mockTransactor) SuggestGasTipCap(ctx context.Context) (*big.Int, error) {
@@ -325,25 +319,6 @@ func TestTransactGasFee(t *testing.T) {
 	assert.Equal(big.NewInt(6), tx.GasTipCap())
 	assert.Equal(big.NewInt(206), tx.GasFeeCap())
 	assert.True(mt.suggestGasTipCapCalled)
-
-	// GasPrice
-	// When opts.GasPrice is nil
-	mt = &mockTransactor{gasPrice: big.NewInt(5)}
-	bc = bind.NewBoundContract(common.Address{}, abi.ABI{}, nil, mt, nil)
-	opts = &bind.TransactOpts{Signer: mockSign}
-	tx, err = bc.Transact(opts, "")
-	assert.Nil(err)
-	assert.Equal(big.NewInt(5), tx.GasPrice())
-	assert.Nil(opts.GasPrice)
-	assert.True(mt.suggestGasPriceCalled)
-
-	// Second call to Transact should use latest suggested GasPrice
-	mt.gasPrice = big.NewInt(6)
-	mt.suggestGasPriceCalled = false
-	tx, err = bc.Transact(opts, "")
-	assert.Nil(err)
-	assert.Equal(big.NewInt(6), tx.GasPrice())
-	assert.True(mt.suggestGasPriceCalled)
 }
 
 func unpackAndCheck(t *testing.T, bc *bind.BoundContract, expected map[string]interface{}, mockLog types.Log) {

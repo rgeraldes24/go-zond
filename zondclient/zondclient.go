@@ -488,16 +488,6 @@ func (ec *Client) PendingCallContract(ctx context.Context, msg zond.CallMsg) ([]
 	return hex, nil
 }
 
-// SuggestGasPrice retrieves the currently suggested gas price to allow a timely
-// execution of a transaction.
-func (ec *Client) SuggestGasPrice(ctx context.Context) (*big.Int, error) {
-	var hex hexutil.Big
-	if err := ec.c.CallContext(ctx, &hex, "zond_gasPrice"); err != nil {
-		return nil, err
-	}
-	return (*big.Int)(&hex), nil
-}
-
 // SuggestGasTipCap retrieves the currently suggested gas tip cap after 1559 to
 // allow a timely execution of a transaction.
 func (ec *Client) SuggestGasTipCap(ctx context.Context) (*big.Int, error) {
@@ -593,9 +583,6 @@ func toCallArg(msg zond.CallMsg) interface{} {
 	}
 	if msg.Gas != 0 {
 		arg["gas"] = hexutil.Uint64(msg.Gas)
-	}
-	if msg.GasPrice != nil {
-		arg["gasPrice"] = (*hexutil.Big)(msg.GasPrice)
 	}
 	if msg.GasFeeCap != nil {
 		arg["maxFeePerGas"] = (*hexutil.Big)(msg.GasFeeCap)

@@ -1249,11 +1249,11 @@ func testLogRebirth(t *testing.T, scheme string) {
 	genDb, chain, _ := GenerateChainWithGenesis(gspec, engine, 3, func(i int, gen *BlockGen) {
 		if i < 2 {
 			for ii := 0; ii < 5; ii++ {
-				tx, err := types.SignNewTx(key1, signer, &types.LegacyTx{
-					Nonce:    gen.TxNonce(addr1),
-					GasPrice: gen.header.BaseFee,
-					Gas:      uint64(1000001),
-					Data:     logCode,
+				tx, err := types.SignNewTx(key1, signer, &types.DynamicFeeTx{
+					Nonce:     gen.TxNonce(addr1),
+					GasFeeCap: gen.header.BaseFee,
+					Gas:       uint64(1000001),
+					Data:      logCode,
 				})
 				if err != nil {
 					t.Fatalf("failed to create tx: %v", err)
@@ -1275,11 +1275,11 @@ func testLogRebirth(t *testing.T, scheme string) {
 			return
 		}
 		for ii := 0; ii < 5; ii++ {
-			tx, err := types.SignNewTx(key1, signer, &types.LegacyTx{
-				Nonce:    gen.TxNonce(addr1),
-				GasPrice: gen.header.BaseFee,
-				Gas:      uint64(1000000),
-				Data:     logCode,
+			tx, err := types.SignNewTx(key1, signer, &types.DynamicFeeTx{
+				Nonce:     gen.TxNonce(addr1),
+				GasFeeCap: gen.header.BaseFee,
+				Gas:       uint64(1000000),
+				Data:      logCode,
 			})
 			if err != nil {
 				t.Fatalf("failed to create tx: %v", err)
@@ -1579,7 +1579,7 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 
 		switch i {
 		case 0:
-			tx = types.NewTx(&types.LegacyTx{
+			tx = types.NewTx(&types.DynamicFeeTx{
 				Nonce: block.TxNonce(address),
 				To:    &theAddr,
 				Value: new(big.Int),
@@ -1588,7 +1588,7 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 			})
 			tx, err = types.SignTx(tx, signer, key)
 		case 1:
-			tx = types.NewTx(&types.LegacyTx{
+			tx = types.NewTx(&types.DynamicFeeTx{
 				Nonce: block.TxNonce(address),
 				To:    &theAddr,
 				Value: new(big.Int),
@@ -1597,7 +1597,7 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 			})
 			tx, err = types.SignTx(tx, signer, key)
 		case 2:
-			tx = types.NewTx(&types.LegacyTx{
+			tx = types.NewTx(&types.DynamicFeeTx{
 				Nonce: block.TxNonce(address),
 				To:    &theAddr,
 				Value: new(big.Int),
@@ -3586,6 +3586,8 @@ func testInitThenFailCreateContract(t *testing.T, scheme string) {
 	}
 }
 
+// TODO(rgeraldes24): fix
+/*
 // TestEIP2718Transition tests that an EIP-2718 transaction will be accepted
 // after the fork block has passed. This is verified by sending an EIP-2930
 // access list transaction, which specifies a single slot access, and then
@@ -3663,6 +3665,7 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 		t.Fatalf("incorrect amount of gas spent: expected %d, got %d", expected, block.GasUsed())
 	}
 }
+*/
 
 // TODO(rgeraldes24): fix
 // TestEIP1559Transition tests the following:
@@ -3780,11 +3783,11 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 	blocks, _ = GenerateChain(gspec.Config, block, engine, genDb, 1, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{2})
 
-		txdata := &types.LegacyTx{
-			Nonce:    0,
-			To:       &aa,
-			Gas:      30000,
-			GasPrice: newGwei(5),
+		txdata := &types.DynamicFeeTx{
+			Nonce:     0,
+			To:        &aa,
+			Gas:       30000,
+			GasFeeCap: newGwei(5),
 		}
 		tx := types.NewTx(txdata)
 		tx, _ = types.SignTx(tx, signer, key2)
@@ -4306,19 +4309,19 @@ func testCreateThenDelete(t *testing.T, config *params.ChainConfig) {
 			fee = b.header.BaseFee
 		}
 		b.SetCoinbase(common.Address{1})
-		tx, _ := types.SignNewTx(key, signer, &types.LegacyTx{
-			Nonce:    nonce,
-			GasPrice: new(big.Int).Set(fee),
-			Gas:      100000,
-			Data:     initCode,
+		tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{
+			Nonce:     nonce,
+			GasFeeCap: new(big.Int).Set(fee),
+			Gas:       100000,
+			Data:      initCode,
 		})
 		nonce++
 		b.AddTx(tx)
-		tx, _ = types.SignNewTx(key, signer, &types.LegacyTx{
-			Nonce:    nonce,
-			GasPrice: new(big.Int).Set(fee),
-			Gas:      100000,
-			To:       &destAddress,
+		tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{
+			Nonce:     nonce,
+			GasFeeCap: new(big.Int).Set(fee),
+			Gas:       100000,
+			To:        &destAddress,
 		})
 		b.AddTx(tx)
 		nonce++

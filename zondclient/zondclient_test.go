@@ -46,7 +46,6 @@ var (
 	_ = zond.ChainSyncReader(&Client{})
 	_ = zond.ContractCaller(&Client{})
 	_ = zond.GasEstimator(&Client{})
-	_ = zond.GasPricer(&Client{})
 	_ = zond.LogFilterer(&Client{})
 	_ = zond.PendingStateReader(&Client{})
 	// _ = zond.PendingStateEventer(&Client{})
@@ -485,15 +484,6 @@ func testStatusFunctions(t *testing.T, client *rpc.Client) {
 	}
 	if networkID.Cmp(big.NewInt(0)) != 0 {
 		t.Fatalf("unexpected networkID: %v", networkID)
-	}
-
-	// SuggestGasPrice
-	gasPrice, err := zc.SuggestGasPrice(context.Background())
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if gasPrice.Cmp(big.NewInt(1765625000)) != 0 {
-		t.Fatalf("unexpected gas price: %v", gasPrice)
 	}
 
 	// SuggestGasTipCap

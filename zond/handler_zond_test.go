@@ -284,8 +284,7 @@ func testRecvTransactions(t *testing.T, protocol uint) {
 }
 
 // This test checks that pending transactions are sent.
-// TODO(rgeraldes24): fix
-// func TestSendTransactions68(t *testing.T) { testSendTransactions(t, zond.ETH68) }
+func TestSendTransactions68(t *testing.T) { testSendTransactions(t, zond.ETH68) }
 
 func testSendTransactions(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -304,12 +303,10 @@ func testSendTransactions(t *testing.T, protocol uint) {
 			Data:  make([]byte, 10240),
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(0)}, testKey)
-
 		insert[nonce] = tx
 	}
-	// TODO(rgeraldes24)
-	// go handler.txpool.AddRemotes(insert) // Need goroutine to not block on feed
-	time.Sleep(250 * time.Millisecond) // Wait until tx events get out of the system (can't use events, tx broadcaster races with peer join)
+	go handler.txpool.Add(insert, false, false) // Need goroutine to not block on feed
+	time.Sleep(250 * time.Millisecond)          // Wait until tx events get out of the system (can't use events, tx broadcaster races with peer join)
 
 	// Create a source handler to send messages through and a sink peer to receive them
 	p2pSrc, p2pSink := p2p.MsgPipe()
@@ -350,7 +347,7 @@ func testSendTransactions(t *testing.T, protocol uint) {
 	seen := make(map[common.Hash]struct{})
 	for len(seen) < len(insert) {
 		switch protocol {
-		case 66, 67, 68:
+		case 68:
 			select {
 			case hashes := <-anns:
 				for _, hash := range hashes {
@@ -376,8 +373,7 @@ func testSendTransactions(t *testing.T, protocol uint) {
 
 // Tests that transactions get propagated to all attached peers, either via direct
 // broadcasts or via announcements/retrievals.
-// TODO(rgeraldes24): fix
-// func TestTransactionPropagation68(t *testing.T) { testTransactionPropagation(t, zond.ETH68) }
+func TestTransactionPropagation68(t *testing.T) { testTransactionPropagation(t, zond.ETH68) }
 
 func testTransactionPropagation(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -438,8 +434,7 @@ func testTransactionPropagation(t *testing.T, protocol uint) {
 
 		txs[nonce] = tx
 	}
-	// TODO(rgeraldes24)
-	// source.txpool.AddRemotes(txs)
+	source.txpool.Add(txs, false, false)
 
 	// Iterate through all the sinks and ensure they all got the transactions
 	for i := range sinks {

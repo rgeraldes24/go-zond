@@ -180,7 +180,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): fix
+// TODO(rgeraldes24)
 /*
 // TestGenesisHashes checks the congruity of default genesis data to
 // corresponding hardcoded genesis hash values.
@@ -205,35 +205,35 @@ func TestGenesisHashes(t *testing.T) {
 }
 */
 
-// TODO(rgeraldes24)
-/*
 func TestGenesis_Commit(t *testing.T) {
 	genesis := &Genesis{
-		BaseFee: big.NewInt(params.InitialBaseFee),
-		Config:  params.TestChainConfig,
-		// difficulty is nil
+		Config: params.TestChainConfig,
+		// basefee is nil
 	}
 
 	db := rawdb.NewMemoryDatabase()
 	genesisBlock := genesis.MustCommit(db, trie.NewDatabase(db, trie.HashDefaults))
 
-	if genesis.Difficulty != nil {
+	if genesis.BaseFee != nil {
 		t.Fatalf("assumption wrong")
 	}
 
 	// This value should have been set as default in the ToBlock method.
-	if genesisBlock.Difficulty().Cmp(params.GenesisDifficulty) != 0 {
-		t.Errorf("assumption wrong: want: %d, got: %v", params.GenesisDifficulty, genesisBlock.Difficulty())
+	if genesisBlock.BaseFee().Cmp(new(big.Int).SetUint64(params.InitialBaseFee)) != 0 {
+		t.Errorf("assumption wrong: want: %d, got: %v", params.InitialBaseFee, genesisBlock.BaseFee())
 	}
 
-	// Expect the stored total difficulty to be the difficulty of the genesis block.
-	stored := rawdb.ReadTd(db, genesisBlock.Hash(), genesisBlock.NumberU64())
+	// Expect the stored basefee to be the basefee of the genesis block.
+	blk := rawdb.ReadBlock(db, genesisBlock.Hash(), 0)
+	if blk == nil {
+		t.Errorf("unable to retrieve block %d for canonical hash: %s", blk.NumberU64(), blk.Hash())
+		return
+	}
 
-	if stored.Cmp(genesisBlock.Difficulty()) != 0 {
-		t.Errorf("inequal difficulty; stored: %v, genesisBlock: %v", stored, genesisBlock.Difficulty())
+	if blk.BaseFee().Cmp(genesisBlock.BaseFee()) != 0 {
+		t.Errorf("inequal difficulty; stored: %v, genesisBlock: %v", blk.BaseFee(), genesisBlock.BaseFee())
 	}
 }
-*/
 
 func TestReadWriteGenesisAlloc(t *testing.T) {
 	var (

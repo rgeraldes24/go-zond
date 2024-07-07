@@ -600,11 +600,11 @@ func makeTestBlocks(nblock int, txsPerBlock int) []*types.Block {
 	for i := 0; i < len(txs); i++ {
 		var err error
 		to := common.Address{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-		txs[i], err = types.SignNewTx(key, signer, &types.LegacyTx{
-			Nonce:    2,
-			GasPrice: big.NewInt(30000),
-			Gas:      0x45454545,
-			To:       &to,
+		txs[i], err = types.SignNewTx(key, signer, &types.DynamicFeeTx{
+			Nonce:     2,
+			GasFeeCap: big.NewInt(30000),
+			Gas:       0x45454545,
+			To:        &to,
 		})
 		if err != nil {
 			panic(err)
@@ -764,25 +764,25 @@ func TestDeriveLogFields(t *testing.T) {
 	to2 := common.HexToAddress("0x2")
 	to3 := common.HexToAddress("0x3")
 	txs := types.Transactions{
-		types.NewTx(&types.LegacyTx{
-			Nonce:    1,
-			Value:    big.NewInt(1),
-			Gas:      1,
-			GasPrice: big.NewInt(1),
+		types.NewTx(&types.DynamicFeeTx{
+			Nonce:     1,
+			Value:     big.NewInt(1),
+			Gas:       1,
+			GasFeeCap: big.NewInt(1),
 		}),
-		types.NewTx(&types.LegacyTx{
-			To:       &to2,
-			Nonce:    2,
-			Value:    big.NewInt(2),
-			Gas:      2,
-			GasPrice: big.NewInt(2),
+		types.NewTx(&types.DynamicFeeTx{
+			To:        &to2,
+			Nonce:     2,
+			Value:     big.NewInt(2),
+			Gas:       2,
+			GasFeeCap: big.NewInt(2),
 		}),
-		types.NewTx(&types.AccessListTx{
-			To:       &to3,
-			Nonce:    3,
-			Value:    big.NewInt(3),
-			Gas:      3,
-			GasPrice: big.NewInt(3),
+		types.NewTx(&types.DynamicFeeTx{
+			To:        &to3,
+			Nonce:     3,
+			Value:     big.NewInt(3),
+			Gas:       3,
+			GasFeeCap: big.NewInt(3),
 		}),
 	}
 	// Create the corresponding receipts

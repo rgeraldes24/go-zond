@@ -38,13 +38,13 @@ var (
 	to = common.HexToAddress("095e7baea6a6c7c4c2dfeb977efac326af552d87")
 
 	// TODO(rgeraldes24)
-	emptyTx = NewTx(&LegacyTx{
-		Nonce:    0,
-		To:       &to,
-		Value:    big.NewInt(0),
-		Gas:      0,
-		GasPrice: big.NewInt(0),
-		Data:     nil,
+	emptyTx = NewTx(&DynamicFeeTx{
+		Nonce:     0,
+		To:        &to,
+		Value:     big.NewInt(0),
+		Gas:       0,
+		GasFeeCap: big.NewInt(0),
+		Data:      nil,
 	})
 
 	// TODO(rgeraldes24)
@@ -63,15 +63,15 @@ var (
 		)
 	*/
 
-	emptyEip2718Tx = NewTx(&AccessListTx{
-		ChainID:  big.NewInt(1),
-		Nonce:    3,
-		To:       &testAddr,
-		Value:    big.NewInt(10),
-		Gas:      25000,
-		GasPrice: big.NewInt(1),
-		Data:     common.FromHex("5544"),
-	})
+	// emptyEip2718Tx = NewTx(&AccessListTx{
+	// 	ChainID:  big.NewInt(1),
+	// 	Nonce:    3,
+	// 	To:       &testAddr,
+	// 	Value:    big.NewInt(10),
+	// 	Gas:      25000,
+	// 	GasPrice: big.NewInt(1),
+	// 	Data:     common.FromHex("5544"),
+	// })
 
 	// TODO(rgeraldes24): fix
 	// signedEip2718Tx, _ = emptyEip2718Tx.WithSignatureAndPublicKey(
@@ -411,31 +411,13 @@ func TestTransactionSizes(t *testing.T) {
 	key, _ := pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	to := common.HexToAddress("0x01")
 	for i, txdata := range []TxData{
-		&AccessListTx{
-			ChainID:  big.NewInt(123),
-			Nonce:    0,
-			To:       nil,
-			Value:    big.NewInt(1000),
-			Gas:      21000,
-			GasPrice: big.NewInt(100000),
-		},
-		// TODO(rgeraldes24): legacy tx: invalid chain id for signer: have 1 want 123
-		/*
-			&LegacyTx{
-				Nonce:    1,
-				GasPrice: big.NewInt(500),
-				Gas:      1000000,
-				To:       &to,
-				Value:    big.NewInt(1),
-			},
-		*/
-		&AccessListTx{
-			ChainID:  big.NewInt(123),
-			Nonce:    1,
-			GasPrice: big.NewInt(500),
-			Gas:      1000000,
-			To:       &to,
-			Value:    big.NewInt(1),
+		&DynamicFeeTx{
+			ChainID:   big.NewInt(123),
+			Nonce:     1,
+			GasFeeCap: big.NewInt(500),
+			Gas:       1000000,
+			To:        &to,
+			Value:     big.NewInt(1),
 			AccessList: AccessList{
 				AccessTuple{
 					Address:     common.HexToAddress("0x01"),

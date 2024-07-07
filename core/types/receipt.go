@@ -101,9 +101,6 @@ type storedReceiptRLP struct {
 // into an RLP stream. If no post state is present, byzantium fork is assumed.
 func (r *Receipt) EncodeRLP(w io.Writer) error {
 	data := &receiptRLP{r.statusEncoding(), r.CumulativeGasUsed, r.Bloom, r.Logs}
-	if r.Type == LegacyTxType {
-		return rlp.Encode(w, data)
-	}
 	buf := encodeBufferPool.Get().(*bytes.Buffer)
 	defer encodeBufferPool.Put(buf)
 	buf.Reset()
@@ -121,9 +118,6 @@ func (r *Receipt) encodeTyped(data *receiptRLP, w *bytes.Buffer) error {
 
 // MarshalBinary returns the consensus encoding of the receipt.
 func (r *Receipt) MarshalBinary() ([]byte, error) {
-	if r.Type == LegacyTxType {
-		return rlp.EncodeToBytes(r)
-	}
 	data := &receiptRLP{r.statusEncoding(), r.CumulativeGasUsed, r.Bloom, r.Logs}
 	var buf bytes.Buffer
 	err := r.encodeTyped(data, &buf)
@@ -137,14 +131,6 @@ func (r *Receipt) DecodeRLP(s *rlp.Stream) error {
 	switch {
 	case err != nil:
 		return err
-	case kind == rlp.List:
-		// It's a legacy receipt.
-		var dec receiptRLP
-		if err := s.Decode(&dec); err != nil {
-			return err
-		}
-		r.Type = LegacyTxType
-		return r.setFromRLP(dec)
 	case kind == rlp.Byte:
 		return errShortTypedReceipt
 	default:
@@ -164,16 +150,6 @@ func (r *Receipt) DecodeRLP(s *rlp.Stream) error {
 // UnmarshalBinary decodes the consensus encoding of receipts.
 // It supports legacy RLP receipts and EIP-2718 typed receipts.
 func (r *Receipt) UnmarshalBinary(b []byte) error {
-	if len(b) > 0 && b[0] > 0x7f {
-		// It's a legacy receipt decode the RLP
-		var data receiptRLP
-		err := rlp.DecodeBytes(b, &data)
-		if err != nil {
-			return err
-		}
-		r.Type = LegacyTxType
-		return r.setFromRLP(data)
-	}
 	// It's an EIP2718 typed transaction envelope.
 	return r.decodeTyped(b)
 }
@@ -184,7 +160,7 @@ func (r *Receipt) decodeTyped(b []byte) error {
 		return errShortTypedReceipt
 	}
 	switch b[0] {
-	case DynamicFeeTxType, AccessListTxType:
+	case DynamicFeeTxType:
 		var data receiptRLP
 		err := rlp.DecodeBytes(b[1:], &data)
 		if err != nil {
@@ -286,13 +262,9 @@ func (rs Receipts) Len() int { return len(rs) }
 func (rs Receipts) EncodeIndex(i int, w *bytes.Buffer) {
 	r := rs[i]
 	data := &receiptRLP{r.statusEncoding(), r.CumulativeGasUsed, r.Bloom, r.Logs}
-	if r.Type == LegacyTxType {
-		rlp.Encode(w, data)
-		return
-	}
 	w.WriteByte(r.Type)
 	switch r.Type {
-	case AccessListTxType, DynamicFeeTxType:
+	case DynamicFeeTxType:
 		rlp.Encode(w, data)
 	default:
 		// For unsupported types, write nothing. Since this is for

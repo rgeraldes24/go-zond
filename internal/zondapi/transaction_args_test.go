@@ -53,44 +53,45 @@ func TestSetFeeDefaults(t *testing.T) {
 		b        = newBackendMock()
 		fortytwo = (*hexutil.Big)(big.NewInt(42))
 		maxFee   = (*hexutil.Big)(new(big.Int).Add(new(big.Int).Mul(b.current.BaseFee, big.NewInt(2)), fortytwo.ToInt()))
-		al       = &types.AccessList{types.AccessTuple{Address: common.Address{0xaa}, StorageKeys: []common.Hash{{0x01}}}}
+		// al       = &types.AccessList{types.AccessTuple{Address: common.Address{0xaa}, StorageKeys: []common.Hash{{0x01}}}}
 	)
 
 	tests := []test{
-		// Legacy txs
-		{
-			"legacy tx post-London, explicit gas price",
-			&TransactionArgs{GasPrice: fortytwo},
-			&TransactionArgs{GasPrice: fortytwo},
-			nil,
-		},
+		/*
+			// Legacy txs
+			{
+				"legacy tx post-London, explicit gas price",
+				&TransactionArgs{GasPrice: fortytwo},
+				&TransactionArgs{GasPrice: fortytwo},
+				nil,
+			},
 
-		// Access list txs
-		{
-			"access list tx post-London, explicit gas price",
-			&TransactionArgs{AccessList: al, GasPrice: fortytwo},
-			&TransactionArgs{AccessList: al, GasPrice: fortytwo},
-			nil,
-		},
-		{
-			"access list tx post-London",
-			&TransactionArgs{AccessList: al},
-			&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
-			nil,
-		},
-		{
-			"access list tx post-London, only max fee",
-			&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee},
-			&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
-			nil,
-		},
-		{
-			"access list tx post-London, only priority fee",
-			&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee},
-			&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
-			nil,
-		},
-
+			// Access list txs
+			{
+				"access list tx post-London, explicit gas price",
+				&TransactionArgs{AccessList: al, GasPrice: fortytwo},
+				&TransactionArgs{AccessList: al, GasPrice: fortytwo},
+				nil,
+			},
+			{
+				"access list tx post-London",
+				&TransactionArgs{AccessList: al},
+				&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
+				nil,
+			},
+			{
+				"access list tx post-London, only max fee",
+				&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee},
+				&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
+				nil,
+			},
+			{
+				"access list tx post-London, only priority fee",
+				&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee},
+				&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
+				nil,
+			},
+		*/
 		// Dynamic fee txs
 		{
 			"dynamic tx post-London",
@@ -124,24 +125,26 @@ func TestSetFeeDefaults(t *testing.T) {
 		},
 
 		// Misc
-		{
-			"set all fee parameters",
-			&TransactionArgs{GasPrice: fortytwo, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
-			nil,
-			errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified"),
-		},
-		{
-			"set gas price and maxPriorityFee",
-			&TransactionArgs{GasPrice: fortytwo, MaxPriorityFeePerGas: fortytwo},
-			nil,
-			errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified"),
-		},
-		{
-			"set gas price and maxFee",
-			&TransactionArgs{GasPrice: fortytwo, MaxFeePerGas: maxFee},
-			nil,
-			errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified"),
-		},
+		/*
+			{
+				"set all fee parameters",
+				&TransactionArgs{GasPrice: fortytwo, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
+				nil,
+				errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified"),
+			},
+			{
+				"set gas price and maxPriorityFee",
+				&TransactionArgs{GasPrice: fortytwo, MaxPriorityFeePerGas: fortytwo},
+				nil,
+				errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified"),
+			},
+			{
+				"set gas price and maxFee",
+				&TransactionArgs{GasPrice: fortytwo, MaxFeePerGas: maxFee},
+				nil,
+				errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified"),
+			},
+		*/
 	}
 
 	ctx := context.Background()

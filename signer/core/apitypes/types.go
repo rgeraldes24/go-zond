@@ -126,7 +126,7 @@ func (args *SendTxArgs) ToTransaction() *types.Transaction {
 
 	var data types.TxData
 	switch {
-	case args.MaxFeePerGas != nil:
+	default:
 		al := types.AccessList{}
 		if args.AccessList != nil {
 			al = *args.AccessList
@@ -141,26 +141,6 @@ func (args *SendTxArgs) ToTransaction() *types.Transaction {
 			Value:      (*big.Int)(&args.Value),
 			Data:       input,
 			AccessList: al,
-		}
-	case args.AccessList != nil:
-		data = &types.AccessListTx{
-			To:         to,
-			ChainID:    (*big.Int)(args.ChainID),
-			Nonce:      uint64(args.Nonce),
-			Gas:        uint64(args.Gas),
-			GasPrice:   (*big.Int)(args.GasPrice),
-			Value:      (*big.Int)(&args.Value),
-			Data:       input,
-			AccessList: *args.AccessList,
-		}
-	default:
-		data = &types.LegacyTx{
-			To:       to,
-			Nonce:    uint64(args.Nonce),
-			Gas:      uint64(args.Gas),
-			GasPrice: (*big.Int)(args.GasPrice),
-			Value:    (*big.Int)(&args.Value),
-			Data:     input,
 		}
 	}
 	return types.NewTx(data)

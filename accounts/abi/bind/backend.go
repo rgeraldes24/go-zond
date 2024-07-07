@@ -79,10 +79,6 @@ type ContractTransactor interface {
 	// PendingNonceAt retrieves the current pending nonce associated with an account.
 	PendingNonceAt(ctx context.Context, account common.Address) (uint64, error)
 
-	// SuggestGasPrice retrieves the currently suggested gas price to allow a timely
-	// execution of a transaction.
-	SuggestGasPrice(ctx context.Context) (*big.Int, error)
-
 	// SuggestGasTipCap retrieves the currently suggested 1559 priority fee to allow
 	// a timely execution of a transaction.
 	SuggestGasTipCap(ctx context.Context) (*big.Int, error)

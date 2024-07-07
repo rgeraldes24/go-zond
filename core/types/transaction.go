@@ -40,12 +40,10 @@ var (
 
 // Transaction types.
 const (
-	LegacyTxType     = 0x00
-	AccessListTxType = 0x01
 	DynamicFeeTxType = 0x02
 )
 
-// Transaction is an Ethereum transaction.
+// Transaction is a Zond transaction.
 type Transaction struct {
 	inner TxData    // Consensus contents of a transaction
 	time  time.Time // Time first seen locally (spam avoidance)
@@ -99,9 +97,6 @@ type TxData interface {
 
 // EncodeRLP implements rlp.Encoder
 func (tx *Transaction) EncodeRLP(w io.Writer) error {
-	if tx.Type() == LegacyTxType {
-		return rlp.Encode(w, tx.inner)
-	}
 	// It's an EIP-2718 typed TX envelope.
 	buf := encodeBufferPool.Get().(*bytes.Buffer)
 	defer encodeBufferPool.Put(buf)
@@ -122,9 +117,6 @@ func (tx *Transaction) encodeTyped(w *bytes.Buffer) error {
 // For legacy transactions, it returns the RLP encoding. For EIP-2718 typed
 // transactions, it returns the type and payload.
 func (tx *Transaction) MarshalBinary() ([]byte, error) {
-	if tx.Type() == LegacyTxType {
-		return rlp.EncodeToBytes(tx.inner)
-	}
 	var buf bytes.Buffer
 	err := tx.encodeTyped(&buf)
 	return buf.Bytes(), err
@@ -135,14 +127,6 @@ func (tx *Transaction) DecodeRLP(s *rlp.Stream) error {
 	kind, size, err := s.Kind()
 	switch {
 	case err != nil:
-		return err
-	case kind == rlp.List:
-		// It's a legacy transaction.
-		var inner LegacyTx
-		err := s.Decode(&inner)
-		if err == nil {
-			tx.setDecoded(&inner, rlp.ListSize(size))
-		}
 		return err
 	case kind == rlp.Byte:
 		return errShortTypedTx
@@ -169,16 +153,6 @@ func (tx *Transaction) DecodeRLP(s *rlp.Stream) error {
 // UnmarshalBinary decodes the canonical encoding of transactions.
 // It supports legacy RLP transactions and EIP2718 typed transactions.
 func (tx *Transaction) UnmarshalBinary(b []byte) error {
-	if len(b) > 0 && b[0] > 0x7f {
-		// It's a legacy transaction.
-		var data LegacyTx
-		err := rlp.DecodeBytes(b, &data)
-		if err != nil {
-			return err
-		}
-		tx.setDecoded(&data, uint64(len(b)))
-		return nil
-	}
 	// It's an EIP2718 typed transaction envelope.
 	inner, err := tx.decodeTyped(b)
 	if err != nil {
@@ -195,8 +169,6 @@ func (tx *Transaction) decodeTyped(b []byte) (TxData, error) {
 	}
 	var inner TxData
 	switch b[0] {
-	case AccessListTxType:
-		inner = new(AccessListTx)
 	case DynamicFeeTxType:
 		inner = new(DynamicFeeTx)
 	default:
@@ -390,13 +362,7 @@ func (tx *Transaction) Hash() common.Hash {
 	if hash := tx.hash.Load(); hash != nil {
 		return hash.(common.Hash)
 	}
-
-	var h common.Hash
-	if tx.Type() == LegacyTxType {
-		h = rlpHash(tx.inner)
-	} else {
-		h = prefixedRlpHash(tx.Type(), tx.inner)
-	}
+	h := prefixedRlpHash(tx.Type(), tx.inner)
 	tx.hash.Store(h)
 	return h
 }
@@ -412,12 +378,7 @@ func (tx *Transaction) Size() uint64 {
 	// Note we rely on the assumption that all tx.inner values are RLP-encoded!
 	c := writeCounter(0)
 	rlp.Encode(&c, &tx.inner)
-	size := uint64(c)
-
-	// For typed transactions, the encoding also includes the leading type byte.
-	if tx.Type() != LegacyTxType {
-		size += 1
-	}
+	size := uint64(c) + 1
 
 	tx.size.Store(size)
 	return size
@@ -445,11 +406,7 @@ func (s Transactions) Len() int { return len(s) }
 // constructed by decoding or via public API in this package.
 func (s Transactions) EncodeIndex(i int, w *bytes.Buffer) {
 	tx := s[i]
-	if tx.Type() == LegacyTxType {
-		rlp.Encode(w, tx.inner)
-	} else {
-		tx.encodeTyped(w)
-	}
+	tx.encodeTyped(w)
 }
 
 // TxDifference returns a new set which is the difference between a and b.
