@@ -1679,7 +1679,7 @@ func TestRepricingDynamicFee(t *testing.T) {
 
 // TODO(rgeraldes24): fix
 // Tests that setting the transaction pool gas price to a higher value does not
-// remove local transactions (legacy & dynamic fee).
+// remove local transactions (dynamic fee).
 /*
 func TestRepricingKeepsLocals(t *testing.T) {
 	t.Parallel()

@@ -25,7 +25,6 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/internal/blocktest"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/zonddb"
 )
 
@@ -41,28 +40,6 @@ func TestLookupStorage(t *testing.T) {
 			"DatabaseV6",
 			func(db zonddb.Writer, block *types.Block) {
 				WriteTxLookupEntriesByBlock(db, block)
-			},
-		},
-		{
-			"DatabaseV4-V5",
-			func(db zonddb.Writer, block *types.Block) {
-				for _, tx := range block.Transactions() {
-					db.Put(txLookupKey(tx.Hash()), block.Hash().Bytes())
-				}
-			},
-		},
-		{
-			"DatabaseV3",
-			func(db zonddb.Writer, block *types.Block) {
-				for index, tx := range block.Transactions() {
-					entry := LegacyTxLookupEntry{
-						BlockHash:  block.Hash(),
-						BlockIndex: block.NumberU64(),
-						Index:      uint64(index),
-					}
-					data, _ := rlp.EncodeToBytes(entry)
-					db.Put(txLookupKey(tx.Hash()), data)
-				}
 			},
 		},
 	}

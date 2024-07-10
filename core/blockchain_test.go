@@ -4401,9 +4401,9 @@ func TestDeleteThenCreate(t *testing.T) {
 
 		// Block 1
 		if i == 0 {
-			tx, _ := types.SignNewTx(key, signer, &types.LegacyTx{
+			tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{
 				Nonce:    nonce,
-				GasPrice: new(big.Int).Set(fee),
+				GasFeeCap: new(big.Int).Set(fee),
 				Gas:      500000,
 				Data:     factoryBIN,
 			})
@@ -4411,9 +4411,9 @@ func TestDeleteThenCreate(t *testing.T) {
 			b.AddTx(tx)
 
 			data := common.Hex2Bytes("00774360000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000a76080604052348015600f57600080fd5b5060646000819055506081806100266000396000f3fe608060405260043610601f5760003560e01c80632b68b9c614602a576025565b36602557005b600080fd5b60306032565b005b3373ffffffffffffffffffffffffffffffffffffffff16fffea2646970667358221220ab749f5ed1fcb87bda03a74d476af3f074bba24d57cb5a355e8162062ad9a4e664736f6c6343000807003300000000000000000000000000000000000000000000000000")
-			tx, _ = types.SignNewTx(key, signer, &types.LegacyTx{
+			tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{
 				Nonce:    nonce,
-				GasPrice: new(big.Int).Set(fee),
+				GasFeeCap: new(big.Int).Set(fee),
 				Gas:      500000,
 				To:       &factoryAddr,
 				Data:     data,
@@ -4422,9 +4422,9 @@ func TestDeleteThenCreate(t *testing.T) {
 			nonce++
 		} else {
 			// Block 2
-			tx, _ := types.SignNewTx(key, signer, &types.LegacyTx{
+			tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{
 				Nonce:    nonce,
-				GasPrice: new(big.Int).Set(fee),
+				GasFeeCap: new(big.Int).Set(fee),
 				Gas:      500000,
 				To:       &contractAddr,
 				Data:     common.Hex2Bytes("2b68b9c6"), // destruct
@@ -4433,9 +4433,9 @@ func TestDeleteThenCreate(t *testing.T) {
 			b.AddTx(tx)
 
 			data := common.Hex2Bytes("00774360000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000a76080604052348015600f57600080fd5b5060646000819055506081806100266000396000f3fe608060405260043610601f5760003560e01c80632b68b9c614602a576025565b36602557005b600080fd5b60306032565b005b3373ffffffffffffffffffffffffffffffffffffffff16fffea2646970667358221220ab749f5ed1fcb87bda03a74d476af3f074bba24d57cb5a355e8162062ad9a4e664736f6c6343000807003300000000000000000000000000000000000000000000000000")
-			tx, _ = types.SignNewTx(key, signer, &types.LegacyTx{
+			tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{
 				Nonce:    nonce,
-				GasPrice: new(big.Int).Set(fee),
+				GasFeeCap: new(big.Int).Set(fee),
 				Gas:      500000,
 				To:       &factoryAddr, // re-creation
 				Data:     data,
@@ -4512,18 +4512,18 @@ func TestTransientStorageReset(t *testing.T) {
 			fee = b.header.BaseFee
 		}
 		b.SetCoinbase(common.Address{1})
-		tx, _ := types.SignNewTx(key, signer, &types.LegacyTx{
+		tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{
 			Nonce:    nonce,
-			GasPrice: new(big.Int).Set(fee),
+			GasFeeCap: new(big.Int).Set(fee),
 			Gas:      100000,
 			Data:     initCode,
 		})
 		nonce++
 		b.AddTxWithVMConfig(tx, vmConfig)
 
-		tx, _ = types.SignNewTx(key, signer, &types.LegacyTx{
+		tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{
 			Nonce:    nonce,
-			GasPrice: new(big.Int).Set(fee),
+			GasFeeCap: new(big.Int).Set(fee),
 			Gas:      100000,
 			To:       &destAddress,
 		})
