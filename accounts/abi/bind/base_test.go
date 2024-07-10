@@ -40,7 +40,6 @@ func mockSign(addr common.Address, tx *types.Transaction) (*types.Transaction, e
 type mockTransactor struct {
 	baseFee                *big.Int
 	gasTipCap              *big.Int
-	gasPrice               *big.Int
 	suggestGasTipCapCalled bool
 }
 

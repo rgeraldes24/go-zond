@@ -3631,12 +3631,13 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 
 		// One transaction to 0xAAAA
 		signer := types.LatestSigner(gspec.Config)
-		tx, _ := types.SignNewTx(key, signer, &types.AccessListTx{
+		tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{
 			ChainID:  gspec.Config.ChainID,
 			Nonce:    0,
 			To:       &aa,
 			Gas:      30000,
-			GasPrice: b.header.BaseFee,
+			MaxFeePerGas: b.header.BaseFee,
+			MaxPriorityFeePerGas: big.NewInt(0),
 			AccessList: types.AccessList{{
 				Address:     aa,
 				StorageKeys: []common.Hash{{0}},

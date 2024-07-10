@@ -63,13 +63,14 @@ var (
 		)
 	*/
 
-	// emptyEip2718Tx = NewTx(&AccessListTx{
+	// emptyEip2718Tx = NewTx(&DynamicFeeTx{
 	// 	ChainID:  big.NewInt(1),
 	// 	Nonce:    3,
 	// 	To:       &testAddr,
 	// 	Value:    big.NewInt(10),
 	// 	Gas:      25000,
-	// 	GasPrice: big.NewInt(1),
+	// 	MaxFeePerGas: big.NewInt(1),
+	// 	MaxPriorityFeePerGas: big.NewInt(0),
 	// 	Data:     common.FromHex("5544"),
 	// })
 
@@ -133,9 +134,9 @@ func TestEIP2930Signer(t *testing.T) {
 		keyAddr = common.Address(key.GetAddress())
 		signer1 = NewShanghaiSigner(big.NewInt(1))
 		signer2 = NewShanghaiSigner(big.NewInt(2))
-		tx0     = NewTx(&AccessListTx{Nonce: 1})
-		tx1     = NewTx(&AccessListTx{ChainID: big.NewInt(1), Nonce: 1})
-		tx2, _  = SignNewTx(key, signer2, &AccessListTx{ChainID: big.NewInt(2), Nonce: 1})
+		tx0     = NewTx(&DynamicFeeTx{Nonce: 1})
+		tx1     = NewTx(&DynamicFeeTx{ChainID: big.NewInt(1), Nonce: 1})
+		tx2, _  = SignNewTx(key, signer2, &DynamicFeeTx{ChainID: big.NewInt(2), Nonce: 1})
 	)
 
 	tests := []struct {
@@ -294,50 +295,55 @@ func TestTransactionCoding(t *testing.T) {
 		var txdata TxData
 		switch i % 5 {
 		case 0:
-			// Legacy tx.
-			txdata = &LegacyTx{
+			// Dynamic fee tx.
+			txdata = &DynamicFeeTx{
 				Nonce:    i,
 				To:       &recipient,
 				Gas:      1,
-				GasPrice: big.NewInt(2),
+				MaxFeePerGas: big.NewInt(2),
+				MaxPriorityFeePerGas: big.NewInt(0),
 				Data:     []byte("abcdef"),
 			}
 		case 1:
-			// Legacy tx contract creation.
-			txdata = &LegacyTx{
+			// Dynamic fee tx contract creation.
+			txdata = &DynamicFeeTx{
 				Nonce:    i,
 				Gas:      1,
-				GasPrice: big.NewInt(2),
+				MaxFeePerGas: big.NewInt(2),
+				MaxPriorityFeePerGas: big.NewInt(0),
 				Data:     []byte("abcdef"),
 			}
 		case 2:
 			// Tx with non-zero access list.
-			txdata = &AccessListTx{
+			txdata = &DynamicFeeTx{
 				ChainID:    big.NewInt(1),
 				Nonce:      i,
 				To:         &recipient,
 				Gas:        123457,
-				GasPrice:   big.NewInt(10),
+				MaxFeePerGas: big.NewInt(2),
+				MaxPriorityFeePerGas: big.NewInt(0),
 				AccessList: accesses,
 				Data:       []byte("abcdef"),
 			}
 		case 3:
 			// Tx with empty access list.
-			txdata = &AccessListTx{
+			txdata = &DynamicFeeTx{
 				ChainID:  big.NewInt(1),
 				Nonce:    i,
 				To:       &recipient,
 				Gas:      123457,
-				GasPrice: big.NewInt(10),
+				MaxFeePerGas: big.NewInt(2),
+				MaxPriorityFeePerGas: big.NewInt(0),
 				Data:     []byte("abcdef"),
 			}
 		case 4:
 			// Contract creation with access list.
-			txdata = &AccessListTx{
+			txdata = &DynamicFeeTx{
 				ChainID:    big.NewInt(1),
 				Nonce:      i,
 				Gas:        123457,
-				GasPrice:   big.NewInt(10),
+				MaxFeePerGas: big.NewInt(2),
+				MaxPriorityFeePerGas: big.NewInt(0),
 				AccessList: accesses,
 			}
 		}

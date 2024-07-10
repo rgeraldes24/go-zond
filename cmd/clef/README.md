@@ -221,7 +221,8 @@ Response
      - `from` [address]: account to send the transaction from
      - `to` [address]: receiver account. If omitted or `0x`, will cause contract creation.
      - `gas` [number]: maximum amount of gas to burn
-     - `gasPrice` [number]: gas price
+     - `maxFeePerGas` [number]: max fee per gas
+     - `maxPriorityFeePerGas` [number]: max priority fee per gas
      - `value` [number:optional]: amount of Wei to send with the transaction
      - `data` [data:optional]:  input data
      - `nonce` [number]: account nonce
@@ -243,7 +244,8 @@ Response
     {
       "from": "0x1923f626bb8dc025849e00f99c25fe2b2f7fb0db",
       "gas": "0x55555",
-      "gasPrice": "0x1234",
+      "maxFeePerGas": "0x1234",
+      "maxPriorityFeePerGas": "0x0",
       "input": "0xabcd",
       "nonce": "0x0",
       "to": "0x07a565b7ed7d7a678680a4c162885bedbb695fe0",
@@ -262,13 +264,13 @@ Response
     "raw": "0xf88380018203339407a565b7ed7d7a678680a4c162885bedbb695fe080a44401a6e4000000000000000000000000000000000000000000000000000000000000001226a0223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20ea02aadee6b34b45bb15bc42d9c09de4a6754e7000908da72d48cc7704971491663",
     "tx": {
       "nonce": "0x0",
-      "gasPrice": "0x1234",
+      "maxFeePerGas": "0x1234",
+      "maxPriorityFeePerGas": "0x0",
       "gas": "0x55555",
       "to": "0x07a565b7ed7d7a678680a4c162885bedbb695fe0",
       "value": "0x1234",
       "input": "0xabcd",
-      "v": "0x26",
-      "r": "0x223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20e",
+      "publicKey": "0x223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20e",
       "s": "0x2aadee6b34b45bb15bc42d9c09de4a6754e7000908da72d48cc7704971491663",
       "hash": "0xeba2df809e7a612a0a0d444ccfa5c839624bdc00dd29e3340d46df3870f8a30e"
     }
@@ -287,7 +289,8 @@ Response
     {
       "from": "0x694267f14675d7e1b9494fd8d72fefe1755710fa",
       "gas": "0x333",
-      "gasPrice": "0x1",
+      "maxFeePerGas": "0x1",
+      "maxPriorityFeePerGas": "0x0",
       "nonce": "0x0",
       "to": "0x07a565b7ed7d7a678680a4c162885bedbb695fe0",
       "value": "0x0",
@@ -307,14 +310,14 @@ Response
     "raw": "0xf88380018203339407a565b7ed7d7a678680a4c162885bedbb695fe080a44401a6e4000000000000000000000000000000000000000000000000000000000000001226a0223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20ea02aadee6b34b45bb15bc42d9c09de4a6754e7000908da72d48cc7704971491663",
     "tx": {
       "nonce": "0x0",
-      "gasPrice": "0x1",
+      "maxFeePerGas": "0x1",
+      "maxPriorityFeePerGas": "0x0",
       "gas": "0x333",
       "to": "0x07a565b7ed7d7a678680a4c162885bedbb695fe0",
       "value": "0x0",
       "input": "0x4401a6e40000000000000000000000000000000000000000000000000000000000000012",
-      "v": "0x26",
-      "r": "0x223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20e",
-      "s": "0x2aadee6b34b45bb15bc42d9c09de4a6754e7000908da72d48cc7704971491663",
+      "publicKey": "0x223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20e",
+      "signature": "0x2aadee6b34b45bb15bc42d9c09de4a6754e7000908da72d48cc7704971491663",
       "hash": "0xeba2df809e7a612a0a0d444ccfa5c839624bdc00dd29e3340d46df3870f8a30e"
     }
   }
@@ -323,9 +326,9 @@ Response
 
 Bash example:
 ```bash
-> curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"account_signTransaction","params":[{"from":"0x694267f14675d7e1b9494fd8d72fefe1755710fa","gas":"0x333","gasPrice":"0x1","nonce":"0x0","to":"0x07a565b7ed7d7a678680a4c162885bedbb695fe0", "value":"0x0", "data":"0x4401a6e40000000000000000000000000000000000000000000000000000000000000012"},"safeSend(address)"],"id":67}' http://localhost:8550/
+> curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"account_signTransaction","params":[{"from":"0x694267f14675d7e1b9494fd8d72fefe1755710fa","gas":"0x333","maxFeePerGas":"0x1","maxPriorityFeePerGas":"0x0","nonce":"0x0","to":"0x07a565b7ed7d7a678680a4c162885bedbb695fe0", "value":"0x0", "data":"0x4401a6e40000000000000000000000000000000000000000000000000000000000000012"},"safeSend(address)"],"id":67}' http://localhost:8550/
 
-{"jsonrpc":"2.0","id":67,"result":{"raw":"0xf88380018203339407a565b7ed7d7a678680a4c162885bedbb695fe080a44401a6e4000000000000000000000000000000000000000000000000000000000000001226a0223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20ea02aadee6b34b45bb15bc42d9c09de4a6754e7000908da72d48cc7704971491663","tx":{"nonce":"0x0","gasPrice":"0x1","gas":"0x333","to":"0x07a565b7ed7d7a678680a4c162885bedbb695fe0","value":"0x0","input":"0x4401a6e40000000000000000000000000000000000000000000000000000000000000012","v":"0x26","r":"0x223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20e","s":"0x2aadee6b34b45bb15bc42d9c09de4a6754e7000908da72d48cc7704971491663","hash":"0xeba2df809e7a612a0a0d444ccfa5c839624bdc00dd29e3340d46df3870f8a30e"}}}
+{"jsonrpc":"2.0","id":67,"result":{"raw":"0xf88380018203339407a565b7ed7d7a678680a4c162885bedbb695fe080a44401a6e4000000000000000000000000000000000000000000000000000000000000001226a0223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20ea02aadee6b34b45bb15bc42d9c09de4a6754e7000908da72d48cc7704971491663","tx":{"nonce":"0x0","maxFeePerGas":"0x1","maxPriorityFeePerGas":"0x0","gas":"0x333","to":"0x07a565b7ed7d7a678680a4c162885bedbb695fe0","value":"0x0","input":"0x4401a6e40000000000000000000000000000000000000000000000000000000000000012","v":"0x26","r":"0x223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20e","s":"0x2aadee6b34b45bb15bc42d9c09de4a6754e7000908da72d48cc7704971491663","hash":"0xeba2df809e7a612a0a0d444ccfa5c839624bdc00dd29e3340d46df3870f8a30e"}}}
 ```
 
 ### account_signData
@@ -558,7 +561,7 @@ Invoked when there's a transaction for approval.
 Here's a method invocation:
 ```bash
 
-curl -i -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"account_signTransaction","params":[{"from":"0x694267f14675d7e1b9494fd8d72fefe1755710fa","gas":"0x333","gasPrice":"0x1","nonce":"0x0","to":"0x07a565b7ed7d7a678680a4c162885bedbb695fe0", "value":"0x0", "data":"0x4401a6e40000000000000000000000000000000000000000000000000000000000000012"},"safeSend(address)"],"id":67}' http://localhost:8550/
+curl -i -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"account_signTransaction","params":[{"from":"0x694267f14675d7e1b9494fd8d72fefe1755710fa","gas":"0x333","maxFeePerGas":"0x1","maxPriorityFeePerGas":"0x1","nonce":"0x0","to":"0x07a565b7ed7d7a678680a4c162885bedbb695fe0", "value":"0x0", "data":"0x4401a6e40000000000000000000000000000000000000000000000000000000000000012"},"safeSend(address)"],"id":67}' http://localhost:8550/
 ```
 Results in the following invocation on the UI:
 ```json
@@ -573,7 +576,8 @@ Results in the following invocation on the UI:
         "from": "0x0x694267f14675d7e1b9494fd8d72fefe1755710fa",
         "to": "0x0x07a565b7ed7d7a678680a4c162885bedbb695fe0",
         "gas": "0x333",
-        "gasPrice": "0x1",
+        "maxFeePerGas": "0x1",
+        "maxPriorityFeePerGas": "0x1",
         "value": "0x0",
         "nonce": "0x0",
         "data": "0x4401a6e40000000000000000000000000000000000000000000000000000000000000012",
@@ -603,7 +607,7 @@ Results in the following invocation on the UI:
 The same method invocation, but with invalid data:
 ```bash
 
-curl -i -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"account_signTransaction","params":[{"from":"0x694267f14675d7e1b9494fd8d72fefe1755710fa","gas":"0x333","gasPrice":"0x1","nonce":"0x0","to":"0x07a565b7ed7d7a678680a4c162885bedbb695fe0", "value":"0x0", "data":"0x4401a6e40000000000000002000000000000000000000000000000000000000000000012"},"safeSend(address)"],"id":67}' http://localhost:8550/
+curl -i -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"account_signTransaction","params":[{"from":"0x694267f14675d7e1b9494fd8d72fefe1755710fa","gas":"0x333","maxFeePerGas":"0x1","maxPriorityFeePerGas":"0x1","nonce":"0x0","to":"0x07a565b7ed7d7a678680a4c162885bedbb695fe0", "value":"0x0", "data":"0x4401a6e40000000000000002000000000000000000000000000000000000000000000012"},"safeSend(address)"],"id":67}' http://localhost:8550/
 ```
 
 ```json
@@ -618,7 +622,8 @@ curl -i -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","me
         "from": "0x0x694267f14675d7e1b9494fd8d72fefe1755710fa",
         "to": "0x0x07a565b7ed7d7a678680a4c162885bedbb695fe0",
         "gas": "0x333",
-        "gasPrice": "0x1",
+        "maxFeePerGas": "0x1",
+        "maxPriorityFeePerGas": "0x1",
         "value": "0x0",
         "nonce": "0x0",
         "data": "0x4401a6e40000000000000002000000000000000000000000000000000000000000000012",
@@ -661,7 +666,8 @@ One which has missing `to`, but with no `data`:
         "from": "",
         "to": null,
         "gas": "0x0",
-        "gasPrice": "0x0",
+        "maxFeePerGas": "0x0",
+        "maxPriorityFeePerGas": "0x0",
         "value": "0x0",
         "nonce": "0x0",
         "data": null,
@@ -828,7 +834,8 @@ Example call:
       "raw": "0xf88380018203339407a565b7ed7d7a678680a4c162885bedbb695fe080a44401a6e4000000000000000000000000000000000000000000000000000000000000001226a0223a7c9bcf5531c99be5ea7082183816eb20cfe0bbc322e97cc5c7f71ab8b20ea02aadee6b34b45bb15bc42d9c09de4a6754e7000908da72d48cc7704971491663",
       "tx": {
         "nonce": "0x0",
-        "gasPrice": "0x1",
+        "maxFeePerGas": "0x1",
+        "maxPriorityFeePerGas": "0x1",
         "gas": "0x333",
         "to": "0x07a565b7ed7d7a678680a4c162885bedbb695fe0",
         "value": "0x0",

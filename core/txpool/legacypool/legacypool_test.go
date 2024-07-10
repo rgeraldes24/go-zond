@@ -98,26 +98,6 @@ func transaction(nonce uint64, gaslimit uint64, key *dilithium.Dilithium) *types
 	return dynamicFeeTx(nonce, gaslimit, big.NewInt(1), big.NewInt(1), key)
 }
 
-// NOTE(rgeraldes24): legacy tx
-/*
-func transaction(nonce uint64, gaslimit uint64, key *dilithium.Dilithium) *types.Transaction {
-	return pricedTransaction(nonce, gaslimit, big.NewInt(1), key)
-}
-
-func pricedTransaction(nonce uint64, gaslimit uint64, gasprice *big.Int, key *dilithium.Dilithium) *types.Transaction {
-	tx, _ := types.SignTx(types.NewTransaction(nonce, common.Address{}, big.NewInt(100), gaslimit, gasprice, nil), types.ShanghaiSigner{ChainId: big.NewInt(0)}, key)
-	return tx
-}
-
-func pricedDataTransaction(nonce uint64, gaslimit uint64, gasprice *big.Int, key *dilithium.Dilithium, bytes uint64) *types.Transaction {
-	data := make([]byte, bytes)
-	crand.Read(data)
-
-	tx, _ := types.SignTx(types.NewTransaction(nonce, common.Address{}, big.NewInt(0), gaslimit, gasprice, data), types.ShanghaiSigner{ChainId: big.NewInt(0)}, key)
-	return tx
-}
-*/
-
 func dynamicFeeTx(nonce uint64, gaslimit uint64, gasFee *big.Int, tip *big.Int, key *dilithium.Dilithium) *types.Transaction {
 	tx, _ := types.SignNewTx(key, types.LatestSignerForChainID(params.TestChainConfig.ChainID), &types.DynamicFeeTx{
 		ChainID:    params.TestChainConfig.ChainID,

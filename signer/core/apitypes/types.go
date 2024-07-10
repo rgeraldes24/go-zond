@@ -77,13 +77,12 @@ func (v *ValidationMessages) GetWarnings() error {
 }
 
 // SendTxArgs represents the arguments to submit a transaction
-// This struct is identical to ethapi.TransactionArgs, except for the usage of
+// This struct is identical to zondapi.TransactionArgs, except for the usage of
 // common.MixedcaseAddress in From and To
 type SendTxArgs struct {
 	From                 common.MixedcaseAddress  `json:"from"`
 	To                   *common.MixedcaseAddress `json:"to"`
 	Gas                  hexutil.Uint64           `json:"gas"`
-	GasPrice             *hexutil.Big             `json:"gasPrice"`
 	MaxFeePerGas         *hexutil.Big             `json:"maxFeePerGas"`
 	MaxPriorityFeePerGas *hexutil.Big             `json:"maxPriorityFeePerGas"`
 	Value                hexutil.Big              `json:"value"`

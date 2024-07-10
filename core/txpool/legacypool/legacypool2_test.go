@@ -28,6 +28,7 @@ import (
 	"github.com/theQRL/go-zond/event"
 )
 
+// TODO(rgeraldes24): gas price arg
 func pricedValuedTransaction(nonce uint64, value int64, gaslimit uint64, gasprice *big.Int, key *dilithium.Dilithium) *types.Transaction {
 	tx := types.NewTx(&types.DynamicFeeTx{
 		Nonce: nonce,

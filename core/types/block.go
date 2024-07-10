@@ -35,24 +35,20 @@ import (
 
 // Header represents a block header in the Zond blockchain.
 type Header struct {
-	ParentHash  common.Hash    `json:"parentHash"       gencodec:"required"`
-	Coinbase    common.Address `json:"miner"`
-	Root        common.Hash    `json:"stateRoot"        gencodec:"required"`
-	TxHash      common.Hash    `json:"transactionsRoot" gencodec:"required"`
-	ReceiptHash common.Hash    `json:"receiptsRoot"     gencodec:"required"`
-	Bloom       Bloom          `json:"logsBloom"        gencodec:"required"`
-	Number      *big.Int       `json:"number"           gencodec:"required"`
-	GasLimit    uint64         `json:"gasLimit"         gencodec:"required"`
-	GasUsed     uint64         `json:"gasUsed"          gencodec:"required"`
-	Time        uint64         `json:"timestamp"        gencodec:"required"`
-	Extra       []byte         `json:"extraData"        gencodec:"required"`
-	Random      common.Hash    `json:"prevRandao"`
-
-	// BaseFee was added by EIP-1559 and is ignored in legacy headers.
-	BaseFee *big.Int `json:"baseFeePerGas" rlp:"optional"`
-
-	// WithdrawalsHash was added by EIP-4895 and is ignored in legacy headers.
-	WithdrawalsHash *common.Hash `json:"withdrawalsRoot" rlp:"optional"`
+	ParentHash      common.Hash    `json:"parentHash"       gencodec:"required"`
+	Coinbase        common.Address `json:"miner"`
+	Root            common.Hash    `json:"stateRoot"        gencodec:"required"`
+	TxHash          common.Hash    `json:"transactionsRoot" gencodec:"required"`
+	ReceiptHash     common.Hash    `json:"receiptsRoot"     gencodec:"required"`
+	Bloom           Bloom          `json:"logsBloom"        gencodec:"required"`
+	Number          *big.Int       `json:"number"           gencodec:"required"`
+	GasLimit        uint64         `json:"gasLimit"         gencodec:"required"`
+	GasUsed         uint64         `json:"gasUsed"          gencodec:"required"`
+	Time            uint64         `json:"timestamp"        gencodec:"required"`
+	Extra           []byte         `json:"extraData"        gencodec:"required"`
+	Random          common.Hash    `json:"prevRandao"`
+	BaseFee         *big.Int       `json:"baseFeePerGas"`
+	WithdrawalsHash *common.Hash   `json:"withdrawalsRoot"`
 }
 
 // field type overrides for gencodec

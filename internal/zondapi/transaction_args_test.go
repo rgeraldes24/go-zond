@@ -123,7 +123,7 @@ func TestSetFeeDefaults(t *testing.T) {
 			nil,
 			errors.New("maxFeePerGas (0x7) < maxPriorityFeePerGas (0x2a)"),
 		},
-
+		// TODO(rgeraldes24)
 		// Misc
 		/*
 			{

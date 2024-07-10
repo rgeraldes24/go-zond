@@ -33,7 +33,6 @@ type txJSON struct {
 	Nonce                *hexutil.Uint64 `json:"nonce"`
 	To                   *common.Address `json:"to"`
 	Gas                  *hexutil.Uint64 `json:"gas"`
-	GasPrice             *hexutil.Big    `json:"gasPrice"`
 	MaxPriorityFeePerGas *hexutil.Big    `json:"maxPriorityFeePerGas"`
 	MaxFeePerGas         *hexutil.Big    `json:"maxFeePerGas"`
 	Value                *hexutil.Big    `json:"value"`

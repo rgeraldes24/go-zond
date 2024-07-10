@@ -58,7 +58,7 @@ var (
 // the background. Its main purpose is to allow for easy testing of contract bindings.
 // Simulated backend implements the following interfaces:
 // ChainReader, ChainStateReader, ContractBackend, ContractCaller, ContractFilterer, ContractTransactor,
-// DeployBackend, GasEstimator, GasPricer, LogFilterer, PendingContractCaller, TransactionReader, and TransactionSender
+// DeployBackend, GasEstimator, LogFilterer, PendingContractCaller, TransactionReader, and TransactionSender
 type SimulatedBackend struct {
 	database   zonddb.Database  // In memory database to store our testing data
 	blockchain *core.BlockChain // Ethereum blockchain to handle the consensus
@@ -479,18 +479,6 @@ func (b *SimulatedBackend) PendingNonceAt(ctx context.Context, account common.Ad
 	defer b.mu.Unlock()
 
 	return b.pendingState.GetOrNewStateObject(account).Nonce(), nil
-}
-
-// SuggestGasPrice implements ContractTransactor.SuggestGasPrice. Since the simulated
-// chain doesn't have miners, we just return a gas price of 1 for any call.
-func (b *SimulatedBackend) SuggestGasPrice(ctx context.Context) (*big.Int, error) {
-	b.mu.Lock()
-	defer b.mu.Unlock()
-
-	if b.pendingBlock.Header().BaseFee != nil {
-		return b.pendingBlock.Header().BaseFee, nil
-	}
-	return big.NewInt(1), nil
 }
 
 // SuggestGasTipCap implements ContractTransactor.SuggestGasTipCap. Since the simulated

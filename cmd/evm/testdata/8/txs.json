@@ -1,7 +1,7 @@
 [
   {
     "gas": "0x4ef00",
-    "gasPrice": "0x1",
+    "maxFeePerGas": "0x1",
     "chainId": "0x1",
     "input": "0x",
     "nonce": "0x0",
@@ -16,26 +16,24 @@
         ]
       }
     ],
-    "v": "0x0",
-    "r": "0x0",
-    "s": "0x0",
+    "publicKey": "0x0",
+    "signature": "0x0",
     "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
   },
   {
     "gas": "0x4ef00",
-    "gasPrice": "0x1",
+    "maxFeePerGas": "0x1",
     "input": "0x",
     "nonce": "0x1",
     "to": "0x000000000000000000000000000000000000aaaa",
     "value": "0x2",
-    "v": "0x0",
-    "r": "0x0",
-    "s": "0x0",
+    "publicKey": "0x0",
+    "signature": "0x0",
     "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
   },
   {
     "gas": "0x4ef00",
-    "gasPrice": "0x1",
+    "maxFeePerGas": "0x1",
     "chainId": "0x1",
     "input": "0x",
     "nonce": "0x2",
@@ -50,9 +48,8 @@
         ]
       }
     ],
-    "v": "0x0",
-    "r": "0x0",
-    "s": "0x0",
+    "publicKey": "0x0",
+    "signature": "0x0",
     "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
   }
 ]

@@ -64,7 +64,7 @@ type Zond struct {
 
 	blockchain         *core.BlockChain
 	handler            *handler
-	ethDialCandidates  enode.Iterator
+	zondDialCandidates enode.Iterator
 	snapDialCandidates enode.Iterator
 
 	// DB interfaces
@@ -229,7 +229,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 
 	// Setup DNS discovery iterators.
 	dnsclient := dnsdisc.NewClient(dnsdisc.Config{})
-	zond.ethDialCandidates, err = dnsclient.NewIterator(zond.config.ZondDiscoveryURLs...)
+	zond.zondDialCandidates, err = dnsclient.NewIterator(zond.config.ZondDiscoveryURLs...)
 	if err != nil {
 		return nil, err
 	}
@@ -320,7 +320,7 @@ func (s *Zond) BloomIndexer() *core.ChainIndexer   { return s.bloomIndexer }
 // Protocols returns all the currently configured
 // network protocols to start.
 func (s *Zond) Protocols() []p2p.Protocol {
-	protos := zond.MakeProtocols((*zondHandler)(s.handler), s.networkID, s.ethDialCandidates)
+	protos := zond.MakeProtocols((*zondHandler)(s.handler), s.networkID, s.zondDialCandidates)
 	if s.config.SnapshotCache > 0 {
 		protos = append(protos, snap.MakeProtocols((*snapHandler)(s.handler), s.snapDialCandidates)...)
 	}
@@ -350,7 +350,7 @@ func (s *Zond) Start() error {
 // Zond protocol.
 func (s *Zond) Stop() error {
 	// Stop all the peer-related stuff first.
-	s.ethDialCandidates.Close()
+	s.zondDialCandidates.Close()
 	s.snapDialCandidates.Close()
 	s.handler.Stop()
 

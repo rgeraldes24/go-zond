@@ -999,14 +999,15 @@ func testExternalUI(api *core.SignerAPI) {
 		data := hexutil.Bytes([]byte{})
 		to := common.NewMixedcaseAddress(a)
 		tx := apitypes.SendTxArgs{
-			Data:     &data,
-			Nonce:    0x1,
-			Value:    hexutil.Big(*big.NewInt(6)),
-			From:     common.NewMixedcaseAddress(a),
-			To:       &to,
-			GasPrice: (*hexutil.Big)(big.NewInt(5)),
-			Gas:      1000,
-			Input:    nil,
+			Data:                 &data,
+			Nonce:                0x1,
+			Value:                hexutil.Big(*big.NewInt(6)),
+			From:                 common.NewMixedcaseAddress(a),
+			To:                   &to,
+			MaxFeePerGas:         (*hexutil.Big)(big.NewInt(5)),
+			MaxPriorityFeePerGas: (*hexutil.Big)(big.NewInt(0)),
+			Gas:                  1000,
+			Input:                nil,
 		}
 		_, err := api.SignTransaction(ctx, tx, nil)
 		expectDeny("signtransaction [1]", err)
@@ -1133,14 +1134,15 @@ func GenDoc(ctx *cli.Context) error {
 				{Typ: "Info", Message: "User should see this as well"},
 			},
 			Transaction: apitypes.SendTxArgs{
-				Data:     &data,
-				Nonce:    0x1,
-				Value:    hexutil.Big(*big.NewInt(6)),
-				From:     common.NewMixedcaseAddress(a),
-				To:       nil,
-				GasPrice: (*hexutil.Big)(big.NewInt(5)),
-				Gas:      1000,
-				Input:    nil,
+				Data:                 &data,
+				Nonce:                0x1,
+				Value:                hexutil.Big(*big.NewInt(6)),
+				From:                 common.NewMixedcaseAddress(a),
+				To:                   nil,
+				MaxFeePerGas:         (*hexutil.Big)(big.NewInt(5)),
+				MaxPriorityFeePerGas: (*hexutil.Big)(big.NewInt(0)),
+				Gas:                  1000,
+				Input:                nil,
 			}})
 	}
 	{ // Sign tx response
@@ -1149,14 +1151,15 @@ func GenDoc(ctx *cli.Context) error {
 			", because the UI is free to make modifications to the transaction.",
 			&core.SignTxResponse{Approved: true,
 				Transaction: apitypes.SendTxArgs{
-					Data:     &data,
-					Nonce:    0x4,
-					Value:    hexutil.Big(*big.NewInt(6)),
-					From:     common.NewMixedcaseAddress(a),
-					To:       nil,
-					GasPrice: (*hexutil.Big)(big.NewInt(5)),
-					Gas:      1000,
-					Input:    nil,
+					Data:                 &data,
+					Nonce:                0x4,
+					Value:                hexutil.Big(*big.NewInt(6)),
+					From:                 common.NewMixedcaseAddress(a),
+					To:                   nil,
+					MaxFeePerGas:         (*hexutil.Big)(big.NewInt(5)),
+					MaxPriorityFeePerGas: (*hexutil.Big)(big.NewInt(0)),
+					Gas:                  1000,
+					Input:                nil,
 				}})
 		add("SignTxResponse - deny", "Response to SignTxRequest. When denying a request, there's no need to "+
 			"provide the transaction in return",

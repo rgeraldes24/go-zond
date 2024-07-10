@@ -49,16 +49,6 @@ func benchRLP(b *testing.B, encode bool) {
 		obj  interface{}
 	}{
 		{
-			"legacy-header",
-			&Header{
-				Number:   big.NewInt(1000),
-				GasLimit: 8_000_000,
-				GasUsed:  8_000_000,
-				Time:     555,
-				Extra:    make([]byte, 32),
-			},
-		},
-		{
 			"london-header",
 			&Header{
 				Number:   big.NewInt(1000),
@@ -85,30 +75,6 @@ func benchRLP(b *testing.B, encode bool) {
 				Logs:              make([]*Log, 0),
 			},
 		},
-		/*
-				{
-					"legacy-transaction",
-					MustSignNewTx(key, signer,
-						&LegacyTx{
-							Nonce:    1,
-							GasPrice: big.NewInt(500),
-							Gas:      1000000,
-							To:       &to,
-							Value:    big.NewInt(1),
-						}),
-				},
-			{
-				"access-transaction",
-				MustSignNewTx(key, signer,
-					&AccessListTx{
-						Nonce:    1,
-						GasPrice: big.NewInt(500),
-						Gas:      1000000,
-						To:       &to,
-						Value:    big.NewInt(1),
-					}),
-			},
-		*/
 		{
 			"1559-transaction",
 			MustSignNewTx(key, signer,

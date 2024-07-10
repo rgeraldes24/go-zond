@@ -105,8 +105,7 @@ type Withdrawal struct {
 
 ##### `txs`
 
-The `txs` object is an array of any of the transaction types: `AccessListTx`,
-or `DynamicFeeTx`.
+The `txs` object is an array of any of the transaction types: `DynamicFeeTx`.
 
 ```go
 type AccessList []AccessTuple
@@ -114,34 +113,20 @@ type AccessTuple struct {
 	Address     common.Address `json:"address"        gencodec:"required"`
 	StorageKeys []common.Hash  `json:"storageKeys"    gencodec:"required"`
 }
-type AccessListTx struct {
-	ChainID    *big.Int        `json:"chainId"`
-	Nonce      uint64          `json:"nonce"`
-	GasPrice   *big.Int        `json:"gasPrice"`
-	Gas        uint64          `json:"gas"`
-	To         *common.Address `json:"to"`
-	Value      *big.Int        `json:"value"`
-	Data       []byte          `json:"data"`
-	AccessList AccessList      `json:"accessList"`
-	V          *big.Int        `json:"v"`
-	R          *big.Int        `json:"r"`
-	S          *big.Int        `json:"s"`
-    SecretKey  *common.Hash     `json:"secretKey"`
-}
+// TODO(rgeraldes24): secret key?
 type DynamicFeeTx struct {
-	ChainID    *big.Int        `json:"chainId"`
-	Nonce      uint64          `json:"nonce"`
-	GasTipCap  *big.Int        `json:"maxPriorityFeePerGas"`
-	GasFeeCap  *big.Int        `json:"maxFeePerGas"`
-	Gas        uint64          `json:"gas"`
-	To         *common.Address `json:"to"`
-	Value      *big.Int        `json:"value"`
-	Data       []byte          `json:"data"`
-	AccessList AccessList      `json:"accessList"`
-	V          *big.Int        `json:"v"`
-	R          *big.Int        `json:"r"`
-	S          *big.Int        `json:"s"`
-    SecretKey  *common.Hash     `json:"secretKey"`
+	ChainID    *big.Int         `json:"chainId"`
+	Nonce      uint64           `json:"nonce"`
+	GasTipCap  *big.Int         `json:"maxPriorityFeePerGas"`
+	GasFeeCap  *big.Int         `json:"maxFeePerGas"`
+	Gas        uint64           `json:"gas"`
+	To         *common.Address  `json:"to"`
+	Value      *big.Int         `json:"value"`
+	Data       []byte           `json:"data"`
+	AccessList AccessList       `json:"accessList"`
+	PublicKey          *big.Int `json:"v"`
+	Signature          *big.Int `json:"r"`
+    SecretKey  *common.Hash             `json:"secretKey"`
 }
 ```
 

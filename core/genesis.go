@@ -59,7 +59,7 @@ type Genesis struct {
 	Number     uint64      `json:"number"`
 	GasUsed    uint64      `json:"gasUsed"`
 	ParentHash common.Hash `json:"parentHash"`
-	BaseFee    *big.Int    `json:"baseFeePerGas"` // EIP-1559
+	BaseFee    *big.Int    `json:"baseFeePerGas"`
 }
 
 func ReadGenesis(db zonddb.Database) (*Genesis, error) {

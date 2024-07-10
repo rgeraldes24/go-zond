@@ -561,11 +561,11 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 	)
 	for i := 0; i < 10; i++ {
 		statedb, _ := zondservice.BlockChain().StateAt(parent.Root)
-		tx := types.MustSignNewTx(testKey, signer, &types.LegacyTx{
+		tx := types.MustSignNewTx(testKey, signer, &types.DynamicFeeTx{
 			Nonce:    statedb.GetNonce(testAddr),
 			Value:    new(big.Int),
 			Gas:      1000000,
-			GasPrice: big.NewInt(2 * params.InitialBaseFee),
+			GasFeeCap: big.NewInt(2 * params.InitialBaseFee),
 			Data:     logCode,
 		})
 		zondservice.TxPool().Add([]*types.Transaction{tx}, false, true)

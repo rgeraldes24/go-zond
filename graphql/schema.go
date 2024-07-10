@@ -326,7 +326,7 @@ const schema string = `
         # successful execution of a transaction for the pending state.
         estimateGas(data: CallData!): Long!
     }
-
+    // TODO(rgeraldes24)
     type Query {
         # Block fetches a Zond block by number or by hash. If neither is
         # supplied, the most recent known block is returned.

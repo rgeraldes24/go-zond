@@ -975,9 +975,8 @@ type CallData struct {
 	From                 *common.Address // The Ethereum address the call is from.
 	To                   *common.Address // The Ethereum address the call is to.
 	Gas                  *Long           // The amount of gas provided for the call.
-	GasPrice             *hexutil.Big    // The price of each unit of gas, in wei.
-	MaxFeePerGas         *hexutil.Big    // The max price of each unit of gas, in wei (1559).
-	MaxPriorityFeePerGas *hexutil.Big    // The max tip of each unit of gas, in wei (1559).
+	MaxFeePerGas         *hexutil.Big    // The max price of each unit of gas, in wei.
+	MaxPriorityFeePerGas *hexutil.Big    // The max tip of each unit of gas, in wei.
 	Value                *hexutil.Big    // The value sent along with the call.
 	Data                 *hexutil.Bytes  // Any data sent with the call.
 }
@@ -1240,6 +1239,7 @@ func (r *Resolver) Logs(ctx context.Context, args struct{ Filter FilterCriteria 
 	return runFilter(ctx, r, filter)
 }
 
+// TODO(rgeraldes24): keep?
 func (r *Resolver) GasPrice(ctx context.Context) (hexutil.Big, error) {
 	tipcap, err := r.backend.SuggestGasTipCap(ctx)
 	if err != nil {

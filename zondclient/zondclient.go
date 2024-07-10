@@ -488,7 +488,7 @@ func (ec *Client) PendingCallContract(ctx context.Context, msg zond.CallMsg) ([]
 	return hex, nil
 }
 
-// SuggestGasTipCap retrieves the currently suggested gas tip cap after 1559 to
+// SuggestGasTipCap retrieves the currently suggested gas tip cap to
 // allow a timely execution of a transaction.
 func (ec *Client) SuggestGasTipCap(ctx context.Context) (*big.Int, error) {
 	var hex hexutil.Big

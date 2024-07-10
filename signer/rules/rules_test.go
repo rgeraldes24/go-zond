@@ -422,16 +422,16 @@ func dummyTx(value hexutil.Big) *core.SignTxRequest {
 	from, _ := mixAddr("000000000000000000000000000000000000dead")
 	n := hexutil.Uint64(3)
 	gas := hexutil.Uint64(21000)
-	gasPrice := hexutil.Big(*big.NewInt(2000000))
+	maxFeePerGas := hexutil.Big(*big.NewInt(2000000))
 
 	return &core.SignTxRequest{
 		Transaction: apitypes.SendTxArgs{
-			From:     *from,
-			To:       to,
-			Value:    value,
-			Nonce:    n,
-			GasPrice: &gasPrice,
-			Gas:      gas,
+			From:         *from,
+			To:           to,
+			Value:        value,
+			Nonce:        n,
+			MaxFeePerGas: &maxFeePerGas,
+			Gas:          gas,
 		},
 		Callinfo: []apitypes.ValidationInfo{
 			{Typ: "Warning", Message: "All your base are belong to us"},

@@ -960,22 +960,6 @@ func TestTransactionReceipt(t *testing.T) {
 	}
 }
 
-func TestSuggestGasPrice(t *testing.T) {
-	sim := NewSimulatedBackend(
-		core.GenesisAlloc{},
-		10000000,
-	)
-	defer sim.Close()
-	bgCtx := context.Background()
-	gasPrice, err := sim.SuggestGasPrice(bgCtx)
-	if err != nil {
-		t.Errorf("could not get gas price: %v", err)
-	}
-	if gasPrice.Uint64() != sim.pendingBlock.Header().BaseFee.Uint64() {
-		t.Errorf("gas price was not expected value of %v. actual: %v", sim.pendingBlock.Header().BaseFee.Uint64(), gasPrice.Uint64())
-	}
-}
-
 func TestPendingCodeAt(t *testing.T) {
 	testAddr := testKey.GetAddress()
 	sim := simTestBackend(testAddr)
