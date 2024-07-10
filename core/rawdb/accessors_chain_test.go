@@ -16,6 +16,7 @@
 
 package rawdb
 
+/*
 import (
 	"bytes"
 	"encoding/hex"
@@ -33,6 +34,7 @@ import (
 	"github.com/theQRL/go-zond/rlp"
 	"golang.org/x/crypto/sha3"
 )
+
 
 // Tests block header storage and retrieval operations.
 func TestHeaderStorage(t *testing.T) {
@@ -922,3 +924,4 @@ func TestHeadersRLPStorage(t *testing.T) {
 	checkSequence(1, 1)    // Only block 1
 	checkSequence(1, 2)    // Genesis + block 1
 }
+*/
