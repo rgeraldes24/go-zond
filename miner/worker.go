@@ -236,15 +236,13 @@ func (miner *Miner) commitTransactions(env *environment, txs *transactionsByPric
 		if ltx == nil {
 			break
 		}
-		// TODO(rgeraldes24): included in the new version
-		/*
-			// If we don't have enough space for the next transaction, skip the account.
-			if env.gasPool.Gas() < ltx.Gas {
-				log.Trace("Not enough gas left for transaction", "hash", ltx.Hash, "left", env.gasPool.Gas(), "needed", ltx.Gas)
-				txs.Pop()
-				continue
-			}
-		*/
+		// If we don't have enough space for the next transaction, skip the account.
+		if env.gasPool.Gas() < ltx.Gas {
+			log.Trace("Not enough gas left for transaction", "hash", ltx.Hash, "left", env.gasPool.Gas(), "needed", ltx.Gas)
+			txs.Pop()
+			continue
+		}
+
 		// Transaction seems to fit, pull it up from the pool
 		tx := ltx.Resolve()
 		if tx == nil {
@@ -286,7 +284,18 @@ func (miner *Miner) commitTransactions(env *environment, txs *transactionsByPric
 // into the given sealing block. The transaction selection and ordering strategy can
 // be customized with the plugin in the future.
 func (miner *Miner) fillTransactions(interrupt *atomic.Int32, env *environment) error {
-	pendingTxs := miner.txpool.Pending(true)
+	miner.confMu.RLock()
+	tip := miner.config.GasPrice
+	miner.confMu.RUnlock()
+
+	// Retrieve the pending transactions pre-filtered by the 1559 dynamic fees
+	filter := txpool.PendingFilter{
+		MinTip: tip,
+	}
+	if env.header.BaseFee != nil {
+		filter.BaseFee = env.header.BaseFee
+	}
+	pendingTxs := miner.txpool.Pending(filter)
 
 	// Split the pending transactions into locals and remotes.
 	localTxs, remoteTxs := make(map[common.Address][]*txpool.LazyTransaction), pendingTxs

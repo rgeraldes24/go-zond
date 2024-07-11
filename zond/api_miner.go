@@ -47,6 +47,7 @@ func (api *MinerAPI) SetGasPrice(gasPrice hexutil.Big) bool {
 	api.z.lock.Unlock()
 
 	api.z.txPool.SetGasTip((*big.Int)(&gasPrice))
+	// TODO(rgeraldes24): our version of tx pool does not support passing in the gas tip
 	// TODO(rgeraldes24): needed?
 	api.z.Miner().SetGasTip((*big.Int)(&gasPrice))
 	return true

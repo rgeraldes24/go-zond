@@ -37,6 +37,8 @@ type LazyTransaction struct {
 	Time      time.Time // Time when the transaction was first seen
 	GasFeeCap *big.Int  // Maximum fee per gas the transaction may consume
 	GasTipCap *big.Int  // Maximum miner tip per gas the transaction can pay
+
+	Gas uint64 // Amount of gas required by the transaction
 }
 
 // Resolve retrieves the full transaction belonging to a lazy handle if it is still
@@ -51,6 +53,17 @@ func (ltx *LazyTransaction) Resolve() *types.Transaction {
 // AddressReserver is passed by the main transaction pool to subpools, so they
 // may request (and relinquish) exclusive access to certain addresses.
 type AddressReserver func(addr common.Address, reserve bool) error
+
+// PendingFilter is a collection of filter rules to allow retrieving a subset
+// of transactions for announcement or mining.
+//
+// Note, the entries here are not arbitrary useful filters, rather each one has
+// a very specific call site in mind and each one can be evaluated very cheaply
+// by the pool implementations. Only add new ones that satisfy those constraints.
+type PendingFilter struct {
+	MinTip  *big.Int // Minimum miner tip required to include a transaction
+	BaseFee *big.Int // Minimum 1559 basefee needed to include a transaction
+}
 
 // SubPool represents a specialized transaction pool that lives on its own (e.g.
 // blob pool). Since independent of how many specialized pools we have, they do
@@ -97,7 +110,7 @@ type SubPool interface {
 
 	// Pending retrieves all currently processable transactions, grouped by origin
 	// account and sorted by nonce.
-	Pending(enforceTips bool) map[common.Address][]*LazyTransaction
+	Pending(filter PendingFilter) map[common.Address][]*LazyTransaction
 
 	// SubscribeTransactions subscribes to new transaction events.
 	SubscribeTransactions(ch chan<- core.NewTxsEvent) event.Subscription

@@ -145,6 +145,7 @@ var DefaultConfig = Config{
 	Journal:   "transactions.rlp",
 	Rejournal: time.Hour,
 
+	// TODO(rgeraldes24)
 	PriceLimit: 1,
 	PriceBump:  10,
 
@@ -506,24 +507,32 @@ func (pool *LegacyPool) ContentFrom(addr common.Address) ([]*types.Transaction, 
 }
 
 // Pending retrieves all currently processable transactions, grouped by origin
-// account and sorted by nonce. The returned transaction set is a copy and can be
-// freely modified by calling code.
+// account and sorted by nonce.
 //
-// The enforceTips parameter can be used to do an extra filtering on the pending
-// transactions and only return those whose **effective** tip is large enough in
-// the next pending execution environment.
-func (pool *LegacyPool) Pending(enforceTips bool) map[common.Address][]*txpool.LazyTransaction {
+// The transactions can also be pre-filtered by the dynamic fee components to
+// reduce allocations and load on downstream subsystems.
+func (pool *LegacyPool) Pending(filter txpool.PendingFilter) map[common.Address][]*txpool.LazyTransaction {
 	pool.mu.Lock()
 	defer pool.mu.Unlock()
 
+	var (
+		minTipBig  *big.Int
+		baseFeeBig *big.Int
+	)
+	if filter.MinTip != nil {
+		minTipBig = filter.MinTip
+	}
+	if filter.BaseFee != nil {
+		baseFeeBig = filter.BaseFee
+	}
 	pending := make(map[common.Address][]*txpool.LazyTransaction, len(pool.pending))
 	for addr, list := range pool.pending {
 		txs := list.Flatten()
 
 		// If the miner requests tip enforcement, cap the lists now
-		if enforceTips && !pool.locals.contains(addr) {
+		if minTipBig != nil && !pool.locals.contains(addr) {
 			for i, tx := range txs {
-				if tx.EffectiveGasTipIntCmp(pool.gasTip.Load(), pool.priced.urgent.baseFee) < 0 {
+				if tx.EffectiveGasTipIntCmp(minTipBig, baseFeeBig) < 0 {
 					txs = txs[:i]
 					break
 				}
@@ -539,6 +548,7 @@ func (pool *LegacyPool) Pending(enforceTips bool) map[common.Address][]*txpool.L
 					Time:      txs[i].Time(),
 					GasFeeCap: txs[i].GasFeeCap(),
 					GasTipCap: txs[i].GasTipCap(),
+					Gas:       txs[i].Gas(),
 				}
 			}
 			pending[addr] = lazies
