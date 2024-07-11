@@ -268,9 +268,6 @@ func (b *backendMock) SubscribeNewTxsEvent(chan<- core.NewTxsEvent) event.Subscr
 func (b *backendMock) BloomStatus() (uint64, uint64)                                        { return 0, 0 }
 func (b *backendMock) ServiceFilter(ctx context.Context, session *bloombits.MatcherSession) {}
 func (b *backendMock) SubscribeLogsEvent(ch chan<- []*types.Log) event.Subscription         { return nil }
-func (b *backendMock) SubscribePendingLogsEvent(ch chan<- []*types.Log) event.Subscription {
-	return nil
-}
 func (b *backendMock) SubscribeRemovedLogsEvent(ch chan<- core.RemovedLogsEvent) event.Subscription {
 	return nil
 }

@@ -302,9 +302,9 @@ func (es *EventSystem) SubscribeLogs(crit zond.FilterQuery, logs chan []*types.L
 		to = rpc.BlockNumber(crit.ToBlock.Int64())
 	}
 
-	// only interested in pending logs
-	if from == rpc.PendingBlockNumber && to == rpc.PendingBlockNumber {
-		return es.subscribePendingLogs(crit, logs), nil
+	// Pending logs are not supported anymore.
+	if from == rpc.PendingBlockNumber || to == rpc.PendingBlockNumber {
+		return nil, errPendingLogsUnsupported
 	}
 	// only interested in new mined logs
 	if from == rpc.LatestBlockNumber && to == rpc.LatestBlockNumber {
@@ -348,23 +348,6 @@ func (es *EventSystem) subscribeLogs(crit zond.FilterQuery, logs chan []*types.L
 	sub := &subscription{
 		id:        rpc.NewID(),
 		typ:       LogsSubscription,
-		logsCrit:  crit,
-		created:   time.Now(),
-		logs:      logs,
-		txs:       make(chan []*types.Transaction),
-		headers:   make(chan *types.Header),
-		installed: make(chan struct{}),
-		err:       make(chan error),
-	}
-	return es.subscribe(sub)
-}
-
-// subscribePendingLogs creates a subscription that writes contract event logs for
-// transactions that enter the transaction pool.
-func (es *EventSystem) subscribePendingLogs(crit zond.FilterQuery, logs chan []*types.Log) *Subscription {
-	sub := &subscription{
-		id:        rpc.NewID(),
-		typ:       PendingLogsSubscription,
 		logsCrit:  crit,
 		created:   time.Now(),
 		logs:      logs,

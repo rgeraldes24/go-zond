@@ -368,9 +368,6 @@ func (b testBackend) SubscribeRemovedLogsEvent(ch chan<- core.RemovedLogsEvent) 
 func (b testBackend) SubscribeLogsEvent(ch chan<- []*types.Log) event.Subscription {
 	panic("implement me")
 }
-func (b testBackend) SubscribePendingLogsEvent(ch chan<- []*types.Log) event.Subscription {
-	panic("implement me")
-}
 func (b testBackend) BloomStatus() (uint64, uint64) { panic("implement me") }
 func (b testBackend) ServiceFilter(ctx context.Context, session *bloombits.MatcherSession) {
 	panic("implement me")
