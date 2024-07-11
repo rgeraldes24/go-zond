@@ -63,8 +63,7 @@ type bbInput struct {
 	TxRlp       string              `json:"txs,omitempty"`
 	Withdrawals []*types.Withdrawal `json:"withdrawals,omitempty"`
 
-	Ethash bool                 `json:"-"`
-	Txs    []*types.Transaction `json:"-"`
+	Txs []*types.Transaction `json:"-"`
 }
 
 // ToBlock converts i into a *types.Block

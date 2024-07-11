@@ -119,15 +119,12 @@ func testTrieTracerNoop(t *testing.T, vals []struct{ k, v string }) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 // Tests if the accessList is correctly tracked.
-/*
 func TestAccessList(t *testing.T) {
 	testAccessList(t, tiny)
 	testAccessList(t, nonAligned)
 	testAccessList(t, standard)
 }
-*/
 
 func testAccessList(t *testing.T, vals []struct{ k, v string }) {
 	var (

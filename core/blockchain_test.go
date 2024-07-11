@@ -3767,7 +3767,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 	// TODO(rgeraldes24)
 	// expected := new(big.Int).Add(
 	// 	new(big.Int).SetUint64(block.GasUsed()*block.Transactions()[0].GasTipCap().Uint64()),
-	// 	ethash.ConstantinopleBlockReward,
+	// 	beacon.ConstantinopleBlockReward,
 	// )
 	expected := new(big.Int)
 	if actual.Cmp(expected) != 0 {
@@ -3809,7 +3809,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 	// TODO(rgeraldes24)
 	// expected = new(big.Int).Add(
 	// 	new(big.Int).SetUint64(block.GasUsed()*effectiveTip),
-	// 	ethash.ConstantinopleBlockReward,
+	// 	beacon.ConstantinopleBlockReward,
 	// )
 	expected = new(big.Int)
 	if actual.Cmp(expected) != 0 {

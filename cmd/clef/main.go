@@ -942,38 +942,12 @@ func testExternalUI(api *core.SignerAPI) {
 		time.Sleep(delay)
 		expectResponse("showerror", "Did you see the message? [yes/no]", "yes")
 	}
-	/*
-		{ // Sign data test - clique header
-			api.UI.ShowInfo("Please approve the next request for signing a clique header")
-			time.Sleep(delay)
-			cliqueHeader := types.Header{
-				ParentHash:  common.HexToHash("0000H45H"),
-				Coinbase:    common.HexToAddress("0000H45H"),
-				Root:        common.HexToHash("0000H00H"),
-				TxHash:      common.HexToHash("0000H45H"),
-				ReceiptHash: common.HexToHash("0000H45H"),
-				Number:      big.NewInt(1337),
-				GasLimit:    1338,
-				GasUsed:     1338,
-				Time:        1338,
-				Extra:       []byte("Extra data Extra data Extra data  Extra data  Extra data  Extra data  Extra data Extra data"),
-				Random:      common.HexToHash("0x0000H45H"),
-			}
-			cliqueRlp, err := rlp.EncodeToBytes(cliqueHeader)
-			if err != nil {
-				utils.Fatalf("Should not error: %v", err)
-			}
-			addr, _ := common.NewMixedcaseAddressFromString("0x0011223344556677889900112233445566778899")
-			_, err = api.SignData(ctx, accounts.MimetypeClique, *addr, hexutil.Encode(cliqueRlp))
-			expectApprove("signdata - clique header", err)
-		}
-	*/
 	{ // Sign data test - typed data
 		api.UI.ShowInfo("Please approve the next request for signing EIP-712 typed data")
 		time.Sleep(delay)
 		addr, _ := common.NewMixedcaseAddressFromString("0x0011223344556677889900112233445566778899")
 		data := `{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Person":[{"name":"name","type":"string"},{"name":"test","type":"uint8"},{"name":"wallet","type":"address"}],"Mail":[{"name":"from","type":"Person"},{"name":"to","type":"Person"},{"name":"contents","type":"string"}]},"primaryType":"Mail","domain":{"name":"Ether Mail","version":"1","chainId":"1","verifyingContract":"0xCCCcccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"},"message":{"from":{"name":"Cow","test":"3","wallet":"0xcD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"},"to":{"name":"Bob","wallet":"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB","test":"2"},"contents":"Hello, Bob!"}}`
-		//_, err := api.SignData(ctx, accounts.MimetypeTypedData, *addr, hexutil.Encode([]byte(data)))
+		// _, err := api.SignData(ctx, accounts.MimetypeTypedData, *addr, hexutil.Encode([]byte(data)))
 		var typedData apitypes.TypedData
 		json.Unmarshal([]byte(data), &typedData)
 		_, err := api.SignTypedData(ctx, *addr, typedData)

@@ -110,10 +110,6 @@ type Env struct {
     ParentTimestamp   uint64             `json:"parentTimestamp"`
     BlockHashes       map[uint64]common.Hash `json:"blockHashes"`
 }
-type Ommer struct {
-    Delta   uint64         `json:"delta"`
-    Address common.Address `json:"address"`
-}
 type Withdrawal struct {
     Index          uint64         `json:"index"`
     ValidatorIndex uint64         `json:"validatorIndex"`
@@ -234,22 +230,15 @@ cat << "EOF"
 
 #### About Ommers
 
-Mining rewards and ommer rewards might need to be added. This is how those are applied:
+Mining rewards might need to be added. This is how those are applied:
 
 - `block_reward` is the block mining reward for the miner (`0xaa`), of a block at height `N`.
-- For each ommer (mined by `0xbb`), with blocknumber `N-delta`
-   - (where `delta` is the difference between the current block and the ommer)
-   - The account `0xbb` (ommer miner) is awarded `(8-delta)/ 8 * block_reward`
-   - The account `0xaa` (block miner) is awarded `block_reward / 32`
 
 To make `t8n` apply these, the following inputs are required:
 
 - `--state.reward`
-  - For ethash, it is `5000000000000000000` `wei`,
   - If this is not defined, mining rewards are not applied,
   - A value of `0` is valid, and causes accounts to be 'touched'.
-- For each ommer, the tool needs to be given an `address\` and a `delta`. This
-  is done via the `ommers` field in `env`.
 
 Note: the tool does not verify that e.g. the normal uncle rules apply,
 and allows e.g two uncles at the same height, or the uncle-distance. This means that
@@ -385,17 +374,12 @@ Command line params that need to be supported are:
 
 ```
     --input.header value        `stdin` or file name of where to find the block header to use. (default: "header.json")
-    --input.ommers value        `stdin` or file name of where to find the list of ommer header RLPs to use.
     --input.txs value           `stdin` or file name of where to find the transactions list in RLP form. (default: "txs.rlp")
     --output.basedir value      Specifies where output files are placed. Will be created if it does not exist.
     --output.block value        Determines where to put the alloc of the post-state. (default: "block.json")
                                 <file> - into the file <file>
                                 `stdout` - into the stdout output
                                 `stderr` - into the stderr output
-    --seal.clique value         Seal block with Clique. `stdin` or file name of where to find the Clique sealing data.
-    --seal.ethash               Seal block with ethash. (default: false)
-    --seal.ethash.dir value     Path to ethash DAG. If none exists, a new DAG will be generated.
-    --seal.ethash.mode value    Defines the type and amount of PoW verification an ethash engine makes. (default: "normal")
     --verbosity value           Sets the verbosity level. (default: 3)
 ```
 
@@ -423,35 +407,12 @@ type Header struct {
         BaseFee     *big.Int          `json:"baseFeePerGas"`
 }
 ```
-#### `ommers`
-
-The `ommers` object is a list of RLP-encoded ommer blocks in hex
-representation.
-
-```go=
-type Ommers []string
-```
-
 #### `txs`
 
 The `txs` object is a list of RLP-encoded transactions in hex representation.
 
 ```go=
 type Txs []string
-```
-
-#### `clique`
-
-The `clique` object provides the necessary information to complete a clique
-seal of the block.
-
-```go=
-var CliqueInfo struct {
-        Key       *common.Hash    `json:"secretKey"`
-        Voted     *common.Address `json:"voted"`
-        Authorize *bool           `json:"authorize"`
-        Vanity    common.Hash     `json:"vanity"`
-}
 ```
 
 #### `output`

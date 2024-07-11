@@ -267,6 +267,7 @@ func (beacon *Beacon) SealHash(header *types.Header) (hash common.Hash) {
 	if header.BaseFee != nil {
 		enc = append(enc, header.BaseFee)
 	}
+	// TODO(rgeraldes24)
 	if header.WithdrawalsHash != nil {
 		panic("withdrawal hash set on ethash")
 	}

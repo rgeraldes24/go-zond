@@ -162,9 +162,7 @@ func (miner *Miner) prepareWork(genParams *generateParams) (*environment, error)
 		log.Error("Failed to prepare header for sealing", "err", err)
 		return nil, err
 	}
-	// Could potentially happen if starting to mine in an odd state.
-	// Note genParams.coinbase can be different with header.Coinbase
-	// since clique algorithm can modify the coinbase field in header.
+	// Could potentially happen if starting to mine in an odd state..
 	env, err := miner.makeEnv(parent, header, genParams.coinbase)
 	if err != nil {
 		log.Error("Failed to create sealing context", "err", err)
