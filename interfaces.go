@@ -135,12 +135,12 @@ type CallMsg struct {
 	From      common.Address  // the sender of the 'transaction'
 	To        *common.Address // the destination contract (nil for contract creation)
 	Gas       uint64          // if 0, the call executes with near-infinite gas
-	GasFeeCap *big.Int        // EIP-1559 fee cap per gas.
-	GasTipCap *big.Int        // EIP-1559 tip per gas.
+	GasFeeCap *big.Int        // fee cap per gas.
+	GasTipCap *big.Int        // tip per gas.
 	Value     *big.Int        // amount of wei sent along with the call
 	Data      []byte          // input data, usually an ABI-encoded contract method invocation
 
-	AccessList types.AccessList // EIP-2930 access list.
+	AccessList types.AccessList // access list.
 }
 
 // A ContractCaller provides contract calls, essentially transactions that are executed by

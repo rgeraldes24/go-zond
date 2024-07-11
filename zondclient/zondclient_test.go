@@ -196,7 +196,8 @@ var testTx1 = types.MustSignNewTx(testKey, types.ShanghaiSigner{ChainId: genesis
 	Nonce:     0,
 	Value:     big.NewInt(12),
 	Gas:       params.TxGas,
-	GasFeeCap: big.NewInt(765625000),
+	GasTipCap: big.NewInt(765625000),
+	GasFeeCap: big.NewInt(1000000000),
 	To:        &common.Address{2},
 })
 
@@ -204,7 +205,8 @@ var testTx2 = types.MustSignNewTx(testKey, types.ShanghaiSigner{ChainId: genesis
 	Nonce:     1,
 	Value:     big.NewInt(8),
 	Gas:       params.TxGas,
-	GasFeeCap: big.NewInt(765625000),
+	GasTipCap: big.NewInt(765625000),
+	GasFeeCap: big.NewInt(1000000000),
 	To:        &common.Address{2},
 })
 
@@ -280,12 +282,9 @@ func TestZondClient(t *testing.T) {
 		"CallContractAtHash": {
 			func(t *testing.T) { testCallContractAtHash(t, client) },
 		},
-		// TODO(rgeraldes24): fails sometimes
-		/*
-			"AtFunctions": {
-				func(t *testing.T) { testAtFunctions(t, client) },
-			},
-		*/
+		"AtFunctions": {
+			func(t *testing.T) { testAtFunctions(t, client) },
+		},
 		"TransactionSender": {
 			func(t *testing.T) { testTransactionSender(t, client) },
 		},
@@ -491,41 +490,32 @@ func testStatusFunctions(t *testing.T, client *rpc.Client) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if gasTipCap.Cmp(big.NewInt(1000000000)) != 0 {
+	if gasTipCap.Cmp(big.NewInt(234375000)) != 0 {
 		t.Fatalf("unexpected gas tip cap: %v", gasTipCap)
 	}
 
-	// TODO(rgeraldes24): with the dynamic fee tx the reward returns as 0; double check
-	// FeeHistory; comparison also fails for the reward field
-	/*
-		history, err := zc.FeeHistory(context.Background(), 1, big.NewInt(2), []float64{95, 99})
-		if err != nil {
-			t.Fatalf("unexpected error: %v", err)
-		}
-		want := &zond.FeeHistory{
-			OldestBlock: big.NewInt(2),
-			Reward: [][]*big.Int{
-				{
-					big.NewInt(0),
-					big.NewInt(0),
-				},
+	// FeeHistory
+	history, err := zc.FeeHistory(context.Background(), 1, big.NewInt(2), []float64{95, 99})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	want := &zond.FeeHistory{
+		OldestBlock: big.NewInt(2),
+		Reward: [][]*big.Int{
+			{
+				big.NewInt(234375000),
+				big.NewInt(234375000),
 			},
-			// Reward: [][]*big.Int{
-			// 	{
-			// 		big.NewInt(234375000),
-			// 		big.NewInt(234375000),
-			// 	},
-			// },
-			BaseFee: []*big.Int{
-				big.NewInt(765625000),
-				big.NewInt(671627818),
-			},
-			GasUsedRatio: []float64{0.008912678667376286},
-		}
-		if !reflect.DeepEqual(history, want) {
-			t.Fatalf("FeeHistory result doesn't match expected: (got: %v, want: %v)", history, want)
-		}
-	*/
+		},
+		BaseFee: []*big.Int{
+			big.NewInt(765625000),
+			big.NewInt(671627818),
+		},
+		GasUsedRatio: []float64{0.008912678667376286},
+	}
+	if !reflect.DeepEqual(history, want) {
+		t.Fatalf("FeeHistory result doesn't match expected: (got: %v, want: %v)", history, want)
+	}
 }
 
 func testCallContractAtHash(t *testing.T, client *rpc.Client) {
@@ -586,18 +576,24 @@ func testAtFunctions(t *testing.T, client *rpc.Client) {
 	zc := NewClient(client)
 
 	// send a transaction for some interesting pending status
-	sendTransaction(zc)
-	// TODO(rgeraldes24): review this sleep
-	// time.Sleep(100 * time.Millisecond)
-
-	// Check pending transaction count
-	pending, err := zc.PendingTransactionCount(context.Background())
-	if err != nil {
+	// and wait for the transaction to be included in the pending block
+	if err := sendTransaction(zc); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if pending != 1 {
-		t.Fatalf("unexpected pending, wanted 1 got: %v", pending)
+
+	// wait for the transaction to be included in the pending block
+	for {
+		// Check pending transaction count
+		pending, err := zc.PendingTransactionCount(context.Background())
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if pending == 1 {
+			break
+		}
+		time.Sleep(100 * time.Millisecond)
 	}
+
 	// Query balance
 	balance, err := zc.BalanceAt(context.Background(), testAddr, nil)
 	if err != nil {

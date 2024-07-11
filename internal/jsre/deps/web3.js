@@ -5385,30 +5385,6 @@ var methods = function () {
         params: 1
     });
 
-    var compileLLL = new Method({
-        name: 'compile.lll',
-        call: 'zond_compileLLL',
-        params: 1
-    });
-
-    var compileSerpent = new Method({
-        name: 'compile.serpent',
-        call: 'zond_compileSerpent',
-        params: 1
-    });
-
-    var submitWork = new Method({
-        name: 'submitWork',
-        call: 'zond_submitWork',
-        params: 3
-    });
-
-    var getWork = new Method({
-        name: 'getWork',
-        call: 'zond_getWork',
-        params: 0
-    });
-
     return [
         getBalance,
         getStorageAt,
@@ -5426,11 +5402,7 @@ var methods = function () {
         signTransaction,
         sendTransaction,
         sign,
-        compileSolidity,
-        compileLLL,
-        compileSerpent,
-        submitWork,
-        getWork
+        compileSolidity
     ];
 };
 
@@ -5444,11 +5416,6 @@ var properties = function () {
         new Property({
             name: 'mining',
             getter: 'zond_mining'
-        }),
-        new Property({
-            name: 'hashrate',
-            getter: 'zond_hashrate',
-            outputFormatter: utils.toDecimal
         }),
         new Property({
             name: 'syncing',

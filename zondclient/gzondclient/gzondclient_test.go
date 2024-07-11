@@ -149,11 +149,10 @@ func TestGzondClient(t *testing.T) {
 		// one block. The `testAccessList` fails if the miner has not yet created a
 		// new pending-block after the import event.
 		// Hence: this test should be last, execute the tests serially.
-		// TODO(rgeraldes24): fix
-		// {
-		// 	"TestAccessList",
-		// 	func(t *testing.T) { testAccessList(t, client) },
-		// },
+		{
+			"TestAccessList",
+			func(t *testing.T) { testAccessList(t, client) },
+		},
 		{
 			"TestSetHead",
 			func(t *testing.T) { testSetHead(t, client) },
@@ -165,16 +164,16 @@ func TestGzondClient(t *testing.T) {
 }
 
 func testAccessList(t *testing.T, client *rpc.Client) {
-	ec := New(client)
+	zc := New(client)
 	// Test transfer
 	msg := zond.CallMsg{
 		From:      testAddr,
 		To:        &common.Address{},
 		Gas:       21000,
-		GasFeeCap: big.NewInt(765625000),
+		GasFeeCap: big.NewInt(1000000000),
 		Value:     big.NewInt(1),
 	}
-	al, gas, vmErr, err := ec.CreateAccessList(context.Background(), msg)
+	al, gas, vmErr, err := zc.CreateAccessList(context.Background(), msg)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -196,7 +195,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 		Value:     big.NewInt(1),
 		Data:      common.FromHex("0x608060806080608155fd"),
 	}
-	al, gas, vmErr, err = ec.CreateAccessList(context.Background(), msg)
+	al, gas, vmErr, err = zc.CreateAccessList(context.Background(), msg)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -283,49 +282,17 @@ func testGetProofCanonicalizeKeys(t *testing.T, client *rpc.Client) {
 	}
 }
 
-func testGetProofNonExistent(t *testing.T, client *rpc.Client) {
-	addr := common.HexToAddress("0x0001")
-	ec := New(client)
-	result, err := ec.GetProof(context.Background(), addr, nil, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if result.Address != addr {
-		t.Fatalf("unexpected address, have: %v want: %v", result.Address, addr)
-	}
-	// test nonce
-	if result.Nonce != 0 {
-		t.Fatalf("invalid nonce, want: %v got: %v", 0, result.Nonce)
-	}
-	// test balance
-	if result.Balance.Sign() != 0 {
-		t.Fatalf("invalid balance, want: %v got: %v", 0, result.Balance)
-	}
-	// test storage
-	if have := len(result.StorageProof); have != 0 {
-		t.Fatalf("invalid storage proof, want 0 proof, got %v proof(s)", have)
-	}
-	// test codeHash
-	if have, want := result.CodeHash, (common.Hash{}); have != want {
-		t.Fatalf("codehash wrong, have %v want %v ", have, want)
-	}
-	// test codeHash
-	if have, want := result.StorageHash, (common.Hash{}); have != want {
-		t.Fatalf("storagehash wrong, have %v want %v ", have, want)
-	}
-}
-
 func testGCStats(t *testing.T, client *rpc.Client) {
-	ec := New(client)
-	_, err := ec.GCStats(context.Background())
+	zc := New(client)
+	_, err := zc.GCStats(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func testMemStats(t *testing.T, client *rpc.Client) {
-	ec := New(client)
-	stats, err := ec.MemStats(context.Background())
+	zc := New(client)
+	stats, err := zc.MemStats(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -335,8 +302,8 @@ func testMemStats(t *testing.T, client *rpc.Client) {
 }
 
 func testGetNodeInfo(t *testing.T, client *rpc.Client) {
-	ec := New(client)
-	info, err := ec.GetNodeInfo(context.Background())
+	zc := New(client)
+	info, err := zc.GetNodeInfo(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -347,19 +314,19 @@ func testGetNodeInfo(t *testing.T, client *rpc.Client) {
 }
 
 func testSetHead(t *testing.T, client *rpc.Client) {
-	ec := New(client)
-	err := ec.SetHead(context.Background(), big.NewInt(0))
+	zc := New(client)
+	err := zc.SetHead(context.Background(), big.NewInt(0))
 	if err != nil {
 		t.Fatal(err)
 	}
 }
 
 func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
-	ec := New(client)
+	zc := New(client)
 	zondcl := zondclient.NewClient(client)
 	// Subscribe to Transactions
 	ch := make(chan common.Hash)
-	ec.SubscribePendingTransactions(context.Background(), ch)
+	zc.SubscribePendingTransactions(context.Background(), ch)
 	// Send a transaction
 	chainID, err := zondcl.ChainID(context.Background())
 	if err != nil {
@@ -392,11 +359,11 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 }
 
 func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
-	ec := New(client)
+	zc := New(client)
 	zondcl := zondclient.NewClient(client)
 	// Subscribe to Transactions
 	ch := make(chan *types.Transaction)
-	ec.SubscribeFullPendingTransactions(context.Background(), ch)
+	zc.SubscribeFullPendingTransactions(context.Background(), ch)
 	// Send a transaction
 	chainID, err := zondcl.ChainID(context.Background())
 	if err != nil {
@@ -429,7 +396,7 @@ func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
 }
 
 func testCallContract(t *testing.T, client *rpc.Client) {
-	ec := New(client)
+	zc := New(client)
 	msg := zond.CallMsg{
 		From:      testAddr,
 		To:        &common.Address{},
@@ -438,7 +405,7 @@ func testCallContract(t *testing.T, client *rpc.Client) {
 		Value:     big.NewInt(1),
 	}
 	// CallContract without override
-	if _, err := ec.CallContract(context.Background(), msg, big.NewInt(0), nil); err != nil {
+	if _, err := zc.CallContract(context.Background(), msg, big.NewInt(0), nil); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	// CallContract with override
@@ -447,7 +414,7 @@ func testCallContract(t *testing.T, client *rpc.Client) {
 	}
 	mapAcc := make(map[common.Address]OverrideAccount)
 	mapAcc[testAddr] = override
-	if _, err := ec.CallContract(context.Background(), msg, big.NewInt(0), &mapAcc); err != nil {
+	if _, err := zc.CallContract(context.Background(), msg, big.NewInt(0), &mapAcc); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 }
@@ -538,7 +505,7 @@ func TestBlockOverridesMarshal(t *testing.T) {
 }
 
 func testCallContractWithBlockOverrides(t *testing.T, client *rpc.Client) {
-	ec := New(client)
+	zc := New(client)
 	msg := zond.CallMsg{
 		From:      testAddr,
 		To:        &common.Address{},
@@ -552,7 +519,7 @@ func testCallContractWithBlockOverrides(t *testing.T, client *rpc.Client) {
 	}
 	mapAcc := make(map[common.Address]OverrideAccount)
 	mapAcc[common.Address{}] = override
-	res, err := ec.CallContract(context.Background(), msg, big.NewInt(0), &mapAcc)
+	res, err := zc.CallContract(context.Background(), msg, big.NewInt(0), &mapAcc)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -564,7 +531,7 @@ func testCallContractWithBlockOverrides(t *testing.T, client *rpc.Client) {
 	bo := BlockOverrides{
 		Coinbase: common.HexToAddress("0x1111111111111111111111111111111111111111"),
 	}
-	res, err = ec.CallContractWithBlockOverrides(context.Background(), msg, big.NewInt(0), &mapAcc, bo)
+	res, err = zc.CallContractWithBlockOverrides(context.Background(), msg, big.NewInt(0), &mapAcc, bo)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

@@ -83,8 +83,8 @@ const (
 	CreateBySelfdestructGas uint64 = 25000
 
 	DefaultBaseFeeChangeDenominator = 8          // Bounds the amount the base fee can change between blocks.
-	DefaultElasticityMultiplier     = 2          // Bounds the maximum gas limit an EIP-1559 block may have.
-	InitialBaseFee                  = 1000000000 // Initial base fee for EIP-1559 blocks.
+	DefaultElasticityMultiplier     = 2          // Bounds the maximum gas limit a block may have.
+	InitialBaseFee                  = 1000000000 // Initial base fee.
 
 	MaxCodeSize     = 24576           // Maximum bytecode to permit for a contract
 	MaxInitCodeSize = 2 * MaxCodeSize // Maximum initcode to permit in a creation transaction and create instructions

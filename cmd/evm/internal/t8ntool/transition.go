@@ -183,13 +183,7 @@ func Transition(ctx *cli.Context) error {
 	if txs, err = loadTransactions(txStr, inputData, prestate.Env, chainConfig); err != nil {
 		return err
 	}
-	if err := applyLondonChecks(&prestate.Env, chainConfig); err != nil {
-		return err
-	}
 	if err := applyShanghaiChecks(&prestate.Env, chainConfig); err != nil {
-		return err
-	}
-	if err := applyMergeChecks(&prestate.Env, chainConfig); err != nil {
 		return err
 	}
 	// Run the test and aggregate the result
@@ -328,7 +322,7 @@ func loadTransactions(txStr string, inputData *input, env stEnv, chainConfig *pa
 	return nil, nil
 }
 
-func applyLondonChecks(env *stEnv, chainConfig *params.ChainConfig) error {
+func applyShanghaiChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 	// Sanity check, to not `panic` in state_transition
 	if env.BaseFee != nil {
 		// Already set, base fee has precedent over parent base fee.
@@ -343,23 +337,14 @@ func applyLondonChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 		GasUsed:  env.ParentGasUsed,
 		GasLimit: env.ParentGasLimit,
 	})
-	return nil
-}
 
-func applyShanghaiChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 	if env.Withdrawals == nil {
-		return NewError(ErrorConfig, errors.New("Shanghai config but missing 'withdrawals' in env section"))
+		return NewError(ErrorConfig, errors.New("shanghai config but missing 'withdrawals' in env section"))
 	}
-	return nil
-}
+	if env.Random == nil {
+		return NewError(ErrorConfig, errors.New("shanghai requires currentRandom to be defined in env"))
+	}
 
-func applyMergeChecks(env *stEnv, chainConfig *params.ChainConfig) error {
-	// post-merge:
-	// - random must be supplied
-	switch {
-	case env.Random == nil:
-		return NewError(ErrorConfig, errors.New("post-merge requires currentRandom to be defined in env"))
-	}
 	return nil
 }
 
