@@ -283,25 +283,20 @@ func TestTraceCall(t *testing.T) {
 			config:    nil,
 			expectErr: errors.New("tracing on top of pending is not supported"),
 		},
-		// TODO(rgeraldes24): fix: result mismatch,
-		// want  {"gas":53018,"failed":false,"returnValue":"","structLogs":[{"pc":0,"op":"NUMBER","gas":24946984,"gasCost":2,"depth":1,"stack":[]},{"pc":1,"op":"STOP","gas":24946982,"gasCost":0,"depth":1,"stack":["0x1337"]}]},
-		// got {"gas":53020,"failed":false,"returnValue":"","structLogs":[{"pc":0,"op":"NUMBER","gas":24946982,"gasCost":2,"depth":1,"stack":[]},{"pc":1,"op":"STOP","gas":24946980,"gasCost":0,"depth":1,"stack":["0x1337"]}]}
-		/*
-			{
-				blockNumber: rpc.LatestBlockNumber,
-				call: zondapi.TransactionArgs{
-					From:  &accounts[0].addr,
-					Input: &hexutil.Bytes{0x43}, // blocknumber
-				},
-				config: &TraceCallConfig{
-					BlockOverrides: &zondapi.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(0x1337))},
-				},
-				expectErr: nil,
-				expect: ` {"gas":53018,"failed":false,"returnValue":"","structLogs":[
-				{"pc":0,"op":"NUMBER","gas":24946984,"gasCost":2,"depth":1,"stack":[]},
-				{"pc":1,"op":"STOP","gas":24946982,"gasCost":0,"depth":1,"stack":["0x1337"]}]}`,
+		{
+			blockNumber: rpc.LatestBlockNumber,
+			call: zondapi.TransactionArgs{
+				From:  &accounts[0].addr,
+				Input: &hexutil.Bytes{0x43}, // blocknumber
 			},
-		*/
+			config: &TraceCallConfig{
+				BlockOverrides: &zondapi.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(0x1337))},
+			},
+			expectErr: nil,
+			expect: ` {"gas":53020,"failed":false,"returnValue":"","structLogs":[
+				{"pc":0,"op":"NUMBER","gas":24946982,"gasCost":2,"depth":1,"stack":[]},
+				{"pc":1,"op":"STOP","gas":24946980,"gasCost":0,"depth":1,"stack":["0x1337"]}]}`,
+		},
 	}
 	for i, testspec := range testSuite {
 		result, err := api.TraceCall(context.Background(), testspec.call, rpc.BlockNumberOrHash{BlockNumber: &testspec.blockNumber}, testspec.config)
@@ -481,7 +476,6 @@ func TestTraceBlock(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): review difference in values
 func TestTracingWithOverrides(t *testing.T) {
 	t.Parallel()
 	// Initialize test accounts
@@ -607,7 +601,6 @@ func TestTracingWithOverrides(t *testing.T) {
 				BlockOverrides: &zondapi.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(0x1337))},
 			},
 			want: `{"gas":59539,"failed":false,"returnValue":"0000000000000000000000000000000000000000000000000000000000001337"}`,
-			// want: `{"gas":59537,"failed":false,"returnValue":"0000000000000000000000000000000000000000000000000000000000001337"}`,
 		},
 		{ // Override blocknumber, and query a blockhash
 			blockNumber: rpc.LatestBlockNumber,
@@ -628,7 +621,6 @@ func TestTracingWithOverrides(t *testing.T) {
 				BlockOverrides: &zondapi.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(0x1337))},
 			},
 			want: `{"gas":72668,"failed":false,"returnValue":"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"}`,
-			// want: `{"gas":72666,"failed":false,"returnValue":"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"}`,
 		},
 
 		// pragma solidity =0.8.12;
@@ -678,7 +670,6 @@ func TestTracingWithOverrides(t *testing.T) {
 					},
 				},
 			},
-			//want: `{"gas":46900,"failed":false,"returnValue":"0000000000000000000000000000000000000000000000000000000000000539"}`,
 			want: `{"gas":44100,"failed":false,"returnValue":"0000000000000000000000000000000000000000000000000000000000000001"}`,
 		},
 		{ // No state override

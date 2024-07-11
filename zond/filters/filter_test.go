@@ -34,6 +34,7 @@ import (
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/trie"
 )
 
@@ -273,13 +274,16 @@ func TestFilters(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		tx, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{
+		tx, err := types.SignTx(types.NewTx(&types.DynamicFeeTx{
 			Nonce:     5,
 			GasFeeCap: gen.BaseFee(),
 			Gas:       30000,
 			To:        &contract,
 			Data:      data,
 		}), signer, key1)
+		if err != nil {
+			t.Fatal(err)
+		}
 		gen.AddTx(tx)
 	})
 	sys.backend.(*testBackend).pendingBlock = pchain[0]
@@ -290,84 +294,77 @@ func TestFilters(t *testing.T) {
 		want string
 		err  string
 	}{
-		// TODO(rgeraldes24): fix
-		/*
-			{
-				f:    sys.NewBlockFilter(chain[2].Hash(), []common.Address{contract}, nil),
-				want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696332","0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x3","transactionHash":"0x0288dc3aa693cbe7754f18623e7aea68cd49c712649bba9d8cb68b064921a38f","transactionIndex":"0x0","blockHash":"0x47f89c9c466d9aac302cbbccb5f9aa6f611c5bfbc294c196edb5f2b319faa8e8","logIndex":"0x0","removed":false}]`,
-			},
-			{
-				f:    sys.NewRangeFilter(0, int64(rpc.LatestBlockNumber), []common.Address{contract}, [][]common.Hash{{hash1, hash2, hash3, hash4}}),
-				want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x2","transactionHash":"0x453e08b0e61c9ac99bfd2f8d46c0c139464833cfda2130e9cab6554eb9392f46","transactionIndex":"0x0","blockHash":"0xd5ee1742a6df87b294d3d1b9003d01d4a1268f48cf5a6748378fb7ba9f3db775","logIndex":"0x0","removed":false},{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696332","0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x3","transactionHash":"0x0288dc3aa693cbe7754f18623e7aea68cd49c712649bba9d8cb68b064921a38f","transactionIndex":"0x0","blockHash":"0x47f89c9c466d9aac302cbbccb5f9aa6f611c5bfbc294c196edb5f2b319faa8e8","logIndex":"0x0","removed":false},{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696334"],"data":"0x","blockNumber":"0x3e8","transactionHash":"0x6e261c39104ad6cbbdc0fce300be763cf45c9f8fa7eae981e60f113d11b2a465","transactionIndex":"0x0","blockHash":"0x7849ec96ecc30d8779ce36115feb82442c59e9398d1b975bec64db8046cac103","logIndex":"0x0","removed":false}]`,
-			},
-			{
-				f: sys.NewRangeFilter(900, 999, []common.Address{contract}, [][]common.Hash{{hash3}}),
-			},
-			{
-				f:    sys.NewRangeFilter(990, int64(rpc.LatestBlockNumber), []common.Address{contract2}, [][]common.Hash{{hash3}}),
-				want: `[{"address":"0xff00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696333"],"data":"0x","blockNumber":"0x3e7","transactionHash":"0xc42b8455f7ff9a39147fb9d4869bfff786ce4dede41276931275c124a474e7fb","transactionIndex":"0x0","blockHash":"0xb2e5618a1f392ae0292b7b6ab8de41a87aba841d5858872ef608ee1c04ffebc1","logIndex":"0x0","removed":false}]`,
-			},
-			{
-				f:    sys.NewRangeFilter(1, 10, []common.Address{contract}, [][]common.Hash{{hash2}, {hash1}}),
-				want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696332","0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x3","transactionHash":"0x0288dc3aa693cbe7754f18623e7aea68cd49c712649bba9d8cb68b064921a38f","transactionIndex":"0x0","blockHash":"0x47f89c9c466d9aac302cbbccb5f9aa6f611c5bfbc294c196edb5f2b319faa8e8","logIndex":"0x0","removed":false}]`,
-			},
-			{
-				f:    sys.NewRangeFilter(1, 10, nil, [][]common.Hash{{hash1, hash2}}),
-				want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x2","transactionHash":"0x453e08b0e61c9ac99bfd2f8d46c0c139464833cfda2130e9cab6554eb9392f46","transactionIndex":"0x0","blockHash":"0xd5ee1742a6df87b294d3d1b9003d01d4a1268f48cf5a6748378fb7ba9f3db775","logIndex":"0x0","removed":false},{"address":"0xff00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x2","transactionHash":"0x9f85a7c5c5c7a2333602b256f580347eeb5a034a831d404b15455472ee456982","transactionIndex":"0x1","blockHash":"0xd5ee1742a6df87b294d3d1b9003d01d4a1268f48cf5a6748378fb7ba9f3db775","logIndex":"0x1","removed":false},{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696332","0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x3","transactionHash":"0x0288dc3aa693cbe7754f18623e7aea68cd49c712649bba9d8cb68b064921a38f","transactionIndex":"0x0","blockHash":"0x47f89c9c466d9aac302cbbccb5f9aa6f611c5bfbc294c196edb5f2b319faa8e8","logIndex":"0x0","removed":false}]`,
-			},
-			{
-				f: sys.NewRangeFilter(0, int64(rpc.LatestBlockNumber), nil, [][]common.Hash{{common.BytesToHash([]byte("fail"))}}),
-			},
-			{
-				f: sys.NewRangeFilter(0, int64(rpc.LatestBlockNumber), []common.Address{common.BytesToAddress([]byte("failmenow"))}, nil),
-			},
-			{
-				f: sys.NewRangeFilter(0, int64(rpc.LatestBlockNumber), nil, [][]common.Hash{{common.BytesToHash([]byte("fail"))}, {hash1}}),
-			},
-			{
-				f:    sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
-				want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696334"],"data":"0x","blockNumber":"0x3e8","transactionHash":"0x6e261c39104ad6cbbdc0fce300be763cf45c9f8fa7eae981e60f113d11b2a465","transactionIndex":"0x0","blockHash":"0x7849ec96ecc30d8779ce36115feb82442c59e9398d1b975bec64db8046cac103","logIndex":"0x0","removed":false}]`,
-			},
-			{
-				f:    sys.NewRangeFilter(int64(rpc.FinalizedBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
-				want: `[{"address":"0xff00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696333"],"data":"0x","blockNumber":"0x3e7","transactionHash":"0xc42b8455f7ff9a39147fb9d4869bfff786ce4dede41276931275c124a474e7fb","transactionIndex":"0x0","blockHash":"0xb2e5618a1f392ae0292b7b6ab8de41a87aba841d5858872ef608ee1c04ffebc1","logIndex":"0x0","removed":false},{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696334"],"data":"0x","blockNumber":"0x3e8","transactionHash":"0x6e261c39104ad6cbbdc0fce300be763cf45c9f8fa7eae981e60f113d11b2a465","transactionIndex":"0x0","blockHash":"0x7849ec96ecc30d8779ce36115feb82442c59e9398d1b975bec64db8046cac103","logIndex":"0x0","removed":false}]`,
-			},
-			{
-				f:    sys.NewRangeFilter(int64(rpc.FinalizedBlockNumber), int64(rpc.FinalizedBlockNumber), nil, nil),
-				want: `[{"address":"0xff00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696333"],"data":"0x","blockNumber":"0x3e7","transactionHash":"0xc42b8455f7ff9a39147fb9d4869bfff786ce4dede41276931275c124a474e7fb","transactionIndex":"0x0","blockHash":"0xb2e5618a1f392ae0292b7b6ab8de41a87aba841d5858872ef608ee1c04ffebc1","logIndex":"0x0","removed":false}]`,
-			},
-			{
-				f: sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.FinalizedBlockNumber), nil, nil),
-			},
-			{
-				f:   sys.NewRangeFilter(int64(rpc.SafeBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
-				err: "safe header not found",
-			},
-			{
-				f:   sys.NewRangeFilter(int64(rpc.SafeBlockNumber), int64(rpc.SafeBlockNumber), nil, nil),
-				err: "safe header not found",
-			},
-			{
-				f:   sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.SafeBlockNumber), nil, nil),
-				err: "safe header not found",
-			},
-		*/
-		// TODO(rgeraldes24): fix: pending logs are not supported
-		/*
-			{
-				f:    sys.NewRangeFilter(int64(rpc.PendingBlockNumber), int64(rpc.PendingBlockNumber), nil, nil),
-				want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696335"],"data":"0x","blockNumber":"0x3e9","transactionHash":"0x4110587c1b8d86edc85dce929a34127f1cb8809515a9f177c91c866de3eb0638","transactionIndex":"0x0","blockHash":"0xc7245899e5817f16fa99cf5ad2d9c1e4b98443a565a673ec9c764640443ef037","logIndex":"0x0","removed":false}]`,
-			},
-			{
-				f:    sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.PendingBlockNumber), nil, nil),
-				want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696334"],"data":"0x","blockNumber":"0x3e8","transactionHash":"0x6e261c39104ad6cbbdc0fce300be763cf45c9f8fa7eae981e60f113d11b2a465","transactionIndex":"0x0","blockHash":"0x7849ec96ecc30d8779ce36115feb82442c59e9398d1b975bec64db8046cac103","logIndex":"0x0","removed":false},{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696335"],"data":"0x","blockNumber":"0x3e9","transactionHash":"0x4110587c1b8d86edc85dce929a34127f1cb8809515a9f177c91c866de3eb0638","transactionIndex":"0x0","blockHash":"0xc7245899e5817f16fa99cf5ad2d9c1e4b98443a565a673ec9c764640443ef037","logIndex":"0x0","removed":false}]`,
-			},
-			{
-				f:   sys.NewRangeFilter(int64(rpc.PendingBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
-				err: "invalid block range",
-			},
-		*/
-
+		{
+			f:    sys.NewBlockFilter(chain[2].Hash(), []common.Address{contract}, nil),
+			want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696332","0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x3","transactionHash":"0x98d3df047a661b1186be5d1f7ae2a521fbca8ca718cd231bf65e06d09d15e98e","transactionIndex":"0x0","blockHash":"0xae2282865aec2aba624fbd1e968a22205c7d70e8feeca606035ac49865c83742","logIndex":"0x0","removed":false}]`,
+		},
+		{
+			f:    sys.NewRangeFilter(0, int64(rpc.LatestBlockNumber), []common.Address{contract}, [][]common.Hash{{hash1, hash2, hash3, hash4}}),
+			want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x2","transactionHash":"0x5c2bb52a0eb61322131687e85eb3498b430274a69428d7bf4bdedfea8529ce9d","transactionIndex":"0x0","blockHash":"0x2272dec00c13cdd8a26b64423643d2d556bb95d2297f9d0c56ba3a682c9e1b3b","logIndex":"0x0","removed":false},{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696332","0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x3","transactionHash":"0x98d3df047a661b1186be5d1f7ae2a521fbca8ca718cd231bf65e06d09d15e98e","transactionIndex":"0x0","blockHash":"0xae2282865aec2aba624fbd1e968a22205c7d70e8feeca606035ac49865c83742","logIndex":"0x0","removed":false},{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696334"],"data":"0x","blockNumber":"0x3e8","transactionHash":"0x298c5fda8e7c96446e298046378764104b07256380b5bec31e6afe6b5a600c9a","transactionIndex":"0x0","blockHash":"0xf59c869d2d6f3e9bfeaad15df443238beca6394588e7ca5b17cf158a25966844","logIndex":"0x0","removed":false}]`,
+		},
+		{
+			f: sys.NewRangeFilter(900, 999, []common.Address{contract}, [][]common.Hash{{hash3}}),
+		},
+		{
+			f:    sys.NewRangeFilter(990, int64(rpc.LatestBlockNumber), []common.Address{contract2}, [][]common.Hash{{hash3}}),
+			want: `[{"address":"0xff00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696333"],"data":"0x","blockNumber":"0x3e7","transactionHash":"0xabd8d45a3d8a4905b0fd1a2cd7a584ed163273f1420e4a6a9a7c0003b04b0bd3","transactionIndex":"0x0","blockHash":"0xd4eacb8f32ea38ec1207219b163bb42a4bd6eabe83d91a37b49870db639b8333","logIndex":"0x0","removed":false}]`,
+		},
+		{
+			f:    sys.NewRangeFilter(1, 10, []common.Address{contract}, [][]common.Hash{{hash2}, {hash1}}),
+			want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696332","0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x3","transactionHash":"0x98d3df047a661b1186be5d1f7ae2a521fbca8ca718cd231bf65e06d09d15e98e","transactionIndex":"0x0","blockHash":"0xae2282865aec2aba624fbd1e968a22205c7d70e8feeca606035ac49865c83742","logIndex":"0x0","removed":false}]`,
+		},
+		{
+			f:    sys.NewRangeFilter(1, 10, nil, [][]common.Hash{{hash1, hash2}}),
+			want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x2","transactionHash":"0x5c2bb52a0eb61322131687e85eb3498b430274a69428d7bf4bdedfea8529ce9d","transactionIndex":"0x0","blockHash":"0x2272dec00c13cdd8a26b64423643d2d556bb95d2297f9d0c56ba3a682c9e1b3b","logIndex":"0x0","removed":false},{"address":"0xff00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x2","transactionHash":"0x7f365dd50796d1941a506c40d1cd98fa01253eafb93104e991b061362236f4f5","transactionIndex":"0x1","blockHash":"0x2272dec00c13cdd8a26b64423643d2d556bb95d2297f9d0c56ba3a682c9e1b3b","logIndex":"0x1","removed":false},{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696332","0x0000000000000000000000000000000000000000000000000000746f70696331"],"data":"0x","blockNumber":"0x3","transactionHash":"0x98d3df047a661b1186be5d1f7ae2a521fbca8ca718cd231bf65e06d09d15e98e","transactionIndex":"0x0","blockHash":"0xae2282865aec2aba624fbd1e968a22205c7d70e8feeca606035ac49865c83742","logIndex":"0x0","removed":false}]`,
+		},
+		{
+			f: sys.NewRangeFilter(0, int64(rpc.LatestBlockNumber), nil, [][]common.Hash{{common.BytesToHash([]byte("fail"))}}),
+		},
+		{
+			f: sys.NewRangeFilter(0, int64(rpc.LatestBlockNumber), []common.Address{common.BytesToAddress([]byte("failmenow"))}, nil),
+		},
+		{
+			f: sys.NewRangeFilter(0, int64(rpc.LatestBlockNumber), nil, [][]common.Hash{{common.BytesToHash([]byte("fail"))}, {hash1}}),
+		},
+		{
+			f:    sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
+			want: `[{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696334"],"data":"0x","blockNumber":"0x3e8","transactionHash":"0x298c5fda8e7c96446e298046378764104b07256380b5bec31e6afe6b5a600c9a","transactionIndex":"0x0","blockHash":"0xf59c869d2d6f3e9bfeaad15df443238beca6394588e7ca5b17cf158a25966844","logIndex":"0x0","removed":false}]`,
+		},
+		{
+			f:    sys.NewRangeFilter(int64(rpc.FinalizedBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
+			want: `[{"address":"0xff00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696333"],"data":"0x","blockNumber":"0x3e7","transactionHash":"0xabd8d45a3d8a4905b0fd1a2cd7a584ed163273f1420e4a6a9a7c0003b04b0bd3","transactionIndex":"0x0","blockHash":"0xd4eacb8f32ea38ec1207219b163bb42a4bd6eabe83d91a37b49870db639b8333","logIndex":"0x0","removed":false},{"address":"0xfe00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696334"],"data":"0x","blockNumber":"0x3e8","transactionHash":"0x298c5fda8e7c96446e298046378764104b07256380b5bec31e6afe6b5a600c9a","transactionIndex":"0x0","blockHash":"0xf59c869d2d6f3e9bfeaad15df443238beca6394588e7ca5b17cf158a25966844","logIndex":"0x0","removed":false}]`,
+		},
+		{
+			f:    sys.NewRangeFilter(int64(rpc.FinalizedBlockNumber), int64(rpc.FinalizedBlockNumber), nil, nil),
+			want: `[{"address":"0xff00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696333"],"data":"0x","blockNumber":"0x3e7","transactionHash":"0xabd8d45a3d8a4905b0fd1a2cd7a584ed163273f1420e4a6a9a7c0003b04b0bd3","transactionIndex":"0x0","blockHash":"0xd4eacb8f32ea38ec1207219b163bb42a4bd6eabe83d91a37b49870db639b8333","logIndex":"0x0","removed":false}]`,
+		},
+		{
+			f: sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.FinalizedBlockNumber), nil, nil),
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.SafeBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
+			err: "safe header not found",
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.SafeBlockNumber), int64(rpc.SafeBlockNumber), nil, nil),
+			err: "safe header not found",
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.SafeBlockNumber), nil, nil),
+			err: "safe header not found",
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.PendingBlockNumber), int64(rpc.PendingBlockNumber), nil, nil),
+			err: errPendingLogsUnsupported.Error(),
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.PendingBlockNumber), nil, nil),
+			err: errPendingLogsUnsupported.Error(),
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.PendingBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
+			err: errPendingLogsUnsupported.Error(),
+		},
 	} {
 		logs, err := tc.f.Logs(context.Background())
 		if err == nil && tc.err != "" {

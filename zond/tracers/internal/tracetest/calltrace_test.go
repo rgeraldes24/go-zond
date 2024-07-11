@@ -79,16 +79,18 @@ type callTracerTest struct {
 
 // Iterates over all the input-output datasets in the tracer test harness and
 // runs the JavaScript tracers against them.
-// TODO(rgeraldes24): fix: rlp: input list has too many elements for types.LegacyTx
+// TODO(rgeraldes24): fix testdata/call_tracer_legacy/* input field with new tx
 /*
 func TestCallTracerLegacy(t *testing.T) {
 	testCallTracer("callTracerLegacy", "call_tracer_legacy", t)
 }
 
+// TODO(rgeraldes24): fix testdata/call_tracer/* input field with new tx
 func TestCallTracerNative(t *testing.T) {
 	testCallTracer("callTracer", "call_tracer", t)
 }
 
+// TODO(rgeraldes24): fix testdata/call_tracer_withLog/* input field with new tx
 func TestCallTracerNativeWithLog(t *testing.T) {
 	testCallTracer("callTracer", "call_tracer_withLog", t)
 }

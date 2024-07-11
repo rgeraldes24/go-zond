@@ -187,7 +187,6 @@ func TestMessages(t *testing.T) {
 		// receiptsRlp = rlpData
 	}
 
-	// TODO(rgeraldes24): fix: rlp: input list has too many elements for types.LegacyTx
 	for i, tc := range []struct {
 		message interface{}
 		want    []byte

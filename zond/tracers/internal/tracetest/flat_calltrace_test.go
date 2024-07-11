@@ -150,7 +150,7 @@ func flatCallTracerTestRunner(tracerName string, filename string, dirPath string
 
 // Iterates over all the input-output datasets in the tracer parity test harness and
 // runs the Native tracer against them.
-// TODO(rgeraldes24): fix: rlp: input list has too many elements for types.LegacyTx
+// TODO(rgeraldes24): fix testdata/call_tracer_flat/* input field with new tx
 // func TestFlatCallTracerNative(t *testing.T) {
 // 	testFlatCallTracer("flatCallTracer", "call_tracer_flat", t)
 // }
