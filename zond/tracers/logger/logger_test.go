@@ -23,7 +23,11 @@ import (
 	"testing"
 
 	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/state"
+	"github.com/theQRL/go-zond/core/types"
+	"github.com/theQRL/go-zond/core/vm"
+	"github.com/theQRL/go-zond/params"
 )
 
 type dummyContractRef struct {
@@ -50,16 +54,14 @@ func (*dummyStatedb) GetRefund() uint64                                       { 
 func (*dummyStatedb) GetState(_ common.Address, _ common.Hash) common.Hash    { return common.Hash{} }
 func (*dummyStatedb) SetState(_ common.Address, _ common.Hash, _ common.Hash) {}
 
-/*
-// TODO(rgeraldes24): different gas cost func: gas cost for SSTORE according to EIP-2929
-// Test in ethereum uses the frontier instruction set
-
 func TestStoreCapture(t *testing.T) {
 	var (
-		logger   = NewStructLogger(nil)
-		env      = vm.NewEVM(vm.BlockContext{}, vm.TxContext{}, &dummyStatedb{}, params.TestChainConfig, vm.Config{Tracer: logger})
-		contract = vm.NewContract(&dummyContractRef{}, &dummyContractRef{}, new(big.Int), 100000)
+		logger     = NewStructLogger(nil)
+		statedb, _ = state.New(types.EmptyRootHash, state.NewDatabase(rawdb.NewMemoryDatabase()), nil)
+		env        = vm.NewEVM(vm.BlockContext{}, vm.TxContext{}, &dummyStatedb{StateDB: *statedb}, params.TestChainConfig, vm.Config{Tracer: logger})
+		contract   = vm.NewContract(&dummyContractRef{}, &dummyContractRef{}, new(big.Int), 100000)
 	)
+	statedb.AddAddressToAccessList(contract.Address())
 	contract.Code = []byte{byte(vm.PUSH1), 0x1, byte(vm.PUSH1), 0x0, byte(vm.SSTORE)}
 	var index common.Hash
 	logger.CaptureStart(env, common.Address{}, contract.Address(), false, nil, 0, nil)
@@ -76,7 +78,6 @@ func TestStoreCapture(t *testing.T) {
 		t.Errorf("expected %x, got %x", exp, logger.storage[contract.Address()][index])
 	}
 }
-*/
 
 // Tests that blank fields don't appear in logs when JSON marshalled, to reduce
 // logs bloat and confusion. See https://github.com/theQRL/go-zond/issues/24487
