@@ -18,6 +18,7 @@ package graphql
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -36,8 +37,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TODO(rgeraldes24): fix
-/*
 func TestBuildSchema(t *testing.T) {
 	ddir := t.TempDir()
 	// Copy config
@@ -53,9 +52,7 @@ func TestBuildSchema(t *testing.T) {
 		t.Errorf("Could not construct GraphQL handler: %v", err)
 	}
 }
-*/
 
-/*
 // Tests that a graphQL request is successfully handled when graphql is enabled on the specified endpoint
 func TestGraphQLBlockSerialization(t *testing.T) {
 	stack := createNode(t)
@@ -161,7 +158,6 @@ func TestGraphQLBlockSerialization(t *testing.T) {
 		}
 	}
 }
-*/
 
 // TODO(rgeraldes24): fix
 /*

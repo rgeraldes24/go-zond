@@ -204,34 +204,6 @@ func (args *TransactionArgs) ToMessage(globalGasCap uint64, baseFee *big.Int) (*
 		gasTipCap *big.Int
 	)
 
-	// TODO(rgeraldes24): remove, code below
-	/*
-		if baseFee == nil {
-			// If there's no basefee, then it must be a non-1559 execution
-			gasPrice = new(big.Int)
-			if args.GasPrice != nil {
-				gasPrice = args.GasPrice.ToInt()
-			}
-			gasFeeCap, gasTipCap = gasPrice, gasPrice
-		} else {
-			// A basefee is provided, necessitating 1559-type execution
-			// User specified 1559 gas fields (or none), use those
-			gasFeeCap = new(big.Int)
-			if args.MaxFeePerGas != nil {
-				gasFeeCap = args.MaxFeePerGas.ToInt()
-			}
-			gasTipCap = new(big.Int)
-			if args.MaxPriorityFeePerGas != nil {
-				gasTipCap = args.MaxPriorityFeePerGas.ToInt()
-			}
-			// Backfill the legacy gasPrice for EVM execution, unless we're all zeroes
-			gasPrice = new(big.Int)
-			if gasFeeCap.BitLen() > 0 || gasTipCap.BitLen() > 0 {
-				gasPrice = math.BigMin(new(big.Int).Add(gasTipCap, baseFee), gasFeeCap)
-			}
-		}
-	*/
-
 	// A basefee is provided, necessitating 1559-type execution
 	// User specified 1559 gas fields (or none), use those
 	gasFeeCap = new(big.Int)

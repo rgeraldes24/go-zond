@@ -29,14 +29,6 @@ import (
 	"github.com/theQRL/go-zond/crypto"
 )
 
-// TODO(rgeraldes24): fix
-/*
-func TestTransactionPriceNonceSortLegacy(t *testing.T) {
-	t.Parallel()
-	testTransactionPriceNonceSort(t, nil)
-}
-*/
-
 func TestTransactionPriceNonceSort1559(t *testing.T) {
 	t.Parallel()
 	testTransactionPriceNonceSort(t, big.NewInt(0))
@@ -86,6 +78,7 @@ func testTransactionPriceNonceSort(t *testing.T, baseFee *big.Int) {
 				Time:      tx.Time(),
 				GasFeeCap: tx.GasFeeCap(),
 				GasTipCap: tx.GasTipCap(),
+				Gas:       tx.Gas(),
 			})
 		}
 		expectedCount += count
@@ -152,6 +145,7 @@ func TestTransactionTimeSort(t *testing.T) {
 			Time:      tx.Time(),
 			GasFeeCap: tx.GasFeeCap(),
 			GasTipCap: tx.GasTipCap(),
+			Gas:       tx.Gas(),
 		})
 	}
 	// Sort the transactions and cross check the nonce ordering

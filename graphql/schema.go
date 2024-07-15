@@ -19,7 +19,7 @@ package graphql
 const schema string = `
     # Bytes32 is a 32 byte binary string, represented as 0x-prefixed hexadecimal.
     scalar Bytes32
-    # Address is a 20 byte Ethereum address, represented as 0x-prefixed hexadecimal.
+    # Address is a 20 byte Zond address, represented as 0x-prefixed hexadecimal.
     scalar Address
     # Bytes is an arbitrary length binary string, represented as 0x-prefixed hexadecimal.
     # An empty byte string is represented as '0x'. Byte strings must have an even number of hexadecimal nybbles.
@@ -38,7 +38,7 @@ const schema string = `
         mutation: Mutation
     }
 
-    # Account is an Ethereum account at a particular block.
+    # Account is a Zond account at a particular block.
     type Account {
         # Address is the address owning the account.
         address: Address!
@@ -56,7 +56,7 @@ const schema string = `
         storage(slot: Bytes32!): Bytes32!
     }
 
-    # Log is an Ethereum event log.
+    # Log is a Zond event log.
     type Log {
         # Index is the index of this log in the block.
         index: Long!
@@ -89,7 +89,7 @@ const schema string = `
         amount: Long!
     }
 
-    # Transaction is an Ethereum transaction.
+    # Transaction is a Zond transaction.
     type Transaction {
         # Hash is the hash of this transaction.
         hash: Bytes32!
@@ -106,8 +106,6 @@ const schema string = `
         to(block: Long): Account
         # Value is the value, in wei, sent along with this transaction.
         value: BigInt!
-        # GasPrice is the price offered to miners for gas, in wei per unit.
-        gasPrice: BigInt!
         # MaxFeePerGas is the maximum fee per gas offered to include a transaction, in wei.
         maxFeePerGas: BigInt
         # MaxPriorityFeePerGas is the maximum miner tip per gas offered to include a transaction, in wei.
@@ -255,8 +253,6 @@ const schema string = `
         to: Address
         # Gas is the amount of gas sent with the call.
         gas: Long
-        # GasPrice is the price, in wei, offered for each unit of gas.
-        gasPrice: BigInt
         # MaxFeePerGas is the maximum fee per gas offered, in wei.
         maxFeePerGas: BigInt
         # MaxPriorityFeePerGas is the maximum miner tip per gas offered, in wei.
@@ -326,7 +322,7 @@ const schema string = `
         # successful execution of a transaction for the pending state.
         estimateGas(data: CallData!): Long!
     }
-    // TODO(rgeraldes24)
+    
     type Query {
         # Block fetches a Zond block by number or by hash. If neither is
         # supplied, the most recent known block is returned.
@@ -340,9 +336,6 @@ const schema string = `
         transaction(hash: Bytes32!): Transaction
         # Logs returns log entries matching the provided filter.
         logs(filter: FilterCriteria!): [Log!]!
-        # GasPrice returns the node's estimate of a gas price sufficient to
-        # ensure a transaction is mined in a timely fashion.
-        gasPrice: BigInt!
         # MaxPriorityFeePerGas returns the node's estimate of a gas tip sufficient
         # to ensure a transaction is mined in a timely fashion.
         maxPriorityFeePerGas: BigInt!

@@ -123,28 +123,6 @@ func TestSetFeeDefaults(t *testing.T) {
 			nil,
 			errors.New("maxFeePerGas (0x7) < maxPriorityFeePerGas (0x2a)"),
 		},
-		// TODO(rgeraldes24)
-		// Misc
-		/*
-			{
-				"set all fee parameters",
-				&TransactionArgs{GasPrice: fortytwo, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
-				nil,
-				errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified"),
-			},
-			{
-				"set gas price and maxPriorityFee",
-				&TransactionArgs{GasPrice: fortytwo, MaxPriorityFeePerGas: fortytwo},
-				nil,
-				errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified"),
-			},
-			{
-				"set gas price and maxFee",
-				&TransactionArgs{GasPrice: fortytwo, MaxFeePerGas: maxFee},
-				nil,
-				errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified"),
-			},
-		*/
 	}
 
 	ctx := context.Background()
