@@ -17,17 +17,24 @@
 package graphql
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
 	"io"
+	"math/big"
 	"net/http"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus"
 	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/types"
+	"github.com/theQRL/go-zond/core/vm"
+	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/zond"
@@ -159,8 +166,6 @@ func TestGraphQLBlockSerialization(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 	// Account for signing txes
 	var (
@@ -222,7 +227,7 @@ func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 	}{
 		{
 			body: `{"query": "{block {number transactions { from { address } to { address } value hash type accessList { address storageKeys } index}}}"}`,
-			want: `{"data":{"block":{"number":"0x1","transactions":[{"from":{"address":"0x20a1a68e6818a1142f85671db01ef7226debf822"},"to":{"address":"0x0000000000000000000000000000000000000dad"},"value":"0x64","hash":"0x44f2ae511a413929850bbe9d7c2364c9dd0018d55779b058b9f28116ab70f0f7","type":"0x2","accessList":[],"index":"0x0"},{"from":{"address":"0x20a1a68e6818a1142f85671db01ef7226debf822"},"to":{"address":"0x0000000000000000000000000000000000000dad"},"value":"0x32","hash":"0xc398950a77d6db165765131baa28b1d46c73e919c8c1df2d4e367f97f1225cb9","type":"0x1","accessList":[{"address":"0x0000000000000000000000000000000000000dad","storageKeys":["0x0000000000000000000000000000000000000000000000000000000000000000"]}],"index":"0x1"}]}}}`,
+			want: `{"data":{"block":{"number":"0x1","transactions":[{"from":{"address":"0x20a1a68e6818a1142f85671db01ef7226debf822"},"to":{"address":"0x0000000000000000000000000000000000000dad"},"value":"0x64","hash":"0x44f2ae511a413929850bbe9d7c2364c9dd0018d55779b058b9f28116ab70f0f7","type":"0x2","accessList":[],"index":"0x0"},{"from":{"address":"0x20a1a68e6818a1142f85671db01ef7226debf822"},"to":{"address":"0x0000000000000000000000000000000000000dad"},"value":"0x32","hash":"0x2236c0393d39c4842d7463aa32788f3a9d278f46e8000c02377bbb0692ce29bb","type":"0x2","accessList":[{"address":"0x0000000000000000000000000000000000000dad","storageKeys":["0x0000000000000000000000000000000000000000000000000000000000000000"]}],"index":"0x1"}]}}}`,
 			code: 200,
 		},
 	} {
@@ -243,7 +248,6 @@ func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 		}
 	}
 }
-*/
 
 // Tests that a graphQL request is not handled successfully when graphql is not enabled on the specified endpoint
 func TestGraphQLHTTPOnSamePort_GQLRequest_Unsuccessful(t *testing.T) {
@@ -262,8 +266,6 @@ func TestGraphQLHTTPOnSamePort_GQLRequest_Unsuccessful(t *testing.T) {
 	assert.Equal(t, http.StatusNotFound, resp.StatusCode)
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestGraphQLConcurrentResolvers(t *testing.T) {
 	var (
 		key, _  = crypto.GenerateDilithiumKey()
@@ -314,8 +316,8 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 		// Multiple fields of a tx race to resolve it. Happens in this case
 		// because resolving the tx body belonging to a log is delayed.
 		{
-			body: `{block { logs(filter: {}) { transaction { nonce value gasPrice }}}}`,
-			want: `{"block":{"logs":[{"transaction":{"nonce":"0x0","value":"0x0","gasPrice":"0x342770c0"}},{"transaction":{"nonce":"0x0","value":"0x0","gasPrice":"0x342770c0"}},{"transaction":{"nonce":"0x1","value":"0x0","gasPrice":"0x342770c0"}},{"transaction":{"nonce":"0x1","value":"0x0","gasPrice":"0x342770c0"}},{"transaction":{"nonce":"0x2","value":"0x0","gasPrice":"0x342770c0"}},{"transaction":{"nonce":"0x2","value":"0x0","gasPrice":"0x342770c0"}}]}}`,
+			body: `{block { logs(filter: {}) { transaction { nonce value }}}}`,
+			want: `{"block":{"logs":[{"transaction":{"nonce":"0x0","value":"0x0"}},{"transaction":{"nonce":"0x0","value":"0x0"}},{"transaction":{"nonce":"0x1","value":"0x0"}},{"transaction":{"nonce":"0x1","value":"0x0"}},{"transaction":{"nonce":"0x2","value":"0x0"}},{"transaction":{"nonce":"0x2","value":"0x0"}}]}}`,
 		},
 		// Multiple txes of a block race to set/retrieve receipts of a block.
 		{
@@ -356,10 +358,7 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 		}
 	}
 }
-*/
 
-// TODO(rgeraldes24): fix
-/*
 func TestWithdrawals(t *testing.T) {
 	var (
 		key, _ = crypto.GenerateDilithiumKey()
@@ -395,13 +394,6 @@ func TestWithdrawals(t *testing.T) {
 		body string
 		want string
 	}{
-		// Genesis block has no withdrawals.
-		// NOTE(rgeraldes24): the original test is not valid anymore
-		// the withdrawals field is not nil in the genesis block post shanghai
-		// {
-		// 	body: "{block(number: 0) { withdrawalsRoot withdrawals { index } } }",
-		// 	want: `{"block":{"withdrawalsRoot":null,"withdrawals":null}}`,
-		// },
 		{
 			body: "{block(number: 0) { withdrawalsRoot withdrawals { index } } }",
 			want: `{"block":{"withdrawalsRoot":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","withdrawals":[]}}`,
@@ -424,7 +416,6 @@ func TestWithdrawals(t *testing.T) {
 		}
 	}
 }
-*/
 
 func createNode(t *testing.T) *node.Node {
 	stack, err := node.New(&node.Config{

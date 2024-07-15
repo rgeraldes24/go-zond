@@ -662,7 +662,6 @@ func TestColdAccountAccessCost(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): review differences for testcase 0 and testcase 1
 func TestRuntimeJSTracer(t *testing.T) {
 	jsTracers := []string{
 		`{enters: 0, exits: 0, enterGas: 0, gasUsed: 0, steps:0,

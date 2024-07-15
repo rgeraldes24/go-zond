@@ -32,7 +32,6 @@ import (
 var (
 	ErrInvalidSig           = errors.New("invalid transaction v, r, s values")
 	ErrUnexpectedProtection = errors.New("transaction type does not supported EIP-155 protected signatures")
-	ErrInvalidTxType        = errors.New("transaction type not valid in this context")
 	ErrTxTypeNotSupported   = errors.New("transaction type not supported")
 	ErrGasFeeCapTooLow      = errors.New("fee cap less than base fee")
 	errShortTypedTx         = errors.New("typed transaction too short")
@@ -114,8 +113,7 @@ func (tx *Transaction) encodeTyped(w *bytes.Buffer) error {
 }
 
 // MarshalBinary returns the canonical encoding of the transaction.
-// For legacy transactions, it returns the RLP encoding. For EIP-2718 typed
-// transactions, it returns the type and payload.
+// It returns the type and payload.
 func (tx *Transaction) MarshalBinary() ([]byte, error) {
 	var buf bytes.Buffer
 	err := tx.encodeTyped(&buf)
@@ -230,9 +228,8 @@ func (tx *Transaction) Type() uint8 {
 	return tx.inner.txType()
 }
 
-// ChainId returns the EIP155 chain ID of the transaction. The return value will always be
-// non-nil. For legacy transactions which are not replay-protected, the return value is
-// zero.
+// ChainId returns the chain ID of the transaction. The return value will always be
+// non-nil.
 func (tx *Transaction) ChainId() *big.Int {
 	return tx.inner.chainID()
 }

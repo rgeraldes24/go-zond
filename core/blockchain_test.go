@@ -3677,7 +3677,6 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 //  4. The transaction sender pays for both the tip and baseFee.
 //  5. The coinbase receives only the partially realized tip when
 //     gasFeeCap - gasTipCap < baseFee.
-//  6. Legacy transaction behave as expected (e.g. gasPrice = gasFeeCap = gasTipCap).
 // func TestEIP1559Transition(t *testing.T) {
 // 	testEIP1559Transition(t, rawdb.HashScheme)
 // 	testEIP1559Transition(t, rawdb.PathScheme)

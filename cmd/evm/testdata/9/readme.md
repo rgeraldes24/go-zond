@@ -16,7 +16,6 @@ The alloc also contains some funds on `0xa94f5374fce5edbc8e2a8697c15331677e6ebf0
 There are two transactions, each invokes the contract above. 
 
 1. EIP-1559 ACL-transaction, which contains the `0x0` slot for `0xaaaa`
-2. Legacy transaction
 
 ## Execution 
 

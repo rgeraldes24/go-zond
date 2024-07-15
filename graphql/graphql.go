@@ -169,7 +169,6 @@ func (l *Log) Data(ctx context.Context) hexutil.Bytes {
 	return l.log.Data
 }
 
-// AccessTuple represents EIP-2930
 type AccessTuple struct {
 	address     common.Address
 	storageKeys []common.Hash
@@ -184,7 +183,7 @@ func (at *AccessTuple) StorageKeys(ctx context.Context) []common.Hash {
 }
 
 // Withdrawal represents a withdrawal of value from the beacon chain
-// by a validator. For details see EIP-4895.
+// by a validator.
 type Withdrawal struct {
 	index     uint64
 	validator uint64
@@ -264,25 +263,6 @@ func (t *Transaction) Gas(ctx context.Context) hexutil.Uint64 {
 		return 0
 	}
 	return hexutil.Uint64(tx.Gas())
-}
-
-func (t *Transaction) GasPrice(ctx context.Context) hexutil.Big {
-	tx, block := t.resolve(ctx)
-	if tx == nil {
-		return hexutil.Big{}
-	}
-	switch tx.Type() {
-	case types.DynamicFeeTxType:
-		if block != nil {
-			if baseFee, _ := block.BaseFeePerGas(ctx); baseFee != nil {
-				// price = min(gasTipCap + baseFee, gasFeeCap)
-				return (hexutil.Big)(*math.BigMin(new(big.Int).Add(tx.GasTipCap(), baseFee.ToInt()), tx.GasFeeCap()))
-			}
-		}
-		return hexutil.Big(*tx.GasPrice())
-	default:
-		return hexutil.Big(*tx.GasPrice())
-	}
 }
 
 func (t *Transaction) EffectiveGasPrice(ctx context.Context) (*hexutil.Big, error) {

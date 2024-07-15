@@ -24,6 +24,7 @@ import (
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
+	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/types"
@@ -50,9 +51,7 @@ func TestMemoryGasCost(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): check the validity of this one
-/*
-var eip2200Tests = []struct {
+var eip3529Tests = []struct {
 	original byte
 	gaspool  uint64
 	input    string
@@ -60,32 +59,54 @@ var eip2200Tests = []struct {
 	refund   uint64
 	failure  error
 }{
-	{0, math.MaxUint64, "0x60006000556000600055", 1612, 0, nil},                // 0 -> 0 -> 0
-	{0, math.MaxUint64, "0x60006000556001600055", 20812, 0, nil},               // 0 -> 0 -> 1
-	{0, math.MaxUint64, "0x60016000556000600055", 20812, 19200, nil},           // 0 -> 1 -> 0
-	{0, math.MaxUint64, "0x60016000556002600055", 20812, 0, nil},               // 0 -> 1 -> 2
-	{0, math.MaxUint64, "0x60016000556001600055", 20812, 0, nil},               // 0 -> 1 -> 1
-	{1, math.MaxUint64, "0x60006000556000600055", 5812, 15000, nil},            // 1 -> 0 -> 0
-	{1, math.MaxUint64, "0x60006000556001600055", 5812, 4200, nil},             // 1 -> 0 -> 1
-	{1, math.MaxUint64, "0x60006000556002600055", 5812, 0, nil},                // 1 -> 0 -> 2
-	{1, math.MaxUint64, "0x60026000556000600055", 5812, 15000, nil},            // 1 -> 2 -> 0
-	{1, math.MaxUint64, "0x60026000556003600055", 5812, 0, nil},                // 1 -> 2 -> 3
-	{1, math.MaxUint64, "0x60026000556001600055", 5812, 4200, nil},             // 1 -> 2 -> 1
-	{1, math.MaxUint64, "0x60026000556002600055", 5812, 0, nil},                // 1 -> 2 -> 2
-	{1, math.MaxUint64, "0x60016000556000600055", 5812, 15000, nil},            // 1 -> 1 -> 0
-	{1, math.MaxUint64, "0x60016000556002600055", 5812, 0, nil},                // 1 -> 1 -> 2
-	{1, math.MaxUint64, "0x60016000556001600055", 1612, 0, nil},                // 1 -> 1 -> 1
-	{0, math.MaxUint64, "0x600160005560006000556001600055", 40818, 19200, nil}, // 0 -> 1 -> 0 -> 1
-	{1, math.MaxUint64, "0x600060005560016000556000600055", 10818, 19200, nil}, // 1 -> 0 -> 1 -> 0
+	{0, math.MaxUint64, "0x60006000556000600055", 2312, 0, nil},                // 0 -> 0 -> 0
+	{0, math.MaxUint64, "0x60006000556001600055", 22212, 0, nil},               // 0 -> 0 -> 1
+	{0, math.MaxUint64, "0x60016000556000600055", 22212, 19900, nil},           // 0 -> 1 -> 0
+	{0, math.MaxUint64, "0x60016000556002600055", 22212, 0, nil},               // 0 -> 1 -> 2
+	{0, math.MaxUint64, "0x60016000556001600055", 22212, 0, nil},               // 0 -> 1 -> 1
+	{1, math.MaxUint64, "0x60006000556000600055", 5112, 4800, nil},             // 1 -> 0 -> 0
+	{1, math.MaxUint64, "0x60006000556001600055", 5112, 2800, nil},             // 1 -> 0 -> 1
+	{1, math.MaxUint64, "0x60006000556002600055", 5112, 0, nil},                // 1 -> 0 -> 2
+	{1, math.MaxUint64, "0x60026000556000600055", 5112, 4800, nil},             // 1 -> 2 -> 0
+	{1, math.MaxUint64, "0x60026000556003600055", 5112, 0, nil},                // 1 -> 2 -> 3
+	{1, math.MaxUint64, "0x60026000556001600055", 5112, 2800, nil},             // 1 -> 2 -> 1
+	{1, math.MaxUint64, "0x60026000556002600055", 5112, 0, nil},                // 1 -> 2 -> 2
+	{1, math.MaxUint64, "0x60016000556000600055", 5112, 4800, nil},             // 1 -> 1 -> 0
+	{1, math.MaxUint64, "0x60016000556002600055", 5112, 0, nil},                // 1 -> 1 -> 2
+	{1, math.MaxUint64, "0x60016000556001600055", 2312, 0, nil},                // 1 -> 1 -> 1
+	{0, math.MaxUint64, "0x600160005560006000556001600055", 42218, 19900, nil}, // 0 -> 1 -> 0 -> 1
+	{1, math.MaxUint64, "0x600060005560016000556000600055", 8018, 7600, nil},   // 1 -> 0 -> 1 -> 0
 	{1, 2306, "0x6001600055", 2306, 0, ErrOutOfGas},                            // 1 -> 1 (2300 sentry + 2xPUSH)
-	{1, 2307, "0x6001600055", 806, 0, nil},                                     // 1 -> 1 (2301 sentry + 2xPUSH)
+	{1, 2307, "0x6001600055", 2206, 0, nil},
+	// TODO(rgeraldes24): review: old versions(eip 2200)
+	/*
+		{0, math.MaxUint64, "0x60006000556000600055", 1612, 0, nil}, // 0 -> 0 -> 0
+		{0, math.MaxUint64, "0x60006000556001600055", 20812, 0, nil},               // 0 -> 0 -> 1
+		{0, math.MaxUint64, "0x60016000556000600055", 20812, 19200, nil},           // 0 -> 1 -> 0
+		{0, math.MaxUint64, "0x60016000556002600055", 20812, 0, nil},               // 0 -> 1 -> 2
+		{0, math.MaxUint64, "0x60016000556001600055", 20812, 0, nil},               // 0 -> 1 -> 1
+		{1, math.MaxUint64, "0x60006000556000600055", 5812, 15000, nil},            // 1 -> 0 -> 0
+		{1, math.MaxUint64, "0x60006000556001600055", 5812, 4200, nil},             // 1 -> 0 -> 1
+		{1, math.MaxUint64, "0x60006000556002600055", 5812, 0, nil},                // 1 -> 0 -> 2
+		{1, math.MaxUint64, "0x60026000556000600055", 5812, 15000, nil},            // 1 -> 2 -> 0
+		{1, math.MaxUint64, "0x60026000556003600055", 5812, 0, nil},                // 1 -> 2 -> 3
+		{1, math.MaxUint64, "0x60026000556001600055", 5812, 4200, nil},             // 1 -> 2 -> 1
+		{1, math.MaxUint64, "0x60026000556002600055", 5812, 0, nil},                // 1 -> 2 -> 2
+		{1, math.MaxUint64, "0x60016000556000600055", 5812, 15000, nil},            // 1 -> 1 -> 0
+		{1, math.MaxUint64, "0x60016000556002600055", 5812, 0, nil},                // 1 -> 1 -> 2
+		{1, math.MaxUint64, "0x60016000556001600055", 1612, 0, nil},                // 1 -> 1 -> 1
+		{0, math.MaxUint64, "0x600160005560006000556001600055", 40818, 19200, nil}, // 0 -> 1 -> 0 -> 1
+		{1, math.MaxUint64, "0x600060005560016000556000600055", 10818, 19200, nil}, // 1 -> 0 -> 1 -> 0
+		{1, 2306, "0x6001600055", 2306, 0, ErrOutOfGas},                            // 1 -> 1 (2300 sentry + 2xPUSH)
+		{1, 2307, "0x6001600055", 806, 0, nil},                                     // 1 -> 1 (2301 sentry + 2xPUSH)
+	*/
 }
 
-func TestEIP2200(t *testing.T) {
-	for i, tt := range eip2200Tests {
+func TestEIP3529(t *testing.T) {
+	for i, tt := range eip3529Tests {
 		address := common.BytesToAddress([]byte("contract"))
-
 		statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(rawdb.NewMemoryDatabase()), nil)
+		statedb.AddAddressToAccessList(address)
 		statedb.CreateAccount(address)
 		statedb.SetCode(address, hexutil.MustDecode(tt.input))
 		statedb.SetState(address, common.Hash{}, common.BytesToHash([]byte{tt.original}))
@@ -109,7 +130,6 @@ func TestEIP2200(t *testing.T) {
 		}
 	}
 }
-*/
 
 var createGasTests = []struct {
 	code       string
