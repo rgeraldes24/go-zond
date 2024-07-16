@@ -16,6 +16,12 @@
 
 package main
 
+import (
+	"os"
+	"path/filepath"
+	"testing"
+)
+
 var customGenesisTests = []struct {
 	genesis string
 	query   string
@@ -26,15 +32,14 @@ var customGenesisTests = []struct {
 		genesis: `{
 			"alloc"      : {},
 			"coinbase"   : "0x0000000000000000000000000000000000000000",
-			"extraData"  : "",
+			"extraData"  : "0x0000000000001338",
 			"gasLimit"   : "0x2fefd8",
-			"nonce"      : "0x0000000000001338",
 			"mixhash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"timestamp"  : "0x00",
 			"config"     : {}
 		}`,
-		query:  "zond.getBlock(0).nonce",
+		query:  "zond.getBlock(0).extraData",
 		result: "0x0000000000001338",
 	},
 	// Genesis file with specific chain configurations
@@ -42,21 +47,18 @@ var customGenesisTests = []struct {
 		genesis: `{
 			"alloc"      : {},
 			"coinbase"   : "0x0000000000000000000000000000000000000000",
-			"extraData"  : "",
+			"extraData"  : "0x0000000000001339",
 			"gasLimit"   : "0x2fefd8",
-			"nonce"      : "0x0000000000001339",
 			"mixhash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
 			"timestamp"  : "0x00",
 			"config"     : {}
 		}`,
-		query:  "zond.getBlock(0).nonce",
+		query:  "zond.getBlock(0).extraData",
 		result: "0x0000000000001339",
 	},
 }
 
-// TODO(rgeraldes24): fix
-/*
 // Tests that initializing Gzond with a custom genesis block and chain definitions
 // work properly.
 func TestCustomGenesis(t *testing.T) {
@@ -81,7 +83,6 @@ func TestCustomGenesis(t *testing.T) {
 		gzond.ExpectExit()
 	}
 }
-*/
 
 /*
 // TestCustomBackend that the backend selection and detection (leveldb vs pebble) works properly.

@@ -156,12 +156,6 @@ func (miner *Miner) prepareWork(genParams *generateParams) (*environment, error)
 	// Set baseFee and GasLimit if we are on an EIP-1559 chain
 	header.BaseFee = eip1559.CalcBaseFee(miner.chainConfig, parent)
 
-	// Run the consensus preparation with the default or customized consensus engine.
-	// Note that the `header.Time` may be changed.
-	if err := miner.engine.Prepare(miner.chain, header); err != nil {
-		log.Error("Failed to prepare header for sealing", "err", err)
-		return nil, err
-	}
 	// Could potentially happen if starting to mine in an odd state..
 	env, err := miner.makeEnv(parent, header, genParams.coinbase)
 	if err != nil {

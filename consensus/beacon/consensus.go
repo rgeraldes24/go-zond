@@ -28,10 +28,8 @@ import (
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/trie"
-	"golang.org/x/crypto/sha3"
 )
 
 // Various error messages to mark blocks invalid. These should be private to
@@ -200,11 +198,6 @@ func (beacon *Beacon) verifyHeaders(chain consensus.ChainHeaderReader, headers [
 	return abort, results
 }
 
-// Prepare implements consensus.Engine.
-func (beacon *Beacon) Prepare(chain consensus.ChainHeaderReader, header *types.Header) error {
-	return nil
-}
-
 // Finalize implements consensus.Engine and processes withdrawals on top.
 func (beacon *Beacon) Finalize(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, txs []*types.Transaction, withdrawals []*types.Withdrawal) {
 	// Withdrawals processing.
@@ -232,48 +225,6 @@ func (beacon *Beacon) FinalizeAndAssemble(chain consensus.ChainHeaderReader, hea
 
 	// Assemble and return the final block.
 	return types.NewBlockWithWithdrawals(header, txs, receipts, withdrawals, trie.NewStackTrie(nil)), nil
-}
-
-// Seal generates a new sealing request for the given input block and pushes
-// the result into the given channel.
-//
-// Note, the method returns immediately and will send the result async. More
-// than one result may also be returned depending on the consensus algorithm.
-func (beacon *Beacon) Seal(chain consensus.ChainHeaderReader, block *types.Block, results chan<- *types.Block, stop <-chan struct{}) error {
-	// The seal verification is done by the external consensus engine,
-	// return directly without pushing any block back. In another word
-	// beacon won't return any result by `results` channel which may
-	// blocks the receiver logic forever.
-	return nil
-}
-
-// SealHash returns the hash of a block prior to it being sealed.
-func (beacon *Beacon) SealHash(header *types.Header) (hash common.Hash) {
-	hasher := sha3.NewLegacyKeccak256()
-
-	enc := []interface{}{
-		header.ParentHash,
-		header.Coinbase,
-		header.Root,
-		header.TxHash,
-		header.ReceiptHash,
-		header.Bloom,
-		header.Number,
-		header.GasLimit,
-		header.GasUsed,
-		header.Time,
-		header.Extra,
-	}
-	if header.BaseFee != nil {
-		enc = append(enc, header.BaseFee)
-	}
-	// TODO(rgeraldes24)
-	if header.WithdrawalsHash != nil {
-		panic("withdrawal hash set on ethash")
-	}
-	rlp.Encode(hasher, enc)
-	hasher.Sum(hash[:0])
-	return hash
 }
 
 // APIs implements consensus.Engine, returning the user facing RPC APIs.
