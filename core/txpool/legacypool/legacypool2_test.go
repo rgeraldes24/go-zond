@@ -28,14 +28,14 @@ import (
 	"github.com/theQRL/go-zond/event"
 )
 
-// TODO(rgeraldes24): gas price arg
-func pricedValuedTransaction(nonce uint64, value int64, gaslimit uint64, gasprice *big.Int, key *dilithium.Dilithium) *types.Transaction {
+func pricedValuedTransaction(nonce uint64, value int64, gaslimit uint64, gasFeeCap *big.Int, key *dilithium.Dilithium) *types.Transaction {
 	tx := types.NewTx(&types.DynamicFeeTx{
-		Nonce: nonce,
-		To:    &common.Address{},
-		Value: big.NewInt(value),
-		Gas:   gaslimit,
-		Data:  nil,
+		Nonce:     nonce,
+		To:        &common.Address{},
+		Value:     big.NewInt(value),
+		Gas:       gaslimit,
+		GasFeeCap: gasFeeCap,
+		Data:      nil,
 	})
 	signedTx, _ := types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(0)}, key)
 	return signedTx

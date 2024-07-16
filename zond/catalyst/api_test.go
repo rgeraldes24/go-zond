@@ -1289,23 +1289,12 @@ func TestGetBlockBodiesByHash(t *testing.T) {
 		results []*types.Body
 		hashes  []common.Hash
 	}{
-		// TODO(rgeraldes24): review to check whether we need all this tests
-		// First pow block
+		// First pos block
 		{
 			results: []*types.Body{zond.BlockChain().GetBlockByNumber(0).Body()},
 			hashes:  []common.Hash{zond.BlockChain().GetBlockByNumber(0).Hash()},
 		},
-		// Last pow block
-		{
-			results: []*types.Body{blocks[9].Body()},
-			hashes:  []common.Hash{blocks[9].Hash()},
-		},
-		// First post-merge block
-		{
-			results: []*types.Body{blocks[10].Body()},
-			hashes:  []common.Hash{blocks[10].Hash()},
-		},
-		// Pre & post merge blocks
+		// pos blocks
 		{
 			results: []*types.Body{blocks[0].Body(), blocks[9].Body(), blocks[14].Body()},
 			hashes:  []common.Hash{blocks[0].Hash(), blocks[9].Hash(), blocks[14].Hash()},

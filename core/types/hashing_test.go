@@ -51,7 +51,7 @@ func TestDeriveSha(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
+// TODO(rgeraldes24): fix hex values
 /*
 // TestEIP2718DeriveSha tests that the input to the DeriveSha function is correct.
 func TestEIP2718DeriveSha(t *testing.T) {

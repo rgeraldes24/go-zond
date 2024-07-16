@@ -145,7 +145,6 @@ var DefaultConfig = Config{
 	Journal:   "transactions.rlp",
 	Rejournal: time.Hour,
 
-	// TODO(rgeraldes24)
 	PriceLimit: 1,
 	PriceBump:  10,
 

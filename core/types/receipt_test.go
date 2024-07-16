@@ -17,48 +17,18 @@
 package types
 
 import (
+	"encoding/json"
 	"math"
 	"math/big"
 	"testing"
 
+	"github.com/kylelemons/godebug/diff"
 	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
 )
 
 var (
-	legacyReceipt = &Receipt{
-		Status:            ReceiptStatusFailed,
-		CumulativeGasUsed: 1,
-		Logs: []*Log{
-			{
-				Address: common.BytesToAddress([]byte{0x11}),
-				Topics:  []common.Hash{common.HexToHash("dead"), common.HexToHash("beef")},
-				Data:    []byte{0x01, 0x00, 0xff},
-			},
-			{
-				Address: common.BytesToAddress([]byte{0x01, 0x11}),
-				Topics:  []common.Hash{common.HexToHash("dead"), common.HexToHash("beef")},
-				Data:    []byte{0x01, 0x00, 0xff},
-			},
-		},
-	}
-	accessListReceipt = &Receipt{
-		Status:            ReceiptStatusFailed,
-		CumulativeGasUsed: 1,
-		Logs: []*Log{
-			{
-				Address: common.BytesToAddress([]byte{0x11}),
-				Topics:  []common.Hash{common.HexToHash("dead"), common.HexToHash("beef")},
-				Data:    []byte{0x01, 0x00, 0xff},
-			},
-			{
-				Address: common.BytesToAddress([]byte{0x01, 0x11}),
-				Topics:  []common.Hash{common.HexToHash("dead"), common.HexToHash("beef")},
-				Data:    []byte{0x01, 0x00, 0xff},
-			},
-		},
-		Type: DynamicFeeTxType,
-	}
 	eip1559Receipt = &Receipt{
 		Status:            ReceiptStatusFailed,
 		CumulativeGasUsed: 1,
@@ -129,6 +99,7 @@ var (
 	// Create the corresponding receipts
 	receipts = Receipts{
 		&Receipt{
+			Type:              DynamicFeeTxType,
 			Status:            ReceiptStatusFailed,
 			CumulativeGasUsed: 1,
 			Logs: []*Log{
@@ -154,10 +125,8 @@ var (
 				},
 			},
 			// derived fields:
-			TxHash: txs[0].Hash(),
-			// TODO(rgeraldes24): original value
-			// ContractAddress:   common.HexToAddress("0x5a443704dd4b594b382c22a083e2bd3090a6fef3"),
-			ContractAddress:   common.HexToAddress("0x4406d56cda6075031b218c6c4d2d8854662329dd"),
+			TxHash:            txs[0].Hash(),
+			ContractAddress:   common.HexToAddress("0x5a443704dd4b594b382c22a083e2bd3090a6fef3"),
 			GasUsed:           1,
 			EffectiveGasPrice: big.NewInt(11),
 			BlockHash:         blockHash,
@@ -165,6 +134,7 @@ var (
 			TransactionIndex:  0,
 		},
 		&Receipt{
+			Type:              DynamicFeeTxType,
 			PostState:         common.Hash{2}.Bytes(),
 			CumulativeGasUsed: 3,
 			Logs: []*Log{
@@ -248,8 +218,6 @@ func TestDecodeEmptyTypedReceipt(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
 // Tests that receipt data can be correctly derived from the contextual infos
 func TestDeriveFields(t *testing.T) {
 	// Re-derive receipts.
@@ -275,7 +243,6 @@ func TestDeriveFields(t *testing.T) {
 		t.Fatal("receipts differ:", d)
 	}
 }
-*/
 
 // Test that we can marshal/unmarshal receipts to/from json without errors.
 // This also confirms that our test receipts contain all the required fields.
@@ -310,7 +277,7 @@ func TestEffectiveGasPriceNotRequired(t *testing.T) {
 }
 
 /*
-TODO(rgeraldes24): fix
+TODO(rgeraldes24): fix payload hex value
 // TestTypedReceiptEncodingDecoding reproduces a flaw that existed in the receipt
 // rlp decoder, which failed due to a shadowing error.
 func TestTypedReceiptEncodingDecoding(t *testing.T) {
@@ -340,52 +307,10 @@ func TestTypedReceiptEncodingDecoding(t *testing.T) {
 }
 */
 
-// TODO(rgeraldes24): fix
+// TODO(rgeraldes24): fix receipt hex value
 /*
 func TestReceiptMarshalBinary(t *testing.T) {
-	// Legacy Receipt
-	legacyReceipt.Bloom = CreateBloom(Receipts{legacyReceipt})
-	have, err := legacyReceipt.MarshalBinary()
-	if err != nil {
-		t.Fatalf("marshal binary error: %v", err)
-	}
-	legacyReceipts := Receipts{legacyReceipt}
 	buf := new(bytes.Buffer)
-	legacyReceipts.EncodeIndex(0, buf)
-	haveEncodeIndex := buf.Bytes()
-	if !bytes.Equal(have, haveEncodeIndex) {
-		t.Errorf("BinaryMarshal and EncodeIndex mismatch, got %x want %x", have, haveEncodeIndex)
-	}
-	buf.Reset()
-	if err := legacyReceipt.EncodeRLP(buf); err != nil {
-		t.Fatalf("encode rlp error: %v", err)
-	}
-	haveRLPEncode := buf.Bytes()
-	if !bytes.Equal(have, haveRLPEncode) {
-		t.Errorf("BinaryMarshal and EncodeRLP mismatch for legacy tx, got %x want %x", have, haveRLPEncode)
-	}
-	legacyWant := common.FromHex("f901c58001b9010000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000014000000000000000000000000000000000000000000000000000000000000000000000000000010000080000000000000000000004000000000000000000000000000040000000000000000000000000000800000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000f8bef85d940000000000000000000000000000000000000011f842a0000000000000000000000000000000000000000000000000000000000000deada0000000000000000000000000000000000000000000000000000000000000beef830100fff85d940000000000000000000000000000000000000111f842a0000000000000000000000000000000000000000000000000000000000000deada0000000000000000000000000000000000000000000000000000000000000beef830100ff")
-	if !bytes.Equal(have, legacyWant) {
-		t.Errorf("encoded RLP mismatch, got %x want %x", have, legacyWant)
-	}
-
-	// 2930 Receipt
-	buf.Reset()
-	accessListReceipt.Bloom = CreateBloom(Receipts{accessListReceipt})
-	have, err = accessListReceipt.MarshalBinary()
-	if err != nil {
-		t.Fatalf("marshal binary error: %v", err)
-	}
-	accessListReceipts := Receipts{accessListReceipt}
-	accessListReceipts.EncodeIndex(0, buf)
-	haveEncodeIndex = buf.Bytes()
-	if !bytes.Equal(have, haveEncodeIndex) {
-		t.Errorf("BinaryMarshal and EncodeIndex mismatch, got %x want %x", have, haveEncodeIndex)
-	}
-	accessListWant := common.FromHex("01f901c58001b9010000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000014000000000000000000000000000000000000000000000000000000000000000000000000000010000080000000000000000000004000000000000000000000000000040000000000000000000000000000800000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000f8bef85d940000000000000000000000000000000000000011f842a0000000000000000000000000000000000000000000000000000000000000deada0000000000000000000000000000000000000000000000000000000000000beef830100fff85d940000000000000000000000000000000000000111f842a0000000000000000000000000000000000000000000000000000000000000deada0000000000000000000000000000000000000000000000000000000000000beef830100ff")
-	if !bytes.Equal(have, accessListWant) {
-		t.Errorf("encoded RLP mismatch, got %x want %x", have, accessListWant)
-	}
 
 	// 1559 Receipt
 	buf.Reset()
@@ -407,30 +332,9 @@ func TestReceiptMarshalBinary(t *testing.T) {
 }
 */
 
+// TODO(rgeraldes24): fix receipt hex value
 /*
 func TestReceiptUnmarshalBinary(t *testing.T) {
-	// Legacy Receipt
-	legacyBinary := common.FromHex("f901c58001b9010000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000014000000000000000000000000000000000000000000000000000000000000000000000000000010000080000000000000000000004000000000000000000000000000040000000000000000000000000000800000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000f8bef85d940000000000000000000000000000000000000011f842a0000000000000000000000000000000000000000000000000000000000000deada0000000000000000000000000000000000000000000000000000000000000beef830100fff85d940000000000000000000000000000000000000111f842a0000000000000000000000000000000000000000000000000000000000000deada0000000000000000000000000000000000000000000000000000000000000beef830100ff")
-	gotLegacyReceipt := new(Receipt)
-	if err := gotLegacyReceipt.UnmarshalBinary(legacyBinary); err != nil {
-		t.Fatalf("unmarshal binary error: %v", err)
-	}
-	legacyReceipt.Bloom = CreateBloom(Receipts{legacyReceipt})
-	if !reflect.DeepEqual(gotLegacyReceipt, legacyReceipt) {
-		t.Errorf("receipt unmarshalled from binary mismatch, got %v want %v", gotLegacyReceipt, legacyReceipt)
-	}
-
-	// 2930 Receipt
-	accessListBinary := common.FromHex("01f901c58001b9010000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000014000000000000000000000000000000000000000000000000000000000000000000000000000010000080000000000000000000004000000000000000000000000000040000000000000000000000000000800000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000f8bef85d940000000000000000000000000000000000000011f842a0000000000000000000000000000000000000000000000000000000000000deada0000000000000000000000000000000000000000000000000000000000000beef830100fff85d940000000000000000000000000000000000000111f842a0000000000000000000000000000000000000000000000000000000000000deada0000000000000000000000000000000000000000000000000000000000000beef830100ff")
-	gotAccessListReceipt := new(Receipt)
-	if err := gotAccessListReceipt.UnmarshalBinary(accessListBinary); err != nil {
-		t.Fatalf("unmarshal binary error: %v", err)
-	}
-	accessListReceipt.Bloom = CreateBloom(Receipts{accessListReceipt})
-	if !reflect.DeepEqual(gotAccessListReceipt, accessListReceipt) {
-		t.Errorf("receipt unmarshalled from binary mismatch, got %v want %v", gotAccessListReceipt, accessListReceipt)
-	}
-
 	// 1559 Receipt
 	eip1559RctBinary := common.FromHex("02f901c58001b9010000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000014000000000000000000000000000000000000000000000000000000000000000000000000000010000080000000000000000000004000000000000000000000000000040000000000000000000000000000800000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000f8bef85d940000000000000000000000000000000000000011f842a0000000000000000000000000000000000000000000000000000000000000deada0000000000000000000000000000000000000000000000000000000000000beef830100fff85d940000000000000000000000000000000000000111f842a0000000000000000000000000000000000000000000000000000000000000deada0000000000000000000000000000000000000000000000000000000000000beef830100ff")
 	got1559Receipt := new(Receipt)

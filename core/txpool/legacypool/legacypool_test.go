@@ -1750,7 +1750,7 @@ func TestRepricingKeepsLocals(t *testing.T) {
 	validate()
 }
 
-// TODO(rgeraldes24): fix
+// TODO(rgeraldes24): fix: there's a TestUnderpricingDynamicFee below
 /*
 // Tests that when the pool reaches its global transaction limit, underpriced
 // transactions are gradually shifted out for more expensive ones and any gapped
