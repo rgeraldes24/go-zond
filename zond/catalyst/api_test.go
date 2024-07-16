@@ -54,14 +54,13 @@ var (
 	testBalance = big.NewInt(2e18)
 )
 
-func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
+func generateChain(n int) (*core.Genesis, []*types.Block) {
 	config := *params.AllBeaconProtocolChanges
 	engine := beaconConsensus.NewFaker()
 	genesis := &core.Genesis{
 		Config: &config,
 		Alloc: core.GenesisAlloc{
 			testAddr: {Balance: testBalance},
-			// params.BeaconRootsStorageAddress: {Balance: common.Big0, Code: common.Hex2Bytes("3373fffffffffffffffffffffffffffffffffffffffe14604457602036146024575f5ffd5b620180005f350680545f35146037575f5ffd5b6201800001545f5260205ff35b6201800042064281555f359062018000015500")},
 		},
 		ExtraData: []byte("test genesis"),
 		Timestamp: 9000,
@@ -82,7 +81,7 @@ func generateMergeChain(n int) (*core.Genesis, []*types.Block) {
 }
 
 func TestEth2AssembleBlock(t *testing.T) {
-	genesis, blocks := generateMergeChain(10)
+	genesis, blocks := generateChain(10)
 	n, zondservice := startZondService(t, genesis, blocks)
 	defer n.Close()
 
@@ -165,11 +164,8 @@ func TestSetHeadBeforeTotalDifficulty(t *testing.T) {
 }
 */
 
-// TODO(rgeraldes24): fix: api_test.go:185: error preparing payload, err=Invalid parameters
-/*
 func TestEth2PrepareAndGetPayload(t *testing.T) {
-	genesis, blocks := generateMergeChain(10)
-	// We need to properly set the terminal total difficulty
+	genesis, blocks := generateChain(10)
 	n, zondservice := startZondService(t, genesis, blocks[:9])
 	defer n.Close()
 
@@ -179,7 +175,8 @@ func TestEth2PrepareAndGetPayload(t *testing.T) {
 	txs := blocks[9].Transactions()
 	zondservice.TxPool().Add(txs, true, false)
 	blockParams := engine.PayloadAttributes{
-		Timestamp: blocks[8].Time() + 5,
+		Timestamp:   blocks[8].Time() + 5,
+		Withdrawals: []*types.Withdrawal{},
 	}
 	fcState := engine.ForkchoiceStateV1{
 		HeadBlockHash:      blocks[8].Hash(),
@@ -214,7 +211,6 @@ func TestEth2PrepareAndGetPayload(t *testing.T) {
 		t.Fatal("expected error retrieving invalid payload")
 	}
 }
-*/
 
 func checkLogEvents(t *testing.T, logsCh <-chan []*types.Log, rmLogsCh <-chan core.RemovedLogsEvent, wantNew, wantRemoved int) {
 	t.Helper()
@@ -467,7 +463,7 @@ func startZondService(t *testing.T, genesis *core.Genesis, blocks []*types.Block
 }
 
 func TestFullAPI(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10)
+	genesis, preMergeBlocks := generateChain(10)
 	n, zondservice := startZondService(t, genesis, preMergeBlocks)
 	defer n.Close()
 	var (
@@ -1223,7 +1219,7 @@ func TestNilWithdrawals(t *testing.T) {
 */
 
 func setupBodies(t *testing.T) (*node.Node, *zond.Zond, []*types.Block) {
-	genesis, blocks := generateMergeChain(10)
+	genesis, blocks := generateChain(10)
 	n, zondservice := startZondService(t, genesis, blocks)
 
 	var (
