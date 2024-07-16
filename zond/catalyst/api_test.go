@@ -18,11 +18,13 @@ package catalyst
 
 import (
 	"bytes"
+	"context"
 	crand "crypto/rand"
 	"fmt"
 	"math/big"
 	"math/rand"
 	"reflect"
+	"sync"
 	"testing"
 	"time"
 
@@ -38,6 +40,7 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/trie"
 	"github.com/theQRL/go-zond/zond"
 	"github.com/theQRL/go-zond/zond/downloader"
@@ -230,11 +233,9 @@ func checkLogEvents(t *testing.T, logsCh <-chan []*types.Log, rmLogsCh <-chan co
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestInvalidPayloadTimestamp(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10)
-	n, zondservice := startZondService(t, genesis, preMergeBlocks)
+	genesis, blocks := generateChain(10)
+	n, zondservice := startZondService(t, genesis, blocks)
 	defer n.Close()
 	var (
 		api    = NewConsensusAPI(zondservice)
@@ -248,6 +249,7 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 		{parent.Time, true},
 		{parent.Time - 1, true},
 
+		// TODO(rgeraldes24)
 		// TODO (MariusVanDerWijden) following tests are currently broken,
 		// fixed in upcoming merge-kiln-v2 pr
 		//{parent.Time() + 1, false},
@@ -260,6 +262,7 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 				Timestamp:             test.time,
 				Random:                crypto.Keccak256Hash([]byte{byte(123)}),
 				SuggestedFeeRecipient: parent.Coinbase,
+				Withdrawals:           []*types.Withdrawal{},
 			}
 			fcState := engine.ForkchoiceStateV1{
 				HeadBlockHash:      parent.Hash(),
@@ -277,13 +280,13 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 }
 
 func TestEth2NewBlock(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10)
-	n, zondservice := startZondService(t, genesis, preMergeBlocks)
+	genesis, blocks := generateChain(10)
+	n, zondservice := startZondService(t, genesis, blocks)
 	defer n.Close()
 
 	var (
 		api    = NewConsensusAPI(zondservice)
-		parent = preMergeBlocks[len(preMergeBlocks)-1]
+		parent = blocks[len(blocks)-1]
 
 		// This EVM code generates a log when the contract is created.
 		logCode = common.Hex2Bytes("60606040525b7f24ec1d3ff24c2f6ff210738839dbc339cd45a5294d85c79361016243157aae7b60405180905060405180910390a15b600a8060416000396000f360606040526008565b00")
@@ -299,10 +302,11 @@ func TestEth2NewBlock(t *testing.T) {
 		nonce := statedb.GetNonce(testAddr)
 		signer := types.LatestSigner(zondservice.BlockChain().Config())
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: nonce,
-			Value: new(big.Int),
-			Gas:   1000000,
-			Data:  logCode,
+			Nonce:     nonce,
+			Value:     new(big.Int),
+			Gas:       1000000,
+			GasFeeCap: big.NewInt(2 * params.InitialBaseFee),
+			Data:      logCode,
 		})
 		signedTx, _ := types.SignTx(tx, signer, testKey)
 		zondservice.TxPool().Add([]*types.Transaction{signedTx}, true, false)
@@ -347,7 +351,7 @@ func TestEth2NewBlock(t *testing.T) {
 	var (
 		head = zondservice.BlockChain().CurrentBlock().Number.Uint64()
 	)
-	parent = preMergeBlocks[len(preMergeBlocks)-1]
+	parent = blocks[len(blocks)-1]
 	for i := 0; i < 10; i++ {
 		execData, err := assembleBlock(api, parent.Hash(), &engine.PayloadAttributes{
 			Timestamp: parent.Time() + 6,
@@ -381,7 +385,6 @@ func TestEth2NewBlock(t *testing.T) {
 		parent, head = block, block.NumberU64()
 	}
 }
-*/
 
 func TestEth2DeepReorg(t *testing.T) {
 	// TODO (MariusVanDerWijden) TestEth2DeepReorg is currently broken, because it tries to reorg
@@ -463,8 +466,8 @@ func startZondService(t *testing.T, genesis *core.Genesis, blocks []*types.Block
 }
 
 func TestFullAPI(t *testing.T) {
-	genesis, preMergeBlocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, preMergeBlocks)
+	genesis, blocks := generateChain(10)
+	n, zondservice := startZondService(t, genesis, blocks)
 	defer n.Close()
 	var (
 		parent = zondservice.BlockChain().CurrentBlock()
@@ -846,80 +849,19 @@ func TestInvalidBloom(t *testing.T) {
 		t.Errorf("invalid status: expected INVALID got: %v", status.Status)
 	}
 }
-
-func TestNewPayloadOnInvalidTerminalBlock(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(100)
-	n, zondservice := startZondService(t, genesis, preMergeBlocks)
-	defer n.Close()
-	api := NewConsensusAPI(zondservice)
-
-	// Test parent already post TTD in FCU
-	parent := preMergeBlocks[len(preMergeBlocks)-2]
-	fcState := engine.ForkchoiceStateV1{
-		HeadBlockHash:      parent.Hash(),
-		SafeBlockHash:      common.Hash{},
-		FinalizedBlockHash: common.Hash{},
-	}
-	resp, err := api.ForkchoiceUpdatedV2(fcState, nil)
-	if err != nil {
-		t.Fatalf("error sending forkchoice, err=%v", err)
-	}
-	if resp.PayloadStatus != engine.INVALID_TERMINAL_BLOCK {
-		t.Fatalf("error sending invalid forkchoice, invalid status: %v", resp.PayloadStatus.Status)
-	}
-
-	// Test parent already post TTD in NewPayload
-	args := &miner.BuildPayloadArgs{
-		Parent:       parent.Hash(),
-		Timestamp:    parent.Time() + 1,
-		Random:       crypto.Keccak256Hash([]byte{byte(1)}),
-		FeeRecipient: parent.Coinbase(),
-	}
-	payload, err := api.zond.Miner().BuildPayload(args)
-	if err != nil {
-		t.Fatalf("error preparing payload, err=%v", err)
-	}
-	data := *payload.Resolve().ExecutionPayload
-	// We need to recompute the blockhash, since the miner computes a wrong (correct) blockhash
-	txs, _ := decodeTransactions(data.Transactions)
-	header := &types.Header{
-		ParentHash:  data.ParentHash,
-		Coinbase:    data.FeeRecipient,
-		Root:        data.StateRoot,
-		TxHash:      types.DeriveSha(types.Transactions(txs), trie.NewStackTrie(nil)),
-		ReceiptHash: data.ReceiptsRoot,
-		Bloom:       types.BytesToBloom(data.LogsBloom),
-		Number:      new(big.Int).SetUint64(data.Number),
-		GasLimit:    data.GasLimit,
-		GasUsed:     data.GasUsed,
-		Time:        data.Timestamp,
-		BaseFee:     data.BaseFeePerGas,
-		Extra:       data.ExtraData,
-		Random:      data.Random,
-	}
-	block := types.NewBlockWithHeader(header).WithBody(txs)
-	data.BlockHash = block.Hash()
-	// Send the new payload
-	resp2, err := api.NewPayloadV2(data)
-	if err != nil {
-		t.Fatalf("error sending NewPayload, err=%v", err)
-	}
-	if resp2 != engine.INVALID_TERMINAL_BLOCK {
-		t.Fatalf("error sending invalid forkchoice, invalid status: %v", resp.PayloadStatus.Status)
-	}
-}
+*/
 
 // TestSimultaneousNewBlock does several parallel inserts, both as
 // newPayLoad and forkchoiceUpdate. This is to test that the api behaves
 // well even of the caller is not being 'serial'.
 func TestSimultaneousNewBlock(t *testing.T) {
-	genesis, preMergeBlocks := generateMergeChain(10)
-	n, zondservice := startZondService(t, genesis, preMergeBlocks)
+	genesis, blocks := generateChain(10)
+	n, zondservice := startZondService(t, genesis, blocks)
 	defer n.Close()
 
 	var (
 		api    = NewConsensusAPI(zondservice)
-		parent = preMergeBlocks[len(preMergeBlocks)-1]
+		parent = blocks[len(blocks)-1]
 	)
 	for i := 0; i < 10; i++ {
 		execData, err := assembleBlock(api, parent.Hash(), &engine.PayloadAttributes{
@@ -1000,7 +942,7 @@ func TestSimultaneousNewBlock(t *testing.T) {
 // TestWithdrawals creates and verifies two post-Shanghai blocks. The first
 // includes zero withdrawals and the second includes two.
 func TestWithdrawals(t *testing.T) {
-	genesis, blocks := generateMergeChain(10)
+	genesis, blocks := generateChain(10)
 
 	n, zondservice := startZondService(t, genesis, blocks)
 	defer n.Close()
@@ -1110,7 +1052,7 @@ func TestWithdrawals(t *testing.T) {
 }
 
 func TestNilWithdrawals(t *testing.T) {
-	genesis, blocks := generateMergeChain(10)
+	genesis, blocks := generateChain(10)
 
 	n, zondservice := startZondService(t, genesis, blocks)
 	defer n.Close()
@@ -1124,35 +1066,6 @@ func TestNilWithdrawals(t *testing.T) {
 		wantErr     bool
 	}
 	tests := []test{
-		// Before Shanghai
-		{
-			blockParams: engine.PayloadAttributes{
-				Timestamp:   parent.Time + 2,
-				Withdrawals: nil,
-			},
-			wantErr: false,
-		},
-		{
-			blockParams: engine.PayloadAttributes{
-				Timestamp:   parent.Time + 2,
-				Withdrawals: make([]*types.Withdrawal, 0),
-			},
-			wantErr: true,
-		},
-		{
-			blockParams: engine.PayloadAttributes{
-				Timestamp: parent.Time + 2,
-				Withdrawals: []*types.Withdrawal{
-					{
-						Index:   0,
-						Address: aa,
-						Amount:  32,
-					},
-				},
-			},
-			wantErr: true,
-		},
-		// After Shanghai
 		{
 			blockParams: engine.PayloadAttributes{
 				Timestamp:   parent.Time + 5,
@@ -1216,7 +1129,6 @@ func TestNilWithdrawals(t *testing.T) {
 		}
 	}
 }
-*/
 
 func setupBodies(t *testing.T) (*node.Node, *zond.Zond, []*types.Block) {
 	genesis, blocks := generateChain(10)
