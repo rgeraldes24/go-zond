@@ -434,22 +434,24 @@ func hugeAmount(s *Suite) *types.Transaction {
 	return signWithFaucet(s.chain.chainConfig, txNew)
 }
 
-// TODO(rgeraldes24): review naming/test
+// TODO(rgeraldes24): review naming/test: change to hugeGasFeeCap?
 func hugeGasPrice(s *Suite) *types.Transaction {
 	tx := getNextTxFromChain(s)
 	if tx == nil {
 		return nil
 	}
+	gasPrice := largeNumber(2)
 	var to common.Address
 	if tx.To() != nil {
 		to = *tx.To()
 	}
 	txNew := types.NewTx(&types.DynamicFeeTx{
-		Nonce: tx.Nonce(),
-		To:    &to,
-		Value: tx.Value(),
-		Gas:   tx.Gas(),
-		Data:  tx.Data(),
+		Nonce:     tx.Nonce(),
+		To:        &to,
+		Value:     tx.Value(),
+		Gas:       tx.Gas(),
+		GasFeeCap: gasPrice,
+		Data:      tx.Data(),
 	})
 	return signWithFaucet(s.chain.chainConfig, txNew)
 }

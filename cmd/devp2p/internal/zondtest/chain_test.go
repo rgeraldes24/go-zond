@@ -119,7 +119,7 @@ func TestEthProtocolNegotiation(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24)
+// TODO(rgeraldes24): replace chain.rlp file
 /*
 // TestChain_GetHeaders tests whether the test suite can correctly
 // respond to a GetBlockHeaders request from a node.

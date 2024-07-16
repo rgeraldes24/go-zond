@@ -36,10 +36,10 @@ var (
 	to3 = common.Address{0xac}
 	// testTxs is a set of transactions to use during testing that have meaningful hashes.
 	testTxs = []*types.Transaction{
-		types.NewTx(&types.DynamicFeeTx{Nonce: 5577006791947779410, To: &to0, Value: new(big.Int), Gas: 0, Data: nil}),
-		types.NewTx(&types.DynamicFeeTx{Nonce: 15352856648520921629, To: &to1, Value: new(big.Int), Gas: 0, Data: nil}),
-		types.NewTx(&types.DynamicFeeTx{Nonce: 3916589616287113937, To: &to2, Value: new(big.Int), Gas: 0, Data: nil}),
-		types.NewTx(&types.DynamicFeeTx{Nonce: 9828766684487745566, To: &to3, Value: new(big.Int), Gas: 0, Data: nil}),
+		types.NewTx(&types.DynamicFeeTx{Nonce: 5577006791947779410, To: &to0, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
+		types.NewTx(&types.DynamicFeeTx{Nonce: 15352856648520921629, To: &to1, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
+		types.NewTx(&types.DynamicFeeTx{Nonce: 3916589616287113937, To: &to2, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
+		types.NewTx(&types.DynamicFeeTx{Nonce: 9828766684487745566, To: &to3, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
 	}
 	// testTxsHashes is the hashes of the test transactions above
 	testTxsHashes = []common.Hash{testTxs[0].Hash(), testTxs[1].Hash(), testTxs[2].Hash(), testTxs[3].Hash()}
@@ -502,8 +502,6 @@ func TestTransactionFetcherMissingRescheduling(t *testing.T) {
 */
 
 // TODO(rgeraldes24): fix
-// tx_fetcher_test.go:1400: step 7: peer A extra in announces
-// tx_fetcher_test.go:1425: step 7: peer A extra in requests
 /*
 // Tests that out of two transactions, if one is missing and the last is
 // delivered, the peer gets properly cleaned out from the internal state.
@@ -920,7 +918,7 @@ func TestTransactionFetcherUnderpricedDoSProtection(t *testing.T) {
 	var txs []*types.Transaction
 	for i := 0; i < maxTxUnderpricedSetSize+1; i++ {
 		to := common.Address{byte(rand.Intn(256))}
-		txs = append(txs, types.NewTx(&types.DynamicFeeTx{Nonce: rand.Uint64(), To: &to, Value: new(big.Int), Gas: 0, Data: nil}))
+		txs = append(txs, types.NewTx(&types.DynamicFeeTx{Nonce: rand.Uint64(), To: &to, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}))
 	}
 	hashes := make([]common.Hash, len(txs))
 	for i, tx := range txs {

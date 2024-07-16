@@ -17,6 +17,7 @@
 package types
 
 import (
+	"bytes"
 	"encoding/json"
 	"math"
 	"math/big"
@@ -276,8 +277,8 @@ func TestEffectiveGasPriceNotRequired(t *testing.T) {
 	}
 }
 
+// TODO(rgeraldes24): fix
 /*
-TODO(rgeraldes24): fix payload hex value
 // TestTypedReceiptEncodingDecoding reproduces a flaw that existed in the receipt
 // rlp decoder, which failed due to a shadowing error.
 func TestTypedReceiptEncodingDecoding(t *testing.T) {
@@ -307,21 +308,19 @@ func TestTypedReceiptEncodingDecoding(t *testing.T) {
 }
 */
 
-// TODO(rgeraldes24): fix receipt hex value
-/*
 func TestReceiptMarshalBinary(t *testing.T) {
 	buf := new(bytes.Buffer)
 
 	// 1559 Receipt
 	buf.Reset()
 	eip1559Receipt.Bloom = CreateBloom(Receipts{eip1559Receipt})
-	have, err = eip1559Receipt.MarshalBinary()
+	have, err := eip1559Receipt.MarshalBinary()
 	if err != nil {
 		t.Fatalf("marshal binary error: %v", err)
 	}
 	eip1559Receipts := Receipts{eip1559Receipt}
 	eip1559Receipts.EncodeIndex(0, buf)
-	haveEncodeIndex = buf.Bytes()
+	haveEncodeIndex := buf.Bytes()
 	if !bytes.Equal(have, haveEncodeIndex) {
 		t.Errorf("BinaryMarshal and EncodeIndex mismatch, got %x want %x", have, haveEncodeIndex)
 	}
@@ -330,7 +329,6 @@ func TestReceiptMarshalBinary(t *testing.T) {
 		t.Errorf("encoded RLP mismatch, got %x want %x", have, eip1559Want)
 	}
 }
-*/
 
 // TODO(rgeraldes24): fix receipt hex value
 /*

@@ -55,10 +55,10 @@ var DefaultConfig = Config{
 	GasPrice: big.NewInt(params.GWei / 1000),
 
 	// The default recommit time is chosen as two seconds since
-	// consensus-layer usually will wait a half slot of time(6s)
+	// consensus-layer usually will wait a half slot of time(30s)
 	// for payload generation. It should be enough for Gzond to
 	// run 3 rounds.
-	Recommit: 2 * time.Second,
+	Recommit: 10 * time.Second,
 }
 
 // Miner is the main object which takes care of submitting new work to consensus
