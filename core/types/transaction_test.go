@@ -102,7 +102,7 @@ func TestEIP2930Signer(t *testing.T) {
 			wantSenderErr:  ErrInvalidChainId,
 			wantHash:       common.HexToHash("c731c1b0e51ecfc23baabaeaf8b3b839a50f4b66f2caae92c6e3512a781c2c76"),
 		},
-		// TODO(rgeraldes24): review test
+		// NOTE(rgeraldes24): not valid atm
 		/*
 			{
 				tx:             tx1,

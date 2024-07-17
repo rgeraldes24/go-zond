@@ -429,7 +429,6 @@ func assertOwnChain(t *testing.T, tester *downloadTester, length int) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 // func TestCanonicalSynchronisation68Full(t *testing.T) { testCanonSync(t, zondproto.ETH68, FullSync) }
 // func TestCanonicalSynchronisation68Snap(t *testing.T) { testCanonSync(t, zondproto.ETH68, SnapSync) }
 

@@ -232,7 +232,6 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 		{parent.Time, true},
 		{parent.Time - 1, true},
 
-		// TODO(rgeraldes24)
 		// TODO (MariusVanDerWijden) following tests are currently broken,
 		// fixed in upcoming merge-kiln-v2 pr
 		//{parent.Time() + 1, false},
@@ -369,7 +368,6 @@ func TestEth2NewBlock(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24)
 func TestEth2DeepReorg(t *testing.T) {
 	// TODO (MariusVanDerWijden) TestEth2DeepReorg is currently broken, because it tries to reorg
 	// before the totalTerminalDifficulty threshold

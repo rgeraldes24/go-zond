@@ -17,11 +17,16 @@
 package downloader
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"math/big"
 	"sync/atomic"
+	"testing"
+	"time"
 
 	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/zond/protocols/zond"
@@ -199,8 +204,6 @@ func (p *skeletonTestPeer) RequestReceipts([]common.Hash, chan *zond.Response) (
 	panic("skeleton sync must not request receipts")
 }
 
-// TODO(rgeraldes24): fix
-/*
 // Tests various sync initializations based on previous leftovers in the database
 // and announced heads.
 func TestSkeletonSyncInit(t *testing.T) {
@@ -305,15 +308,18 @@ func TestSkeletonSyncInit(t *testing.T) {
 				{Head: 10, Tail: 5},
 			},
 		},
+		// TODO(rgeradles24): fix
 		// A single leftover subchain is present and the new head is extending
 		// it with one more header. We expect the subchain head to be pushed
 		// forward.
-		{
-			headers:  []*types.Header{block49},
-			oldstate: []*subchain{{Head: 49, Tail: 5}},
-			head:     block50,
-			newstate: []*subchain{{Head: 50, Tail: 5}},
-		},
+		/*
+			{
+				headers:  []*types.Header{block49},
+				oldstate: []*subchain{{Head: 49, Tail: 5}},
+				head:     block50,
+				newstate: []*subchain{{Head: 50, Tail: 5}},
+			},
+		*/
 		// A single leftover subchain is present and although the new head does
 		// extend it number wise, the hash chain does not link up. We expect a
 		// new subchain to be created for the dangling head.
@@ -326,16 +332,19 @@ func TestSkeletonSyncInit(t *testing.T) {
 				{Head: 49, Tail: 5},
 			},
 		},
+		// TODO(rgeraldes24): fix
 		// A single leftover subchain is present. A new head is announced that
 		// links into the middle of it, correctly anchoring into an existing
 		// header. We expect the old subchain to be truncated and extended with
 		// the new head.
-		{
-			headers:  []*types.Header{block49},
-			oldstate: []*subchain{{Head: 100, Tail: 5}},
-			head:     block50,
-			newstate: []*subchain{{Head: 50, Tail: 5}},
-		},
+		/*
+			{
+				headers:  []*types.Header{block49},
+				oldstate: []*subchain{{Head: 100, Tail: 5}},
+				head:     block50,
+				newstate: []*subchain{{Head: 50, Tail: 5}},
+			},
+		*/
 		// A single leftover subchain is present. A new head is announced that
 		// links into the middle of it, but does not anchor into an existing
 		// header. We expect the old subchain to be truncated and a new chain
@@ -390,10 +399,7 @@ func TestSkeletonSyncInit(t *testing.T) {
 		}
 	}
 }
-*/
 
-// TODO(rgeraldes24): fix
-/*
 // Tests that a running skeleton sync can be extended with properly linked up
 // headers but not with side chains.
 func TestSkeletonSyncExtend(t *testing.T) {
@@ -411,22 +417,28 @@ func TestSkeletonSyncExtend(t *testing.T) {
 		newstate []*subchain   // Expected sync state after the reorg
 		err      error         // Whether extension succeeds or not
 	}{
-		// Initialize a sync and try to extend it with a subsequent block.
-		{
-			head:   block49,
-			extend: block50,
-			newstate: []*subchain{
-				{Head: 50, Tail: 49},
+		// TODO(rgeraldes24): fix
+		/*
+			// Initialize a sync and try to extend it with a subsequent block.
+			{
+				head:   block49,
+				extend: block50,
+				newstate: []*subchain{
+					{Head: 50, Tail: 49},
+				},
 			},
-		},
-		// Initialize a sync and try to extend it with the existing head block.
-		{
-			head:   block49,
-			extend: block49,
-			newstate: []*subchain{
-				{Head: 49, Tail: 49},
+		*/
+		// TODO(rgeraldes24): fix
+		/*
+			// Initialize a sync and try to extend it with the existing head block.
+			{
+				head:   block49,
+				extend: block49,
+				newstate: []*subchain{
+					{Head: 49, Tail: 49},
+				},
 			},
-		},
+		*/
 		// Initialize a sync and try to extend it with a sibling block.
 		{
 			head:   block49,
@@ -511,7 +523,6 @@ func TestSkeletonSyncExtend(t *testing.T) {
 	}
 }
 
-
 // Tests that the skeleton sync correctly retrieves headers from one or more
 // peers without duplicates or other strange side effects.
 func TestSkeletonSyncRetrievals(t *testing.T) {
@@ -554,253 +565,257 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 		endserve uint64            // Expected number of header retrievals after the post-init event
 		enddrop  uint64            // Expected number of peers dropped after the post-init event
 	}{
-		// Completely empty database with only the genesis set. The sync is expected
-		// to create a single subchain with the requested head. No peers however, so
-		// the sync should be stuck without any progression.
-		//
-		// When a new peer is added, it should detect the join and fill the headers
-		// to the genesis block.
-		{
-			head:     chain[len(chain)-1],
-			midstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: uint64(len(chain) - 1)}},
+		// TODO(rgeraldes24): fix
+		/*
+			// Completely empty database with only the genesis set. The sync is expected
+			// to create a single subchain with the requested head. No peers however, so
+			// the sync should be stuck without any progression.
+			//
+			// When a new peer is added, it should detect the join and fill the headers
+			// to the genesis block.
+			{
+				head:     chain[len(chain)-1],
+				midstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: uint64(len(chain) - 1)}},
 
-			newPeer:  newSkeletonTestPeer("test-peer", chain),
-			endstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: 1}},
-			endserve: uint64(len(chain) - 2), // len - head - genesis
-		},
-		// Completely empty database with only the genesis set. The sync is expected
-		// to create a single subchain with the requested head. With one valid peer,
-		// the sync is expected to complete already in the initial round.
-		//
-		// Adding a second peer should not have any effect.
-		{
-			head:     chain[len(chain)-1],
-			peers:    []*skeletonTestPeer{newSkeletonTestPeer("test-peer-1", chain)},
-			midstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: 1}},
-			midserve: uint64(len(chain) - 2), // len - head - genesis
-
-			newPeer:  newSkeletonTestPeer("test-peer-2", chain),
-			endstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: 1}},
-			endserve: uint64(len(chain) - 2), // len - head - genesis
-		},
-		// Completely empty database with only the genesis set. The sync is expected
-		// to create a single subchain with the requested head. With many valid peers,
-		// the sync is expected to complete already in the initial round.
-		//
-		// Adding a new peer should not have any effect.
-		{
-			head: chain[len(chain)-1],
-			peers: []*skeletonTestPeer{
-				newSkeletonTestPeer("test-peer-1", chain),
-				newSkeletonTestPeer("test-peer-2", chain),
-				newSkeletonTestPeer("test-peer-3", chain),
+				newPeer:  newSkeletonTestPeer("test-peer", chain),
+				endstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: 1}},
+				endserve: uint64(len(chain) - 2), // len - head - genesis
 			},
-			midstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: 1}},
-			midserve: uint64(len(chain) - 2), // len - head - genesis
 
-			newPeer:  newSkeletonTestPeer("test-peer-4", chain),
-			endstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: 1}},
-			endserve: uint64(len(chain) - 2), // len - head - genesis
-		},
-		// This test checks if a peer tries to withhold a header - *on* the sync
-		// boundary - instead of sending the requested amount. The malicious short
-		// package should not be accepted.
-		//
-		// Joining with a new peer should however unblock the sync.
-		{
-			head: chain[requestHeaders+100],
-			peers: []*skeletonTestPeer{
-				newSkeletonTestPeer("header-skipper", append(append(append([]*types.Header{}, chain[:99]...), nil), chain[100:]...)),
-			},
-			midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
-			midserve: requestHeaders + 101 - 3, // len - head - genesis - missing
-			middrop:  1,                        // penalize shortened header deliveries
+				// Completely empty database with only the genesis set. The sync is expected
+				// to create a single subchain with the requested head. With one valid peer,
+				// the sync is expected to complete already in the initial round.
+				//
+				// Adding a second peer should not have any effect.
+				{
+					head:     chain[len(chain)-1],
+					peers:    []*skeletonTestPeer{newSkeletonTestPeer("test-peer-1", chain)},
+					midstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: 1}},
+					midserve: uint64(len(chain) - 2), // len - head - genesis
 
-			newPeer:  newSkeletonTestPeer("good-peer", chain),
-			endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
-			endserve: (requestHeaders + 101 - 3) + (100 - 1), // midserve + lenrest - genesis
-			enddrop:  1,                                      // no new drops
-		},
-		// This test checks if a peer tries to withhold a header - *off* the sync
-		// boundary - instead of sending the requested amount. The malicious short
-		// package should not be accepted.
-		//
-		// Joining with a new peer should however unblock the sync.
-		{
-			head: chain[requestHeaders+100],
-			peers: []*skeletonTestPeer{
-				newSkeletonTestPeer("header-skipper", append(append(append([]*types.Header{}, chain[:50]...), nil), chain[51:]...)),
-			},
-			midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
-			midserve: requestHeaders + 101 - 3, // len - head - genesis - missing
-			middrop:  1,                        // penalize shortened header deliveries
+					newPeer:  newSkeletonTestPeer("test-peer-2", chain),
+					endstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: 1}},
+					endserve: uint64(len(chain) - 2), // len - head - genesis
+				},
+				// Completely empty database with only the genesis set. The sync is expected
+				// to create a single subchain with the requested head. With many valid peers,
+				// the sync is expected to complete already in the initial round.
+				//
+				// Adding a new peer should not have any effect.
+				{
+					head: chain[len(chain)-1],
+					peers: []*skeletonTestPeer{
+						newSkeletonTestPeer("test-peer-1", chain),
+						newSkeletonTestPeer("test-peer-2", chain),
+						newSkeletonTestPeer("test-peer-3", chain),
+					},
+					midstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: 1}},
+					midserve: uint64(len(chain) - 2), // len - head - genesis
 
-			newPeer:  newSkeletonTestPeer("good-peer", chain),
-			endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
-			endserve: (requestHeaders + 101 - 3) + (100 - 1), // midserve + lenrest - genesis
-			enddrop:  1,                                      // no new drops
-		},
-		// This test checks if a peer tries to duplicate a header - *on* the sync
-		// boundary - instead of sending the correct sequence. The malicious duped
-		// package should not be accepted.
-		//
-		// Joining with a new peer should however unblock the sync.
-		{
-			head: chain[requestHeaders+100], // We want to force the 100th header to be a request boundary
-			peers: []*skeletonTestPeer{
-				newSkeletonTestPeer("header-duper", append(append(append([]*types.Header{}, chain[:99]...), chain[98]), chain[100:]...)),
-			},
-			midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
-			midserve: requestHeaders + 101 - 2, // len - head - genesis
-			middrop:  1,                        // penalize invalid header sequences
+					newPeer:  newSkeletonTestPeer("test-peer-4", chain),
+					endstate: []*subchain{{Head: uint64(len(chain) - 1), Tail: 1}},
+					endserve: uint64(len(chain) - 2), // len - head - genesis
+				},
+				// This test checks if a peer tries to withhold a header - *on* the sync
+				// boundary - instead of sending the requested amount. The malicious short
+				// package should not be accepted.
+				//
+				// Joining with a new peer should however unblock the sync.
+				{
+					head: chain[requestHeaders+100],
+					peers: []*skeletonTestPeer{
+						newSkeletonTestPeer("header-skipper", append(append(append([]*types.Header{}, chain[:99]...), nil), chain[100:]...)),
+					},
+					midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
+					midserve: requestHeaders + 101 - 3, // len - head - genesis - missing
+					middrop:  1,                        // penalize shortened header deliveries
 
-			newPeer:  newSkeletonTestPeer("good-peer", chain),
-			endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
-			endserve: (requestHeaders + 101 - 2) + (100 - 1), // midserve + lenrest - genesis
-			enddrop:  1,                                      // no new drops
-		},
-		// This test checks if a peer tries to duplicate a header - *off* the sync
-		// boundary - instead of sending the correct sequence. The malicious duped
-		// package should not be accepted.
-		//
-		// Joining with a new peer should however unblock the sync.
-		{
-			head: chain[requestHeaders+100], // We want to force the 100th header to be a request boundary
-			peers: []*skeletonTestPeer{
-				newSkeletonTestPeer("header-duper", append(append(append([]*types.Header{}, chain[:50]...), chain[49]), chain[51:]...)),
-			},
-			midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
-			midserve: requestHeaders + 101 - 2, // len - head - genesis
-			middrop:  1,                        // penalize invalid header sequences
+					newPeer:  newSkeletonTestPeer("good-peer", chain),
+					endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
+					endserve: (requestHeaders + 101 - 3) + (100 - 1), // midserve + lenrest - genesis
+					enddrop:  1,                                      // no new drops
+				},
+				// This test checks if a peer tries to withhold a header - *off* the sync
+				// boundary - instead of sending the requested amount. The malicious short
+				// package should not be accepted.
+				//
+				// Joining with a new peer should however unblock the sync.
+				{
+					head: chain[requestHeaders+100],
+					peers: []*skeletonTestPeer{
+						newSkeletonTestPeer("header-skipper", append(append(append([]*types.Header{}, chain[:50]...), nil), chain[51:]...)),
+					},
+					midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
+					midserve: requestHeaders + 101 - 3, // len - head - genesis - missing
+					middrop:  1,                        // penalize shortened header deliveries
 
-			newPeer:  newSkeletonTestPeer("good-peer", chain),
-			endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
-			endserve: (requestHeaders + 101 - 2) + (100 - 1), // midserve + lenrest - genesis
-			enddrop:  1,                                      // no new drops
-		},
-		// This test checks if a peer tries to inject a different header - *on*
-		// the sync boundary - instead of sending the correct sequence. The bad
-		// package should not be accepted.
-		//
-		// Joining with a new peer should however unblock the sync.
-		{
-			head: chain[requestHeaders+100], // We want to force the 100th header to be a request boundary
-			peers: []*skeletonTestPeer{
-				newSkeletonTestPeer("header-changer",
-					append(
-						append(
-							append([]*types.Header{}, chain[:99]...),
-							&types.Header{
-								ParentHash: chain[98].Hash(),
-								Number:     big.NewInt(int64(99)),
-								GasLimit:   1,
-							},
-						), chain[100:]...,
-					),
-				),
-			},
-			midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
-			midserve: requestHeaders + 101 - 2, // len - head - genesis
-			middrop:  1,                        // different set of headers, drop // TODO(karalabe): maybe just diff sync?
+					newPeer:  newSkeletonTestPeer("good-peer", chain),
+					endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
+					endserve: (requestHeaders + 101 - 3) + (100 - 1), // midserve + lenrest - genesis
+					enddrop:  1,                                      // no new drops
+				},
+				// This test checks if a peer tries to duplicate a header - *on* the sync
+				// boundary - instead of sending the correct sequence. The malicious duped
+				// package should not be accepted.
+				//
+				// Joining with a new peer should however unblock the sync.
+				{
+					head: chain[requestHeaders+100], // We want to force the 100th header to be a request boundary
+					peers: []*skeletonTestPeer{
+						newSkeletonTestPeer("header-duper", append(append(append([]*types.Header{}, chain[:99]...), chain[98]), chain[100:]...)),
+					},
+					midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
+					midserve: requestHeaders + 101 - 2, // len - head - genesis
+					middrop:  1,                        // penalize invalid header sequences
 
-			newPeer:  newSkeletonTestPeer("good-peer", chain),
-			endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
-			endserve: (requestHeaders + 101 - 2) + (100 - 1), // midserve + lenrest - genesis
-			enddrop:  1,                                      // no new drops
-		},
-		// This test checks if a peer tries to inject a different header - *off*
-		// the sync boundary - instead of sending the correct sequence. The bad
-		// package should not be accepted.
-		//
-		// Joining with a new peer should however unblock the sync.
-		{
-			head: chain[requestHeaders+100], // We want to force the 100th header to be a request boundary
-			peers: []*skeletonTestPeer{
-				newSkeletonTestPeer("header-changer",
-					append(
-						append(
-							append([]*types.Header{}, chain[:50]...),
-							&types.Header{
-								ParentHash: chain[49].Hash(),
-								Number:     big.NewInt(int64(50)),
-								GasLimit:   1,
-							},
-						), chain[51:]...,
-					),
-				),
-			},
-			midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
-			midserve: requestHeaders + 101 - 2, // len - head - genesis
-			middrop:  1,                        // different set of headers, drop
+					newPeer:  newSkeletonTestPeer("good-peer", chain),
+					endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
+					endserve: (requestHeaders + 101 - 2) + (100 - 1), // midserve + lenrest - genesis
+					enddrop:  1,                                      // no new drops
+				},
+				// This test checks if a peer tries to duplicate a header - *off* the sync
+				// boundary - instead of sending the correct sequence. The malicious duped
+				// package should not be accepted.
+				//
+				// Joining with a new peer should however unblock the sync.
+				{
+					head: chain[requestHeaders+100], // We want to force the 100th header to be a request boundary
+					peers: []*skeletonTestPeer{
+						newSkeletonTestPeer("header-duper", append(append(append([]*types.Header{}, chain[:50]...), chain[49]), chain[51:]...)),
+					},
+					midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
+					midserve: requestHeaders + 101 - 2, // len - head - genesis
+					middrop:  1,                        // penalize invalid header sequences
 
-			newPeer:  newSkeletonTestPeer("good-peer", chain),
-			endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
-			endserve: (requestHeaders + 101 - 2) + (100 - 1), // midserve + lenrest - genesis
-			enddrop:  1,                                      // no new drops
-		},
-		// This test reproduces a bug caught during review (kudos to @holiman)
-		// where a subchain is merged with a previously interrupted one, causing
-		// pending data in the scratch space to become "invalid" (since we jump
-		// ahead during subchain merge). In that case it is expected to ignore
-		// the queued up data instead of trying to process on top of a shifted
-		// task set.
-		//
-		// The test is a bit convoluted since it needs to trigger a concurrency
-		// issue. First we sync up an initial chain of 2x512 items. Then announce
-		// 2x512+2 as head and delay delivering the head batch to fill the scratch
-		// space first. The delivery head should merge with the previous download
-		// and the scratch space must not be consumed further.
-		{
-			head: chain[2*requestHeaders],
-			peers: []*skeletonTestPeer{
-				newSkeletonTestPeerWithHook("peer-1", chain, func(origin uint64) []*types.Header {
-					if origin == chain[2*requestHeaders+1].Number.Uint64() {
-						time.Sleep(100 * time.Millisecond)
-					}
-					return nil // Fallback to default behavior, just delayed
-				}),
-				newSkeletonTestPeerWithHook("peer-2", chain, func(origin uint64) []*types.Header {
-					if origin == chain[2*requestHeaders+1].Number.Uint64() {
-						time.Sleep(100 * time.Millisecond)
-					}
-					return nil // Fallback to default behavior, just delayed
-				}),
-			},
-			midstate: []*subchain{{Head: 2 * requestHeaders, Tail: 1}},
-			midserve: 2*requestHeaders - 1, // len - head - genesis
+					newPeer:  newSkeletonTestPeer("good-peer", chain),
+					endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
+					endserve: (requestHeaders + 101 - 2) + (100 - 1), // midserve + lenrest - genesis
+					enddrop:  1,                                      // no new drops
+				},
+				// This test checks if a peer tries to inject a different header - *on*
+				// the sync boundary - instead of sending the correct sequence. The bad
+				// package should not be accepted.
+				//
+				// Joining with a new peer should however unblock the sync.
+				{
+					head: chain[requestHeaders+100], // We want to force the 100th header to be a request boundary
+					peers: []*skeletonTestPeer{
+						newSkeletonTestPeer("header-changer",
+							append(
+								append(
+									append([]*types.Header{}, chain[:99]...),
+									&types.Header{
+										ParentHash: chain[98].Hash(),
+										Number:     big.NewInt(int64(99)),
+										GasLimit:   1,
+									},
+								), chain[100:]...,
+							),
+						),
+					},
+					midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
+					midserve: requestHeaders + 101 - 2, // len - head - genesis
+					middrop:  1,                        // different set of headers, drop // TODO(karalabe): maybe just diff sync?
 
-			newHead:  chain[2*requestHeaders+2],
-			endstate: []*subchain{{Head: 2*requestHeaders + 2, Tail: 1}},
-			endserve: 4 * requestHeaders,
-		},
-		// This test reproduces a bug caught by (@rjl493456442) where a skeleton
-		// header goes missing, causing the sync to get stuck and/or panic.
-		//
-		// The setup requires a previously successfully synced chain up to a block
-		// height N. That results is a single skeleton header (block N) and a single
-		// subchain (head N, Tail N) being stored on disk.
-		//
-		// The following step requires a new sync cycle to a new side chain of a
-		// height higher than N, and an ancestor lower than N (e.g. N-2, N+2).
-		// In this scenario, when processing a batch of headers, a link point of
-		// N-2 will be found, meaning that N-1 and N have been overwritten.
-		//
-		// The link event triggers an early exit, noticing that the previous sub-
-		// chain is a leftover and deletes it (with it's skeleton header N). But
-		// since skeleton header N has been overwritten to the new side chain, we
-		// end up losing it and creating a gap.
-		{
-			fill:          true,
-			unpredictable: true, // We have good and bad peer too, bad may be dropped, test too short for certainty
+					newPeer:  newSkeletonTestPeer("good-peer", chain),
+					endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
+					endserve: (requestHeaders + 101 - 2) + (100 - 1), // midserve + lenrest - genesis
+					enddrop:  1,                                      // no new drops
+				},
+				// This test checks if a peer tries to inject a different header - *off*
+				// the sync boundary - instead of sending the correct sequence. The bad
+				// package should not be accepted.
+				//
+				// Joining with a new peer should however unblock the sync.
+				{
+					head: chain[requestHeaders+100], // We want to force the 100th header to be a request boundary
+					peers: []*skeletonTestPeer{
+						newSkeletonTestPeer("header-changer",
+							append(
+								append(
+									append([]*types.Header{}, chain[:50]...),
+									&types.Header{
+										ParentHash: chain[49].Hash(),
+										Number:     big.NewInt(int64(50)),
+										GasLimit:   1,
+									},
+								), chain[51:]...,
+							),
+						),
+					},
+					midstate: []*subchain{{Head: requestHeaders + 100, Tail: 100}},
+					midserve: requestHeaders + 101 - 2, // len - head - genesis
+					middrop:  1,                        // different set of headers, drop
 
-			head:     chain[len(chain)/2+1], // Sync up until the sidechain common ancestor + 2
-			peers:    []*skeletonTestPeer{newSkeletonTestPeer("test-peer-oldchain", chain)},
-			midstate: []*subchain{{Head: uint64(len(chain)/2 + 1), Tail: 1}},
+					newPeer:  newSkeletonTestPeer("good-peer", chain),
+					endstate: []*subchain{{Head: requestHeaders + 100, Tail: 1}},
+					endserve: (requestHeaders + 101 - 2) + (100 - 1), // midserve + lenrest - genesis
+					enddrop:  1,                                      // no new drops
+				},
+				// This test reproduces a bug caught during review (kudos to @holiman)
+				// where a subchain is merged with a previously interrupted one, causing
+				// pending data in the scratch space to become "invalid" (since we jump
+				// ahead during subchain merge). In that case it is expected to ignore
+				// the queued up data instead of trying to process on top of a shifted
+				// task set.
+				//
+				// The test is a bit convoluted since it needs to trigger a concurrency
+				// issue. First we sync up an initial chain of 2x512 items. Then announce
+				// 2x512+2 as head and delay delivering the head batch to fill the scratch
+				// space first. The delivery head should merge with the previous download
+				// and the scratch space must not be consumed further.
+				{
+					head: chain[2*requestHeaders],
+					peers: []*skeletonTestPeer{
+						newSkeletonTestPeerWithHook("peer-1", chain, func(origin uint64) []*types.Header {
+							if origin == chain[2*requestHeaders+1].Number.Uint64() {
+								time.Sleep(100 * time.Millisecond)
+							}
+							return nil // Fallback to default behavior, just delayed
+						}),
+						newSkeletonTestPeerWithHook("peer-2", chain, func(origin uint64) []*types.Header {
+							if origin == chain[2*requestHeaders+1].Number.Uint64() {
+								time.Sleep(100 * time.Millisecond)
+							}
+							return nil // Fallback to default behavior, just delayed
+						}),
+					},
+					midstate: []*subchain{{Head: 2 * requestHeaders, Tail: 1}},
+					midserve: 2*requestHeaders - 1, // len - head - genesis
 
-			newHead:  sidechain[len(sidechain)/2+3], // Sync up until the sidechain common ancestor + 4
-			newPeer:  newSkeletonTestPeer("test-peer-newchain", sidechain),
-			endstate: []*subchain{{Head: uint64(len(sidechain)/2 + 3), Tail: uint64(len(chain) / 2)}},
-		},
+					newHead:  chain[2*requestHeaders+2],
+					endstate: []*subchain{{Head: 2*requestHeaders + 2, Tail: 1}},
+					endserve: 4 * requestHeaders,
+				},
+				// This test reproduces a bug caught by (@rjl493456442) where a skeleton
+				// header goes missing, causing the sync to get stuck and/or panic.
+				//
+				// The setup requires a previously successfully synced chain up to a block
+				// height N. That results is a single skeleton header (block N) and a single
+				// subchain (head N, Tail N) being stored on disk.
+				//
+				// The following step requires a new sync cycle to a new side chain of a
+				// height higher than N, and an ancestor lower than N (e.g. N-2, N+2).
+				// In this scenario, when processing a batch of headers, a link point of
+				// N-2 will be found, meaning that N-1 and N have been overwritten.
+				//
+				// The link event triggers an early exit, noticing that the previous sub-
+				// chain is a leftover and deletes it (with it's skeleton header N). But
+				// since skeleton header N has been overwritten to the new side chain, we
+				// end up losing it and creating a gap.
+				{
+					fill:          true,
+					unpredictable: true, // We have good and bad peer too, bad may be dropped, test too short for certainty
+
+					head:     chain[len(chain)/2+1], // Sync up until the sidechain common ancestor + 2
+					peers:    []*skeletonTestPeer{newSkeletonTestPeer("test-peer-oldchain", chain)},
+					midstate: []*subchain{{Head: uint64(len(chain)/2 + 1), Tail: 1}},
+
+					newHead:  sidechain[len(sidechain)/2+3], // Sync up until the sidechain common ancestor + 4
+					newPeer:  newSkeletonTestPeer("test-peer-newchain", sidechain),
+					endstate: []*subchain{{Head: uint64(len(sidechain)/2 + 3), Tail: uint64(len(chain) / 2)}},
+				},
+		*/
 	}
 	for i, tt := range tests {
 		// Create a fresh database and initialize it with the starting state
@@ -974,4 +989,3 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 		skeleton.Terminate()
 	}
 }
-*/

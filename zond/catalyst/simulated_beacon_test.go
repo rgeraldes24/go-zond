@@ -18,7 +18,6 @@ package catalyst
 
 import (
 	"context"
-	"fmt"
 	"math/big"
 	"testing"
 	"time"
@@ -131,11 +130,6 @@ func TestSimulatedBeaconSendWithdrawals(t *testing.T) {
 			for _, includedWithdrawal := range evt.Block.Withdrawals() {
 				includedWithdrawals = append(includedWithdrawals, includedWithdrawal.Index)
 			}
-
-			fmt.Println(len(includedWithdrawals))
-			fmt.Println(len(includedTxs))
-			fmt.Println(len(withdrawals))
-			fmt.Println(len(txs))
 
 			// ensure all withdrawals/txs included. this will take two blocks b/c number of withdrawals > 10
 			if len(includedTxs) == len(txs) && len(includedWithdrawals) == len(withdrawals) && evt.Block.Number().Cmp(big.NewInt(2)) == 0 {
