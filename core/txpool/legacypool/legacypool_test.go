@@ -500,8 +500,6 @@ func TestChainFork(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix: legacypool_test.go:549: second transaction insert failed (replacement transaction underpriced) or not reported replacement (false)
-/*
 func TestDoubleNonce(t *testing.T) {
 	t.Parallel()
 
@@ -519,9 +517,9 @@ func TestDoubleNonce(t *testing.T) {
 	resetState()
 
 	signer := types.ShanghaiSigner{ChainId: big.NewInt(1)}
-	tx1, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &common.Address{}, Value: big.NewInt(100), Gas: 100000, Data: nil}), signer, key)
-	tx2, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &common.Address{}, Value: big.NewInt(100), Gas: 1000000, Data: nil}), signer, key)
-	tx3, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &common.Address{}, Value: big.NewInt(100), Gas: 1000000, Data: nil}), signer, key)
+	tx1, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &common.Address{}, Value: big.NewInt(100), Gas: 100000, GasFeeCap: big.NewInt(1), GasTipCap: big.NewInt(1), Data: nil}), signer, key)
+	tx2, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &common.Address{}, Value: big.NewInt(100), Gas: 1000000, GasFeeCap: big.NewInt(2), GasTipCap: big.NewInt(2), Data: nil}), signer, key)
+	tx3, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &common.Address{}, Value: big.NewInt(100), Gas: 1000000, GasFeeCap: big.NewInt(1), GasTipCap: big.NewInt(1), Data: nil}), signer, key)
 
 	// Add the first two transaction, ensure higher priced stays only
 	if replace, err := pool.add(tx1, false); err != nil || replace {
@@ -552,7 +550,6 @@ func TestDoubleNonce(t *testing.T) {
 		t.Error("expected 1 total transactions, got", pool.all.Count())
 	}
 }
-*/
 
 func TestMissingNonce(t *testing.T) {
 	t.Parallel()
