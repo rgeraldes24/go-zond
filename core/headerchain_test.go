@@ -19,11 +19,15 @@ package core
 import (
 	"errors"
 	"fmt"
+	"math/big"
 	"testing"
 	"time"
 
+	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
+	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/trie"
 )
 
 func verifyUnbrokenCanonchain(hc *HeaderChain) error {
@@ -58,8 +62,6 @@ func testInsert(t *testing.T, hc *HeaderChain, chain []*types.Header, wantStatus
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
 // This test checks status reporting of InsertHeaderChain.
 func TestHeaderInsertion(t *testing.T) {
 	var (
@@ -72,9 +74,10 @@ func TestHeaderInsertion(t *testing.T) {
 		t.Fatal(err)
 	}
 	// chain A: G->A1->A2...A128
-	genDb, chainA := makeHeaderChainWithGenesis(gspec, 128, beacon.NewFaker(), 10)
+	// genDb, chainA := makeHeaderChainWithGenesis(gspec, 128, beacon.NewFaker(), 10)
+	_, chainA := makeHeaderChainWithGenesis(gspec, 128, beacon.NewFaker(), 10)
 	// chain B: G->A1->B1...B128
-	chainB := makeHeaderChain(gspec.Config, chainA[0], 128, beacon.NewFaker(), genDb, 10)
+	// chainB := makeHeaderChain(gspec.Config, chainA[0], 128, beacon.NewFaker(), genDb, 10)
 
 	forker := NewForkChoice(hc, nil)
 	// Inserting 64 headers on an empty chain, expecting
@@ -89,22 +92,26 @@ func TestHeaderInsertion(t *testing.T) {
 	// 1 callbacks, 1 canon, 0 side
 	testInsert(t, hc, chainA[32:96], CanonStatTy, nil, forker)
 
-	// Inserting side blocks, but not overtaking the canon chain
-	testInsert(t, hc, chainB[0:32], SideStatTy, nil, forker)
+	// TODO(rgeraldes24): fix
+	// // Inserting side blocks, but not overtaking the canon chain
+	// testInsert(t, hc, chainB[0:32], SideStatTy, nil, forker)
 
+	// TODO(rgeraldes24): fix
 	// Inserting more side blocks, but we don't have the parent
-	testInsert(t, hc, chainB[34:36], NonStatTy, consensus.ErrUnknownAncestor, forker)
+	// testInsert(t, hc, chainB[34:36], NonStatTy, consensus.ErrUnknownAncestor, forker)
 
+	// TODO(rgeraldes24): fix
 	// Inserting more sideblocks, overtaking the canon chain
-	testInsert(t, hc, chainB[32:97], CanonStatTy, nil, forker)
+	// testInsert(t, hc, chainB[32:97], CanonStatTy, nil, forker)
 
 	// Inserting more A-headers, taking back the canonicality
 	testInsert(t, hc, chainA[90:100], CanonStatTy, nil, forker)
 
+	// TODO(rgeraldes24): fix
 	// And B becomes canon again
-	testInsert(t, hc, chainB[97:107], CanonStatTy, nil, forker)
+	// testInsert(t, hc, chainB[97:107], CanonStatTy, nil, forker)
 
+	// TODO(rgeraldes24): fix
 	// And B becomes even longer
-	testInsert(t, hc, chainB[107:128], CanonStatTy, nil, forker)
+	// testInsert(t, hc, chainB[107:128], CanonStatTy, nil, forker)
 }
-*/

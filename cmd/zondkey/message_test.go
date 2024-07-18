@@ -16,13 +16,8 @@
 
 package main
 
-/*
-import (
-	"path/filepath"
-	"testing"
-)
-
 // TODO(rgeraldes24): fix
+/*
 func TestMessageSignVerify(t *testing.T) {
 	tmpdir := t.TempDir()
 
@@ -37,7 +32,6 @@ Password: {{.InputLine "foobar"}}
 Repeat password: {{.InputLine "foobar"}}
 `)
 	_, matches := generate.ExpectRegexp(`Address: (0x[0-9a-fA-F]{40})\n`)
-	address := matches[1]
 	generate.ExpectExit()
 
 	// Sign a message.
@@ -51,17 +45,10 @@ Password: {{.InputLine "foobar"}}
 	sign.ExpectExit()
 
 	// Verify the message.
-	verify := runZondkey(t, "verifymessage", address, signature, message)
+	verify := runZondkey(t, "verifymessage", signature, message)
 	_, matches = verify.ExpectRegexp(`
 Signature verification successful!
-Recovered public key: [0-9a-f]+
-Recovered address: (0x[0-9a-fA-F]{40})
 `)
-	recovered := matches[1]
 	verify.ExpectExit()
-
-	if recovered != address {
-		t.Error("recovered address doesn't match generated key")
-	}
 }
 */

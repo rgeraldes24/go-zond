@@ -173,8 +173,6 @@ func testSetupGenesis(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24)
-/*
 // TestGenesisHashes checks the congruity of default genesis data to
 // corresponding hardcoded genesis hash values.
 func TestGenesisHashes(t *testing.T) {
@@ -182,8 +180,9 @@ func TestGenesisHashes(t *testing.T) {
 		genesis *Genesis
 		want    common.Hash
 	}{
-		{DefaultGenesisBlock(), params.MainnetGenesisHash},
-		{DefaultBetaNetGenesisBlock(), params.BetaNetGenesisHash},
+		// TODO(rgeraldes24): add new hashes
+		// {DefaultGenesisBlock(), params.MainnetGenesisHash},
+		// {DefaultBetaNetGenesisBlock(), params.BetaNetGenesisHash},
 	} {
 		// Test via MustCommit
 		db := rawdb.NewMemoryDatabase()
@@ -196,7 +195,6 @@ func TestGenesisHashes(t *testing.T) {
 		}
 	}
 }
-*/
 
 func TestGenesis_Commit(t *testing.T) {
 	genesis := &Genesis{

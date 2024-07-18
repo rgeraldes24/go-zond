@@ -37,6 +37,7 @@ type txSenderCacherRequest struct {
 	inc    int
 }
 
+// TODO(rgeraldes24): review: ec recover
 // txSenderCacher is a helper structure to concurrently ecrecover transaction
 // senders from digital signatures on background threads.
 type txSenderCacher struct {

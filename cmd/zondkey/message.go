@@ -21,10 +21,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/theQRL/go-zond/accounts"
+	"github.com/theQRL/go-qrllib/dilithium"
 	"github.com/theQRL/go-zond/cmd/utils"
-	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/crypto"
 	"github.com/urfave/cli/v2"
 )
 
@@ -86,15 +84,13 @@ To sign a message contained in a file, use the --msgfile flag.
 }
 
 type outputVerify struct {
-	Success            bool
-	RecoveredAddress   string
-	RecoveredPublicKey string
+	Success bool
 }
 
 var commandVerifyMessage = &cli.Command{
 	Name:      "verifymessage",
 	Usage:     "verify the signature of a signed message",
-	ArgsUsage: "<address> <signature> <message>",
+	ArgsUsage: "<signature> <message>",
 	Description: `
 Verify the signature of the message.
 It is possible to refer to a file containing the message.`,
@@ -103,31 +99,23 @@ It is possible to refer to a file containing the message.`,
 		msgfileFlag,
 	},
 	Action: func(ctx *cli.Context) error {
-		addressStr := ctx.Args().First()
-		signatureHex := ctx.Args().Get(1)
+		signatureHex := ctx.Args().First()
+		pubKeyHex := ctx.Args().Get(1)
 		message := getMessage(ctx, 2)
 
-		if !common.IsHexAddress(addressStr) {
-			utils.Fatalf("Invalid address: %s", addressStr)
-		}
-		address := common.HexToAddress(addressStr)
 		signature, err := hex.DecodeString(signatureHex)
 		if err != nil {
 			utils.Fatalf("Signature encoding is not hexadecimal: %v", err)
 		}
 
-		recoveredPubkey, err := crypto.SigToPub(accounts.TextHash(message), signature)
-		if err != nil || recoveredPubkey == nil {
-			utils.Fatalf("Signature verification failed: %v", err)
+		pk, err := hex.DecodeString(pubKeyHex)
+		if err != nil {
+			utils.Fatalf("Public key encoding is not hexadecimal: %v", err)
 		}
-		recoveredPubkeyBytes := crypto.FromECDSAPub(recoveredPubkey)
-		recoveredAddress := crypto.PubkeyToAddress(*recoveredPubkey)
-		success := address == recoveredAddress
 
+		// TODO(rgeraldes24): review
 		out := outputVerify{
-			Success:            success,
-			RecoveredPublicKey: hex.EncodeToString(recoveredPubkeyBytes),
-			RecoveredAddress:   recoveredAddress.Hex(),
+			Success: dilithium.Verify(message, [4595]uint8(signature), (*[2592]uint8)(pk)),
 		}
 		if ctx.Bool(jsonFlag.Name) {
 			mustPrintJSON(out)
@@ -137,8 +125,6 @@ It is possible to refer to a file containing the message.`,
 			} else {
 				fmt.Println("Signature verification failed!")
 			}
-			fmt.Println("Recovered public key:", out.RecoveredPublicKey)
-			fmt.Println("Recovered address:", out.RecoveredAddress)
 		}
 		return nil
 	},
