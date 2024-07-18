@@ -2128,8 +2128,6 @@ func testJournaling(t *testing.T, nolocals bool) {
 	pool.Close()
 }
 
-// TODO(rgeraldes24): fix
-/*
 // TestStatusCheck tests that the pool can correctly retrieve the
 // pending status of individual transactions.
 func TestStatusCheck(t *testing.T) {
@@ -2152,14 +2150,10 @@ func TestStatusCheck(t *testing.T) {
 	// Generate and queue a batch of transactions, both pending and queued
 	txs := types.Transactions{}
 
-	txs = append(txs, dynamicFeeTx(0, 100000, big.NewInt(1), big.NewInt(0), keys[0])) // Pending only
-	txs = append(txs, dynamicFeeTx(0, 100000, big.NewInt(1), big.NewInt(0), keys[1])) // Pending and queued
-	txs = append(txs, dynamicFeeTx(2, 100000, big.NewInt(1), big.NewInt(0), keys[1]))
-	txs = append(txs, dynamicFeeTx(2, 100000, big.NewInt(1), big.NewInt(0), keys[2])) // Queued only
-	// txs = append(txs, pricedTransaction(0, 100000, big.NewInt(1), keys[0])) // Pending only
-	// txs = append(txs, pricedTransaction(0, 100000, big.NewInt(1), keys[1])) // Pending and queued
-	// txs = append(txs, pricedTransaction(2, 100000, big.NewInt(1), keys[1]))
-	// txs = append(txs, pricedTransaction(2, 100000, big.NewInt(1), keys[2])) // Queued only
+	txs = append(txs, dynamicFeeTx(0, 100000, big.NewInt(1), big.NewInt(1), keys[0])) // Pending only
+	txs = append(txs, dynamicFeeTx(0, 100000, big.NewInt(1), big.NewInt(1), keys[1])) // Pending and queued
+	txs = append(txs, dynamicFeeTx(2, 100000, big.NewInt(1), big.NewInt(1), keys[1]))
+	txs = append(txs, dynamicFeeTx(2, 100000, big.NewInt(1), big.NewInt(1), keys[2])) // Queued only
 
 	// Import the transaction and ensure they are correctly added
 	pool.addRemotesSync(txs)
@@ -2188,7 +2182,6 @@ func TestStatusCheck(t *testing.T) {
 		}
 	}
 }
-*/
 
 // Test the transaction slots consumption is computed correctly
 func TestSlotCount(t *testing.T) {

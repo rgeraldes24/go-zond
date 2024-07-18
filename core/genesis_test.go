@@ -33,18 +33,6 @@ import (
 	"github.com/theQRL/go-zond/zonddb"
 )
 
-// TODO(rgeraldes24): remove
-/*
-func TestInvalidCliqueConfig(t *testing.T) {
-	block := DefaultGoerliGenesisBlock()
-	block.ExtraData = []byte{}
-	db := rawdb.NewMemoryDatabase()
-	if _, err := block.Commit(db, trie.NewDatabase(db, nil)); err == nil {
-		t.Fatal("Expected error on invalid clique config")
-	}
-}
-*/
-
 // TODO(rgeraldes24): fix
 // func TestSetupGenesis(t *testing.T) {
 // 	testSetupGenesis(t, rawdb.HashScheme)
