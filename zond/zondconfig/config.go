@@ -43,7 +43,7 @@ var FullNodeGPO = gasprice.Config{
 	IgnorePrice:      gasprice.DefaultIgnorePrice,
 }
 
-// Defaults contains default settings for use on the Ethereum main net.
+// Defaults contains default settings for use on the Zond main net.
 var Defaults = Config{
 	SyncMode:           downloader.SnapSync,
 	NetworkId:          1,

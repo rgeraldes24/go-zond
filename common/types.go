@@ -223,7 +223,7 @@ func BigToAddress(b *big.Int) Address { return BytesToAddress(b.Bytes()) }
 func HexToAddress(s string) Address { return BytesToAddress(FromHex(s)) }
 
 // IsHexAddress verifies whether a string can represent a valid hex-encoded
-// Ethereum address or not.
+// Zond address or not.
 func IsHexAddress(s string) bool {
 	if has0xPrefix(s) {
 		s = s[2:]

@@ -23,6 +23,7 @@ import (
 	"github.com/theQRL/go-zond/common"
 )
 
+// TODO(rgeraldes24): fix
 // Genesis hashes to enforce below configs on.
 var (
 	MainnetGenesisHash = common.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")
@@ -54,7 +55,7 @@ var (
 	}
 
 	// TestChainConfig contains every protocol change (EIPs) introduced
-	// and accepted by the Ethereum core developers for testing proposes.
+	// and accepted by the Zond core developers for testing proposes.
 	TestChainConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
 	}

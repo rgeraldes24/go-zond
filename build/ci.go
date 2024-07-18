@@ -81,19 +81,19 @@ var (
 	debExecutables = []debExecutable{
 		{
 			BinaryName:  "abigen",
-			Description: "Source code generator to convert Ethereum contract definitions into easy to use, compile-time type-safe Go packages.",
+			Description: "Source code generator to convert Zond contract definitions into easy to use, compile-time type-safe Go packages.",
 		},
 		{
 			BinaryName:  "bootnode",
-			Description: "Ethereum bootnode.",
+			Description: "Zond bootnode.",
 		},
 		{
 			BinaryName:  "evm",
-			Description: "Developer utility version of the EVM (Ethereum Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
+			Description: "Developer utility version of the EVM (Zond Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
 		},
 		{
 			BinaryName:  "gzond",
-			Description: "Ethereum CLI client.",
+			Description: "Zond CLI client.",
 		},
 		{
 			BinaryName:  "rlpdump",
@@ -101,20 +101,20 @@ var (
 		},
 		{
 			BinaryName:  "clef",
-			Description: "Ethereum account management tool.",
+			Description: "Zond account management tool.",
 		},
 	}
 
 	// A debian package is created for all executables listed here.
-	debEthereum = debPackage{
-		Name:        "ethereum",
+	debZond = debPackage{
+		Name:        "zond",
 		Version:     params.Version,
 		Executables: debExecutables,
 	}
 
 	// Debian meta packages to build and push to Ubuntu PPA
 	debPackages = []debPackage{
-		debEthereum,
+		debZond,
 	}
 
 	// Distros for which packages are created.
@@ -521,6 +521,7 @@ func doDocker(cmdline []string) {
 		auther.Stdin = bytes.NewReader(pass)
 		build.MustRun(auther)
 	}
+	// TODO(rgeraldes24): review
 	// Retrieve the version infos to build and push to the following paths:
 	//  - ethereum/client-go:latest                            - Pushes to the master branch, Gzond only
 	//  - ethereum/client-go:stable                            - Version tag publish on GitHub, Gzond only
@@ -867,7 +868,8 @@ func (d debExecutable) Package() string {
 func newDebMetadata(distro, goboot, author string, env build.Environment, t time.Time, name string, version string, exes []debExecutable) debMetadata {
 	if author == "" {
 		// No signing key, use default author.
-		author = "Ethereum Builds <fjl@ethereum.org>"
+		// TODO(rgeraldes24)
+		author = "Zond Builds <fjl@ethereum.org>"
 	}
 	return debMetadata{
 		GoBootPackage: goboot,

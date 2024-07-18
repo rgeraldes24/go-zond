@@ -24,7 +24,7 @@ import (
 // zondPeerInfo represents a short summary of the `zond` sub-protocol metadata known
 // about a connected peer.
 type zondPeerInfo struct {
-	Version uint `json:"version"` // Ethereum protocol version negotiated
+	Version uint `json:"version"` // Zond protocol version negotiated
 }
 
 // ethPeer is a wrapper around zond.Peer to maintain a few extra metadata.

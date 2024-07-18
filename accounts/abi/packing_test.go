@@ -661,6 +661,7 @@ var packUnpackTests = []packUnpackTest{
 			"0000000000000000000000000000000000000000000000000000000000000003",
 		unpacked: [3]*big.Int{big.NewInt(1), big.NewInt(2), big.NewInt(3)},
 	},
+	// TODO(rgeraldes24)
 	{
 		def: `[{"type": "string[4]"}]`,
 		packed: "0000000000000000000000000000000000000000000000000000000000000020" +

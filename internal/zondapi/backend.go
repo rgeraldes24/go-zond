@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package ethapi implements the general Ethereum API functions.
+// Package ethapi implements the general Zond API functions.
 package zondapi
 
 import (
@@ -101,7 +101,7 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 	return []rpc.API{
 		{
 			Namespace: "zond",
-			Service:   NewEthereumAPI(apiBackend),
+			Service:   NewZondAPI(apiBackend),
 		}, {
 			Namespace: "zond",
 			Service:   NewBlockChainAPI(apiBackend),

@@ -39,7 +39,7 @@ type PrecompiledContract interface {
 	Run(input []byte) ([]byte, error) // Run runs the precompiled contract
 }
 
-// PrecompiledContractsBerlin contains the default set of pre-compiled Ethereum
+// PrecompiledContractsBerlin contains the default set of pre-compiled Zond
 // contracts used in the Berlin release.
 var PrecompiledContractsBerlin = map[common.Address]PrecompiledContract{
 	common.BytesToAddress([]byte{1}): &depositroot{},

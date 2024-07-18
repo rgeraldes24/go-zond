@@ -163,7 +163,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gzondConfig) {
 	return stack, cfg
 }
 
-// makeFullNode loads gzond configuration and creates the Ethereum backend.
+// makeFullNode loads gzond configuration and creates the Zond backend.
 func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
 	stack, cfg := makeConfigNode(ctx)
 	backend, zond := utils.RegisterZondService(stack, &cfg.Zond)
@@ -190,7 +190,7 @@ func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
 		utils.RegisterGraphQLService(stack, backend, filterSystem, &cfg.Node)
 	}
 
-	// Add the Ethereum Stats daemon if requested.
+	// Add the Zond Stats daemon if requested.
 	if cfg.Zondstats.URL != "" {
 		utils.RegisterZondStatsService(stack, backend, cfg.Zondstats.URL)
 	}
