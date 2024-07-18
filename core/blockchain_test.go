@@ -4030,8 +4030,6 @@ func testCanonicalHashMarker(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
 // TestTxIndexer tests the tx indexes are updated correctly.
 func TestTxIndexer(t *testing.T) {
 	var (
@@ -4050,13 +4048,14 @@ func TestTxIndexer(t *testing.T) {
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, engine, 128, func(i int, gen *BlockGen) {
 		to := common.HexToAddress("0xdeadbeef")
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: nonce,
-			To:    &to,
-			Value: big.NewInt(1000),
-			Gas:   params.TxGas,
-			Data:  nil,
+			Nonce:     nonce,
+			To:        &to,
+			Value:     big.NewInt(1000),
+			Gas:       params.TxGas,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
-		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, testBankKey)
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, testBankKey)
 		gen.AddTx(tx)
 		nonce += 1
 	})
@@ -4245,7 +4244,7 @@ func TestTxIndexer(t *testing.T) {
 		os.RemoveAll(frdir)
 	}
 }
-*/
+
 func TestCreateThenDeletePostByzantium(t *testing.T) {
 	testCreateThenDelete(t, params.TestChainConfig)
 }
@@ -4435,103 +4434,6 @@ func TestDeleteThenCreate(t *testing.T) {
 		}
 	}
 }
-
-/*
-// TestTransientStorageReset ensures the transient storage is wiped correctly
-// between transactions.
-func TestTransientStorageReset(t *testing.T) {
-	var (
-		engine      = beacon.NewFaker()
-		key, _      = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address     = key.GetAddress()
-		destAddress = crypto.CreateAddress(address, 0)
-		funds       = big.NewInt(1000000000000000)
-		vmConfig    = vm.Config{
-			ExtraEips: []int{1153}, // Enable transient storage EIP
-		}
-	)
-	code := append([]byte{
-		// TLoad value with location 1
-		byte(vm.PUSH1), 0x1,
-		byte(vm.TLOAD),
-
-		// PUSH location
-		byte(vm.PUSH1), 0x1,
-
-		// SStore location:value
-		byte(vm.SSTORE),
-	}, make([]byte, 32-6)...)
-	initCode := []byte{
-		// TSTORE 1:1
-		byte(vm.PUSH1), 0x1,
-		byte(vm.PUSH1), 0x1,
-		byte(vm.TSTORE),
-
-		// Get the runtime-code on the stack
-		byte(vm.PUSH32)}
-	initCode = append(initCode, code...)
-	initCode = append(initCode, []byte{
-		byte(vm.PUSH1), 0x0, // offset
-		byte(vm.MSTORE),
-		byte(vm.PUSH1), 0x6, // size
-		byte(vm.PUSH1), 0x0, // offset
-		byte(vm.RETURN), // return 6 bytes of zero-code
-	}...)
-	gspec := &Genesis{
-		Config: params.TestChainConfig,
-		Alloc: GenesisAlloc{
-			address: {Balance: funds},
-		},
-	}
-	nonce := uint64(0)
-	signer := types.ShanghaiSigner{}
-	_, blocks, _ := GenerateChainWithGenesis(gspec, engine, 1, func(i int, b *BlockGen) {
-		fee := big.NewInt(1)
-		if b.header.BaseFee != nil {
-			fee = b.header.BaseFee
-		}
-		b.SetCoinbase(common.Address{1})
-		tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{
-			Nonce:    nonce,
-			GasFeeCap: new(big.Int).Set(fee),
-			Gas:      100000,
-			Data:     initCode,
-		})
-		nonce++
-		b.AddTxWithVMConfig(tx, vmConfig)
-
-		tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{
-			Nonce:    nonce,
-			GasFeeCap: new(big.Int).Set(fee),
-			Gas:      100000,
-			To:       &destAddress,
-		})
-		b.AddTxWithVMConfig(tx, vmConfig)
-		nonce++
-	})
-
-	// Initialize the blockchain with 1153 enabled.
-	chain, err := NewBlockChain(rawdb.NewMemoryDatabase(), nil, gspec, engine, vmConfig, nil, nil)
-	if err != nil {
-		t.Fatalf("failed to create tester chain: %v", err)
-	}
-	defer chain.Stop()
-	// Import the blocks
-	if _, err := chain.InsertChain(blocks); err != nil {
-		t.Fatalf("failed to insert into chain: %v", err)
-	}
-	// Check the storage
-	state, err := chain.StateAt(chain.CurrentHeader().Root)
-	if err != nil {
-		t.Fatalf("Failed to load state %v", err)
-	}
-	loc := common.BytesToHash([]byte{1})
-	slot := state.GetState(destAddress, loc)
-	if slot != (common.Hash{}) {
-		t.Fatalf("Unexpected dirty storage slot")
-	}
-}
-*/
 
 func TestEIP3651(t *testing.T) {
 	var (
