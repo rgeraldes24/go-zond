@@ -30,7 +30,7 @@ import (
 // enough for the miner and other APIs to handle large batches of transactions;
 // and supports pulling up the entire transaction when really needed.
 type LazyTransaction struct {
-	Pool SubPool            // Transaction subpool to pull the real transaction up
+	Pool LazyResolver       // Transaction resolver to pull the real transaction up
 	Hash common.Hash        // Transaction hash to pull up if needed
 	Tx   *types.Transaction // Transaction if already resolved
 
@@ -43,11 +43,25 @@ type LazyTransaction struct {
 
 // Resolve retrieves the full transaction belonging to a lazy handle if it is still
 // maintained by the transaction pool.
+//
+// Note, the method will *not* cache the retrieved transaction if the original
+// pool has not cached it. The idea being, that if the tx was too big to insert
+// originally, silently saving it will cause more trouble down the line (and
+// indeed seems to have caused a memory bloat in the original implementation
+// which did just that).
 func (ltx *LazyTransaction) Resolve() *types.Transaction {
-	if ltx.Tx == nil {
-		ltx.Tx = ltx.Pool.Get(ltx.Hash)
+	if ltx.Tx != nil {
+		return ltx.Tx
 	}
-	return ltx.Tx
+	return ltx.Pool.Get(ltx.Hash)
+}
+
+// LazyResolver is a minimal interface needed for a transaction pool to satisfy
+// resolving lazy transactions. It's mostly a helper to avoid the entire sub-
+// pool being injected into the lazy transaction.
+type LazyResolver interface {
+	// Get returns a transaction if it is contained in the pool, or nil otherwise.
+	Get(hash common.Hash) *types.Transaction
 }
 
 // AddressReserver is passed by the main transaction pool to subpools, so they
@@ -71,7 +85,7 @@ type PendingFilter struct {
 // production, this interface defines the common methods that allow the primary
 // transaction pool to manage the subpools.
 type SubPool interface {
-	// Filter is a selector used to decide whether a transaction whould be added
+	// Filter is a selector used to decide whether a transaction would be added
 	// to this particular subpool.
 	Filter(tx *types.Transaction) bool
 
@@ -110,9 +124,14 @@ type SubPool interface {
 
 	// Pending retrieves all currently processable transactions, grouped by origin
 	// account and sorted by nonce.
+	//
+	// The transactions can also be pre-filtered by the dynamic fee components to
+	// reduce allocations and load on downstream subsystems.
 	Pending(filter PendingFilter) map[common.Address][]*LazyTransaction
 
-	// SubscribeTransactions subscribes to new transaction events.
+	// SubscribeTransactions subscribes to new transaction events. The subscriber
+	// can decide whether to receive notifications only for newly seen transactions
+	// or also for reorged out ones.
 	SubscribeTransactions(ch chan<- core.NewTxsEvent) event.Subscription
 
 	// Nonce returns the next nonce of an account, with all transactions executable

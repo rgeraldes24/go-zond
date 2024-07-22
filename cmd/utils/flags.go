@@ -18,7 +18,6 @@
 package utils
 
 import (
-	"bytes"
 	"context"
 	"crypto/ecdsa"
 	"encoding/hex"
@@ -41,11 +40,9 @@ import (
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/fdlimit"
-	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/txpool/legacypool"
-	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/graphql"
@@ -62,7 +59,6 @@ import (
 	"github.com/theQRL/go-zond/p2p/nat"
 	"github.com/theQRL/go-zond/p2p/netutil"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/trie"
 	"github.com/theQRL/go-zond/trie/triedb/hashdb"
@@ -250,7 +246,6 @@ var (
 	StateSchemeFlag = &cli.StringFlag{
 		Name:     "state.scheme",
 		Usage:    "Scheme to use for storing zond state ('hash' or 'path')",
-		Value:    rawdb.HashScheme,
 		Category: flags.StateCategory,
 	}
 	StateHistoryFlag = &cli.Uint64Flag{
@@ -557,7 +552,7 @@ var (
 	}
 	HTTPPathPrefixFlag = &cli.StringFlag{
 		Name:     "http.rpcprefix",
-		Usage:    "HTTP path path prefix on which JSON-RPC is served. Use '/' to serve on all paths.",
+		Usage:    "HTTP path prefix on which JSON-RPC is served. Use '/' to serve on all paths.",
 		Value:    "",
 		Category: flags.APICategory,
 	}
@@ -756,11 +751,6 @@ var (
 	MetricsEnabledFlag = &cli.BoolFlag{
 		Name:     "metrics",
 		Usage:    "Enable metrics collection and reporting",
-		Category: flags.MetricsCategory,
-	}
-	MetricsEnabledExpensiveFlag = &cli.BoolFlag{
-		Name:     "metrics.expensive",
-		Usage:    "Enable expensive metrics collection and reporting",
 		Category: flags.MetricsCategory,
 	}
 
@@ -1713,21 +1703,9 @@ func RegisterFilterAPI(stack *node.Node, backend zondapi.Backend, zondcfg *zondc
 }
 
 // RegisterFullSyncTester adds the full-sync tester service into node.
-func RegisterFullSyncTester(stack *node.Node, zond *zond.Zond, path string) {
-	blob, err := os.ReadFile(path)
-	if err != nil {
-		Fatalf("Failed to read block file: %v", err)
-	}
-	rlpBlob, err := hexutil.Decode(string(bytes.TrimRight(blob, "\r\n")))
-	if err != nil {
-		Fatalf("Failed to decode block blob: %v", err)
-	}
-	var block types.Block
-	if err := rlp.DecodeBytes(rlpBlob, &block); err != nil {
-		Fatalf("Failed to decode block: %v", err)
-	}
-	catalyst.RegisterFullSyncTester(stack, zond, &block)
-	log.Info("Registered full-sync tester", "number", block.NumberU64(), "hash", block.Hash())
+func RegisterFullSyncTester(stack *node.Node, zond *zond.Zond, target common.Hash) {
+	catalyst.RegisterFullSyncTester(stack, zond, target)
+	log.Info("Registered full-sync tester", "hash", target)
 }
 
 func SetupMetrics(ctx *cli.Context) {

@@ -619,6 +619,7 @@ func (s *Service) assembleBlockStats(block *types.Block) *blockStats {
 	// check if backend is a full node
 	fullBackend, ok := s.backend.(fullNodeBackend)
 	if ok {
+		// Retrieve current chain head if no block is given.
 		if block == nil {
 			head := fullBackend.CurrentBlock()
 			block, _ = fullBackend.BlockByNumber(context.Background(), rpc.BlockNumber(head.Number.Uint64()))
@@ -763,7 +764,7 @@ func (s *Service) reportStats(conn *connWrapper) error {
 	// check if backend is a full node
 	if fullBackend, ok := s.backend.(fullNodeBackend); ok {
 		sync := fullBackend.SyncProgress()
-		syncing = fullBackend.CurrentHeader().Number.Uint64() >= sync.HighestBlock
+		syncing = !sync.Done()
 
 		price, _ := fullBackend.SuggestGasTipCap(context.Background())
 		gasprice = int(price.Uint64())
@@ -772,7 +773,7 @@ func (s *Service) reportStats(conn *connWrapper) error {
 		}
 	} else {
 		sync := s.backend.SyncProgress()
-		syncing = s.backend.CurrentHeader().Number.Uint64() >= sync.HighestBlock
+		syncing = !sync.Done()
 	}
 	// Assemble the node stats and send it to the server
 	log.Trace("Sending node details to zondstats")

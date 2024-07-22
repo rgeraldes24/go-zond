@@ -31,6 +31,8 @@ import (
 	"github.com/theQRL/go-zond/accounts/external"
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
+	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/internal/flags"
 	"github.com/theQRL/go-zond/internal/version"
 	"github.com/theQRL/go-zond/internal/zondapi"
@@ -39,7 +41,6 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/zond/catalyst"
-	"github.com/theQRL/go-zond/zond/downloader"
 	"github.com/theQRL/go-zond/zond/zondconfig"
 	"github.com/urfave/cli/v2"
 )
@@ -196,8 +197,12 @@ func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
 	}
 
 	// Configure full-sync tester service if requested
-	if ctx.IsSet(utils.SyncTargetFlag.Name) && cfg.Zond.SyncMode == downloader.FullSync {
-		utils.RegisterFullSyncTester(stack, zond, ctx.Path(utils.SyncTargetFlag.Name))
+	if ctx.IsSet(utils.SyncTargetFlag.Name) {
+		hex := hexutil.MustDecode(ctx.String(utils.SyncTargetFlag.Name))
+		if len(hex) != common.HashLength {
+			utils.Fatalf("invalid sync target length: have %d, want %d", len(hex), common.HashLength)
+		}
+		utils.RegisterFullSyncTester(stack, zond, common.BytesToHash(hex))
 	}
 
 	// Start the dev mode if requested, or launch the engine API for
@@ -250,9 +255,6 @@ func dumpConfig(ctx *cli.Context) error {
 func applyMetricConfig(ctx *cli.Context, cfg *gzondConfig) {
 	if ctx.IsSet(utils.MetricsEnabledFlag.Name) {
 		cfg.Metrics.Enabled = ctx.Bool(utils.MetricsEnabledFlag.Name)
-	}
-	if ctx.IsSet(utils.MetricsEnabledExpensiveFlag.Name) {
-		cfg.Metrics.EnabledExpensive = ctx.Bool(utils.MetricsEnabledExpensiveFlag.Name)
 	}
 	if ctx.IsSet(utils.MetricsHTTPFlag.Name) {
 		cfg.Metrics.HTTP = ctx.String(utils.MetricsHTTPFlag.Name)

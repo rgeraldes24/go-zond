@@ -16,6 +16,7 @@
 
 package zondtest
 
+/*
 import (
 	"compress/gzip"
 	"encoding/json"
@@ -31,6 +32,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
+	"github.com/theQRL/go-zond/zond/protocols/zond"
 )
 
 type Chain struct {
@@ -73,7 +75,8 @@ func (c *Chain) Head() *types.Block {
 	return c.blocks[c.Len()-1]
 }
 
-func (c *Chain) GetHeaders(req *GetBlockHeaders) ([]*types.Header, error) {
+// GetHeaders returns the headers base on a zondGetPacketHeadersPacket.
+func (c *Chain) GetHeaders(req *zond.GetBlockHeadersPacket) ([]*types.Header, error) {
 	if req.Amount < 1 {
 		return nil, errors.New("no block headers requested")
 	}
@@ -169,3 +172,4 @@ func blocksFromFile(chainfile string, gblock *types.Block) ([]*types.Block, erro
 	}
 	return blocks, nil
 }
+*/

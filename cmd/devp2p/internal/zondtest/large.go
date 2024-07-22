@@ -16,6 +16,7 @@
 
 package zondtest
 
+/*
 import (
 	"crypto/rand"
 	"math/big"
@@ -75,3 +76,4 @@ func largeHeader() *types.Header {
 		Number:      largeNumber(2),
 	}
 }
+*/

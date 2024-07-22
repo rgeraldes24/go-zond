@@ -16,6 +16,7 @@
 
 package zondtest
 
+/*
 import (
 	"time"
 
@@ -74,7 +75,6 @@ func TestSnapSuite(t *testing.T) {
 		})
 	}
 }
-*/
 
 // runGzond creates and starts a gzond node
 func runGzond() (*node.Node, error) {
@@ -124,3 +124,4 @@ func setupGzond(stack *node.Node) error {
 	_, err = backend.BlockChain().InsertChain(chain.blocks[1:])
 	return err
 }
+*/

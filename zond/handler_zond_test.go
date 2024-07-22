@@ -52,11 +52,7 @@ func (h *testZondHandler) PeerInfo(enode.ID) interface{}          { panic("not u
 
 func (h *testZondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 	switch packet := packet.(type) {
-	case *zond.NewPooledTransactionHashesPacket66:
-		h.txAnnounces.Send(([]common.Hash)(*packet))
-		return nil
-
-	case *zond.NewPooledTransactionHashesPacket68:
+	case *zond.NewPooledTransactionHashesPacket:
 		h.txAnnounces.Send(packet.Hashes)
 		return nil
 
@@ -64,7 +60,7 @@ func (h *testZondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 		h.txBroadcasts.Send(([]*types.Transaction)(*packet))
 		return nil
 
-	case *zond.PooledTransactionsPacket:
+	case *zond.PooledTransactionsResponse:
 		h.txBroadcasts.Send(([]*types.Transaction)(*packet))
 		return nil
 
@@ -231,10 +227,10 @@ func testRecvTransactions(t *testing.T, protocol uint) {
 	handler := newTestHandler()
 	defer handler.close()
 
-	handler.handler.acceptTxs.Store(true) // mark synced to accept transactions
+	handler.handler.synced.Store(true) // mark synced to accept transactions
 
 	txs := make(chan core.NewTxsEvent)
-	sub := handler.txpool.SubscribeNewTxsEvent(txs)
+	sub := handler.txpool.SubscribeTransactions(txs)
 	defer sub.Unsubscribe()
 
 	// Create a source peer to send messages through and a sink handler to receive them
@@ -390,7 +386,7 @@ func testTransactionPropagation(t *testing.T, protocol uint) {
 		sinks[i] = newTestHandler()
 		defer sinks[i].close()
 
-		sinks[i].handler.acceptTxs.Store(true) // mark synced to accept transactions
+		sinks[i].handler.synced.Store(true) // mark synced to accept transactions
 	}
 	// Interconnect all the sink handlers with the source handler
 	for i, sink := range sinks {
@@ -417,7 +413,7 @@ func testTransactionPropagation(t *testing.T, protocol uint) {
 	for i := 0; i < len(sinks); i++ {
 		txChs[i] = make(chan core.NewTxsEvent, 1024)
 
-		sub := sinks[i].txpool.SubscribeNewTxsEvent(txChs[i])
+		sub := sinks[i].txpool.SubscribeTransactions(txChs[i])
 		defer sub.Unsubscribe()
 	}
 	// Fill the source pool with transactions and wait for them at the sinks

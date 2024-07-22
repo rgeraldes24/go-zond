@@ -121,7 +121,7 @@ func (p *testTxPool) Pending(filter txpool.PendingFilter) map[common.Address][]*
 
 // SubscribeNewTxsEvent should return an event subscription of NewTxsEvent and
 // send events to the given channel.
-func (p *testTxPool) SubscribeNewTxsEvent(ch chan<- core.NewTxsEvent) event.Subscription {
+func (p *testTxPool) SubscribeTransactions(ch chan<- core.NewTxsEvent) event.Subscription {
 	return p.txFeed.Subscribe(ch)
 }
 

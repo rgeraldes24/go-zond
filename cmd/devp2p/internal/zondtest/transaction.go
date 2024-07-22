@@ -16,6 +16,7 @@
 
 package zondtest
 
+/*
 import (
 	"errors"
 	"fmt"
@@ -483,3 +484,4 @@ func signWithFaucet(chainConfig *params.ChainConfig, tx *types.Transaction) *typ
 	}
 	return signedTx
 }
+*/

@@ -16,6 +16,7 @@
 
 package zondtest
 
+/*
 import (
 	"bytes"
 	"errors"
@@ -139,8 +140,6 @@ func (s *Suite) TestSnapGetStorageRanges(t *utesting.T) {
 			nBytes:   500,
 			expSlots: 0,
 		},
-
-		/*
 			Some tests against this account:
 			{
 			  "balance": "0",
@@ -154,7 +153,7 @@ func (s *Suite) TestSnapGetStorageRanges(t *utesting.T) {
 			  },
 			  "key": "0xf493f79c43bd747129a226ad42529885a4b108aba6046b2d12071695a6627844"
 			}
-		*/
+
 		{ // [:] -> [slot1, slot2, slot3]
 			root:     s.chain.RootAt(999),
 			accounts: []common.Hash{common.HexToHash("0xf493f79c43bd747129a226ad42529885a4b108aba6046b2d12071695a6627844")},
@@ -434,7 +433,7 @@ func (s *Suite) TestSnapTrieNodes(t *utesting.T) {
 			},
 		},
 		{
-			/*
+
 				A test against this account, requesting trie nodes for the storage trie
 				{
 				  "balance": "0",
@@ -448,7 +447,7 @@ func (s *Suite) TestSnapTrieNodes(t *utesting.T) {
 				  },
 				  "key": "0xf493f79c43bd747129a226ad42529885a4b108aba6046b2d12071695a6627844"
 				}
-			*/
+
 			root: s.chain.RootAt(999),
 			paths: []snap.TrieNodePathSet{
 				{
@@ -700,3 +699,4 @@ func (s *Suite) snapGetTrieNodes(t *utesting.T, tc *trieNodesTest) error {
 	}
 	return err
 }
+*/

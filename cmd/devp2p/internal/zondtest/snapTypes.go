@@ -16,6 +16,7 @@
 
 package zondtest
 
+/*
 import "github.com/theQRL/go-zond/zond/protocols/snap"
 
 // GetAccountRange represents an account range query.
@@ -58,3 +59,4 @@ type TrieNodes snap.TrieNodesPacket
 
 func (msg TrieNodes) Code() int     { return 40 }
 func (msg TrieNodes) ReqID() uint64 { return msg.ID }
+*/

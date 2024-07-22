@@ -316,7 +316,7 @@ func (b *ZondAPIBackend) TxPool() *txpool.TxPool {
 }
 
 func (b *ZondAPIBackend) SubscribeNewTxsEvent(ch chan<- core.NewTxsEvent) event.Subscription {
-	return b.zond.txPool.SubscribeNewTxsEvent(ch)
+	return b.zond.txPool.SubscribeTransactions(ch)
 }
 
 func (b *ZondAPIBackend) SyncProgress() zond.SyncProgress {

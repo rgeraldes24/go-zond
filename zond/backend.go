@@ -203,6 +203,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	// Permit the downloader to use the trie cache allowance during fast sync
 	cacheLimit := cacheConfig.TrieCleanLimit + cacheConfig.TrieDirtyLimit + cacheConfig.SnapshotLimit
 	if zond.handler, err = newHandler(&handlerConfig{
+		NodeID:         zond.p2pServer.Self().ID(),
 		Database:       chainDb,
 		Chain:          zond.blockchain,
 		TxPool:         zond.txPool,
@@ -311,7 +312,7 @@ func (s *Zond) Engine() consensus.Engine           { return s.engine }
 func (s *Zond) ChainDb() zonddb.Database           { return s.chainDb }
 func (s *Zond) IsListening() bool                  { return true } // Always listening
 func (s *Zond) Downloader() *downloader.Downloader { return s.handler.downloader }
-func (s *Zond) Synced() bool                       { return s.handler.acceptTxs.Load() }
+func (s *Zond) Synced() bool                       { return s.handler.synced.Load() }
 func (s *Zond) SetSynced()                         { s.handler.enableSyncedFeatures() }
 func (s *Zond) ArchiveMode() bool                  { return s.config.NoPruning }
 func (s *Zond) BloomIndexer() *core.ChainIndexer   { return s.bloomIndexer }
