@@ -726,7 +726,7 @@ func setBlockhash(data *engine.ExecutableData) *engine.ExecutableData {
 		Extra:       data.ExtraData,
 		Random:      data.Random,
 	}
-	block := types.NewBlockWithHeader(header).WithBody(txs)
+	block := types.NewBlockWithHeader(header).WithBody(types.Body{Transactions: txs})
 	data.BlockHash = block.Hash()
 	return data
 }

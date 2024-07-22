@@ -56,7 +56,7 @@ func TestLookupStorage(t *testing.T) {
 			tx3 := types.NewTx(&types.DynamicFeeTx{Nonce: 3, To: &to3, Value: big.NewInt(333), Gas: 3333, Data: []byte{0x33, 0x33, 0x33}})
 			txs := []*types.Transaction{tx1, tx2, tx3}
 
-			block := types.NewBlock(&types.Header{Number: big.NewInt(314)}, txs, nil, newTestHasher())
+			block := types.NewBlock(&types.Header{Number: big.NewInt(314)}, &types.Body{Transactions: txs}, nil, newTestHasher())
 
 			// Check that no transactions entries are in a pristine database
 			for i, tx := range txs {

@@ -253,7 +253,7 @@ func makeBenchBlock() *Block {
 		}
 	}
 
-	return NewBlock(header, txs, receipts, blocktest.NewHasher())
+	return NewBlock(header, &Body{Transactions: txs}, receipts, blocktest.NewHasher())
 }
 
 func TestRlpDecodeParentHash(t *testing.T) {

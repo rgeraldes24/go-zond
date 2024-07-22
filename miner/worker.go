@@ -100,7 +100,7 @@ func (miner *Miner) generateWork(params *generateParams) *newPayloadResult {
 		}
 	}
 	body := types.Body{Transactions: work.txs, Withdrawals: params.withdrawals}
-	block, err := miner.engine.FinalizeAndAssemble(miner.chain, work.header, work.state, body.Transactions, work.receipts, body.Withdrawals)
+	block, err := miner.engine.FinalizeAndAssemble(miner.chain, work.header, work.state, &body, work.receipts)
 	if err != nil {
 		return &newPayloadResult{err: err}
 	}

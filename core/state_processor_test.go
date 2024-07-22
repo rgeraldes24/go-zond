@@ -340,5 +340,7 @@ func GenerateBadBlock(parent *types.Block, engine consensus.Engine, txs types.Tr
 	}
 	header.Root = common.BytesToHash(hasher.Sum(nil))
 
-	return types.NewBlockWithWithdrawals(header, txs, receipts, []*types.Withdrawal{}, trie.NewStackTrie(nil))
+	// Assemble and return the final block for sealing
+	body := &types.Body{Transactions: txs, Withdrawals: []*types.Withdrawal{}}
+	return types.NewBlock(header, body, receipts, trie.NewStackTrie(nil))
 }
