@@ -192,7 +192,7 @@ var genesis = &core.Genesis{
 	BaseFee:   big.NewInt(params.InitialBaseFee),
 }
 
-var testTx1 = types.MustSignNewTx(testKey, types.ShanghaiSigner{ChainId: genesis.Config.ChainID}, &types.DynamicFeeTx{
+var testTx1 = types.MustSignNewTx(testKey, types.LatestSigner(genesis.Config), &types.DynamicFeeTx{
 	Nonce:     0,
 	Value:     big.NewInt(12),
 	Gas:       params.TxGas,
@@ -201,7 +201,7 @@ var testTx1 = types.MustSignNewTx(testKey, types.ShanghaiSigner{ChainId: genesis
 	To:        &common.Address{2},
 })
 
-var testTx2 = types.MustSignNewTx(testKey, types.ShanghaiSigner{ChainId: genesis.Config.ChainID}, &types.DynamicFeeTx{
+var testTx2 = types.MustSignNewTx(testKey, types.LatestSigner(genesis.Config), &types.DynamicFeeTx{
 	Nonce:     1,
 	Value:     big.NewInt(8),
 	Gas:       params.TxGas,
@@ -265,7 +265,7 @@ func TestZondClient(t *testing.T) {
 			func(t *testing.T) { testBalanceAt(t, client) },
 		},
 		"TxInBlockInterrupted": {
-			func(t *testing.T) { testTransactionInBlockInterrupted(t, client) },
+			func(t *testing.T) { testTransactionInBlock(t, client) },
 		},
 		"ChainID": {
 			func(t *testing.T) { testChainID(t, client) },
@@ -330,7 +330,7 @@ func testHeader(t *testing.T, chain []*types.Block, client *rpc.Client) {
 				got.Number = big.NewInt(0) // hack to make DeepEqual work
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Fatalf("HeaderByNumber(%v)\n   = %v\nwant %v", tt.block, got, tt.want)
+				t.Fatalf("HeaderByNumber(%v) got = %v, want %v", tt.block, got, tt.want)
 			}
 		})
 	}
@@ -382,29 +382,35 @@ func testBalanceAt(t *testing.T, client *rpc.Client) {
 	}
 }
 
-func testTransactionInBlockInterrupted(t *testing.T, client *rpc.Client) {
-	zc := NewClient(client)
+func testTransactionInBlock(t *testing.T, client *rpc.Client) {
+	ec := NewClient(client)
 
 	// Get current block by number.
-	block, err := zc.BlockByNumber(context.Background(), nil)
+	block, err := ec.BlockByNumber(context.Background(), nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	// Test tx in block interrupted.
-	ctx, cancel := context.WithCancel(context.Background())
-	cancel()
-	tx, err := zc.TransactionInBlock(ctx, block.Hash(), 0)
-	if tx != nil {
-		t.Fatal("transaction should be nil")
-	}
-	if err == nil || err == zond.NotFound {
-		t.Fatal("error should not be nil/notfound")
+	// Test tx in block not found.
+	if _, err := ec.TransactionInBlock(context.Background(), block.Hash(), 20); err != zond.NotFound {
+		t.Fatal("error should be zond.NotFound")
 	}
 
-	// Test tx in block not found.
-	if _, err := zc.TransactionInBlock(context.Background(), block.Hash(), 20); err != zond.NotFound {
-		t.Fatal("error should be zond.NotFound")
+	// Test tx in block found.
+	tx, err := ec.TransactionInBlock(context.Background(), block.Hash(), 0)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if tx.Hash() != testTx1.Hash() {
+		t.Fatalf("unexpected transaction: %v", tx)
+	}
+
+	tx, err = ec.TransactionInBlock(context.Background(), block.Hash(), 1)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if tx.Hash() != testTx2.Hash() {
+		t.Fatalf("unexpected transaction: %v", tx)
 	}
 }
 
@@ -665,6 +671,7 @@ func testTransactionSender(t *testing.T, client *rpc.Client) {
 	// TransactionSender. Ensure the server is not asked by canceling the context here.
 	canceledCtx, cancel := context.WithCancel(context.Background())
 	cancel()
+	<-canceledCtx.Done() // Ensure the close of the Done channel
 	sender1, err := zc.TransactionSender(canceledCtx, tx1, block2.Hash(), 0)
 	if err != nil {
 		t.Fatal(err)
@@ -689,7 +696,7 @@ func sendTransaction(zc *Client) error {
 	if err != nil {
 		return err
 	}
-	nonce, err := zc.PendingNonceAt(context.Background(), testAddr)
+	nonce, err := zc.NonceAt(context.Background(), testAddr, nil)
 	if err != nil {
 		return err
 	}

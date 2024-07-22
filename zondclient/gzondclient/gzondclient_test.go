@@ -110,8 +110,20 @@ func TestGzondClient(t *testing.T) {
 		test func(t *testing.T)
 	}{
 		{
-			"TestGetProof",
-			func(t *testing.T) { testGetProof(t, client) },
+			"TestGetProof1",
+			func(t *testing.T) { testGetProof(t, client, testAddr) },
+		},
+		{
+			"TestGetProof2",
+			func(t *testing.T) { testGetProof(t, client, testContract) },
+		},
+		{
+			"TestGetProofEmpty",
+			func(t *testing.T) { testGetProof(t, client, testEmpty) },
+		},
+		{
+			"TestGetProofNonExistent",
+			func(t *testing.T) { testGetProofNonExistent(t, client) },
 		},
 		{
 			"TestGetProofCanonicalizeKeys",
@@ -217,24 +229,22 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 	}
 }
 
-func testGetProof(t *testing.T, client *rpc.Client) {
+func testGetProof(t *testing.T, client *rpc.Client, addr common.Address) {
 	zc := New(client)
 	zondcl := zondclient.NewClient(client)
-	result, err := zc.GetProof(context.Background(), testAddr, []string{testSlot.String()}, nil)
+	result, err := zc.GetProof(context.Background(), addr, []string{testSlot.String()}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !bytes.Equal(result.Address[:], testAddr[:]) {
-		t.Fatalf("unexpected address, want: %v got: %v", testAddr, result.Address)
+	if result.Address != addr {
+		t.Fatalf("unexpected address, have: %v want: %v", result.Address, addr)
 	}
 	// test nonce
-	nonce, _ := zondcl.NonceAt(context.Background(), result.Address, nil)
-	if result.Nonce != nonce {
+	if nonce, _ := zondcl.NonceAt(context.Background(), result.Address, nil); result.Nonce != nonce {
 		t.Fatalf("invalid nonce, want: %v got: %v", nonce, result.Nonce)
 	}
 	// test balance
-	balance, _ := zondcl.BalanceAt(context.Background(), result.Address, nil)
-	if result.Balance.Cmp(balance) != 0 {
+	if balance, _ := zondcl.BalanceAt(context.Background(), result.Address, nil); result.Balance.Cmp(balance) != 0 {
 		t.Fatalf("invalid balance, want: %v got: %v", balance, result.Balance)
 	}
 
@@ -242,13 +252,19 @@ func testGetProof(t *testing.T, client *rpc.Client) {
 	if len(result.StorageProof) != 1 {
 		t.Fatalf("invalid storage proof, want 1 proof, got %v proof(s)", len(result.StorageProof))
 	}
-	proof := result.StorageProof[0]
-	slotValue, _ := zondcl.StorageAt(context.Background(), testAddr, testSlot, nil)
-	if !bytes.Equal(slotValue, proof.Value.Bytes()) {
-		t.Fatalf("invalid storage proof value, want: %v, got: %v", slotValue, proof.Value.Bytes())
+	for _, proof := range result.StorageProof {
+		if proof.Key != testSlot.String() {
+			t.Fatalf("invalid storage proof key, want: %q, got: %q", testSlot.String(), proof.Key)
+		}
+		slotValue, _ := zondcl.StorageAt(context.Background(), addr, common.HexToHash(proof.Key), nil)
+		if have, want := common.BigToHash(proof.Value), common.BytesToHash(slotValue); have != want {
+			t.Fatalf("addr %x, invalid storage proof value: have: %v, want: %v", addr, have, want)
+		}
 	}
-	if proof.Key != testSlot.String() {
-		t.Fatalf("invalid storage proof key, want: %q, got: %q", testSlot.String(), proof.Key)
+	// test code
+	code, _ := zondcl.CodeAt(context.Background(), addr, nil)
+	if have, want := result.CodeHash, crypto.Keccak256Hash(code); have != want {
+		t.Fatalf("codehash wrong, have %v want %v ", have, want)
 	}
 }
 
@@ -280,6 +296,39 @@ func testGetProofCanonicalizeKeys(t *testing.T, client *rpc.Client) {
 	if result.StorageProof[0].Key != hashSizedKey {
 		t.Fatalf("wrong storage key encoding in proof: %q", result.StorageProof[0].Key)
 	}
+}
+
+func testGetProofNonExistent(t *testing.T, client *rpc.Client) {
+	addr := common.HexToAddress("0x0001")
+	ec := New(client)
+	result, err := ec.GetProof(context.Background(), addr, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Address != addr {
+		t.Fatalf("unexpected address, have: %v want: %v", result.Address, addr)
+	}
+	// test nonce
+	if result.Nonce != 0 {
+		t.Fatalf("invalid nonce, want: %v got: %v", 0, result.Nonce)
+	}
+	// test balance
+	if result.Balance.Sign() != 0 {
+		t.Fatalf("invalid balance, want: %v got: %v", 0, result.Balance)
+	}
+	// test storage
+	if have := len(result.StorageProof); have != 0 {
+		t.Fatalf("invalid storage proof, want 0 proof, got %v proof(s)", have)
+	}
+	// TODO(rgeraldes24)
+	// test codeHash
+	// if have, want := result.CodeHash, (common.Hash{}); have != want {
+	// 	t.Fatalf("codehash wrong, have %v want %v ", have, want)
+	// }
+	// test codeHash
+	// if have, want := result.StorageHash, (common.Hash{}); have != want {
+	// 	t.Fatalf("storagehash wrong, have %v want %v ", have, want)
+	// }
 }
 
 func testGCStats(t *testing.T, client *rpc.Client) {
