@@ -1538,7 +1538,8 @@ func (s *TransactionAPI) PendingTransactions() ([]*RPCTransaction, error) {
 	return transactions, nil
 }
 
-// TODO(rgeraldes24): https://docs.alchemy.com/docs/retrying-an-eip-1559-transaction#:~:text=Transactions%20before%20and%20after%20EIP%201559&text=As%20with%20legacy%20transactions%2C%20the,with%20an%20updated%20gas%20price.
+// TODO(rgeraldes24): fix: https://docs.alchemy.com/docs/retrying-an-eip-1559-transaction#:~:text=Transactions%20before%20and%20after%20EIP%201559&text=As%20with%20legacy%20transactions%2C%20the,with%20an%20updated%20gas%20price.
+// Check TestReplacementDynamicFee
 /*
 // Resend accepts an existing transaction and a new gas price and limit. It will remove
 // the given transaction from the pool and reinsert it with the new gas price and limit.

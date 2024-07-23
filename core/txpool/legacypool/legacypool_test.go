@@ -1889,7 +1889,6 @@ func TestDeduplication(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): resend logic
 // Tests that the pool rejects replacement dynamic fee transactions that don't
 // meet the minimum price bump required.
 func TestReplacementDynamicFee(t *testing.T) {

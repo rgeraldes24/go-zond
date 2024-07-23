@@ -88,7 +88,7 @@ func (c *depositroot) RequiredGas(input []byte) uint64 {
 	return params.DepositrootGas
 }
 
-// TODO(rgeraldes24): assess why extra bytes are being added
+// TODO(rgeraldes24): assess why extra bytes are being added: check the kzg example from the source repo
 func (c *depositroot) Run(input []byte) ([]byte, error) {
 	const depositRootInputLength = 7508 // 7251 in the correct version
 	input = common.RightPadBytes(input, depositRootInputLength)

@@ -20,7 +20,6 @@ import (
 	"github.com/holiman/uint256"
 )
 
-// TODO(rgeraldes24): remove? 5656
 // Memory implements a simple memory model for the ethereum virtual machine.
 type Memory struct {
 	store       []byte

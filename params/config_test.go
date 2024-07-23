@@ -23,7 +23,7 @@ import (
 	"time"
 )
 
-// TODO(rgeraldes24): add case for the chain id mismatch
+// TODO(rgeraldes24): extra: add case for the chain id mismatch
 func TestCheckCompatible(t *testing.T) {
 	type test struct {
 		stored, new   *ChainConfig
