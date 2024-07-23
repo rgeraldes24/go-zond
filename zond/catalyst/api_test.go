@@ -116,7 +116,7 @@ func TestEth2AssembleBlock(t *testing.T) {
 // assembleWithTransactions tries to assemble a block, retrying until it has 'want',
 // number of transactions in it, or it has retried three times.
 func assembleWithTransactions(api *ConsensusAPI, parentHash common.Hash, params *engine.PayloadAttributes, want int) (execData *engine.ExecutableData, err error) {
-	for retries := 10; retries > 0; retries-- {
+	for retries := 3; retries > 0; retries-- {
 		execData, err = assembleBlock(api, parentHash, params)
 		if err != nil {
 			return nil, err
@@ -231,11 +231,8 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 		{0, true},
 		{parent.Time, true},
 		{parent.Time - 1, true},
-
-		// TODO (MariusVanDerWijden) following tests are currently broken,
-		// fixed in upcoming merge-kiln-v2 pr
-		//{parent.Time() + 1, false},
-		//{uint64(time.Now().Unix()) + uint64(time.Minute), false},
+		{parent.Time + 1, false},
+		{uint64(time.Now().Unix()) + uint64(time.Minute), false},
 	}
 
 	for i, test := range tests {
@@ -862,11 +859,11 @@ func TestSimultaneousNewBlock(t *testing.T) {
 					defer wg.Done()
 					if newResp, err := api.NewPayloadV2(*execData); err != nil {
 						errMu.Lock()
-						testErr = fmt.Errorf("Failed to insert block: %w", err)
+						testErr = fmt.Errorf("failed to insert block: %w", err)
 						errMu.Unlock()
 					} else if newResp.Status != "VALID" {
 						errMu.Lock()
-						testErr = fmt.Errorf("Failed to insert block: %v", newResp.Status)
+						testErr = fmt.Errorf("failed to insert block: %v", newResp.Status)
 						errMu.Unlock()
 					}
 				}()
@@ -901,7 +898,7 @@ func TestSimultaneousNewBlock(t *testing.T) {
 					defer wg.Done()
 					if _, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 						errMu.Lock()
-						testErr = fmt.Errorf("Failed to insert block: %w", err)
+						testErr = fmt.Errorf("failed to insert block: %w", err)
 						errMu.Unlock()
 					}
 				}()
@@ -1102,7 +1099,7 @@ func TestNilWithdrawals(t *testing.T) {
 			t.Fatalf("error getting payload, err=%v", err)
 		}
 		if status, err := api.NewPayloadV2(*execData.ExecutionPayload); err != nil {
-			t.Fatalf("error validating payload: %v", err)
+			t.Fatalf("error validating payload: %v", err.(*engine.EngineAPIError).ErrorData())
 		} else if status.Status != engine.VALID {
 			t.Fatalf("invalid payload")
 		}

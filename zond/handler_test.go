@@ -119,7 +119,7 @@ func (p *testTxPool) Pending(filter txpool.PendingFilter) map[common.Address][]*
 	return pending
 }
 
-// SubscribeNewTxsEvent should return an event subscription of NewTxsEvent and
+// SubscribeTransactions should return an event subscription of NewTxsEvent and
 // send events to the given channel.
 func (p *testTxPool) SubscribeTransactions(ch chan<- core.NewTxsEvent) event.Subscription {
 	return p.txFeed.Subscribe(ch)

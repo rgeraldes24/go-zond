@@ -18,6 +18,7 @@ package zond
 
 import (
 	"errors"
+	"fmt"
 	"sync"
 
 	"github.com/theQRL/go-zond/common"
@@ -55,6 +56,7 @@ type peerSet struct {
 
 	lock   sync.RWMutex
 	closed bool
+	quitCh chan struct{} // Quit channel to signal termination
 }
 
 // newPeerSet creates a new peer set to track the active participants.
@@ -63,6 +65,7 @@ func newPeerSet() *peerSet {
 		peers:    make(map[string]*ethPeer),
 		snapWait: make(map[string]chan *snap.Peer),
 		snapPend: make(map[string]*snap.Peer),
+		quitCh:   make(chan struct{}),
 	}
 }
 
@@ -73,7 +76,7 @@ func (ps *peerSet) registerSnapExtension(peer *snap.Peer) error {
 	// Reject the peer if it advertises `snap` without `zond` as `snap` is only a
 	// satellite protocol meaningful with the chain selection of `zond`
 	if !peer.RunningCap(zond.ProtocolName, zond.ProtocolVersions) {
-		return errSnapWithoutZond
+		return fmt.Errorf("%w: have %v", errSnapWithoutZond, peer.Caps())
 	}
 	// Ensure nobody can double connect
 	ps.lock.Lock()
@@ -96,7 +99,7 @@ func (ps *peerSet) registerSnapExtension(peer *snap.Peer) error {
 	return nil
 }
 
-// waitExtensions blocks until all satellite protocols are connected and tracked
+// waitSnapExtension blocks until all satellite protocols are connected and tracked
 // by the peerset.
 func (ps *peerSet) waitSnapExtension(peer *zond.Peer) (*snap.Peer, error) {
 	// If the peer does not support a compatible `snap`, don't wait
@@ -127,7 +130,15 @@ func (ps *peerSet) waitSnapExtension(peer *zond.Peer) (*snap.Peer, error) {
 	ps.snapWait[id] = wait
 	ps.lock.Unlock()
 
-	return <-wait, nil
+	select {
+	case p := <-wait:
+		return p, nil
+	case <-ps.quitCh:
+		ps.lock.Lock()
+		delete(ps.snapWait, id)
+		ps.lock.Unlock()
+		return nil, errPeerSetClosed
+	}
 }
 
 // registerPeer injects a new `zond` peer into the working set, or returns an error
@@ -220,6 +231,9 @@ func (ps *peerSet) close() {
 
 	for _, p := range ps.peers {
 		p.Disconnect(p2p.DiscQuitting)
+	}
+	if !ps.closed {
+		close(ps.quitCh)
 	}
 	ps.closed = true
 }

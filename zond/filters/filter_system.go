@@ -20,7 +20,6 @@ package filters
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"sync"
 	"sync/atomic"
@@ -93,7 +92,7 @@ func NewFilterSystem(backend Backend, config Config) *FilterSystem {
 
 type logCacheElem struct {
 	logs []*types.Log
-	body atomic.Value
+	body atomic.Pointer[types.Body]
 }
 
 // cachedLogElem loads block logs from the backend and caches the result.
@@ -131,7 +130,7 @@ func (sys *FilterSystem) cachedLogElem(ctx context.Context, blockHash common.Has
 
 func (sys *FilterSystem) cachedGetBody(ctx context.Context, elem *logCacheElem, hash common.Hash, number uint64) (*types.Body, error) {
 	if body := elem.body.Load(); body != nil {
-		return body.(*types.Body), nil
+		return body, nil
 	}
 	body, err := sys.backend.GetBody(ctx, hash, rpc.BlockNumber(number))
 	if err != nil {
@@ -150,10 +149,6 @@ const (
 	UnknownSubscription Type = iota
 	// LogsSubscription queries for new or removed (chain reorg) logs
 	LogsSubscription
-	// PendingLogsSubscription queries for logs in pending blocks
-	PendingLogsSubscription
-	// MinedAndPendingLogsSubscription queries for logs in mined and pending blocks.
-	MinedAndPendingLogsSubscription
 	// PendingTransactionsSubscription queries for pending transactions entering
 	// the pending state
 	PendingTransactionsSubscription
@@ -290,6 +285,9 @@ func (es *EventSystem) subscribe(sub *subscription) *Subscription {
 // given criteria to the given logs channel. Default value for the from and to
 // block is "latest". If the fromBlock > toBlock an error is returned.
 func (es *EventSystem) SubscribeLogs(crit zond.FilterQuery, logs chan []*types.Log) (*Subscription, error) {
+	if len(crit.Topics) > maxTopics {
+		return nil, errExceedMaxTopics
+	}
 	var from, to rpc.BlockNumber
 	if crit.FromBlock == nil {
 		from = rpc.LatestBlockNumber
@@ -306,6 +304,7 @@ func (es *EventSystem) SubscribeLogs(crit zond.FilterQuery, logs chan []*types.L
 	if from == rpc.PendingBlockNumber || to == rpc.PendingBlockNumber {
 		return nil, errPendingLogsUnsupported
 	}
+
 	// only interested in new mined logs
 	if from == rpc.LatestBlockNumber && to == rpc.LatestBlockNumber {
 		return es.subscribeLogs(crit, logs), nil
@@ -314,32 +313,11 @@ func (es *EventSystem) SubscribeLogs(crit zond.FilterQuery, logs chan []*types.L
 	if from >= 0 && to >= 0 && to >= from {
 		return es.subscribeLogs(crit, logs), nil
 	}
-	// interested in mined logs from a specific block number, new logs and pending logs
-	if from >= rpc.LatestBlockNumber && to == rpc.PendingBlockNumber {
-		return es.subscribeMinedPendingLogs(crit, logs), nil
-	}
 	// interested in logs from a specific block number to new mined blocks
 	if from >= 0 && to == rpc.LatestBlockNumber {
 		return es.subscribeLogs(crit, logs), nil
 	}
-	return nil, errors.New("invalid from and to block combination: from > to")
-}
-
-// subscribeMinedPendingLogs creates a subscription that returned mined and
-// pending logs that match the given criteria.
-func (es *EventSystem) subscribeMinedPendingLogs(crit zond.FilterQuery, logs chan []*types.Log) *Subscription {
-	sub := &subscription{
-		id:        rpc.NewID(),
-		typ:       MinedAndPendingLogsSubscription,
-		logsCrit:  crit,
-		created:   time.Now(),
-		logs:      logs,
-		txs:       make(chan []*types.Transaction),
-		headers:   make(chan *types.Header),
-		installed: make(chan struct{}),
-		err:       make(chan error),
-	}
-	return es.subscribe(sub)
+	return nil, errInvalidBlockRange
 }
 
 // subscribeLogs creates a subscription that will write all logs matching the
@@ -444,23 +422,11 @@ func (es *EventSystem) eventLoop() {
 			es.handleChainEvent(index, ev)
 
 		case f := <-es.install:
-			if f.typ == MinedAndPendingLogsSubscription {
-				// the type are logs and pending logs subscriptions
-				index[LogsSubscription][f.id] = f
-				index[PendingLogsSubscription][f.id] = f
-			} else {
-				index[f.typ][f.id] = f
-			}
+			index[f.typ][f.id] = f
 			close(f.installed)
 
 		case f := <-es.uninstall:
-			if f.typ == MinedAndPendingLogsSubscription {
-				// the type are logs and pending logs subscriptions
-				delete(index[LogsSubscription], f.id)
-				delete(index[PendingLogsSubscription], f.id)
-			} else {
-				delete(index[f.typ], f.id)
-			}
+			delete(index[f.typ], f.id)
 			close(f.err)
 
 		// System stopped

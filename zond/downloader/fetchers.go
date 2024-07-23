@@ -24,6 +24,7 @@ import (
 	"github.com/theQRL/go-zond/zond/protocols/zond"
 )
 
+// TODO(rgeraldes24)
 // fetchHeadersByHash is a blocking version of Peer.RequestHeadersByHash which
 // handles all the cancellation, interruption and timeout mechanisms of a data
 // retrieval to allow blocking API calls.

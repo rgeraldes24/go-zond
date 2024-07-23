@@ -1012,7 +1012,6 @@ func TestTransactionFetcherRateLimiting(t *testing.T) {
 	for i := 0; i < maxTxAnnounces; i++ {
 		hashes = append(hashes, common.Hash{byte(i / 256), byte(i % 256)})
 	}
-
 	testTransactionFetcherParallel(t, txFetcherTest{
 		init: func() *TxFetcher {
 			return NewTxFetcher(

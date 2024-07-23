@@ -93,14 +93,14 @@ type Zond struct {
 	shutdownTracker *shutdowncheck.ShutdownTracker // Tracks if and when the node has shutdown ungracefully
 }
 
-// New creates a new Zond object (including the
-// initialisation of the common Zond object)
+// New creates a new Zond object (including the initialisation of the common Zond object),
+// whose lifecycle will be managed by the provided node.
 func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	// Ensure configuration values are compatible and sane
 	if !config.SyncMode.IsValid() {
 		return nil, fmt.Errorf("invalid sync mode %d", config.SyncMode)
 	}
-	if config.Miner.GasPrice == nil || config.Miner.GasPrice.Cmp(common.Big0) <= 0 {
+	if config.Miner.GasPrice == nil || config.Miner.GasPrice.Sign() <= 0 {
 		log.Warn("Sanitizing invalid miner gas price", "provided", config.Miner.GasPrice, "updated", zondconfig.Defaults.Miner.GasPrice)
 		config.Miner.GasPrice = new(big.Int).Set(zondconfig.Defaults.Miner.GasPrice)
 	}
@@ -130,9 +130,10 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	if err != nil {
 		return nil, err
 	}
-	engine, err := zondconfig.CreateConsensusEngine(chainConfig, chainDb)
-	if err != nil {
-		return nil, err
+	engine := zondconfig.CreateConsensusEngine()
+	networkID := config.NetworkId
+	if networkID == 0 {
+		networkID = chainConfig.ChainID.Uint64()
 	}
 	zond := &Zond{
 		config:            config,
@@ -141,7 +142,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 		accountManager:    stack.AccountManager(),
 		engine:            engine,
 		closeBloomHandler: make(chan struct{}),
-		networkID:         config.NetworkId,
+		networkID:         networkID,
 		gasPrice:          config.Miner.GasPrice,
 		bloomRequests:     make(chan chan *bloombits.Retrieval),
 		bloomIndexer:      core.NewBloomIndexer(chainDb, params.BloomBitsBlocks, params.BloomConfirms),
@@ -153,7 +154,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	if bcVersion != nil {
 		dbVer = fmt.Sprintf("%d", *bcVersion)
 	}
-	log.Info("Initialising Zond protocol", "network", config.NetworkId, "dbversion", dbVer)
+	log.Info("Initialising Zond protocol", "network", networkID, "dbversion", dbVer)
 
 	if !config.SkipBcVersionCheck {
 		if bcVersion != nil && *bcVersion > core.BlockChainVersion {
@@ -181,7 +182,6 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 			StateScheme:         config.StateScheme,
 		}
 	)
-	// Override the chain config with provided settings.
 	// TODO (MariusVanDerWijden) get rid of shouldPreserve in a follow-up PR
 	shouldPreserve := func(header *types.Header) bool {
 		return false
@@ -207,7 +207,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 		Database:       chainDb,
 		Chain:          zond.blockchain,
 		TxPool:         zond.txPool,
-		Network:        config.NetworkId,
+		Network:        networkID,
 		Sync:           config.SyncMode,
 		BloomCache:     uint64(cacheLimit),
 		EventMux:       zond.eventMux,
@@ -239,7 +239,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	}
 
 	// Start the RPC service
-	zond.netRPCService = zondapi.NewNetAPI(zond.p2pServer, config.NetworkId)
+	zond.netRPCService = zondapi.NewNetAPI(zond.p2pServer, networkID)
 
 	// Register the backend on the node
 	stack.RegisterAPIs(zond.APIs())

@@ -89,10 +89,6 @@ type SimulatedBeacon struct {
 //   - If period is set to 0, a block is produced on every transaction.
 //     via Commit, Fork and AdjustTime.
 func NewSimulatedBeacon(period uint64, zond *zond.Zond) (*SimulatedBeacon, error) {
-	chainConfig := zond.APIBackend.ChainConfig()
-	if !chainConfig.IsDevMode {
-		return nil, errors.New("incompatible pre-existing chain configuration")
-	}
 	block := zond.BlockChain().CurrentBlock()
 	current := engine.ForkchoiceStateV1{
 		HeadBlockHash:      block.Hash(),
@@ -290,14 +286,19 @@ func (c *SimulatedBeacon) AdjustTime(adjustment time.Duration) error {
 		return errors.New("parent not found")
 	}
 	withdrawals := c.withdrawals.gatherPending(10)
-	return c.sealBlock(withdrawals, parent.Time+uint64(adjustment/time.Second))
+	return c.sealBlock(withdrawals, parent.Time+uint64(adjustment))
 }
 
 func RegisterSimulatedBeaconAPIs(stack *node.Node, sim *SimulatedBeacon) {
+	api := &api{sim}
+	if sim.period == 0 {
+		// mine on demand if period is set to 0
+		go api.loop()
+	}
 	stack.RegisterAPIs([]rpc.API{
 		{
 			Namespace: "dev",
-			Service:   &api{sim},
+			Service:   api,
 		},
 	})
 }

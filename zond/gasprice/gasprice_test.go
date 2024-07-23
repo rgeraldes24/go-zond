@@ -18,6 +18,7 @@ package gasprice
 
 import (
 	"context"
+	"fmt"
 	"math"
 	"math/big"
 	"testing"
@@ -25,7 +26,6 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
-	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
@@ -136,7 +136,7 @@ func newTestBackend(t *testing.T, pending bool) *testBackend {
 	engine := beacon.NewFaker()
 
 	// Generate testing blocks
-	_, blocks, _ := core.GenerateChainWithGenesis(gspec, engine, testHead+1, func(i int, b *core.BlockGen) {
+	db, blocks, _ := core.GenerateChainWithGenesis(gspec, engine, testHead+1, func(i int, b *core.BlockGen) {
 		b.SetCoinbase(common.Address{1})
 
 		txdata := &types.DynamicFeeTx{
@@ -151,13 +151,16 @@ func newTestBackend(t *testing.T, pending bool) *testBackend {
 		b.AddTx(types.MustSignNewTx(key, signer, txdata))
 	})
 	// Construct testing chain
-	chain, err := core.NewBlockChain(rawdb.NewMemoryDatabase(), &core.CacheConfig{TrieCleanNoPrefetch: true}, gspec, engine, vm.Config{}, nil, nil)
+	chain, err := core.NewBlockChain(db, &core.CacheConfig{TrieCleanNoPrefetch: true}, gspec, engine, vm.Config{}, nil, nil)
 	if err != nil {
 		t.Fatalf("Failed to create local chain, %v", err)
 	}
-	chain.InsertChain(blocks)
+	if i, err := chain.InsertChain(blocks); err != nil {
+		panic(fmt.Errorf("error inserting block %d: %w", i, err))
+	}
 	chain.SetFinalized(chain.GetBlockByNumber(25).Header())
 	chain.SetSafe(chain.GetBlockByNumber(25).Header())
+
 	return &testBackend{chain: chain, pending: pending}
 }
 
