@@ -320,15 +320,14 @@ func testGetProofNonExistent(t *testing.T, client *rpc.Client) {
 	if have := len(result.StorageProof); have != 0 {
 		t.Fatalf("invalid storage proof, want 0 proof, got %v proof(s)", have)
 	}
-	// TODO(rgeraldes24)
 	// test codeHash
-	// if have, want := result.CodeHash, (common.Hash{}); have != want {
-	// 	t.Fatalf("codehash wrong, have %v want %v ", have, want)
-	// }
+	if have, want := result.CodeHash, (common.Hash{}); have != want {
+		t.Fatalf("codehash wrong, have %v want %v ", have, want)
+	}
 	// test codeHash
-	// if have, want := result.StorageHash, (common.Hash{}); have != want {
-	// 	t.Fatalf("storagehash wrong, have %v want %v ", have, want)
-	// }
+	if have, want := result.StorageHash, (common.Hash{}); have != want {
+		t.Fatalf("storagehash wrong, have %v want %v ", have, want)
+	}
 }
 
 func testGCStats(t *testing.T, client *rpc.Client) {
