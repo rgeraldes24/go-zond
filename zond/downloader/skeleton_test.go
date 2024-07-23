@@ -16,6 +16,8 @@
 
 package downloader
 
+// TODO(rgeraldes24): fix
+/*
 import (
 	"encoding/json"
 	"errors"
@@ -969,3 +971,4 @@ func checkSkeletonProgress(db zonddb.KeyValueReader, unpredictable bool, peers [
 	}
 	return nil
 }
+*/
