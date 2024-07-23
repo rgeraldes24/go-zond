@@ -531,8 +531,10 @@ func (api *ConsensusAPI) checkInvalidAncestor(check common.Hash, head common.Has
 // invalid returns a response "INVALID" with the latest valid hash supplied by latest.
 func (api *ConsensusAPI) invalid(err error, latestValid *types.Header) engine.PayloadStatusV1 {
 	var currentHash *common.Hash
-	h := latestValid.Hash()
-	currentHash = &h
+	if latestValid != nil {
+		h := latestValid.Hash()
+		currentHash = &h
+	}
 	errorMsg := err.Error()
 	return engine.PayloadStatusV1{Status: engine.INVALID, LatestValidHash: currentHash, ValidationError: &errorMsg}
 }

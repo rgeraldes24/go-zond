@@ -662,12 +662,11 @@ func TestEmptyBlocks(t *testing.T) {
 	if status.Status != engine.INVALID {
 		t.Errorf("invalid status: expected INVALID got: %v", status.Status)
 	}
-	// TODO(rgeraldes24): fix: this returns INVALID with nil fields
-	// Expect 0x0 on INVALID block on top of PoW block
-	// expected := common.Hash{}
-	// if !bytes.Equal(status.LatestValidHash[:], expected[:]) {
-	// 	t.Fatalf("invalid LVH: got %v want %v", status.LatestValidHash, expected)
-	// }
+	// Expect parent header hash on INVALID block on top of PoS block
+	expected := commonAncestor.Hash()
+	if !bytes.Equal(status.LatestValidHash[:], expected[:]) {
+		t.Fatalf("invalid LVH: got %v want %v", status.LatestValidHash, expected)
+	}
 
 	// (3) Now send a payload with unknown parent
 	payload = getNewPayload(t, api, commonAncestor, nil)
@@ -678,13 +677,12 @@ func TestEmptyBlocks(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// TODO(rgeraldes24): fix: this returns INVALID
-	// if status.Status != engine.SYNCING {
-	// 	t.Errorf("invalid status: expected SYNCING got: %v", status.Status)
-	// }
-	// if status.LatestValidHash != nil {
-	// 	t.Fatalf("invalid LVH: got %v wanted nil", status.LatestValidHash)
-	// }
+	if status.Status != engine.SYNCING {
+		t.Errorf("invalid status: expected SYNCING got: %v", status.Status)
+	}
+	if status.LatestValidHash != nil {
+		t.Fatalf("invalid LVH: got %v wanted nil", status.LatestValidHash)
+	}
 }
 
 func getNewPayload(t *testing.T, api *ConsensusAPI, parent *types.Header, withdrawals []*types.Withdrawal) *engine.ExecutableData {
@@ -709,19 +707,20 @@ func setBlockhash(data *engine.ExecutableData) *engine.ExecutableData {
 	number := big.NewInt(0)
 	number.SetUint64(data.Number)
 	header := &types.Header{
-		ParentHash:  data.ParentHash,
-		Coinbase:    data.FeeRecipient,
-		Root:        data.StateRoot,
-		TxHash:      types.DeriveSha(types.Transactions(txs), trie.NewStackTrie(nil)),
-		ReceiptHash: data.ReceiptsRoot,
-		Bloom:       types.BytesToBloom(data.LogsBloom),
-		Number:      number,
-		GasLimit:    data.GasLimit,
-		GasUsed:     data.GasUsed,
-		Time:        data.Timestamp,
-		BaseFee:     data.BaseFeePerGas,
-		Extra:       data.ExtraData,
-		Random:      data.Random,
+		ParentHash:      data.ParentHash,
+		Coinbase:        data.FeeRecipient,
+		Root:            data.StateRoot,
+		TxHash:          types.DeriveSha(types.Transactions(txs), trie.NewStackTrie(nil)),
+		ReceiptHash:     data.ReceiptsRoot,
+		Bloom:           types.BytesToBloom(data.LogsBloom),
+		Number:          number,
+		GasLimit:        data.GasLimit,
+		GasUsed:         data.GasUsed,
+		Time:            data.Timestamp,
+		BaseFee:         data.BaseFeePerGas,
+		Extra:           data.ExtraData,
+		Random:          data.Random,
+		WithdrawalsHash: &types.EmptyWithdrawalsHash,
 	}
 	block := types.NewBlockWithHeader(header).WithBody(types.Body{Transactions: txs})
 	data.BlockHash = block.Hash()
