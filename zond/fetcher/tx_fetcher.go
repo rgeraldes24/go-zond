@@ -891,7 +891,7 @@ func (f *TxFetcher) scheduleFetches(timer *mclock.Timer, timeout chan struct{}, 
 			if len(hashes) >= maxTxRetrievals {
 				return false // break in the for-each
 			}
-			if meta != nil { // Only set eth/68 and upwards
+			if meta != nil {
 				bytes += uint64(meta.size)
 				if bytes >= maxTxRetrievalSize {
 					return false

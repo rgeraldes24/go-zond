@@ -1066,15 +1066,12 @@ func TestTransactionFetcherBandwidthLimiting(t *testing.T) {
 				types:  []byte{types.DynamicFeeTxType, types.DynamicFeeTxType},
 				sizes:  []uint32{maxTxRetrievalSize, maxTxRetrievalSize},
 			},
-			// TODO(rgeraldes24): fix
-			/*
-				// Announce oversized blob transactions to see that overflows are ok
-				doTxNotify{peer: "C",
-					hashes: []common.Hash{{0x07}, {0x08}},
-					types:  []byte{types.DynamicFeeTxType, types.DynamicFeeTxType},
-					sizes:  []uint32{params.MaxBlobGasPerBlock, params.MaxBlobGasPerBlock},
-				},
-			*/
+			// Announce oversized blob transactions to see that overflows are ok
+			doTxNotify{peer: "C",
+				hashes: []common.Hash{{0x07}, {0x08}},
+				types:  []byte{types.DynamicFeeTxType, types.DynamicFeeTxType},
+				sizes:  []uint32{6 * (1 << 17), 6 * (1 << 17)},
+			},
 			doWait{time: txArriveTimeout, step: true},
 			isWaiting(nil),
 			isScheduledWithMeta{
@@ -1089,11 +1086,10 @@ func TestTransactionFetcherBandwidthLimiting(t *testing.T) {
 						{common.Hash{0x05}, typeptr(types.DynamicFeeTxType), sizeptr(maxTxRetrievalSize)},
 						{common.Hash{0x06}, typeptr(types.DynamicFeeTxType), sizeptr(maxTxRetrievalSize)},
 					},
-					// TODO(rgeraldes24)
-					// "C": {
-					// 	{common.Hash{0x07}, typeptr(types.DynamicFeeTxType), sizeptr(params.MaxBlobGasPerBlock)},
-					// 	{common.Hash{0x08}, typeptr(types.DynamicFeeTxType), sizeptr(params.MaxBlobGasPerBlock)},
-					// },
+					"C": {
+						{common.Hash{0x07}, typeptr(types.DynamicFeeTxType), sizeptr(6 * (1 << 17))},
+						{common.Hash{0x08}, typeptr(types.DynamicFeeTxType), sizeptr(6 * (1 << 17))},
+					},
 				},
 				fetching: map[string][]common.Hash{
 					"A": {{0x02}, {0x03}, {0x04}},
