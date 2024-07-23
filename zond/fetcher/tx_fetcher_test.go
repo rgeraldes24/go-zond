@@ -37,8 +37,8 @@ var (
 	to3 = common.Address{0xac}
 	// testTxs is a set of transactions to use during testing that have meaningful hashes.
 	testTxs = []*types.Transaction{
-		types.NewTx(&types.DynamicFeeTx{Nonce: 5577006791947779410, To: &to0, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
 		types.NewTx(&types.DynamicFeeTx{Nonce: 15352856648520921629, To: &to1, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
+		types.NewTx(&types.DynamicFeeTx{Nonce: 5577006791947779410, To: &to0, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
 		types.NewTx(&types.DynamicFeeTx{Nonce: 3916589616287113937, To: &to2, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
 		types.NewTx(&types.DynamicFeeTx{Nonce: 9828766684487745566, To: &to3, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
 	}
@@ -683,8 +683,6 @@ func TestTransactionFetcherCleanupEmpty(t *testing.T) {
 	})
 }
 
-// TODO(rgeraldes24): fix
-/*
 // Tests that non-returned transactions are either re-scheduled from a
 // different peer, or self if they are after the cutoff point.
 func TestTransactionFetcherMissingRescheduling(t *testing.T) {
@@ -731,10 +729,7 @@ func TestTransactionFetcherMissingRescheduling(t *testing.T) {
 		},
 	})
 }
-*/
 
-// TODO(rgeraldes24): fix
-/*
 // Tests that out of two transactions, if one is missing and the last is
 // delivered, the peer gets properly cleaned out from the internal state.
 func TestTransactionFetcherMissingCleanup(t *testing.T) {
@@ -774,7 +769,6 @@ func TestTransactionFetcherMissingCleanup(t *testing.T) {
 		},
 	})
 }
-*/
 
 // Tests that transaction broadcasts properly clean up announcements.
 func TestTransactionFetcherBroadcasts(t *testing.T) {
