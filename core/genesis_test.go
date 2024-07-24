@@ -95,7 +95,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 			wantHash:   customghash,
 			wantConfig: customg.Config,
 		},
-		// TODO(rgeraldes24): replace with betanet?
+		// TODO(theQRL/go-zond/issues/50)
 		/*
 			{
 				name: "custom block in DB, genesis == goerli",

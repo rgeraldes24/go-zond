@@ -17,7 +17,6 @@
 package core
 
 import (
-	"errors"
 	"fmt"
 	"math/big"
 	"math/rand"
@@ -618,107 +617,6 @@ func testReorg(t *testing.T, first, second []int64, td int64, full bool, scheme 
 }
 */
 
-// Tests that the insertion functions detect banned hashes.
-func TestBadHeaderHashes(t *testing.T) {
-	testBadHashes(t, false, rawdb.HashScheme)
-	testBadHashes(t, false, rawdb.PathScheme)
-}
-func TestBadBlockHashes(t *testing.T) {
-	testBadHashes(t, true, rawdb.HashScheme)
-	testBadHashes(t, true, rawdb.PathScheme)
-}
-
-func testBadHashes(t *testing.T, full bool, scheme string) {
-	// Create a pristine chain and database
-	genDb, _, blockchain, err := newCanonical(beacon.NewFaker(), 0, full, scheme)
-	if err != nil {
-		t.Fatalf("failed to create pristine chain: %v", err)
-	}
-	defer blockchain.Stop()
-
-	// Create a chain, ban a hash and try to import
-	if full {
-		blocks := makeBlockChain(blockchain.chainConfig, blockchain.GetBlockByHash(blockchain.CurrentBlock().Hash()), 3, beacon.NewFaker(), genDb, 10)
-
-		BadHashes[blocks[2].Header().Hash()] = true
-		defer func() { delete(BadHashes, blocks[2].Header().Hash()) }()
-
-		_, err = blockchain.InsertChain(blocks)
-	} else {
-		headers := makeHeaderChain(blockchain.chainConfig, blockchain.CurrentHeader(), 3, beacon.NewFaker(), genDb, 10)
-
-		BadHashes[headers[2].Hash()] = true
-		defer func() { delete(BadHashes, headers[2].Hash()) }()
-
-		_, err = blockchain.InsertHeaderChain(headers)
-	}
-	if !errors.Is(err, ErrBannedHash) {
-		t.Errorf("error mismatch: have: %v, want: %v", err, ErrBannedHash)
-	}
-}
-
-// Tests that bad hashes are detected on boot, and the chain rolled back to a
-// good state prior to the bad hash.
-func TestReorgBadHeaderHashes(t *testing.T) {
-	testReorgBadHashes(t, false, rawdb.HashScheme)
-	testReorgBadHashes(t, false, rawdb.PathScheme)
-}
-func TestReorgBadBlockHashes(t *testing.T) {
-	testReorgBadHashes(t, true, rawdb.HashScheme)
-	testReorgBadHashes(t, true, rawdb.PathScheme)
-}
-
-func testReorgBadHashes(t *testing.T, full bool, scheme string) {
-	// Create a pristine chain and database
-	genDb, gspec, blockchain, err := newCanonical(beacon.NewFaker(), 0, full, scheme)
-	if err != nil {
-		t.Fatalf("failed to create pristine chain: %v", err)
-	}
-	// Create a chain, import and ban afterwards
-	headers := makeHeaderChain(blockchain.chainConfig, blockchain.CurrentHeader(), 4, beacon.NewFaker(), genDb, 10)
-	blocks := makeBlockChain(blockchain.chainConfig, blockchain.GetBlockByHash(blockchain.CurrentBlock().Hash()), 4, beacon.NewFaker(), genDb, 10)
-
-	if full {
-		if _, err = blockchain.InsertChain(blocks); err != nil {
-			t.Errorf("failed to import blocks: %v", err)
-		}
-		if blockchain.CurrentBlock().Hash() != blocks[3].Hash() {
-			t.Errorf("last block hash mismatch: have: %x, want %x", blockchain.CurrentBlock().Hash(), blocks[3].Header().Hash())
-		}
-		BadHashes[blocks[3].Header().Hash()] = true
-		defer func() { delete(BadHashes, blocks[3].Header().Hash()) }()
-	} else {
-		if _, err = blockchain.InsertHeaderChain(headers); err != nil {
-			t.Errorf("failed to import headers: %v", err)
-		}
-		if blockchain.CurrentHeader().Hash() != headers[3].Hash() {
-			t.Errorf("last header hash mismatch: have: %x, want %x", blockchain.CurrentHeader().Hash(), headers[3].Hash())
-		}
-		BadHashes[headers[3].Hash()] = true
-		defer func() { delete(BadHashes, headers[3].Hash()) }()
-	}
-	blockchain.Stop()
-
-	// Create a new BlockChain and check that it rolled back the state.
-	ncm, err := NewBlockChain(blockchain.db, DefaultCacheConfigWithScheme(scheme), gspec, beacon.NewFaker(), vm.Config{}, nil, nil)
-	if err != nil {
-		t.Fatalf("failed to create new chain manager: %v", err)
-	}
-	if full {
-		if ncm.CurrentBlock().Hash() != blocks[2].Header().Hash() {
-			t.Errorf("last block hash mismatch: have: %x, want %x", ncm.CurrentBlock().Hash(), blocks[2].Header().Hash())
-		}
-		if blocks[2].Header().GasLimit != ncm.GasLimit() {
-			t.Errorf("last  block gasLimit mismatch: have: %d, want %d", ncm.GasLimit(), blocks[2].Header().GasLimit)
-		}
-	} else {
-		if ncm.CurrentHeader().Hash() != headers[2].Hash() {
-			t.Errorf("last header hash mismatch: have: %x, want %x", ncm.CurrentHeader().Hash(), headers[2].Hash())
-		}
-	}
-	ncm.Stop()
-}
-
 // Tests chain insertions in the face of one entity containing an invalid nonce.
 func TestHeadersInsertNonceError(t *testing.T) {
 	testInsertNonceError(t, false, rawdb.HashScheme)
@@ -1031,12 +929,11 @@ func testLightVsFastVsFullChainHeads(t *testing.T, scheme string) {
 	assert(t, "light", light, height/2, 0, 0)
 }
 
-// TODO(rgeraldes24): fix
 // Tests that chain reorganisations handle transaction removals and reinsertions.
-// func TestChainTxReorgs(t *testing.T) {
-// 	testChainTxReorgs(t, rawdb.HashScheme)
-// 	testChainTxReorgs(t, rawdb.PathScheme)
-// }
+func TestChainTxReorgs(t *testing.T) {
+	testChainTxReorgs(t, rawdb.HashScheme)
+	testChainTxReorgs(t, rawdb.PathScheme)
+}
 
 func testChainTxReorgs(t *testing.T, scheme string) {
 	var (
@@ -1062,8 +959,8 @@ func testChainTxReorgs(t *testing.T, scheme string) {
 	//  - postponed: transaction included at a later block in the forked chain
 	//  - swapped: transaction included at the same block number in the forked chain
 	to := common.Address(addr1)
-	postponed, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &to, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, key1)
-	swapped, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 1, To: &to, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, key1)
+	postponed, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &to, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key1)
+	swapped, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 1, To: &to, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key1)
 
 	// Create two transactions that will be dropped by the forked chain:
 	//  - pastDrop: transaction dropped retroactively from a past block
@@ -1081,13 +978,13 @@ func testChainTxReorgs(t *testing.T, scheme string) {
 		switch i {
 		case 0:
 
-			pastDrop, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr2), To: &to2, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, key2)
+			pastDrop, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr2), To: &to2, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key2)
 
 			gen.AddTx(pastDrop)  // This transaction will be dropped in the fork from below the split point
 			gen.AddTx(postponed) // This transaction will be postponed till block #3 in the fork
 
 		case 2:
-			freshDrop, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr2), To: &to2, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, key2)
+			freshDrop, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr2), To: &to2, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key2)
 
 			gen.AddTx(freshDrop) // This transaction will be dropped in the fork from exactly at the split point
 			gen.AddTx(swapped)   // This transaction will be swapped out at the exact height
@@ -1108,18 +1005,18 @@ func testChainTxReorgs(t *testing.T, scheme string) {
 	_, chain, _ = GenerateChainWithGenesis(gspec, beacon.NewFaker(), 5, func(i int, gen *BlockGen) {
 		switch i {
 		case 0:
-			pastAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, key3)
+			pastAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key3)
 			gen.AddTx(pastAdd) // This transaction needs to be injected during reorg
 
 		case 2:
 			gen.AddTx(postponed) // This transaction was postponed from block #1 in the original chain
 			gen.AddTx(swapped)   // This transaction was swapped from the exact current spot in the original chain
 
-			freshAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, key3)
+			freshAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key3)
 			gen.AddTx(freshAdd) // This transaction will be added exactly at reorg time
 
 		case 3:
-			futureAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, Data: nil}), signer, key3)
+			futureAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key3)
 			gen.AddTx(futureAdd) // This transaction will be added after a full reorg
 		}
 	})
@@ -1156,11 +1053,10 @@ func testChainTxReorgs(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-// func TestLogReorgs(t *testing.T) {
-// 	testLogReorgs(t, rawdb.HashScheme)
-// 	testLogReorgs(t, rawdb.PathScheme)
-// }
+func TestLogReorgs(t *testing.T) {
+	testLogReorgs(t, rawdb.HashScheme)
+	testLogReorgs(t, rawdb.PathScheme)
+}
 
 func testLogReorgs(t *testing.T, scheme string) {
 	var (
@@ -1181,10 +1077,11 @@ func testLogReorgs(t *testing.T, scheme string) {
 	_, chain, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 2, func(i int, gen *BlockGen) {
 		if i == 1 {
 			tx := types.NewTx(&types.DynamicFeeTx{
-				Nonce: gen.TxNonce(addr1),
-				Value: new(big.Int),
-				Gas:   1000000,
-				Data:  code,
+				Nonce:     gen.TxNonce(addr1),
+				Value:     new(big.Int),
+				Gas:       1000000,
+				GasFeeCap: big.NewInt(875000000),
+				Data:      code,
 			})
 			tx, err := types.SignTx(tx, signer, key1)
 			if err != nil {
@@ -1303,9 +1200,9 @@ func testLogRebirth(t *testing.T, scheme string) {
 	checkLogEvents(t, newLogCh, rmLogsCh, 10, 10)
 }
 
+// TODO(rgeraldes24): fix
 // This test is a variation of TestLogRebirth. It verifies that log events are emitted
 // when a side chain containing log events overtakes the canonical chain.
-// TODO(rgeraldes24): fix
 // func TestSideLogRebirth(t *testing.T) {
 // 	testSideLogRebirth(t, rawdb.HashScheme)
 // 	testSideLogRebirth(t, rawdb.PathScheme)
@@ -1340,10 +1237,11 @@ func testSideLogRebirth(t *testing.T, scheme string) {
 	genDb, sideChain, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 2, func(i int, gen *BlockGen) {
 		if i == 1 {
 			tx := types.NewTx(&types.DynamicFeeTx{
-				Nonce: gen.TxNonce(addr1),
-				Value: new(big.Int),
-				Gas:   1000000,
-				Data:  logCode,
+				Nonce:     gen.TxNonce(addr1),
+				Value:     new(big.Int),
+				Gas:       1000000,
+				GasFeeCap: big.NewInt(875000000),
+				Data:      logCode,
 			})
 			tx, err := types.SignTx(tx, signer, key1)
 			if err != nil {
@@ -1433,10 +1331,11 @@ func testReorgSideEvent(t *testing.T, scheme string) {
 
 	_, replacementBlocks, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 4, func(i int, gen *BlockGen) {
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: gen.TxNonce(addr1),
-			Value: new(big.Int),
-			Gas:   1000000,
-			Data:  nil,
+			Nonce:     gen.TxNonce(addr1),
+			Value:     new(big.Int),
+			Gas:       1000000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
 		tx, err := types.SignTx(tx, signer, key1)
 		if i == 2 {
@@ -3159,10 +3058,10 @@ func testDeleteRecreateSlots(t *testing.T, scheme string) {
 // contract with storage, and a recreate of the same contract via a
 // regular value-transfer
 // Expected outcome is that _all_ slots are cleared from A
-// func TestDeleteRecreateAccount(t *testing.T) {
-// 	testDeleteRecreateAccount(t, rawdb.HashScheme)
-// 	testDeleteRecreateAccount(t, rawdb.PathScheme)
-// }
+func TestDeleteRecreateAccount(t *testing.T) {
+	testDeleteRecreateAccount(t, rawdb.HashScheme)
+	testDeleteRecreateAccount(t, rawdb.PathScheme)
+}
 
 func testDeleteRecreateAccount(t *testing.T, scheme string) {
 	var (
@@ -3200,23 +3099,25 @@ func testDeleteRecreateAccount(t *testing.T, scheme string) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to AA, to kill it
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: 0,
-			To:    &aa,
-			Value: big.NewInt(0),
-			Gas:   50000,
-			Data:  nil,
+			Nonce:     0,
+			To:        &aa,
+			Value:     big.NewInt(0),
+			Gas:       50000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
-		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
 		b.AddTx(tx)
 		// One transaction to AA, to recreate it (but without storage
 		tx = types.NewTx(&types.DynamicFeeTx{
-			Nonce: 1,
-			To:    &aa,
-			Value: big.NewInt(1),
-			Gas:   100000,
-			Data:  nil,
+			Nonce:     1,
+			To:        &aa,
+			Value:     big.NewInt(1),
+			Gas:       100000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
-		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
 		b.AddTx(tx)
 	})
 	// Import the canonical chain
@@ -3466,12 +3367,11 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 // to the destructset in case something is created "onto" an existing item.
 // We need to either roll back the snapDestructs, or not place it into snapDestructs
 // in the first place.
-//
-// TODO(rgeraldes24): fix
-// func TestInitThenFailCreateContract(t *testing.T) {
-// 	testInitThenFailCreateContract(t, rawdb.HashScheme)
-// 	testInitThenFailCreateContract(t, rawdb.PathScheme)
-// }
+
+func TestInitThenFailCreateContract(t *testing.T) {
+	testInitThenFailCreateContract(t, rawdb.HashScheme)
+	testInitThenFailCreateContract(t, rawdb.PathScheme)
+}
 
 func testInitThenFailCreateContract(t *testing.T, scheme string) {
 	var (
@@ -3540,13 +3440,14 @@ func testInitThenFailCreateContract(t *testing.T, scheme string) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to BB
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: nonce,
-			To:    &bb,
-			Value: big.NewInt(0),
-			Gas:   100000,
-			Data:  nil,
+			Nonce:     nonce,
+			To:        &bb,
+			Value:     big.NewInt(0),
+			Gas:       100000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
-		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
 		b.AddTx(tx)
 		nonce++
 	})
