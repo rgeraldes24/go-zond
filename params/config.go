@@ -23,7 +23,7 @@ import (
 	"github.com/theQRL/go-zond/common"
 )
 
-// TODO(rgeraldes24): add github issue
+// TODO(theQRL/go-zond/issues/50)
 // Genesis hashes to enforce below configs on.
 var (
 	MainnetGenesisHash = common.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")

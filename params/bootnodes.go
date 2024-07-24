@@ -18,7 +18,7 @@ package params
 
 import "github.com/theQRL/go-zond/common"
 
-// TODO(rgeraldes24): add github issue
+// TODO(theQRL/go-zond/issues/46)
 // MainnetBootnodes are the enode URLs of the P2P bootstrap nodes running on
 // the main Zond network.
 var MainnetBootnodes = []string{
