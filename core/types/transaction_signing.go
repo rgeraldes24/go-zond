@@ -66,6 +66,10 @@ func LatestSignerForChainID(chainID *big.Int) Signer {
 
 // SignTx signs the transaction using the given dilithium signer and private key.
 func SignTx(tx *Transaction, s Signer, d *dilithium.Dilithium) (*Transaction, error) {
+	if tx.ChainId().Sign() != 0 && tx.ChainId().Cmp(s.ChainID()) != 0 {
+		return nil, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, tx.ChainId(), s.ChainID())
+	}
+
 	h := s.Hash(tx)
 	sig, err := pqcrypto.Sign(h[:], d)
 	if err != nil {

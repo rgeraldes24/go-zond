@@ -232,7 +232,7 @@ func (p *TxPool) loop(head *types.Header, chain BlockChain) {
 				// this is a noop.
 				resetForced = false
 			default:
-				// Reset already running, wait until it finishes
+				// Reset already running, wait until it finishes.
 				//
 				// Note, this will not drop any forced reset request. If a forced
 				// reset was requested, but we were busy, then when the currently
@@ -452,7 +452,7 @@ func (p *TxPool) Locals() []common.Address {
 }
 
 // Status returns the known status (unknown/pending/queued) of a transaction
-// identified by their hashes.
+// identified by its hashes.
 func (p *TxPool) Status(hash common.Hash) TxStatus {
 	for _, subpool := range p.subpools {
 		if status := subpool.Status(hash); status != TxStatusUnknown {
