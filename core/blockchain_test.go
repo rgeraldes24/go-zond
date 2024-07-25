@@ -504,33 +504,33 @@ func testBrokenChain(t *testing.T, full bool, scheme string) {
 	}
 }
 
-/*
+// TODO(rgeraldes24): fix
 // Tests that reorganising a long difficult chain after a short easy one
 // overwrites the canonical numbers and links in the database.
-func TestReorgLongHeaders(t *testing.T) {
-	testReorgLong(t, false, rawdb.HashScheme)
-	testReorgLong(t, false, rawdb.PathScheme)
-}
-func TestReorgLongBlocks(t *testing.T) {
-	testReorgLong(t, true, rawdb.HashScheme)
-	testReorgLong(t, true, rawdb.PathScheme)
-}
+// func TestReorgLongHeaders(t *testing.T) {
+// 	testReorgLong(t, false, rawdb.HashScheme)
+// 	testReorgLong(t, false, rawdb.PathScheme)
+// }
+// func TestReorgLongBlocks(t *testing.T) {
+// 	testReorgLong(t, true, rawdb.HashScheme)
+// 	testReorgLong(t, true, rawdb.PathScheme)
+// }
 
 func testReorgLong(t *testing.T, full bool, scheme string) {
-	testReorg(t, []int64{0, 0, -9}, []int64{0, 0, 0, -9}, 393280+params.GenesisDifficulty.Int64(), full, scheme)
+	testReorg(t, []int64{0, 0, -9}, []int64{0, 0, 0, -9}, full, scheme)
 }
 
-
+// TODO(rgeraldes24): fix
 // Tests that reorganising a short difficult chain after a long easy one
 // overwrites the canonical numbers and links in the database.
-func TestReorgShortHeaders(t *testing.T) {
-	testReorgShort(t, false, rawdb.HashScheme)
-	testReorgShort(t, false, rawdb.PathScheme)
-}
-func TestReorgShortBlocks(t *testing.T) {
-	testReorgShort(t, true, rawdb.HashScheme)
-	testReorgShort(t, true, rawdb.PathScheme)
-}
+// func TestReorgShortHeaders(t *testing.T) {
+// 	testReorgShort(t, false, rawdb.HashScheme)
+// 	testReorgShort(t, false, rawdb.PathScheme)
+// }
+// func TestReorgShortBlocks(t *testing.T) {
+// 	testReorgShort(t, true, rawdb.HashScheme)
+// 	testReorgShort(t, true, rawdb.PathScheme)
+// }
 
 func testReorgShort(t *testing.T, full bool, scheme string) {
 	// Create a long easy chain vs. a short heavy one. Due to difficulty adjustment
@@ -544,10 +544,10 @@ func testReorgShort(t *testing.T, full bool, scheme string) {
 	for i := 0; i < len(diff); i++ {
 		diff[i] = -9
 	}
-	testReorg(t, easy, diff, 12615120+params.GenesisDifficulty.Int64(), full, scheme)
+	testReorg(t, easy, diff, full, scheme)
 }
 
-func testReorg(t *testing.T, first, second []int64, td int64, full bool, scheme string) {
+func testReorg(t *testing.T, first, second []int64, full bool, scheme string) {
 	// Create a pristine chain and database
 	genDb, _, blockchain, err := newCanonical(beacon.NewFaker(), 0, full, scheme)
 	if err != nil {
@@ -601,21 +601,21 @@ func testReorg(t *testing.T, first, second []int64, td int64, full bool, scheme 
 			}
 		}
 	}
-	// Make sure the chain total difficulty is the correct one
-	want := new(big.Int).Add(blockchain.genesisBlock.Difficulty(), big.NewInt(td))
-	if full {
-		cur := blockchain.CurrentBlock()
-		if have := blockchain.GetTd(cur.Hash(), cur.Number.Uint64()); have.Cmp(want) != 0 {
-			t.Errorf("total difficulty mismatch: have %v, want %v", have, want)
-		}
-	} else {
-		cur := blockchain.CurrentHeader()
-		if have := blockchain.GetTd(cur.Hash(), cur.Number.Uint64()); have.Cmp(want) != 0 {
-			t.Errorf("total difficulty mismatch: have %v, want %v", have, want)
-		}
-	}
+	// TODO(rgeraldes24)
+	// // Make sure the chain total difficulty is the correct one
+	// want := new(big.Int).Add(blockchain.genesisBlock.Difficulty(), big.NewInt(td))
+	// if full {
+	// 	cur := blockchain.CurrentBlock()
+	// 	if have := blockchain.GetTd(cur.Hash(), cur.Number.Uint64()); have.Cmp(want) != 0 {
+	// 		t.Errorf("total difficulty mismatch: have %v, want %v", have, want)
+	// 	}
+	// } else {
+	// 	cur := blockchain.CurrentHeader()
+	// 	if have := blockchain.GetTd(cur.Hash(), cur.Number.Uint64()); have.Cmp(want) != 0 {
+	// 		t.Errorf("total difficulty mismatch: have %v, want %v", have, want)
+	// 	}
+	// }
 }
-*/
 
 // Tests chain insertions in the face of one entity containing an invalid nonce.
 func TestHeadersInsertNonceError(t *testing.T) {
@@ -1759,6 +1759,7 @@ func testInsertReceiptChainRollback(t *testing.T, scheme string) {
 	}
 }
 
+// TODO(rgeraldes24): review
 // Tests that importing a very large side fork, which is larger than the canon chain,
 // but where the difficulty per block is kept low: this means that it will not
 // overtake the 'canon' chain until after it's passed canon by about 200 blocks.
@@ -1829,9 +1830,7 @@ func testLowDiffLongChain(t *testing.T, scheme string) {
 // - The sidechain S is prepended with numCanonBlocksInSidechain blocks from the canon chain
 //
 // The mergePoint can be these values:
-// -1: the transition won't happen
 // 0:  the transition happens since genesis
-// 1:  the transition happens after some chain segments
 func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommonAncestorAndPruneblock int) {
 	// Generate a canonical chain to act as the main dataset
 	chainConfig := *params.TestChainConfig
@@ -1858,11 +1857,12 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 	genDb, blocks, _ := GenerateChainWithGenesis(gspec, engine, 2*TriesInMemory, func(i int, gen *BlockGen) {
 		to := common.HexToAddress("deadbeef")
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: nonce,
-			To:    &to,
-			Value: big.NewInt(100),
-			Gas:   21000,
-			Data:  nil,
+			Nonce:     nonce,
+			To:        &to,
+			Value:     big.NewInt(100),
+			Gas:       21000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
 		tx, err := types.SignTx(tx, signer, key)
 		if err != nil {
@@ -1914,30 +1914,8 @@ func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommon
 	}
 }
 
-// TODO(rgeraldes24): fix
+// TODO(rgeraldes24): review
 /*
-// Tests that importing a sidechain (S), where
-//   - S is sidechain, containing blocks [Sn...Sm]
-//   - C is canon chain, containing blocks [G..Cn..Cm]
-//   - The common ancestor Cc is pruned
-//   - The first block in S: Sn, is == Cn
-//
-// That is: the sidechain for import contains some blocks already present in canon chain.
-// So the blocks are:
-//
-//	[ Cn, Cn+1, Cc, Sn+3 ... Sm]
-//	^    ^    ^  pruned
-func TestPrunedImportSide(t *testing.T) {
-	//glogger := log.NewGlogHandler(log.StreamHandler(os.Stdout, log.TerminalFormat(false)))
-	//glogger.Verbosity(3)
-	//log.Root().SetHandler(log.Handler(glogger))
-	testSideImport(t, 3, 3)
-	testSideImport(t, 3, -3)
-	testSideImport(t, 10, 0)
-	testSideImport(t, 1, 10)
-	testSideImport(t, 1, -10)
-}
-
 func TestPrunedImportSideWithMerging(t *testing.T) {
 	//glogger := log.NewGlogHandler(log.StreamHandler(os.Stdout, log.TerminalFormat(false)))
 	//glogger.Verbosity(3)
@@ -1947,159 +1925,10 @@ func TestPrunedImportSideWithMerging(t *testing.T) {
 	testSideImport(t, 10, 0)
 	testSideImport(t, 1, 10)
 	testSideImport(t, 1, -10)
-
-	testSideImport(t, 3, 3)
-	testSideImport(t, 3, -3)
-	testSideImport(t, 10, 0)
-	testSideImport(t, 1, 10)
-	testSideImport(t, 1, -10)
 }
 */
 
-// TODO(rgeraldes24): fix
-// func TestInsertKnownHeaders(t *testing.T) {
-// 	testInsertKnownChainData(t, "headers", rawdb.HashScheme)
-// 	testInsertKnownChainData(t, "headers", rawdb.PathScheme)
-// }
-
-// TODO(rgeraldes24): fix
-// func TestInsertKnownReceiptChain(t *testing.T) {
-// 	testInsertKnownChainData(t, "receipts", rawdb.HashScheme)
-// 	testInsertKnownChainData(t, "receipts", rawdb.PathScheme)
-// }
-
-// func TestInsertKnownBlocks(t *testing.T) {
-// 	testInsertKnownChainData(t, "blocks", rawdb.HashScheme)
-// 	testInsertKnownChainData(t, "blocks", rawdb.PathScheme)
-// }
-
-func testInsertKnownChainData(t *testing.T, typ string, scheme string) {
-	engine := beacon.NewFaker()
-	genesis := &Genesis{
-		Config:  params.TestChainConfig,
-		BaseFee: big.NewInt(params.InitialBaseFee),
-	}
-	genDb, blocks, receipts := GenerateChainWithGenesis(genesis, engine, 32, func(i int, b *BlockGen) { b.SetCoinbase(common.Address{1}) })
-
-	// A longer chain but total difficulty is lower.
-	blocks2, receipts2 := GenerateChain(genesis.Config, blocks[len(blocks)-1], engine, genDb, 65, func(i int, b *BlockGen) { b.SetCoinbase(common.Address{1}) })
-
-	// A shorter chain but total difficulty is higher.
-	blocks3, receipts3 := GenerateChain(genesis.Config, blocks[len(blocks)-1], engine, genDb, 64, func(i int, b *BlockGen) {
-		b.SetCoinbase(common.Address{1})
-		b.OffsetTime(-9) // A higher difficulty
-	})
-	// Import the shared chain and the original canonical one
-	chaindb, err := rawdb.NewDatabaseWithFreezer(rawdb.NewMemoryDatabase(), t.TempDir(), "", false)
-	if err != nil {
-		t.Fatalf("failed to create temp freezer db: %v", err)
-	}
-	defer chaindb.Close()
-
-	chain, err := NewBlockChain(chaindb, DefaultCacheConfigWithScheme(scheme), genesis, engine, vm.Config{}, nil, nil)
-	if err != nil {
-		t.Fatalf("failed to create tester chain: %v", err)
-	}
-	defer chain.Stop()
-
-	var (
-		inserter func(blocks []*types.Block, receipts []types.Receipts) error
-		asserter func(t *testing.T, block *types.Block)
-	)
-	if typ == "headers" {
-		inserter = func(blocks []*types.Block, receipts []types.Receipts) error {
-			headers := make([]*types.Header, 0, len(blocks))
-			for _, block := range blocks {
-				headers = append(headers, block.Header())
-			}
-			_, err := chain.InsertHeaderChain(headers)
-			return err
-		}
-		asserter = func(t *testing.T, block *types.Block) {
-			if chain.CurrentHeader().Hash() != block.Hash() {
-				t.Fatalf("current head header mismatch, have %v, want %v", chain.CurrentHeader().Hash().Hex(), block.Hash().Hex())
-			}
-		}
-	} else if typ == "receipts" {
-		inserter = func(blocks []*types.Block, receipts []types.Receipts) error {
-			headers := make([]*types.Header, 0, len(blocks))
-			for _, block := range blocks {
-				headers = append(headers, block.Header())
-			}
-			_, err := chain.InsertHeaderChain(headers)
-			if err != nil {
-				return err
-			}
-			_, err = chain.InsertReceiptChain(blocks, receipts, 0)
-			return err
-		}
-		asserter = func(t *testing.T, block *types.Block) {
-			if chain.CurrentSnapBlock().Hash() != block.Hash() {
-				t.Fatalf("current head fast block mismatch, have %v, want %v", chain.CurrentSnapBlock().Hash().Hex(), block.Hash().Hex())
-			}
-		}
-	} else {
-		inserter = func(blocks []*types.Block, _ []types.Receipts) error {
-			_, err := chain.InsertChain(blocks)
-			return err
-		}
-		asserter = func(t *testing.T, block *types.Block) {
-			if chain.CurrentBlock().Hash() != block.Hash() {
-				t.Fatalf("current head block mismatch, have %v, want %v", chain.CurrentBlock().Hash().Hex(), block.Hash().Hex())
-			}
-		}
-	}
-
-	if err := inserter(blocks, receipts); err != nil {
-		t.Fatalf("failed to insert chain data: %v", err)
-	}
-
-	// Reimport the chain data again. All the imported
-	// chain data are regarded "known" data.
-	if err := inserter(blocks, receipts); err != nil {
-		t.Fatalf("failed to insert chain data: %v", err)
-	}
-	asserter(t, blocks[len(blocks)-1])
-
-	// Import a long canonical chain with some known data as prefix.
-	rollback := blocks[len(blocks)/2].NumberU64()
-
-	chain.SetHead(rollback - 1)
-	if err := inserter(append(blocks, blocks2...), append(receipts, receipts2...)); err != nil {
-		t.Fatalf("failed to insert chain data: %v", err)
-	}
-	asserter(t, blocks2[len(blocks2)-1])
-
-	// Import a heavier shorter but higher total difficulty chain with some known data as prefix.
-	if err := inserter(append(blocks, blocks3...), append(receipts, receipts3...)); err != nil {
-		t.Fatalf("failed to insert chain data: %v", err)
-	}
-	asserter(t, blocks3[len(blocks3)-1])
-
-	// Import a longer but lower total difficulty chain with some known data as prefix.
-	if err := inserter(append(blocks, blocks2...), append(receipts, receipts2...)); err != nil {
-		t.Fatalf("failed to insert chain data: %v", err)
-	}
-	// The head shouldn't change.
-	asserter(t, blocks3[len(blocks3)-1])
-
-	// Rollback the heavier chain and re-insert the longer chain again
-	chain.SetHead(rollback - 1)
-	if err := inserter(append(blocks, blocks2...), append(receipts, receipts2...)); err != nil {
-		t.Fatalf("failed to insert chain data: %v", err)
-	}
-	asserter(t, blocks2[len(blocks2)-1])
-}
-
-func TestInsertKnownHeadersWithMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "headers")
-}
-func TestInsertKnownReceiptChainWithMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "receipts")
-}
-func TestInsertKnownBlocksWithMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "blocks")
-}
+// TODO(rgeraldes24): add path schemes?
 func TestInsertKnownHeadersAfterMerging(t *testing.T) {
 	testInsertKnownChainDataWithMerging(t, "headers")
 }
@@ -2110,9 +1939,6 @@ func TestInsertKnownBlocksAfterMerging(t *testing.T) {
 	testInsertKnownChainDataWithMerging(t, "blocks")
 }
 
-// mergeHeight can be assigned in these values:
-// 0: means the merging is applied since genesis
-// 1: means the merging is applied after the first segment
 func testInsertKnownChainDataWithMerging(t *testing.T, typ string) {
 	// Copy the TestChainConfig so we can modify it during tests
 	chainConfig := *params.TestChainConfig
@@ -2486,10 +2312,10 @@ func TestTransactionIndices(t *testing.T) {
 }
 
 // TODO(rgeraldes24): fix
-// func TestSkipStaleTxIndicesInSnapSync(t *testing.T) {
-// 	testSkipStaleTxIndicesInSnapSync(t, rawdb.HashScheme)
-// 	testSkipStaleTxIndicesInSnapSync(t, rawdb.PathScheme)
-// }
+func TestSkipStaleTxIndicesInSnapSync(t *testing.T) {
+	testSkipStaleTxIndicesInSnapSync(t, rawdb.HashScheme)
+	testSkipStaleTxIndicesInSnapSync(t, rawdb.PathScheme)
+}
 
 func testSkipStaleTxIndicesInSnapSync(t *testing.T, scheme string) {
 	// Configure and generate a sample block chain
@@ -2502,11 +2328,12 @@ func testSkipStaleTxIndicesInSnapSync(t *testing.T, scheme string) {
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 128, func(i int, block *BlockGen) {
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: block.TxNonce(address),
-			To:    &common.Address{0x00},
-			Value: big.NewInt(1000),
-			Gas:   params.TxGas,
-			Data:  nil,
+			Nonce:     block.TxNonce(address),
+			To:        &common.Address{0x00},
+			Value:     big.NewInt(1000),
+			Gas:       params.TxGas,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
 		tx, err := types.SignTx(tx, signer, key)
 		if err != nil {
@@ -2739,7 +2566,6 @@ func testSideImportPrunedBlocks(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 // TestDeleteCreateRevert tests a weird state transition corner case that we hit
 // while changing the internals of statedb. The workflow is that a contract is
 // self destructed, then in a followup transaction (but same block) it's created
@@ -2748,10 +2574,10 @@ func testSideImportPrunedBlocks(t *testing.T, scheme string) {
 // The original statedb implementation flushed dirty objects to the tries after
 // each transaction, so this works ok. The rework accumulated writes in memory
 // first, but the journal wiped the entire state object on create-revert.
-// func TestDeleteCreateRevert(t *testing.T) {
-// 	testDeleteCreateRevert(t, rawdb.HashScheme)
-// 	testDeleteCreateRevert(t, rawdb.PathScheme)
-// }
+func TestDeleteCreateRevert(t *testing.T) {
+	testDeleteCreateRevert(t, rawdb.HashScheme)
+	testDeleteCreateRevert(t, rawdb.PathScheme)
+}
 
 func testDeleteCreateRevert(t *testing.T, scheme string) {
 	var (
@@ -2797,23 +2623,25 @@ func testDeleteCreateRevert(t *testing.T, scheme string) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to AAAA
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: 0,
-			To:    &aa,
-			Value: big.NewInt(0),
-			Gas:   50000,
-			Data:  nil,
+			Nonce:     0,
+			To:        &aa,
+			Value:     big.NewInt(0),
+			Gas:       50000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
-		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
 		b.AddTx(tx)
 		// One transaction to BBBB
 		tx = types.NewTx(&types.DynamicFeeTx{
-			Nonce: 1,
-			To:    &bb,
-			Value: big.NewInt(0),
-			Gas:   100000,
-			Data:  nil,
+			Nonce:     1,
+			To:        &bb,
+			Value:     big.NewInt(0),
+			Gas:       100000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
-		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
 		b.AddTx(tx)
 	})
 	// Import the canonical chain
@@ -2828,7 +2656,6 @@ func testDeleteCreateRevert(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 // TestDeleteRecreateSlots tests a state-transition that contains both deletion
 // and recreation of contract state.
 // Contract A exists, has slots 1 and 2 set
@@ -2836,10 +2663,10 @@ func testDeleteCreateRevert(t *testing.T, scheme string) {
 // Tx 2: Re-create A, set slots 3 and 4
 // Expected outcome is that _all_ slots are cleared from A, due to the selfdestruct,
 // and then the new slots exist
-// func TestDeleteRecreateSlots(t *testing.T) {
-// 	testDeleteRecreateSlots(t, rawdb.HashScheme)
-// 	testDeleteRecreateSlots(t, rawdb.PathScheme)
-// }
+func TestDeleteRecreateSlots(t *testing.T) {
+	testDeleteRecreateSlots(t, rawdb.HashScheme)
+	testDeleteRecreateSlots(t, rawdb.PathScheme)
+}
 
 func testDeleteRecreateSlots(t *testing.T, scheme string) {
 	var (
@@ -2923,23 +2750,25 @@ func testDeleteRecreateSlots(t *testing.T, scheme string) {
 		b.SetCoinbase(common.Address{1})
 		// One transaction to AA, to kill it
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: 0,
-			To:    &aa,
-			Value: big.NewInt(0),
-			Gas:   50000,
-			Data:  nil,
+			Nonce:     0,
+			To:        &aa,
+			Value:     big.NewInt(0),
+			Gas:       50000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
-		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
 		b.AddTx(tx)
 		// One transaction to BB, to recreate AA
 		tx = types.NewTx(&types.DynamicFeeTx{
-			Nonce: 1,
-			To:    &bb,
-			Value: big.NewInt(0),
-			Gas:   100000,
-			Data:  nil,
+			Nonce:     1,
+			To:        &bb,
+			Value:     big.NewInt(0),
+			Gas:       100000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
-		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
 		b.AddTx(tx)
 	})
 	// Import the canonical chain
@@ -2972,7 +2801,6 @@ func testDeleteRecreateSlots(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 // TestDeleteRecreateAccount tests a state-transition that contains deletion of a
 // contract with storage, and a recreate of the same contract via a
 // regular value-transfer
@@ -3062,7 +2890,6 @@ func testDeleteRecreateAccount(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 // TestDeleteRecreateSlotsAcrossManyBlocks tests multiple state-transition that contains both deletion
 // and recreation of contract state.
 // Contract A exists, has slots 1 and 2 set
@@ -3070,10 +2897,10 @@ func testDeleteRecreateAccount(t *testing.T, scheme string) {
 // Tx 2: Re-create A, set slots 3 and 4
 // Expected outcome is that _all_ slots are cleared from A, due to the selfdestruct,
 // and then the new slots exist
-// func TestDeleteRecreateSlotsAcrossManyBlocks(t *testing.T) {
-// 	testDeleteRecreateSlotsAcrossManyBlocks(t, rawdb.HashScheme)
-// 	testDeleteRecreateSlotsAcrossManyBlocks(t, rawdb.PathScheme)
-// }
+func TestDeleteRecreateSlotsAcrossManyBlocks(t *testing.T) {
+	testDeleteRecreateSlotsAcrossManyBlocks(t, rawdb.HashScheme)
+	testDeleteRecreateSlotsAcrossManyBlocks(t, rawdb.PathScheme)
+}
 
 func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 	var (
