@@ -156,8 +156,8 @@ func (tt *rewindTest) dump(crash bool) string {
 // chain to be rolled back to the committed block. Everything above the sethead
 // point should be deleted. In between the committed block and the requested head
 // the data can remain as "fast sync" data to avoid redownloading it.
-// TODO(rgeraldes24): fix
-// func TestShortSetHead(t *testing.T)              { testShortSetHead(t, false) }
+// func TestShortSetHead(t *testing.T) { testShortSetHead(t, false) }
+
 // func TestShortSetHeadWithSnapshots(t *testing.T) { testShortSetHead(t, true) }
 
 func testShortSetHead(t *testing.T, snapshots bool) {
@@ -179,18 +179,18 @@ func testShortSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C7
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks: 8,
-		// sidechainBlocks:    0,
+		canonicalBlocks:    8,
+		sidechainBlocks:    0,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         nil,
 		setheadBlock:       7,
 		expCanonicalBlocks: 7,
-		// expSidechainBlocks: 0,
-		expFrozen:        0,
-		expHeadHeader:    7,
-		expHeadFastBlock: 7,
-		expHeadBlock:     4,
+		expSidechainBlocks: 0,
+		expFrozen:          0,
+		expHeadHeader:      7,
+		expHeadFastBlock:   7,
+		expHeadBlock:       4,
 	}, snapshots)
 }
 
@@ -244,7 +244,8 @@ func testShortSnapSyncedSetHead(t *testing.T, snapshots bool) {
 // we can just pick up fast syncing from there. The head full block should be set
 // to the genesis.
 // TODO(rgeraldes24): fix
-// func TestShortSnapSyncingSetHead(t *testing.T)              { testShortSnapSyncingSetHead(t, false) }
+// func TestShortSnapSyncingSetHead(t *testing.T) { testShortSnapSyncingSetHead(t, false) }
+
 // func TestShortSnapSyncingSetHeadWithSnapshots(t *testing.T) { testShortSnapSyncingSetHead(t, true) }
 
 func testShortSnapSyncingSetHead(t *testing.T, snapshots bool) {
@@ -292,7 +293,8 @@ func testShortSnapSyncingSetHead(t *testing.T, snapshots bool) {
 // we are deleting to, but it would be exceedingly hard to detect that case and
 // properly handle it, so we'll trade extra work in exchange for simpler code.
 // TODO(rgeraldes24): fix
-// func TestShortReorgedSetHead(t *testing.T)              { testShortReorgedSetHead(t, false) }
+// func TestShortReorgedSetHead(t *testing.T) { testShortReorgedSetHead(t, false) }
+
 // func TestShortReorgedSetHeadWithSnapshots(t *testing.T) { testShortReorgedSetHead(t, true) }
 
 func testShortReorgedSetHead(t *testing.T, snapshots bool) {
@@ -1096,15 +1098,15 @@ func testSetHeadWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme 
 	defer chain.Stop()
 
 	// If sidechain blocks are needed, make a light chain and import it
-	// var sideblocks types.Blocks
-	// if tt.sidechainBlocks > 0 {
-	// 	sideblocks, _ = GenerateChain(gspec.Config, gspec.ToBlock(), engine, rawdb.NewMemoryDatabase(), tt.sidechainBlocks, func(i int, b *BlockGen) {
-	// 		b.SetCoinbase(common.Address{0x01})
-	// 	})
-	// 	if _, err := chain.InsertChain(sideblocks); err != nil {
-	// 		t.Fatalf("Failed to import side chain: %v", err)
-	// 	}
-	// }
+	var sideblocks types.Blocks
+	if tt.sidechainBlocks > 0 {
+		sideblocks, _ = GenerateChain(gspec.Config, gspec.ToBlock(), engine, rawdb.NewMemoryDatabase(), tt.sidechainBlocks, func(i int, b *BlockGen) {
+			b.SetCoinbase(common.Address{0x01})
+		})
+		if _, err := chain.InsertChain(sideblocks); err != nil {
+			t.Fatalf("Failed to import side chain: %v", err)
+		}
+	}
 	canonblocks, _ := GenerateChain(gspec.Config, gspec.ToBlock(), engine, rawdb.NewMemoryDatabase(), tt.canonicalBlocks, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{0x02})
 	})
@@ -1149,9 +1151,9 @@ func testSetHeadWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme 
 
 	// Iterate over all the remaining blocks and ensure there are no gaps
 	verifyNoGaps(t, chain, true, canonblocks)
-	// verifyNoGaps(t, chain, false, sideblocks)
+	verifyNoGaps(t, chain, false, sideblocks)
 	verifyCutoff(t, chain, true, canonblocks, tt.expCanonicalBlocks)
-	// verifyCutoff(t, chain, false, sideblocks, tt.expSidechainBlocks)
+	verifyCutoff(t, chain, false, sideblocks, tt.expSidechainBlocks)
 
 	if head := chain.CurrentHeader(); head.Number.Uint64() != tt.expHeadHeader {
 		t.Errorf("Head header mismatch: have %d, want %d", head.Number, tt.expHeadHeader)
@@ -1184,8 +1186,7 @@ func verifyNoGaps(t *testing.T, chain *BlockChain, canonical bool, inserted type
 			if canonical {
 				t.Errorf("Canonical header gap between #%d-#%d", end, i-1)
 			} else {
-				// TODO(rgeraldes24): remove
-				// t.Errorf("Sidechain header gap between #%d-#%d", end, i-1)
+				t.Errorf("Sidechain header gap between #%d-#%d", end, i-1)
 			}
 			end = 0 // Reset for further gap detection
 		}
@@ -1200,8 +1201,7 @@ func verifyNoGaps(t *testing.T, chain *BlockChain, canonical bool, inserted type
 			if canonical {
 				t.Errorf("Canonical block gap between #%d-#%d", end, i-1)
 			} else {
-				// TODO(rgeraldes24): remove
-				// t.Errorf("Sidechain block gap between #%d-#%d", end, i-1)
+				t.Errorf("Sidechain block gap between #%d-#%d", end, i-1)
 			}
 			end = 0 // Reset for further gap detection
 		}
@@ -1216,8 +1216,7 @@ func verifyNoGaps(t *testing.T, chain *BlockChain, canonical bool, inserted type
 			if canonical {
 				t.Errorf("Canonical receipt gap between #%d-#%d", end, i-1)
 			} else {
-				// TODO(rgeraldes24): remove
-				// t.Errorf("Sidechain receipt gap between #%d-#%d", end, i-1)
+				t.Errorf("Sidechain receipt gap between #%d-#%d", end, i-1)
 			}
 			end = 0 // Reset for further gap detection
 		}
@@ -1235,24 +1234,21 @@ func verifyCutoff(t *testing.T, chain *BlockChain, canonical bool, inserted type
 				if canonical {
 					t.Errorf("Canonical header   #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					// TODO(rgeraldes24): remove
-					// t.Errorf("Sidechain header   #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					t.Errorf("Sidechain header   #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 			if block := chain.GetBlock(inserted[i-1].Hash(), uint64(i)); block == nil {
 				if canonical {
 					t.Errorf("Canonical block    #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					// TODO(rgeraldes24): remove
-					// t.Errorf("Sidechain block    #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					t.Errorf("Sidechain block    #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 			if receipts := chain.GetReceiptsByHash(inserted[i-1].Hash()); receipts == nil {
 				if canonical {
 					t.Errorf("Canonical receipts #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					// TODO(rgeraldes24): remove
-					// t.Errorf("Sidechain receipts #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					t.Errorf("Sidechain receipts #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 		} else {
@@ -1260,24 +1256,21 @@ func verifyCutoff(t *testing.T, chain *BlockChain, canonical bool, inserted type
 				if canonical {
 					t.Errorf("Canonical header   #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					// TODO(rgeraldes24): remove
-					// t.Errorf("Sidechain header   #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					t.Errorf("Sidechain header   #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 			if block := chain.GetBlock(inserted[i-1].Hash(), uint64(i)); block != nil {
 				if canonical {
 					t.Errorf("Canonical block    #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					// TODO(rgeraldes24): remove
-					// t.Errorf("Sidechain block    #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					t.Errorf("Sidechain block    #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 			if receipts := chain.GetReceiptsByHash(inserted[i-1].Hash()); receipts != nil {
 				if canonical {
 					t.Errorf("Canonical receipts #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					// TODO(rgeraldes24): remove
-					// t.Errorf("Sidechain receipts #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					t.Errorf("Sidechain receipts #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 		}

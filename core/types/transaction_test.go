@@ -36,8 +36,6 @@ import (
 var (
 	testAddr = common.HexToAddress("b94f5374fce5edbc8e2a8697c15331677e6ebf0b")
 
-	to = common.HexToAddress("095e7baea6a6c7c4c2dfeb977efac326af552d87")
-
 	emptyEip2718Tx = NewTx(&DynamicFeeTx{
 		ChainID:   big.NewInt(1),
 		Nonce:     3,

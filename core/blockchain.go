@@ -1291,22 +1291,6 @@ func (bc *BlockChain) InsertReceiptChain(blockChain types.Blocks, receiptChain [
 	return 0, nil
 }
 
-// writeBlockWithoutState writes only the block and its metadata to the database,
-// but does not write any state. This is used to construct competing side forks
-// up to the point where they exceed the canonical total difficulty.
-func (bc *BlockChain) writeBlockWithoutState(block *types.Block) (err error) {
-	if bc.insertStopped() {
-		return errInsertionInterrupted
-	}
-
-	batch := bc.db.NewBatch()
-	rawdb.WriteBlock(batch, block)
-	if err := batch.Write(); err != nil {
-		log.Crit("Failed to write block into disk", "err", err)
-	}
-	return nil
-}
-
 // writeKnownBlock updates the head block flag with a known block
 // and introduces chain reorg if necessary.
 func (bc *BlockChain) writeKnownBlock(block *types.Block) error {

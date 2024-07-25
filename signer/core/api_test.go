@@ -235,6 +235,7 @@ func mkTestTx(from common.MixedcaseAddress) apitypes.SendTxArgs {
 	return tx
 }
 
+// TODO(rgeraldes24)
 /*
 func TestSignTx(t *testing.T) {
 	var (

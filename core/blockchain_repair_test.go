@@ -29,7 +29,6 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core/rawdb"
-	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/params"
 )
@@ -39,7 +38,8 @@ import (
 // chain to be rolled back to the committed block, but the chain data itself left
 // in the database for replaying.
 // TODO(rgeraldes24): fix
-// func TestShortRepair(t *testing.T)              { testShortRepair(t, false) }
+// func TestShortRepair(t *testing.T) { testShortRepair(t, false) }
+
 // func TestShortRepairWithSnapshots(t *testing.T) { testShortRepair(t, true) }
 
 func testShortRepair(t *testing.T, snapshots bool) {
@@ -912,16 +912,6 @@ func testRepairWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme s
 	if err != nil {
 		t.Fatalf("Failed to create chain: %v", err)
 	}
-	// If sidechain blocks are needed, make a light chain and import it
-	var sideblocks types.Blocks
-	if tt.sidechainBlocks > 0 {
-		sideblocks, _ = GenerateChain(gspec.Config, gspec.ToBlock(), engine, rawdb.NewMemoryDatabase(), tt.sidechainBlocks, func(i int, b *BlockGen) {
-			b.SetCoinbase(common.Address{0x01})
-		})
-		if _, err := chain.InsertChain(sideblocks); err != nil {
-			t.Fatalf("Failed to import side chain: %v", err)
-		}
-	}
 	canonblocks, _ := GenerateChain(gspec.Config, gspec.ToBlock(), engine, rawdb.NewMemoryDatabase(), tt.canonicalBlocks, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{0x02})
 	})
@@ -976,9 +966,7 @@ func testRepairWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme s
 
 	// Iterate over all the remaining blocks and ensure there are no gaps
 	verifyNoGaps(t, newChain, true, canonblocks)
-	verifyNoGaps(t, newChain, false, sideblocks)
 	verifyCutoff(t, newChain, true, canonblocks, tt.expCanonicalBlocks)
-	verifyCutoff(t, newChain, false, sideblocks, tt.expSidechainBlocks)
 
 	if head := newChain.CurrentHeader(); head.Number.Uint64() != tt.expHeadHeader {
 		t.Errorf("Head header mismatch: have %d, want %d", head.Number, tt.expHeadHeader)

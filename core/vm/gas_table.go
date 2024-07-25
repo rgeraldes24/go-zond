@@ -88,7 +88,6 @@ func memoryCopierGas(stackpos int) gasFunc {
 var (
 	gasCallDataCopy   = memoryCopierGas(2)
 	gasCodeCopy       = memoryCopierGas(2)
-	gasMcopy          = memoryCopierGas(2)
 	gasExtCodeCopy    = memoryCopierGas(3)
 	gasReturnDataCopy = memoryCopierGas(2)
 )
@@ -286,23 +285,6 @@ func gasStaticCall(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memo
 	var overflow bool
 	if gas, overflow = math.SafeAdd(gas, evm.callGasTemp); overflow {
 		return 0, ErrGasUintOverflow
-	}
-	return gas, nil
-}
-
-func gasSelfdestruct(evm *EVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (uint64, error) {
-	var gas uint64
-	// EIP150 homestead gas reprice fork:
-	gas = params.SelfdestructGasEIP150
-	var address = common.Address(stack.Back(0).Bytes20())
-
-	// if empty and transfers value
-	if evm.StateDB.Empty(address) && evm.StateDB.GetBalance(contract.Address()).Sign() != 0 {
-		gas += params.CreateBySelfdestructGas
-	}
-
-	if !evm.StateDB.HasSelfDestructed(contract.Address()) {
-		evm.StateDB.AddRefund(params.SelfdestructRefundGas)
 	}
 	return gas, nil
 }

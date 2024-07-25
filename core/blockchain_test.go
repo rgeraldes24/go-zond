@@ -3422,13 +3422,10 @@ func testInitThenFailCreateContract(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
 // TestEIP2718Transition tests that an EIP-2718 transaction will be accepted
-// after the fork block has passed. This is verified by sending an EIP-2930
-// access list transaction, which specifies a single slot access, and then
-// checking that the gas usage of a hot SLOAD and a cold SLOAD are calculated
-// correctly.
+// This is verified by sending an EIP-2930 access list transaction , which
+// specifies a single slot access, and then checking that the gas usage of a
+// hot SLOAD and a cold SLOAD are calculated correctly.
 func TestEIP2718Transition(t *testing.T) {
 	testEIP2718Transition(t, rawdb.HashScheme)
 	testEIP2718Transition(t, rawdb.PathScheme)
@@ -3468,12 +3465,12 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 		// One transaction to 0xAAAA
 		signer := types.LatestSigner(gspec.Config)
 		tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{
-			ChainID:  gspec.Config.ChainID,
-			Nonce:    0,
-			To:       &aa,
-			Gas:      30000,
-			MaxFeePerGas: b.header.BaseFee,
-			MaxPriorityFeePerGas: big.NewInt(0),
+			ChainID:   gspec.Config.ChainID,
+			Nonce:     0,
+			To:        &aa,
+			Gas:       30000,
+			GasFeeCap: b.header.BaseFee,
+			GasTipCap: big.NewInt(0),
 			AccessList: types.AccessList{{
 				Address:     aa,
 				StorageKeys: []common.Hash{{0}},
@@ -3502,7 +3499,6 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 		t.Fatalf("incorrect amount of gas spent: expected %d, got %d", expected, block.GasUsed())
 	}
 }
-*/
 
 // TestEIP1559Transition tests the following:
 //
