@@ -684,7 +684,8 @@ func testInsertNonceError(t *testing.T, full bool, scheme string) {
 
 // Tests that fast importing a block chain produces the same chain data as the
 // classical full block processing.
-//  TODO(rgeraldes24): fix
+//
+//	TODO(rgeraldes24): fix
 // func TestFastVsFullChains(t *testing.T) {
 // 	testFastVsFullChains(t, rawdb.HashScheme)
 // 	testFastVsFullChains(t, rawdb.PathScheme)
@@ -1242,11 +1243,10 @@ func checkLogEvents(t *testing.T, logsCh <-chan []*types.Log, rmLogsCh <-chan Re
 	}
 }
 
-// TODO(rgeraldes24): fix
-// func TestReorgSideEvent(t *testing.T) {
-// 	testReorgSideEvent(t, rawdb.HashScheme)
-// 	testReorgSideEvent(t, rawdb.PathScheme)
-// }
+func TestReorgSideEvent(t *testing.T) {
+	testReorgSideEvent(t, rawdb.HashScheme)
+	testReorgSideEvent(t, rawdb.PathScheme)
+}
 
 func testReorgSideEvent(t *testing.T, scheme string) {
 	var (
@@ -1289,15 +1289,10 @@ func testReorgSideEvent(t *testing.T, scheme string) {
 		t.Fatalf("failed to insert chain: %v", err)
 	}
 
-	// first two block of the secondary chain are for a brief moment considered
-	// side chains because up to that point the first one is considered the
-	// heavier chain.
 	expectedSideHashes := map[common.Hash]bool{
-		replacementBlocks[0].Hash(): true,
-		replacementBlocks[1].Hash(): true,
-		chain[0].Hash():             true,
-		chain[1].Hash():             true,
-		chain[2].Hash():             true,
+		chain[0].Hash(): true,
+		chain[1].Hash(): true,
+		chain[2].Hash(): true,
 	}
 
 	i := 0
@@ -1386,27 +1381,28 @@ func testCanonicalBlockRetrieval(t *testing.T, scheme string) {
 	pend.Wait()
 }
 
-// TODO(rgeraldes24): fix
-// func TestEIP161AccountRemoval(t *testing.T) {
-// 	testEIP161AccountRemoval(t, rawdb.HashScheme)
-// 	testEIP161AccountRemoval(t, rawdb.PathScheme)
-// }
+func TestEIP161AccountRemoval(t *testing.T) {
+	testEIP161AccountRemoval(t, rawdb.HashScheme)
+	testEIP161AccountRemoval(t, rawdb.PathScheme)
+}
 
 func testEIP161AccountRemoval(t *testing.T, scheme string) {
 	// Configure and generate a sample block chain
 	var (
 		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = key.GetAddress()
-		funds   = big.NewInt(1000000000)
+		funds   = big.NewInt(100000000000000000)
 		theAddr = common.Address{1}
 		gspec   = &Genesis{
 			Config: &params.ChainConfig{
 				ChainID: big.NewInt(1),
 			},
-			Alloc: GenesisAlloc{address: {Balance: funds}},
+			Alloc: GenesisAlloc{
+				address: {Balance: funds},
+			},
 		}
 	)
-	_, blocks, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 3, func(i int, block *BlockGen) {
+	_, blocks, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 2, func(i int, block *BlockGen) {
 		var (
 			tx     *types.Transaction
 			err    error
@@ -1416,29 +1412,22 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 		switch i {
 		case 0:
 			tx = types.NewTx(&types.DynamicFeeTx{
-				Nonce: block.TxNonce(address),
-				To:    &theAddr,
-				Value: new(big.Int),
-				Gas:   21000,
-				Data:  nil,
+				Nonce:     block.TxNonce(address),
+				To:        &theAddr,
+				Value:     new(big.Int),
+				Gas:       21000,
+				GasFeeCap: big.NewInt(875000000),
+				Data:      nil,
 			})
 			tx, err = types.SignTx(tx, signer, key)
 		case 1:
 			tx = types.NewTx(&types.DynamicFeeTx{
-				Nonce: block.TxNonce(address),
-				To:    &theAddr,
-				Value: new(big.Int),
-				Gas:   21000,
-				Data:  nil,
-			})
-			tx, err = types.SignTx(tx, signer, key)
-		case 2:
-			tx = types.NewTx(&types.DynamicFeeTx{
-				Nonce: block.TxNonce(address),
-				To:    &theAddr,
-				Value: new(big.Int),
-				Gas:   21000,
-				Data:  nil,
+				Nonce:     block.TxNonce(address),
+				To:        &theAddr,
+				Value:     new(big.Int),
+				Gas:       21000,
+				GasFeeCap: big.NewInt(875000000),
+				Data:      nil,
 			})
 			tx, err = types.SignTx(tx, signer, key)
 		}
@@ -1447,27 +1436,20 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 		}
 		block.AddTx(tx)
 	})
-	// account must exist pre eip 161
+
 	blockchain, _ := NewBlockChain(rawdb.NewMemoryDatabase(), DefaultCacheConfigWithScheme(scheme), gspec, beacon.NewFaker(), vm.Config{}, nil, nil)
 	defer blockchain.Stop()
 
+	// account should not be created
 	if _, err := blockchain.InsertChain(types.Blocks{blocks[0]}); err != nil {
-		t.Fatal(err)
-	}
-	if st, _ := blockchain.State(); !st.Exist(theAddr) {
-		t.Error("expected account to exist")
-	}
-
-	// account needs to be deleted post eip 161
-	if _, err := blockchain.InsertChain(types.Blocks{blocks[1]}); err != nil {
 		t.Fatal(err)
 	}
 	if st, _ := blockchain.State(); st.Exist(theAddr) {
 		t.Error("account should not exist")
 	}
 
-	// account mustn't be created post eip 161
-	if _, err := blockchain.InsertChain(types.Blocks{blocks[2]}); err != nil {
+	// account should not be created
+	if _, err := blockchain.InsertChain(types.Blocks{blocks[1]}); err != nil {
 		t.Fatal(err)
 	}
 	if st, _ := blockchain.State(); st.Exist(theAddr) {
