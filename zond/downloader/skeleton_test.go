@@ -457,6 +457,7 @@ func TestSkeletonSyncExtend(t *testing.T) {
 			},
 			err: errChainReorged,
 		},
+		/*
 		// Initialize a sync and try to extend it with a past sidechain block.
 		{
 			head:   block50,

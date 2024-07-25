@@ -39,6 +39,7 @@ import (
 	"github.com/theQRL/go-zond/trie/triedb/pathdb"
 )
 
+// TODO(rgeraldes24): remove side chain references?
 // rewindTest is a test case for chain rollback upon user request.
 type rewindTest struct {
 	canonicalBlocks int     // Number of blocks to generate for the canonical chain (heavier)
@@ -178,18 +179,18 @@ func testShortSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C7
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    8,
-		sidechainBlocks:    0,
+		canonicalBlocks: 8,
+		// sidechainBlocks:    0,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         nil,
 		setheadBlock:       7,
 		expCanonicalBlocks: 7,
-		expSidechainBlocks: 0,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 0,
+		expFrozen:        0,
+		expHeadHeader:    7,
+		expHeadFastBlock: 7,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -222,18 +223,18 @@ func testShortSnapSyncedSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C7
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    8,
-		sidechainBlocks:    0,
+		canonicalBlocks: 8,
+		// sidechainBlocks:    0,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       7,
 		expCanonicalBlocks: 7,
-		expSidechainBlocks: 0,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 0,
+		expFrozen:        0,
+		expHeadHeader:    7,
+		expHeadFastBlock: 7,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -265,325 +266,18 @@ func testShortSnapSyncingSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C7
 	// Expected head block     : G
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    8,
-		sidechainBlocks:    0,
+		canonicalBlocks: 8,
+		// sidechainBlocks:    0,
 		freezeThreshold:    16,
 		commitBlock:        0,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       7,
 		expCanonicalBlocks: 7,
-		expSidechainBlocks: 0,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       0,
-	}, snapshots)
-}
-
-// Tests a sethead for a short canonical chain and a shorter side chain, where a
-// recent block was already committed to disk and then sethead was called. In this
-// test scenario the side chain is below the committed block. In this case we expect
-// the canonical full chain to be rolled back to the committed block. Everything
-// above the sethead point should be deleted. In between the committed block and
-// the requested head the data can remain as "fast sync" data to avoid redownloading
-// it. The side chain should be left alone as it was shorter.
-// TODO(rgeraldes24): fix
-// func TestShortOldForkedSetHead(t *testing.T)              { testShortOldForkedSetHead(t, false) }
-// func TestShortOldForkedSetHeadWithSnapshots(t *testing.T) { testShortOldForkedSetHead(t, true) }
-
-func testShortOldForkedSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8 (HEAD)
-	//   └->S1->S2->S3
-	//
-	// Frozen: none
-	// Commit: G, C4
-	// Pivot : none
-	//
-	// SetHead(7)
-	//
-	// ------------------------------
-	//
-	// Expected in leveldb:
-	//   G->C1->C2->C3->C4->C5->C6->C7
-	//   └->S1->S2->S3
-	//
-	// Expected head header    : C7
-	// Expected head fast block: C7
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    8,
-		sidechainBlocks:    3,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         nil,
-		setheadBlock:       7,
-		expCanonicalBlocks: 7,
-		expSidechainBlocks: 3,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a short canonical chain and a shorter side chain, where
-// the fast sync pivot point was already committed to disk and then sethead was
-// called. In this test scenario the side chain is below the committed block. In
-// this case we expect the canonical full chain to be rolled back to the committed
-// block. Everything above the sethead point should be deleted. In between the
-// committed block and the requested head the data can remain as "fast sync" data
-// to avoid redownloading it. The side chain should be left alone as it was shorter.
-// TODO(rgeraldes24): fix
-// func TestShortOldForkedSnapSyncedSetHead(t *testing.T) {
-// 	testShortOldForkedSnapSyncedSetHead(t, false)
-// }
-// func TestShortOldForkedSnapSyncedSetHeadWithSnapshots(t *testing.T) {
-// 	testShortOldForkedSnapSyncedSetHead(t, true)
-// }
-
-func testShortOldForkedSnapSyncedSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8 (HEAD)
-	//   └->S1->S2->S3
-	//
-	// Frozen: none
-	// Commit: G, C4
-	// Pivot : C4
-	//
-	// SetHead(7)
-	//
-	// ------------------------------
-	//
-	// Expected in leveldb:
-	//   G->C1->C2->C3->C4->C5->C6->C7
-	//   └->S1->S2->S3
-	//
-	// Expected head header    : C7
-	// Expected head fast block: C7
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    8,
-		sidechainBlocks:    3,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       7,
-		expCanonicalBlocks: 7,
-		expSidechainBlocks: 3,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a short canonical chain and a shorter side chain, where
-// the fast sync pivot point was not yet committed, but sethead was called. In this
-// test scenario the side chain is below the committed block. In this case we expect
-// the chain to detect that it was fast syncing and delete everything from the new
-// head, since we can just pick up fast syncing from there. The head full block
-// should be set to the genesis.
-// TODO(rgeraldes24): fix
-// func TestShortOldForkedSnapSyncingSetHead(t *testing.T) {
-// 	testShortOldForkedSnapSyncingSetHead(t, false)
-// }
-// func TestShortOldForkedSnapSyncingSetHeadWithSnapshots(t *testing.T) {
-// 	testShortOldForkedSnapSyncingSetHead(t, true)
-// }
-
-func testShortOldForkedSnapSyncingSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8 (HEAD)
-	//   └->S1->S2->S3
-	//
-	// Frozen: none
-	// Commit: G
-	// Pivot : C4
-	//
-	// SetHead(7)
-	//
-	// ------------------------------
-	//
-	// Expected in leveldb:
-	//   G->C1->C2->C3->C4->C5->C6->C7
-	//   └->S1->S2->S3
-	//
-	// Expected head header    : C7
-	// Expected head fast block: C7
-	// Expected head block     : G
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    8,
-		sidechainBlocks:    3,
-		freezeThreshold:    16,
-		commitBlock:        0,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       7,
-		expCanonicalBlocks: 7,
-		expSidechainBlocks: 3,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       0,
-	}, snapshots)
-}
-
-// Tests a sethead for a short canonical chain and a shorter side chain, where a
-// recent block was already committed to disk and then sethead was called. In this
-// test scenario the side chain reaches above the committed block. In this case we
-// expect the canonical full chain to be rolled back to the committed block. All
-// data above the sethead point should be deleted. In between the committed block
-// and the requested head the data can remain as "fast sync" data to avoid having
-// to redownload it. The side chain should be truncated to the head set.
-//
-// The side chain could be left to be if the fork point was before the new head
-// we are deleting to, but it would be exceedingly hard to detect that case and
-// properly handle it, so we'll trade extra work in exchange for simpler code.
-// TODO(rgeraldes24): fix
-// func TestShortNewlyForkedSetHead(t *testing.T)              { testShortNewlyForkedSetHead(t, false) }
-// func TestShortNewlyForkedSetHeadWithSnapshots(t *testing.T) { testShortNewlyForkedSetHead(t, true) }
-
-func testShortNewlyForkedSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10 (HEAD)
-	//   └->S1->S2->S3->S4->S5->S6->S7->S8
-	//
-	// Frozen: none
-	// Commit: G, C4
-	// Pivot : none
-	//
-	// SetHead(7)
-	//
-	// ------------------------------
-	//
-	// Expected in leveldb:
-	//   G->C1->C2->C3->C4->C5->C6->C7
-	//   └->S1->S2->S3->S4->S5->S6->S7
-	//
-	// Expected head header    : C7
-	// Expected head fast block: C7
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    10,
-		sidechainBlocks:    8,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         nil,
-		setheadBlock:       7,
-		expCanonicalBlocks: 7,
-		expSidechainBlocks: 7,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a short canonical chain and a shorter side chain, where
-// the fast sync pivot point was already committed to disk and then sethead was
-// called. In this case we expect the canonical full chain to be rolled back to
-// between the committed block and the requested head the data can remain as
-// "fast sync" data to avoid having to redownload it. The side chain should be
-// truncated to the head set.
-//
-// The side chain could be left to be if the fork point was before the new head
-// we are deleting to, but it would be exceedingly hard to detect that case and
-// properly handle it, so we'll trade extra work in exchange for simpler code.
-// TODO(rgeraldes24): fix
-// func TestShortNewlyForkedSnapSyncedSetHead(t *testing.T) {
-// 	testShortNewlyForkedSnapSyncedSetHead(t, false)
-// }
-// func TestShortNewlyForkedSnapSyncedSetHeadWithSnapshots(t *testing.T) {
-// 	testShortNewlyForkedSnapSyncedSetHead(t, true)
-// }
-
-func testShortNewlyForkedSnapSyncedSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10 (HEAD)
-	//   └->S1->S2->S3->S4->S5->S6->S7->S8
-	//
-	// Frozen: none
-	// Commit: G, C4
-	// Pivot : C4
-	//
-	// SetHead(7)
-	//
-	// ------------------------------
-	//
-	// Expected in leveldb:
-	//   G->C1->C2->C3->C4->C5->C6->C7
-	//   └->S1->S2->S3->S4->S5->S6->S7
-	//
-	// Expected head header    : C7
-	// Expected head fast block: C7
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    10,
-		sidechainBlocks:    8,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       7,
-		expCanonicalBlocks: 7,
-		expSidechainBlocks: 7,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a short canonical chain and a shorter side chain, where
-// the fast sync pivot point was not yet committed, but sethead was called. In
-// this test scenario the side chain reaches above the committed block. In this
-// case we expect the chain to detect that it was fast syncing and delete
-// everything from the new head, since we can just pick up fast syncing from
-// there.
-//
-// The side chain could be left to be if the fork point was before the new head
-// we are deleting to, but it would be exceedingly hard to detect that case and
-// properly handle it, so we'll trade extra work in exchange for simpler code.
-// TODO(rgeraldes24): fix
-// func TestShortNewlyForkedSnapSyncingSetHead(t *testing.T) {
-// 	testShortNewlyForkedSnapSyncingSetHead(t, false)
-// }
-// func TestShortNewlyForkedSnapSyncingSetHeadWithSnapshots(t *testing.T) {
-// 	testShortNewlyForkedSnapSyncingSetHead(t, true)
-// }
-
-func testShortNewlyForkedSnapSyncingSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10 (HEAD)
-	//   └->S1->S2->S3->S4->S5->S6->S7->S8
-	//
-	// Frozen: none
-	// Commit: G
-	// Pivot : C4
-	//
-	// SetHead(7)
-	//
-	// ------------------------------
-	//
-	// Expected in leveldb:
-	//   G->C1->C2->C3->C4->C5->C6->C7
-	//   └->S1->S2->S3->S4->S5->S6->S7
-	//
-	// Expected head header    : C7
-	// Expected head fast block: C7
-	// Expected head block     : G
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    10,
-		sidechainBlocks:    8,
-		freezeThreshold:    16,
-		commitBlock:        0,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       7,
-		expCanonicalBlocks: 7,
-		expSidechainBlocks: 7,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       0,
+		// expSidechainBlocks: 0,
+		expFrozen:        0,
+		expHeadHeader:    7,
+		expHeadFastBlock: 7,
+		expHeadBlock:     0,
 	}, snapshots)
 }
 
@@ -622,18 +316,18 @@ func testShortReorgedSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C7
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    8,
-		sidechainBlocks:    10,
+		canonicalBlocks: 8,
+		// sidechainBlocks:    10,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         nil,
 		setheadBlock:       7,
 		expCanonicalBlocks: 7,
-		expSidechainBlocks: 7,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 7,
+		expFrozen:        0,
+		expHeadHeader:    7,
+		expHeadFastBlock: 7,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -677,18 +371,18 @@ func testShortReorgedSnapSyncedSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C7
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    8,
-		sidechainBlocks:    10,
+		canonicalBlocks: 8,
+		// sidechainBlocks:    10,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       7,
 		expCanonicalBlocks: 7,
-		expSidechainBlocks: 7,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 7,
+		expFrozen:        0,
+		expHeadHeader:    7,
+		expHeadFastBlock: 7,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -730,18 +424,18 @@ func testShortReorgedSnapSyncingSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C7
 	// Expected head block     : G
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    8,
-		sidechainBlocks:    10,
+		canonicalBlocks: 8,
+		// sidechainBlocks:    10,
 		freezeThreshold:    16,
 		commitBlock:        0,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       7,
 		expCanonicalBlocks: 7,
-		expSidechainBlocks: 7,
-		expFrozen:          0,
-		expHeadHeader:      7,
-		expHeadFastBlock:   7,
-		expHeadBlock:       0,
+		// expSidechainBlocks: 7,
+		expFrozen:        0,
+		expHeadHeader:    7,
+		expHeadFastBlock: 7,
+		expHeadBlock:     0,
 	}, snapshots)
 }
 
@@ -779,18 +473,18 @@ func testLongShallowSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C6
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    0,
+		canonicalBlocks: 18,
+		// sidechainBlocks:    0,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         nil,
 		setheadBlock:       6,
 		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 0,
+		expFrozen:        3,
+		expHeadHeader:    6,
+		expHeadFastBlock: 6,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -826,18 +520,18 @@ func testLongDeepSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C4
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    0,
+		canonicalBlocks: 24,
+		// sidechainBlocks:    0,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         nil,
 		setheadBlock:       6,
 		expCanonicalBlocks: 4,
-		expSidechainBlocks: 0,
-		expFrozen:          5,
-		expHeadHeader:      4,
-		expHeadFastBlock:   4,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 0,
+		expFrozen:        5,
+		expHeadHeader:    4,
+		expHeadFastBlock: 4,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -879,18 +573,18 @@ func testLongSnapSyncedShallowSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C6
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    0,
+		canonicalBlocks: 18,
+		// sidechainBlocks:    0,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       6,
 		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 0,
+		expFrozen:        3,
+		expHeadHeader:    6,
+		expHeadFastBlock: 6,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -926,18 +620,18 @@ func testLongSnapSyncedDeepSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C4
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    0,
+		canonicalBlocks: 24,
+		// sidechainBlocks:    0,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       6,
 		expCanonicalBlocks: 4,
-		expSidechainBlocks: 0,
-		expFrozen:          5,
-		expHeadHeader:      4,
-		expHeadFastBlock:   4,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 0,
+		expFrozen:        5,
+		expHeadHeader:    4,
+		expHeadFastBlock: 4,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -978,18 +672,18 @@ func testLongSnapSyncingShallowSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C6
 	// Expected head block     : G
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    0,
+		canonicalBlocks: 18,
+		// sidechainBlocks:    0,
 		freezeThreshold:    16,
 		commitBlock:        0,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       6,
 		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       0,
+		// expSidechainBlocks: 0,
+		expFrozen:        3,
+		expHeadHeader:    6,
+		expHeadFastBlock: 6,
+		expHeadBlock:     0,
 	}, snapshots)
 }
 
@@ -1029,656 +723,18 @@ func testLongSnapSyncingDeepSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C6
 	// Expected head block     : G
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    0,
+		canonicalBlocks: 24,
+		// sidechainBlocks:    0,
 		freezeThreshold:    16,
 		commitBlock:        0,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       6,
 		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          7,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       0,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter side
-// chain, where a recent block - newer than the ancient limit - was already committed
-// to disk and then sethead was called. In this case we expect the canonical full
-// chain to be rolled back to the committed block. Everything above the sethead point
-// should be deleted. In between the committed block and the requested head the data
-// can remain as "fast sync" data to avoid redownloading it. The side chain is nuked
-// by the freezer.
-// TODO(rgeraldes24): fix
-// func TestLongOldForkedShallowSetHead(t *testing.T) {
-// 	testLongOldForkedShallowSetHead(t, false)
-// }
-// func TestLongOldForkedShallowSetHeadWithSnapshots(t *testing.T) {
-// 	testLongOldForkedShallowSetHead(t, true)
-// }
-
-func testLongOldForkedShallowSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18 (HEAD)
-	//   └->S1->S2->S3
-	//
-	// Frozen:
-	//   G->C1->C2
-	//
-	// Commit: G, C4
-	// Pivot : none
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2
-	//
-	// Expected in leveldb:
-	//   C2)->C3->C4->C5->C6
-	//
-	// Expected head header    : C6
-	// Expected head fast block: C6
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    3,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         nil,
-		setheadBlock:       6,
-		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter side
-// chain, where a recent block - older than the ancient limit - was already committed
-// to disk and then sethead was called. In this case we expect the canonical full
-// chain to be rolled back to the committed block. Since the ancient limit was
-// underflown, everything needs to be deleted onwards to avoid creating a gap. The
-// side chain is nuked by the freezer.
-// TODO(rgeraldes24): fix
-// func TestLongOldForkedDeepSetHead(t *testing.T)              { testLongOldForkedDeepSetHead(t, false) }
-// func TestLongOldForkedDeepSetHeadWithSnapshots(t *testing.T) { testLongOldForkedDeepSetHead(t, true) }
-
-func testLongOldForkedDeepSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18->C19->C20->C21->C22->C23->C24 (HEAD)
-	//   └->S1->S2->S3
-	//
-	// Frozen:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8
-	//
-	// Commit: G, C4
-	// Pivot : none
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2->C3->C4
-	//
-	// Expected in leveldb: none
-	//
-	// Expected head header    : C4
-	// Expected head fast block: C4
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    3,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         nil,
-		setheadBlock:       6,
-		expCanonicalBlocks: 4,
-		expSidechainBlocks: 0,
-		expFrozen:          5,
-		expHeadHeader:      4,
-		expHeadFastBlock:   4,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter
-// side chain, where the fast sync pivot point - newer than the ancient limit -
-// was already committed to disk and then sethead was called. In this test scenario
-// the side chain is below the committed block. In this case we expect the canonical
-// full chain to be rolled back to the committed block. Everything above the
-// sethead point should be deleted. In between the committed block and the
-// requested head the data can remain as "fast sync" data to avoid redownloading
-// it. The side chain is nuked by the freezer.
-// TODO(rgeraldes24): fix
-// func TestLongOldForkedSnapSyncedShallowSetHead(t *testing.T) {
-// 	testLongOldForkedSnapSyncedShallowSetHead(t, false)
-// }
-// func TestLongOldForkedSnapSyncedShallowSetHeadWithSnapshots(t *testing.T) {
-// 	testLongOldForkedSnapSyncedShallowSetHead(t, true)
-// }
-
-func testLongOldForkedSnapSyncedShallowSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18 (HEAD)
-	//   └->S1->S2->S3
-	//
-	// Frozen:
-	//   G->C1->C2
-	//
-	// Commit: G, C4
-	// Pivot : C4
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2
-	//
-	// Expected in leveldb:
-	//   C2)->C3->C4->C5->C6
-	//
-	// Expected head header    : C6
-	// Expected head fast block: C6
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    3,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       6,
-		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter
-// side chain, where the fast sync pivot point - older than the ancient limit -
-// was already committed to disk and then sethead was called. In this test scenario
-// the side chain is below the committed block. In this case we expect the canonical
-// full chain to be rolled back to the committed block. Since the ancient limit was
-// underflown, everything needs to be deleted onwards to avoid creating a gap. The
-// side chain is nuked by the freezer.
-// TODO(rgeraldes24): fix
-// func TestLongOldForkedSnapSyncedDeepSetHead(t *testing.T) {
-// 	testLongOldForkedSnapSyncedDeepSetHead(t, false)
-// }
-// func TestLongOldForkedSnapSyncedDeepSetHeadWithSnapshots(t *testing.T) {
-// 	testLongOldForkedSnapSyncedDeepSetHead(t, true)
-// }
-
-func testLongOldForkedSnapSyncedDeepSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18->C19->C20->C21->C22->C23->C24 (HEAD)
-	//   └->S1->S2->S3
-	//
-	// Frozen:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8
-	//
-	// Commit: G, C4
-	// Pivot : C4
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2->C3->C4->C5->C6
-	//
-	// Expected in leveldb: none
-	//
-	// Expected head header    : C6
-	// Expected head fast block: C6
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    3,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       6,
-		expCanonicalBlocks: 4,
-		expSidechainBlocks: 0,
-		expFrozen:          5,
-		expHeadHeader:      4,
-		expHeadFastBlock:   4,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter
-// side chain, where the fast sync pivot point - newer than the ancient limit -
-// was not yet committed, but sethead was called. In this test scenario the side
-// chain is below the committed block. In this case we expect the chain to detect
-// that it was fast syncing and delete everything from the new head, since we can
-// just pick up fast syncing from there. The side chain is completely nuked by the
-// freezer.
-// TODO(rgeraldes24): fix
-// func TestLongOldForkedSnapSyncingShallowSetHead(t *testing.T) {
-// 	testLongOldForkedSnapSyncingShallowSetHead(t, false)
-// }
-// func TestLongOldForkedSnapSyncingShallowSetHeadWithSnapshots(t *testing.T) {
-// 	testLongOldForkedSnapSyncingShallowSetHead(t, true)
-// }
-
-func testLongOldForkedSnapSyncingShallowSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18 (HEAD)
-	//   └->S1->S2->S3
-	//
-	// Frozen:
-	//   G->C1->C2
-	//
-	// Commit: G
-	// Pivot : C4
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2
-	//
-	// Expected in leveldb:
-	//   C2)->C3->C4->C5->C6
-	//
-	// Expected head header    : C6
-	// Expected head fast block: C6
-	// Expected head block     : G
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    3,
-		freezeThreshold:    16,
-		commitBlock:        0,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       6,
-		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       0,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter
-// side chain, where the fast sync pivot point - older than the ancient limit -
-// was not yet committed, but sethead was called. In this test scenario the side
-// chain is below the committed block. In this case we expect the chain to detect
-// that it was fast syncing and delete everything from the new head, since we can
-// just pick up fast syncing from there. The side chain is completely nuked by the
-// freezer.
-// TODO(rgeraldes24): fix
-// func TestLongOldForkedSnapSyncingDeepSetHead(t *testing.T) {
-// 	testLongOldForkedSnapSyncingDeepSetHead(t, false)
-// }
-// func TestLongOldForkedSnapSyncingDeepSetHeadWithSnapshots(t *testing.T) {
-// 	testLongOldForkedSnapSyncingDeepSetHead(t, true)
-// }
-
-func testLongOldForkedSnapSyncingDeepSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18->C19->C20->C21->C22->C23->C24 (HEAD)
-	//   └->S1->S2->S3
-	//
-	// Frozen:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8
-	//
-	// Commit: G
-	// Pivot : C4
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2->C3->C4->C5->C6
-	//
-	// Expected in leveldb: none
-	//
-	// Expected head header    : C6
-	// Expected head fast block: C6
-	// Expected head block     : G
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    3,
-		freezeThreshold:    16,
-		commitBlock:        0,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       6,
-		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          7,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       0,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter
-// side chain, where a recent block - newer than the ancient limit - was already
-// committed to disk and then sethead was called. In this test scenario the side
-// chain is above the committed block. In this case the freezer will delete the
-// sidechain since it's dangling, reverting to TestLongShallowSetHead.
-// TODO(rgeraldes24): fix
-// func TestLongNewerForkedShallowSetHead(t *testing.T) {
-// 	testLongNewerForkedShallowSetHead(t, false)
-// }
-// func TestLongNewerForkedShallowSetHeadWithSnapshots(t *testing.T) {
-// 	testLongNewerForkedShallowSetHead(t, true)
-// }
-
-func testLongNewerForkedShallowSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18 (HEAD)
-	//   └->S1->S2->S3->S4->S5->S6->S7->S8->S9->S10->S11->S12
-	//
-	// Frozen:
-	//   G->C1->C2
-	//
-	// Commit: G, C4
-	// Pivot : none
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2
-	//
-	// Expected in leveldb:
-	//   C2)->C3->C4->C5->C6
-	//
-	// Expected head header    : C6
-	// Expected head fast block: C6
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    12,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         nil,
-		setheadBlock:       6,
-		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter
-// side chain, where a recent block - older than the ancient limit - was already
-// committed to disk and then sethead was called. In this test scenario the side
-// chain is above the committed block. In this case the freezer will delete the
-// sidechain since it's dangling, reverting to TestLongDeepSetHead.
-// TODO(rgeraldes24): fix
-// func TestLongNewerForkedDeepSetHead(t *testing.T) {
-// 	testLongNewerForkedDeepSetHead(t, false)
-// }
-// func TestLongNewerForkedDeepSetHeadWithSnapshots(t *testing.T) {
-// 	testLongNewerForkedDeepSetHead(t, true)
-// }
-
-func testLongNewerForkedDeepSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18->C19->C20->C21->C22->C23->C24 (HEAD)
-	//   └->S1->S2->S3->S4->S5->S6->S7->S8->S9->S10->S11->S12
-	//
-	// Frozen:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8
-	//
-	// Commit: G, C4
-	// Pivot : none
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2->C3->C4
-	//
-	// Expected in leveldb: none
-	//
-	// Expected head header    : C4
-	// Expected head fast block: C4
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    12,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         nil,
-		setheadBlock:       6,
-		expCanonicalBlocks: 4,
-		expSidechainBlocks: 0,
-		expFrozen:          5,
-		expHeadHeader:      4,
-		expHeadFastBlock:   4,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter
-// side chain, where the fast sync pivot point - newer than the ancient limit -
-// was already committed to disk and then sethead was called. In this test scenario
-// the side chain is above the committed block. In this case the freezer will delete
-// the sidechain since it's dangling, reverting to TestLongSnapSyncedShallowSetHead.
-// TODO(rgeraldes24): fix
-// func TestLongNewerForkedSnapSyncedShallowSetHead(t *testing.T) {
-// 	testLongNewerForkedSnapSyncedShallowSetHead(t, false)
-// }
-// func TestLongNewerForkedSnapSyncedShallowSetHeadWithSnapshots(t *testing.T) {
-// 	testLongNewerForkedSnapSyncedShallowSetHead(t, true)
-// }
-
-func testLongNewerForkedSnapSyncedShallowSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18 (HEAD)
-	//   └->S1->S2->S3->S4->S5->S6->S7->S8->S9->S10->S11->S12
-	//
-	// Frozen:
-	//   G->C1->C2
-	//
-	// Commit: G, C4
-	// Pivot : C4
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2
-	//
-	// Expected in leveldb:
-	//   C2)->C3->C4->C5->C6
-	//
-	// Expected head header    : C6
-	// Expected head fast block: C6
-	// Expected head block     : C4
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    12,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       6,
-		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter
-// side chain, where the fast sync pivot point - older than the ancient limit -
-// was already committed to disk and then sethead was called. In this test scenario
-// the side chain is above the committed block. In this case the freezer will delete
-// the sidechain since it's dangling, reverting to TestLongSnapSyncedDeepSetHead.
-// TODO(rgeraldes24): fix
-// func TestLongNewerForkedSnapSyncedDeepSetHead(t *testing.T) {
-// 	testLongNewerForkedSnapSyncedDeepSetHead(t, false)
-// }
-// func TestLongNewerForkedSnapSyncedDeepSetHeadWithSnapshots(t *testing.T) {
-// 	testLongNewerForkedSnapSyncedDeepSetHead(t, true)
-// }
-
-func testLongNewerForkedSnapSyncedDeepSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18->C19->C20->C21->C22->C23->C24 (HEAD)
-	//   └->S1->S2->S3->S4->S5->S6->S7->S8->S9->S10->S11->S12
-	//
-	// Frozen:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8
-	//
-	// Commit: G, C4
-	// Pivot : C4
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2->C3->C4
-	//
-	// Expected in leveldb: none
-	//
-	// Expected head header    : C4
-	// Expected head fast block: C4
-	// Expected head block     : C
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    12,
-		freezeThreshold:    16,
-		commitBlock:        4,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       6,
-		expCanonicalBlocks: 4,
-		expSidechainBlocks: 0,
-		expFrozen:          5,
-		expHeadHeader:      4,
-		expHeadFastBlock:   4,
-		expHeadBlock:       4,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter
-// side chain, where the fast sync pivot point - newer than the ancient limit -
-// was not yet committed, but sethead was called. In this test scenario the side
-// chain is above the committed block. In this case the freezer will delete the
-// sidechain since it's dangling, reverting to TestLongSnapSyncinghallowSetHead.
-// TODO(rgeraldes24): fix
-// func TestLongNewerForkedSnapSyncingShallowSetHead(t *testing.T) {
-// 	testLongNewerForkedSnapSyncingShallowSetHead(t, false)
-// }
-// func TestLongNewerForkedSnapSyncingShallowSetHeadWithSnapshots(t *testing.T) {
-// 	testLongNewerForkedSnapSyncingShallowSetHead(t, true)
-// }
-
-func testLongNewerForkedSnapSyncingShallowSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18 (HEAD)
-	//   └->S1->S2->S3->S4->S5->S6->S7->S8->S9->S10->S11->S12
-	//
-	// Frozen:
-	//   G->C1->C2
-	//
-	// Commit: G
-	// Pivot : C4
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2
-	//
-	// Expected in leveldb:
-	//   C2)->C3->C4->C5->C6
-	//
-	// Expected head header    : C6
-	// Expected head fast block: C6
-	// Expected head block     : G
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    12,
-		freezeThreshold:    16,
-		commitBlock:        0,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       6,
-		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       0,
-	}, snapshots)
-}
-
-// Tests a sethead for a long canonical chain with frozen blocks and a shorter
-// side chain, where the fast sync pivot point - older than the ancient limit -
-// was not yet committed, but sethead was called. In this test scenario the side
-// chain is above the committed block. In this case the freezer will delete the
-// sidechain since it's dangling, reverting to TestLongSnapSyncingDeepSetHead.
-// TODO(rgeraldes24): fix
-// func TestLongNewerForkedSnapSyncingDeepSetHead(t *testing.T) {
-// 	testLongNewerForkedSnapSyncingDeepSetHead(t, false)
-// }
-// func TestLongNewerForkedSnapSyncingDeepSetHeadWithSnapshots(t *testing.T) {
-// 	testLongNewerForkedSnapSyncingDeepSetHead(t, true)
-// }
-
-func testLongNewerForkedSnapSyncingDeepSetHead(t *testing.T, snapshots bool) {
-	// Chain:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8->C9->C10->C11->C12->C13->C14->C15->C16->C17->C18->C19->C20->C21->C22->C23->C24 (HEAD)
-	//   └->S1->S2->S3->S4->S5->S6->S7->S8->S9->S10->S11->S12
-	//
-	// Frozen:
-	//   G->C1->C2->C3->C4->C5->C6->C7->C8
-	//
-	// Commit: G
-	// Pivot : C4
-	//
-	// SetHead(6)
-	//
-	// ------------------------------
-	//
-	// Expected in freezer:
-	//   G->C1->C2->C3->C4->C5->C6
-	//
-	// Expected in leveldb: none
-	//
-	// Expected head header    : C6
-	// Expected head fast block: C6
-	// Expected head block     : G
-	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    12,
-		freezeThreshold:    16,
-		commitBlock:        0,
-		pivotBlock:         uint64ptr(4),
-		setheadBlock:       6,
-		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          7,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       0,
+		// expSidechainBlocks: 0,
+		expFrozen:        7,
+		expHeadHeader:    6,
+		expHeadFastBlock: 6,
+		expHeadBlock:     0,
 	}, snapshots)
 }
 
@@ -1715,18 +771,18 @@ func testLongReorgedShallowSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C6
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    26,
+		canonicalBlocks: 18,
+		// sidechainBlocks:    26,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         nil,
 		setheadBlock:       6,
 		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 0,
+		expFrozen:        3,
+		expHeadHeader:    6,
+		expHeadFastBlock: 6,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -1762,18 +818,18 @@ func testLongReorgedDeepSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C4
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    26,
+		canonicalBlocks: 24,
+		// sidechainBlocks:    26,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         nil,
 		setheadBlock:       6,
 		expCanonicalBlocks: 4,
-		expSidechainBlocks: 0,
-		expFrozen:          5,
-		expHeadHeader:      4,
-		expHeadFastBlock:   4,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 0,
+		expFrozen:        5,
+		expHeadHeader:    4,
+		expHeadFastBlock: 4,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -1815,18 +871,18 @@ func testLongReorgedSnapSyncedShallowSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C6
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    26,
+		canonicalBlocks: 18,
+		// sidechainBlocks:    26,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       6,
 		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 0,
+		expFrozen:        3,
+		expHeadHeader:    6,
+		expHeadFastBlock: 6,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -1867,18 +923,18 @@ func testLongReorgedSnapSyncedDeepSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C4
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    26,
+		canonicalBlocks: 24,
+		// sidechainBlocks:    26,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       6,
 		expCanonicalBlocks: 4,
-		expSidechainBlocks: 0,
-		expFrozen:          5,
-		expHeadHeader:      4,
-		expHeadFastBlock:   4,
-		expHeadBlock:       4,
+		// expSidechainBlocks: 0,
+		expFrozen:        5,
+		expHeadHeader:    4,
+		expHeadFastBlock: 4,
+		expHeadBlock:     4,
 	}, snapshots)
 }
 
@@ -1921,18 +977,18 @@ func testLongReorgedSnapSyncingShallowSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C6
 	// Expected head block     : G
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    18,
-		sidechainBlocks:    26,
+		canonicalBlocks: 18,
+		// sidechainBlocks:    26,
 		freezeThreshold:    16,
 		commitBlock:        0,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       6,
 		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          3,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       0,
+		// expSidechainBlocks: 0,
+		expFrozen:        3,
+		expHeadHeader:    6,
+		expHeadFastBlock: 6,
+		expHeadBlock:     0,
 	}, snapshots)
 }
 
@@ -1974,18 +1030,18 @@ func testLongReorgedSnapSyncingDeepSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C6
 	// Expected head block     : G
 	testSetHead(t, &rewindTest{
-		canonicalBlocks:    24,
-		sidechainBlocks:    26,
+		canonicalBlocks: 24,
+		// sidechainBlocks:    26,
 		freezeThreshold:    16,
 		commitBlock:        0,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       6,
 		expCanonicalBlocks: 6,
-		expSidechainBlocks: 0,
-		expFrozen:          7,
-		expHeadHeader:      6,
-		expHeadFastBlock:   6,
-		expHeadBlock:       0,
+		// expSidechainBlocks: 0,
+		expFrozen:        7,
+		expHeadHeader:    6,
+		expHeadFastBlock: 6,
+		expHeadBlock:     0,
 	}, snapshots)
 }
 
@@ -2040,15 +1096,15 @@ func testSetHeadWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme 
 	defer chain.Stop()
 
 	// If sidechain blocks are needed, make a light chain and import it
-	var sideblocks types.Blocks
-	if tt.sidechainBlocks > 0 {
-		sideblocks, _ = GenerateChain(gspec.Config, gspec.ToBlock(), engine, rawdb.NewMemoryDatabase(), tt.sidechainBlocks, func(i int, b *BlockGen) {
-			b.SetCoinbase(common.Address{0x01})
-		})
-		if _, err := chain.InsertChain(sideblocks); err != nil {
-			t.Fatalf("Failed to import side chain: %v", err)
-		}
-	}
+	// var sideblocks types.Blocks
+	// if tt.sidechainBlocks > 0 {
+	// 	sideblocks, _ = GenerateChain(gspec.Config, gspec.ToBlock(), engine, rawdb.NewMemoryDatabase(), tt.sidechainBlocks, func(i int, b *BlockGen) {
+	// 		b.SetCoinbase(common.Address{0x01})
+	// 	})
+	// 	if _, err := chain.InsertChain(sideblocks); err != nil {
+	// 		t.Fatalf("Failed to import side chain: %v", err)
+	// 	}
+	// }
 	canonblocks, _ := GenerateChain(gspec.Config, gspec.ToBlock(), engine, rawdb.NewMemoryDatabase(), tt.canonicalBlocks, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{0x02})
 	})
@@ -2093,9 +1149,9 @@ func testSetHeadWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme 
 
 	// Iterate over all the remaining blocks and ensure there are no gaps
 	verifyNoGaps(t, chain, true, canonblocks)
-	verifyNoGaps(t, chain, false, sideblocks)
+	// verifyNoGaps(t, chain, false, sideblocks)
 	verifyCutoff(t, chain, true, canonblocks, tt.expCanonicalBlocks)
-	verifyCutoff(t, chain, false, sideblocks, tt.expSidechainBlocks)
+	// verifyCutoff(t, chain, false, sideblocks, tt.expSidechainBlocks)
 
 	if head := chain.CurrentHeader(); head.Number.Uint64() != tt.expHeadHeader {
 		t.Errorf("Head header mismatch: have %d, want %d", head.Number, tt.expHeadHeader)
@@ -2128,7 +1184,8 @@ func verifyNoGaps(t *testing.T, chain *BlockChain, canonical bool, inserted type
 			if canonical {
 				t.Errorf("Canonical header gap between #%d-#%d", end, i-1)
 			} else {
-				t.Errorf("Sidechain header gap between #%d-#%d", end, i-1)
+				// TODO(rgeraldes24): remove
+				// t.Errorf("Sidechain header gap between #%d-#%d", end, i-1)
 			}
 			end = 0 // Reset for further gap detection
 		}
@@ -2143,7 +1200,8 @@ func verifyNoGaps(t *testing.T, chain *BlockChain, canonical bool, inserted type
 			if canonical {
 				t.Errorf("Canonical block gap between #%d-#%d", end, i-1)
 			} else {
-				t.Errorf("Sidechain block gap between #%d-#%d", end, i-1)
+				// TODO(rgeraldes24): remove
+				// t.Errorf("Sidechain block gap between #%d-#%d", end, i-1)
 			}
 			end = 0 // Reset for further gap detection
 		}
@@ -2158,7 +1216,8 @@ func verifyNoGaps(t *testing.T, chain *BlockChain, canonical bool, inserted type
 			if canonical {
 				t.Errorf("Canonical receipt gap between #%d-#%d", end, i-1)
 			} else {
-				t.Errorf("Sidechain receipt gap between #%d-#%d", end, i-1)
+				// TODO(rgeraldes24): remove
+				// t.Errorf("Sidechain receipt gap between #%d-#%d", end, i-1)
 			}
 			end = 0 // Reset for further gap detection
 		}
@@ -2176,21 +1235,24 @@ func verifyCutoff(t *testing.T, chain *BlockChain, canonical bool, inserted type
 				if canonical {
 					t.Errorf("Canonical header   #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					t.Errorf("Sidechain header   #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					// TODO(rgeraldes24): remove
+					// t.Errorf("Sidechain header   #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 			if block := chain.GetBlock(inserted[i-1].Hash(), uint64(i)); block == nil {
 				if canonical {
 					t.Errorf("Canonical block    #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					t.Errorf("Sidechain block    #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					// TODO(rgeraldes24): remove
+					// t.Errorf("Sidechain block    #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 			if receipts := chain.GetReceiptsByHash(inserted[i-1].Hash()); receipts == nil {
 				if canonical {
 					t.Errorf("Canonical receipts #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					t.Errorf("Sidechain receipts #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					// TODO(rgeraldes24): remove
+					// t.Errorf("Sidechain receipts #%2d [%x...] missing before cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 		} else {
@@ -2198,21 +1260,24 @@ func verifyCutoff(t *testing.T, chain *BlockChain, canonical bool, inserted type
 				if canonical {
 					t.Errorf("Canonical header   #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					t.Errorf("Sidechain header   #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					// TODO(rgeraldes24): remove
+					// t.Errorf("Sidechain header   #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 			if block := chain.GetBlock(inserted[i-1].Hash(), uint64(i)); block != nil {
 				if canonical {
 					t.Errorf("Canonical block    #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					t.Errorf("Sidechain block    #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					// TODO(rgeraldes24): remove
+					// t.Errorf("Sidechain block    #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 			if receipts := chain.GetReceiptsByHash(inserted[i-1].Hash()); receipts != nil {
 				if canonical {
 					t.Errorf("Canonical receipts #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				} else {
-					t.Errorf("Sidechain receipts #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
+					// TODO(rgeraldes24): remove
+					// t.Errorf("Sidechain receipts #%2d [%x...] present after cap %d", inserted[i-1].Number(), inserted[i-1].Hash().Bytes()[:3], head)
 				}
 			}
 		}

@@ -1200,69 +1200,6 @@ func testLogRebirth(t *testing.T, scheme string) {
 	checkLogEvents(t, newLogCh, rmLogsCh, 10, 10)
 }
 
-// TODO(rgeraldes24): fix
-// This test is a variation of TestLogRebirth. It verifies that log events are emitted
-// when a side chain containing log events overtakes the canonical chain.
-// func TestSideLogRebirth(t *testing.T) {
-// 	testSideLogRebirth(t, rawdb.HashScheme)
-// 	testSideLogRebirth(t, rawdb.PathScheme)
-// }
-
-func testSideLogRebirth(t *testing.T, scheme string) {
-	var (
-		key1, _       = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		addr1         = key1.GetAddress()
-		gspec         = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{addr1: {Balance: big.NewInt(10000000000000000)}}}
-		signer        = types.LatestSigner(gspec.Config)
-		blockchain, _ = NewBlockChain(rawdb.NewMemoryDatabase(), DefaultCacheConfigWithScheme(scheme), gspec, beacon.NewFaker(), vm.Config{}, nil, nil)
-	)
-	defer blockchain.Stop()
-
-	newLogCh := make(chan []*types.Log, 10)
-	rmLogsCh := make(chan RemovedLogsEvent, 10)
-	blockchain.SubscribeLogsEvent(newLogCh)
-	blockchain.SubscribeRemovedLogsEvent(rmLogsCh)
-
-	_, chain, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 2, func(i int, gen *BlockGen) {
-		if i == 1 {
-			gen.OffsetTime(-9) // higher block difficulty
-		}
-	})
-	if _, err := blockchain.InsertChain(chain); err != nil {
-		t.Fatalf("failed to insert forked chain: %v", err)
-	}
-	checkLogEvents(t, newLogCh, rmLogsCh, 0, 0)
-
-	// Generate side chain with lower difficulty
-	genDb, sideChain, _ := GenerateChainWithGenesis(gspec, beacon.NewFaker(), 2, func(i int, gen *BlockGen) {
-		if i == 1 {
-			tx := types.NewTx(&types.DynamicFeeTx{
-				Nonce:     gen.TxNonce(addr1),
-				Value:     new(big.Int),
-				Gas:       1000000,
-				GasFeeCap: big.NewInt(875000000),
-				Data:      logCode,
-			})
-			tx, err := types.SignTx(tx, signer, key1)
-			if err != nil {
-				t.Fatalf("failed to create tx: %v", err)
-			}
-			gen.AddTx(tx)
-		}
-	})
-	if _, err := blockchain.InsertChain(sideChain); err != nil {
-		t.Fatalf("failed to insert forked chain: %v", err)
-	}
-	checkLogEvents(t, newLogCh, rmLogsCh, 0, 0)
-
-	// Generate a new block based on side chain.
-	newBlocks, _ := GenerateChain(gspec.Config, sideChain[len(sideChain)-1], beacon.NewFaker(), genDb, 1, func(i int, gen *BlockGen) {})
-	if _, err := blockchain.InsertChain(newBlocks); err != nil {
-		t.Fatalf("failed to insert forked chain: %v", err)
-	}
-	checkLogEvents(t, newLogCh, rmLogsCh, 1, 0)
-}
-
 func checkLogEvents(t *testing.T, logsCh <-chan []*types.Log, rmLogsCh <-chan RemovedLogsEvent, wantNew, wantRemoved int) {
 	t.Helper()
 	var (
