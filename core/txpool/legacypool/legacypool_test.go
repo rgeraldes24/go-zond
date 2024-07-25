@@ -201,9 +201,6 @@ func validatePoolInternals(pool *LegacyPool) error {
 		if nonce := pool.pendingNonces.get(addr); nonce != last+1 {
 			return fmt.Errorf("pending nonce mismatch: have %v, want %v", nonce, last+1)
 		}
-		if txs.totalcost.Cmp(common.Big0) < 0 {
-			return fmt.Errorf("totalcost went negative: %v", txs.totalcost)
-		}
 	}
 	return nil
 }
@@ -1034,12 +1031,6 @@ func testQueueTimeLimiting(t *testing.T, nolocals bool) {
 	testAddBalance(pool, remote.GetAddress(), big.NewInt(1000000000))
 
 	// Add the two transactions and ensure they both are queued up
-	// if err := pool.addLocal(pricedTransaction(1, 100000, big.NewInt(1), local)); err != nil {
-	// 	t.Fatalf("failed to add local transaction: %v", err)
-	// }
-	// if err := pool.addRemote(pricedTransaction(1, 100000, big.NewInt(1), remote)); err != nil {
-	// 	t.Fatalf("failed to add remote transaction: %v", err)
-	// }
 	if err := pool.addLocal(dynamicFeeTx(1, 100000, big.NewInt(1), big.NewInt(1), local)); err != nil {
 		t.Fatalf("failed to add local transaction: %v", err)
 	}
@@ -1110,12 +1101,6 @@ func testQueueTimeLimiting(t *testing.T, nolocals bool) {
 	}
 
 	// Queue gapped transactions
-	// if err := pool.addLocal(pricedTransaction(4, 100000, big.NewInt(1), local)); err != nil {
-	// 	t.Fatalf("failed to add remote transaction: %v", err)
-	// }
-	// if err := pool.addRemoteSync(pricedTransaction(4, 100000, big.NewInt(1), remote)); err != nil {
-	// 	t.Fatalf("failed to add remote transaction: %v", err)
-	// }
 	if err := pool.addLocal(dynamicFeeTx(4, 100000, big.NewInt(1), big.NewInt(1), local)); err != nil {
 		t.Fatalf("failed to add remote transaction: %v", err)
 	}
@@ -1125,12 +1110,6 @@ func testQueueTimeLimiting(t *testing.T, nolocals bool) {
 	time.Sleep(5 * evictionInterval) // A half lifetime pass
 
 	// Queue executable transactions, the life cycle should be restarted.
-	// if err := pool.addLocal(pricedTransaction(2, 100000, big.NewInt(1), local)); err != nil {
-	// 	t.Fatalf("failed to add remote transaction: %v", err)
-	// }
-	// if err := pool.addRemoteSync(pricedTransaction(2, 100000, big.NewInt(1), remote)); err != nil {
-	// 	t.Fatalf("failed to add remote transaction: %v", err)
-	// }
 	if err := pool.addLocal(dynamicFeeTx(2, 100000, big.NewInt(1), big.NewInt(1), local)); err != nil {
 		t.Fatalf("failed to add remote transaction: %v", err)
 	}
@@ -1394,6 +1373,50 @@ func TestPendingMinimumAllowance(t *testing.T) {
 	}
 	if err := validatePoolInternals(pool); err != nil {
 		t.Fatalf("pool internal state corrupted: %v", err)
+	}
+}
+
+func TestMinGasPriceEnforced(t *testing.T) {
+	t.Parallel()
+
+	// Create the pool to test the pricing enforcement with
+	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(rawdb.NewMemoryDatabase()), nil)
+	blockchain := newTestBlockChain(eip1559Config, 10000000, statedb, new(event.Feed))
+
+	txPoolConfig := DefaultConfig
+	txPoolConfig.NoLocals = true
+	pool := New(txPoolConfig, blockchain)
+	pool.Init(new(big.Int).SetUint64(txPoolConfig.PriceLimit), blockchain.CurrentBlock(), makeAddressReserver())
+	defer pool.Close()
+
+	key, _ := crypto.GenerateDilithiumKey()
+	testAddBalance(pool, common.Address(key.GetAddress()), big.NewInt(1000000))
+
+	tx := dynamicFeeTx(0, 100000, big.NewInt(2), big.NewInt(2), key)
+	pool.SetGasTip(big.NewInt(tx.GasPrice().Int64() + 1))
+
+	if err := pool.addLocal(tx); !errors.Is(err, txpool.ErrUnderpriced) {
+		t.Fatalf("Min tip not enforced")
+	}
+
+	if err := pool.Add([]*types.Transaction{tx}, true, false)[0]; !errors.Is(err, txpool.ErrUnderpriced) {
+		t.Fatalf("Min tip not enforced")
+	}
+
+	tx = dynamicFeeTx(0, 100000, big.NewInt(3), big.NewInt(2), key)
+	pool.SetGasTip(big.NewInt(tx.GasTipCap().Int64() + 1))
+
+	if err := pool.addLocal(tx); !errors.Is(err, txpool.ErrUnderpriced) {
+		t.Fatalf("Min tip not enforced")
+	}
+
+	if err := pool.Add([]*types.Transaction{tx}, true, false)[0]; !errors.Is(err, txpool.ErrUnderpriced) {
+		t.Fatalf("Min tip not enforced")
+	}
+	// Make sure the tx is accepted if locals are enabled
+	pool.config.NoLocals = false
+	if err := pool.Add([]*types.Transaction{tx}, true, false)[0]; err != nil {
+		t.Fatalf("Min tip enforced with locals enabled, error: %v", err)
 	}
 }
 
@@ -1840,7 +1863,6 @@ func TestDeduplication(t *testing.T) {
 	txs := make([]*types.Transaction, 16)
 	for i := 0; i < len(txs); i++ {
 		txs[i] = dynamicFeeTx(uint64(i), 100000, big.NewInt(1), big.NewInt(1), key)
-		// txs[i] = pricedTransaction(uint64(i), 100000, big.NewInt(1), key)
 	}
 	var firsts []*types.Transaction
 	for i := 0; i < len(txs); i += 2 {
@@ -2285,7 +2307,6 @@ func BenchmarkInsertRemoteWithAllLocals(b *testing.B) {
 	}
 	remotes := make([]*types.Transaction, 1000)
 	for i := 0; i < len(remotes); i++ {
-		// remotes[i] = pricedTransaction(uint64(i), 100000, big.NewInt(2), remoteKey) // Higher gasprice
 		remotes[i] = dynamicFeeTx(uint64(i), 100000, big.NewInt(2), big.NewInt(0), remoteKey) // Higher gasprice
 	}
 	// Benchmark importing the transactions into the queue

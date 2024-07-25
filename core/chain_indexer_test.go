@@ -31,8 +31,8 @@ import (
 )
 
 // TODO(rgeraldes24): fix
-/*
 // Runs multiple tests with randomized parameters.
+/*
 func TestChainIndexerSingle(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		testChainIndexer(t, 1)
@@ -234,7 +234,7 @@ func (b *testChainIndexBackend) Process(ctx context.Context, header *types.Heade
 		b.t.Error("Unexpected call to Process")
 		// Can't use Fatal since this is not the test's goroutine.
 		// Returning error stops the chainIndexer's updateLoop
-		return errors.New("Unexpected call to Process")
+		return errors.New("unexpected call to Process")
 	case b.processCh <- header.Number.Uint64():
 	}
 	return nil
