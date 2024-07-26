@@ -26,7 +26,6 @@ import (
 	"time"
 
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/consensus"
 	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core/rawdb"
@@ -504,33 +503,32 @@ func testBrokenChain(t *testing.T, full bool, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 // Tests that reorganising a long difficult chain after a short easy one
 // overwrites the canonical numbers and links in the database.
-// func TestReorgLongHeaders(t *testing.T) {
-// 	testReorgLong(t, false, rawdb.HashScheme)
-// 	testReorgLong(t, false, rawdb.PathScheme)
-// }
-// func TestReorgLongBlocks(t *testing.T) {
-// 	testReorgLong(t, true, rawdb.HashScheme)
-// 	testReorgLong(t, true, rawdb.PathScheme)
-// }
+func TestReorgLongHeaders(t *testing.T) {
+	testReorgLong(t, false, rawdb.HashScheme)
+	testReorgLong(t, false, rawdb.PathScheme)
+}
+func TestReorgLongBlocks(t *testing.T) {
+	testReorgLong(t, true, rawdb.HashScheme)
+	testReorgLong(t, true, rawdb.PathScheme)
+}
 
 func testReorgLong(t *testing.T, full bool, scheme string) {
 	testReorg(t, []int64{0, 0, -9}, []int64{0, 0, 0, -9}, full, scheme)
 }
 
-// TODO(rgeraldes24): fix
 // Tests that reorganising a short difficult chain after a long easy one
 // overwrites the canonical numbers and links in the database.
-// func TestReorgShortHeaders(t *testing.T) {
-// 	testReorgShort(t, false, rawdb.HashScheme)
-// 	testReorgShort(t, false, rawdb.PathScheme)
-// }
-// func TestReorgShortBlocks(t *testing.T) {
-// 	testReorgShort(t, true, rawdb.HashScheme)
-// 	testReorgShort(t, true, rawdb.PathScheme)
-// }
+func TestReorgShortHeaders(t *testing.T) {
+	testReorgShort(t, false, rawdb.HashScheme)
+	testReorgShort(t, false, rawdb.PathScheme)
+}
+
+func TestReorgShortBlocks(t *testing.T) {
+	testReorgShort(t, true, rawdb.HashScheme)
+	testReorgShort(t, true, rawdb.PathScheme)
+}
 
 func testReorgShort(t *testing.T, full bool, scheme string) {
 	// Create a long easy chain vs. a short heavy one. Due to difficulty adjustment
@@ -1823,111 +1821,6 @@ func testLowDiffLongChain(t *testing.T, scheme string) {
 	}
 }
 
-// Tests that importing a sidechain (S), where
-// - S is sidechain, containing blocks [Sn...Sm]
-// - C is canon chain, containing blocks [G..Cn..Cm]
-// - A common ancestor is placed at prune-point + blocksBetweenCommonAncestorAndPruneblock
-// - The sidechain S is prepended with numCanonBlocksInSidechain blocks from the canon chain
-//
-// The mergePoint can be these values:
-// 0:  the transition happens since genesis
-func testSideImport(t *testing.T, numCanonBlocksInSidechain, blocksBetweenCommonAncestorAndPruneblock int) {
-	// Generate a canonical chain to act as the main dataset
-	chainConfig := *params.TestChainConfig
-	var (
-		engine = beacon.New()
-		key, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		addr   = key.GetAddress()
-		nonce  = uint64(0)
-
-		gspec = &Genesis{
-			Config:  &chainConfig,
-			Alloc:   GenesisAlloc{addr: {Balance: big.NewInt(math.MaxInt64)}},
-			BaseFee: big.NewInt(params.InitialBaseFee),
-		}
-		signer = types.LatestSigner(gspec.Config)
-	)
-	// Generate and import the canonical chain
-	chain, err := NewBlockChain(rawdb.NewMemoryDatabase(), nil, gspec, engine, vm.Config{}, nil, nil)
-	if err != nil {
-		t.Fatalf("failed to create tester chain: %v", err)
-	}
-	defer chain.Stop()
-
-	genDb, blocks, _ := GenerateChainWithGenesis(gspec, engine, 2*TriesInMemory, func(i int, gen *BlockGen) {
-		to := common.HexToAddress("deadbeef")
-		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce:     nonce,
-			To:        &to,
-			Value:     big.NewInt(100),
-			Gas:       21000,
-			GasFeeCap: big.NewInt(875000000),
-			Data:      nil,
-		})
-		tx, err := types.SignTx(tx, signer, key)
-		if err != nil {
-			t.Fatalf("failed to create tx: %v", err)
-		}
-		gen.AddTx(tx)
-		nonce++
-	})
-	if n, err := chain.InsertChain(blocks); err != nil {
-		t.Fatalf("block %d: failed to insert into chain: %v", n, err)
-	}
-
-	lastPrunedIndex := len(blocks) - TriesInMemory - 1
-	lastPrunedBlock := blocks[lastPrunedIndex]
-	firstNonPrunedBlock := blocks[len(blocks)-TriesInMemory]
-
-	// Verify pruning of lastPrunedBlock
-	if chain.HasBlockAndState(lastPrunedBlock.Hash(), lastPrunedBlock.NumberU64()) {
-		t.Errorf("Block %d not pruned", lastPrunedBlock.NumberU64())
-	}
-	// Verify firstNonPrunedBlock is not pruned
-	if !chain.HasBlockAndState(firstNonPrunedBlock.Hash(), firstNonPrunedBlock.NumberU64()) {
-		t.Errorf("Block %d pruned", firstNonPrunedBlock.NumberU64())
-	}
-
-	// Generate the sidechain
-	// First block should be a known block, block after should be a pruned block. So
-	// canon(pruned), side, side...
-
-	// Generate fork chain, make it longer than canon
-	parentIndex := lastPrunedIndex + blocksBetweenCommonAncestorAndPruneblock
-	parent := blocks[parentIndex]
-	fork, _ := GenerateChain(gspec.Config, parent, engine, genDb, 2*TriesInMemory, func(i int, b *BlockGen) {
-		b.SetCoinbase(common.Address{2})
-	})
-	// Prepend the parent(s)
-	var sidechain []*types.Block
-	for i := numCanonBlocksInSidechain; i > 0; i-- {
-		sidechain = append(sidechain, blocks[parentIndex+1-i])
-	}
-	sidechain = append(sidechain, fork...)
-	n, err := chain.InsertChain(sidechain)
-	if err != nil {
-		t.Errorf("Got error, %v number %d - %d", err, sidechain[n].NumberU64(), n)
-	}
-	head := chain.CurrentBlock()
-	if got := fork[len(fork)-1].Hash(); got != head.Hash() {
-		t.Fatalf("head wrong, expected %x got %x", head.Hash(), got)
-	}
-}
-
-// TODO(rgeraldes24): review
-/*
-func TestPrunedImportSideWithMerging(t *testing.T) {
-	//glogger := log.NewGlogHandler(log.StreamHandler(os.Stdout, log.TerminalFormat(false)))
-	//glogger.Verbosity(3)
-	//log.Root().SetHandler(log.Handler(glogger))
-	testSideImport(t, 3, 3)
-	testSideImport(t, 3, -3)
-	testSideImport(t, 10, 0)
-	testSideImport(t, 1, 10)
-	testSideImport(t, 1, -10)
-}
-*/
-
 // TODO(rgeraldes24): add path schemes?
 func TestInsertKnownHeadersAfterMerging(t *testing.T) {
 	testInsertKnownChainDataWithMerging(t, "headers")
@@ -2311,7 +2204,6 @@ func TestTransactionIndices(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 func TestSkipStaleTxIndicesInSnapSync(t *testing.T) {
 	testSkipStaleTxIndicesInSnapSync(t, rawdb.HashScheme)
 	testSkipStaleTxIndicesInSnapSync(t, rawdb.PathScheme)
@@ -2505,65 +2397,6 @@ func BenchmarkBlockChain_1x1000Executions(b *testing.B) {
 		return common.BigToAddress(new(big.Int).SetUint64(0xc0de))
 	}
 	benchmarkLargeNumberOfValueToNonexisting(b, numTxs, numBlocks, recipientFn)
-}
-
-// TODO(rgeraldes24): fix
-// Tests that importing a some old blocks, where all blocks are before the
-// pruning point.
-// This internally leads to a sidechain import, since the blocks trigger an
-// ErrPrunedAncestor error.
-// This may e.g. happen if
-//  1. Downloader rollbacks a batch of inserted blocks and exits
-//  2. Downloader starts to sync again
-//  3. The blocks fetched are all known and canonical blocks
-// func TestSideImportPrunedBlocks(t *testing.T) {
-// 	testSideImportPrunedBlocks(t, rawdb.HashScheme)
-// 	testSideImportPrunedBlocks(t, rawdb.PathScheme)
-// }
-
-func testSideImportPrunedBlocks(t *testing.T, scheme string) {
-	// Generate a canonical chain to act as the main dataset
-	engine := beacon.NewFaker()
-	genesis := &Genesis{
-		Config:  params.TestChainConfig,
-		BaseFee: big.NewInt(params.InitialBaseFee),
-	}
-	// Generate and import the canonical chain
-	_, blocks, _ := GenerateChainWithGenesis(genesis, engine, 2*TriesInMemory, nil)
-
-	chain, err := NewBlockChain(rawdb.NewMemoryDatabase(), DefaultCacheConfigWithScheme(scheme), genesis, engine, vm.Config{}, nil, nil)
-	if err != nil {
-		t.Fatalf("failed to create tester chain: %v", err)
-	}
-	defer chain.Stop()
-
-	if n, err := chain.InsertChain(blocks); err != nil {
-		t.Fatalf("block %d: failed to insert into chain: %v", n, err)
-	}
-	// In path-based trie database implementation, it will keep 128 diff + 1 disk
-	// layers, totally 129 latest states available. In hash-based it's 128.
-	states := TriesInMemory
-	if scheme == rawdb.PathScheme {
-		states = TriesInMemory + 1
-	}
-	lastPrunedIndex := len(blocks) - states - 1
-	lastPrunedBlock := blocks[lastPrunedIndex]
-
-	// Verify pruning of lastPrunedBlock
-	if chain.HasBlockAndState(lastPrunedBlock.Hash(), lastPrunedBlock.NumberU64()) {
-		t.Errorf("Block %d not pruned", lastPrunedBlock.NumberU64())
-	}
-	firstNonPrunedBlock := blocks[len(blocks)-states]
-	// Verify firstNonPrunedBlock is not pruned
-	if !chain.HasBlockAndState(firstNonPrunedBlock.Hash(), firstNonPrunedBlock.NumberU64()) {
-		t.Errorf("Block %d pruned", firstNonPrunedBlock.NumberU64())
-	}
-	// Now re-import some old blocks
-	blockToReimport := blocks[5:8]
-	_, err = chain.InsertChain(blockToReimport)
-	if err != nil {
-		t.Errorf("Got error, %v", err)
-	}
 }
 
 // TestDeleteCreateRevert tests a weird state transition corner case that we hit
