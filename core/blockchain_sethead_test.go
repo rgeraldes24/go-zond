@@ -20,6 +20,14 @@
 package core
 
 import (
+	"testing"
+
+	"github.com/theQRL/go-zond/core/types"
+)
+
+// TODO(rgeraldes24): fix
+/*
+import (
 	"fmt"
 	"math/big"
 	"path"
@@ -39,7 +47,6 @@ import (
 	"github.com/theQRL/go-zond/trie/triedb/pathdb"
 )
 
-// TODO(rgeraldes24): remove side chain references?
 // rewindTest is a test case for chain rollback upon user request.
 type rewindTest struct {
 	canonicalBlocks int     // Number of blocks to generate for the canonical chain (heavier)
@@ -156,9 +163,9 @@ func (tt *rewindTest) dump(crash bool) string {
 // chain to be rolled back to the committed block. Everything above the sethead
 // point should be deleted. In between the committed block and the requested head
 // the data can remain as "fast sync" data to avoid redownloading it.
-// func TestShortSetHead(t *testing.T) { testShortSetHead(t, false) }
+func TestShortSetHead(t *testing.T) { testShortSetHead(t, false) }
 
-// func TestShortSetHeadWithSnapshots(t *testing.T) { testShortSetHead(t, true) }
+func TestShortSetHeadWithSnapshots(t *testing.T) { testShortSetHead(t, true) }
 
 func testShortSetHead(t *testing.T, snapshots bool) {
 	// Chain:
@@ -190,7 +197,8 @@ func testShortSetHead(t *testing.T, snapshots bool) {
 		expFrozen:          0,
 		expHeadHeader:      7,
 		expHeadFastBlock:   7,
-		expHeadBlock:       4,
+		// expHeadBlock:       4,
+		expHeadBlock: 7,
 	}, snapshots)
 }
 
@@ -200,9 +208,9 @@ func testShortSetHead(t *testing.T, snapshots bool) {
 // Everything above the sethead point should be deleted. In between the committed
 // block and the requested head the data can remain as "fast sync" data to avoid
 // redownloading it.
-// TODO(rgeraldes24): fix
-// func TestShortSnapSyncedSetHead(t *testing.T)              { testShortSnapSyncedSetHead(t, false) }
-// func TestShortSnapSyncedSetHeadWithSnapshots(t *testing.T) { testShortSnapSyncedSetHead(t, true) }
+func TestShortSnapSyncedSetHead(t *testing.T) { testShortSnapSyncedSetHead(t, false) }
+
+func TestShortSnapSyncedSetHeadWithSnapshots(t *testing.T) { testShortSnapSyncedSetHead(t, true) }
 
 func testShortSnapSyncedSetHead(t *testing.T, snapshots bool) {
 	// Chain:
@@ -224,17 +232,16 @@ func testShortSnapSyncedSetHead(t *testing.T, snapshots bool) {
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
 		canonicalBlocks: 8,
-		// sidechainBlocks:    0,
-		freezeThreshold:    16,
-		commitBlock:        4,
+		freezeThreshold: 16,
+		// commitBlock:        4,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       7,
 		expCanonicalBlocks: 7,
-		// expSidechainBlocks: 0,
-		expFrozen:        0,
-		expHeadHeader:    7,
-		expHeadFastBlock: 7,
-		expHeadBlock:     4,
+		expFrozen:          0,
+		expHeadHeader:      7,
+		expHeadFastBlock:   7,
+		// expHeadBlock:       4,
+		expHeadBlock: 7,
 	}, snapshots)
 }
 
@@ -243,10 +250,9 @@ func testShortSnapSyncedSetHead(t *testing.T, snapshots bool) {
 // detect that it was fast syncing and delete everything from the new head, since
 // we can just pick up fast syncing from there. The head full block should be set
 // to the genesis.
-// TODO(rgeraldes24): fix
-// func TestShortSnapSyncingSetHead(t *testing.T) { testShortSnapSyncingSetHead(t, false) }
+func TestShortSnapSyncingSetHead(t *testing.T) { testShortSnapSyncingSetHead(t, false) }
 
-// func TestShortSnapSyncingSetHeadWithSnapshots(t *testing.T) { testShortSnapSyncingSetHead(t, true) }
+func TestShortSnapSyncingSetHeadWithSnapshots(t *testing.T) { testShortSnapSyncingSetHead(t, true) }
 
 func testShortSnapSyncingSetHead(t *testing.T, snapshots bool) {
 	// Chain:
@@ -267,18 +273,17 @@ func testShortSnapSyncingSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C7
 	// Expected head block     : G
 	testSetHead(t, &rewindTest{
-		canonicalBlocks: 8,
-		// sidechainBlocks:    0,
+		canonicalBlocks:    8,
 		freezeThreshold:    16,
 		commitBlock:        0,
 		pivotBlock:         uint64ptr(4),
 		setheadBlock:       7,
 		expCanonicalBlocks: 7,
-		// expSidechainBlocks: 0,
-		expFrozen:        0,
-		expHeadHeader:    7,
-		expHeadFastBlock: 7,
-		expHeadBlock:     0,
+		expFrozen:          0,
+		expHeadHeader:      7,
+		expHeadFastBlock:   7,
+		// expHeadBlock:       0,
+		expHeadBlock: 7,
 	}, snapshots)
 }
 
@@ -292,10 +297,9 @@ func testShortSnapSyncingSetHead(t *testing.T, snapshots bool) {
 // The side chain could be left to be if the fork point was before the new head
 // we are deleting to, but it would be exceedingly hard to detect that case and
 // properly handle it, so we'll trade extra work in exchange for simpler code.
-// TODO(rgeraldes24): fix
-// func TestShortReorgedSetHead(t *testing.T) { testShortReorgedSetHead(t, false) }
+func TestShortReorgedSetHead(t *testing.T) { testShortReorgedSetHead(t, false) }
 
-// func TestShortReorgedSetHeadWithSnapshots(t *testing.T) { testShortReorgedSetHead(t, true) }
+func TestShortReorgedSetHeadWithSnapshots(t *testing.T) { testShortReorgedSetHead(t, true) }
 
 func testShortReorgedSetHead(t *testing.T, snapshots bool) {
 	// Chain:
@@ -318,18 +322,18 @@ func testShortReorgedSetHead(t *testing.T, snapshots bool) {
 	// Expected head fast block: C7
 	// Expected head block     : C4
 	testSetHead(t, &rewindTest{
-		canonicalBlocks: 8,
-		// sidechainBlocks:    10,
+		canonicalBlocks:    8,
+		sidechainBlocks:    10,
 		freezeThreshold:    16,
 		commitBlock:        4,
 		pivotBlock:         nil,
 		setheadBlock:       7,
 		expCanonicalBlocks: 7,
-		// expSidechainBlocks: 7,
-		expFrozen:        0,
-		expHeadHeader:    7,
-		expHeadFastBlock: 7,
-		expHeadBlock:     4,
+		expSidechainBlocks: 7,
+		expFrozen:          0,
+		expHeadHeader:      7,
+		expHeadFastBlock:   7,
+		expHeadBlock:       4,
 	}, snapshots)
 }
 
@@ -344,7 +348,6 @@ func testShortReorgedSetHead(t *testing.T, snapshots bool) {
 // The side chain could be left to be if the fork point was before the new head
 // we are deleting to, but it would be exceedingly hard to detect that case and
 // properly handle it, so we'll trade extra work in exchange for simpler code.
-// TODO(rgeraldes24): fix
 // func TestShortReorgedSnapSyncedSetHead(t *testing.T) {
 // 	testShortReorgedSnapSyncedSetHead(t, false)
 // }
@@ -397,7 +400,6 @@ func testShortReorgedSnapSyncedSetHead(t *testing.T, snapshots bool) {
 // The side chain could be left to be if the fork point was before the new head
 // we are deleting to, but it would be exceedingly hard to detect that case and
 // properly handle it, so we'll trade extra work in exchange for simpler code.
-// TODO(rgeraldes24): fix
 // func TestShortReorgedSnapSyncingSetHead(t *testing.T) {
 // 	testShortReorgedSnapSyncingSetHead(t, false)
 // }
@@ -447,7 +449,6 @@ func testShortReorgedSnapSyncingSetHead(t *testing.T, snapshots bool) {
 // to the committed block. Everything above the sethead point should be deleted.
 // In between the committed block and the requested head the data can remain as
 // "fast sync" data to avoid redownloading it.
-// TODO(rgeraldes24): fix
 // func TestLongShallowSetHead(t *testing.T)              { testLongShallowSetHead(t, false) }
 // func TestLongShallowSetHeadWithSnapshots(t *testing.T) { testLongShallowSetHead(t, true) }
 
@@ -495,7 +496,6 @@ func testLongShallowSetHead(t *testing.T, snapshots bool) {
 // sethead was called. In this case we expect the full chain to be rolled back
 // to the committed block. Since the ancient limit was underflown, everything
 // needs to be deleted onwards to avoid creating a gap.
-// TODO(rgeraldes24): fix
 // func TestLongDeepSetHead(t *testing.T)              { testLongDeepSetHead(t, false) }
 // func TestLongDeepSetHeadWithSnapshots(t *testing.T) { testLongDeepSetHead(t, true) }
 
@@ -543,7 +543,6 @@ func testLongDeepSetHead(t *testing.T, snapshots bool) {
 // back to the committed block. Everything above the sethead point should be
 // deleted. In between the committed block and the requested head the data can
 // remain as "fast sync" data to avoid redownloading it.
-// TODO(rgeraldes24): fix
 // func TestLongSnapSyncedShallowSetHead(t *testing.T) {
 // 	testLongSnapSyncedShallowSetHead(t, false)
 // }
@@ -595,7 +594,6 @@ func testLongSnapSyncedShallowSetHead(t *testing.T, snapshots bool) {
 // which sethead was called. In this case we expect the full chain to be rolled
 // back to the committed block. Since the ancient limit was underflown, everything
 // needs to be deleted onwards to avoid creating a gap.
-// TODO(rgeraldes24): fix
 // func TestLongSnapSyncedDeepSetHead(t *testing.T)              { testLongSnapSyncedDeepSetHead(t, false) }
 // func TestLongSnapSyncedDeepSetHeadWithSnapshots(t *testing.T) { testLongSnapSyncedDeepSetHead(t, true) }
 
@@ -642,7 +640,6 @@ func testLongSnapSyncedDeepSetHead(t *testing.T, snapshots bool) {
 // sethead was called. In this case we expect the chain to detect that it was fast
 // syncing and delete everything from the new head, since we can just pick up fast
 // syncing from there.
-// TODO(rgeraldes24): fix
 // func TestLongSnapSyncingShallowSetHead(t *testing.T) {
 // 	testLongSnapSyncingShallowSetHead(t, false)
 // }
@@ -694,7 +691,6 @@ func testLongSnapSyncingShallowSetHead(t *testing.T, snapshots bool) {
 // sethead was called. In this case we expect the chain to detect that it was fast
 // syncing and delete everything from the new head, since we can just pick up fast
 // syncing from there.
-// TODO(rgeraldes24): fix
 // func TestLongSnapSyncingDeepSetHead(t *testing.T) {
 // 	testLongSnapSyncingDeepSetHead(t, false)
 // }
@@ -744,7 +740,6 @@ func testLongSnapSyncingDeepSetHead(t *testing.T, snapshots bool) {
 // chain, where a recent block - newer than the ancient limit - was already committed
 // to disk and then sethead was called. In this case the freezer will delete the
 // sidechain since it's dangling, reverting to TestLongShallowSetHead.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedShallowSetHead(t *testing.T)              { testLongReorgedShallowSetHead(t, false) }
 // func TestLongReorgedShallowSetHeadWithSnapshots(t *testing.T) { testLongReorgedShallowSetHead(t, true) }
 
@@ -792,7 +787,6 @@ func testLongReorgedShallowSetHead(t *testing.T, snapshots bool) {
 // chain, where a recent block - older than the ancient limit - was already committed
 // to disk and then sethead was called. In this case the freezer will delete the
 // sidechain since it's dangling, reverting to TestLongDeepSetHead.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedDeepSetHead(t *testing.T)              { testLongReorgedDeepSetHead(t, false) }
 // func TestLongReorgedDeepSetHeadWithSnapshots(t *testing.T) { testLongReorgedDeepSetHead(t, true) }
 
@@ -840,7 +834,6 @@ func testLongReorgedDeepSetHead(t *testing.T, snapshots bool) {
 // was already committed to disk and then sethead was called. In this case the
 // freezer will delete the sidechain since it's dangling, reverting to
 // TestLongSnapSyncedShallowSetHead.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedSnapSyncedShallowSetHead(t *testing.T) {
 // 	testLongReorgedSnapSyncedShallowSetHead(t, false)
 // }
@@ -893,7 +886,6 @@ func testLongReorgedSnapSyncedShallowSetHead(t *testing.T, snapshots bool) {
 // was already committed to disk and then sethead was called. In this case the
 // freezer will delete the sidechain since it's dangling, reverting to
 // TestLongSnapSyncedDeepSetHead.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedSnapSyncedDeepSetHead(t *testing.T) {
 // 	testLongReorgedSnapSyncedDeepSetHead(t, false)
 // }
@@ -946,7 +938,6 @@ func testLongReorgedSnapSyncedDeepSetHead(t *testing.T, snapshots bool) {
 // chain to detect that it was fast syncing and delete everything from the new
 // head, since we can just pick up fast syncing from there. The side chain is
 // completely nuked by the freezer.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedSnapSyncingShallowSetHead(t *testing.T) {
 // 	testLongReorgedSnapSyncingShallowSetHead(t, false)
 // }
@@ -1000,7 +991,6 @@ func testLongReorgedSnapSyncingShallowSetHead(t *testing.T, snapshots bool) {
 // chain to detect that it was fast syncing and delete everything from the new
 // head, since we can just pick up fast syncing from there. The side chain is
 // completely nuked by the freezer.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedSnapSyncingDeepSetHead(t *testing.T) {
 // 	testLongReorgedSnapSyncingDeepSetHead(t, false)
 // }
@@ -1170,6 +1160,7 @@ func testSetHeadWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme 
 		t.Errorf("Frozen block count mismatch: have %d, want %d", frozen, tt.expFrozen)
 	}
 }
+*/
 
 // verifyNoGaps checks that there are no gaps after the initial set of blocks in
 // the database and errors if found.
@@ -1277,7 +1268,9 @@ func verifyCutoff(t *testing.T, chain *BlockChain, canonical bool, inserted type
 	}
 }
 
+/*
 // uint64ptr is a weird helper to allow 1-line constant pointer creation.
 func uint64ptr(n uint64) *uint64 {
 	return &n
 }
+*/

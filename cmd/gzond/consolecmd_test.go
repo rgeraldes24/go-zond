@@ -58,7 +58,7 @@ func TestConsoleWelcome(t *testing.T) {
 	gzond.SetTemplateFunc("gover", runtime.Version)
 	gzond.SetTemplateFunc("gzondver", func() string { return params.VersionWithCommit("", "") })
 	gzond.SetTemplateFunc("niltime", func() string {
-		// TODO(rgeraldes24): we need to change the time based on the chain config selected
+		// TODO(theQRL/go-zond/issues/50): we need to change the time based on the chain config selected
 		// return time.Unix(1548854791, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")
 		return time.Unix(0, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")
 	})
@@ -129,7 +129,7 @@ func testAttachWelcome(t *testing.T, gzond *testgzond, endpoint, apis string) {
 	attach.SetTemplateFunc("gover", runtime.Version)
 	attach.SetTemplateFunc("gzondver", func() string { return params.VersionWithCommit("", "") })
 	attach.SetTemplateFunc("niltime", func() string {
-		// TODO(rgeraldes24): we need to change the time based on the chain config selected
+		// TODO(theQRL/go-zond/issues/50): we need to change the time based on the chain config selected
 		// return time.Unix(1548854791, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")
 		return time.Unix(0, 0).Format("Mon Jan 02 2006 15:04:05 GMT-0700 (MST)")
 	})

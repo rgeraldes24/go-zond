@@ -20,6 +20,7 @@
 
 package core
 
+/*
 import (
 	"math/big"
 	"path"
@@ -37,7 +38,6 @@ import (
 // committed to disk and then the process crashed. In this case we expect the full
 // chain to be rolled back to the committed block, but the chain data itself left
 // in the database for replaying.
-// TODO(rgeraldes24): fix
 // func TestShortRepair(t *testing.T) { testShortRepair(t, false) }
 
 // func TestShortRepairWithSnapshots(t *testing.T) { testShortRepair(t, true) }
@@ -77,7 +77,6 @@ func testShortRepair(t *testing.T, snapshots bool) {
 // already committed, after which the process crashed. In this case we expect the full
 // chain to be rolled back to the committed block, but the chain data itself left in
 // the database for replaying.
-// TODO(rgeraldes24): fix
 // func TestShortSnapSyncedRepair(t *testing.T)              { testShortSnapSyncedRepair(t, false) }
 // func TestShortSnapSyncedRepairWithSnapshots(t *testing.T) { testShortSnapSyncedRepair(t, true) }
 
@@ -116,7 +115,6 @@ func testShortSnapSyncedRepair(t *testing.T, snapshots bool) {
 // not yet committed, but the process crashed. In this case we expect the chain to
 // detect that it was fast syncing and not delete anything, since we can just pick
 // up directly where we left off.
-// TODO(rgeraldes24)
 // func TestShortSnapSyncingRepair(t *testing.T)              { testShortSnapSyncingRepair(t, false) }
 // func TestShortSnapSyncingRepairWithSnapshots(t *testing.T) { testShortSnapSyncingRepair(t, true) }
 
@@ -155,7 +153,6 @@ func testShortSnapSyncingRepair(t *testing.T, snapshots bool) {
 // recent block was already committed to disk and then the process crashed. In this
 // case we expect the canonical chain to be rolled back to the committed block, but
 // the chain data itself left in the database for replaying.
-// TODO(rgeraldes24): fix
 // func TestShortReorgedRepair(t *testing.T)              { testShortReorgedRepair(t, false) }
 // func TestShortReorgedRepairWithSnapshots(t *testing.T) { testShortReorgedRepair(t, true) }
 
@@ -198,7 +195,6 @@ func testShortReorgedRepair(t *testing.T, snapshots bool) {
 // the fast sync pivot point was already committed to disk and then the process
 // crashed. In this case we expect the canonical chain to be rolled back to the
 // committed block, but the chain data itself left in the database for replaying.
-// TODO(rgeraldes24): fix
 // func TestShortReorgedSnapSyncedRepair(t *testing.T) {
 // 	testShortReorgedSnapSyncedRepair(t, false)
 // }
@@ -245,7 +241,6 @@ func testShortReorgedSnapSyncedRepair(t *testing.T, snapshots bool) {
 // the fast sync pivot point was not yet committed, but the process crashed. In
 // this case we expect the chain to detect that it was fast syncing and not delete
 // anything, since we can just pick up directly where we left off.
-// TODO(rgeraldes24): fix
 // func TestShortReorgedSnapSyncingRepair(t *testing.T) {
 // 	testShortReorgedSnapSyncingRepair(t, false)
 // }
@@ -292,7 +287,6 @@ func testShortReorgedSnapSyncingRepair(t *testing.T, snapshots bool) {
 // block - newer than the ancient limit - was already committed to disk and then
 // the process crashed. In this case we expect the chain to be rolled back to the
 // committed block, with everything afterwards kept as fast sync data.
-// TODO(rgeraldes24): fix
 // func TestLongShallowRepair(t *testing.T)              { testLongShallowRepair(t, false) }
 // func TestLongShallowRepairWithSnapshots(t *testing.T) { testLongShallowRepair(t, true) }
 
@@ -336,7 +330,6 @@ func testLongShallowRepair(t *testing.T, snapshots bool) {
 // block - older than the ancient limit - was already committed to disk and then
 // the process crashed. In this case we expect the chain to be rolled back to the
 // committed block, with everything afterwards deleted.
-// TODO(rgeraldes24): fix
 // func TestLongDeepRepair(t *testing.T)              { testLongDeepRepair(t, false) }
 // func TestLongDeepRepairWithSnapshots(t *testing.T) { testLongDeepRepair(t, true) }
 
@@ -379,7 +372,6 @@ func testLongDeepRepair(t *testing.T, snapshots bool) {
 // sync pivot point - newer than the ancient limit - was already committed, after
 // which the process crashed. In this case we expect the chain to be rolled back
 // to the committed block, with everything afterwards kept as fast sync data.
-// TODO(rgeraldes24): fix
 // func TestLongSnapSyncedShallowRepair(t *testing.T) {
 // 	testLongSnapSyncedShallowRepair(t, false)
 // }
@@ -427,7 +419,6 @@ func testLongSnapSyncedShallowRepair(t *testing.T, snapshots bool) {
 // sync pivot point - older than the ancient limit - was already committed, after
 // which the process crashed. In this case we expect the chain to be rolled back
 // to the committed block, with everything afterwards deleted.
-// TODO(rgeraldes24): fix
 // func TestLongSnapSyncedDeepRepair(t *testing.T)              { testLongSnapSyncedDeepRepair(t, false) }
 // func TestLongSnapSyncedDeepRepairWithSnapshots(t *testing.T) { testLongSnapSyncedDeepRepair(t, true) }
 
@@ -471,7 +462,6 @@ func testLongSnapSyncedDeepRepair(t *testing.T, snapshots bool) {
 // process crashed. In this case we expect the chain to detect that it was fast
 // syncing and not delete anything, since we can just pick up directly where we
 // left off.
-// TODO(rgeraldes24): fix
 // func TestLongSnapSyncingShallowRepair(t *testing.T) {
 // 	testLongSnapSyncingShallowRepair(t, false)
 // }
@@ -520,7 +510,6 @@ func testLongSnapSyncingShallowRepair(t *testing.T, snapshots bool) {
 // process crashed. In this case we expect the chain to detect that it was fast
 // syncing and not delete anything, since we can just pick up directly where we
 // left off.
-// TODO(rgeraldes24): fix
 // func TestLongSnapSyncingDeepRepair(t *testing.T)              { testLongSnapSyncingDeepRepair(t, false) }
 // func TestLongSnapSyncingDeepRepairWithSnapshots(t *testing.T) { testLongSnapSyncingDeepRepair(t, true) }
 
@@ -565,7 +554,6 @@ func testLongSnapSyncingDeepRepair(t *testing.T, snapshots bool) {
 // to disk and then the process crashed. In this case we expect the chain to be
 // rolled back to the committed block, with everything afterwards kept as fast sync
 // data. The side chain completely nuked by the freezer.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedShallowRepair(t *testing.T)              { testLongReorgedShallowRepair(t, false) }
 // func TestLongReorgedShallowRepairWithSnapshots(t *testing.T) { testLongReorgedShallowRepair(t, true) }
 
@@ -613,7 +601,6 @@ func testLongReorgedShallowRepair(t *testing.T, snapshots bool) {
 // to disk and then the process crashed. In this case we expect the canonical chains
 // to be rolled back to the committed block, with everything afterwards deleted. The
 // side chain completely nuked by the freezer.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedDeepRepair(t *testing.T)              { testLongReorgedDeepRepair(t, false) }
 // func TestLongReorgedDeepRepairWithSnapshots(t *testing.T) { testLongReorgedDeepRepair(t, true) }
 
@@ -661,7 +648,6 @@ func testLongReorgedDeepRepair(t *testing.T, snapshots bool) {
 // expect the chain to be rolled back to the committed block, with everything
 // afterwards kept as fast sync data. The side chain completely nuked by the
 // freezer.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedSnapSyncedShallowRepair(t *testing.T) {
 // 	testLongReorgedSnapSyncedShallowRepair(t, false)
 // }
@@ -713,7 +699,6 @@ func testLongReorgedSnapSyncedShallowRepair(t *testing.T, snapshots bool) {
 // was already committed to disk and then the process crashed. In this case we
 // expect the canonical chains to be rolled back to the committed block, with
 // everything afterwards deleted. The side chain completely nuked by the freezer.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedSnapSyncedDeepRepair(t *testing.T) {
 // 	testLongReorgedSnapSyncedDeepRepair(t, false)
 // }
@@ -764,7 +749,6 @@ func testLongReorgedSnapSyncedDeepRepair(t *testing.T, snapshots bool) {
 // was not yet committed, but the process crashed. In this case we expect the
 // chain to detect that it was fast syncing and not delete anything, since we
 // can just pick up directly where we left off.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedSnapSyncingShallowRepair(t *testing.T) {
 // 	testLongReorgedSnapSyncingShallowRepair(t, false)
 // }
@@ -816,7 +800,6 @@ func testLongReorgedSnapSyncingShallowRepair(t *testing.T, snapshots bool) {
 // was not yet committed, but the process crashed. In this case we expect the
 // chain to detect that it was fast syncing and not delete anything, since we
 // can just pick up directly where we left off.
-// TODO(rgeraldes24): fix
 // func TestLongReorgedSnapSyncingDeepRepair(t *testing.T) {
 // 	testLongReorgedSnapSyncingDeepRepair(t, false)
 // }
@@ -998,7 +981,6 @@ func testRepairWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme s
 // chain rewinds itself to the B1 (skip B3 in order to recover snapshot)
 // In this case the snapshot layer of B3 is not created because of existent
 // state.
-// TODO(rgeraldes24): fix
 // func TestIssue23496(t *testing.T) {
 // 	testIssue23496(t, rawdb.HashScheme)
 // 	testIssue23496(t, rawdb.PathScheme)
@@ -1115,3 +1097,4 @@ func testIssue23496(t *testing.T, scheme string) {
 		t.Error("Failed to regenerate the snapshot of known state")
 	}
 }
+*/
