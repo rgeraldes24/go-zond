@@ -2829,13 +2829,14 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 	var expectations []*expectation
 	var newDestruct = func(e *expectation, b *BlockGen) *types.Transaction {
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: nonce,
-			To:    &aa,
-			Value: big.NewInt(0),
-			Gas:   50000,
-			Data:  nil,
+			Nonce:     nonce,
+			To:        &aa,
+			Value:     big.NewInt(0),
+			Gas:       50000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
-		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
 		nonce++
 		if e.exist {
 			e.exist = false
@@ -2846,13 +2847,14 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 	}
 	var newResurrect = func(e *expectation, b *BlockGen) *types.Transaction {
 		tx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: nonce,
-			To:    &bb,
-			Value: big.NewInt(0),
-			Gas:   100000,
-			Data:  nil,
+			Nonce:     nonce,
+			To:        &bb,
+			Value:     big.NewInt(0),
+			Gas:       100000,
+			GasFeeCap: big.NewInt(875000000),
+			Data:      nil,
 		})
-		tx, _ = types.SignTx(tx, types.ShanghaiSigner{}, key)
+		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
 		nonce++
 		if !e.exist {
 			e.exist = true
