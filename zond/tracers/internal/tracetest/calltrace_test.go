@@ -77,27 +77,15 @@ type callTracerTest struct {
 	Result       *callTrace      `json:"result"`
 }
 
-// Iterates over all the input-output datasets in the tracer test harness and
-// runs the JavaScript tracers against them.
-// TODO(rgeraldes24): fix testdata/call_tracer_legacy/* input field with new tx
-/*
-func TestCallTracerLegacy(t *testing.T) {
-	testCallTracer("callTracerLegacy", "call_tracer_legacy", t)
-}
-
-// TODO(rgeraldes24): fix testdata/call_tracer/* input field with new tx
 func TestCallTracerNative(t *testing.T) {
 	testCallTracer("callTracer", "call_tracer", t)
 }
 
-// TODO(rgeraldes24): fix testdata/call_tracer_withLog/* input field with new tx
 func TestCallTracerNativeWithLog(t *testing.T) {
 	testCallTracer("callTracer", "call_tracer_withLog", t)
 }
-*/
 
 func testCallTracer(tracerName string, dirPath string, t *testing.T) {
-	isLegacy := strings.HasSuffix(dirPath, "_legacy")
 	files, err := os.ReadDir(filepath.Join("testdata", dirPath))
 	if err != nil {
 		t.Fatalf("failed to retrieve tracer test suite: %v", err)
@@ -161,15 +149,6 @@ func testCallTracer(tracerName string, dirPath string, t *testing.T) {
 			res, err := tracer.GetResult()
 			if err != nil {
 				t.Fatalf("failed to retrieve trace result: %v", err)
-			}
-			// The legacy javascript calltracer marshals json in js, which
-			// is not deterministic (as opposed to the golang json encoder).
-			if isLegacy {
-				// This is a tweak to make it deterministic. Can be removed when
-				// we remove the legacy tracer.
-				var x callTrace
-				json.Unmarshal(res, &x)
-				res, _ = json.Marshal(x)
 			}
 			want, err := json.Marshal(test.Result)
 			if err != nil {

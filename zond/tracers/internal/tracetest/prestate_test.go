@@ -52,26 +52,13 @@ type testcase struct {
 	Result       interface{}     `json:"result"`
 }
 
-// TODO(rgeraldes24): fix testdata/prestate_tracer_legacy/* input field with new tx
-/*
-func TestPrestateTracerLegacy(t *testing.T) {
-	testPrestateDiffTracer("prestateTracerLegacy", "prestate_tracer_legacy", t)
-}
-*/
-
-// TODO(rgeraldes24): fix testdata/prestate_tracer/* input field with new tx
-/*
 func TestPrestateTracer(t *testing.T) {
 	testPrestateDiffTracer("prestateTracer", "prestate_tracer", t)
 }
-*/
 
-// TODO(rgeraldes24): fix testdata/prestate_tracer_with_diff_mode/* input field with new tx
-/*
 func TestPrestateWithDiffModeTracer(t *testing.T) {
 	testPrestateDiffTracer("prestateTracer", "prestate_tracer_with_diff_mode", t)
 }
-*/
 
 func testPrestateDiffTracer(tracerName string, dirPath string, t *testing.T) {
 	files, err := os.ReadDir(filepath.Join("testdata", dirPath))
@@ -137,15 +124,6 @@ func testPrestateDiffTracer(tracerName string, dirPath string, t *testing.T) {
 			res, err := tracer.GetResult()
 			if err != nil {
 				t.Fatalf("failed to retrieve trace result: %v", err)
-			}
-			// The legacy javascript calltracer marshals json in js, which
-			// is not deterministic (as opposed to the golang json encoder).
-			if strings.HasSuffix(dirPath, "_legacy") {
-				// This is a tweak to make it deterministic. Can be removed when
-				// we remove the legacy tracer.
-				var x prestateTrace
-				json.Unmarshal(res, &x)
-				res, _ = json.Marshal(x)
 			}
 			want, err := json.Marshal(test.Result)
 			if err != nil {

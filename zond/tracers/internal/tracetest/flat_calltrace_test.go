@@ -150,10 +150,9 @@ func flatCallTracerTestRunner(tracerName string, filename string, dirPath string
 
 // Iterates over all the input-output datasets in the tracer parity test harness and
 // runs the Native tracer against them.
-// TODO(rgeraldes24): fix testdata/call_tracer_flat/* input field with new tx
-// func TestFlatCallTracerNative(t *testing.T) {
-// 	testFlatCallTracer("flatCallTracer", "call_tracer_flat", t)
-// }
+func TestFlatCallTracerNative(t *testing.T) {
+	testFlatCallTracer("flatCallTracer", "call_tracer_flat", t)
+}
 
 func testFlatCallTracer(tracerName string, dirPath string, t *testing.T) {
 	files, err := os.ReadDir(filepath.Join("testdata", dirPath))
