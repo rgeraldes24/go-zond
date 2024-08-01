@@ -78,6 +78,34 @@ type callTracerTest struct {
 }
 
 func TestCallTracerNative(t *testing.T) {
+	/*
+		key, err := pqcrypto.HexToDilithium("12345678")
+		if err != nil {
+			log.Fatal(err)
+		}
+		signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(3)})
+		to := common.HexToAddress("0x269296dddce321a6bcbaa2f0181127593d732cba")
+		tx := types.NewTx(&types.DynamicFeeTx{
+			ChainID: signer.ChainID(),
+			Nonce:   68,
+			// Value:     big.NewInt(1050000000000000000),
+			Value:     common.Big0,
+			To:        &to,
+			Data:      common.Hex2Bytes("7065cb480000000000000000000000001523e55a1ca4efbae03355775ae89f8d7699ad9e"),
+			GasFeeCap: big.NewInt(50000000000),
+			Gas:       1000000,
+		})
+		signedTx, err := types.SignTx(tx, signer, key)
+		if err != nil {
+			log.Fatal(err)
+		}
+		rawTx, err := signedTx.MarshalBinary()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(common.Bytes2Hex(rawTx))
+	*/
+
 	testCallTracer("callTracer", "call_tracer", t)
 }
 

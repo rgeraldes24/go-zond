@@ -3,6 +3,7 @@ package tracetest
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/big"
 	"os"
 	"path/filepath"
@@ -16,6 +17,8 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
+	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/tests"
 
@@ -98,6 +101,7 @@ func flatCallTracerTestRunner(tracerName string, filename string, dirPath string
 		BlockNumber: new(big.Int).SetUint64(uint64(test.Context.Number)),
 		Time:        uint64(test.Context.Time),
 		GasLimit:    uint64(test.Context.GasLimit),
+		BaseFee:     big.NewInt(params.InitialBaseFee),
 	}
 	triedb, _, statedb := tests.MakePreState(rawdb.NewMemoryDatabase(), test.Genesis.Alloc, false, rawdb.HashScheme)
 	defer triedb.Close()
@@ -151,6 +155,33 @@ func flatCallTracerTestRunner(tracerName string, filename string, dirPath string
 // Iterates over all the input-output datasets in the tracer parity test harness and
 // runs the Native tracer against them.
 func TestFlatCallTracerNative(t *testing.T) {
+
+	key, err := pqcrypto.HexToDilithium("12345678")
+	if err != nil {
+		log.Fatal(err)
+	}
+	signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(3)})
+	// to := common.HexToAddress("0x269296dddce321a6bcbaa2f0181127593d732cba")
+	tx := types.NewTx(&types.DynamicFeeTx{
+		ChainID: signer.ChainID(),
+		Nonce:   9,
+		// Value:     big.NewInt(1050000000000000000),
+		Value: common.Big0,
+		// To:        &to,
+		Data:      common.Hex2Bytes("606060405260405160208061077c83398101604052808051906020019091905050600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff161415151561007d57600080fd5b336000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555080600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506001600460006101000a81548160ff02191690831515021790555050610653806101296000396000f300606060405260043610610083576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806305e4382a146100855780631c02708d146100ae5780632e1a7d4d146100c35780635114cb52146100e6578063a37dda2c146100fe578063ae200e7914610153578063b5769f70146101a8575b005b341561009057600080fd5b6100986101d1565b6040518082815260200191505060405180910390f35b34156100b957600080fd5b6100c16101d7565b005b34156100ce57600080fd5b6100e460048080359060200190919050506102eb565b005b6100fc6004808035906020019091905050610513565b005b341561010957600080fd5b6101116105d6565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b341561015e57600080fd5b6101666105fc565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34156101b357600080fd5b6101bb610621565b6040518082815260200191505060405180910390f35b60025481565b60011515600460009054906101000a900460ff1615151415156101f957600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614806102a15750600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16145b15156102ac57600080fd5b6000600460006101000a81548160ff0219169083151502179055506003543073ffffffffffffffffffffffffffffffffffffffff163103600281905550565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614806103935750600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16145b151561039e57600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141561048357600060025411801561040757506002548111155b151561041257600080fd5b80600254036002819055506000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f19350505050151561047e57600080fd5b610510565b600060035411801561049757506003548111155b15156104a257600080fd5b8060035403600381905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f19350505050151561050f57600080fd5b5b50565b60011515600460009054906101000a900460ff16151514151561053557600080fd5b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614801561059657506003548160035401115b80156105bd575080600354013073ffffffffffffffffffffffffffffffffffffffff163110155b15156105c857600080fd5b806003540160038190555050565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b600354815600a165627a7a72305820c3b849e8440987ce43eae3097b77672a69234d516351368b03fe5b7de03807910029000000000000000000000000c65e620a3a55451316168d57e268f5702ef56a11"),
+		GasFeeCap: big.NewInt(50000000000),
+		Gas:       1000000,
+	})
+	signedTx, err := types.SignTx(tx, signer, key)
+	if err != nil {
+		log.Fatal(err)
+	}
+	rawTx, err := rlp.EncodeToBytes(signedTx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(common.Bytes2Hex(rawTx))
+
 	testFlatCallTracer("flatCallTracer", "call_tracer_flat", t)
 }
 
