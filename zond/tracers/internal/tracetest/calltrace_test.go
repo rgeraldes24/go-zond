@@ -18,6 +18,8 @@ package tracetest
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
 	"math/big"
 	"os"
 	"path/filepath"
@@ -31,6 +33,7 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/tests"
@@ -78,38 +81,64 @@ type callTracerTest struct {
 }
 
 func TestCallTracerNative(t *testing.T) {
-	/*
-		key, err := pqcrypto.HexToDilithium("12345678")
-		if err != nil {
-			log.Fatal(err)
-		}
-		signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(3)})
-		to := common.HexToAddress("0x269296dddce321a6bcbaa2f0181127593d732cba")
-		tx := types.NewTx(&types.DynamicFeeTx{
-			ChainID: signer.ChainID(),
-			Nonce:   68,
-			// Value:     big.NewInt(1050000000000000000),
-			Value:     common.Big0,
-			To:        &to,
-			Data:      common.Hex2Bytes("7065cb480000000000000000000000001523e55a1ca4efbae03355775ae89f8d7699ad9e"),
-			GasFeeCap: big.NewInt(50000000000),
-			Gas:       1000000,
-		})
-		signedTx, err := types.SignTx(tx, signer, key)
-		if err != nil {
-			log.Fatal(err)
-		}
-		rawTx, err := signedTx.MarshalBinary()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(common.Bytes2Hex(rawTx))
-	*/
+	key, err := pqcrypto.HexToDilithium("12345678")
+	if err != nil {
+		log.Fatal(err)
+	}
+	signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(3)})
+	to := common.HexToAddress("0x43064693d3d38ad6a7cb579e0d6d9718c8aa6b62")
+	tx := types.NewTx(&types.DynamicFeeTx{
+		ChainID: signer.ChainID(),
+		Nonce:   265,
+		// Value:     big.NewInt(1050000000000000000),
+		Value:     common.Big0,
+		To:        &to,
+		Data:      common.Hex2Bytes("a9059cbb000000000000000000000000e77b1ac803616503510bed0086e3a7be2627a69900000000000000000000000000000000000000000000000000000009502f9000"),
+		GasFeeCap: big.NewInt(50000000000),
+		// Gas:       1000000,
+		Gas: 51741,
+	})
+	signedTx, err := types.SignTx(tx, signer, key)
+	if err != nil {
+		log.Fatal(err)
+	}
+	rawTx, err := signedTx.MarshalBinary()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(common.Bytes2Hex(rawTx))
 
 	testCallTracer("callTracer", "call_tracer", t)
 }
 
 func TestCallTracerNativeWithLog(t *testing.T) {
+	key, err := pqcrypto.HexToDilithium("12345678")
+	if err != nil {
+		log.Fatal(err)
+	}
+	signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(1)})
+	to := common.HexToAddress("0xc212e03b9e060e36facad5fd8f4435412ca22e6b")
+	// val, _ := new(big.Int).SetString("10000000000000000000", 10)
+	tx := types.NewTx(&types.DynamicFeeTx{
+		ChainID: signer.ChainID(),
+		Nonce:   1634,
+		// Value:   val,
+		Value:     common.Big0,
+		To:        &to,
+		Data:      common.Hex2Bytes("51a34eb80000000000000000000000000000000000000000000000280faf689c35ac0000"),
+		GasFeeCap: big.NewInt(50000000000),
+		Gas:       1000000,
+	})
+	signedTx, err := types.SignTx(tx, signer, key)
+	if err != nil {
+		log.Fatal(err)
+	}
+	rawTx, err := signedTx.MarshalBinary()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(common.Bytes2Hex(rawTx))
+
 	testCallTracer("callTracer", "call_tracer_withLog", t)
 }
 

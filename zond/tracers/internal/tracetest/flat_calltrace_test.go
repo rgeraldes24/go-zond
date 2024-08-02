@@ -160,17 +160,18 @@ func TestFlatCallTracerNative(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(3)})
-	to := common.HexToAddress("0xc212e03b9e060e36facad5fd8f4435412ca22e6b")
+	signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(63)})
+	// to := common.HexToAddress("0x33056b5dcac09a9b4becad0e1dcf92c19bd0af76")
 	tx := types.NewTx(&types.DynamicFeeTx{
 		ChainID: signer.ChainID(),
-		Nonce:   1634,
-		// Value:   big.NewInt(1000000000000000000),
-		Value:     common.Big0,
-		To:        &to,
-		Data:      common.Hex2Bytes("51a34eb80000000000000000000000000000000000000000000000280faf689c35ac0000"),
+		Nonce:   264882,
+		// Value:   big.NewInt(1050000000000000000),
+		Value: common.Big0,
+		// To: &to,
+		Data:      common.Hex2Bytes("601b565b6000555b005b630badf00d6003565b63c001f00d6003565b7319e7e376e7c213b7e7e7e46cc70a5dd086daff2a7f22ae6da6b482f9b1b19b0b897c3fd43884180a1c5ee361e1107a1bc635649dda600052601b603f537f16433dce375ce6dc8151d3f0a22728bc4a1d9fd6ed39dfd18b4609331937367f6040527f306964c0cf5d74f04129fdc60b54d35b596dde1bf89ad92cb4123318f4c0e40060605260206080607f60006000600161fffff21560075760805114601257600956"),
 		GasFeeCap: big.NewInt(50000000000),
-		Gas:       1000000,
+		// Gas:       1000000,
+		Gas: 109000,
 	})
 	signedTx, err := types.SignTx(tx, signer, key)
 	if err != nil {
