@@ -847,14 +847,6 @@ func newShanghaiInstructionSet() JumpTable {
 			maxStack:    maxStack(7, 1),
 			memorySize:  memoryCall,
 		},
-		CALLCODE: {
-			execute:     opCallCode,
-			constantGas: params.WarmStorageReadCostEIP2929,
-			dynamicGas:  gasCallCodeEIP2929,
-			minStack:    minStack(7, 1),
-			maxStack:    maxStack(7, 1),
-			memorySize:  memoryCall,
-		},
 		RETURN: {
 			execute:    opReturn,
 			dynamicGas: gasReturn,

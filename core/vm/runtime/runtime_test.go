@@ -611,15 +611,6 @@ func TestColdAccountAccessCost(t *testing.T) {
 			step: 7,
 			want: 2855,
 		},
-		{ // CALLCODE(0xff)
-			code: []byte{
-				byte(vm.PUSH1), 0x0,
-				byte(vm.DUP1), byte(vm.DUP1), byte(vm.DUP1), byte(vm.DUP1),
-				byte(vm.PUSH1), 0xff, byte(vm.DUP1), byte(vm.CALLCODE), byte(vm.POP),
-			},
-			step: 7,
-			want: 2855,
-		},
 		{ // DELEGATECALL(0xff)
 			code: []byte{
 				byte(vm.PUSH1), 0x0,
@@ -739,19 +730,6 @@ func TestRuntimeJSTracer(t *testing.T) {
 				byte(vm.PUSH1), 0xbb, //address
 				byte(vm.GAS), // gas
 				byte(vm.CALL),
-				byte(vm.POP),
-			},
-			results: []string{`"1,1,981796,6,13"`, `"1,1,981796,6,0"`},
-		},
-		{
-			// CALLCODE
-			code: []byte{
-				// outsize, outoffset, insize, inoffset
-				byte(vm.PUSH1), 0, byte(vm.PUSH1), 0, byte(vm.PUSH1), 0, byte(vm.PUSH1), 0,
-				byte(vm.PUSH1), 0, // value
-				byte(vm.PUSH1), 0xcc, //address
-				byte(vm.GAS), // gas
-				byte(vm.CALLCODE),
 				byte(vm.POP),
 			},
 			results: []string{`"1,1,981796,6,13"`, `"1,1,981796,6,0"`},

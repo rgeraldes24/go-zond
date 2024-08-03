@@ -111,21 +111,22 @@ func TestCallTracerNative(t *testing.T) {
 	testCallTracer("callTracer", "call_tracer", t)
 }
 
+// TODO(rgeraldes24): "simple" testcase fix ERC20 key
 func TestCallTracerNativeWithLog(t *testing.T) {
 	key, err := pqcrypto.HexToDilithium("12345678")
 	if err != nil {
 		log.Fatal(err)
 	}
 	signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(1)})
-	to := common.HexToAddress("0xc212e03b9e060e36facad5fd8f4435412ca22e6b")
+	to := common.HexToAddress("0xf4eCEd2f682CE333f96f2D8966C613DeD8fC95DD")
 	// val, _ := new(big.Int).SetString("10000000000000000000", 10)
 	tx := types.NewTx(&types.DynamicFeeTx{
 		ChainID: signer.ChainID(),
-		Nonce:   1634,
+		Nonce:   34,
 		// Value:   val,
 		Value:     common.Big0,
 		To:        &to,
-		Data:      common.Hex2Bytes("51a34eb80000000000000000000000000000000000000000000000280faf689c35ac0000"),
+		Data:      common.Hex2Bytes("a9059cbb000000000000000000000000dbf03b407c01e7cd3cbea99509d93f8dddc8c6fb0000000000000000000000000000000000000000000000000000000000989680"),
 		GasFeeCap: big.NewInt(50000000000),
 		Gas:       1000000,
 	})

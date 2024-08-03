@@ -694,41 +694,6 @@ func opCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byt
 	return ret, nil
 }
 
-func opCallCode(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {
-	// Pop gas. The actual gas is in interpreter.evm.callGasTemp.
-	stack := scope.Stack
-	// We use it as a temporary value
-	temp := stack.pop()
-	gas := interpreter.evm.callGasTemp
-	// Pop other call parameters.
-	addr, value, inOffset, inSize, retOffset, retSize := stack.pop(), stack.pop(), stack.pop(), stack.pop(), stack.pop(), stack.pop()
-	toAddr := common.Address(addr.Bytes20())
-	// Get arguments from the memory.
-	args := scope.Memory.GetPtr(int64(inOffset.Uint64()), int64(inSize.Uint64()))
-
-	//TODO: use uint256.Int instead of converting with toBig()
-	var bigVal = big0
-	if !value.IsZero() {
-		gas += params.CallStipend
-		bigVal = value.ToBig()
-	}
-
-	ret, returnGas, err := interpreter.evm.CallCode(scope.Contract, toAddr, args, gas, bigVal)
-	if err != nil {
-		temp.Clear()
-	} else {
-		temp.SetOne()
-	}
-	stack.push(&temp)
-	if err == nil || err == ErrExecutionReverted {
-		scope.Memory.Set(retOffset.Uint64(), retSize.Uint64(), ret)
-	}
-	scope.Contract.Gas += returnGas
-
-	interpreter.returnData = ret
-	return ret, nil
-}
-
 func opDelegateCall(pc *uint64, interpreter *EVMInterpreter, scope *ScopeContext) ([]byte, error) {
 	stack := scope.Stack
 	// Pop gas. The actual gas is in interpreter.evm.callGasTemp.

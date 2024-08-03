@@ -155,7 +155,7 @@ func (t *prestateTracer) CaptureState(pc uint64, op vm.OpCode, gas, cost uint64,
 		if op == vm.SELFDESTRUCT {
 			t.deleted[caller] = true
 		}
-	case stackLen >= 5 && (op == vm.DELEGATECALL || op == vm.CALL || op == vm.STATICCALL || op == vm.CALLCODE):
+	case stackLen >= 5 && (op == vm.DELEGATECALL || op == vm.CALL || op == vm.STATICCALL):
 		addr := common.Address(stackData[stackLen-2].Bytes20())
 		t.lookupAccount(addr)
 	case op == vm.CREATE:
