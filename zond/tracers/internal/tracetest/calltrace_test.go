@@ -18,8 +18,6 @@ package tracetest
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"math/big"
 	"os"
 	"path/filepath"
@@ -33,7 +31,6 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
-	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/tests"
@@ -81,65 +78,11 @@ type callTracerTest struct {
 }
 
 func TestCallTracerNative(t *testing.T) {
-	key, err := pqcrypto.HexToDilithium("12345678")
-	if err != nil {
-		log.Fatal(err)
-	}
-	signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(3)})
-	to := common.HexToAddress("0x43064693d3d38ad6a7cb579e0d6d9718c8aa6b62")
-	tx := types.NewTx(&types.DynamicFeeTx{
-		ChainID: signer.ChainID(),
-		Nonce:   265,
-		// Value:     big.NewInt(1050000000000000000),
-		Value:     common.Big0,
-		To:        &to,
-		Data:      common.Hex2Bytes("a9059cbb000000000000000000000000e77b1ac803616503510bed0086e3a7be2627a69900000000000000000000000000000000000000000000000000000009502f9000"),
-		GasFeeCap: big.NewInt(50000000000),
-		// Gas:       1000000,
-		Gas: 51741,
-	})
-	signedTx, err := types.SignTx(tx, signer, key)
-	if err != nil {
-		log.Fatal(err)
-	}
-	rawTx, err := signedTx.MarshalBinary()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(common.Bytes2Hex(rawTx))
-
 	testCallTracer("callTracer", "call_tracer", t)
 }
 
-// TODO(rgeraldes24): "simple" testcase fix ERC20 key
+// TODO(rgeraldes24): replace tests that use CALLCODE op
 func TestCallTracerNativeWithLog(t *testing.T) {
-	key, err := pqcrypto.HexToDilithium("12345678")
-	if err != nil {
-		log.Fatal(err)
-	}
-	signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(1)})
-	to := common.HexToAddress("0xf4eCEd2f682CE333f96f2D8966C613DeD8fC95DD")
-	// val, _ := new(big.Int).SetString("10000000000000000000", 10)
-	tx := types.NewTx(&types.DynamicFeeTx{
-		ChainID: signer.ChainID(),
-		Nonce:   34,
-		// Value:   val,
-		Value:     common.Big0,
-		To:        &to,
-		Data:      common.Hex2Bytes("a9059cbb000000000000000000000000dbf03b407c01e7cd3cbea99509d93f8dddc8c6fb0000000000000000000000000000000000000000000000000000000000989680"),
-		GasFeeCap: big.NewInt(50000000000),
-		Gas:       1000000,
-	})
-	signedTx, err := types.SignTx(tx, signer, key)
-	if err != nil {
-		log.Fatal(err)
-	}
-	rawTx, err := signedTx.MarshalBinary()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(common.Bytes2Hex(rawTx))
-
 	testCallTracer("callTracer", "call_tracer_withLog", t)
 }
 
