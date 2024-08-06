@@ -327,7 +327,7 @@ $ gzond --rinkeby --signer=~/.clef/clef.ipc console
 ```
 
 Lastly, when we requested a transaction to be sent, Clef prompted us in the original window to approve it:
-// TODO(rgeraldes24): review
+
 ```text
 --------- Transaction request-------------
 to:           0xD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3

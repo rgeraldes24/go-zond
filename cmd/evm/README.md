@@ -113,7 +113,7 @@ type AccessTuple struct {
 	Address     common.Address `json:"address"        gencodec:"required"`
 	StorageKeys []common.Hash  `json:"storageKeys"    gencodec:"required"`
 }
-// TODO(rgeraldes24): secret key?
+
 type DynamicFeeTx struct {
 	ChainID    *big.Int         `json:"chainId"`
 	Nonce      uint64           `json:"nonce"`

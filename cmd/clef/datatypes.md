@@ -140,7 +140,6 @@ A ruleset that implements a rate limitation needs to know what transactions are 
 
 The `OnApproved` method cannot be responded to, it's purely informative
 
-// TODO(rgeraldes24): pub, key sizes
 Example:
 ```json
 {

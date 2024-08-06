@@ -83,7 +83,7 @@ func rlpxPing(ctx *cli.Context) error {
 	}
 	switch code {
 	case 0:
-		// TODO(rgeraldes24)
+		// TODO(theQRL/go-zond/issues/59)
 		// var h zondtest.Hello
 		// if err := rlp.DecodeBytes(data, &h); err != nil {
 		// 	return fmt.Errorf("invalid handshake: %v", err)
@@ -106,7 +106,7 @@ func rlpxZondTest(ctx *cli.Context) error {
 	if ctx.NArg() < 3 {
 		exit("missing path to chain.rlp as command-line argument")
 	}
-	// TODO(rgeraldes24)
+	// TODO(theQRL/go-zond/issues/59)
 	// suite, err := zondtest.NewSuite(getNodeArg(ctx), ctx.Args().Get(1), ctx.Args().Get(2))
 	// if err != nil {
 	// 	exit(err)
@@ -120,7 +120,7 @@ func rlpxSnapTest(ctx *cli.Context) error {
 	if ctx.NArg() < 3 {
 		exit("missing path to chain.rlp as command-line argument")
 	}
-	// TODO(rgeraldes24)
+	// TODO(theQRL/go-zond/issues/59)
 	// suite, err := zondtest.NewSuite(getNodeArg(ctx), ctx.Args().Get(1), ctx.Args().Get(2))
 	// if err != nil {
 	// 	exit(err)

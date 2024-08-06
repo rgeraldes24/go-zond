@@ -18,6 +18,7 @@ package core_test
 
 import (
 	// "bytes"
+	"bytes"
 	"context"
 	"fmt"
 	"math/big"
@@ -27,6 +28,9 @@ import (
 	"time"
 
 	"github.com/theQRL/go-zond/accounts"
+	"github.com/theQRL/go-zond/accounts/keystore"
+	"github.com/theQRL/go-zond/core/types"
+
 	// "github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
@@ -235,8 +239,6 @@ func mkTestTx(from common.MixedcaseAddress) apitypes.SendTxArgs {
 	return tx
 }
 
-// TODO(rgeraldes24)
-/*
 func TestSignTx(t *testing.T) {
 	var (
 		list      []common.Address
@@ -280,12 +282,14 @@ func TestSignTx(t *testing.T) {
 	control.approveCh <- "Y"
 	control.inputCh <- "a_long_password"
 	res, err = api.SignTransaction(context.Background(), tx, &methodSig)
-
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	parsedTx := &types.Transaction{}
-	rlp.DecodeBytes(res.Raw, parsedTx)
+	if err := parsedTx.UnmarshalBinary(res.Raw); err != nil {
+		t.Fatal(err)
+	}
 
 	//The tx should NOT be modified by the UI
 	if parsedTx.Value().Cmp(tx.Value.ToInt()) != 0 {
@@ -311,7 +315,9 @@ func TestSignTx(t *testing.T) {
 		t.Fatal(err)
 	}
 	parsedTx2 := &types.Transaction{}
-	rlp.DecodeBytes(res.Raw, parsedTx2)
+	if err := parsedTx2.UnmarshalBinary(res.Raw); err != nil {
+		t.Fatal(err)
+	}
 
 	//The tx should be modified by the UI
 	if parsedTx2.Value().Cmp(tx.Value.ToInt()) != 0 {
@@ -321,4 +327,3 @@ func TestSignTx(t *testing.T) {
 		t.Error("Expected tx to be modified by UI")
 	}
 }
-*/

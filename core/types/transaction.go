@@ -149,7 +149,7 @@ func (tx *Transaction) DecodeRLP(s *rlp.Stream) error {
 }
 
 // UnmarshalBinary decodes the canonical encoding of transactions.
-// It supports legacy RLP transactions and EIP2718 typed transactions.
+// It supports EIP2718 typed transactions.
 func (tx *Transaction) UnmarshalBinary(b []byte) error {
 	// It's an EIP2718 typed transaction envelope.
 	inner, err := tx.decodeTyped(b)
