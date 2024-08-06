@@ -19,6 +19,7 @@ package native
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"math/big"
 	"sync/atomic"
 
@@ -144,6 +145,7 @@ func (t *prestateTracer) CaptureState(pc uint64, op vm.OpCode, gas, cost uint64,
 	if t.interrupt.Load() {
 		return
 	}
+	fmt.Println(op)
 	stack := scope.Stack
 	stackData := stack.Data()
 	stackLen := len(stackData)
