@@ -36,8 +36,6 @@ func tmpKeyStoreIface(t *testing.T, encrypted bool) (dir string, ks keyStore) {
 	return d, ks
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestKeyStorePlain(t *testing.T) {
 	_, ks := tmpKeyStoreIface(t, false)
 
@@ -57,7 +55,6 @@ func TestKeyStorePlain(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-*/
 
 func TestKeyStorePassphrase(t *testing.T) {
 	_, ks := tmpKeyStoreIface(t, true)
