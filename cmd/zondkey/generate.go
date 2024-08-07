@@ -17,15 +17,16 @@
 package main
 
 import (
-	"crypto/ecdsa"
 	"fmt"
 	"os"
 	"path/filepath"
 
 	"github.com/google/uuid"
+	"github.com/theQRL/go-qrllib/dilithium"
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
-	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/urfave/cli/v2"
 )
 
@@ -73,17 +74,17 @@ If you want to encrypt an existing private key, it can be specified by setting
 			utils.Fatalf("Error checking if keyfile exists: %v", err)
 		}
 
-		var privateKey *ecdsa.PrivateKey
+		var dilithiumKey *dilithium.Dilithium
 		var err error
 		if file := ctx.String(privateKeyFlag.Name); file != "" {
 			// Load private key from file.
-			privateKey, err = crypto.LoadECDSA(file)
+			dilithiumKey, err = pqcrypto.LoadDilithium(file)
 			if err != nil {
 				utils.Fatalf("Can't load private key: %v", err)
 			}
 		} else {
 			// If not loaded, generate random.
-			privateKey, err = crypto.GenerateKey()
+			dilithiumKey, err = pqcrypto.GenerateDilithiumKey()
 			if err != nil {
 				utils.Fatalf("Failed to generate random private key: %v", err)
 			}
@@ -95,10 +96,9 @@ If you want to encrypt an existing private key, it can be specified by setting
 			utils.Fatalf("Failed to generate random uuid: %v", err)
 		}
 		key := &keystore.Key{
-			Id:      UUID,
-			Address: crypto.PubkeyToAddress(privateKey.PublicKey),
-			// TODO(rgeraldes24)
-			// PrivateKey: privateKey,
+			Id:        UUID,
+			Address:   common.Address(dilithiumKey.GetAddress()),
+			Dilithium: dilithiumKey,
 		}
 
 		// Encrypt key with passphrase.

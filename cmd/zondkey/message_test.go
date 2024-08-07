@@ -16,9 +16,18 @@
 
 package main
 
-// TODO(rgeraldes24): fix
-/*
+import (
+	"os"
+	"path/filepath"
+	"testing"
+
+	"github.com/theQRL/go-zond/accounts/keystore"
+	"github.com/theQRL/go-zond/cmd/utils"
+	"github.com/theQRL/go-zond/common"
+)
+
 func TestMessageSignVerify(t *testing.T) {
+	// t.Parallel()
 	tmpdir := t.TempDir()
 
 	keyfile := filepath.Join(tmpdir, "the-keyfile")
@@ -31,7 +40,7 @@ func TestMessageSignVerify(t *testing.T) {
 Password: {{.InputLine "foobar"}}
 Repeat password: {{.InputLine "foobar"}}
 `)
-	_, matches := generate.ExpectRegexp(`Address: (0x[0-9a-fA-F]{40})\n`)
+	generate.ExpectRegexp(`Address: (0x[0-9a-fA-F]{40})\n`)
 	generate.ExpectExit()
 
 	// Sign a message.
@@ -40,15 +49,27 @@ Repeat password: {{.InputLine "foobar"}}
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "foobar"}}
 `)
-	_, matches = sign.ExpectRegexp(`Signature: ([0-9a-f]+)\n`)
+	_, matches := sign.ExpectRegexp(`Signature: ([0-9a-f]+)\n`)
 	signature := matches[1]
 	sign.ExpectExit()
 
+	// Read key from file.
+	keyjson, err := os.ReadFile(keyfile)
+	if err != nil {
+		utils.Fatalf("Failed to read the keyfile at '%s': %v", keyfile, err)
+	}
+
+	// Decrypt key with passphrase.
+	key, err := keystore.DecryptKey(keyjson, "foobar")
+	if err != nil {
+		utils.Fatalf("Error decrypting key: %v", err)
+	}
+
 	// Verify the message.
-	verify := runZondkey(t, "verifymessage", signature, message)
-	_, matches = verify.ExpectRegexp(`
+	publicKey := key.Dilithium.GetPK()
+	verify := runZondkey(t, "verifymessage", signature, common.Bytes2Hex(publicKey[:]), message)
+	verify.ExpectRegexp(`
 Signature verification successful!
 `)
 	verify.ExpectExit()
 }
-*/

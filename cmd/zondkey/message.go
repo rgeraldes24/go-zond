@@ -22,7 +22,11 @@ import (
 	"os"
 
 	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-zond/accounts"
+	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
+	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/crypto"
 	"github.com/urfave/cli/v2"
 )
 
@@ -50,35 +54,33 @@ To sign a message contained in a file, use the --msgfile flag.
 		msgfileFlag,
 	},
 	Action: func(ctx *cli.Context) error {
-		// TODO(rgeraldes24)
-		/*
-			message := getMessage(ctx, 1)
+		message := getMessage(ctx, 1)
 
-			// Load the keyfile.
-			keyfilepath := ctx.Args().First()
-			keyjson, err := os.ReadFile(keyfilepath)
-			if err != nil {
-				utils.Fatalf("Failed to read the keyfile at '%s': %v", keyfilepath, err)
-			}
+		// Load the keyfile.
+		keyfilepath := ctx.Args().First()
+		keyjson, err := os.ReadFile(keyfilepath)
+		if err != nil {
+			utils.Fatalf("Failed to read the keyfile at '%s': %v", keyfilepath, err)
+		}
 
-			// Decrypt key with passphrase.
-			passphrase := getPassphrase(ctx, false)
-			key, err := keystore.DecryptKey(keyjson, passphrase)
-			if err != nil {
-				utils.Fatalf("Error decrypting key: %v", err)
-			}
+		// Decrypt key with passphrase.
+		passphrase := getPassphrase(ctx, false)
+		key, err := keystore.DecryptKey(keyjson, passphrase)
+		if err != nil {
+			utils.Fatalf("Error decrypting key: %v", err)
+		}
 
-			signature, err := crypto.Sign(accounts.TextHash(message), key.PrivateKey)
-			if err != nil {
-				utils.Fatalf("Failed to sign message: %v", err)
-			}
-			out := outputSign{Signature: hex.EncodeToString(signature)}
-			if ctx.Bool(jsonFlag.Name) {
-				mustPrintJSON(out)
-			} else {
-				fmt.Println("Signature:", out.Signature)
-			}
-		*/
+		signature, err := crypto.SignDilithium(accounts.TextHash(message), key.Dilithium)
+		if err != nil {
+			utils.Fatalf("Failed to sign message: %v", err)
+		}
+		out := outputSign{Signature: hex.EncodeToString(signature)}
+		if ctx.Bool(jsonFlag.Name) {
+			mustPrintJSON(out)
+		} else {
+			fmt.Println("Signature:", out.Signature)
+		}
+
 		return nil
 	},
 }
@@ -90,7 +92,7 @@ type outputVerify struct {
 var commandVerifyMessage = &cli.Command{
 	Name:      "verifymessage",
 	Usage:     "verify the signature of a signed message",
-	ArgsUsage: "<signature> <message>",
+	ArgsUsage: "<signature> <publickey> <message>",
 	Description: `
 Verify the signature of the message.
 It is possible to refer to a file containing the message.`,
@@ -103,19 +105,12 @@ It is possible to refer to a file containing the message.`,
 		pubKeyHex := ctx.Args().Get(1)
 		message := getMessage(ctx, 2)
 
-		signature, err := hex.DecodeString(signatureHex)
-		if err != nil {
-			utils.Fatalf("Signature encoding is not hexadecimal: %v", err)
-		}
+		signature := common.FromHex(signatureHex)
+		publicKey := common.FromHex(pubKeyHex)
 
-		pk, err := hex.DecodeString(pubKeyHex)
-		if err != nil {
-			utils.Fatalf("Public key encoding is not hexadecimal: %v", err)
-		}
-
-		// TODO(rgeraldes24): review
+		dilithiumPublicKey := [2592]uint8(publicKey)
 		out := outputVerify{
-			Success: dilithium.Verify(message, [4595]uint8(signature), (*[2592]uint8)(pk)),
+			Success: dilithium.Verify(accounts.TextHash(message), [4595]uint8(signature), &dilithiumPublicKey),
 		}
 		if ctx.Bool(jsonFlag.Name) {
 			mustPrintJSON(out)
