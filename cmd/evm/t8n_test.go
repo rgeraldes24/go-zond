@@ -72,9 +72,6 @@ func (args *t8nInput) get(base string) []string {
 	if opt := args.stFork; opt != "" {
 		out = append(out, "--state.fork", opt)
 	}
-	if opt := args.stReward; opt != "" {
-		out = append(out, "--state.reward", opt)
-	}
 	return out
 }
 
@@ -134,7 +131,7 @@ func TestT8n(t *testing.T) {
 		{ // blockhash test
 			base: "./testdata/3",
 			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Berlin", "",
+				"alloc.json", "txs.json", "env.json", "Shanghai", "",
 			},
 			output: t8nOutput{alloc: true, result: true},
 			expOut: "exp.json",
@@ -142,7 +139,7 @@ func TestT8n(t *testing.T) {
 		{ // missing blockhash test
 			base: "./testdata/4",
 			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Berlin", "",
+				"alloc.json", "txs.json", "env.json", "Shanghai", "",
 			},
 			output:      t8nOutput{alloc: true, result: true},
 			expExitCode: 4,
@@ -150,7 +147,7 @@ func TestT8n(t *testing.T) {
 		{ // Sign json transactions
 			base: "./testdata/13",
 			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "London", "",
+				"alloc.json", "txs.json", "env.json", "Shanghai", "",
 			},
 			output: t8nOutput{body: true},
 			expOut: "exp.json",
@@ -158,18 +155,10 @@ func TestT8n(t *testing.T) {
 		{ // Already signed transactions
 			base: "./testdata/13",
 			input: t8nInput{
-				"alloc.json", "signed_txs.rlp", "env.json", "London", "",
+				"alloc.json", "signed_txs.rlp", "env.json", "Shanghai", "",
 			},
 			output: t8nOutput{result: true},
 			expOut: "exp2.json",
-		},
-		{ // Sign unprotected (pre-EIP155) transaction
-			base: "./testdata/23",
-			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Berlin", "",
-			},
-			output: t8nOutput{result: true},
-			expOut: "exp.json",
 		},
 		{ // Test post-merge transition
 			base: "./testdata/24",
@@ -269,27 +258,21 @@ func TestT9n(t *testing.T) {
 		expExitCode int
 		expOut      string
 	}{
-		{ // London txs on homestead
+
+		{ // txs on Shanghai
 			base: "./testdata/15",
 			input: t9nInput{
 				inTxs:  "signed_txs.rlp",
-				stFork: "Homestead",
-			},
-			expOut: "exp.json",
-		},
-		{ // London txs on London
-			base: "./testdata/15",
-			input: t9nInput{
-				inTxs:  "signed_txs.rlp",
-				stFork: "London",
+				stFork: "Shanghai",
 			},
 			expOut: "exp2.json",
 		},
+
 		{ // An RLP list (a blockheader really)
 			base: "./testdata/15",
 			input: t9nInput{
 				inTxs:  "blockheader.rlp",
-				stFork: "London",
+				stFork: "Shanghai",
 			},
 			expOut: "exp3.json",
 		},
@@ -297,7 +280,7 @@ func TestT9n(t *testing.T) {
 			base: "./testdata/16",
 			input: t9nInput{
 				inTxs:  "signed_txs.rlp",
-				stFork: "London",
+				stFork: "Shanghai",
 			},
 			expOut: "exp.json",
 		},
@@ -305,7 +288,7 @@ func TestT9n(t *testing.T) {
 			base: "./testdata/17",
 			input: t9nInput{
 				inTxs:  "signed_txs.rlp",
-				stFork: "London",
+				stFork: "Shanghai",
 			},
 			expOut: "exp.json",
 		},
@@ -313,7 +296,7 @@ func TestT9n(t *testing.T) {
 			base: "./testdata/18",
 			input: t9nInput{
 				inTxs:  "invalid.rlp",
-				stFork: "London",
+				stFork: "Shanghai",
 			},
 			expExitCode: t8ntool.ErrorIO,
 		},

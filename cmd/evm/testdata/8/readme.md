@@ -23,7 +23,7 @@ There are three transactions, each invokes the contract above.
 
 Running it yields: 
 ```
-dir=./testdata/8 && ./evm t8n --state.fork=Berlin --input.alloc=$dir/alloc.json --input.txs=$dir/txs.json --input.env=$dir/env.json --trace 2>/dev/null && cat trace-* | grep SLOAD
+dir=./testdata/8 && ./evm t8n --state.fork=Shanghai --input.alloc=$dir/alloc.json --input.txs=$dir/txs.json --input.env=$dir/env.json --trace 2>/dev/null && cat trace-* | grep SLOAD
 {"pc":1,"op":84,"gas":"0x484be","gasCost":"0x834","memSize":0,"stack":["0x0"],"depth":1,"refund":0,"opName":"SLOAD"}
 {"pc":4,"op":84,"gas":"0x47c86","gasCost":"0x834","memSize":0,"stack":["0x3"],"depth":1,"refund":0,"opName":"SLOAD"}
 {"pc":1,"op":84,"gas":"0x49cf6","gasCost":"0x834","memSize":0,"stack":["0x0"],"depth":1,"refund":0,"opName":"SLOAD"}
@@ -37,7 +37,7 @@ Simlarly, we can provide the input transactions via `stdin` instead of as file:
 ```
 $ dir=./testdata/8 \
   && cat $dir/txs.json | jq "{txs: .}" \
-  | ./evm t8n --state.fork=Berlin \
+  | ./evm t8n --state.fork=Shanghai \
      --input.alloc=$dir/alloc.json \
      --input.txs=stdin \
      --input.env=$dir/env.json \
@@ -54,6 +54,6 @@ $ dir=./testdata/8 \
 
 If we try to execute it on older rules: 
 ```
-$ dir=./testdata/8 && ./evm t8n --state.fork=Istanbul --input.alloc=$dir/alloc.json --input.txs=$dir/txs.json --input.env=$dir/env.json 
+$ dir=./testdata/8 && ./evm t8n --state.fork=Shanghai --input.alloc=$dir/alloc.json --input.txs=$dir/txs.json --input.env=$dir/env.json 
 ERROR(10): failed signing transactions: ERROR(10): tx 0: failed to sign tx: transaction type not supported
 ```

@@ -119,7 +119,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 			wantHash:   customghash,
 			wantConfig: customg.Config,
 		},
-		// TODO(rgeraldes24): check validity
+		// TODO(rgeraldes24): not valid for now
 		/*
 			{
 				name: "incompatible config in DB",

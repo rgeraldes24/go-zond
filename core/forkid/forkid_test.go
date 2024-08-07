@@ -73,7 +73,7 @@ func TestCreation(t *testing.T) {
 					{7280000, 0, ID{Hash: checksumToBytes(0x668db0af), Next: 9069000}},              // First and last Constantinople, first Petersburg block
 					{9068999, 0, ID{Hash: checksumToBytes(0x668db0af), Next: 9069000}},              // Last Petersburg block
 					{9069000, 0, ID{Hash: checksumToBytes(0x879d6e30), Next: 9200000}},              // First Istanbul and first Muir Glacier block
-					{9199999, 0, ID{Hash: checksumToBytes(0x879d6e30), Next: 9200000}},              // Last Istanbul and first Muir Glacier block
+					{9199999, 0, ID{Hash: checksumToBytes(0x879d6e30), Next: 9200000}},              // Last  and first Muir Glacier block
 					{9200000, 0, ID{Hash: checksumToBytes(0xe029e991), Next: 12244000}},             // First Muir Glacier block
 					{12243999, 0, ID{Hash: checksumToBytes(0xe029e991), Next: 12244000}},            // Last Muir Glacier block
 					{12244000, 0, ID{Hash: checksumToBytes(0x0eb440f6), Next: 12965000}},            // First Berlin block

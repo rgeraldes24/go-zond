@@ -44,8 +44,7 @@ Command line params that need to be supported are
     --output.body value           
     --output.result value          (default: "result.json")
     --state.chainid value          (default: 1)
-    --state.fork value             (default: "GrayGlacier")
-    --state.reward value           (default: 0)
+    --state.fork value             (default: "Shanghai")
     --trace.memory                 (default: false)
     --trace.nomemory               (default: true)
     --trace.noreturndata           (default: true)
@@ -170,7 +169,7 @@ There are a few (not many) errors that can occur, those are defined below.
 
 ```
 # This should exit with 3
-./evm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --state.fork=Frontier+1346 2>/dev/null
+./evm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --state.fork=Shanghai 2>/dev/null
 exitcode:3 OK
 ```
 #### Forks
@@ -185,7 +184,7 @@ found in [`tests/init.go`](tests/init.go).
 
 Invoking it with the provided example files
 ```
-./evm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --state.fork=Berlin
+./evm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --state.fork=Shanghai
 ```
 Two resulting files:
 
@@ -239,7 +238,7 @@ Two resulting files:
 
 We can make them spit out the data to e.g. `stdout` like this:
 ```
-./evm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --output.result=stdout --output.alloc=stdout --state.fork=Berlin
+./evm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --output.result=stdout --output.alloc=stdout --state.fork=Shanghai
 ```
 Output:
 ```json
@@ -291,9 +290,9 @@ Output:
 #### Future EIPS
 
 It is also possible to experiment with future eips that are not yet defined in a hard fork.
-Example, putting EIP-1344 into Frontier: 
+Example, putting EIP-1344 into Shanghai: 
 ```
-./evm t8n --state.fork=Frontier+1344 --input.pre=./testdata/1/pre.json --input.txs=./testdata/1/txs.json --input.env=/testdata/1/env.json
+./evm t8n --state.fork=Shanghai+1344 --input.pre=./testdata/1/pre.json --input.txs=./testdata/1/txs.json --input.env=/testdata/1/env.json
 ```
 
 #### Block history
@@ -345,7 +344,7 @@ to use the evm to go from `json` input to `rlp` input.
 
 The following command takes **json** the transactions in `./testdata/13/txs.json` and signs them. After execution, they are output to `signed_txs.rlp`.:
 ```
-./evm t8n --state.fork=London --input.alloc=./testdata/13/alloc.json --input.txs=./testdata/13/txs.json --input.env=./testdata/13/env.json --output.result=alloc_jsontx.json --output.body=signed_txs.rlp
+./evm t8n --state.fork=Shanghai --input.alloc=./testdata/13/alloc.json --input.txs=./testdata/13/txs.json --input.env=./testdata/13/env.json --output.result=alloc_jsontx.json --output.body=signed_txs.rlp
 INFO [12-27|09:25:11.102] Trie dumping started                     root=e4b924..6aef61
 INFO [12-27|09:25:11.102] Trie dumping complete                    accounts=3 elapsed="275.66µs"
 INFO [12-27|09:25:11.102] Wrote file                               file=alloc.json
@@ -369,7 +368,7 @@ rlpdump -hex $(cat signed_txs.rlp | jq -r )
 ```
 Now, we can now use those (or any other already signed transactions), as input, like so: 
 ```
-./evm t8n --state.fork=London --input.alloc=./testdata/13/alloc.json --input.txs=./signed_txs.rlp --input.env=./testdata/13/env.json --output.result=alloc_rlptx.json
+./evm t8n --state.fork=Shanghai --input.alloc=./testdata/13/alloc.json --input.txs=./signed_txs.rlp --input.env=./testdata/13/env.json --output.result=alloc_rlptx.json
 INFO [12-27|09:25:11.187] Trie dumping started                     root=e4b924..6aef61
 INFO [12-27|09:25:11.187] Trie dumping complete                    accounts=3 elapsed="123.676µs"
 INFO [12-27|09:25:11.187] Wrote file                               file=alloc.json
@@ -394,20 +393,7 @@ The transaction tool is used to perform static validity checks on transactions s
 ### Examples
 
 ```
-./evm t9n --state.fork Homestead --input.txs testdata/15/signed_txs.rlp
-[
-  {
-    "error": "transaction type not supported",
-    "hash": "0xa98a24882ea90916c6a86da650fbc6b14238e46f0af04a131ce92be897507476"
-  },
-  {
-    "error": "transaction type not supported",
-    "hash": "0x36bad80acce7040c45fd32764b5c2b2d2e6f778669fb41791f73f546d56e739a"
-  }
-]
-```
-```
-./evm t9n --state.fork London --input.txs testdata/15/signed_txs.rlp
+./evm t9n --state.fork Shanghai --input.txs testdata/15/signed_txs.rlp
 [
   {
     "address": "0xd02d72e067e77158444ef2020ff2d325f929b363",

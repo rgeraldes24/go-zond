@@ -158,49 +158,24 @@ Fatal: Passwords do not match
 `)
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestAccountUpdate(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
 	gzond := runGzond(t, "account", "update",
 		"--datadir", datadir, "--lightkdf",
-		"205547ba6232eec096770f7161d57dea54fd13d0")
+		"206f5f53d348954856a6d2cde75ad6381945fb46")
 	defer gzond.ExpectExit()
 	gzond.Expect(`
-Unlocking account 205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 1/3
+Unlocking account 206f5f53d348954856a6d2cde75ad6381945fb46 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
-Password: {{.InputLine "foobar"}}
+Password: {{.InputLine "1234567890"}}
 Please give a new password. Do not forget this password.
 Password: {{.InputLine "foobar2"}}
 Repeat password: {{.InputLine "foobar2"}}
 `)
 }
 
-func TestWalletImport(t *testing.T) {
-	gzond := runGzond(t, "wallet", "import", "--lightkdf", "testdata/guswallet.json")
-	defer gzond.ExpectExit()
-	gzond.Expect(`
-!! Unsupported terminal, password will be echoed.
-Password: {{.InputLine "foo"}}
-Address: {d4584b5f6229b7be90727b0fc8c6b91bb427821f}
-`)
-
-	files, err := os.ReadDir(filepath.Join(gzond.Datadir, "keystore"))
-	if len(files) != 1 {
-		t.Errorf("expected one key file in keystore directory, found %d files (error: %v)", len(files), err)
-	}
-}
-
-func TestWalletImportBadPassword(t *testing.T) {
-	gzond := runGzond(t, "wallet", "import", "--lightkdf", "testdata/guswallet.json")
-	defer gzond.ExpectExit()
-	gzond.Expect(`
-!! Unsupported terminal, password will be echoed.
-Password: {{.InputLine "wrong"}}
-Fatal: could not decrypt key with given password
-`)
-}
-
+// TODO(rgeraldes24): fix
+/*
 func TestUnlockFlag(t *testing.T) {
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
 		"--unlock", "205547ba6232eec096770f7161d57dea54fd13d0", "console", "--exec", "loadScript('testdata/empty.js')")

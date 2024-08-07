@@ -17,13 +17,13 @@
 package params
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/theQRL/go-zond/common"
 )
 
-// TODO(rgeraldes24): extra: add case for the chain id mismatch
 func TestCheckCompatible(t *testing.T) {
 	type test struct {
 		stored, new   *ChainConfig
@@ -40,6 +40,15 @@ func TestCheckCompatible(t *testing.T) {
 			new:    &ChainConfig{},
 			// headBlock: 9,
 			wantErr: nil,
+		},
+		{
+			stored: &ChainConfig{ChainID: common.Big1},
+			new:    &ChainConfig{ChainID: common.Big32},
+			wantErr: &ConfigCompatError{
+				What:        "chain ID",
+				StoredBlock: common.Big1,
+				NewBlock:    common.Big32,
+			},
 		},
 		// NOTE(rgeraldes24): not valid at the moment
 		/*
@@ -115,8 +124,6 @@ func TestCheckCompatible(t *testing.T) {
 
 	for _, test := range tests {
 		err := test.stored.CheckCompatible(test.new, test.headBlock, test.headTimestamp)
-		fmt.Println(err)
-		fmt.Println(test.wantErr)
 		if !reflect.DeepEqual(err, test.wantErr) {
 			t.Errorf("error mismatch:\nstored: %v\nnew: %v\nheadBlock: %v\nheadTimestamp: %v\nerr: %v\nwant: %v", test.stored, test.new, test.headBlock, test.headTimestamp, err, test.wantErr)
 		}

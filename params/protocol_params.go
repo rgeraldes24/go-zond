@@ -66,16 +66,16 @@ const (
 	SelfdestructRefundGas uint64 = 24000 // Refunded following a selfdestruct operation.
 	MemoryGas             uint64 = 3     // Times the address of the (highest referenced byte in memory + 1). NOTE: referencing happens on read, write and in instructions such as RETURN and CALL.
 
-	TxDataNonZeroGasEIP2028   uint64 = 16   // Per byte of non zero data attached to a transaction after EIP 2028 (part in Istanbul)
+	TxDataNonZeroGasEIP2028   uint64 = 16   // Per byte of non zero data attached to a transaction after EIP 2028
 	TxAccessListAddressGas    uint64 = 2400 // Per address specified in EIP 2930 access list
 	TxAccessListStorageKeyGas uint64 = 1900 // Per storage key specified in EIP 2930 access list
 
 	// These have been changed during the course of the chain
-	SloadGasEIP2200       uint64 = 800  // Cost of SLOAD after EIP 2200 (part of Istanbul)
-	SelfdestructGasEIP150 uint64 = 5000 // Cost of SELFDESTRUCT post EIP 150 (Tangerine)
+	SloadGasEIP2200       uint64 = 800  // Cost of SLOAD
+	SelfdestructGasEIP150 uint64 = 5000 // Cost of SELFDESTRUCT
 
 	// EXP has a dynamic portion depending on the size of the exponent
-	ExpByteEIP158 uint64 = 50 // was raised to 50 during Eip158 (Spurious Dragon)
+	ExpByteEIP158 uint64 = 50 // was raised to 50 during Eip158
 
 	// CreateBySelfdestructGas is used when the refunded account is one that does
 	// not exist. This logic is similar to call.

@@ -226,37 +226,6 @@ echo "${ticks}json"
 echo "$output"
 echo "$ticks"
 
-cat << "EOF"
-
-#### About Ommers
-
-Mining rewards might need to be added. This is how those are applied:
-
-- `block_reward` is the block mining reward for the miner (`0xaa`), of a block at height `N`.
-
-To make `t8n` apply these, the following inputs are required:
-
-- `--state.reward`
-  - If this is not defined, mining rewards are not applied,
-  - A value of `0` is valid, and causes accounts to be 'touched'.
-
-Note: the tool does not verify that e.g. the normal uncle rules apply,
-and allows e.g two uncles at the same height, or the uncle-distance. This means that
-the tool allows for negative uncle reward (distance > 8)
-
-Example:
-EOF
-
-showjson ./testdata/5/env.json
-
-echo "When applying this, using a reward of \`0x08\`"
-cmd="./evm t8n --input.alloc=./testdata/5/alloc.json -input.txs=./testdata/5/txs.json --input.env=./testdata/5/env.json  --output.alloc=stdout --state.reward=0x80 --state.fork=Berlin"
-output=`$cmd 2>/dev/null`
-echo "Output:"
-echo "${ticks}json"
-echo "$output"
-echo "$ticks"
-
 echo "#### Future EIPS"
 echo ""
 echo "It is also possible to experiment with future eips that are not yet defined in a hard fork."
@@ -270,7 +239,7 @@ echo ""
 echo "The \`BLOCKHASH\` opcode requires blockhashes to be provided by the caller, inside the \`env\`."
 echo "If a required blockhash is not provided, the exit code should be \`4\`:"
 echo "Example where blockhashes are provided: "
-demo "./evm t8n --input.alloc=./testdata/3/alloc.json --input.txs=./testdata/3/txs.json --input.env=./testdata/3/env.json  --trace --state.fork=Berlin"
+demo "./evm t8n --input.alloc=./testdata/3/alloc.json --input.txs=./testdata/3/txs.json --input.env=./testdata/3/env.json  --trace --state.fork=Shanghai"
 cmd="cat trace-0-0x72fadbef39cd251a437eea619cfeda752271a5faaaa2147df012e112159ffb81.jsonl | grep BLOCKHASH -C2"
 tick && echo $cmd && tick
 echo "$ticks"
@@ -279,7 +248,7 @@ echo "$ticks"
 echo ""
 
 echo "In this example, the caller has not provided the required blockhash:"
-cmd="./evm t8n --input.alloc=./testdata/4/alloc.json --input.txs=./testdata/4/txs.json --input.env=./testdata/4/env.json  --trace --state.fork=Berlin"
+cmd="./evm t8n --input.alloc=./testdata/4/alloc.json --input.txs=./testdata/4/txs.json --input.env=./testdata/4/env.json  --trace --state.fork=Shanghai"
 tick && echo $cmd && $cmd 2>&1
 errc=$?
 tick
@@ -289,8 +258,8 @@ echo ""
 echo "#### Chaining"
 echo ""
 echo "Another thing that can be done, is to chain invocations:"
-cmd1="./evm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --state.fork=Berlin --output.alloc=stdout"
-cmd2="./evm t8n --input.alloc=stdin --input.env=./testdata/1/env.json --input.txs=./testdata/1/txs.json --state.fork=Berlin"
+cmd1="./evm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --state.fork=Shanghai --output.alloc=stdout"
+cmd2="./evm t8n --input.alloc=stdin --input.env=./testdata/1/env.json --input.txs=./testdata/1/txs.json --state.fork=Shanghai"
 echo "$ticks"
 echo "$cmd1 | $cmd2"
 output=$($cmd1 | $cmd2 )
@@ -311,7 +280,7 @@ echo "The input format for RLP-form transactions is _identical_ to the _output_ 
 echo "to use the evm to go from \`json\` input to \`rlp\` input."
 echo ""
 echo "The following command takes **json** the transactions in \`./testdata/13/txs.json\` and signs them. After execution, they are output to \`signed_txs.rlp\`.:"
-cmd="./evm t8n --state.fork=London --input.alloc=./testdata/13/alloc.json --input.txs=./testdata/13/txs.json --input.env=./testdata/13/env.json --output.result=alloc_jsontx.json --output.body=signed_txs.rlp"
+cmd="./evm t8n --state.fork=Shanghai --input.alloc=./testdata/13/alloc.json --input.txs=./testdata/13/txs.json --input.env=./testdata/13/env.json --output.result=alloc_jsontx.json --output.body=signed_txs.rlp"
 echo "$ticks"
 echo $cmd
 $cmd 2>&1
@@ -325,7 +294,7 @@ echo "rlpdump -hex \$(cat signed_txs.rlp | jq -r )"
 rlpdump -hex $(cat signed_txs.rlp | jq -r )
 echo "$ticks"
 echo "Now, we can now use those (or any other already signed transactions), as input, like so: "
-cmd="./evm t8n --state.fork=London --input.alloc=./testdata/13/alloc.json --input.txs=./signed_txs.rlp --input.env=./testdata/13/env.json --output.result=alloc_rlptx.json"
+cmd="./evm t8n --state.fork=Shanghai --input.alloc=./testdata/13/alloc.json --input.txs=./signed_txs.rlp --input.env=./testdata/13/env.json --output.result=alloc_rlptx.json"
 echo "$ticks"
 echo $cmd
 $cmd 2>&1
@@ -351,12 +320,7 @@ The transaction tool is used to perform static validity checks on transactions s
 
 EOF
 
-cmd="./evm t9n --state.fork Homestead --input.txs testdata/15/signed_txs.rlp"
-tick;echo "$cmd";
-$cmd 2>/dev/null
-tick
-
-cmd="./evm t9n --state.fork London --input.txs testdata/15/signed_txs.rlp"
+cmd="./evm t9n --state.fork Shanghai --input.txs testdata/15/signed_txs.rlp"
 tick;echo "$cmd";
 $cmd 2>/dev/null
 tick

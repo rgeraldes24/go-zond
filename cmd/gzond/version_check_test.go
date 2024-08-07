@@ -26,8 +26,6 @@ import (
 	"github.com/jedisct1/go-minisign"
 )
 
-// TODO(rgeraldes24): fix
-/*
 func TestVerification(t *testing.T) {
 	// Signatures generated with `minisign`. Legacy format, not pre-hashed file.
 	t.Run("minisig-legacy", func(t *testing.T) {
@@ -52,7 +50,6 @@ func TestVerification(t *testing.T) {
 		testVerification(t, pub, "./testdata/vcheck/signify-sigs/")
 	})
 }
-*/
 
 func testVerification(t *testing.T, pubkey, sigdir string) {
 	// Data to verify
