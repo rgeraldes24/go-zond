@@ -599,20 +599,6 @@ func testReorg(t *testing.T, first, second []int64, full bool, scheme string) {
 			}
 		}
 	}
-	// TODO(rgeraldes24)
-	// // Make sure the chain total difficulty is the correct one
-	// want := new(big.Int).Add(blockchain.genesisBlock.Difficulty(), big.NewInt(td))
-	// if full {
-	// 	cur := blockchain.CurrentBlock()
-	// 	if have := blockchain.GetTd(cur.Hash(), cur.Number.Uint64()); have.Cmp(want) != 0 {
-	// 		t.Errorf("total difficulty mismatch: have %v, want %v", have, want)
-	// 	}
-	// } else {
-	// 	cur := blockchain.CurrentHeader()
-	// 	if have := blockchain.GetTd(cur.Hash(), cur.Number.Uint64()); have.Cmp(want) != 0 {
-	// 		t.Errorf("total difficulty mismatch: have %v, want %v", have, want)
-	// 	}
-	// }
 }
 
 // Tests chain insertions in the face of one entity containing an invalid nonce.
