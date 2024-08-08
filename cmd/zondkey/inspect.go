@@ -17,6 +17,7 @@
 package main
 
 import (
+	"encoding/hex"
 	"fmt"
 	"os"
 
@@ -26,15 +27,15 @@ import (
 )
 
 type outputInspect struct {
-	Address    string
-	PublicKey  string
-	PrivateKey string
+	Address   string
+	PublicKey string
+	Seed      string
 }
 
 var (
 	privateFlag = &cli.BoolFlag{
 		Name:  "private",
-		Usage: "include the private key in the output",
+		Usage: "include the seed in the output",
 	}
 )
 
@@ -45,7 +46,7 @@ var commandInspect = &cli.Command{
 	Description: `
 Print various information about the keyfile.
 
-Private key information can be printed by using the --private flag;
+Seed information can be printed by using the --private flag;
 make sure to use this feature with great caution!`,
 	Flags: []cli.Flag{
 		passphraseFlag,
@@ -70,16 +71,15 @@ make sure to use this feature with great caution!`,
 
 		// Output all relevant information we can retrieve.
 		showPrivate := ctx.Bool(privateFlag.Name)
+		publicKey := key.Dilithium.GetPK()
 		out := outputInspect{
-			Address: key.Address.Hex(),
-			// TODO(rgeraldes24)
-			// PublicKey: hex.EncodeToString(
-			// 	crypto.FromECDSAPub(&key.PrivateKey.PublicKey)),
+			Address:   key.Address.Hex(),
+			PublicKey: hex.EncodeToString(publicKey[:]),
 		}
-		// TODO(rgeraldes24)
-		// if showPrivate {
-		// 	out.PrivateKey = hex.EncodeToString(crypto.FromECDSA(key.PrivateKey))
-		// }
+		if showPrivate {
+			seed := key.Dilithium.GetSeed()
+			out.Seed = hex.EncodeToString(seed[:])
+		}
 
 		if ctx.Bool(jsonFlag.Name) {
 			mustPrintJSON(out)
@@ -87,7 +87,7 @@ make sure to use this feature with great caution!`,
 			fmt.Println("Address:       ", out.Address)
 			fmt.Println("Public key:    ", out.PublicKey)
 			if showPrivate {
-				fmt.Println("Private key:   ", out.PrivateKey)
+				fmt.Println("Seed:   ", out.Seed)
 			}
 		}
 		return nil

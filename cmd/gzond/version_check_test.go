@@ -17,8 +17,11 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -92,8 +95,6 @@ func versionUint(v string) int {
 	return a*100*100 + b*100 + c
 }
 
-// TODO(rgeraldes24): fix
-/*
 // TestMatching can be used to check that the regexps are correct
 func TestMatching(t *testing.T) {
 	data, _ := os.ReadFile("./testdata/vcheck/vulnerabilities.json")
@@ -102,7 +103,7 @@ func TestMatching(t *testing.T) {
 		t.Fatal(err)
 	}
 	check := func(version string) {
-		vFull := fmt.Sprintf("Gzond/%v-unstable-15339cf1-20201204/linux-amd64/go1.15.4", version)
+		vFull := fmt.Sprintf("Geth/%v-unstable-15339cf1-20201204/linux-amd64/go1.15.4", version)
 		for _, vuln := range vulns {
 			r, err := regexp.Compile(vuln.Check)
 			vulnIntro := versionUint(vuln.Introduced)
@@ -138,7 +139,6 @@ func TestMatching(t *testing.T) {
 		}
 	}
 }
-*/
 
 func TestGzondPubKeysParseable(t *testing.T) {
 	for _, pubkey := range gzondPubKeys {
