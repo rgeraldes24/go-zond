@@ -251,7 +251,6 @@ func dnsNukeRoute53(ctx *cli.Context) error {
 
 // loadSigningKey loads a private key in Ethereum keystore format.
 func loadSigningKey(keyfile string) *ecdsa.PrivateKey {
-	// TODO(rgeraldes24)
 	/*
 		keyjson, err := os.ReadFile(keyfile)
 		if err != nil {
@@ -262,6 +261,7 @@ func loadSigningKey(keyfile string) *ecdsa.PrivateKey {
 		if err != nil {
 			exit(fmt.Errorf("error decrypting key: %v", err))
 		}
+
 		return key.PrivateKey
 	*/
 	return nil

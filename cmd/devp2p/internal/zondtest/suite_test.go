@@ -32,7 +32,7 @@ var (
 	fullchainFile = "./testdata/chain.rlp"
 )
 
-// TODO(rgeraldes24)
+TODO(theQRL/go-zond/issues/59)
 /*
 func TestZondSuite(t *testing.T) {
 	gzond, err := runGzond()

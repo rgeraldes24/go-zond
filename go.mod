@@ -60,7 +60,6 @@ require (
 	github.com/urfave/cli/v2 v2.25.7
 	go.uber.org/automaxprocs v1.5.2
 	golang.org/x/crypto v0.12.0
-	golang.org/x/exp v0.0.0-20230810033253-352e893a4cad
 	golang.org/x/sync v0.3.0
 	golang.org/x/sys v0.11.0
 	golang.org/x/text v0.12.0
@@ -121,6 +120,7 @@ require (
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
+	golang.org/x/exp v0.0.0-20230810033253-352e893a4cad // indirect
 	golang.org/x/mod v0.11.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220517211312-f3a8303e98df // indirect

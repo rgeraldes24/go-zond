@@ -17,7 +17,6 @@
 package zondtest
 
 /*
-TODO(theQRL/go-zond/issues/59)
 // Suite represents a structure used to test a node's conformance
 // to the zond protocol.
 type Suite struct {
