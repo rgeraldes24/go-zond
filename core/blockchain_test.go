@@ -1742,70 +1742,6 @@ func testInsertReceiptChainRollback(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): review
-// Tests that importing a very large side fork, which is larger than the canon chain,
-// but where the difficulty per block is kept low: this means that it will not
-// overtake the 'canon' chain until after it's passed canon by about 200 blocks.
-//
-// Details at:
-//   - https://github.com/theQRL/go-zond/issues/18977
-//   - https://github.com/theQRL/go-zond/pull/18988
-func TestLowDiffLongChain(t *testing.T) {
-	testLowDiffLongChain(t, rawdb.HashScheme)
-	testLowDiffLongChain(t, rawdb.PathScheme)
-}
-
-func testLowDiffLongChain(t *testing.T, scheme string) {
-	// Generate a canonical chain to act as the main dataset
-	engine := beacon.NewFaker()
-	genesis := &Genesis{
-		Config:  params.TestChainConfig,
-		BaseFee: big.NewInt(params.InitialBaseFee),
-	}
-	// We must use a pretty long chain to ensure that the fork doesn't overtake us
-	// until after at least 128 blocks post tip
-	genDb, blocks, _ := GenerateChainWithGenesis(genesis, engine, 6*TriesInMemory, func(i int, b *BlockGen) {
-		b.SetCoinbase(common.Address{1})
-		b.OffsetTime(-9)
-	})
-
-	// Import the canonical chain
-	diskdb, _ := rawdb.NewDatabaseWithFreezer(rawdb.NewMemoryDatabase(), t.TempDir(), "", false)
-	defer diskdb.Close()
-
-	chain, err := NewBlockChain(diskdb, DefaultCacheConfigWithScheme(scheme), genesis, engine, vm.Config{}, nil, nil)
-	if err != nil {
-		t.Fatalf("failed to create tester chain: %v", err)
-	}
-	defer chain.Stop()
-
-	if n, err := chain.InsertChain(blocks); err != nil {
-		t.Fatalf("block %d: failed to insert into chain: %v", n, err)
-	}
-	// Generate fork chain, starting from an early block
-	parent := blocks[10]
-	fork, _ := GenerateChain(genesis.Config, parent, engine, genDb, 8*TriesInMemory, func(i int, b *BlockGen) {
-		b.SetCoinbase(common.Address{2})
-	})
-
-	// And now import the fork
-	if i, err := chain.InsertChain(fork); err != nil {
-		t.Fatalf("block %d: failed to insert into chain: %v", i, err)
-	}
-	head := chain.CurrentBlock()
-	if got := fork[len(fork)-1].Hash(); got != head.Hash() {
-		t.Fatalf("head wrong, expected %x got %x", head.Hash(), got)
-	}
-	// Sanity check that all the canonical numbers are present
-	header := chain.CurrentHeader()
-	for number := head.Number.Uint64(); number > 0; number-- {
-		if hash := chain.GetHeaderByNumber(number).Hash(); hash != header.Hash() {
-			t.Fatalf("header %d: canonical hash mismatch: have %x, want %x", number, hash, header.Hash())
-		}
-		header = chain.GetHeader(header.ParentHash, number-1)
-	}
-}
-
 func TestInsertKnownHeaders(t *testing.T) {
 	testInsertKnownChainData(t, "headers")
 }
@@ -1838,7 +1774,7 @@ func testInsertKnownChainData(t *testing.T, typ string) {
 	})
 	blocks3, receipts3 := GenerateChain(genesis.Config, blocks[len(blocks)-1], engine, genDb, 64, func(i int, b *BlockGen) {
 		b.SetCoinbase(common.Address{1})
-		b.OffsetTime(-9) // Time shifted, difficulty shouldn't be changed
+		b.OffsetTime(-9) // Time shifted
 	})
 	// Import the shared chain and the original canonical one
 	chaindb, err := rawdb.NewDatabaseWithFreezer(rawdb.NewMemoryDatabase(), t.TempDir(), "", false)
