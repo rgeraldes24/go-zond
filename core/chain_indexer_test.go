@@ -31,7 +31,6 @@ import (
 )
 
 // TODO(rgeraldes24): fix
-// Runs multiple tests with randomized parameters.
 /*
 func TestChainIndexerSingle(t *testing.T) {
 	for i := 0; i < 10; i++ {
@@ -120,10 +119,10 @@ func testChainIndexer(t *testing.T, count int) {
 	notify(500, 500, true)
 
 	// Create new fork
-	for i := uint64(501); i <= 1000; i++ {
-		inject(i)
-		notify(i, i, false)
-	}
+	// for i := uint64(501); i <= 1000; i++ {
+	// 	inject(i)
+	// 	notify(i, i, false)
+	// }
 	for i := uint64(1001); i <= 1500; i++ {
 		inject(i)
 	}
@@ -134,10 +133,10 @@ func testChainIndexer(t *testing.T, count int) {
 	notify(1500, 1500, true)
 
 	// Create new fork
-	for i := uint64(1501); i <= 2000; i++ {
-		inject(i)
-		notify(i, i, false)
-	}
+	// for i := uint64(1501); i <= 2000; i++ {
+	// 	inject(i)
+	// 	notify(i, i, false)
+	// }
 }
 
 // testChainIndexBackend implements ChainIndexerBackend

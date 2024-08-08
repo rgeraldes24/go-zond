@@ -75,9 +75,9 @@ func TestRlpIterator(t *testing.T) {
 		txs      int
 		datasize int
 	}{
-		// {0, 0},
+		{0, 0},
 		{10, 0},
-		// {10, 50},
+		{10, 50},
 	} {
 		testRlpIterator(t, tt.txs, tt.datasize)
 	}

@@ -71,8 +71,7 @@ func (h *testZondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
 
 // Tests that peers are correctly accepted (or rejected) based on the advertised
 // fork IDs in the protocol handshake.
-// TODO(rgeraldes24): check validity(homestead ref)
-// func TestForkIDSplit68(t *testing.T) { testForkIDSplit(t, zond.ETH68) }
+func TestForkIDSplit68(t *testing.T) { testForkIDSplit(t, zond.ETH68) }
 
 func testForkIDSplit(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -180,41 +179,44 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 			t.Fatalf("homestead nofork <-> profork handler timeout")
 		}
 	}
-	// Progress into Spurious. Forks mismatch, signalling differing chains, reject
-	chainNoFork.InsertChain(blocksNoFork[1:2])
-	chainProFork.InsertChain(blocksProFork[1:2])
+	// NOTE(rgeraldes24): revisit upon new fork
+	/*
+		// Progress into Spurious. Forks mismatch, signalling differing chains, reject
+		chainNoFork.InsertChain(blocksNoFork[1:2])
+		chainProFork.InsertChain(blocksProFork[1:2])
 
-	p2pNoFork, p2pProFork = p2p.MsgPipe()
-	defer p2pNoFork.Close()
-	defer p2pProFork.Close()
+		p2pNoFork, p2pProFork = p2p.MsgPipe()
+		defer p2pNoFork.Close()
+		defer p2pProFork.Close()
 
-	peerNoFork = zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pNoFork), p2pNoFork, nil)
-	peerProFork = zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pProFork), p2pProFork, nil)
-	defer peerNoFork.Close()
-	defer peerProFork.Close()
+		peerNoFork = zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pNoFork), p2pNoFork, nil)
+		peerProFork = zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pProFork), p2pProFork, nil)
+		defer peerNoFork.Close()
+		defer peerProFork.Close()
 
-	errc = make(chan error, 2)
-	go func(errc chan error) {
-		errc <- zondNoFork.runZondPeer(peerProFork, func(peer *zond.Peer) error { return nil })
-	}(errc)
-	go func(errc chan error) {
-		errc <- zondProFork.runZondPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
-	}(errc)
+		errc = make(chan error, 2)
+		go func(errc chan error) {
+			errc <- zondNoFork.runZondPeer(peerProFork, func(peer *zond.Peer) error { return nil })
+		}(errc)
+		go func(errc chan error) {
+			errc <- zondProFork.runZondPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
+		}(errc)
 
-	var successes int
-	for i := 0; i < 2; i++ {
-		select {
-		case err := <-errc:
-			if err == nil {
-				successes++
-				if successes == 2 { // Only one side disconnects
-					t.Fatalf("fork ID rejection didn't happen")
+		var successes int
+		for i := 0; i < 2; i++ {
+			select {
+			case err := <-errc:
+				if err == nil {
+					successes++
+					if successes == 2 { // Only one side disconnects
+						t.Fatalf("fork ID rejection didn't happen")
+					}
 				}
+			case <-time.After(250 * time.Millisecond):
+				t.Fatalf("split peers not rejected")
 			}
-		case <-time.After(250 * time.Millisecond):
-			t.Fatalf("split peers not rejected")
 		}
-	}
+	*/
 }
 
 // Tests that received transactions are added to the local pool.

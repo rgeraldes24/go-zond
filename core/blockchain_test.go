@@ -668,12 +668,10 @@ func testInsertNonceError(t *testing.T, full bool, scheme string) {
 
 // Tests that fast importing a block chain produces the same chain data as the
 // classical full block processing.
-//
-//	TODO(rgeraldes24): fix
-// func TestFastVsFullChains(t *testing.T) {
-// 	testFastVsFullChains(t, rawdb.HashScheme)
-// 	testFastVsFullChains(t, rawdb.PathScheme)
-// }
+func TestFastVsFullChains(t *testing.T) {
+	testFastVsFullChains(t, rawdb.HashScheme)
+	testFastVsFullChains(t, rawdb.PathScheme)
+}
 
 func testFastVsFullChains(t *testing.T, scheme string) {
 	// Configure and generate a sample block chain
@@ -695,11 +693,12 @@ func testFastVsFullChains(t *testing.T, scheme string) {
 		if i%3 == 2 {
 			for j := 0; j < i%4+1; j++ {
 				tx := types.NewTx(&types.DynamicFeeTx{
-					Nonce: block.TxNonce(address),
-					To:    &common.Address{0x00},
-					Value: big.NewInt(1000),
-					Gas:   params.TxGas,
-					Data:  nil,
+					Nonce:     block.TxNonce(address),
+					To:        &common.Address{0x00},
+					Value:     big.NewInt(1000),
+					Gas:       params.TxGas,
+					GasFeeCap: big.NewInt(669921875),
+					Data:      nil,
 				})
 				signedTx, err := types.SignTx(tx, signer, key)
 				if err != nil {
