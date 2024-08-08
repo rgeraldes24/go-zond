@@ -24,6 +24,7 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core/types"
+	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
@@ -60,14 +61,13 @@ func getBlock(transactions int, dataSize int) *types.Block {
 					signedTx, _ := types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, d)
 					b.AddTx(signedTx)
 				}
+
 			}
 		})
 	block := blocks[len(blocks)-1]
 	return block
 }
 
-// TODO(rgeraldes24): fix
-/*
 // TestRlpIterator tests that individual transactions can be picked out
 // from blocks without full unmarshalling/marshalling
 func TestRlpIterator(t *testing.T) {
@@ -82,7 +82,6 @@ func TestRlpIterator(t *testing.T) {
 		testRlpIterator(t, tt.txs, tt.datasize)
 	}
 }
-*/
 
 func testRlpIterator(t *testing.T, txs, datasize int) {
 	desc := fmt.Sprintf("%d txs [%d datasize]", txs, datasize)
@@ -111,8 +110,9 @@ func testRlpIterator(t *testing.T, txs, datasize int) {
 	var gotHashes []common.Hash
 	var expHashes []common.Hash
 	for txIt.Next() {
-		// TODO(rgeraldes24): replace rlpHash with prefixedRlpHash
-		// gotHashes = append(gotHashes, crypto.Keccak256Hash(txIt.Value()))
+		// NOTE(rgeraldes24): ignore rlp metadata bytes + tx type byte
+		innerRLP := txIt.Value()[4:]
+		gotHashes = append(gotHashes, crypto.Keccak256Hash([][]byte{{types.DynamicFeeTxType}, innerRLP}...))
 	}
 
 	var expBody types.Body
@@ -130,12 +130,11 @@ func testRlpIterator(t *testing.T, txs, datasize int) {
 	if gotLen := len(gotHashes); gotLen != txs {
 		t.Fatalf("testcase %v: length wrong, got %d exp %d", desc, gotLen, txs)
 	}
-	// TODO(rgeraldes24): gotHashes does not have the expected result
-	// for i, got := range gotHashes {
-	// 	if exp := expHashes[i]; got != exp {
-	// 		t.Errorf("testcase %v: hash wrong, got %x, exp %x", desc, got, exp)
-	// 	}
-	// }
+	for i, got := range gotHashes {
+		if exp := expHashes[i]; got != exp {
+			t.Errorf("testcase %v: hash wrong, got %x, exp %x", desc, got, exp)
+		}
+	}
 }
 
 // BenchmarkHashing compares the speeds of hashing a rlp raw data directly

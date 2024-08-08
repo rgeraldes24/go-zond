@@ -1807,18 +1807,17 @@ func testLowDiffLongChain(t *testing.T, scheme string) {
 	}
 }
 
-// TODO(rgeraldes24): add path schemes?
-func TestInsertKnownHeadersAfterMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "headers")
+func TestInsertKnownHeaders(t *testing.T) {
+	testInsertKnownChainData(t, "headers")
 }
-func TestInsertKnownReceiptChainAfterMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "receipts")
+func TestInsertKnownReceiptChain(t *testing.T) {
+	testInsertKnownChainData(t, "receipts")
 }
-func TestInsertKnownBlocksAfterMerging(t *testing.T) {
-	testInsertKnownChainDataWithMerging(t, "blocks")
+func TestInsertKnownBlocks(t *testing.T) {
+	testInsertKnownChainData(t, "blocks")
 }
 
-func testInsertKnownChainDataWithMerging(t *testing.T, typ string) {
+func testInsertKnownChainData(t *testing.T, typ string) {
 	// Copy the TestChainConfig so we can modify it during tests
 	chainConfig := *params.TestChainConfig
 	var (
