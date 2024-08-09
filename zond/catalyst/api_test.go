@@ -79,8 +79,8 @@ func generateChain(n int) (*core.Genesis, []*types.Block) {
 			To:        &to,
 			Value:     big.NewInt(1),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
-			GasTipCap: big.NewInt(params.GWei / 1000),
+			GasFeeCap: big.NewInt(8750000000),
+			GasTipCap: big.NewInt(params.GWei),
 			Data:      nil}), types.LatestSigner(&config), testKey)
 		g.AddTx(tx)
 		testNonce++
@@ -130,8 +130,6 @@ func assembleWithTransactions(api *ConsensusAPI, parentHash common.Hash, params 
 	return nil, err
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestEth2AssembleBlockWithAnotherBlocksTxs(t *testing.T) {
 	genesis, blocks := generateChain(10)
 	n, zondservice := startZondService(t, genesis, blocks[:9])
@@ -151,7 +149,6 @@ func TestEth2AssembleBlockWithAnotherBlocksTxs(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-*/
 
 func TestEth2PrepareAndGetPayload(t *testing.T) {
 	genesis, blocks := generateChain(10)

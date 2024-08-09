@@ -3178,6 +3178,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 			To:        &aa,
 			Gas:       30000,
 			GasFeeCap: newGwei(5),
+			GasTipCap: newGwei(5),
 		}
 		tx := types.NewTx(txdata)
 		tx, _ = types.SignTx(tx, signer, key2)
@@ -3191,27 +3192,21 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 
 	block = chain.GetBlockByNumber(2)
 	state, _ = chain.State()
-	// effectiveTip := block.Transactions()[0].GasTipCap().Uint64() - block.BaseFee().Uint64()
+	effectiveTip := block.Transactions()[0].GasTipCap().Uint64() - block.BaseFee().Uint64()
 
 	// 6+5: Ensure that miner received only the tx's effective tip.
 	actual = state.GetBalance(block.Coinbase())
-	// TODO(rgeraldes24): fix
-	// expected = new(big.Int).Add(
-	// 	new(big.Int).SetUint64(block.GasUsed()*effectiveTip),
-	// 	beacon.ConstantinopleBlockReward,
-	// )
-	expected = new(big.Int)
+	expected = new(big.Int).SetUint64(block.GasUsed() * effectiveTip)
 	if actual.Cmp(expected) != 0 {
 		t.Fatalf("miner balance incorrect: expected %d, got %d", expected, actual)
 	}
 
-	// TODO(rgeraldes24): fix
 	// 4: Ensure the tx sender paid for the gasUsed * (effectiveTip + block baseFee).
-	// actual = new(big.Int).Sub(funds, state.GetBalance(addr2))
-	// expected = new(big.Int).SetUint64(block.GasUsed() * (effectiveTip + block.BaseFee().Uint64()))
-	// if actual.Cmp(expected) != 0 {
-	// 	t.Fatalf("sender balance incorrect: expected %d, got %d", expected, actual)
-	// }
+	actual = new(big.Int).Sub(funds, state.GetBalance(addr2))
+	expected = new(big.Int).SetUint64(block.GasUsed() * (effectiveTip + block.BaseFee().Uint64()))
+	if actual.Cmp(expected) != 0 {
+		t.Fatalf("sender balance incorrect: expected %d, got %d", expected, actual)
+	}
 }
 
 // Tests the scenario the chain is requested to another point with the missing state.
