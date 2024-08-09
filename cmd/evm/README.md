@@ -65,11 +65,11 @@ The `alloc` object defines the prestate that transition will begin with.
 type Alloc map[common.Address]Account
 // Genesis account. Each field is optional.
 type Account struct {
-    Code       []byte                           `json:"code"`
-    Storage    map[common.Hash]common.Hash      `json:"storage"`
-    Balance    *big.Int                         `json:"balance"`
-    Nonce      uint64                           `json:"nonce"`
-    SecretKey  []byte                            `json:"secretKey"`
+    Code    []byte                      `json:"code"`
+    Storage map[common.Hash]common.Hash `json:"storage"`
+    Balance *big.Int                    `json:"balance"`
+    Nonce   uint64                      `json:"nonce"`
+    Seed    []byte                      `json:"seed"`
 }
 ```
 
@@ -114,18 +114,18 @@ type AccessTuple struct {
 }
 
 type DynamicFeeTx struct {
-	ChainID    *big.Int         `json:"chainId"`
-	Nonce      uint64           `json:"nonce"`
-	GasTipCap  *big.Int         `json:"maxPriorityFeePerGas"`
-	GasFeeCap  *big.Int         `json:"maxFeePerGas"`
-	Gas        uint64           `json:"gas"`
-	To         *common.Address  `json:"to"`
-	Value      *big.Int         `json:"value"`
-	Data       []byte           `json:"data"`
-	AccessList AccessList       `json:"accessList"`
-	PublicKey          *big.Int `json:"v"`
-	Signature          *big.Int `json:"r"`
-    SecretKey  *common.Hash             `json:"secretKey"`
+	ChainID    *big.Int        `json:"chainId"`
+	Nonce      uint64          `json:"nonce"`
+	GasTipCap  *big.Int        `json:"maxPriorityFeePerGas"`
+	GasFeeCap  *big.Int        `json:"maxFeePerGas"`
+	Gas        uint64          `json:"gas"`
+	To         *common.Address `json:"to"`
+	Value      *big.Int        `json:"value"`
+	Data       []byte          `json:"data"`
+	AccessList AccessList      `json:"accessList"`
+	PublicKey  *big.Int        `json:"publicKey"`
+	Signature  *big.Int        `json:"signature"`
+  Seed       *common.Hash    `json:"seed"`
 }
 ```
 

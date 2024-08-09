@@ -21,9 +21,11 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/docker/docker/pkg/reexec"
+	"github.com/theQRL/go-zond/cmd/evm/internal/t8ntool"
 	"github.com/theQRL/go-zond/internal/cmdtest"
 )
 
@@ -100,8 +102,6 @@ func (args *t8nOutput) get() (out []string) {
 	return out
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestT8n(t *testing.T) {
 	tt := new(testT8n)
 	tt.TestCmd = cmdtest.NewTestCmd(t, tt)
@@ -112,78 +112,82 @@ func TestT8n(t *testing.T) {
 		expExitCode int
 		expOut      string
 	}{
-		{ // Test exit (3) on bad config
-			base: "./testdata/1",
-			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Frontier+1346", "",
+		/*
+				{ // Test exit (3) on bad config
+					base: "./testdata/1",
+					input: t8nInput{
+						"alloc.json", "txs.json", "env.json", "Shanghai", "",
+					},
+					output:      t8nOutput{alloc: true, result: true},
+					expExitCode: 3,
+				},
+				{
+					base: "./testdata/1",
+					input: t8nInput{
+						"alloc.json", "txs.json", "env.json", "Byzantium", "",
+					},
+					output: t8nOutput{alloc: true, result: true},
+					expOut: "exp.json",
+				},
+				{ // blockhash test
+					base: "./testdata/3",
+					input: t8nInput{
+						"alloc.json", "txs.json", "env.json", "Shanghai", "",
+					},
+					output: t8nOutput{alloc: true, result: true},
+					expOut: "exp.json",
+				},
+				{ // missing blockhash test
+					base: "./testdata/4",
+					input: t8nInput{
+						"alloc.json", "txs.json", "env.json", "Shanghai", "",
+					},
+					output:      t8nOutput{alloc: true, result: true},
+					expExitCode: 4,
+				},
+				{ // Sign json transactions
+					base: "./testdata/13",
+					input: t8nInput{
+						"alloc.json", "txs.json", "env.json", "Shanghai", "",
+					},
+					output: t8nOutput{body: true},
+					expOut: "exp.json",
+				},
+				{ // Already signed transactions
+					base: "./testdata/13",
+					input: t8nInput{
+						"alloc.json", "signed_txs.rlp", "env.json", "Shanghai", "",
+					},
+					output: t8nOutput{result: true},
+					expOut: "exp2.json",
+				},
+				{ // Test post-merge transition
+					base: "./testdata/24",
+					input: t8nInput{
+						"alloc.json", "txs.json", "env.json", "Merge", "",
+					},
+					output: t8nOutput{alloc: true, result: true},
+					expOut: "exp.json",
+				},
+
+			{ // Test post-merge transition where input is missing random
+				base: "./testdata/24",
+				input: t8nInput{
+					"alloc.json", "txs.json", "env-missingrandom.json", "Shanghai", "",
+				},
+				output:      t8nOutput{alloc: false, result: false},
+				expExitCode: 3,
 			},
-			output:      t8nOutput{alloc: true, result: true},
-			expExitCode: 3,
-		},
-		{
-			base: "./testdata/1",
-			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Byzantium", "",
-			},
-			output: t8nOutput{alloc: true, result: true},
-			expOut: "exp.json",
-		},
-		{ // blockhash test
-			base: "./testdata/3",
-			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Shanghai", "",
-			},
-			output: t8nOutput{alloc: true, result: true},
-			expOut: "exp.json",
-		},
-		{ // missing blockhash test
-			base: "./testdata/4",
-			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Shanghai", "",
-			},
-			output:      t8nOutput{alloc: true, result: true},
-			expExitCode: 4,
-		},
-		{ // Sign json transactions
-			base: "./testdata/13",
-			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Shanghai", "",
-			},
-			output: t8nOutput{body: true},
-			expOut: "exp.json",
-		},
-		{ // Already signed transactions
-			base: "./testdata/13",
-			input: t8nInput{
-				"alloc.json", "signed_txs.rlp", "env.json", "Shanghai", "",
-			},
-			output: t8nOutput{result: true},
-			expOut: "exp2.json",
-		},
-		{ // Test post-merge transition
-			base: "./testdata/24",
-			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Merge", "",
-			},
-			output: t8nOutput{alloc: true, result: true},
-			expOut: "exp.json",
-		},
-		{ // Test post-merge transition where input is missing random
-			base: "./testdata/24",
-			input: t8nInput{
-				"alloc.json", "txs.json", "env-missingrandom.json", "Merge", "",
-			},
-			output:      t8nOutput{alloc: false, result: false},
-			expExitCode: 3,
-		},
-		{ // Test base fee calculation
-			base: "./testdata/25",
-			input: t8nInput{
-				"alloc.json", "txs.json", "env.json", "Merge", "",
-			},
-			output: t8nOutput{alloc: true, result: true},
-			expOut: "exp.json",
-		},
+
+				{ // Test base fee calculation
+					base: "./testdata/25",
+					input: t8nInput{
+						"alloc.json", "txs.json", "env.json", "Merge", "",
+					},
+					output: t8nOutput{alloc: true, result: true},
+					expOut: "exp.json",
+				},
+		*/
 		{ // Test withdrawals transition
 			base: "./testdata/26",
 			input: t8nInput{
@@ -228,7 +232,6 @@ func TestT8n(t *testing.T) {
 		}
 	}
 }
-*/
 
 type t9nInput struct {
 	inTxs  string
@@ -247,8 +250,6 @@ func (args *t9nInput) get(base string) []string {
 	return out
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestT9n(t *testing.T) {
 	tt := new(testT8n)
 	tt.TestCmd = cmdtest.NewTestCmd(t, tt)
@@ -258,40 +259,42 @@ func TestT9n(t *testing.T) {
 		expExitCode int
 		expOut      string
 	}{
+		// TODO(rgeraldes24): add new version of txs.rlp
+		/*
+			{ // txs on Shanghai
+				base: "./testdata/15",
+				input: t9nInput{
+					inTxs:  "signed_txs.rlp",
+					stFork: "Shanghai",
+				},
+				expOut: "exp2.json",
+			},
 
-		{ // txs on Shanghai
-			base: "./testdata/15",
-			input: t9nInput{
-				inTxs:  "signed_txs.rlp",
-				stFork: "Shanghai",
+			{ // An RLP list (a blockheader really)
+				base: "./testdata/15",
+				input: t9nInput{
+					inTxs:  "blockheader.rlp",
+					stFork: "Shanghai",
+				},
+				expOut: "exp3.json",
 			},
-			expOut: "exp2.json",
-		},
-
-		{ // An RLP list (a blockheader really)
-			base: "./testdata/15",
-			input: t9nInput{
-				inTxs:  "blockheader.rlp",
-				stFork: "Shanghai",
+			{ // Transactions with too low gas
+				base: "./testdata/16",
+				input: t9nInput{
+					inTxs:  "signed_txs.rlp",
+					stFork: "Shanghai",
+				},
+				expOut: "exp.json",
 			},
-			expOut: "exp3.json",
-		},
-		{ // Transactions with too low gas
-			base: "./testdata/16",
-			input: t9nInput{
-				inTxs:  "signed_txs.rlp",
-				stFork: "Shanghai",
+			{ // Transactions with value exceeding 256 bits
+				base: "./testdata/17",
+				input: t9nInput{
+					inTxs:  "signed_txs.rlp",
+					stFork: "Shanghai",
+				},
+				expOut: "exp.json",
 			},
-			expOut: "exp.json",
-		},
-		{ // Transactions with value exceeding 256 bits
-			base: "./testdata/17",
-			input: t9nInput{
-				inTxs:  "signed_txs.rlp",
-				stFork: "Shanghai",
-			},
-			expOut: "exp.json",
-		},
+		*/
 		{ // Invalid RLP
 			base: "./testdata/18",
 			input: t9nInput{
@@ -328,7 +331,6 @@ func TestT9n(t *testing.T) {
 		}
 	}
 }
-*/
 
 type b11rInput struct {
 	inEnv         string
@@ -355,8 +357,6 @@ func (args *b11rInput) get(base string) []string {
 	return out
 }
 
-// TODO(rgeraldes24): fix
-/*
 func TestB11r(t *testing.T) {
 	tt := new(testT8n)
 	tt.TestCmd = cmdtest.NewTestCmd(t, tt)
@@ -366,14 +366,18 @@ func TestB11r(t *testing.T) {
 		expExitCode int
 		expOut      string
 	}{
-		{ // unsealed block
-			base: "./testdata/20",
-			input: b11rInput{
-				inEnv:    "header.json",
-				inTxsRlp: "txs.rlp",
+		// TODO(rgeraldes24): add new version of txs.rlp
+		/*
+			{ // unsealed block
+				base: "./testdata/20",
+				input: b11rInput{
+					inEnv:    "header.json",
+					inTxsRlp: "txs.rlp",
+				},
+				expOut: "exp.json",
 			},
-			expOut: "exp.json",
-		},
+
+		*/
 		{ // block with withdrawals
 			base: "./testdata/27",
 			input: b11rInput{
@@ -411,7 +415,6 @@ func TestB11r(t *testing.T) {
 		}
 	}
 }
-*/
 
 // cmpJson compares the JSON in two byte slices.
 func cmpJson(a, b []byte) (bool, error) {

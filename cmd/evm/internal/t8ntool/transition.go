@@ -180,7 +180,7 @@ func Transition(ctx *cli.Context) error {
 	// Set the chain id
 	chainConfig.ChainID = big.NewInt(ctx.Int64(ChainIDFlag.Name))
 
-	if txs, err = loadTransactions(txStr, inputData, prestate.Env, chainConfig); err != nil {
+	if txs, err = loadTransactions(txStr, inputData, chainConfig); err != nil {
 		return err
 	}
 	if err := applyShanghaiChecks(&prestate.Env, chainConfig); err != nil {
@@ -199,35 +199,28 @@ func Transition(ctx *cli.Context) error {
 }
 
 // txWithKey is a helper-struct, to allow us to use the types.Transaction along with
-// a `secretKey`-field, for input
+// a `seed`-field, for input
 type txWithKey struct {
-	key       *dilithium.Dilithium
-	tx        *types.Transaction
-	protected bool
+	key *dilithium.Dilithium
+	tx  *types.Transaction
 }
 
 func (t *txWithKey) UnmarshalJSON(input []byte) error {
 	// Read the metadata, if present
 	type txMetadata struct {
-		Key       *common.Hash `json:"secretKey"`
-		Protected *bool        `json:"protected"`
+		Seed *string `json:"seed"`
 	}
 	var data txMetadata
 	if err := json.Unmarshal(input, &data); err != nil {
 		return err
 	}
-	if data.Key != nil {
-		k := data.Key.Hex()[2:]
-		if dilithiumKey, err := pqcrypto.HexToDilithium(k); err != nil {
+	if data.Seed != nil {
+		sd := *data.Seed
+		if dilithiumKey, err := pqcrypto.HexToDilithium(sd[2:]); err != nil {
 			return err
 		} else {
 			t.key = dilithiumKey
 		}
-	}
-	if data.Protected != nil {
-		t.protected = *data.Protected
-	} else {
-		t.protected = true
 	}
 	// Now, read the transaction itself
 	var tx types.Transaction
@@ -244,11 +237,11 @@ func (t *txWithKey) UnmarshalJSON(input []byte) error {
 //  1. unsigned or
 //  2. signed
 //
-// For (1), r, s, v, need so be zero, and the `secretKey` needs to be set.
-// If so, we sign it here and now, with the given `secretKey`
+// For (1), signature, need so be zero, and the `seed` needs to be set.
+// If so, we sign it here and now, with the given `seed`
 // If the condition above is not met, then it's considered a signed transaction.
 //
-// To manage this, we read the transactions twice, first trying to read the secretKeys,
+// To manage this, we read the transactions twice, first trying to read the seeds,
 // and secondly to read them with the standard tx json format
 
 func signUnsignedTransactions(txs []*txWithKey, signer types.Signer) (types.Transactions, error) {
@@ -273,7 +266,7 @@ func signUnsignedTransactions(txs []*txWithKey, signer types.Signer) (types.Tran
 	return signedTxs, nil
 }
 
-func loadTransactions(txStr string, inputData *input, env stEnv, chainConfig *params.ChainConfig) (types.Transactions, error) {
+func loadTransactions(txStr string, inputData *input, chainConfig *params.ChainConfig) (types.Transactions, error) {
 	var txsWithKeys []*txWithKey
 	var signed types.Transactions
 	if txStr != stdinSelector {

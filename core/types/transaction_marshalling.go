@@ -126,6 +126,7 @@ func (tx *Transaction) UnmarshalJSON(input []byte) error {
 			return errors.New("missing required field 'signature' in transaction")
 		}
 		itx.Signature = *dec.Signature
+
 		// TODO (cyyber): add sanity check later
 		//withSignature := itx.V.Sign() != 0 || itx.R.Sign() != 0 || itx.S.Sign() != 0
 		//if withSignature {

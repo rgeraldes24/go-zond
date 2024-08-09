@@ -85,7 +85,7 @@ type Account struct {
     Storage    map[common.Hash]common.Hash      `json:"storage"`
     Balance    *big.Int                         `json:"balance"`
     Nonce      uint64                           `json:"nonce"`
-    SecretKey  []byte                            `json:"secretKey"`
+    Seed       []byte                           `json:"seed"`
 }
 ```
 
@@ -138,10 +138,9 @@ type DynamicFeeTx struct {
 	Value      *big.Int        `json:"value"`
 	Data       []byte          `json:"data"`
 	AccessList AccessList      `json:"accessList"`
-	V          *big.Int        `json:"v"`
-	R          *big.Int        `json:"r"`
-	S          *big.Int        `json:"s"`
-    SecretKey  *common.Hash     `json:"secretKey"`
+	PublicKey  []byte          `json:"publicKey"`
+	Signature  []byte          `json:"signature"`
+  Seed       *common.Hash    `json:"seed"`
 }
 ```
 

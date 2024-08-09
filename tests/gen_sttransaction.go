@@ -26,7 +26,7 @@ func (s stTransaction) MarshalJSON() ([]byte, error) {
 		AccessLists          []*types.AccessList   `json:"accessLists,omitempty"`
 		GasLimit             []math.HexOrDecimal64 `json:"gasLimit"`
 		Value                []string              `json:"value"`
-		PrivateKey           hexutil.Bytes         `json:"secretKey"`
+		Seed                 hexutil.Bytes         `json:"seed"`
 		Sender               *common.Address       `json:"sender"`
 	}
 	var enc stTransaction
@@ -44,7 +44,7 @@ func (s stTransaction) MarshalJSON() ([]byte, error) {
 		}
 	}
 	enc.Value = s.Value
-	enc.PrivateKey = s.PrivateKey
+	enc.Seed = s.Seed
 	enc.Sender = s.Sender
 	return json.Marshal(&enc)
 }
@@ -61,7 +61,7 @@ func (s *stTransaction) UnmarshalJSON(input []byte) error {
 		AccessLists          []*types.AccessList   `json:"accessLists,omitempty"`
 		GasLimit             []math.HexOrDecimal64 `json:"gasLimit"`
 		Value                []string              `json:"value"`
-		PrivateKey           *hexutil.Bytes        `json:"secretKey"`
+		Seed                 *hexutil.Bytes        `json:"seed"`
 		Sender               *common.Address       `json:"sender"`
 	}
 	var dec stTransaction
@@ -98,8 +98,8 @@ func (s *stTransaction) UnmarshalJSON(input []byte) error {
 	if dec.Value != nil {
 		s.Value = dec.Value
 	}
-	if dec.PrivateKey != nil {
-		s.PrivateKey = *dec.PrivateKey
+	if dec.Seed != nil {
+		s.Seed = *dec.Seed
 	}
 	if dec.Sender != nil {
 		s.Sender = dec.Sender
