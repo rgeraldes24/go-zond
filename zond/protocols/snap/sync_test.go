@@ -16,8 +16,6 @@
 
 package snap
 
-// TODO(rgeraldes24): taking too long/blocked
-/*
 import (
 	"bytes"
 	"crypto/rand"
@@ -45,7 +43,7 @@ import (
 )
 
 func TestHashing(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	var bytecodes = make([][]byte, 10)
 	for i := 0; i < len(bytecodes); i++ {
@@ -563,7 +561,7 @@ func noProofStorageRequestHandler(t *testPeer, requestId uint64, root common.Has
 // also ship the entire trie inside the proof. If the attack is successful,
 // the remote side does not do any follow-up requests
 func TestSyncBloatedProof(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncBloatedProof(t, rawdb.HashScheme)
 	testSyncBloatedProof(t, rawdb.PathScheme)
@@ -645,7 +643,7 @@ func setupSyncer(scheme string, peers ...*testPeer) *Syncer {
 
 // TestSync tests a basic sync with one peer
 func TestSync(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSync(t, rawdb.HashScheme)
 	testSync(t, rawdb.PathScheme)
@@ -679,7 +677,7 @@ func testSync(t *testing.T, scheme string) {
 // TestSyncTinyTriePanic tests a basic sync with one peer, and a tiny trie. This caused a
 // panic within the prover
 func TestSyncTinyTriePanic(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncTinyTriePanic(t, rawdb.HashScheme)
 	testSyncTinyTriePanic(t, rawdb.PathScheme)
@@ -714,7 +712,7 @@ func testSyncTinyTriePanic(t *testing.T, scheme string) {
 
 // TestMultiSync tests a basic sync with multiple peers
 func TestMultiSync(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testMultiSync(t, rawdb.HashScheme)
 	testMultiSync(t, rawdb.PathScheme)
@@ -749,7 +747,7 @@ func testMultiSync(t *testing.T, scheme string) {
 
 // TestSyncWithStorage tests  basic sync using accounts + storage + code
 func TestSyncWithStorage(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncWithStorage(t, rawdb.HashScheme)
 	testSyncWithStorage(t, rawdb.PathScheme)
@@ -765,7 +763,7 @@ func testSyncWithStorage(t *testing.T, scheme string) {
 			})
 		}
 	)
-	nodeScheme, sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 3, 3000, true, false, false)
+	sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 3, 3000, true, false, false)
 
 	mkSource := func(name string) *testPeer {
 		source := newTestPeer(name, t, term)
@@ -775,7 +773,7 @@ func testSyncWithStorage(t *testing.T, scheme string) {
 		source.storageValues = storageElems
 		return source
 	}
-	syncer := setupSyncer(nodeScheme, mkSource("sourceA"))
+	syncer := setupSyncer(scheme, mkSource("sourceA"))
 	done := checkStall(t, term)
 	if err := syncer.Sync(sourceAccountTrie.Hash(), cancel); err != nil {
 		t.Fatalf("sync failed: %v", err)
@@ -786,7 +784,7 @@ func testSyncWithStorage(t *testing.T, scheme string) {
 
 // TestMultiSyncManyUseless contains one good peer, and many which doesn't return anything valuable at all
 func TestMultiSyncManyUseless(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testMultiSyncManyUseless(t, rawdb.HashScheme)
 	testMultiSyncManyUseless(t, rawdb.PathScheme)
@@ -802,7 +800,7 @@ func testMultiSyncManyUseless(t *testing.T, scheme string) {
 			})
 		}
 	)
-	nodeScheme, sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 100, 3000, true, false, false)
+	sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 100, 3000, true, false, false)
 
 	mkSource := func(name string, noAccount, noStorage, noTrieNode bool) *testPeer {
 		source := newTestPeer(name, t, term)
@@ -824,7 +822,7 @@ func testMultiSyncManyUseless(t *testing.T, scheme string) {
 	}
 
 	syncer := setupSyncer(
-		nodeScheme,
+		scheme,
 		mkSource("full", true, true, true),
 		mkSource("noAccounts", false, true, true),
 		mkSource("noStorage", true, false, true),
@@ -840,7 +838,7 @@ func testMultiSyncManyUseless(t *testing.T, scheme string) {
 
 // TestMultiSyncManyUselessWithLowTimeout contains one good peer, and many which doesn't return anything valuable at all
 func TestMultiSyncManyUselessWithLowTimeout(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testMultiSyncManyUselessWithLowTimeout(t, rawdb.HashScheme)
 	testMultiSyncManyUselessWithLowTimeout(t, rawdb.PathScheme)
@@ -856,7 +854,7 @@ func testMultiSyncManyUselessWithLowTimeout(t *testing.T, scheme string) {
 			})
 		}
 	)
-	nodeScheme, sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 100, 3000, true, false, false)
+	sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 100, 3000, true, false, false)
 
 	mkSource := func(name string, noAccount, noStorage, noTrieNode bool) *testPeer {
 		source := newTestPeer(name, t, term)
@@ -878,7 +876,7 @@ func testMultiSyncManyUselessWithLowTimeout(t *testing.T, scheme string) {
 	}
 
 	syncer := setupSyncer(
-		nodeScheme,
+		scheme,
 		mkSource("full", true, true, true),
 		mkSource("noAccounts", false, true, true),
 		mkSource("noStorage", true, false, true),
@@ -899,7 +897,7 @@ func testMultiSyncManyUselessWithLowTimeout(t *testing.T, scheme string) {
 
 // TestMultiSyncManyUnresponsive contains one good peer, and many which doesn't respond at all
 func TestMultiSyncManyUnresponsive(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testMultiSyncManyUnresponsive(t, rawdb.HashScheme)
 	testMultiSyncManyUnresponsive(t, rawdb.PathScheme)
@@ -915,7 +913,7 @@ func testMultiSyncManyUnresponsive(t *testing.T, scheme string) {
 			})
 		}
 	)
-	nodeScheme, sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 100, 3000, true, false, false)
+	sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 100, 3000, true, false, false)
 
 	mkSource := func(name string, noAccount, noStorage, noTrieNode bool) *testPeer {
 		source := newTestPeer(name, t, term)
@@ -937,7 +935,7 @@ func testMultiSyncManyUnresponsive(t *testing.T, scheme string) {
 	}
 
 	syncer := setupSyncer(
-		nodeScheme,
+		scheme,
 		mkSource("full", true, true, true),
 		mkSource("noAccounts", false, true, true),
 		mkSource("noStorage", true, false, true),
@@ -971,7 +969,7 @@ func checkStall(t *testing.T, term func()) chan struct{} {
 // TestSyncBoundaryAccountTrie tests sync against a few normal peers, but the
 // account trie has a few boundary elements.
 func TestSyncBoundaryAccountTrie(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncBoundaryAccountTrie(t, rawdb.HashScheme)
 	testSyncBoundaryAccountTrie(t, rawdb.PathScheme)
@@ -1011,7 +1009,7 @@ func testSyncBoundaryAccountTrie(t *testing.T, scheme string) {
 // TestSyncNoStorageAndOneCappedPeer tests sync using accounts and no storage, where one peer is
 // consistently returning very small results
 func TestSyncNoStorageAndOneCappedPeer(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncNoStorageAndOneCappedPeer(t, rawdb.HashScheme)
 	testSyncNoStorageAndOneCappedPeer(t, rawdb.PathScheme)
@@ -1058,7 +1056,7 @@ func testSyncNoStorageAndOneCappedPeer(t *testing.T, scheme string) {
 // TestSyncNoStorageAndOneCodeCorruptPeer has one peer which doesn't deliver
 // code requests properly.
 func TestSyncNoStorageAndOneCodeCorruptPeer(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncNoStorageAndOneCodeCorruptPeer(t, rawdb.HashScheme)
 	testSyncNoStorageAndOneCodeCorruptPeer(t, rawdb.PathScheme)
@@ -1101,7 +1099,7 @@ func testSyncNoStorageAndOneCodeCorruptPeer(t *testing.T, scheme string) {
 }
 
 func TestSyncNoStorageAndOneAccountCorruptPeer(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncNoStorageAndOneAccountCorruptPeer(t, rawdb.HashScheme)
 	testSyncNoStorageAndOneAccountCorruptPeer(t, rawdb.PathScheme)
@@ -1146,7 +1144,7 @@ func testSyncNoStorageAndOneAccountCorruptPeer(t *testing.T, scheme string) {
 // TestSyncNoStorageAndOneCodeCappedPeer has one peer which delivers code hashes
 // one by one
 func TestSyncNoStorageAndOneCodeCappedPeer(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncNoStorageAndOneCodeCappedPeer(t, rawdb.HashScheme)
 	testSyncNoStorageAndOneCodeCappedPeer(t, rawdb.PathScheme)
@@ -1202,7 +1200,7 @@ func testSyncNoStorageAndOneCodeCappedPeer(t *testing.T, scheme string) {
 // TestSyncBoundaryStorageTrie tests sync against a few normal peers, but the
 // storage trie has a few boundary elements.
 func TestSyncBoundaryStorageTrie(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncBoundaryStorageTrie(t, rawdb.HashScheme)
 	testSyncBoundaryStorageTrie(t, rawdb.PathScheme)
@@ -1218,7 +1216,7 @@ func testSyncBoundaryStorageTrie(t *testing.T, scheme string) {
 			})
 		}
 	)
-	nodeScheme, sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 10, 1000, false, true, false)
+	sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 10, 1000, false, true, false)
 
 	mkSource := func(name string) *testPeer {
 		source := newTestPeer(name, t, term)
@@ -1229,7 +1227,7 @@ func testSyncBoundaryStorageTrie(t *testing.T, scheme string) {
 		return source
 	}
 	syncer := setupSyncer(
-		nodeScheme,
+		scheme,
 		mkSource("peer-a"),
 		mkSource("peer-b"),
 	)
@@ -1244,7 +1242,7 @@ func testSyncBoundaryStorageTrie(t *testing.T, scheme string) {
 // TestSyncWithStorageAndOneCappedPeer tests sync using accounts + storage, where one peer is
 // consistently returning very small results
 func TestSyncWithStorageAndOneCappedPeer(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncWithStorageAndOneCappedPeer(t, rawdb.HashScheme)
 	testSyncWithStorageAndOneCappedPeer(t, rawdb.PathScheme)
@@ -1260,7 +1258,7 @@ func testSyncWithStorageAndOneCappedPeer(t *testing.T, scheme string) {
 			})
 		}
 	)
-	nodeScheme, sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 300, 1000, false, false, false)
+	sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 300, 1000, false, false, false)
 
 	mkSource := func(name string, slow bool) *testPeer {
 		source := newTestPeer(name, t, term)
@@ -1276,7 +1274,7 @@ func testSyncWithStorageAndOneCappedPeer(t *testing.T, scheme string) {
 	}
 
 	syncer := setupSyncer(
-		nodeScheme,
+		scheme,
 		mkSource("nice-a", false),
 		mkSource("slow", true),
 	)
@@ -1291,7 +1289,7 @@ func testSyncWithStorageAndOneCappedPeer(t *testing.T, scheme string) {
 // TestSyncWithStorageAndCorruptPeer tests sync using accounts + storage, where one peer is
 // sometimes sending bad proofs
 func TestSyncWithStorageAndCorruptPeer(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncWithStorageAndCorruptPeer(t, rawdb.HashScheme)
 	testSyncWithStorageAndCorruptPeer(t, rawdb.PathScheme)
@@ -1307,7 +1305,7 @@ func testSyncWithStorageAndCorruptPeer(t *testing.T, scheme string) {
 			})
 		}
 	)
-	nodeScheme, sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 100, 3000, true, false, false)
+	sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 100, 3000, true, false, false)
 
 	mkSource := func(name string, handler storageHandlerFunc) *testPeer {
 		source := newTestPeer(name, t, term)
@@ -1320,7 +1318,7 @@ func testSyncWithStorageAndCorruptPeer(t *testing.T, scheme string) {
 	}
 
 	syncer := setupSyncer(
-		nodeScheme,
+		scheme,
 		mkSource("nice-a", defaultStorageRequestHandler),
 		mkSource("nice-b", defaultStorageRequestHandler),
 		mkSource("nice-c", defaultStorageRequestHandler),
@@ -1335,7 +1333,7 @@ func testSyncWithStorageAndCorruptPeer(t *testing.T, scheme string) {
 }
 
 func TestSyncWithStorageAndNonProvingPeer(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncWithStorageAndNonProvingPeer(t, rawdb.HashScheme)
 	testSyncWithStorageAndNonProvingPeer(t, rawdb.PathScheme)
@@ -1351,7 +1349,7 @@ func testSyncWithStorageAndNonProvingPeer(t *testing.T, scheme string) {
 			})
 		}
 	)
-	nodeScheme, sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 100, 3000, true, false, false)
+	sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 100, 3000, true, false, false)
 
 	mkSource := func(name string, handler storageHandlerFunc) *testPeer {
 		source := newTestPeer(name, t, term)
@@ -1363,7 +1361,7 @@ func testSyncWithStorageAndNonProvingPeer(t *testing.T, scheme string) {
 		return source
 	}
 	syncer := setupSyncer(
-		nodeScheme,
+		scheme,
 		mkSource("nice-a", defaultStorageRequestHandler),
 		mkSource("nice-b", defaultStorageRequestHandler),
 		mkSource("nice-c", defaultStorageRequestHandler),
@@ -1382,7 +1380,7 @@ func testSyncWithStorageAndNonProvingPeer(t *testing.T, scheme string) {
 // an error, where the recipient erroneously clipped the boundary nodes, but
 // did not mark the account for healing.
 func TestSyncWithStorageMisbehavingProve(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testSyncWithStorageMisbehavingProve(t, rawdb.HashScheme)
 	testSyncWithStorageMisbehavingProve(t, rawdb.PathScheme)
@@ -1416,14 +1414,15 @@ func testSyncWithStorageMisbehavingProve(t *testing.T, scheme string) {
 	verifyTrie(scheme, syncer.db, sourceAccountTrie.Hash(), t)
 }
 
+// TODO(rgeraldes24): blocks @ OnStorage len(hashes) == 0
 // TestSyncWithUnevenStorage tests sync where the storage trie is not even
 // and with a few empty ranges.
-func TestSyncWithUnevenStorage(t *testing.T) {
-	// t.Parallel()
+// func TestSyncWithUnevenStorage(t *testing.T) {
+// 	t.Parallel()
 
-	testSyncWithUnevenStorage(t, rawdb.HashScheme)
-	testSyncWithUnevenStorage(t, rawdb.PathScheme)
-}
+// 	testSyncWithUnevenStorage(t, rawdb.HashScheme)
+// 	testSyncWithUnevenStorage(t, rawdb.PathScheme)
+// }
 
 func testSyncWithUnevenStorage(t *testing.T, scheme string) {
 	var (
@@ -1435,7 +1434,7 @@ func testSyncWithUnevenStorage(t *testing.T, scheme string) {
 			})
 		}
 	)
-	nodeScheme, sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 3, 256, false, false, true)
+	sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 3, 256, false, false, true)
 
 	mkSource := func(name string) *testPeer {
 		source := newTestPeer(name, t, term)
@@ -1448,7 +1447,7 @@ func testSyncWithUnevenStorage(t *testing.T, scheme string) {
 		}
 		return source
 	}
-	syncer := setupSyncer(nodeScheme, mkSource("source"))
+	syncer := setupSyncer(scheme, mkSource("source"))
 	if err := syncer.Sync(sourceAccountTrie.Hash(), cancel); err != nil {
 		t.Fatalf("sync failed: %v", err)
 	}
@@ -1650,7 +1649,7 @@ func makeAccountTrieWithStorageWithUniqueStorage(scheme string, accounts, slots 
 }
 
 // makeAccountTrieWithStorage spits out a trie, along with the leaves
-func makeAccountTrieWithStorage(scheme string, accounts, slots int, code, boundary bool, uneven bool) (string, *trie.Trie, []*kv, map[common.Hash]*trie.Trie, map[common.Hash][]*kv) {
+func makeAccountTrieWithStorage(scheme string, accounts, slots int, code, boundary bool, uneven bool) (*trie.Trie, []*kv, map[common.Hash]*trie.Trie, map[common.Hash][]*kv) {
 	var (
 		db             = trie.NewDatabase(rawdb.NewMemoryDatabase(), newDbConfig(scheme))
 		accTrie        = trie.NewEmpty(db)
@@ -1719,7 +1718,7 @@ func makeAccountTrieWithStorage(scheme string, accounts, slots int, code, bounda
 		}
 		storageTries[common.BytesToHash(key)] = trie
 	}
-	return db.Scheme(), accTrie, entries, storageTries, storageEntries
+	return accTrie, entries, storageTries, storageEntries
 }
 
 // makeStorageTrieWithSeed fills a storage trie with n items, returning the
@@ -1975,4 +1974,3 @@ func newDbConfig(scheme string) *trie.Config {
 	}
 	return &trie.Config{PathDB: pathdb.Defaults}
 }
-*/
