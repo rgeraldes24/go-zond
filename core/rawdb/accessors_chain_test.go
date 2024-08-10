@@ -16,6 +16,7 @@
 
 package rawdb
 
+// TODO(rgeraldes24): fix
 /*
 import (
 	"bytes"

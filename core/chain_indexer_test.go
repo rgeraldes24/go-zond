@@ -30,17 +30,12 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 )
 
-// TODO(rgeraldes24): fix
-/*
 func TestChainIndexerSingle(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		testChainIndexer(t, 1)
 	}
 }
-*/
 
-// TODO(rgeraldes24): fix
-/*
 // Runs multiple tests with randomized parameters and different number of
 // chain backends.
 func TestChainIndexerWithChildren(t *testing.T) {
@@ -48,8 +43,8 @@ func TestChainIndexerWithChildren(t *testing.T) {
 		testChainIndexer(t, i)
 	}
 }
-*/
 
+// NOTE(rgeraldes24): forks are not possible
 // testChainIndexer runs a test with either a single chain indexer or a chain of
 // multiple backends. The section size and required confirmation count parameters
 // are randomized.
@@ -97,13 +92,19 @@ func testChainIndexer(t *testing.T, count int) {
 	}
 	// inject inserts a new random canonical header into the database directly
 	inject := func(number uint64) {
-		header := &types.Header{Number: big.NewInt(int64(number)), Extra: big.NewInt(rand.Int63()).Bytes()}
+		header := &types.Header{
+			Number:          big.NewInt(int64(number)),
+			Extra:           big.NewInt(rand.Int63()).Bytes(),
+			BaseFee:         big.NewInt(0),
+			WithdrawalsHash: &types.EmptyWithdrawalsHash,
+		}
 		if number > 0 {
 			header.ParentHash = rawdb.ReadCanonicalHash(db, number-1)
 		}
 		rawdb.WriteHeader(db, header)
 		rawdb.WriteCanonicalHash(db, header.Hash(), number)
 	}
+
 	// Start indexer with an already existing chain
 	for i := uint64(0); i <= 100; i++ {
 		inject(i)
@@ -126,6 +127,7 @@ func testChainIndexer(t *testing.T, count int) {
 	for i := uint64(1001); i <= 1500; i++ {
 		inject(i)
 	}
+
 	// Failed processing scenario where less blocks are available than notified
 	notify(2000, 1500, false)
 
@@ -136,7 +138,7 @@ func testChainIndexer(t *testing.T, count int) {
 	// for i := uint64(1501); i <= 2000; i++ {
 	// 	inject(i)
 	// 	notify(i, i, false)
-	// }
+	//
 }
 
 // testChainIndexBackend implements ChainIndexerBackend

@@ -1675,7 +1675,6 @@ func TestStableUnderpricing(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): add future transaction logic from TestUnderpricing test
 // Tests that when the pool reaches its global transaction limit, underpriced
 // transactions are gradually shifted out for more
 // expensive ones and any gapped pending transactions are moved into the queue.

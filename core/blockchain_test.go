@@ -1539,13 +1539,13 @@ func TestTrieForkGC(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 // Tests that doing large reorgs works even if the state associated with the
 // forking point is not available any more.
-// func TestLargeReorgTrieGC(t *testing.T) {
-// 	testLargeReorgTrieGC(t, rawdb.HashScheme)
-// 	testLargeReorgTrieGC(t, rawdb.PathScheme)
-// }
+func TestLargeReorgTrieGC(t *testing.T) {
+	t.Skip() // NOTE(rgeraldes24): not valid
+	testLargeReorgTrieGC(t, rawdb.HashScheme)
+	testLargeReorgTrieGC(t, rawdb.PathScheme)
+}
 
 func testLargeReorgTrieGC(t *testing.T, scheme string) {
 	// Generate the original common chain segment and the two competing forks
