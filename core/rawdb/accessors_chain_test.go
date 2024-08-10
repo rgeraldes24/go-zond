@@ -16,8 +16,6 @@
 
 package rawdb
 
-// TODO(rgeraldes24): fix
-/*
 import (
 	"bytes"
 	"encoding/hex"
@@ -36,13 +34,17 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
-
 // Tests block header storage and retrieval operations.
 func TestHeaderStorage(t *testing.T) {
 	db := NewMemoryDatabase()
 
 	// Create a test header to move around the database and make sure it's really new
-	header := &types.Header{Number: big.NewInt(42), Extra: []byte("test header")}
+	header := &types.Header{
+		Number:          big.NewInt(42),
+		Extra:           []byte("test header"),
+		BaseFee:         common.Big0,
+		WithdrawalsHash: &types.EmptyWithdrawalsHash,
+	}
 	if entry := ReadHeader(db, header.Hash(), header.Number.Uint64()); entry != nil {
 		t.Fatalf("Non existent header returned: %v", entry)
 	}
@@ -114,9 +116,11 @@ func TestBlockStorage(t *testing.T) {
 
 	// Create a test block to move around the database and make sure it's really new
 	block := types.NewBlockWithHeader(&types.Header{
-		Extra:       []byte("test block"),
-		TxHash:      types.EmptyTxsHash,
-		ReceiptHash: types.EmptyReceiptsHash,
+		Extra:           []byte("test block"),
+		TxHash:          types.EmptyTxsHash,
+		ReceiptHash:     types.EmptyReceiptsHash,
+		BaseFee:         common.Big0,
+		WithdrawalsHash: &types.EmptyWithdrawalsHash,
 	})
 	if entry := ReadBlock(db, block.Hash(), block.NumberU64()); entry != nil {
 		t.Fatalf("Non existent block returned: %v", entry)
@@ -161,9 +165,11 @@ func TestBlockStorage(t *testing.T) {
 func TestPartialBlockStorage(t *testing.T) {
 	db := NewMemoryDatabase()
 	block := types.NewBlockWithHeader(&types.Header{
-		Extra:       []byte("test block"),
-		TxHash:      types.EmptyTxsHash,
-		ReceiptHash: types.EmptyReceiptsHash,
+		Extra:           []byte("test block"),
+		TxHash:          types.EmptyTxsHash,
+		ReceiptHash:     types.EmptyReceiptsHash,
+		BaseFee:         common.Big0,
+		WithdrawalsHash: &types.EmptyWithdrawalsHash,
 	})
 	// Store a header and check that it's not recognized as a block
 	WriteHeader(db, block.Header())
@@ -196,14 +202,17 @@ func TestBadBlockStorage(t *testing.T) {
 
 	// Create a test block to move around the database and make sure it's really new
 	block := types.NewBlockWithHeader(&types.Header{
-		Number:      big.NewInt(1),
-		Extra:       []byte("bad block"),
-		TxHash:      types.EmptyTxsHash,
-		ReceiptHash: types.EmptyReceiptsHash,
+		Number:          big.NewInt(1),
+		Extra:           []byte("bad block"),
+		TxHash:          types.EmptyTxsHash,
+		ReceiptHash:     types.EmptyReceiptsHash,
+		BaseFee:         common.Big0,
+		WithdrawalsHash: &types.EmptyWithdrawalsHash,
 	})
 	if entry := ReadBadBlock(db, block.Hash()); entry != nil {
 		t.Fatalf("Non existent block returned: %v", entry)
 	}
+
 	// Write and verify the block in the database
 	WriteBadBlock(db, block)
 	if entry := ReadBadBlock(db, block.Hash()); entry == nil {
@@ -211,12 +220,15 @@ func TestBadBlockStorage(t *testing.T) {
 	} else if entry.Hash() != block.Hash() {
 		t.Fatalf("Retrieved block mismatch: have %v, want %v", entry, block)
 	}
+
 	// Write one more bad block
 	blockTwo := types.NewBlockWithHeader(&types.Header{
-		Number:      big.NewInt(2),
-		Extra:       []byte("bad block two"),
-		TxHash:      types.EmptyTxsHash,
-		ReceiptHash: types.EmptyReceiptsHash,
+		Number:          big.NewInt(2),
+		Extra:           []byte("bad block two"),
+		TxHash:          types.EmptyTxsHash,
+		ReceiptHash:     types.EmptyReceiptsHash,
+		BaseFee:         common.Big0,
+		WithdrawalsHash: &types.EmptyWithdrawalsHash,
 	})
 	WriteBadBlock(db, blockTwo)
 
@@ -231,10 +243,12 @@ func TestBadBlockStorage(t *testing.T) {
 	// in reverse order. The extra blocks should be truncated.
 	for _, n := range rand.Perm(100) {
 		block := types.NewBlockWithHeader(&types.Header{
-			Number:      big.NewInt(int64(n)),
-			Extra:       []byte("bad block"),
-			TxHash:      types.EmptyTxsHash,
-			ReceiptHash: types.EmptyReceiptsHash,
+			Number:          big.NewInt(int64(n)),
+			Extra:           []byte("bad block"),
+			TxHash:          types.EmptyTxsHash,
+			ReceiptHash:     types.EmptyReceiptsHash,
+			BaseFee:         common.Big0,
+			WithdrawalsHash: &types.EmptyWithdrawalsHash,
 		})
 		WriteBadBlock(db, block)
 	}
@@ -621,7 +635,7 @@ func makeTestBlocks(nblock int, txsPerBlock int) []*types.Block {
 			Number: big.NewInt(int64(i)),
 			Extra:  []byte("test block"),
 		}
-		blocks[i] = types.NewBlockWithHeader(header).WithBody(txs)
+		blocks[i] = types.NewBlockWithHeader(header).WithBody(types.Body{Transactions: txs})
 		blocks[i].Hash() // pre-cache the block hash
 	}
 	return blocks
@@ -881,11 +895,13 @@ func TestHeadersRLPStorage(t *testing.T) {
 	var pHash common.Hash
 	for i := 0; i < 100; i++ {
 		block := types.NewBlockWithHeader(&types.Header{
-			Number:      big.NewInt(int64(i)),
-			Extra:       []byte("test block"),
-			TxHash:      types.EmptyTxsHash,
-			ReceiptHash: types.EmptyReceiptsHash,
-			ParentHash:  pHash,
+			Number:          big.NewInt(int64(i)),
+			Extra:           []byte("test block"),
+			TxHash:          types.EmptyTxsHash,
+			ReceiptHash:     types.EmptyReceiptsHash,
+			ParentHash:      pHash,
+			BaseFee:         common.Big0,
+			WithdrawalsHash: &types.EmptyWithdrawalsHash,
 		})
 		chain = append(chain, block)
 		pHash = block.Hash()
@@ -925,4 +941,3 @@ func TestHeadersRLPStorage(t *testing.T) {
 	checkSequence(1, 1)    // Only block 1
 	checkSequence(1, 2)    // Genesis + block 1
 }
-*/
