@@ -1185,7 +1185,7 @@ func GenDoc(ctx *cli.Context) error {
 						URL:     accounts.URL{Path: ".. ignored .."},
 					},
 					{
-						Address: common.HexToAddress("0xffffffffffffffffffffffffffffffffffffffff"),
+						Address: common.MaxAddress,
 					},
 				}})
 	}

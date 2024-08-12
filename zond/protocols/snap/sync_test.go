@@ -32,10 +32,10 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/internal/testrand"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/trie"
+	"github.com/theQRL/go-zond/trie/testutil"
 	"github.com/theQRL/go-zond/trie/triedb/pathdb"
 	"github.com/theQRL/go-zond/trie/trienode"
 	"github.com/theQRL/go-zond/zonddb"
@@ -1414,15 +1414,14 @@ func testSyncWithStorageMisbehavingProve(t *testing.T, scheme string) {
 	verifyTrie(scheme, syncer.db, sourceAccountTrie.Hash(), t)
 }
 
-// TODO(rgeraldes24): blocks @ OnStorage len(hashes) == 0
 // TestSyncWithUnevenStorage tests sync where the storage trie is not even
 // and with a few empty ranges.
-// func TestSyncWithUnevenStorage(t *testing.T) {
-// 	t.Parallel()
+func TestSyncWithUnevenStorage(t *testing.T) {
+	t.Parallel()
 
-// 	testSyncWithUnevenStorage(t, rawdb.HashScheme)
-// 	testSyncWithUnevenStorage(t, rawdb.PathScheme)
-// }
+	testSyncWithUnevenStorage(t, rawdb.HashScheme)
+	testSyncWithUnevenStorage(t, rawdb.PathScheme)
+}
 
 func testSyncWithUnevenStorage(t *testing.T, scheme string) {
 	var (
@@ -1434,12 +1433,12 @@ func testSyncWithUnevenStorage(t *testing.T, scheme string) {
 			})
 		}
 	)
-	sourceAccountTrie, elems, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 3, 256, false, false, true)
+	accountTrie, accounts, storageTries, storageElems := makeAccountTrieWithStorage(scheme, 3, 256, false, false, true)
 
 	mkSource := func(name string) *testPeer {
 		source := newTestPeer(name, t, term)
-		source.accountTrie = sourceAccountTrie.Copy()
-		source.accountValues = elems
+		source.accountTrie = accountTrie.Copy()
+		source.accountValues = accounts
 		source.setStorageTries(storageTries)
 		source.storageValues = storageElems
 		source.storageRequestHandler = func(t *testPeer, reqId uint64, root common.Hash, accounts []common.Hash, origin, limit []byte, max uint64) error {
@@ -1448,10 +1447,10 @@ func testSyncWithUnevenStorage(t *testing.T, scheme string) {
 		return source
 	}
 	syncer := setupSyncer(scheme, mkSource("source"))
-	if err := syncer.Sync(sourceAccountTrie.Hash(), cancel); err != nil {
+	if err := syncer.Sync(accountTrie.Hash(), cancel); err != nil {
 		t.Fatalf("sync failed: %v", err)
 	}
-	verifyTrie(scheme, syncer.db, sourceAccountTrie.Hash(), t)
+	verifyTrie(scheme, syncer.db, accountTrie.Hash(), t)
 }
 
 type kv struct {
@@ -1814,8 +1813,8 @@ func makeUnevenStorageTrie(owner common.Hash, slots int, db *trie.Database) (com
 			break
 		}
 		for j := 0; j < slots/3; j++ {
-			key := append([]byte{byte(n)}, testrand.Bytes(31)...)
-			val, _ := rlp.EncodeToBytes(testrand.Bytes(32))
+			key := append([]byte{byte(n)}, testutil.RandBytes(31)...)
+			val, _ := rlp.EncodeToBytes(testutil.RandBytes(32))
 
 			elem := &kv{key, val}
 			tr.MustUpdate(elem.k, elem.v)
