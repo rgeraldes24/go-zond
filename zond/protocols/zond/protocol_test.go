@@ -111,7 +111,6 @@ func TestEmptyMessages(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): review: values in some tests should be identical but its not the case
 // TestMessages tests the encoding of all messages
 func TestMessages(t *testing.T) {
 	// Some basic structs used during testing
