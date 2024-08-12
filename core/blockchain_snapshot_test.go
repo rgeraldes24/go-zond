@@ -460,14 +460,13 @@ func TestRestartWithNewSnapshot(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24): fix
-/*
 // Tests a Gzond was crashed and restarts with a broken snapshot. In this case the
 // chain head should be rewound to the point with available state. And also the
 // new head should must be lower than disk layer. But there is no committed point
 // so the chain should be rewound to genesis and the disk layer should be left
 // for recovery.
 func TestNoCommitCrashWithNewSnapshot(t *testing.T) {
+	t.Skip() // TODO(theQRL/go-zond/issues/62)
 	// Chain:
 	//   G->C1->C2->C3->C4->C5->C6->C7->C8 (HEAD)
 	//
@@ -510,6 +509,7 @@ func TestNoCommitCrashWithNewSnapshot(t *testing.T) {
 // point so the chain should be rewound to committed point and the disk layer
 // should be left for recovery.
 func TestLowCommitCrashWithNewSnapshot(t *testing.T) {
+	t.Skip() // TODO(theQRL/go-zond/issues/62)
 	// Chain:
 	//   G->C1->C2->C3->C4->C5->C6->C7->C8 (HEAD)
 	//
@@ -552,6 +552,7 @@ func TestLowCommitCrashWithNewSnapshot(t *testing.T) {
 // committed point so the chain should be rewound to genesis and the disk layer
 // should be left for recovery.
 func TestHighCommitCrashWithNewSnapshot(t *testing.T) {
+	t.Skip() // TODO(theQRL/go-zond/issues/62)
 	// Chain:
 	//   G->C1->C2->C3->C4->C5->C6->C7->C8 (HEAD)
 	//
@@ -591,7 +592,6 @@ func TestHighCommitCrashWithNewSnapshot(t *testing.T) {
 		test.teardown()
 	}
 }
-*/
 
 // Tests a Gzond was running with snapshot enabled. Then restarts without
 // enabling snapshot and after that re-enable the snapshot again. In this

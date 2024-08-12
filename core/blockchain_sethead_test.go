@@ -20,14 +20,6 @@
 package core
 
 import (
-	"testing"
-
-	"github.com/theQRL/go-zond/core/types"
-)
-
-// TODO(rgeraldes24): fix
-/*
-import (
 	"fmt"
 	"math/big"
 	"path"
@@ -158,6 +150,8 @@ func (tt *rewindTest) dump(crash bool) string {
 	return buffer.String()
 }
 
+// TODO(theQRL/go-zond/issues/61)
+/*
 // Tests a sethead for a short canonical chain where a recent block was already
 // committed to disk and then the sethead called. In this case we expect the full
 // chain to be rolled back to the committed block. Everything above the sethead
@@ -197,8 +191,7 @@ func testShortSetHead(t *testing.T, snapshots bool) {
 		expFrozen:          0,
 		expHeadHeader:      7,
 		expHeadFastBlock:   7,
-		// expHeadBlock:       4,
-		expHeadBlock: 7,
+		expHeadBlock:       4,
 	}, snapshots)
 }
 
@@ -1036,6 +1029,7 @@ func testLongReorgedSnapSyncingDeepSetHead(t *testing.T, snapshots bool) {
 		expHeadBlock:     0,
 	}, snapshots)
 }
+*/
 
 func testSetHead(t *testing.T, tt *rewindTest, snapshots bool) {
 	for _, scheme := range []string{rawdb.HashScheme, rawdb.PathScheme} {
@@ -1160,7 +1154,6 @@ func testSetHeadWithScheme(t *testing.T, tt *rewindTest, snapshots bool, scheme 
 		t.Errorf("Frozen block count mismatch: have %d, want %d", frozen, tt.expFrozen)
 	}
 }
-*/
 
 // verifyNoGaps checks that there are no gaps after the initial set of blocks in
 // the database and errors if found.
