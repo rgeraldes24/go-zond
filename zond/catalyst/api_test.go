@@ -509,7 +509,6 @@ func setupBlocks(t *testing.T, zondservice *zond.Zond, n int, parent *types.Head
 	return blocks
 }
 
-// TODO(rgeraldes24): fix
 /*
 TestNewPayloadOnInvalidChain sets up a valid chain and tries to feed blocks
 from an invalid chain to test if latestValidHash (LVH) works correctly.
@@ -527,7 +526,6 @@ We expect
 	                │
 	                └── P1''
 */
-/*
 func TestNewPayloadOnInvalidChain(t *testing.T) {
 	genesis, blocks := generateChain(10)
 	n, zondservice := startZondService(t, genesis, blocks)
@@ -547,6 +545,7 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 			Value:     new(big.Int),
 			Gas:       1000000,
 			GasFeeCap: big.NewInt(2 * params.InitialBaseFee),
+			GasTipCap: big.NewInt(params.GWei),
 			Data:      logCode,
 		})
 		zondservice.TxPool().Add([]*types.Transaction{tx}, false, true)
@@ -608,7 +607,6 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 		parent = zondservice.BlockChain().CurrentBlock()
 	}
 }
-*/
 
 func assembleBlock(api *ConsensusAPI, parentHash common.Hash, params *engine.PayloadAttributes) (*engine.ExecutableData, error) {
 	args := &miner.BuildPayloadArgs{
