@@ -16,7 +16,7 @@
 
 package downloader
 
-// TODO(rgeraldes24): fix
+// TODO(theQRL/go-zond/issues/63)
 /*
 import (
 	"encoding/json"
@@ -25,7 +25,6 @@ import (
 	"math/big"
 	"sync/atomic"
 	"testing"
-	"time"
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/rawdb"
@@ -212,10 +211,10 @@ func (p *skeletonTestPeer) RequestReceipts([]common.Hash, chan *zond.Response) (
 func TestSkeletonSyncInit(t *testing.T) {
 	// Create a few key headers
 	var (
-		genesis  = &types.Header{Number: big.NewInt(0)}
-		block49  = &types.Header{Number: big.NewInt(49)}
-		block49B = &types.Header{Number: big.NewInt(49), Extra: []byte("B")}
-		block50  = &types.Header{Number: big.NewInt(50), ParentHash: block49.Hash()}
+		genesis = &types.Header{Number: big.NewInt(0)}
+		// block49 = &types.Header{Number: big.NewInt(49)}
+		// block49B = &types.Header{Number: big.NewInt(49), Extra: []byte("B")}
+		// block50  = &types.Header{Number: big.NewInt(50), ParentHash: block49.Hash()}
 	)
 	tests := []struct {
 		headers  []*types.Header // Database content (beside the genesis)
@@ -223,138 +222,139 @@ func TestSkeletonSyncInit(t *testing.T) {
 		head     *types.Header   // New head header to announce to reorg to
 		newstate []*subchain     // Expected sync state after the reorg
 	}{
-		// Completely empty database with only the genesis set. The sync is expected
-		// to create a single subchain with the requested head.
-		{
-			head:     block50,
-			newstate: []*subchain{{Head: 50, Tail: 50}},
-		},
-		// Empty database with only the genesis set with a leftover empty sync
-		// progress. This is a synthetic case, just for the sake of covering things.
-		{
-			oldstate: []*subchain{},
-			head:     block50,
-			newstate: []*subchain{{Head: 50, Tail: 50}},
-		},
-		// A single leftover subchain is present, older than the new head. The
-		// old subchain should be left as is and a new one appended to the sync
-		// status.
-		{
-			oldstate: []*subchain{{Head: 10, Tail: 5}},
-			head:     block50,
-			newstate: []*subchain{
-				{Head: 50, Tail: 50},
-				{Head: 10, Tail: 5},
-			},
-		},
-		// Multiple leftover subchains are present, older than the new head. The
-		// old subchains should be left as is and a new one appended to the sync
-		// status.
-		{
-			oldstate: []*subchain{
-				{Head: 20, Tail: 15},
-				{Head: 10, Tail: 5},
-			},
-			head: block50,
-			newstate: []*subchain{
-				{Head: 50, Tail: 50},
-				{Head: 20, Tail: 15},
-				{Head: 10, Tail: 5},
-			},
-		},
-		// A single leftover subchain is present, newer than the new head. The
-		// newer subchain should be deleted and a fresh one created for the head.
-		{
-			oldstate: []*subchain{{Head: 65, Tail: 60}},
-			head:     block50,
-			newstate: []*subchain{{Head: 50, Tail: 50}},
-		},
-		// Multiple leftover subchain is present, newer than the new head. The
-		// newer subchains should be deleted and a fresh one created for the head.
-		{
-			oldstate: []*subchain{
-				{Head: 75, Tail: 70},
-				{Head: 65, Tail: 60},
-			},
-			head:     block50,
-			newstate: []*subchain{{Head: 50, Tail: 50}},
-		},
 
-		// Two leftover subchains are present, one fully older and one fully
-		// newer than the announced head. The head should delete the newer one,
-		// keeping the older one.
-		{
-			oldstate: []*subchain{
-				{Head: 65, Tail: 60},
-				{Head: 10, Tail: 5},
+			// Completely empty database with only the genesis set. The sync is expected
+			// to create a single subchain with the requested head.
+			{
+				head:     block50,
+				newstate: []*subchain{{Head: 50, Tail: 50}},
 			},
-			head: block50,
-			newstate: []*subchain{
-				{Head: 50, Tail: 50},
-				{Head: 10, Tail: 5},
+			// Empty database with only the genesis set with a leftover empty sync
+			// progress. This is a synthetic case, just for the sake of covering things.
+			{
+				oldstate: []*subchain{},
+				head:     block50,
+				newstate: []*subchain{{Head: 50, Tail: 50}},
 			},
-		},
-		// Multiple leftover subchains are present, some fully older and some
-		// fully newer than the announced head. The head should delete the newer
-		// ones, keeping the older ones.
-		{
-			oldstate: []*subchain{
-				{Head: 75, Tail: 70},
-				{Head: 65, Tail: 60},
-				{Head: 20, Tail: 15},
-				{Head: 10, Tail: 5},
+			// A single leftover subchain is present, older than the new head. The
+			// old subchain should be left as is and a new one appended to the sync
+			// status.
+			{
+				oldstate: []*subchain{{Head: 10, Tail: 5}},
+				head:     block50,
+				newstate: []*subchain{
+					{Head: 50, Tail: 50},
+					{Head: 10, Tail: 5},
+				},
 			},
-			head: block50,
-			newstate: []*subchain{
-				{Head: 50, Tail: 50},
-				{Head: 20, Tail: 15},
-				{Head: 10, Tail: 5},
+			// Multiple leftover subchains are present, older than the new head. The
+			// old subchains should be left as is and a new one appended to the sync
+			// status.
+			{
+				oldstate: []*subchain{
+					{Head: 20, Tail: 15},
+					{Head: 10, Tail: 5},
+				},
+				head: block50,
+				newstate: []*subchain{
+					{Head: 50, Tail: 50},
+					{Head: 20, Tail: 15},
+					{Head: 10, Tail: 5},
+				},
 			},
-		},
-		// A single leftover subchain is present and the new head is extending
-		// it with one more header. We expect the subchain head to be pushed
-		// forward.
-		{
-			headers:  []*types.Header{block49},
-			oldstate: []*subchain{{Head: 49, Tail: 5}},
-			head:     block50,
-			newstate: []*subchain{{Head: 50, Tail: 5}},
-		},
-		// A single leftover subchain is present and although the new head does
-		// extend it number wise, the hash chain does not link up. We expect a
-		// new subchain to be created for the dangling head.
-		{
-			headers:  []*types.Header{block49B},
-			oldstate: []*subchain{{Head: 49, Tail: 5}},
-			head:     block50,
-			newstate: []*subchain{
-				{Head: 50, Tail: 50},
-				{Head: 49, Tail: 5},
+			// A single leftover subchain is present, newer than the new head. The
+			// newer subchain should be deleted and a fresh one created for the head.
+			{
+				oldstate: []*subchain{{Head: 65, Tail: 60}},
+				head:     block50,
+				newstate: []*subchain{{Head: 50, Tail: 50}},
 			},
-		},
-		// A single leftover subchain is present. A new head is announced that
-		// links into the middle of it, correctly anchoring into an existing
-		// header. We expect the old subchain to be truncated and extended with
-		// the new head.
-		{
-			headers:  []*types.Header{block49},
-			oldstate: []*subchain{{Head: 100, Tail: 5}},
-			head:     block50,
-			newstate: []*subchain{{Head: 50, Tail: 5}},
-		},
-		// A single leftover subchain is present. A new head is announced that
-		// links into the middle of it, but does not anchor into an existing
-		// header. We expect the old subchain to be truncated and a new chain
-		// be created for the dangling head.
-		{
-			headers:  []*types.Header{block49B},
-			oldstate: []*subchain{{Head: 100, Tail: 5}},
-			head:     block50,
-			newstate: []*subchain{
-				{Head: 50, Tail: 50},
-				{Head: 49, Tail: 5},
+			// Multiple leftover subchain is present, newer than the new head. The
+			// newer subchains should be deleted and a fresh one created for the head.
+			{
+				oldstate: []*subchain{
+					{Head: 75, Tail: 70},
+					{Head: 65, Tail: 60},
+				},
+				head:     block50,
+				newstate: []*subchain{{Head: 50, Tail: 50}},
 			},
-		},
+
+			// Two leftover subchains are present, one fully older and one fully
+			// newer than the announced head. The head should delete the newer one,
+			// keeping the older one.
+			{
+				oldstate: []*subchain{
+					{Head: 65, Tail: 60},
+					{Head: 10, Tail: 5},
+				},
+				head: block50,
+				newstate: []*subchain{
+					{Head: 50, Tail: 50},
+					{Head: 10, Tail: 5},
+				},
+			},
+			// Multiple leftover subchains are present, some fully older and some
+			// fully newer than the announced head. The head should delete the newer
+			// ones, keeping the older ones.
+			{
+				oldstate: []*subchain{
+					{Head: 75, Tail: 70},
+					{Head: 65, Tail: 60},
+					{Head: 20, Tail: 15},
+					{Head: 10, Tail: 5},
+				},
+				head: block50,
+				newstate: []*subchain{
+					{Head: 50, Tail: 50},
+					{Head: 20, Tail: 15},
+					{Head: 10, Tail: 5},
+				},
+			},
+			// A single leftover subchain is present and the new head is extending
+			// it with one more header. We expect the subchain head to be pushed
+			// forward.
+			{
+				headers:  []*types.Header{block49},
+				oldstate: []*subchain{{Head: 49, Tail: 5}},
+				head:     block50,
+				newstate: []*subchain{{Head: 50, Tail: 5}},
+			},
+			// A single leftover subchain is present and although the new head does
+			// extend it number wise, the hash chain does not link up. We expect a
+			// new subchain to be created for the dangling head.
+			{
+				headers:  []*types.Header{block49B},
+				oldstate: []*subchain{{Head: 49, Tail: 5}},
+				head:     block50,
+				newstate: []*subchain{
+					{Head: 50, Tail: 50},
+					{Head: 49, Tail: 5},
+				},
+			},
+			// A single leftover subchain is present. A new head is announced that
+			// links into the middle of it, correctly anchoring into an existing
+			// header. We expect the old subchain to be truncated and extended with
+			// the new head.
+			{
+				headers:  []*types.Header{block49},
+				oldstate: []*subchain{{Head: 100, Tail: 5}},
+				head:     block50,
+				newstate: []*subchain{{Head: 50, Tail: 5}},
+			},
+			// A single leftover subchain is present. A new head is announced that
+			// links into the middle of it, but does not anchor into an existing
+			// header. We expect the old subchain to be truncated and a new chain
+			// be created for the dangling head.
+			{
+				headers:  []*types.Header{block49B},
+				oldstate: []*subchain{{Head: 100, Tail: 5}},
+				head:     block50,
+				newstate: []*subchain{
+					{Head: 50, Tail: 50},
+					{Head: 49, Tail: 5},
+				},
+			},
 	}
 	for i, tt := range tests {
 		// Create a fresh database and initialize it with the starting state
@@ -391,11 +391,11 @@ func TestSkeletonSyncInit(t *testing.T) {
 func TestSkeletonSyncExtend(t *testing.T) {
 	// Create a few key headers
 	var (
-		genesis  = &types.Header{Number: big.NewInt(0)}
-		block49  = &types.Header{Number: big.NewInt(49)}
-		block49B = &types.Header{Number: big.NewInt(49), Extra: []byte("B")}
-		block50  = &types.Header{Number: big.NewInt(50), ParentHash: block49.Hash()}
-		block51  = &types.Header{Number: big.NewInt(51), ParentHash: block50.Hash()}
+		genesis = &types.Header{Number: big.NewInt(0)}
+		block49 = &types.Header{Number: big.NewInt(49)}
+		// block49B = &types.Header{Number: big.NewInt(49), Extra: []byte("B")}
+		block50 = &types.Header{Number: big.NewInt(50), ParentHash: block49.Hash()}
+		// block51  = &types.Header{Number: big.NewInt(51), ParentHash: block50.Hash()}
 	)
 	tests := []struct {
 		head     *types.Header // New head header to announce to reorg to
@@ -412,61 +412,61 @@ func TestSkeletonSyncExtend(t *testing.T) {
 				{Head: 50, Tail: 49},
 			},
 		},
-		// Initialize a sync and try to extend it with the existing head block.
-		{
-			head:   block49,
-			extend: block49,
-			newstate: []*subchain{
-				{Head: 49, Tail: 49},
+			// Initialize a sync and try to extend it with the existing head block.
+			{
+				head:   block49,
+				extend: block49,
+				newstate: []*subchain{
+					{Head: 49, Tail: 49},
+				},
 			},
-		},
-		// Initialize a sync and try to extend it with a sibling block.
-		{
-			head:   block49,
-			extend: block49B,
-			newstate: []*subchain{
-				{Head: 49, Tail: 49},
+			// Initialize a sync and try to extend it with a sibling block.
+			{
+				head:   block49,
+				extend: block49B,
+				newstate: []*subchain{
+					{Head: 49, Tail: 49},
+				},
+				err: errChainReorged,
 			},
-			err: errChainReorged,
-		},
-		// Initialize a sync and try to extend it with a number-wise sequential
-		// header, but a hash wise non-linking one.
-		{
-			head:   block49B,
-			extend: block50,
-			newstate: []*subchain{
-				{Head: 49, Tail: 49},
+			// Initialize a sync and try to extend it with a number-wise sequential
+			// header, but a hash wise non-linking one.
+			{
+				head:   block49B,
+				extend: block50,
+				newstate: []*subchain{
+					{Head: 49, Tail: 49},
+				},
+				err: errChainForked,
 			},
-			err: errChainForked,
-		},
-		// Initialize a sync and try to extend it with a non-linking future block.
-		{
-			head:   block49,
-			extend: block51,
-			newstate: []*subchain{
-				{Head: 49, Tail: 49},
+			// Initialize a sync and try to extend it with a non-linking future block.
+			{
+				head:   block49,
+				extend: block51,
+				newstate: []*subchain{
+					{Head: 49, Tail: 49},
+				},
+				err: errChainGapped,
 			},
-			err: errChainGapped,
-		},
-		// Initialize a sync and try to extend it with a past canonical block.
-		{
-			head:   block50,
-			extend: block49,
-			newstate: []*subchain{
-				{Head: 50, Tail: 50},
+			// Initialize a sync and try to extend it with a past canonical block.
+			{
+				head:   block50,
+				extend: block49,
+				newstate: []*subchain{
+					{Head: 50, Tail: 50},
+				},
+				err: errChainReorged,
 			},
-			err: errChainReorged,
-		},
-		/*
-		// Initialize a sync and try to extend it with a past sidechain block.
-		{
-			head:   block50,
-			extend: block49B,
-			newstate: []*subchain{
-				{Head: 50, Tail: 50},
+			/*
+			// Initialize a sync and try to extend it with a past sidechain block.
+			{
+				head:   block50,
+				extend: block49B,
+				newstate: []*subchain{
+					{Head: 50, Tail: 50},
+				},
+				err: errChainReorged,
 			},
-			err: errChainReorged,
-		},
 	}
 	for i, tt := range tests {
 		// Create a fresh database and initialize it with the starting state
@@ -513,6 +513,7 @@ type skeletonTest struct {
 	end     skeletonExpect
 }
 
+// NOTE(rgeraldes24): tests not valid
 // Tests that the skeleton sync correctly retrieves headers from one or more
 // peers without duplicates or other strange side effects.
 func TestSkeletonSyncRetrievals(t *testing.T) {
@@ -558,6 +559,7 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 				serve: uint64(len(chain) - 2), // len - head - genesis
 			},
 		},
+
 		// Completely empty database with only the genesis set. The sync is expected
 		// to create a single subchain with the requested head. With one valid peer,
 		// the sync is expected to complete already in the initial round.
