@@ -21,9 +21,11 @@ package core
 
 import (
 	"bytes"
+	"fmt"
 	"math/big"
 	"os"
 	"path"
+	"strings"
 	"testing"
 	"time"
 
@@ -156,8 +158,6 @@ func (basic *snapshotTestBasic) verify(t *testing.T, chain *BlockChain, blocks [
 	}
 }
 
-// NOTE(rgeraldes24): unused
-/*
 //nolint:unused
 func (basic *snapshotTestBasic) dump() string {
 	buffer := new(strings.Builder)
@@ -206,7 +206,6 @@ func (basic *snapshotTestBasic) dump() string {
 	}
 	return buffer.String()
 }
-*/
 
 func (basic *snapshotTestBasic) teardown() {
 	basic.db.Close()

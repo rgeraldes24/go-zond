@@ -57,6 +57,18 @@ func NewZondAPI(b Backend) *ZondAPI {
 	return &ZondAPI{b}
 }
 
+// GasPrice returns a suggestion for a gas price for legacy transactions.
+func (api *ZondAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
+	tipcap, err := api.b.SuggestGasTipCap(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if head := api.b.CurrentHeader(); head.BaseFee != nil {
+		tipcap.Add(tipcap, head.BaseFee)
+	}
+	return (*hexutil.Big)(tipcap), err
+}
+
 // MaxPriorityFeePerGas returns a suggestion for a gas tip cap for dynamic fee transactions.
 func (s *ZondAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, error) {
 	tipcap, err := s.b.SuggestGasTipCap(ctx)

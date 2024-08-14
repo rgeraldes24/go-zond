@@ -325,7 +325,7 @@ func setAccountManagerBackends(conf *node.Config, am *accounts.Manager, keydir s
 	// we can have both, but it's very confusing for the user to see the same
 	// accounts in both externally and locally, plus very racey.
 	am.AddBackend(keystore.NewKeyStore(keydir, scryptN, scryptP))
-	// NOTE(rgeraldes24): not supported for now
+	// TODO(theQRL/go-zond/issues/37)
 	/*
 		if conf.USB {
 			// Start a USB hub for Ledger hardware wallets
