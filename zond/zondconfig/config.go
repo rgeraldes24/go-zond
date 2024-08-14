@@ -87,7 +87,7 @@ type Config struct {
 	TransactionHistory uint64 `toml:",omitempty"` // The maximum number of blocks from head whose tx indices are reserved.
 	StateHistory       uint64 `toml:",omitempty"` // The maximum number of blocks from head whose state histories are reserved.
 
-	// State scheme represents the scheme used to store ethereum states and trie
+	// State scheme represents the scheme used to store zond states and trie
 	// nodes on top. It can be 'hash', 'path', or none which means use the scheme
 	// consistent with persistent state.
 	StateScheme string `toml:",omitempty"`

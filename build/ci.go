@@ -525,14 +525,14 @@ func doDocker(cmdline []string) {
 		build.MustRun(auther)
 	}
 	// Retrieve the version infos to build and push to the following paths:
-	//  - ethereum/client-go:latest                            - Pushes to the master branch, Gzond only
-	//  - ethereum/client-go:stable                            - Version tag publish on GitHub, Gzond only
-	//  - ethereum/client-go:alltools-latest                   - Pushes to the master branch, Gzond & tools
-	//  - ethereum/client-go:alltools-stable                   - Version tag publish on GitHub, Gzond & tools
-	//  - ethereum/client-go:release-<major>.<minor>           - Version tag publish on GitHub, Gzond only
-	//  - ethereum/client-go:alltools-release-<major>.<minor>  - Version tag publish on GitHub, Gzond & tools
-	//  - ethereum/client-go:v<major>.<minor>.<patch>          - Version tag publish on GitHub, Gzond only
-	//  - ethereum/client-go:alltools-v<major>.<minor>.<patch> - Version tag publish on GitHub, Gzond & tools
+	//  - theqrl/client-go:latest                            - Pushes to the master branch, Gzond only
+	//  - theqrl/client-go:stable                            - Version tag publish on GitHub, Gzond only
+	//  - theqrl/client-go:alltools-latest                   - Pushes to the master branch, Gzond & tools
+	//  - theqrl/client-go:alltools-stable                   - Version tag publish on GitHub, Gzond & tools
+	//  - theqrl/client-go:release-<major>.<minor>           - Version tag publish on GitHub, Gzond only
+	//  - theqrl/client-go:alltools-release-<major>.<minor>  - Version tag publish on GitHub, Gzond & tools
+	//  - theqrl/client-go:v<major>.<minor>.<patch>          - Version tag publish on GitHub, Gzond only
+	//  - theqrl/client-go:alltools-v<major>.<minor>.<patch> - Version tag publish on GitHub, Gzond & tools
 	var tags []string
 
 	switch {

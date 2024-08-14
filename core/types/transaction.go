@@ -30,7 +30,8 @@ import (
 )
 
 var (
-	ErrInvalidSig           = errors.New("invalid transaction v, r, s values")
+	// NOTE(rgeraldes24): unused
+	// ErrInvalidSig           = errors.New("invalid transaction v, r, s values")
 	ErrUnexpectedProtection = errors.New("transaction type does not supported EIP-155 protected signatures")
 	ErrTxTypeNotSupported   = errors.New("transaction type not supported")
 	ErrGasFeeCapTooLow      = errors.New("fee cap less than base fee")

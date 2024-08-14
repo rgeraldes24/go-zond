@@ -105,9 +105,8 @@ func MustSignNewTx(d *dilithium.Dilithium, s Signer, txdata TxData) *Transaction
 	return tx
 }
 
-// Sender returns the address derived from the signature (V, R, S) using secp256k1
-// elliptic curve and an error if it failed deriving or upon an incorrect
-// signature.
+// Sender returns the address derived from the public key and an error
+// if it failed deriving or upon an incorrect signature.
 //
 // Sender may cache the address, allowing it to be used regardless of
 // signing method. The cache is invalidated if the cached signer does

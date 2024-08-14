@@ -339,7 +339,6 @@ func encodeDecodeBinary(tx *Transaction) (*Transaction, error) {
 }
 
 func assertEqual(orig *Transaction, cpy *Transaction) error {
-	// compare nonce, price, gaslimit, recipient, amount, payload, V, R, S
 	if want, got := orig.Hash(), cpy.Hash(); want != got {
 		return fmt.Errorf("parsed tx differs from original tx, want %v, got %v", want, got)
 	}

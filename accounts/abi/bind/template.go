@@ -91,7 +91,7 @@ import (
 	"strings"
 	"errors"
 
-	ethereum "github.com/theQRL/go-zond"
+	zond "github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/accounts/abi"
 	"github.com/theQRL/go-zond/accounts/abi/bind"
 	"github.com/theQRL/go-zond/common"
