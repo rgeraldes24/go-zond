@@ -183,7 +183,13 @@ func Transition(ctx *cli.Context) error {
 	if txs, err = loadTransactions(txStr, inputData, chainConfig); err != nil {
 		return err
 	}
+	if err := applyLondonChecks(&prestate.Env, chainConfig); err != nil {
+		return err
+	}
 	if err := applyShanghaiChecks(&prestate.Env, chainConfig); err != nil {
+		return err
+	}
+	if err := applyMergeChecks(&prestate.Env, chainConfig); err != nil {
 		return err
 	}
 	// Run the test and aggregate the result
@@ -306,14 +312,14 @@ func loadTransactions(txStr string, inputData *input, chainConfig *params.ChainC
 	return signUnsignedTransactions(txsWithKeys, signer)
 }
 
-func applyShanghaiChecks(env *stEnv, chainConfig *params.ChainConfig) error {
+func applyLondonChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 	// Sanity check, to not `panic` in state_transition
 	if env.BaseFee != nil {
 		// Already set, base fee has precedent over parent base fee.
 		return nil
 	}
 	if env.ParentBaseFee == nil || env.Number == 0 {
-		return NewError(ErrorConfig, errors.New("EIP-1559 config but missing 'currentBaseFee' in env section"))
+		return NewError(ErrorConfig, errors.New("EIP-1559 config but missing 'parentBaseFee' in env section"))
 	}
 	env.BaseFee = eip1559.CalcBaseFee(chainConfig, &types.Header{
 		Number:   new(big.Int).SetUint64(env.Number - 1),
@@ -321,14 +327,20 @@ func applyShanghaiChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 		GasUsed:  env.ParentGasUsed,
 		GasLimit: env.ParentGasLimit,
 	})
+	return nil
+}
 
+func applyShanghaiChecks(env *stEnv, chainConfig *params.ChainConfig) error {
 	if env.Withdrawals == nil {
 		return NewError(ErrorConfig, errors.New("shanghai config but missing 'withdrawals' in env section"))
 	}
-	if env.Random == nil {
-		return NewError(ErrorConfig, errors.New("shanghai requires currentRandom to be defined in env"))
-	}
+	return nil
+}
 
+func applyMergeChecks(env *stEnv, chainConfig *params.ChainConfig) error {
+	if env.Random == nil {
+		return NewError(ErrorConfig, errors.New("post-merge requires currentRandom to be defined in env"))
+	}
 	return nil
 }
 

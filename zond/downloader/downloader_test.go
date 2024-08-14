@@ -16,7 +16,6 @@
 
 package downloader
 
-/*
 import (
 	"fmt"
 	"math/big"
@@ -245,6 +244,9 @@ func (dlp *downloadTesterPeer) RequestBodies(hashes []common.Hash, sink chan *zo
 			continue
 		}
 		txsHashes[i] = hash
+
+		hash = types.DeriveSha(types.Withdrawals(body.Withdrawals), hasher)
+		withdrawalHashes[i] = hash
 	}
 	req := &zondproto.Request{
 		Peer: dlp.id,
@@ -399,8 +401,8 @@ func assertOwnChain(t *testing.T, tester *downloadTester, length int) {
 	}
 }
 
-// func TestCanonicalSynchronisation68Full(t *testing.T) { testCanonSync(t, zondproto.ETH68, FullSync) }
-// func TestCanonicalSynchronisation68Snap(t *testing.T) { testCanonSync(t, zondproto.ETH68, SnapSync) }
+func TestCanonicalSynchronisation68Full(t *testing.T) { testCanonSync(t, zondproto.ETH68, FullSync) }
+func TestCanonicalSynchronisation68Snap(t *testing.T) { testCanonSync(t, zondproto.ETH68, SnapSync) }
 
 func testCanonSync(t *testing.T, protocol uint, mode SyncMode) {
 	success := make(chan struct{})
@@ -425,12 +427,11 @@ func testCanonSync(t *testing.T, protocol uint, mode SyncMode) {
 	}
 }
 
-// TODO(rgeraldes24): fix
 // Tests that if a large batch of blocks are being downloaded, it is throttled
 // until the cached blocks are retrieved.
-// func TestThrottling68Full(t *testing.T) { testThrottling(t, zondproto.ETH68, FullSync) }
+func TestThrottling68Full(t *testing.T) { testThrottling(t, zondproto.ETH68, FullSync) }
 
-// func TestThrottling68Snap(t *testing.T) { testThrottling(t, zondproto.ETH68, SnapSync) }
+func TestThrottling68Snap(t *testing.T) { testThrottling(t, zondproto.ETH68, SnapSync) }
 
 func testThrottling(t *testing.T, protocol uint, mode SyncMode) {
 	tester := newTester(t)
@@ -750,4 +751,3 @@ func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 		t.Fatalf("Failed to sync chain in three seconds")
 	}
 }
-*/
