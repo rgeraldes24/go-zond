@@ -26,8 +26,8 @@ import (
 // TODO(theQRL/go-zond/issues/50)
 // Genesis hashes to enforce below configs on.
 var (
-	MainnetGenesisHash = common.HexToHash("0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3")
-	BetaNetGenesisHash = common.HexToHash("0xdbad833547c0da0aa80a33f575833fb6a5931e6d14060c96de96a681eefc669c")
+	MainnetGenesisHash = common.HexToHash("0xb3de630542cf9acf842e24f428c7c21b7824b38a7718a632e424b58ba0f562c6")
+	BetaNetGenesisHash = common.HexToHash("0xab0c2cf4bd9bc1d3bad049a5ae94725177bf2b95f45115415e9941f218c661b1")
 )
 
 // NOTE(rgeraldes24): unused atm

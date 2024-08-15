@@ -181,8 +181,8 @@ func TestGenesisHashes(t *testing.T) {
 		want    common.Hash
 	}{
 		// TODO(theQRL/go-zond/issues/50)
-		// {DefaultGenesisBlock(), params.MainnetGenesisHash},
-		// {DefaultBetaNetGenesisBlock(), params.BetaNetGenesisHash},
+		{DefaultGenesisBlock(), params.MainnetGenesisHash},
+		{DefaultBetaNetGenesisBlock(), params.BetaNetGenesisHash},
 	} {
 		// Test via MustCommit
 		db := rawdb.NewMemoryDatabase()
