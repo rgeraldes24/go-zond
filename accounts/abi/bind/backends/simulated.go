@@ -684,7 +684,7 @@ func (b *SimulatedBackend) FilterLogs(ctx context.Context, query zond.FilterQuer
 		if query.FromBlock != nil {
 			from = query.FromBlock.Int64()
 		}
-		to := int64(-1)
+		to := int64(-2)
 		if query.ToBlock != nil {
 			to = query.ToBlock.Int64()
 		}
