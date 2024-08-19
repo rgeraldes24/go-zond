@@ -197,6 +197,12 @@ type TransactionSender interface {
 	SendTransaction(ctx context.Context, tx *types.Transaction) error
 }
 
+// GasPricer wraps the gas price oracle, which monitors the blockchain to determine the
+// optimal gas price given current fee market conditions.
+type GasPricer interface {
+	SuggestGasPrice(ctx context.Context) (*big.Int, error)
+}
+
 // GasPricer1559 provides access to the EIP-1559 gas price oracle.
 type GasPricer1559 interface {
 	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
