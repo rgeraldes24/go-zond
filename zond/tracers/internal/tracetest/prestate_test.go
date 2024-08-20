@@ -18,8 +18,6 @@ package tracetest
 
 import (
 	"encoding/json"
-	"fmt"
-	"log"
 	"math/big"
 	"os"
 	"path/filepath"
@@ -31,8 +29,6 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
-	"github.com/theQRL/go-zond/crypto/pqcrypto"
-	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/tests"
 	"github.com/theQRL/go-zond/zond/tracers"
 )
@@ -62,33 +58,6 @@ func TestPrestateTracer(t *testing.T) {
 
 // TODO(theQRL/go-zond/issues/51)
 func TestPrestateWithDiffModeTracer(t *testing.T) {
-	key, err := pqcrypto.HexToDilithium("12345678")
-	if err != nil {
-		log.Fatal(err)
-	}
-	signer := types.LatestSigner(&params.ChainConfig{ChainID: big.NewInt(1)})
-	to := common.HexToAddress("0x2861BF89b6C640C79040d357c1e9513693ef5D3f")
-	tx := types.NewTx(&types.DynamicFeeTx{
-		ChainID:   signer.ChainID(),
-		Nonce:     138,
-		Value:     common.Big0,
-		To:        &to,
-		Data:      common.Hex2Bytes("41c0e1b5"),
-		GasFeeCap: big.NewInt(50000000000),
-		// GasFeeCap: big.NewInt(51088069741),
-		// Gas: 176979,
-		Gas: 2984512,
-	})
-	signedTx, err := types.SignTx(tx, signer, key)
-	if err != nil {
-		log.Fatal(err)
-	}
-	rawTx, err := signedTx.MarshalBinary()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(common.Bytes2Hex(rawTx))
-
 	testPrestateDiffTracer("prestateTracer", "prestate_tracer_with_diff_mode", t)
 }
 
