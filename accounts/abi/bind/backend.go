@@ -72,6 +72,7 @@ type ContractTransactor interface {
 	zond.GasEstimator
 	zond.GasPricer1559
 	zond.TransactionSender
+	zond.GasPricer
 
 	// HeaderByNumber returns a block header from the current canonical chain. If
 	// number is nil, the latest known header is returned.
