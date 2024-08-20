@@ -74,7 +74,7 @@ type backend interface {
 type fullNodeBackend interface {
 	backend
 	BlockByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Block, error)
-	CurrentBlock() *types.Header
+	CurrentBlock() *types.Block
 	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
 }
 
@@ -543,12 +543,10 @@ func (s *Service) reportLatency(conn *connWrapper) error {
 		return err
 	}
 	// Wait for the pong request to arrive back
-	timer := time.NewTimer(5 * time.Second)
-	defer timer.Stop()
 	select {
 	case <-s.pongCh:
 		// Pong delivered, report the latency
-	case <-timer.C:
+	case <-time.After(5 * time.Second):
 		// Ping timeout, abort
 		return errors.New("ping timed out")
 	}
@@ -590,10 +588,6 @@ func (s *Service) reportBlock(conn *connWrapper, block *types.Block) error {
 	// Gather the block details from the header or block chain
 	details := s.assembleBlockStats(block)
 
-	// Short circuit if the block detail is not available.
-	if details == nil {
-		return nil
-	}
 	// Assemble the block report and send it to the server
 	log.Trace("Sending new block to zondstats", "number", details.Number, "hash", details.Hash)
 
@@ -619,15 +613,8 @@ func (s *Service) assembleBlockStats(block *types.Block) *blockStats {
 	// check if backend is a full node
 	fullBackend, ok := s.backend.(fullNodeBackend)
 	if ok {
-		// Retrieve current chain head if no block is given.
 		if block == nil {
-			head := fullBackend.CurrentBlock()
-			block, _ = fullBackend.BlockByNumber(context.Background(), rpc.BlockNumber(head.Number.Uint64()))
-		}
-		// Short circuit if no block is available. It might happen when
-		// the blockchain is reorging.
-		if block == nil {
-			return nil
+			block = fullBackend.CurrentBlock()
 		}
 		header = block.Header()
 
@@ -762,9 +749,10 @@ func (s *Service) reportStats(conn *connWrapper) error {
 		gasprice int
 	)
 	// check if backend is a full node
-	if fullBackend, ok := s.backend.(fullNodeBackend); ok {
+	fullBackend, ok := s.backend.(fullNodeBackend)
+	if ok {
 		sync := fullBackend.SyncProgress()
-		syncing = !sync.Done()
+		syncing = fullBackend.CurrentHeader().Number.Uint64() >= sync.HighestBlock
 
 		price, _ := fullBackend.SuggestGasTipCap(context.Background())
 		gasprice = int(price.Uint64())
@@ -773,7 +761,7 @@ func (s *Service) reportStats(conn *connWrapper) error {
 		}
 	} else {
 		sync := s.backend.SyncProgress()
-		syncing = !sync.Done()
+		syncing = fullBackend.CurrentHeader().Number.Uint64() >= sync.HighestBlock
 	}
 	// Assemble the node stats and send it to the server
 	log.Trace("Sending node details to zondstats")
