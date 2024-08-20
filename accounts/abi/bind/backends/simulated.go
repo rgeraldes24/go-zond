@@ -609,6 +609,12 @@ func (b *SimulatedBackend) callContract(ctx context.Context, call zond.CallMsg, 
 	if call.GasTipCap == nil {
 		call.GasTipCap = new(big.Int)
 	}
+	// Backfill the legacy gasPrice for EVM execution, unless we're all zeroes
+	gasPrice := new(big.Int)
+	if call.GasFeeCap.BitLen() > 0 || call.GasTipCap.BitLen() > 0 {
+		head := b.blockchain.CurrentHeader()
+		gasPrice = math.BigMin(new(big.Int).Add(call.GasTipCap, head.BaseFee), call.GasFeeCap)
+	}
 
 	// Ensure message is initialized properly.
 	if call.Gas == 0 {
@@ -616,12 +622,6 @@ func (b *SimulatedBackend) callContract(ctx context.Context, call zond.CallMsg, 
 	}
 	if call.Value == nil {
 		call.Value = new(big.Int)
-	}
-	// Backfill the legacy gasPrice for EVM execution, unless we're all zeroes
-	gasPrice := new(big.Int)
-	if call.GasFeeCap.BitLen() > 0 || call.GasTipCap.BitLen() > 0 {
-		head := b.blockchain.CurrentHeader()
-		gasPrice = math.BigMin(new(big.Int).Add(call.GasTipCap, head.BaseFee), call.GasFeeCap)
 	}
 
 	// Set infinite balance to the fake caller account.
