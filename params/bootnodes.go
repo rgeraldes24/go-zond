@@ -22,7 +22,7 @@ import "github.com/theQRL/go-zond/common"
 // MainnetBootnodes are the enode URLs of the P2P bootstrap nodes running on
 // the main Zond network.
 var MainnetBootnodes = []string{
-	// Zond Foundation Go Bootnodes
+	// QRL Go Bootnodes
 }
 
 // BetaNetBootnodes are the enode URLs of the P2P bootstrap nodes running on the
