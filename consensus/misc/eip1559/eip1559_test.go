@@ -49,7 +49,6 @@ func TestBlockGasLimits(t *testing.T) {
 		gasLimit  uint64
 		ok        bool
 	}{
-		// London to London
 		{20000000, 5, 20000000, true},
 		{20000000, 5, 20019530, true},  // Upper limit
 		{20000000, 5, 20019531, false}, // Upper limit +1
