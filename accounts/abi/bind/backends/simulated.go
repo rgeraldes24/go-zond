@@ -617,6 +617,12 @@ func (b *SimulatedBackend) callContract(ctx context.Context, call zond.CallMsg, 
 	if call.Value == nil {
 		call.Value = new(big.Int)
 	}
+	// Backfill the legacy gasPrice for EVM execution, unless we're all zeroes
+	gasPrice := new(big.Int)
+	if call.GasFeeCap.BitLen() > 0 || call.GasTipCap.BitLen() > 0 {
+		head := b.blockchain.CurrentHeader()
+		gasPrice = math.BigMin(new(big.Int).Add(call.GasTipCap, head.BaseFee), call.GasFeeCap)
+	}
 
 	// Set infinite balance to the fake caller account.
 	from := stateDB.GetOrNewStateObject(call.From)
@@ -628,9 +634,9 @@ func (b *SimulatedBackend) callContract(ctx context.Context, call zond.CallMsg, 
 		To:                call.To,
 		Value:             call.Value,
 		GasLimit:          call.Gas,
+		GasPrice:          gasPrice,
 		GasFeeCap:         call.GasFeeCap,
 		GasTipCap:         call.GasTipCap,
-		GasPrice:          new(big.Int),
 		Data:              call.Data,
 		AccessList:        call.AccessList,
 		SkipAccountChecks: true,
