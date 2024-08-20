@@ -162,7 +162,6 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (
 		if !contract.UseGas(cost) {
 			return nil, ErrOutOfGas
 		}
-
 		if operation.dynamicGas != nil {
 			// All ops with a dynamic memory usage also has a dynamic gas cost.
 			var memorySize uint64
@@ -201,7 +200,6 @@ func (in *EVMInterpreter) Run(contract *Contract, input []byte, readOnly bool) (
 			in.evm.Config.Tracer.CaptureState(pc, op, gasCopy, cost, callContext, in.returnData, in.evm.depth, err)
 			logged = true
 		}
-
 		// execute the operation
 		res, err = operation.execute(&pc, in, callContext)
 		if err != nil {
