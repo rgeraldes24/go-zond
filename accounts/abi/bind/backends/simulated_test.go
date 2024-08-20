@@ -367,7 +367,6 @@ func TestSendTransaction(t *testing.T) {
 	bgCtx := context.Background()
 
 	// create a signed transaction to send
-	// create a signed transaction to send
 	head, _ := sim.HeaderByNumber(context.Background(), nil) // Should be child's, good enough
 	gasFeeCap := new(big.Int).Add(head.BaseFee, big.NewInt(1))
 
