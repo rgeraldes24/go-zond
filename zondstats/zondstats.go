@@ -761,7 +761,7 @@ func (s *Service) reportStats(conn *connWrapper) error {
 		}
 	} else {
 		sync := s.backend.SyncProgress()
-		syncing = fullBackend.CurrentHeader().Number.Uint64() >= sync.HighestBlock
+		syncing = s.backend.CurrentHeader().Number.Uint64() >= sync.HighestBlock
 	}
 	// Assemble the node stats and send it to the server
 	log.Trace("Sending node details to zondstats")
