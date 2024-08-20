@@ -16,20 +16,6 @@
 
 package bind
 
-/*
-import (
-	"fmt"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"runtime"
-	"strings"
-	"testing"
-
-	"github.com/theQRL/go-zond/common"
-)
-*/
-
 var bindTests = []struct {
 	name     string
 	contract string
