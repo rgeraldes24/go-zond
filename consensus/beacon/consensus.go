@@ -40,11 +40,7 @@ var (
 	errInvalidTimestamp = errors.New("invalid timestamp")
 )
 
-// Beacon is a consensus engine that combines the eth1 consensus and proof-of-stake
-// algorithm.
-//
-// The beacon here is a half-functional consensus engine with partial functions which
-// is only used for necessary consensus checks.
+// Beacon is a consensus engine that uses the proof-of-stake algorithm.
 type Beacon struct {
 	fakeFail  *uint64        // Block number which fails PoW check even in fake mode
 	fakeDelay *time.Duration // Time delay to sleep for before returning from verify
