@@ -209,7 +209,7 @@ func TestTraceCall(t *testing.T) {
 			To:        &accounts[1].addr,
 			Value:     big.NewInt(1000),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.BaseFee(),
 			Data:      nil,
 		})
 		signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
@@ -351,7 +351,7 @@ func TestTraceTransaction(t *testing.T) {
 			To:        &accounts[1].addr,
 			Value:     big.NewInt(1000),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.BaseFee(),
 			Data:      nil,
 		})
 		signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
@@ -409,7 +409,7 @@ func TestTraceBlock(t *testing.T) {
 			To:        &accounts[1].addr,
 			Value:     big.NewInt(1000),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.BaseFee(),
 			Data:      nil,
 		})
 		signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
@@ -508,7 +508,7 @@ func TestTracingWithOverrides(t *testing.T) {
 			To:        &accounts[1].addr,
 			Value:     big.NewInt(1000),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.BaseFee(),
 			Data:      nil,
 		})
 		signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
@@ -875,7 +875,7 @@ func TestTraceChain(t *testing.T) {
 				To:        &accounts[1].addr,
 				Value:     big.NewInt(1000),
 				Gas:       params.TxGas,
-				GasFeeCap: big.NewInt(875000000),
+				GasFeeCap: b.BaseFee(),
 				Data:      nil,
 			})
 			signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
