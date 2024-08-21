@@ -479,7 +479,7 @@ func (g *Genesis) MustCommit(db zonddb.Database, triedb *trie.Database) *types.B
 	return block
 }
 
-// TODO(theQRL/go-zond/issues/50): https://ethereum.stackexchange.com/questions/71804/what-is-the-meaning-of-ethereum-mainnet-genesis-block-extradata-value
+// TODO(theQRL/go-zond/issues/50)
 // DefaultGenesisBlock returns the Zond main net genesis block.
 func DefaultGenesisBlock() *Genesis {
 	return &Genesis{
