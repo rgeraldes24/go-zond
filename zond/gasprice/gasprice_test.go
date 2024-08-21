@@ -18,7 +18,6 @@ package gasprice
 
 import (
 	"context"
-	"fmt"
 	"math"
 	"math/big"
 	"testing"
@@ -156,11 +155,10 @@ func newTestBackend(t *testing.T, pending bool) *testBackend {
 		t.Fatalf("Failed to create local chain, %v", err)
 	}
 	if i, err := chain.InsertChain(blocks); err != nil {
-		panic(fmt.Errorf("error inserting block %d: %w", i, err))
+		t.Fatalf("Failed to insert block %d: %v", i, err)
 	}
 	chain.SetFinalized(chain.GetBlockByNumber(25).Header())
 	chain.SetSafe(chain.GetBlockByNumber(25).Header())
-
 	return &testBackend{chain: chain, pending: pending}
 }
 
