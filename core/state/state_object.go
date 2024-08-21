@@ -26,6 +26,7 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/trie/trienode"
 )
@@ -187,7 +188,9 @@ func (s *stateObject) GetCommittedState(key common.Hash) common.Hash {
 	if s.db.snap != nil {
 		start := time.Now()
 		enc, err = s.db.snap.Storage(s.addrHash, crypto.Keccak256Hash(key.Bytes()))
-		s.db.SnapshotStorageReads += time.Since(start)
+		if metrics.EnabledExpensive {
+			s.db.SnapshotStorageReads += time.Since(start)
+		}
 
 		if len(enc) > 0 {
 			_, content, _, err := rlp.Split(enc)
@@ -206,7 +209,9 @@ func (s *stateObject) GetCommittedState(key common.Hash) common.Hash {
 			return common.Hash{}
 		}
 		val, err := tr.GetStorage(s.address, key.Bytes())
-		s.db.StorageReads += time.Since(start)
+		if metrics.EnabledExpensive {
+			s.db.StorageReads += time.Since(start)
+		}
 
 		if err != nil {
 			s.db.setError(err)
@@ -271,7 +276,9 @@ func (s *stateObject) updateTrie() (Trie, error) {
 		return s.trie, nil
 	}
 	// Track the amount of time wasted on updating the storage trie
-	defer func(start time.Time) { s.db.StorageUpdates += time.Since(start) }(time.Now())
+	if metrics.EnabledExpensive {
+		defer func(start time.Time) { s.db.StorageUpdates += time.Since(start) }(time.Now())
+	}
 
 	// The snapshot storage map for the object
 	var (
@@ -357,7 +364,9 @@ func (s *stateObject) updateRoot() {
 		return
 	}
 	// Track the amount of time wasted on hashing the storage trie
-	defer func(start time.Time) { s.db.StorageHashes += time.Since(start) }(time.Now())
+	if metrics.EnabledExpensive {
+		defer func(start time.Time) { s.db.StorageHashes += time.Since(start) }(time.Now())
+	}
 
 	s.data.Root = tr.Hash()
 }
@@ -372,7 +381,9 @@ func (s *stateObject) commit() (*trienode.NodeSet, error) {
 		return nil, nil
 	}
 	// Track the amount of time wasted on committing the storage trie
-	defer func(start time.Time) { s.db.StorageCommits += time.Since(start) }(time.Now())
+	if metrics.EnabledExpensive {
+		defer func(start time.Time) { s.db.StorageCommits += time.Since(start) }(time.Now())
+	}
 
 	// The trie is currently in an open state and could potentially contain
 	// cached mutations. Call commit to acquire a set of nodes that have been
