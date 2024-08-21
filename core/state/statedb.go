@@ -1223,7 +1223,6 @@ func (s *StateDB) Commit(block uint64, deleteEmptyObjects bool) (common.Hash, er
 		if metrics.EnabledExpensive {
 			s.SnapshotCommits += time.Since(start)
 		}
-
 		s.snap = nil
 	}
 	if root == (common.Hash{}) {
