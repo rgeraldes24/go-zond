@@ -34,11 +34,6 @@ func ReadTxLookupEntry(db zonddb.Reader, hash common.Hash) *uint64 {
 	if len(data) == 0 {
 		return nil
 	}
-	// Database v6 tx lookup just stores the block number
-	// if len(data) < common.HashLength {
-	// 	number := new(big.Int).SetBytes(data).Uint64()
-	// 	return &number
-	// }
 
 	number := new(big.Int).SetBytes(data).Uint64()
 	return &number

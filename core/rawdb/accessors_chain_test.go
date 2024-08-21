@@ -212,7 +212,6 @@ func TestBadBlockStorage(t *testing.T) {
 	if entry := ReadBadBlock(db, block.Hash()); entry != nil {
 		t.Fatalf("Non existent block returned: %v", entry)
 	}
-
 	// Write and verify the block in the database
 	WriteBadBlock(db, block)
 	if entry := ReadBadBlock(db, block.Hash()); entry == nil {
@@ -220,7 +219,6 @@ func TestBadBlockStorage(t *testing.T) {
 	} else if entry.Hash() != block.Hash() {
 		t.Fatalf("Retrieved block mismatch: have %v, want %v", entry, block)
 	}
-
 	// Write one more bad block
 	blockTwo := types.NewBlockWithHeader(&types.Header{
 		Number:          big.NewInt(2),
