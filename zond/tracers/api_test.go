@@ -561,10 +561,10 @@ func TestTracingWithOverrides(t *testing.T) {
 		//
 		//  pragma solidity >=0.7.0 <0.8.0;
 		//
-		//
+		//  /**
 		//   * @title Storage
 		//   * @dev Store & retrieve value in a variable
-		//
+		//   */
 		//  contract Storage {
 		//      uint256 public number;
 		//      constructor() {
@@ -622,23 +622,21 @@ func TestTracingWithOverrides(t *testing.T) {
 			},
 			want: `{"gas":72668,"failed":false,"returnValue":"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"}`,
 		},
-
-		// pragma solidity =0.8.12;
-
-		// contract Test {
-		//     uint private x;
-
-		//     function test2() external {
-		//         x = 1337;
-		//         revert();
-		//     }
-
-		//     function test() external returns (uint) {
-		//         x = 1;
-		//         try this.test2() {} catch (bytes memory) {}
-		//         return x;
-		//     }
-		// }
+		/*
+			pragma solidity =0.8.12;
+			contract Test {
+			    uint private x;
+			    function test2() external {
+			        x = 1337;
+			        revert();
+			    }
+			    function test() external returns (uint) {
+			        x = 1;
+			        try this.test2() {} catch (bytes memory) {}
+			        return x;
+			    }
+			}
+		*/
 		{ // First with only code override, not storage override
 			blockNumber: rpc.LatestBlockNumber,
 			call: zondapi.TransactionArgs{
