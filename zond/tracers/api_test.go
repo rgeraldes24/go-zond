@@ -413,7 +413,6 @@ func TestTraceBlock(t *testing.T) {
 			Data:      nil,
 		})
 		signedTx, _ := types.SignTx(tx, signer, accounts[0].key)
-
 		b.AddTx(signedTx)
 		txHash = signedTx.Hash()
 	})
@@ -624,12 +623,15 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		/*
 			pragma solidity =0.8.12;
+
 			contract Test {
 			    uint private x;
+
 			    function test2() external {
 			        x = 1337;
 			        revert();
 			    }
+
 			    function test() external returns (uint) {
 			        x = 1;
 			        try this.test2() {} catch (bytes memory) {}
