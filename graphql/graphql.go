@@ -265,6 +265,23 @@ func (t *Transaction) Gas(ctx context.Context) hexutil.Uint64 {
 	return hexutil.Uint64(tx.Gas())
 }
 
+func (t *Transaction) GasPrice(ctx context.Context) hexutil.Big {
+	tx, block := t.resolve(ctx)
+	if tx == nil {
+		return hexutil.Big{}
+	}
+	switch tx.Type() {
+	default:
+		if block != nil {
+			if baseFee, _ := block.BaseFeePerGas(ctx); baseFee != nil {
+				// price = min(gasTipCap + baseFee, gasFeeCap)
+				return (hexutil.Big)(*math.BigMin(new(big.Int).Add(tx.GasTipCap(), baseFee.ToInt()), tx.GasFeeCap()))
+			}
+		}
+		return hexutil.Big(*tx.GasPrice())
+	}
+}
+
 func (t *Transaction) EffectiveGasPrice(ctx context.Context) (*hexutil.Big, error) {
 	tx, block := t.resolve(ctx)
 	if tx == nil {
@@ -1217,6 +1234,17 @@ func (r *Resolver) Logs(ctx context.Context, args struct{ Filter FilterCriteria 
 	// Construct the range filter
 	filter := r.filterSystem.NewRangeFilter(begin, end, addresses, topics)
 	return runFilter(ctx, r, filter)
+}
+
+func (r *Resolver) GasPrice(ctx context.Context) (hexutil.Big, error) {
+	tipcap, err := r.backend.SuggestGasTipCap(ctx)
+	if err != nil {
+		return hexutil.Big{}, err
+	}
+	if head := r.backend.CurrentHeader(); head.BaseFee != nil {
+		tipcap.Add(tipcap, head.BaseFee)
+	}
+	return (hexutil.Big)(*tipcap), nil
 }
 
 func (r *Resolver) MaxPriorityFeePerGas(ctx context.Context) (hexutil.Big, error) {
