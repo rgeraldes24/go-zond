@@ -101,7 +101,7 @@ func TestExecute(t *testing.T) {
 
 func TestCall(t *testing.T) {
 	state, _ := state.New(types.EmptyRootHash, state.NewDatabase(rawdb.NewMemoryDatabase()), nil)
-	address := common.HexToAddress("0xaa")
+	address := common.HexToAddress("0x0a")
 	state.SetCode(address, []byte{
 		byte(vm.PUSH1), 10,
 		byte(vm.PUSH1), 0,
@@ -702,7 +702,6 @@ func TestRuntimeJSTracer(t *testing.T) {
 				byte(vm.POP),
 			},
 			results: []string{`"1,1,952853,6,12"`, `"1,1,952853,6,0"`},
-			// results: []string{`"1,1,952855,6,12"`, `"1,1,952855,6,0"`},
 		},
 		{
 			// CREATE2
@@ -719,7 +718,6 @@ func TestRuntimeJSTracer(t *testing.T) {
 				byte(vm.POP),
 			},
 			results: []string{`"1,1,952844,6,13"`, `"1,1,952844,6,0"`},
-			// results: []string{`"1,1,952846,6,13"`, `"1,1,952846,6,0"`},
 		},
 		{
 			// CALL
