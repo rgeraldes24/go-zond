@@ -18,7 +18,6 @@ package zond
 
 import (
 	"errors"
-	"fmt"
 	"sync"
 
 	"github.com/theQRL/go-zond/common"
@@ -48,24 +47,22 @@ var (
 // peerSet represents the collection of active peers currently participating in
 // the `zond` protocol, with or without the `snap` extension.
 type peerSet struct {
-	peers     map[string]*ethPeer // Peers connected on the `zond` protocol
-	snapPeers int                 // Number of `snap` compatible peers for connection prioritization
+	peers     map[string]*zondPeer // Peers connected on the `zond` protocol
+	snapPeers int                  // Number of `snap` compatible peers for connection prioritization
 
 	snapWait map[string]chan *snap.Peer // Peers connected on `zond` waiting for their snap extension
 	snapPend map[string]*snap.Peer      // Peers connected on the `snap` protocol, but not yet on `zond`
 
 	lock   sync.RWMutex
 	closed bool
-	quitCh chan struct{} // Quit channel to signal termination
 }
 
 // newPeerSet creates a new peer set to track the active participants.
 func newPeerSet() *peerSet {
 	return &peerSet{
-		peers:    make(map[string]*ethPeer),
+		peers:    make(map[string]*zondPeer),
 		snapWait: make(map[string]chan *snap.Peer),
 		snapPend: make(map[string]*snap.Peer),
-		quitCh:   make(chan struct{}),
 	}
 }
 
@@ -76,7 +73,7 @@ func (ps *peerSet) registerSnapExtension(peer *snap.Peer) error {
 	// Reject the peer if it advertises `snap` without `zond` as `snap` is only a
 	// satellite protocol meaningful with the chain selection of `zond`
 	if !peer.RunningCap(zond.ProtocolName, zond.ProtocolVersions) {
-		return fmt.Errorf("%w: have %v", errSnapWithoutZond, peer.Caps())
+		return errSnapWithoutZond
 	}
 	// Ensure nobody can double connect
 	ps.lock.Lock()
@@ -130,15 +127,7 @@ func (ps *peerSet) waitSnapExtension(peer *zond.Peer) (*snap.Peer, error) {
 	ps.snapWait[id] = wait
 	ps.lock.Unlock()
 
-	select {
-	case p := <-wait:
-		return p, nil
-	case <-ps.quitCh:
-		ps.lock.Lock()
-		delete(ps.snapWait, id)
-		ps.lock.Unlock()
-		return nil, errPeerSetClosed
-	}
+	return <-wait, nil
 }
 
 // registerPeer injects a new `zond` peer into the working set, or returns an error
@@ -155,7 +144,7 @@ func (ps *peerSet) registerPeer(peer *zond.Peer, ext *snap.Peer) error {
 	if _, ok := ps.peers[id]; ok {
 		return errPeerAlreadyRegistered
 	}
-	eth := &ethPeer{
+	eth := &zondPeer{
 		Peer: peer,
 	}
 	if ext != nil {
@@ -184,7 +173,7 @@ func (ps *peerSet) unregisterPeer(id string) error {
 }
 
 // peer retrieves the registered peer with the given id.
-func (ps *peerSet) peer(id string) *ethPeer {
+func (ps *peerSet) peer(id string) *zondPeer {
 	ps.lock.RLock()
 	defer ps.lock.RUnlock()
 
@@ -193,11 +182,11 @@ func (ps *peerSet) peer(id string) *ethPeer {
 
 // peersWithoutTransaction retrieves a list of peers that do not have a given
 // transaction in their set of known hashes.
-func (ps *peerSet) peersWithoutTransaction(hash common.Hash) []*ethPeer {
+func (ps *peerSet) peersWithoutTransaction(hash common.Hash) []*zondPeer {
 	ps.lock.RLock()
 	defer ps.lock.RUnlock()
 
-	list := make([]*ethPeer, 0, len(ps.peers))
+	list := make([]*zondPeer, 0, len(ps.peers))
 	for _, p := range ps.peers {
 		if !p.KnownTransaction(hash) {
 			list = append(list, p)
@@ -231,9 +220,6 @@ func (ps *peerSet) close() {
 
 	for _, p := range ps.peers {
 		p.Disconnect(p2p.DiscQuitting)
-	}
-	if !ps.closed {
-		close(ps.quitCh)
 	}
 	ps.closed = true
 }

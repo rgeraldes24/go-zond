@@ -467,8 +467,8 @@ func (h *handler) BroadcastTransactions(txs types.Transactions) {
 		directCount int // Number of transactions sent directly to peers (duplicates included)
 		annCount    int // Number of transactions announced across all peers (duplicates included)
 
-		txset = make(map[*ethPeer][]common.Hash) // Set peer->hash to transfer directly
-		annos = make(map[*ethPeer][]common.Hash) // Set peer->hash to announce
+		txset = make(map[*zondPeer][]common.Hash) // Set peer->hash to transfer directly
+		annos = make(map[*zondPeer][]common.Hash) // Set peer->hash to announce
 
 	)
 	// Broadcast transactions to a batch of peers not knowing about it

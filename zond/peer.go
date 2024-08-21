@@ -27,14 +27,14 @@ type zondPeerInfo struct {
 	Version uint `json:"version"` // Zond protocol version negotiated
 }
 
-// ethPeer is a wrapper around zond.Peer to maintain a few extra metadata.
-type ethPeer struct {
+// zondPeer is a wrapper around zond.Peer to maintain a few extra metadata.
+type zondPeer struct {
 	*zond.Peer
 	snapExt *snapPeer // Satellite `snap` connection
 }
 
 // info gathers and returns some `zond` protocol metadata known about a peer.
-func (p *ethPeer) info() *zondPeerInfo {
+func (p *zondPeer) info() *zondPeerInfo {
 	return &zondPeerInfo{
 		Version: p.Version(),
 	}
