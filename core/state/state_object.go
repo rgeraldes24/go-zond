@@ -191,7 +191,6 @@ func (s *stateObject) GetCommittedState(key common.Hash) common.Hash {
 		if metrics.EnabledExpensive {
 			s.db.SnapshotStorageReads += time.Since(start)
 		}
-
 		if len(enc) > 0 {
 			_, content, _, err := rlp.Split(enc)
 			if err != nil {
@@ -212,7 +211,6 @@ func (s *stateObject) GetCommittedState(key common.Hash) common.Hash {
 		if metrics.EnabledExpensive {
 			s.db.StorageReads += time.Since(start)
 		}
-
 		if err != nil {
 			s.db.setError(err)
 			return common.Hash{}
@@ -279,7 +277,6 @@ func (s *stateObject) updateTrie() (Trie, error) {
 	if metrics.EnabledExpensive {
 		defer func(start time.Time) { s.db.StorageUpdates += time.Since(start) }(time.Now())
 	}
-
 	// The snapshot storage map for the object
 	var (
 		storage map[common.Hash][]byte
@@ -367,7 +364,6 @@ func (s *stateObject) updateRoot() {
 	if metrics.EnabledExpensive {
 		defer func(start time.Time) { s.db.StorageHashes += time.Since(start) }(time.Now())
 	}
-
 	s.data.Root = tr.Hash()
 }
 
@@ -384,7 +380,6 @@ func (s *stateObject) commit() (*trienode.NodeSet, error) {
 	if metrics.EnabledExpensive {
 		defer func(start time.Time) { s.db.StorageCommits += time.Since(start) }(time.Now())
 	}
-
 	// The trie is currently in an open state and could potentially contain
 	// cached mutations. Call commit to acquire a set of nodes that have been
 	// modified, the set can be nil if nothing to commit.
