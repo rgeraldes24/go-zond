@@ -249,6 +249,7 @@ func dnsNukeRoute53(ctx *cli.Context) error {
 	return client.deleteDomain(ctx.Args().First())
 }
 
+// TODO(theQRL/go-zond/issues/59)
 // loadSigningKey loads a private key in Ethereum keystore format.
 func loadSigningKey(keyfile string) *ecdsa.PrivateKey {
 	/*
