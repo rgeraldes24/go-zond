@@ -262,7 +262,6 @@ func loadSigningKey(keyfile string) *ecdsa.PrivateKey {
 		if err != nil {
 			exit(fmt.Errorf("error decrypting key: %v", err))
 		}
-
 		return key.PrivateKey
 	*/
 	return nil
