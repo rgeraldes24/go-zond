@@ -26,7 +26,7 @@ import (
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/urfave/cli/v2"
 )
 
@@ -70,7 +70,7 @@ To sign a message contained in a file, use the --msgfile flag.
 			utils.Fatalf("Error decrypting key: %v", err)
 		}
 
-		signature, err := crypto.SignDilithium(accounts.TextHash(message), key.Dilithium)
+		signature, err := pqcrypto.Sign(accounts.TextHash(message), key.Dilithium)
 		if err != nil {
 			utils.Fatalf("Failed to sign message: %v", err)
 		}

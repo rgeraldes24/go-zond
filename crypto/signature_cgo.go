@@ -24,7 +24,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/theQRL/go-qrllib/dilithium"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/crypto/secp256k1"
 )
@@ -58,17 +57,6 @@ func Sign(digestHash []byte, prv *ecdsa.PrivateKey) (sig []byte, err error) {
 	seckey := math.PaddedBigBytes(prv.D, prv.Params().BitSize/8)
 	defer zeroBytes(seckey)
 	return secp256k1.Sign(digestHash, seckey)
-}
-
-func SignDilithium(digestHash []byte, key *dilithium.Dilithium) ([]byte, error) {
-	if len(digestHash) != DigestLength {
-		return nil, fmt.Errorf("hash is required to be exactly %d bytes (%d)", DigestLength, len(digestHash))
-	}
-	signature, err := key.Sign(digestHash)
-	if err != nil {
-		return nil, err
-	}
-	return signature[:], nil
 }
 
 // VerifySignature checks that the given public key created signature over digest.
