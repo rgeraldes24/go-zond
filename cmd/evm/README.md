@@ -44,6 +44,7 @@ Command line params that need to be supported are
     --output.body value           
     --output.result value          (default: "result.json")
     --state.chainid value          (default: 1)
+    --state.reward value           (default: 0)
     --state.fork value             (default: "Shanghai")
     --trace.memory                 (default: false)
     --trace.nomemory               (default: true)
@@ -112,7 +113,6 @@ type AccessTuple struct {
 	Address     common.Address `json:"address"        gencodec:"required"`
 	StorageKeys []common.Hash  `json:"storageKeys"    gencodec:"required"`
 }
-
 type DynamicFeeTx struct {
 	ChainID    *big.Int        `json:"chainId"`
 	Nonce      uint64          `json:"nonce"`
