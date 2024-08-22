@@ -198,7 +198,7 @@ func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 			To:        &dad,
 			Value:     big.NewInt(100),
 			Gas:       50000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: big.NewInt(params.InitialBaseFee),
 		})
 		gen.AddTx(tx)
 		tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{
@@ -292,11 +292,11 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 
 	var tx *types.Transaction
 	handler, chain := newGQLService(t, stack, genesis, 1, func(i int, gen *core.BlockGen) {
-		tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{To: &dad, Gas: 100000, GasFeeCap: big.NewInt(875000000)})
+		tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{To: &dad, Gas: 100000, GasFeeCap: big.NewInt(params.InitialBaseFee)})
 		gen.AddTx(tx)
-		tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{To: &dad, Nonce: 1, Gas: 100000, GasFeeCap: big.NewInt(875000000)})
+		tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{To: &dad, Nonce: 1, Gas: 100000, GasFeeCap: big.NewInt(params.InitialBaseFee)})
 		gen.AddTx(tx)
-		tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{To: &dad, Nonce: 2, Gas: 100000, GasFeeCap: big.NewInt(875000000)})
+		tx, _ = types.SignNewTx(key, signer, &types.DynamicFeeTx{To: &dad, Nonce: 2, Gas: 100000, GasFeeCap: big.NewInt(params.InitialBaseFee)})
 		gen.AddTx(tx)
 	})
 	// start node
@@ -316,8 +316,8 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 		// Multiple fields of a tx race to resolve it. Happens in this case
 		// because resolving the tx body belonging to a log is delayed.
 		{
-			body: `{block { logs(filter: {}) { transaction { nonce value }}}}`,
-			want: `{"block":{"logs":[{"transaction":{"nonce":"0x0","value":"0x0"}},{"transaction":{"nonce":"0x0","value":"0x0"}},{"transaction":{"nonce":"0x1","value":"0x0"}},{"transaction":{"nonce":"0x1","value":"0x0"}},{"transaction":{"nonce":"0x2","value":"0x0"}},{"transaction":{"nonce":"0x2","value":"0x0"}}]}}`,
+			body: `{block { logs(filter: {}) { transaction { nonce value maxFeePerGas }}}}`,
+			want: `{"block":{"logs":[{"transaction":{"nonce":"0x0","value":"0x0","maxFeePerGas":"0x3b9aca00"}},{"transaction":{"nonce":"0x0","value":"0x0","maxFeePerGas":"0x3b9aca00"}},{"transaction":{"nonce":"0x1","value":"0x0","maxFeePerGas":"0x3b9aca00"}},{"transaction":{"nonce":"0x1","value":"0x0","maxFeePerGas":"0x3b9aca00"}},{"transaction":{"nonce":"0x2","value":"0x0","maxFeePerGas":"0x3b9aca00"}},{"transaction":{"nonce":"0x2","value":"0x0","maxFeePerGas":"0x3b9aca00"}}]}}`,
 		},
 		// Multiple txes of a block race to set/retrieve receipts of a block.
 		{
@@ -377,7 +377,7 @@ func TestWithdrawals(t *testing.T) {
 	defer stack.Close()
 
 	handler, _ := newGQLService(t, stack, genesis, 1, func(i int, gen *core.BlockGen) {
-		tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{To: &common.Address{}, Gas: 100000, GasFeeCap: big.NewInt(875000000)})
+		tx, _ := types.SignNewTx(key, signer, &types.DynamicFeeTx{To: &common.Address{}, Gas: 100000, GasFeeCap: big.NewInt(params.InitialBaseFee)})
 		gen.AddTx(tx)
 		gen.AddWithdrawal(&types.Withdrawal{
 			Validator: 5,
