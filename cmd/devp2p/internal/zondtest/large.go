@@ -16,6 +16,7 @@
 
 package zondtest
 
+// TODO(theQRL/go-zond/issues/59)
 /*
 import (
 	"crypto/rand"

@@ -16,6 +16,7 @@
 
 package zondtest
 
+// TODO(theQRL/go-zond/issues/59)
 /*
 import "github.com/theQRL/go-zond/zond/protocols/snap"
 
