@@ -74,6 +74,9 @@ func (args *t8nInput) get(base string) []string {
 	if opt := args.stFork; opt != "" {
 		out = append(out, "--state.fork", opt)
 	}
+	if opt := args.stReward; opt != "" {
+		out = append(out, "--state.reward", opt)
+	}
 	return out
 }
 

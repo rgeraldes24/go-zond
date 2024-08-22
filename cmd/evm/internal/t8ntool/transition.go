@@ -193,7 +193,7 @@ func Transition(ctx *cli.Context) error {
 		return err
 	}
 	// Run the test and aggregate the result
-	s, result, err := prestate.Apply(vmConfig, chainConfig, txs, getTracer)
+	s, result, err := prestate.Apply(vmConfig, chainConfig, txs, ctx.Int64(RewardFlag.Name), getTracer)
 	if err != nil {
 		return err
 	}
