@@ -423,7 +423,7 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 				To:        &to1,
 				Value:     big.NewInt(10_000_000_000_000_000),
 				Gas:       params.TxGas,
-				GasFeeCap: big.NewInt(875000000),
+				GasFeeCap: block.BaseFee(),
 				Data:      nil,
 			})
 			signedTx, _ := types.SignTx(tx, signer, testKey)
@@ -436,7 +436,7 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 				To:        &to1,
 				Value:     big.NewInt(1_000_000_000_000_000),
 				Gas:       params.TxGas,
-				GasFeeCap: big.NewInt(766599825),
+				GasFeeCap: block.BaseFee(),
 				Data:      nil,
 			})
 			tx2 := types.NewTx(&types.DynamicFeeTx{
@@ -444,7 +444,7 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 				To:        &to2,
 				Value:     big.NewInt(1_000_000_000_000_000),
 				Gas:       params.TxGas,
-				GasFeeCap: big.NewInt(766599825),
+				GasFeeCap: block.BaseFee(),
 				Data:      nil,
 			})
 			signedTx1, _ := types.SignTx(tx1, signer, testKey)
