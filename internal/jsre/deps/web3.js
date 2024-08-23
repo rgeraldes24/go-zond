@@ -5423,6 +5423,11 @@ var properties = function () {
             outputFormatter: formatters.outputSyncingFormatter
         }),
         new Property({
+            name: 'gasPrice',
+            getter: 'zond_gasPrice',
+            outputFormatter: formatters.outputBigNumberFormatter
+        }),
+        new Property({
             name: 'accounts',
             getter: 'zond_accounts'
         }),
