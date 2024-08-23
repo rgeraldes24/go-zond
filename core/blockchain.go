@@ -252,7 +252,7 @@ type BlockChain struct {
 // NewBlockChain returns a fully initialised block chain using information
 // available in the database. It initialises the default Zond Validator
 // and Processor.
-func NewBlockChain(db zonddb.Database, cacheConfig *CacheConfig, genesis *Genesis, engine consensus.Engine, vmConfig vm.Config, shouldPreserve func(header *types.Header) bool, txLookupLimit *uint64) (*BlockChain, error) {
+func NewBlockChain(db zonddb.Database, cacheConfig *CacheConfig, genesis *Genesis, engine consensus.Engine, vmConfig vm.Config, txLookupLimit *uint64) (*BlockChain, error) {
 	if cacheConfig == nil {
 		cacheConfig = defaultCacheConfig
 	}

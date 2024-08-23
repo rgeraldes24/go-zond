@@ -83,7 +83,7 @@ func NewSimulatedBackendWithDatabase(database zonddb.Database, alloc core.Genesi
 		GasLimit: gasLimit,
 		Alloc:    alloc,
 	}
-	blockchain, _ := core.NewBlockChain(database, nil, &genesis, beacon.NewFaker(), vm.Config{}, nil, nil)
+	blockchain, _ := core.NewBlockChain(database, nil, &genesis, beacon.NewFaker(), vm.Config{}, nil)
 
 	backend := &SimulatedBackend{
 		database:   database,

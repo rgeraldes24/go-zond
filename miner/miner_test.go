@@ -146,7 +146,7 @@ func createMiner(t *testing.T) *Miner {
 	// Create consensus engine
 	engine := beacon.New()
 	// Create Zond backend
-	bc, err := core.NewBlockChain(chainDB, nil, genesis, engine, vm.Config{}, nil, nil)
+	bc, err := core.NewBlockChain(chainDB, nil, genesis, engine, vm.Config{}, nil)
 	if err != nil {
 		t.Fatalf("can't create new chain %v", err)
 	}

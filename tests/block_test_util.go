@@ -137,7 +137,7 @@ func (t *BlockTest) Run(snapshotter bool, scheme string, tracer vm.EVMLogger) er
 	}
 	chain, err := core.NewBlockChain(db, cache, gspec, engine, vm.Config{
 		Tracer: tracer,
-	}, nil, nil)
+	}, nil)
 	if err != nil {
 		return err
 	}

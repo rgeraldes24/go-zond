@@ -182,11 +182,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 			StateScheme:         config.StateScheme,
 		}
 	)
-	// TODO (MariusVanDerWijden) get rid of shouldPreserve in a follow-up PR
-	shouldPreserve := func(header *types.Header) bool {
-		return false
-	}
-	zond.blockchain, err = core.NewBlockChain(chainDb, cacheConfig, config.Genesis, zond.engine, vmConfig, shouldPreserve, &config.TransactionHistory)
+	zond.blockchain, err = core.NewBlockChain(chainDb, cacheConfig, config.Genesis, zond.engine, vmConfig, &config.TransactionHistory)
 	if err != nil {
 		return nil, err
 	}

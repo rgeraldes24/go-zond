@@ -150,7 +150,7 @@ func newTestBackend(t *testing.T, pending bool) *testBackend {
 		b.AddTx(types.MustSignNewTx(key, signer, txdata))
 	})
 	// Construct testing chain
-	chain, err := core.NewBlockChain(db, &core.CacheConfig{TrieCleanNoPrefetch: true}, gspec, engine, vm.Config{}, nil, nil)
+	chain, err := core.NewBlockChain(db, &core.CacheConfig{TrieCleanNoPrefetch: true}, gspec, engine, vm.Config{}, nil)
 	if err != nil {
 		t.Fatalf("Failed to create local chain, %v", err)
 	}
