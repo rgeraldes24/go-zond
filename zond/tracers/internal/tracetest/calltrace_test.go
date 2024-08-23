@@ -290,6 +290,12 @@ func TestInternals(t *testing.T) {
 			want:   `{"from":"0x000000000000000000000000000000000000feed","gas":"0x13880","gasUsed":"0x5c44","to":"0x00000000000000000000000000000000deadbeef","input":"0x","calls":[{"from":"0x00000000000000000000000000000000deadbeef","gas":"0xd8cc","gasUsed":"0x0","to":"0x00000000000000000000000000000000000000ff","input":"0x","value":"0x0","type":"CALL"}],"value":"0x0","type":"CALL"}`,
 		},
 		{
+			name:   "Stack depletion in LOG0",
+			code:   []byte{byte(vm.LOG3)},
+			tracer: mkTracer("callTracer", json.RawMessage(`{ "withLog": true }`)),
+			want:   `{"from":"0x000000000000000000000000000000000000feed","gas":"0x13880","gasUsed":"0x13880","to":"0x00000000000000000000000000000000deadbeef","input":"0x","error":"stack underflow (0 \u003c=\u003e 5)","value":"0x0","type":"CALL"}`,
+		},
+		{
 			name: "Mem expansion in LOG0",
 			code: []byte{
 				byte(vm.PUSH1), 0x1,
