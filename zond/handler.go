@@ -78,7 +78,7 @@ type txPool interface {
 	// SubscribeTransactions subscribes to new transaction events. The subscriber
 	// can decide whether to receive notifications only for newly seen transactions
 	// or also for reorged out ones.
-	SubscribeTransactions(chan<- core.NewTxsEvent) event.Subscription
+	SubscribeTransactions(ch chan<- core.NewTxsEvent) event.Subscription
 }
 
 // handlerConfig is the collection of initialization parameters to create a full
@@ -179,7 +179,6 @@ func newHandler(config *handlerConfig) (*handler, error) {
 	if h.snapSync.Load() && config.Chain.Snapshots() == nil {
 		return nil, errors.New("snap sync not supported with snapshots disabled")
 	}
-
 	// Construct the downloader (long sync)
 	h.downloader = downloader.New(config.Database, h.eventMux, h.chain, h.removePeer, h.enableSyncedFeatures)
 
