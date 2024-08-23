@@ -75,19 +75,19 @@ func BenchmarkFilters(b *testing.B) {
 		case 2403:
 			receipt := makeReceipt(addr1)
 			gen.AddUncheckedReceipt(receipt)
-			gen.AddUncheckedTx(types.NewTx(&types.DynamicFeeTx{Nonce: 999, To: &to, Value: big.NewInt(999), Gas: 999, Data: nil}))
+			gen.AddUncheckedTx(types.NewTx(&types.DynamicFeeTx{Nonce: 999, To: &to, Value: big.NewInt(999), Gas: 999, GasFeeCap: gen.BaseFee(), Data: nil}))
 		case 1034:
 			receipt := makeReceipt(addr2)
 			gen.AddUncheckedReceipt(receipt)
-			gen.AddUncheckedTx(types.NewTx(&types.DynamicFeeTx{Nonce: 999, To: &to, Value: big.NewInt(999), Gas: 999, Data: nil}))
+			gen.AddUncheckedTx(types.NewTx(&types.DynamicFeeTx{Nonce: 999, To: &to, Value: big.NewInt(999), Gas: 999, GasFeeCap: gen.BaseFee(), Data: nil}))
 		case 34:
 			receipt := makeReceipt(addr3)
 			gen.AddUncheckedReceipt(receipt)
-			gen.AddUncheckedTx(types.NewTx(&types.DynamicFeeTx{Nonce: 999, To: &to, Value: big.NewInt(999), Gas: 999, Data: nil}))
+			gen.AddUncheckedTx(types.NewTx(&types.DynamicFeeTx{Nonce: 999, To: &to, Value: big.NewInt(999), Gas: 999, GasFeeCap: gen.BaseFee(), Data: nil}))
 		case 99999:
 			receipt := makeReceipt(addr4)
 			gen.AddUncheckedReceipt(receipt)
-			gen.AddUncheckedTx(types.NewTx(&types.DynamicFeeTx{Nonce: 999, To: &to, Value: big.NewInt(999), Gas: 999, Data: nil}))
+			gen.AddUncheckedTx(types.NewTx(&types.DynamicFeeTx{Nonce: 999, To: &to, Value: big.NewInt(999), Gas: 999, GasFeeCap: gen.BaseFee(), Data: nil}))
 		}
 	})
 	// The test txs are not properly signed, can't simply create a chain
