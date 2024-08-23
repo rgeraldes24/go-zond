@@ -195,7 +195,6 @@ func TestMessages(t *testing.T) {
 			GetBlockHeadersPacket{1111, &GetBlockHeadersRequest{HashOrNumber{hashes[0], 0}, 5, 5, false}},
 			common.FromHex("e8820457e4a000000000000000000000000000000000000000000000000000000000deadc0de050580"),
 		},
-
 		{
 			GetBlockHeadersPacket{1111, &GetBlockHeadersRequest{HashOrNumber{common.Hash{}, 9999}, 5, 5, false}},
 			common.FromHex("ca820457c682270f050580"),
