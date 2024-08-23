@@ -53,60 +53,24 @@ func TestSetFeeDefaults(t *testing.T) {
 		b        = newBackendMock()
 		fortytwo = (*hexutil.Big)(big.NewInt(42))
 		maxFee   = (*hexutil.Big)(new(big.Int).Add(new(big.Int).Mul(b.current.BaseFee, big.NewInt(2)), fortytwo.ToInt()))
-		// al       = &types.AccessList{types.AccessTuple{Address: common.Address{0xaa}, StorageKeys: []common.Hash{{0x01}}}}
+		al       = &types.AccessList{types.AccessTuple{Address: common.Address{0xaa}, StorageKeys: []common.Hash{{0x01}}}}
 	)
 
 	tests := []test{
-		/*
-			// Legacy txs
-			{
-				"legacy tx post-London, explicit gas price",
-				&TransactionArgs{GasPrice: fortytwo},
-				&TransactionArgs{GasPrice: fortytwo},
-				nil,
-			},
-
-			// Access list txs
-			{
-				"access list tx post-London, explicit gas price",
-				&TransactionArgs{AccessList: al, GasPrice: fortytwo},
-				&TransactionArgs{AccessList: al, GasPrice: fortytwo},
-				nil,
-			},
-			{
-				"access list tx post-London",
-				&TransactionArgs{AccessList: al},
-				&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
-				nil,
-			},
-			{
-				"access list tx post-London, only max fee",
-				&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee},
-				&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
-				nil,
-			},
-			{
-				"access list tx post-London, only priority fee",
-				&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee},
-				&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
-				nil,
-			},
-		*/
-		// Dynamic fee txs
 		{
-			"dynamic tx post-London",
-			&TransactionArgs{},
-			&TransactionArgs{MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
+			"dynamic tx",
+			&TransactionArgs{AccessList: al},
+			&TransactionArgs{AccessList: al, MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
 			nil,
 		},
 		{
-			"dynamic tx post-London, only max fee",
+			"dynamic tx, only max fee",
 			&TransactionArgs{MaxFeePerGas: maxFee},
 			&TransactionArgs{MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
 			nil,
 		},
 		{
-			"dynamic tx post-London, only priority fee",
+			"dynamic tx, only priority fee",
 			&TransactionArgs{MaxFeePerGas: maxFee},
 			&TransactionArgs{MaxFeePerGas: maxFee, MaxPriorityFeePerGas: fortytwo},
 			nil,
