@@ -449,13 +449,15 @@ func dummyTxWithV(value uint64) *core.SignTxRequest {
 func dummySigned(value *big.Int) *types.Transaction {
 	to := common.HexToAddress("000000000000000000000000000000000000dead")
 	gas := uint64(21000)
+	gasFeeCap := big.NewInt(2000000)
 	data := make([]byte, 0)
 	return types.NewTx(&types.DynamicFeeTx{
-		Nonce: 3,
-		To:    &to,
-		Value: value,
-		Gas:   gas,
-		Data:  data,
+		Nonce:     3,
+		To:        &to,
+		Value:     value,
+		Gas:       gas,
+		GasFeeCap: gasFeeCap,
+		Data:      data,
 	})
 }
 
