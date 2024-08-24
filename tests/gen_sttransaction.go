@@ -7,7 +7,6 @@ import (
 	"math/big"
 
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/core/types"
 )
@@ -26,7 +25,7 @@ func (s stTransaction) MarshalJSON() ([]byte, error) {
 		AccessLists          []*types.AccessList   `json:"accessLists,omitempty"`
 		GasLimit             []math.HexOrDecimal64 `json:"gasLimit"`
 		Value                []string              `json:"value"`
-		Seed                 hexutil.Bytes         `json:"seed"`
+		Seed                 string                `json:"seed"`
 		Sender               *common.Address       `json:"sender"`
 	}
 	var enc stTransaction
@@ -61,7 +60,7 @@ func (s *stTransaction) UnmarshalJSON(input []byte) error {
 		AccessLists          []*types.AccessList   `json:"accessLists,omitempty"`
 		GasLimit             []math.HexOrDecimal64 `json:"gasLimit"`
 		Value                []string              `json:"value"`
-		Seed                 *hexutil.Bytes        `json:"seed"`
+		Seed                 *string        `json:"seed"`
 		Sender               *common.Address       `json:"sender"`
 	}
 	var dec stTransaction

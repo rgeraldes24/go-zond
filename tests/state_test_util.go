@@ -113,7 +113,7 @@ type stTransaction struct {
 	AccessLists          []*types.AccessList `json:"accessLists,omitempty"`
 	GasLimit             []uint64            `json:"gasLimit"`
 	Value                []string            `json:"value"`
-	Seed                 []byte              `json:"seed"`
+	Seed                 string              `json:"seed"`
 	Sender               *common.Address     `json:"sender"`
 }
 
@@ -355,7 +355,7 @@ func (tx *stTransaction) toMessage(ps stPostState, baseFee *big.Int) (*core.Mess
 		from = *tx.Sender
 	} else if len(tx.Seed) > 0 {
 		// Derive sender from key if needed.
-		key, err := dilithium.NewDilithiumFromHexSeed(string(tx.Seed)[2:])
+		key, err := dilithium.NewDilithiumFromHexSeed(tx.Seed)
 		if err != nil {
 			return nil, fmt.Errorf("invalid seed: %v", err)
 		}
