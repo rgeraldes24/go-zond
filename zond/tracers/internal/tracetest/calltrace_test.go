@@ -38,10 +38,11 @@ import (
 )
 
 type callContext struct {
-	Number   math.HexOrDecimal64 `json:"number"`
-	Time     math.HexOrDecimal64 `json:"timestamp"`
-	GasLimit math.HexOrDecimal64 `json:"gasLimit"`
-	Miner    common.Address      `json:"miner"`
+	Number   math.HexOrDecimal64   `json:"number"`
+	Time     math.HexOrDecimal64   `json:"timestamp"`
+	GasLimit math.HexOrDecimal64   `json:"gasLimit"`
+	Miner    common.Address        `json:"miner"`
+	BaseFee  *math.HexOrDecimal256 `json:"baseFeePerGas"`
 }
 
 // callLog is the result of LOG opCode
