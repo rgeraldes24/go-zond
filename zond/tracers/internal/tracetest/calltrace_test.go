@@ -260,7 +260,7 @@ func TestInternals(t *testing.T) {
 			BlockNumber: new(big.Int).SetUint64(8000000),
 			Time:        5,
 			GasLimit:    uint64(6000000),
-			BaseFee:     big.NewInt(0),
+			BaseFee:     new(big.Int),
 		}
 	)
 	mkTracer := func(name string, cfg json.RawMessage) tracers.Tracer {
