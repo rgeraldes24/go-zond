@@ -28,7 +28,7 @@ import (
 	"github.com/theQRL/go-zond/event"
 )
 
-func pricedValuedTransaction(nonce uint64, value int64, gaslimit uint64, gasFeeCap *big.Int, key *dilithium.Dilithium) *types.Transaction {
+func dynamicFeeValuedTransaction(nonce uint64, value int64, gaslimit uint64, gasFeeCap *big.Int, key *dilithium.Dilithium) *types.Transaction {
 	tx := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     nonce,
 		To:        &common.Address{},
@@ -200,7 +200,7 @@ func TestTransactionZAttack(t *testing.T) {
 		key, _ := crypto.GenerateDilithiumKey()
 		pool.currentState.AddBalance(key.GetAddress(), big.NewInt(100000000000))
 		for j := 0; j < int(pool.config.GlobalSlots); j++ {
-			overDraftTxs = append(overDraftTxs, pricedValuedTransaction(uint64(j), 600000000000, 21000, big.NewInt(500), key))
+			overDraftTxs = append(overDraftTxs, dynamicFeeValuedTransaction(uint64(j), 600000000000, 21000, big.NewInt(500), key))
 		}
 	}
 	pool.addRemotesSync(overDraftTxs)
