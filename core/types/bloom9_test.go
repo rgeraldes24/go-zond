@@ -95,17 +95,19 @@ func BenchmarkCreateBloom(b *testing.B) {
 	to := common.HexToAddress("0x2")
 	var txs = Transactions{
 		NewTx(&DynamicFeeTx{
-			Nonce: 1,
-			Value: big.NewInt(1),
-			Gas:   1,
-			Data:  nil,
+			Nonce:     1,
+			Value:     big.NewInt(1),
+			Gas:       1,
+			GasFeeCap: big.NewInt(1),
+			Data:      nil,
 		}),
 		NewTx(&DynamicFeeTx{
-			Nonce: 2,
-			To:    &to,
-			Value: big.NewInt(2),
-			Gas:   2,
-			Data:  nil,
+			Nonce:     2,
+			To:        &to,
+			Value:     big.NewInt(2),
+			Gas:       2,
+			GasFeeCap: big.NewInt(2),
+			Data:      nil,
 		}),
 	}
 	var rSmall = Receipts{
