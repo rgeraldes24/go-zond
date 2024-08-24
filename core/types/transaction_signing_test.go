@@ -31,7 +31,7 @@ func TestShaghaiSigning(t *testing.T) {
 	addr := common.Address(key.GetAddress())
 
 	signer := NewShanghaiSigner(big.NewInt(18))
-	tx, err := SignTx(NewTx(&DynamicFeeTx{Nonce: 0, To: &addr, Value: new(big.Int), Gas: 0, Data: nil}), signer, key)
+	tx, err := SignTx(NewTx(&DynamicFeeTx{Nonce: 0, To: &addr, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}), signer, key)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -50,7 +50,7 @@ func TestEIP155ChainId(t *testing.T) {
 	addr := common.Address(key.GetAddress())
 
 	signer := NewShanghaiSigner(big.NewInt(18))
-	tx, err := SignTx(NewTx(&DynamicFeeTx{Nonce: 0, To: &addr, Value: new(big.Int), Gas: 0, Data: nil}), signer, key)
+	tx, err := SignTx(NewTx(&DynamicFeeTx{Nonce: 0, To: &addr, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}), signer, key)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -92,7 +92,7 @@ func TestShaghaiSigningVitalik(t *testing.T) {
 func TestChainId(t *testing.T) {
 	key, _ := defaultTestKey()
 
-	tx := NewTx(&DynamicFeeTx{Nonce: 0, To: &common.Address{}, Value: new(big.Int), Gas: 0, Data: nil})
+	tx := NewTx(&DynamicFeeTx{Nonce: 0, To: &common.Address{}, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil})
 
 	var err error
 	tx, err = SignTx(tx, NewShanghaiSigner(big.NewInt(1)), key)
