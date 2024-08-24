@@ -47,7 +47,7 @@ import (
 	"github.com/theQRL/go-zond/zond/tracers/logger"
 )
 
-// ZondAPI provides an API to access zond related information.
+// ZondAPI provides an API to access Zond related information.
 type ZondAPI struct {
 	b Backend
 }
@@ -58,12 +58,12 @@ func NewZondAPI(b Backend) *ZondAPI {
 }
 
 // GasPrice returns a suggestion for a gas price for legacy transactions.
-func (api *ZondAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
-	tipcap, err := api.b.SuggestGasTipCap(ctx)
+func (s *ZondAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
+	tipcap, err := s.b.SuggestGasTipCap(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if head := api.b.CurrentHeader(); head.BaseFee != nil {
+	if head := s.b.CurrentHeader(); head.BaseFee != nil {
 		tipcap.Add(tipcap, head.BaseFee)
 	}
 	return (*hexutil.Big)(tipcap), err
@@ -335,7 +335,7 @@ func (n *proofList) Delete(key []byte) error {
 }
 
 // GetProof returns the Merkle-proof for a given account and optionally some storage keys.
-func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, storageKeys []string, blockNrOrHash rpc.BlockNumberOrHash) (*AccountResult, error) {
+func (s *BlockChainAPI) GetProof(ctx context.Context, address common.Address, storageKeys []string, blockNrOrHash rpc.BlockNumberOrHash) (*AccountResult, error) {
 	var (
 		keys         = make([]common.Hash, len(storageKeys))
 		keyLengths   = make([]int, len(storageKeys))
@@ -349,7 +349,7 @@ func (api *BlockChainAPI) GetProof(ctx context.Context, address common.Address, 
 			return nil, err
 		}
 	}
-	statedb, header, err := api.b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
+	statedb, header, err := s.b.StateAndHeaderByNumberOrHash(ctx, blockNrOrHash)
 	if statedb == nil || err != nil {
 		return nil, err
 	}
