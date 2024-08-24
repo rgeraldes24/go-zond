@@ -152,11 +152,12 @@ func genTxs(num uint64) (types.Transactions, error) {
 	newTx := func(i uint64) (*types.Transaction, error) {
 		signer := types.NewShanghaiSigner(big.NewInt(18))
 		utx := types.NewTx(&types.DynamicFeeTx{
-			Nonce: i,
-			To:    &addr,
-			Value: new(big.Int),
-			Gas:   0,
-			Data:  nil,
+			Nonce:     i,
+			To:        &addr,
+			Value:     new(big.Int),
+			Gas:       0,
+			GasFeeCap: new(big.Int).SetUint64(10000000),
+			Data:      nil,
 		})
 		tx, err := types.SignTx(utx, signer, key)
 		return tx, err
