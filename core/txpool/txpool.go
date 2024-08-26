@@ -452,7 +452,7 @@ func (p *TxPool) Locals() []common.Address {
 }
 
 // Status returns the known status (unknown/pending/queued) of a transaction
-// identified by its hashes.
+// identified by its hash.
 func (p *TxPool) Status(hash common.Hash) TxStatus {
 	for _, subpool := range p.subpools {
 		if status := subpool.Status(hash); status != TxStatusUnknown {
