@@ -78,7 +78,7 @@ func TestGenerateWithdrawalChain(t *testing.T) {
 			To:        &to,
 			Value:     big.NewInt(1000),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: new(big.Int).Add(gen.BaseFee(), common.Big1),
 			Data:      nil,
 		})
 		signedTx, _ := types.SignTx(tx, signer, key)
@@ -175,7 +175,7 @@ func ExampleGenerateChain() {
 				To:        &to,
 				Value:     big.NewInt(10000000000000),
 				Gas:       params.TxGas,
-				GasFeeCap: big.NewInt(875000000),
+				GasFeeCap: gen.header.BaseFee,
 				Data:      nil,
 			})
 			signedTx, _ := types.SignTx(tx, signer, key1)
@@ -191,7 +191,7 @@ func ExampleGenerateChain() {
 				To:        &to2,
 				Value:     big.NewInt(10000000000000),
 				Gas:       params.TxGas,
-				GasFeeCap: big.NewInt(875000000),
+				GasFeeCap: gen.header.BaseFee,
 				Data:      nil,
 			})
 			tx2 := types.NewTx(&types.DynamicFeeTx{
@@ -199,7 +199,7 @@ func ExampleGenerateChain() {
 				To:        &to3,
 				Value:     big.NewInt(10000000),
 				Gas:       params.TxGas,
-				GasFeeCap: big.NewInt(875000000),
+				GasFeeCap: gen.header.BaseFee,
 				Data:      nil,
 			})
 			signedTx1, _ := types.SignTx(tx1, signer, key1)
