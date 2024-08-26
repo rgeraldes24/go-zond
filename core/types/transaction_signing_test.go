@@ -61,6 +61,7 @@ func TestEIP155ChainId(t *testing.T) {
 }
 
 func TestShaghaiSigningVitalik(t *testing.T) {
+	// NOTE(rgeraldes24): url not working
 	// Test vectors come from http://vitalik.ca/files/eip155_testvec.txt
 	for i, test := range []struct {
 		txRlp, addr string
