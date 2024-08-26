@@ -20,6 +20,7 @@
 
 package core
 
+// TODO(theQRL/go-zond/issues/64)
 /*
 import (
 	"math/big"
