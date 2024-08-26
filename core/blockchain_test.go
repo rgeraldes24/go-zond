@@ -697,7 +697,7 @@ func testFastVsFullChains(t *testing.T, scheme string) {
 					To:        &common.Address{0x00},
 					Value:     big.NewInt(1000),
 					Gas:       params.TxGas,
-					GasFeeCap: big.NewInt(669921875),
+					GasFeeCap: block.header.BaseFee,
 					Data:      nil,
 				})
 				signedTx, err := types.SignTx(tx, signer, key)
@@ -943,8 +943,8 @@ func testChainTxReorgs(t *testing.T, scheme string) {
 	//  - postponed: transaction included at a later block in the forked chain
 	//  - swapped: transaction included at the same block number in the forked chain
 	to := common.Address(addr1)
-	postponed, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &to, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key1)
-	swapped, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 1, To: &to, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key1)
+	postponed, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &to, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(params.InitialBaseFee), Data: nil}), signer, key1)
+	swapped, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 1, To: &to, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(params.InitialBaseFee), Data: nil}), signer, key1)
 
 	// Create two transactions that will be dropped by the forked chain:
 	//  - pastDrop: transaction dropped retroactively from a past block
@@ -962,13 +962,13 @@ func testChainTxReorgs(t *testing.T, scheme string) {
 		switch i {
 		case 0:
 
-			pastDrop, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr2), To: &to2, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key2)
+			pastDrop, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr2), To: &to2, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: gen.header.BaseFee, Data: nil}), signer, key2)
 
 			gen.AddTx(pastDrop)  // This transaction will be dropped in the fork from below the split point
 			gen.AddTx(postponed) // This transaction will be postponed till block #3 in the fork
 
 		case 2:
-			freshDrop, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr2), To: &to2, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key2)
+			freshDrop, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr2), To: &to2, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: gen.header.BaseFee, Data: nil}), signer, key2)
 
 			gen.AddTx(freshDrop) // This transaction will be dropped in the fork from exactly at the split point
 			gen.AddTx(swapped)   // This transaction will be swapped out at the exact height
@@ -989,18 +989,18 @@ func testChainTxReorgs(t *testing.T, scheme string) {
 	_, chain, _ = GenerateChainWithGenesis(gspec, beacon.NewFaker(), 5, func(i int, gen *BlockGen) {
 		switch i {
 		case 0:
-			pastAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key3)
+			pastAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: gen.header.BaseFee, Data: nil}), signer, key3)
 			gen.AddTx(pastAdd) // This transaction needs to be injected during reorg
 
 		case 2:
 			gen.AddTx(postponed) // This transaction was postponed from block #1 in the original chain
 			gen.AddTx(swapped)   // This transaction was swapped from the exact current spot in the original chain
 
-			freshAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key3)
+			freshAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: gen.header.BaseFee, Data: nil}), signer, key3)
 			gen.AddTx(freshAdd) // This transaction will be added exactly at reorg time
 
 		case 3:
-			futureAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, key3)
+			futureAdd, _ = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: gen.TxNonce(addr3), To: &to3, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: gen.header.BaseFee, Data: nil}), signer, key3)
 			gen.AddTx(futureAdd) // This transaction will be added after a full reorg
 		}
 	})
@@ -1064,7 +1064,7 @@ func testLogReorgs(t *testing.T, scheme string) {
 				Nonce:     gen.TxNonce(addr1),
 				Value:     new(big.Int),
 				Gas:       1000000,
-				GasFeeCap: big.NewInt(875000000),
+				GasFeeCap: gen.header.BaseFee,
 				Data:      code,
 			})
 			tx, err := types.SignTx(tx, signer, key1)
@@ -1254,7 +1254,7 @@ func testReorgSideEvent(t *testing.T, scheme string) {
 			Nonce:     gen.TxNonce(addr1),
 			Value:     new(big.Int),
 			Gas:       1000000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: gen.header.BaseFee,
 			Data:      nil,
 		})
 		tx, err := types.SignTx(tx, signer, key1)
@@ -1399,7 +1399,7 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 				To:        &theAddr,
 				Value:     new(big.Int),
 				Gas:       21000,
-				GasFeeCap: big.NewInt(875000000),
+				GasFeeCap: block.header.BaseFee,
 				Data:      nil,
 			})
 			tx, err = types.SignTx(tx, signer, key)
@@ -1409,7 +1409,7 @@ func testEIP161AccountRemoval(t *testing.T, scheme string) {
 				To:        &theAddr,
 				Value:     new(big.Int),
 				Gas:       21000,
-				GasFeeCap: big.NewInt(875000000),
+				GasFeeCap: block.header.BaseFee,
 				Data:      nil,
 			})
 			tx, err = types.SignTx(tx, signer, key)
@@ -2035,7 +2035,7 @@ func TestTransactionIndices(t *testing.T) {
 			To:        &common.Address{0x00},
 			Value:     big.NewInt(1000),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: block.header.BaseFee,
 			Data:      nil,
 		})
 		tx, err := types.SignTx(tx, signer, key)
@@ -2144,7 +2144,7 @@ func testSkipStaleTxIndicesInSnapSync(t *testing.T, scheme string) {
 			To:        &common.Address{0x00},
 			Value:     big.NewInt(1000),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: block.header.BaseFee,
 			Data:      nil,
 		})
 		tx, err := types.SignTx(tx, signer, key)
@@ -2245,11 +2245,12 @@ func benchmarkLargeNumberOfValueToNonexisting(b *testing.B, numTxs, numBlocks in
 			uniq := uint64(i*numTxs + txi)
 			recipient := recipientFn(uniq)
 			tx := types.NewTx(&types.DynamicFeeTx{
-				Nonce: uniq,
-				To:    &recipient,
-				Value: big.NewInt(1),
-				Gas:   params.TxGas,
-				Data:  nil,
+				Nonce:     uniq,
+				To:        &recipient,
+				Value:     big.NewInt(1),
+				Gas:       params.TxGas,
+				GasFeeCap: block.header.BaseFee,
+				Data:      nil,
 			})
 			tx, err := types.SignTx(tx, signer, testBankKey)
 			if err != nil {
@@ -2380,7 +2381,7 @@ func testDeleteCreateRevert(t *testing.T, scheme string) {
 			To:        &aa,
 			Value:     big.NewInt(0),
 			Gas:       50000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.header.BaseFee,
 			Data:      nil,
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
@@ -2391,7 +2392,7 @@ func testDeleteCreateRevert(t *testing.T, scheme string) {
 			To:        &bb,
 			Value:     big.NewInt(0),
 			Gas:       100000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.header.BaseFee,
 			Data:      nil,
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
@@ -2507,7 +2508,7 @@ func testDeleteRecreateSlots(t *testing.T, scheme string) {
 			To:        &aa,
 			Value:     big.NewInt(0),
 			Gas:       50000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.header.BaseFee,
 			Data:      nil,
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
@@ -2518,7 +2519,7 @@ func testDeleteRecreateSlots(t *testing.T, scheme string) {
 			To:        &bb,
 			Value:     big.NewInt(0),
 			Gas:       100000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.header.BaseFee,
 			Data:      nil,
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
@@ -2603,7 +2604,7 @@ func testDeleteRecreateAccount(t *testing.T, scheme string) {
 			To:        &aa,
 			Value:     big.NewInt(0),
 			Gas:       50000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.header.BaseFee,
 			Data:      nil,
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
@@ -2614,7 +2615,7 @@ func testDeleteRecreateAccount(t *testing.T, scheme string) {
 			To:        &aa,
 			Value:     big.NewInt(1),
 			Gas:       100000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.header.BaseFee,
 			Data:      nil,
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
@@ -2753,7 +2754,7 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 			To:        &aa,
 			Value:     big.NewInt(0),
 			Gas:       50000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.header.BaseFee,
 			Data:      nil,
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
@@ -2771,7 +2772,7 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 			To:        &bb,
 			Value:     big.NewInt(0),
 			Gas:       100000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.header.BaseFee,
 			Data:      nil,
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
@@ -2945,7 +2946,7 @@ func testInitThenFailCreateContract(t *testing.T, scheme string) {
 			To:        &bb,
 			Value:     big.NewInt(0),
 			Gas:       100000,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: b.header.BaseFee,
 			Data:      nil,
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, key)
@@ -3238,7 +3239,7 @@ func testSetCanonical(t *testing.T, scheme string) {
 			To:        &common.Address{0x00},
 			Value:     big.NewInt(1000),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: gen.header.BaseFee,
 			Data:      nil,
 		})
 		tx, err := types.SignTx(tx, signer, key)
@@ -3267,7 +3268,7 @@ func testSetCanonical(t *testing.T, scheme string) {
 			To:        &common.Address{0x00},
 			Value:     big.NewInt(1),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: gen.header.BaseFee,
 			Data:      nil,
 		})
 		tx, err := types.SignTx(tx, signer, key)
@@ -3445,7 +3446,7 @@ func TestTxIndexer(t *testing.T) {
 			To:        &to,
 			Value:     big.NewInt(1000),
 			Gas:       params.TxGas,
-			GasFeeCap: big.NewInt(875000000),
+			GasFeeCap: big.NewInt(10 * params.InitialBaseFee),
 			Data:      nil,
 		})
 		tx, _ = types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, testBankKey)
