@@ -79,9 +79,9 @@ func genValueTx(nbytes int) func(int, *BlockGen) {
 		data := make([]byte, nbytes)
 		gas, _ := IntrinsicGas(data, nil, false)
 		signer := types.MakeSigner(gen.config)
-		gasPrice := big.NewInt(0)
+		baseFee := big.NewInt(0)
 		if gen.header.BaseFee != nil {
-			gasPrice = gen.header.BaseFee
+			baseFee = gen.header.BaseFee
 		}
 		tx, _ := types.SignNewTx(benchRootKey, signer, &types.DynamicFeeTx{
 			Nonce:     gen.TxNonce(benchRootAddr),
@@ -89,7 +89,7 @@ func genValueTx(nbytes int) func(int, *BlockGen) {
 			Value:     big.NewInt(1),
 			Gas:       gas,
 			Data:      data,
-			GasFeeCap: gasPrice,
+			GasFeeCap: baseFee,
 		})
 		gen.AddTx(tx)
 	}
@@ -118,9 +118,9 @@ func genTxRing(naccounts int) func(int, *BlockGen) {
 	return func(i int, gen *BlockGen) {
 		block := gen.PrevBlock(i - 1)
 		gas := block.GasLimit()
-		gasPrice := big.NewInt(0)
+		baseFee := big.NewInt(0)
 		if gen.header.BaseFee != nil {
-			gasPrice = gen.header.BaseFee
+			baseFee = gen.header.BaseFee
 		}
 		signer := types.MakeSigner(gen.config)
 		for {
@@ -141,7 +141,7 @@ func genTxRing(naccounts int) func(int, *BlockGen) {
 					To:        &ringAddrs[to],
 					Value:     availableFunds,
 					Gas:       params.TxGas,
-					GasFeeCap: gasPrice,
+					GasFeeCap: baseFee,
 				})
 			if err != nil {
 				panic(err)
