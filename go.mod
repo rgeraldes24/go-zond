@@ -2,6 +2,8 @@ module github.com/theQRL/go-zond
 
 go 1.22
 
+toolchain go1.22.0
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v0.3.0
 	github.com/Microsoft/go-winio v0.6.1
