@@ -105,10 +105,9 @@ func TestEIP1559BlockEncoding(t *testing.T) {
 		},
 	}}
 	tx1 := NewTx(&DynamicFeeTx{
-		Nonce: 18,
-		To:    &to,
-		Value: big.NewInt(1),
-		// Gas:        params.TxGas,
+		Nonce:      18,
+		To:         &to,
+		Value:      big.NewInt(1),
 		Gas:        25300,
 		GasFeeCap:  big.NewInt(875000000),
 		GasTipCap:  big.NewInt(params.GWei / 1000),
