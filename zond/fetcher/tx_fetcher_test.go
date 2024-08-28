@@ -1060,7 +1060,7 @@ func TestTransactionFetcherBandwidthLimiting(t *testing.T) {
 				types:  []byte{types.DynamicFeeTxType, types.DynamicFeeTxType},
 				sizes:  []uint32{maxTxRetrievalSize, maxTxRetrievalSize},
 			},
-			// Announce oversized blob transactions to see that overflows are ok
+			// Announce oversized transactions to see that overflows are ok
 			doTxNotify{peer: "C",
 				hashes: []common.Hash{{0x07}, {0x08}},
 				types:  []byte{types.DynamicFeeTxType, types.DynamicFeeTxType},

@@ -1206,7 +1206,6 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 	return backend, txHashes
 }
 
-/*
 func TestRPCGetTransactionReceipt(t *testing.T) {
 	t.Parallel()
 
@@ -1269,7 +1268,6 @@ func TestRPCGetTransactionReceipt(t *testing.T) {
 		testRPCResponseWithFile(t, i, result, "zond_getTransactionReceipt", tt.file)
 	}
 }
-*/
 
 func TestRPCGetBlockReceipts(t *testing.T) {
 	t.Parallel()
