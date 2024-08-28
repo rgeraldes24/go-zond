@@ -45,8 +45,7 @@ function testTx(){
     if( accts && accts.length > 0) {
         var a = accts[0]
         var txdata = zond.signTransaction({from: a, to: a, value: 1, nonce: 1, gas: 1, maxFeePerGas: 1, maxPriorityFeePerGas: 0})
-        console.log("tx data",  txdata)
-
+        console.log("transaction signing response",  txdata)
     }
 }
 function testSignText(){

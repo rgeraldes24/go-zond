@@ -384,8 +384,12 @@ func (tx *Transaction) Size() uint64 {
 
 // WithSignatureAndPublicKey returns a new transaction with the given signature.
 func (tx *Transaction) WithSignatureAndPublicKey(signer Signer, sig, pk []byte) (*Transaction, error) {
+	signature, publicKey, err := signer.SignatureAndPublicKeyValues(tx, sig, pk)
+	if err != nil {
+		return nil, err
+	}
 	cpy := tx.inner.copy()
-	cpy.setSignatureAndPublicKeyValues(signer.ChainID(), sig, pk)
+	cpy.setSignatureAndPublicKeyValues(signer.ChainID(), signature, publicKey)
 	return &Transaction{inner: cpy, time: tx.time}, nil
 }
 
