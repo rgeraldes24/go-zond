@@ -893,7 +893,7 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 		signer    = types.ShanghaiSigner{ChainId: big.NewInt(1)}
 		tx        = types.NewTx(&types.DynamicFeeTx{
 			Nonce:     11,
-			GasFeeCap: big.NewInt(0),
+			GasFeeCap: big.NewInt(11111),
 			Gas:       1111,
 			To:        &acc2Addr,
 			Value:     big.NewInt(111),
