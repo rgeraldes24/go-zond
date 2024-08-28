@@ -436,7 +436,6 @@ func hugeAmount(s *Suite) *types.Transaction {
 	return signWithFaucet(s.chain.chainConfig, txNew)
 }
 
-// eraldes24): review naming/test: change to hugeGasFeeCap?
 func hugeGasPrice(s *Suite) *types.Transaction {
 	tx := getNextTxFromChain(s)
 	if tx == nil {
