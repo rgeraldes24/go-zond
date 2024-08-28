@@ -219,47 +219,48 @@ func TestStateProcessorErrors(t *testing.T) {
 		}
 	}
 
-	// ErrTxTypeNotSupported, For this, we need an older chain
-	{
-		var (
-			db    = rawdb.NewMemoryDatabase()
-			gspec = &Genesis{
-				Config: &params.ChainConfig{
-					ChainID: big.NewInt(1),
-				},
-				Alloc: GenesisAlloc{
-					common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7"): GenesisAccount{
-						Balance: big.NewInt(1000000000000000000), // 1 ether
-						Nonce:   0,
+	// NOTE(rgeraldes24): test not valid for now
+	/*
+		// ErrTxTypeNotSupported, For this, we need an older chain
+		{
+			var (
+				db    = rawdb.NewMemoryDatabase()
+				gspec = &Genesis{
+					Config: &params.ChainConfig{
+						ChainID: big.NewInt(1),
 					},
-				},
-			}
-			blockchain, _ = NewBlockChain(db, nil, gspec, beacon.NewFaker(), vm.Config{}, nil)
-		)
-		defer blockchain.Stop()
-		for i, tt := range []struct {
-			txs  []*types.Transaction
-			want string
-		}{
-			/*
+					Alloc: GenesisAlloc{
+						common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7"): GenesisAccount{
+							Balance: big.NewInt(1000000000000000000), // 1 ether
+							Nonce:   0,
+						},
+					},
+				}
+				blockchain, _ = NewBlockChain(db, nil, gspec, beacon.NewFaker(), vm.Config{}, nil)
+			)
+			defer blockchain.Stop()
+			for i, tt := range []struct {
+				txs  []*types.Transaction
+				want string
+			}{
 				{ // ErrTxTypeNotSupported
 					txs: []*types.Transaction{
 						mkDynamicTx(0, common.Address{}, params.TxGas-1000, big.NewInt(0), big.NewInt(0)),
 					},
 					want: "could not apply tx 0 [0x88626ac0d53cb65308f2416103c62bb1f18b805573d4f96a3640bbbfff13c14f]: transaction type not supported",
 				},
-			*/
-		} {
-			block := GenerateBadBlock(gspec.ToBlock(), beacon.NewFaker(), tt.txs, gspec.Config)
-			_, err := blockchain.InsertChain(types.Blocks{block})
-			if err == nil {
-				t.Fatal("block imported without errors")
-			}
-			if have, want := err.Error(), tt.want; have != want {
-				t.Errorf("test %d:\nhave \"%v\"\nwant \"%v\"\n", i, have, want)
+			} {
+				block := GenerateBadBlock(gspec.ToBlock(), beacon.NewFaker(), tt.txs, gspec.Config)
+				_, err := blockchain.InsertChain(types.Blocks{block})
+				if err == nil {
+					t.Fatal("block imported without errors")
+				}
+				if have, want := err.Error(), tt.want; have != want {
+					t.Errorf("test %d:\nhave \"%v\"\nwant \"%v\"\n", i, have, want)
+				}
 			}
 		}
-	}
+	*/
 
 	// ErrSenderNoEOA, for this we need the sender to have contract code
 	{
@@ -268,7 +269,7 @@ func TestStateProcessorErrors(t *testing.T) {
 			gspec = &Genesis{
 				Config: config,
 				Alloc: GenesisAlloc{
-					common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7"): GenesisAccount{
+					common.HexToAddress("0x20a1A68e6818a1142F85671DB01eF7226debf822"): GenesisAccount{
 						Balance: big.NewInt(1000000000000000000), // 1 ether
 						Nonce:   0,
 						Code:    common.FromHex("0xB0B0FACE"),
@@ -282,14 +283,12 @@ func TestStateProcessorErrors(t *testing.T) {
 			txs  []*types.Transaction
 			want string
 		}{
-			/*
-				{ // ErrSenderNoEOA
-					txs: []*types.Transaction{
-						mkDynamicTx(0, common.Address{}, params.TxGas-1000, big.NewInt(0), big.NewInt(0)),
-					},
-					want: "could not apply tx 0 [0x88626ac0d53cb65308f2416103c62bb1f18b805573d4f96a3640bbbfff13c14f]: sender not an eoa: address 0x71562b71999873DB5b286dF957af199Ec94617F7, codehash: 0x9280914443471259d4570a8661015ae4a5b80186dbc619658fb494bebc3da3d1",
+			{ // ErrSenderNoEOA
+				txs: []*types.Transaction{
+					mkDynamicTx(key1, 0, common.Address{}, big.NewInt(0), params.TxGas-1000, big.NewInt(875000000), big.NewInt(0)),
 				},
-			*/
+				want: "could not apply tx 0 [0xbdd680bc60f0a72adc477e41ab160216daa660c40e907fa568e1b86952670390]: sender not an eoa: address 0x20a1A68e6818a1142F85671DB01eF7226debf822, codehash: 0x9280914443471259d4570a8661015ae4a5b80186dbc619658fb494bebc3da3d1",
+			},
 		} {
 			block := GenerateBadBlock(gspec.ToBlock(), beacon.New(), tt.txs, gspec.Config)
 			_, err := blockchain.InsertChain(types.Blocks{block})
