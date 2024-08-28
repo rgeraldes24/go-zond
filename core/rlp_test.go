@@ -55,7 +55,7 @@ func getBlock(transactions int, dataSize int) *types.Block {
 						To:        &aa,
 						Value:     big.NewInt(0),
 						Gas:       50000,
-						GasFeeCap: big.NewInt(875000000),
+						GasFeeCap: b.header.BaseFee,
 						Data:      make([]byte, dataSize),
 					})
 					signedTx, _ := types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, d)
@@ -110,9 +110,9 @@ func testRlpIterator(t *testing.T, txs, datasize int) {
 	var gotHashes []common.Hash
 	var expHashes []common.Hash
 	for txIt.Next() {
-		// NOTE(rgeraldes24): ignore rlp metadata bytes + tx type byte
-		innerRLP := txIt.Value()[4:]
-		gotHashes = append(gotHashes, crypto.Keccak256Hash([][]byte{{types.DynamicFeeTxType}, innerRLP}...))
+		// NOTE(rgeraldes24): ignore rlp metadata bytes(3): kind: case b < 0xC0(b9)
+		typeAndInnerRLP := txIt.Value()[3:]
+		gotHashes = append(gotHashes, crypto.Keccak256Hash([][]byte{typeAndInnerRLP}...))
 	}
 
 	var expBody types.Body
