@@ -335,6 +335,7 @@ func unknownTx(s *Suite) *types.Transaction {
 		To:    &to,
 		Value: tx.Value(),
 		Gas:   tx.Gas(),
+		GasFeeCap: tx.GasPrice(),
 		Data:  tx.Data(),
 	})
 	return signWithFaucet(s.chain.chainConfig, txNew)
@@ -382,6 +383,7 @@ func generateTx(chainConfig *params.ChainConfig, nonce uint64, gas uint64) *type
 		To:    &to,
 		Value: big.NewInt(1),
 		Gas:   gas,
+		GasFeeCap: big.NewInt(1),
 		Data:  []byte{},
 	})
 	return signWithFaucet(chainConfig, tx)
@@ -411,6 +413,7 @@ func invalidNonceTx(s *Suite) *types.Transaction {
 		To:    &to,
 		Value: tx.Value(),
 		Gas:   tx.Gas(),
+		GasFeeCap: tx.GasPrice(),
 		Data:  tx.Data(),
 	})
 	return signWithFaucet(s.chain.chainConfig, txNew)
@@ -431,6 +434,7 @@ func hugeAmount(s *Suite) *types.Transaction {
 		To:    &to,
 		Value: amount,
 		Gas:   tx.Gas(),
+		GasFeeCap: tx.GasPrice(),
 		Data:  tx.Data(),
 	})
 	return signWithFaucet(s.chain.chainConfig, txNew)
@@ -471,6 +475,7 @@ func hugeData(s *Suite) *types.Transaction {
 		To:    &to,
 		Value: tx.Value(),
 		Gas:   tx.Gas(),
+		GasFeeCap: tx.GasPrice(),
 		Data:  largeBuffer(2),
 	})
 	return signWithFaucet(s.chain.chainConfig, txNew)
