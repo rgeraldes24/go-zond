@@ -16,7 +16,7 @@
 
 package zondtest
 
-// TODO(theQRL/go-zond/issues/59)
+// TODO(now.youtrack.cloud/issue/TGZ-6)
 /*
 import (
 	"time"
@@ -33,7 +33,7 @@ var (
 	fullchainFile = "./testdata/chain.rlp"
 )
 
-TODO(theQRL/go-zond/issues/59)
+TODO(now.youtrack.cloud/issue/TGZ-6)
 /*
 func TestZondSuite(t *testing.T) {
 	gzond, err := runGzond()

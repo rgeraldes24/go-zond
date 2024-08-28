@@ -16,7 +16,7 @@
 
 package downloader
 
-// TODO(theQRL/go-zond/issues/63)
+// TODO(now.youtrack.cloud/issue/TGZ-8)
 /*
 import (
 	"encoding/json"

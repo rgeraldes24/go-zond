@@ -36,7 +36,6 @@ type sigCache struct {
 	from   common.Address
 }
 
-// TODO(theQRL/go-zond/issues/39)
 // MakeSigner returns a Signer based on the given chain config and block number.
 func MakeSigner(config *params.ChainConfig) Signer {
 	return NewShanghaiSigner(config.ChainID)

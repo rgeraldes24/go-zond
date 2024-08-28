@@ -82,7 +82,7 @@ func TestCallTracerNative(t *testing.T) {
 	testCallTracer("callTracer", "call_tracer", t)
 }
 
-// TODO(theQRL/go-zond/issues/51)
+// TODO(now.youtrack.cloud/issue/TGZ-13)
 func TestCallTracerNativeWithLog(t *testing.T) {
 	testCallTracer("callTracer", "call_tracer_withLog", t)
 }

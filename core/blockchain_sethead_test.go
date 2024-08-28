@@ -150,7 +150,7 @@ func (tt *rewindTest) dump(crash bool) string {
 	return buffer.String()
 }
 
-// TODO(theQRL/go-zond/issues/61)
+// TODO(now.youtrack.cloud/issue/TGZ-10)
 /*
 // Tests a sethead for a short canonical chain where a recent block was already
 // committed to disk and then the sethead called. In this case we expect the full

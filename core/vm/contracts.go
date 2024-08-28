@@ -83,12 +83,12 @@ func RunPrecompiledContract(p PrecompiledContract, input []byte, suppliedGas uin
 
 type depositroot struct{}
 
-// TODO(theQRL/go-zond/issues/60)
+// TODO(now.youtrack.cloud/issue/TGZ-5)
 func (c *depositroot) RequiredGas(input []byte) uint64 {
 	return params.DepositrootGas
 }
 
-// TODO(theQRL/go-zond/issues/60)
+// TODO(now.youtrack.cloud/issue/TGZ-5)
 func (c *depositroot) Run(input []byte) ([]byte, error) {
 	const depositRootInputLength = 7508 // 7251 in the correct version
 	input = common.RightPadBytes(input, depositRootInputLength)

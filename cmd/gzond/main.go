@@ -60,9 +60,9 @@ var (
 		utils.MinFreeDiskSpaceFlag,
 		utils.KeyStoreDirFlag,
 		utils.ExternalSignerFlag,
-		// TODO(theQRL/go-zond/issues/37)
+		// TODO(now.youtrack.cloud/issue/TGZ-4)
 		// utils.USBFlag,
-		// TODO(theQRL/go-zond/issues/38)
+		// TODO(now.youtrack.cloud/issue/TGZ-1)
 		// utils.SmartCardDaemonPathFlag,
 		utils.TxPoolLocalsFlag,
 		utils.TxPoolNoLocalsFlag,

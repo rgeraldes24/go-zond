@@ -20,7 +20,7 @@
 
 package core
 
-// TODO(theQRL/go-zond/issues/64)
+// TODO(now.youtrack.cloud/issue/TGZ-7)
 /*
 import (
 	"math/big"

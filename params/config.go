@@ -23,7 +23,7 @@ import (
 	"github.com/theQRL/go-zond/common"
 )
 
-// TODO(theQRL/go-zond/issues/50)
+// TODO(now.youtrack.cloud/issue/TGZ-16)
 // Genesis hashes to enforce below configs on.
 var (
 	MainnetGenesisHash = common.HexToHash("0xb3de630542cf9acf842e24f428c7c21b7824b38a7718a632e424b58ba0f562c6")

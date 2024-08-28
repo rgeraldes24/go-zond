@@ -16,7 +16,7 @@
 
 package zondtest
 
-// TODO(theQRL/go-zond/issues/59)
+// TODO(now.youtrack.cloud/issue/TGZ-6)
 /*
 import (
 	"crypto/rand"

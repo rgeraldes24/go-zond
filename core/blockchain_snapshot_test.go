@@ -465,7 +465,7 @@ func TestRestartWithNewSnapshot(t *testing.T) {
 // so the chain should be rewound to genesis and the disk layer should be left
 // for recovery.
 func TestNoCommitCrashWithNewSnapshot(t *testing.T) {
-	t.Skip() // TODO(theQRL/go-zond/issues/62)
+	t.Skip() // TODO(now.youtrack.cloud/issue/TGZ-9)
 	// Chain:
 	//   G->C1->C2->C3->C4->C5->C6->C7->C8 (HEAD)
 	//
@@ -508,7 +508,7 @@ func TestNoCommitCrashWithNewSnapshot(t *testing.T) {
 // point so the chain should be rewound to committed point and the disk layer
 // should be left for recovery.
 func TestLowCommitCrashWithNewSnapshot(t *testing.T) {
-	t.Skip() // TODO(theQRL/go-zond/issues/62)
+	t.Skip() // TODO(now.youtrack.cloud/issue/TGZ-9)
 	// Chain:
 	//   G->C1->C2->C3->C4->C5->C6->C7->C8 (HEAD)
 	//
@@ -551,7 +551,7 @@ func TestLowCommitCrashWithNewSnapshot(t *testing.T) {
 // committed point so the chain should be rewound to genesis and the disk layer
 // should be left for recovery.
 func TestHighCommitCrashWithNewSnapshot(t *testing.T) {
-	t.Skip() // TODO(theQRL/go-zond/issues/62)
+	t.Skip() // TODO(now.youtrack.cloud/issue/TGZ-9)
 	// Chain:
 	//   G->C1->C2->C3->C4->C5->C6->C7->C8 (HEAD)
 	//

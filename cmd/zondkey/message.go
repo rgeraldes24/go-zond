@@ -89,7 +89,7 @@ type outputVerify struct {
 	Success bool
 }
 
-// TODO(theQRL/go-zond/issues/65)
+// TODO(now.youtrack.cloud/issue/TGZ-3)
 var commandVerifyMessage = &cli.Command{
 	Name:      "verifymessage",
 	Usage:     "verify the signature of a signed message",

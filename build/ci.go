@@ -184,10 +184,10 @@ func main() {
 		doLint(os.Args[2:])
 	case "archive":
 		doArchive(os.Args[2:])
-	// TODO(theQRL/go-zond/issues/55)
+	// TODO(now.youtrack.cloud/issue/TGZ-15)
 	// case "docker":
 	// doDocker(os.Args[2:])
-	// TODO(theQRL/go-zond/issues/54)
+	// TODO(now.youtrack.cloud/issue/TGZ-22)
 	// case "debsrc":
 	// doDebianSource(os.Args[2:])
 	case "nsis":
@@ -304,7 +304,7 @@ func doTest(cmdline []string) {
 
 	// Get test fixtures.
 	csdb := build.MustLoadChecksums("build/checksums.txt")
-	// TODO(theQRL/go-zond/issues/56)
+	// TODO(now.youtrack.cloud/issue/TGZ-23)
 	// downloadSpecTestFixtures(csdb, *cachedir)
 
 	// Configure the toolchain.

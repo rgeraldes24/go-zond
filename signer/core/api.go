@@ -134,7 +134,7 @@ func StartClefAccountManager(ksLocation string /*usbEnabled bool,*/, lightKDF bo
 		backends = append(backends, keystore.NewKeyStore(ksLocation, n, p))
 	}
 
-	// TODO(theQRL/go-zond/issues/58)
+	// TODO(now.youtrack.cloud/issue/TGZ-4)
 	/*
 		if usbEnabled {
 			// Start a USB hub for Ledger hardware wallets

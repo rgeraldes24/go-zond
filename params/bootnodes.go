@@ -18,7 +18,7 @@ package params
 
 import "github.com/theQRL/go-zond/common"
 
-// TODO(theQRL/go-zond/issues/46)
+// TODO(now.youtrack.cloud/issue/TGZ-14)
 // MainnetBootnodes are the enode URLs of the P2P bootstrap nodes running on
 // the main Zond network.
 var MainnetBootnodes = []string{
@@ -31,6 +31,7 @@ var BetaNetBootnodes = []string{
 	"enode://a1c66b0db0aef11f12327b83d0aea1e4f22d61afa0f7395633dd13ce9f84bd75b9e2ff583563944c33e6d9f552eaed36ba010ef365c92d37a00053035d2e3438@45.32.234.157:30303",
 }
 
+// TODO(now.youtrack.cloud/issue/TGZ-21)
 var V5Bootnodes = []string{
 	// Teku team's bootnode
 	"enr:-KG4QOtcP9X1FbIMOe17QNMKqDxCpm14jcX5tiOE4_TyMrFqbmhPZHK_ZPG2Gxb1GE2xdtodOfx9-cgvNtxnRyHEmC0ghGV0aDKQ9aX9QgAAAAD__________4JpZIJ2NIJpcIQDE8KdiXNlY3AyNTZrMaEDhpehBDbZjM_L9ek699Y7vhUJ-eAdMyQW_Fil522Y0fODdGNwgiMog3VkcIIjKA",

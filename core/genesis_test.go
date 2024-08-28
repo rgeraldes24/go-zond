@@ -64,7 +64,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 			wantErr:    errGenesisNoConfig,
 			wantConfig: params.AllBeaconProtocolChanges,
 		},
-		// TODO(theQRL/go-zond/issues/50)
+		// TODO(now.youtrack.cloud/issue/TGZ-16)
 		/*
 			{
 				name: "no block in DB, genesis == nil",
@@ -95,7 +95,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 			wantHash:   customghash,
 			wantConfig: customg.Config,
 		},
-		// TODO(theQRL/go-zond/issues/50)
+		// TODO(now.youtrack.cloud/issue/TGZ-16)
 		/*
 			{
 				name: "custom block in DB, genesis == goerli",
@@ -180,7 +180,7 @@ func TestGenesisHashes(t *testing.T) {
 		genesis *Genesis
 		want    common.Hash
 	}{
-		// TODO(theQRL/go-zond/issues/50)
+		// TODO(now.youtrack.cloud/issue/TGZ-16)
 		{DefaultGenesisBlock(), params.MainnetGenesisHash},
 		{DefaultBetaNetGenesisBlock(), params.BetaNetGenesisHash},
 	} {

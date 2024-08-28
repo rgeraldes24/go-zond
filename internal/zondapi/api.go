@@ -1550,7 +1550,7 @@ func (s *TransactionAPI) PendingTransactions() ([]*RPCTransaction, error) {
 	return transactions, nil
 }
 
-// TODO(theQRL/go-zond/issues/57)
+// TODO(now.youtrack.cloud/issue/TGZ-11)
 /*
 // Resend accepts an existing transaction and a new gas price and limit. It will remove
 // the given transaction from the pool and reinsert it with the new gas price and limit.
