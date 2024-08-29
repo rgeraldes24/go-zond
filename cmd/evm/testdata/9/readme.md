@@ -28,7 +28,7 @@ $ go run . t8n --state.fork=Shanghai --input.alloc=testdata/9/alloc.json --input
 
 We can also get the post-alloc:
 ```
-$ go run . t8n --state.fork=Shanghai --input.alloc=testdata/9/alloc.json --input.txs=testdata/9/txs.json --input.env=testdata/9/env.json --output.alloc=stdout
+$ go run . t8n --state.fork=Shanghai --input.alloc=testdata/9/alloc.json --input.txs=testdata/9/txs.json --input.env=testdata/9/env.json --output.alloc=stdout 2>/dev/null
 {
   "alloc": {
     "0x000000000000000000000000000000000000aaaa": {
