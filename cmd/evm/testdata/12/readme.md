@@ -5,23 +5,23 @@ This test contains an EIP-1559 consensus issue which happened on Ropsten, where
 
 Before the issue was fixed, this invocation allowed the transaction to pass into a block:
 ```
-dir=./testdata/12 && ./evm t8n --state.fork=Shanghai --input.alloc=$dir/alloc.json --input.txs=$dir/txs.json --input.env=$dir/env.json --output.alloc=stdout --output.result=stdout
+$ go run . t8n --state.fork=Shanghai --input.alloc=testdata/12/alloc.json --input.txs=testdata/12/txs.json --input.env=testdata/12/env.json --output.alloc=stdout --output.result=stdout
 ```
 
 With the fix applied, the result is: 
 ```
-dir=./testdata/12 && ./evm t8n --state.fork=Shanghai --input.alloc=$dir/alloc.json --input.txs=$dir/txs.json --input.env=$dir/env.json --output.alloc=stdout --output.result=stdout
-INFO [03-09|10:43:12.649] rejected tx                              index=0 hash=ccc996..d83435 from=0xa94f5374Fce5edBC8E2a8697C15331677e6EbF0B error="insufficient funds for gas * price + value: address 0xa94f5374Fce5edBC8E2a8697C15331677e6EbF0B have 84000000 want 84000032"
-INFO [03-09|10:43:12.650] Trie dumping started                     root=e05f81..6597a5
-INFO [03-09|10:43:12.650] Trie dumping complete                    accounts=1 elapsed="46.393µs"
+go run . t8n --state.fork=Shanghai --input.alloc=testdata/12/alloc.json --input.txs=testdata/12/txs.json --input.env=testdata/12/env.json --output.alloc=stdout --output.result=stdout
+INFO [08-29|13:58:34.361] rejected tx                              index=0 hash=dd9b2b..31143a from=0x20922F242A32cBb2d4CD75e397694cDBfac1242a error="insufficient funds for gas * price + value: address 0x20922F242A32cBb2d4CD75e397694cDBfac1242a have 84000000 want 84000032"
+INFO [08-29|13:58:34.361] Trie dumping started                     root=e13736..a39dbb
+INFO [08-29|13:58:34.361] Trie dumping complete                    accounts=1 elapsed="23.709µs"
 {
   "alloc": {
-    "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
+    "0x20922f242a32cbb2d4cd75e397694cdbfac1242a": {
       "balance": "0x501bd00"
     }
   },
   "result": {
-    "stateRoot": "0xe05f81f8244a76503ceec6f88abfcd03047a612a1001217f37d30984536597a5",
+    "stateRoot": "0xe1373654d7b14379003e90d1547fac4a29e78bf044ceef9b77e9cdc7f2a39dbb",
     "txRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
     "receiptsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
     "logsHash": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
@@ -30,11 +30,12 @@ INFO [03-09|10:43:12.650] Trie dumping complete                    accounts=1 el
     "rejected": [
       {
         "index": 0,
-        "error": "insufficient funds for gas * price + value: address 0xa94f5374Fce5edBC8E2a8697C15331677e6EbF0B have 84000000 want 84000032"
+        "error": "insufficient funds for gas * price + value: address 0x20922F242A32cBb2d4CD75e397694cDBfac1242a have 84000000 want 84000032"
       }
     ],
     "gasUsed": "0x0",
-    "currentBaseFee": "0x20"
+    "currentBaseFee": "0x20",
+    "withdrawalsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421"
   }
 }
 ```
