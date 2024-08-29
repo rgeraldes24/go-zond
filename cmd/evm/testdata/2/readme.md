@@ -13,7 +13,7 @@ $ go run . t8n --state.fork=Shanghai --input.alloc=testdata/2/alloc.json --input
     "0x0000000000000000000000000000000000000000": {
       "balance": "0xde0b6b3a76586a0"
     },
-    "0x20922f242a32cbb2d4cd75e397694cdbfac1242a": {
+    "0x20687fa825ab4ad40a89c303f22f65fef9778555": {
       "balance": "0xde0b6b3a183ed4f",
       "nonce": "0x1"
     }

@@ -9,7 +9,7 @@ following code: `0x58585454`: `PC; PC; SLOAD; SLOAD`.
 
 Essentially, this contract does `SLOAD(0)` and `SLOAD(1)`.
 
-The alloc also contains some funds on `0x20922f242a32cbb2d4cd75e397694cdbfac1242a`. 
+The alloc also contains some funds on `0x204cc644e26bdf879db422658edee62e302c3da8`. 
 
 ## Transactions
 
@@ -36,7 +36,7 @@ $ go run . t8n --state.fork=Shanghai --input.alloc=testdata/9/alloc.json --input
       "balance": "0x3",
       "nonce": "0x1"
     },
-    "0x20922f242a32cbb2d4cd75e397694cdbfac1242a": {
+    "0x204cc644e26bdf879db422658edee62e302c3da8": {
       "balance": "0xffe6fc39d8c920",
       "nonce": "0x1"
     },

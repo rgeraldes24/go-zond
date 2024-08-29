@@ -258,7 +258,7 @@ func signUnsignedTransactions(txs []*txWithKey, signer types.Signer) (types.Tran
 			signed    *types.Transaction
 			err       error
 		)
-		if tx.key == nil || signature != nil {
+		if tx.key == nil || len(signature) != 0 {
 			// Already signed
 			signedTxs = append(signedTxs, tx.tx)
 			continue

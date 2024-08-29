@@ -9,7 +9,7 @@ following code: `0x5854505854`: `PC ;SLOAD; POP; PC; SLOAD`.
 
 Essentially, this contract does `SLOAD(0)` and `SLOAD(3)`.
 
-The alloc also contains some funds on `0x20922f242a32cbb2d4cd75e397694cdbfac1242a`. 
+The alloc also contains some funds on `0x204cc644e26bdf879db422658edee62e302c3da8`. 
 
 ## Transactions
 
@@ -29,7 +29,7 @@ $ go run . t8n --state.fork=Shanghai --input.alloc=testdata/8/alloc.json --input
 {"pc":1,"op":84,"gas":"0x49cf6","gasCost":"0x834","memSize":0,"stack":["0x0"],"depth":1,"refund":0,"opName":"SLOAD"}
 {"pc":4,"op":84,"gas":"0x494be","gasCost":"0x834","memSize":0,"stack":["0x3"],"depth":1,"refund":0,"opName":"SLOAD"}
 {"pc":1,"op":84,"gas":"0x484be","gasCost":"0x64","memSize":0,"stack":["0x0"],"depth":1,"refund":0,"opName":"SLOAD"}
-{"pc":4,"op":84,"gas":"0x48456","gasCost":"0x64","memSize":0,"stack":["0x3"],"depth":1,"refund":0,"opName":"SLOAD"
+{"pc":4,"op":84,"gas":"0x48456","gasCost":"0x64","memSize":0,"stack":["0x3"],"depth":1,"refund":0,"opName":"SLOAD"}
 ```
 
 Simlarly, we can provide the input transactions via `stdin` instead of as file: 

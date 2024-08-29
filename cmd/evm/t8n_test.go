@@ -123,17 +123,14 @@ func TestT8n(t *testing.T) {
 			output:      t8nOutput{alloc: true, result: true},
 			expExitCode: 3,
 		},
-		// TODO(rgeraldes24): fix
-		/*
-			{
-				base: "./testdata/1",
-				input: t8nInput{
-					"alloc.json", "txs.json", "env.json", "Shanghai", "",
-				},
-				output: t8nOutput{alloc: true, result: true},
-				expOut: "exp.json",
+		{
+			base: "./testdata/1",
+			input: t8nInput{
+				"alloc.json", "txs.json", "env.json", "Shanghai", "",
 			},
-		*/
+			output: t8nOutput{alloc: true, result: true},
+			expOut: "exp.json",
+		},
 		{ // blockhash test
 			base: "./testdata/3",
 			input: t8nInput{
@@ -150,25 +147,22 @@ func TestT8n(t *testing.T) {
 			output:      t8nOutput{alloc: true, result: true},
 			expExitCode: 4,
 		},
-		// TODO(rgeraldes24): fix
-		/*
-			{ // Sign json transactions
-				base: "./testdata/13",
-				input: t8nInput{
-					"alloc.json", "txs.json", "env.json", "Shanghai", "",
-				},
-				output: t8nOutput{body: true},
-				expOut: "exp.json",
+		{ // Sign json transactions
+			base: "./testdata/13",
+			input: t8nInput{
+				"alloc.json", "txs.json", "env.json", "Shanghai", "",
 			},
-			{ // Already signed transactions
-				base: "./testdata/13",
-				input: t8nInput{
-					"alloc.json", "signed_txs.rlp", "env.json", "Shanghai", "",
-				},
-				output: t8nOutput{result: true},
-				expOut: "exp2.json",
+			output: t8nOutput{body: true},
+			expOut: "exp.json",
+		},
+		{ // Already signed transactions
+			base: "./testdata/13",
+			input: t8nInput{
+				"alloc.json", "signed_txs.rlp", "env.json", "Shanghai", "",
 			},
-		*/
+			output: t8nOutput{result: true},
+			expOut: "exp2.json",
+		},
 		{ // Test post-merge transition
 			base: "./testdata/24",
 			input: t8nInput{
@@ -271,16 +265,13 @@ func TestT9n(t *testing.T) {
 			},
 			expOut: "exp2.json",
 		},
-		// TODO(rgeraldes24): fix
-		/*
-			{ // An RLP list (a blockheader really)
-				base: "./testdata/15",
-				input: t9nInput{
-					inTxs: "blockheader.rlp",
-				},
-				expOut: "exp3.json",
+		{ // An RLP list (a blockheader really)
+			base: "./testdata/15",
+			input: t9nInput{
+				inTxs: "blockheader.rlp",
 			},
-		*/
+			expOut: "exp3.json",
+		},
 		{ // Transactions with too low gas
 			base: "./testdata/16",
 			input: t9nInput{
