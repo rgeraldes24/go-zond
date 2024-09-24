@@ -311,12 +311,6 @@ func newTestAction(addr common.Address, r *rand.Rand) testAction {
 			},
 		},
 		{
-			name: "SelfDestruct",
-			fn: func(a testAction, s *StateDB) {
-				s.SelfDestruct(addr)
-			},
-		},
-		{
 			name: "AddRefund",
 			fn: func(a testAction, s *StateDB) {
 				s.AddRefund(uint64(a.args[0]))
@@ -490,7 +484,6 @@ func (test *snapshotTest) checkEqual(state, checkstate *StateDB) error {
 		}
 		// Check basic accessor methods.
 		checkeq("Exist", state.Exist(addr), checkstate.Exist(addr))
-		checkeq("HasSelfdestructed", state.HasSelfDestructed(addr), checkstate.HasSelfDestructed(addr))
 		checkeq("GetBalance", state.GetBalance(addr), checkstate.GetBalance(addr))
 		checkeq("GetNonce", state.GetNonce(addr), checkstate.GetNonce(addr))
 		checkeq("GetCode", state.GetCode(addr), checkstate.GetCode(addr))
@@ -753,6 +746,8 @@ func TestCommitCopy(t *testing.T) {
 // The original StateDB implementation flushed dirty objects to the tries after
 // each transaction, so this works ok. The rework accumulated writes in memory
 // first, but the journal wiped the entire state object on create-revert.
+// TODO(rgeraldes24): test not valid
+/*
 func TestDeleteCreateRevert(t *testing.T) {
 	// Create an initial state with a single contract
 	state, _ := New(types.EmptyRootHash, NewDatabase(rawdb.NewMemoryDatabase()), nil)
@@ -779,6 +774,7 @@ func TestDeleteCreateRevert(t *testing.T) {
 		t.Fatalf("self-destructed contract came alive")
 	}
 }
+*/
 
 // TestMissingTrieNodes tests that if the StateDB fails to load parts of the trie,
 // the Commit operation fails with an error

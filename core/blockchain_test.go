@@ -2328,10 +2328,11 @@ func BenchmarkBlockChain_1x1000Executions(b *testing.B) {
 // The original statedb implementation flushed dirty objects to the tries after
 // each transaction, so this works ok. The rework accumulated writes in memory
 // first, but the journal wiped the entire state object on create-revert.
-func TestDeleteCreateRevert(t *testing.T) {
-	testDeleteCreateRevert(t, rawdb.HashScheme)
-	testDeleteCreateRevert(t, rawdb.PathScheme)
-}
+// TODO(rgeraldes24): self destruct op
+// func TestDeleteCreateRevert(t *testing.T) {
+// 	testDeleteCreateRevert(t, rawdb.HashScheme)
+// 	testDeleteCreateRevert(t, rawdb.PathScheme)
+// }
 
 func testDeleteCreateRevert(t *testing.T, scheme string) {
 	var (
@@ -2350,7 +2351,7 @@ func testDeleteCreateRevert(t *testing.T, scheme string) {
 				// The address 0xAAAAA selfdestructs if called
 				aa: {
 					// Code needs to just selfdestruct
-					Code:    []byte{byte(vm.PC), byte(vm.SELFDESTRUCT)},
+					// Code:    []byte{byte(vm.PC), byte(vm.SELFDESTRUCT)},
 					Nonce:   1,
 					Balance: big.NewInt(0),
 				},
@@ -2431,8 +2432,8 @@ func testDeleteRecreateSlots(t *testing.T, scheme string) {
 		address   = key.GetAddress()
 		funds     = big.NewInt(1000000000000000)
 		bb        = common.HexToAddress("0x000000000000000000000000000000000000bbbb")
-		aaStorage = make(map[common.Hash]common.Hash)          // Initial storage in AA
-		aaCode    = []byte{byte(vm.PC), byte(vm.SELFDESTRUCT)} // Code for AA (simple selfdestruct)
+		aaStorage = make(map[common.Hash]common.Hash) // Initial storage in AA
+		// aaCode    = []byte{byte(vm.PC), byte(vm.SELFDESTRUCT)} // Code for AA (simple selfdestruct)
 	)
 	// Populate two slots
 	aaStorage[common.HexToHash("01")] = common.HexToHash("01")
@@ -2452,7 +2453,7 @@ func testDeleteRecreateSlots(t *testing.T, scheme string) {
 		byte(vm.PUSH1), 0x4, // location
 		byte(vm.SSTORE), // Set slot[4] = 4
 		// Slots are set, now return the code
-		byte(vm.PUSH2), byte(vm.PC), byte(vm.SELFDESTRUCT), // Push code on stack
+		// byte(vm.PUSH2), byte(vm.PC), byte(vm.SELFDESTRUCT), // Push code on stack
 		byte(vm.PUSH1), 0x0, // memory start on stack
 		byte(vm.MSTORE),
 		// Code is now in memory.
@@ -2488,7 +2489,7 @@ func testDeleteRecreateSlots(t *testing.T, scheme string) {
 			// The address 0xAAAAA selfdestructs if called
 			aa: {
 				// Code needs to just selfdestruct
-				Code:    aaCode,
+				// Code:    aaCode,
 				Nonce:   1,
 				Balance: big.NewInt(0),
 				Storage: aaStorage,
@@ -2574,8 +2575,8 @@ func testDeleteRecreateAccount(t *testing.T, scheme string) {
 		funds   = big.NewInt(1000000000000000)
 
 		aa        = common.HexToAddress("0x7217d81b76bdd8707601e959454e3d776aee5f43")
-		aaStorage = make(map[common.Hash]common.Hash)          // Initial storage in AA
-		aaCode    = []byte{byte(vm.PC), byte(vm.SELFDESTRUCT)} // Code for AA (simple selfdestruct)
+		aaStorage = make(map[common.Hash]common.Hash) // Initial storage in AA
+		// aaCode    = []byte{byte(vm.PC), byte(vm.SELFDESTRUCT)} // Code for AA (simple selfdestruct)
 	)
 	// Populate two slots
 	aaStorage[common.HexToHash("01")] = common.HexToHash("01")
@@ -2588,7 +2589,7 @@ func testDeleteRecreateAccount(t *testing.T, scheme string) {
 			// The address 0xAAAAA selfdestructs if called
 			aa: {
 				// Code needs to just selfdestruct
-				Code:    aaCode,
+				// Code:    aaCode,
 				Nonce:   1,
 				Balance: big.NewInt(0),
 				Storage: aaStorage,
@@ -2651,10 +2652,11 @@ func testDeleteRecreateAccount(t *testing.T, scheme string) {
 // Tx 2: Re-create A, set slots 3 and 4
 // Expected outcome is that _all_ slots are cleared from A, due to the selfdestruct,
 // and then the new slots exist
-func TestDeleteRecreateSlotsAcrossManyBlocks(t *testing.T) {
-	testDeleteRecreateSlotsAcrossManyBlocks(t, rawdb.HashScheme)
-	testDeleteRecreateSlotsAcrossManyBlocks(t, rawdb.PathScheme)
-}
+// TODO(rgeraldes24): tests not valid
+// func TestDeleteRecreateSlotsAcrossManyBlocks(t *testing.T) {
+// 	testDeleteRecreateSlotsAcrossManyBlocks(t, rawdb.HashScheme)
+// 	testDeleteRecreateSlotsAcrossManyBlocks(t, rawdb.PathScheme)
+// }
 
 func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 	var (
@@ -2665,8 +2667,8 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 		address   = key.GetAddress()
 		funds     = big.NewInt(1000000000000000)
 		bb        = common.HexToAddress("0x000000000000000000000000000000000000bbbb")
-		aaStorage = make(map[common.Hash]common.Hash)          // Initial storage in AA
-		aaCode    = []byte{byte(vm.PC), byte(vm.SELFDESTRUCT)} // Code for AA (simple selfdestruct)
+		aaStorage = make(map[common.Hash]common.Hash) // Initial storage in AA
+		// aaCode    = []byte{byte(vm.PC), byte(vm.SELFDESTRUCT)} // Code for AA (simple selfdestruct)
 	)
 	// Populate two slots
 	aaStorage[common.HexToHash("01")] = common.HexToHash("01")
@@ -2688,7 +2690,8 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 		byte(vm.PUSH1), 0x4, // location
 		byte(vm.SSTORE), // Set slot[4] = 4
 		// Slots are set, now return the code
-		byte(vm.PUSH2), byte(vm.PC), byte(vm.SELFDESTRUCT), // Push code on stack
+		// TODO(rgeraldes24)
+		// byte(vm.PUSH2), byte(vm.PC), byte(vm.SELFDESTRUCT), // Push code on stack
 		byte(vm.PUSH1), 0x0, // memory start on stack
 		byte(vm.MSTORE),
 		// Code is now in memory.
@@ -2723,7 +2726,7 @@ func testDeleteRecreateSlotsAcrossManyBlocks(t *testing.T, scheme string) {
 			// The address 0xAAAAA selfdestructs if called
 			aa: {
 				// Code needs to just selfdestruct
-				Code:    aaCode,
+				// Code:    aaCode,
 				Nonce:   1,
 				Balance: big.NewInt(0),
 				Storage: aaStorage,
@@ -3639,9 +3642,10 @@ func TestTxIndexer(t *testing.T) {
 	}
 }
 
-func TestCreateThenDeletePostByzantium(t *testing.T) {
-	testCreateThenDelete(t, params.TestChainConfig)
-}
+// TODO(rgeraldes24): test not valid
+// func TestCreateThenDeletePostByzantium(t *testing.T) {
+// 	testCreateThenDelete(t, params.TestChainConfig)
+// }
 
 // testCreateThenDelete tests a creation and subsequent deletion of a contract, happening
 // within the same block.
@@ -3720,6 +3724,8 @@ func testCreateThenDelete(t *testing.T, config *params.ChainConfig) {
 	}
 }
 
+// TODO(rgeraldes24): test not valid
+/*
 func TestDeleteThenCreate(t *testing.T) {
 	var (
 		engine      = beacon.NewFaker()
@@ -3828,6 +3834,7 @@ func TestDeleteThenCreate(t *testing.T) {
 		}
 	}
 }
+*/
 
 func TestEIP3651(t *testing.T) {
 	var (
