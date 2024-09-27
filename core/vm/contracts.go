@@ -21,6 +21,7 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"math/big"
 
 	pkgerrors "github.com/pkg/errors"
@@ -106,6 +107,7 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 			return nil, err
 		}
 	*/
+	fmt.Println(len(input))
 
 	var (
 		pkBytes     = getData(input, 0, 2592)    // 2592 bytes
@@ -121,6 +123,7 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(amountUint)
 
 	data := &depositdata{
 		PublicKey:             pkBytes,
