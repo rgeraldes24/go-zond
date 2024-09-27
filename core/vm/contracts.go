@@ -113,7 +113,7 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 		pkBytes     = getData(input, 0, 2592)    // 2592 bytes
 		credsBytes  = getData(input, 2592, 32)   // 32 bytes
 		amountBytes = getData(input, 2624, 8)    // 8 bytes
-		sigBytes    = getData(input, 2656, 4595) // 4595 bytes
+		sigBytes    = getData(input, 2632, 4595) // 4595 bytes
 	)
 
 	var amountUint uint64
