@@ -21,7 +21,6 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"errors"
-	"fmt"
 	"math/big"
 
 	pkgerrors "github.com/pkg/errors"
@@ -89,26 +88,7 @@ func (c *depositroot) RequiredGas(input []byte) uint64 {
 	return params.DepositrootGas
 }
 
-// TODO(now.youtrack.cloud/issue/TGZ-5)
 func (c *depositroot) Run(input []byte) ([]byte, error) {
-	/*
-		const depositRootInputLength = 7508 // 7251 in the correct version
-		input = common.RightPadBytes(input, depositRootInputLength)
-		// "input" is (pubkey, withdrawal_credentials, amount, signature)
-		// pubkey is 2592 bytes
-		// withdrawal_credentials is 32 bytes
-		// signature is 4595 bytes
-
-		var amount uint64
-
-		buf := bytes.NewReader(input[2848:2880])
-		err := binary.Read(buf, binary.LittleEndian, &amount)
-		if err != nil {
-			return nil, err
-		}
-	*/
-	fmt.Println(len(input))
-
 	var (
 		pkBytes     = getData(input, 0, 2592)    // 2592 bytes
 		credsBytes  = getData(input, 2592, 32)   // 32 bytes
@@ -117,17 +97,11 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 	)
 
 	var amountUint uint64
-
 	buf := bytes.NewReader(amountBytes)
 	err := binary.Read(buf, binary.LittleEndian, &amountUint)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(pkBytes)
-	fmt.Println(credsBytes)
-	fmt.Println(amountBytes)
-	fmt.Println(amountUint)
-	fmt.Println(sigBytes)
 
 	data := &depositdata{
 		PublicKey:             pkBytes,
