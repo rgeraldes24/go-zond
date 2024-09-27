@@ -90,26 +90,43 @@ func (c *depositroot) RequiredGas(input []byte) uint64 {
 
 // TODO(now.youtrack.cloud/issue/TGZ-5)
 func (c *depositroot) Run(input []byte) ([]byte, error) {
-	const depositRootInputLength = 7508 // 7251 in the correct version
-	input = common.RightPadBytes(input, depositRootInputLength)
-	// "input" is (pubkey, withdrawal_credentials, amount, signature)
-	// pubkey is 2592 bytes
-	// withdrawal_credentials is 32 bytes
-	// signature is 4595 bytes
+	/*
+		const depositRootInputLength = 7508 // 7251 in the correct version
+		input = common.RightPadBytes(input, depositRootInputLength)
+		// "input" is (pubkey, withdrawal_credentials, amount, signature)
+		// pubkey is 2592 bytes
+		// withdrawal_credentials is 32 bytes
+		// signature is 4595 bytes
 
-	var amount uint64
+		var amount uint64
 
-	buf := bytes.NewReader(input[2848:2880])
-	err := binary.Read(buf, binary.LittleEndian, &amount)
+		buf := bytes.NewReader(input[2848:2880])
+		err := binary.Read(buf, binary.LittleEndian, &amount)
+		if err != nil {
+			return nil, err
+		}
+	*/
+
+	var (
+		pkBytes     = getData(input, 0, 2592)    // 2592 bytes
+		credsBytes  = getData(input, 2592, 32)   // 32 bytes
+		amountBytes = getData(input, 2624, 32)   // 32 bytes
+		sigBytes    = getData(input, 2656, 4595) // 4595 bytes
+	)
+
+	var amountUint uint64
+
+	buf := bytes.NewReader(amountBytes)
+	err := binary.Read(buf, binary.LittleEndian, &amountUint)
 	if err != nil {
 		return nil, err
 	}
 
 	data := &depositdata{
-		PublicKey:             input[160:2752],  // 2592 bytes
-		WithdrawalCredentials: input[2784:2816], // 32 bytes
-		Amount:                amount,           // 32 bytes
-		Signature:             input[2912:7507], // 4595 bytes
+		PublicKey:             pkBytes,
+		WithdrawalCredentials: credsBytes,
+		Amount:                amountUint,
+		Signature:             sigBytes,
 	}
 	h, err := data.HashTreeRoot()
 	if err != nil {
