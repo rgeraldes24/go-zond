@@ -123,7 +123,11 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println(pkBytes)
+	fmt.Println(credsBytes)
+	fmt.Println(amountBytes)
 	fmt.Println(amountUint)
+	fmt.Println(sigBytes)
 
 	data := &depositdata{
 		PublicKey:             pkBytes,
