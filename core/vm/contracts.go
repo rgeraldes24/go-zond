@@ -21,6 +21,7 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"math/big"
 
 	pkgerrors "github.com/pkg/errors"
@@ -89,6 +90,7 @@ func (c *depositroot) RequiredGas(input []byte) uint64 {
 }
 
 func (c *depositroot) Run(input []byte) ([]byte, error) {
+	fmt.Println(common.Bytes2Hex(input))
 	var (
 		pkBytes     = getData(input, 0, 2592)    // 2592 bytes
 		credsBytes  = getData(input, 2592, 32)   // 32 bytes
@@ -114,6 +116,7 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 		return nil, pkgerrors.Wrap(err, "could not hash tree root deposit data item")
 	}
 
+	fmt.Println(common.Bytes2Hex(h[:]))
 	return h[:], nil
 }
 
