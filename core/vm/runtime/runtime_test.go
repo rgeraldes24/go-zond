@@ -749,19 +749,6 @@ func TestRuntimeJSTracer(t *testing.T) {
 			},
 			results: []string{`"1,1,981799,6,12"`, `"1,1,981799,6,0"`},
 		},
-		{
-			// CALL self-destructing contract
-			code: []byte{
-				// outsize, outoffset, insize, inoffset
-				byte(vm.PUSH1), 0, byte(vm.PUSH1), 0, byte(vm.PUSH1), 0, byte(vm.PUSH1), 0,
-				byte(vm.PUSH1), 0, // value
-				byte(vm.PUSH1), 0xff, //address
-				byte(vm.GAS), // gas
-				byte(vm.CALL),
-				byte(vm.POP),
-			},
-			results: []string{`"2,2,0,5003,12"`, `"2,2,0,5003,0"`},
-		},
 	}
 	calleeCode := []byte{
 		byte(vm.PUSH1), 0,

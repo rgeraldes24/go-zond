@@ -130,16 +130,6 @@ func TestEIP2930Signer(t *testing.T) {
 		})
 	)
 
-	/*
-	   // TODO(rgeraldes24): sig, pk
-	   // tx.public_key = "2fe690e16de3534bee626150596573d57cb56d0c2e48a02f64c0a03c1636ce2a"_hex;
-	   // tx.signature = "4814f3dc7dac2ee153a2456aa3968717af7400972167dfb00b1cce1c23b6dd9f"_hex;
-	*/
-
-	fmt.Println(keyAddr)
-	fmt.Println(common.Bytes2Hex(tx5.RawPublicKeyValue()))
-	fmt.Println(common.Bytes2Hex(tx5.RawSignatureValue()))
-
 	rlpraw, err := rlp.EncodeToBytes(tx5)
 	if err != nil {
 		log.Fatal(err)
