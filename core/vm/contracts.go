@@ -85,8 +85,8 @@ type depositroot struct{}
 
 // TODO(now.youtrack.cloud/issue/TGZ-5)
 func (c *depositroot) RequiredGas(input []byte) uint64 {
-	// NOTE(rgeraldes): number of sha256 ops below does not include the number
-	// of zero hashes done; these are calculated during the lib init
+	// NOTE(rgeraldes): number of sha256 ops below does not include the number of zero
+	// hashes done; these are calculated during the prysmaticlabs/fastssz lib init
 	// 238 sha256 ops + 64 bytes input per op
 	// return uint64(64+31)/32*params.Sha256PerWordGas + params.Sha256BaseGas
 	return (2*params.Sha256PerWordGas + params.Sha256BaseGas) * 238
