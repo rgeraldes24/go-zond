@@ -21,7 +21,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"math/big"
 	"reflect"
 	"testing"
@@ -129,14 +128,6 @@ func TestEIP2930Signer(t *testing.T) {
 			AccessList: []AccessTuple{},
 		})
 	)
-
-	rlpraw, err := rlp.EncodeToBytes(tx5)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(common.Bytes2Hex(rlpraw))
-	h := tx5.Hash()
-	fmt.Println(h)
 
 	tests := []struct {
 		tx             *Transaction
