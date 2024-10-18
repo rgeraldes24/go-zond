@@ -46,7 +46,7 @@ var (
 	addressT = reflect.TypeOf(Address{})
 
 	// MaxAddress represents the maximum possible address value.
-	MaxAddress = HexToAddress("0xffffffffffffffffffffffffffffffffffffffff")
+	MaxAddress = HexToAddress("Qffffffffffffffffffffffffffffffffffffffff")
 
 	// MaxHash represents the maximum possible hash value.
 	MaxHash = HexToHash("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
@@ -226,13 +226,13 @@ func BigToAddress(b *big.Int) Address { return BytesToAddress(b.Bytes()) }
 
 // HexToAddress returns Address with byte values of s.
 // If s is larger than len(h), s will be cropped from the left.
-func HexToAddress(s string) Address { return BytesToAddress(FromHex(s)) }
+func HexToAddress(s string) Address { return BytesToAddress(FromHexAddress(s)) }
 
 // IsHexAddress verifies whether a string can represent a valid hex-encoded
 // Zond address or not.
 func IsHexAddress(s string) bool {
-	if has0xPrefix(s) {
-		s = s[2:]
+	if hasQPrefix(s) {
+		s = s[1:]
 	}
 	return len(s) == 2*AddressLength && isHex(s)
 }
@@ -283,9 +283,9 @@ func (a *Address) checksumHex() []byte {
 }
 
 func (a Address) hex() []byte {
-	var buf [len(a)*2 + 2]byte
-	copy(buf[:2], "0x")
-	hex.Encode(buf[2:], a[:])
+	var buf [len(a)*2 + 1]byte
+	copy(buf[:1], "Q")
+	hex.Encode(buf[1:], a[:])
 	return buf[:]
 }
 
@@ -374,10 +374,10 @@ func (a *Address) UnmarshalGraphQL(input interface{}) error {
 	return err
 }
 
-// UnprefixedAddress allows marshaling an Address without 0x prefix.
+// UnprefixedAddress allows marshaling an Address without Q prefix.
 type UnprefixedAddress Address
 
-// UnmarshalText decodes the address from hex. The 0x prefix is optional.
+// UnmarshalText decodes the address from hex. The Q prefix is optional.
 func (a *UnprefixedAddress) UnmarshalText(input []byte) error {
 	return hexutil.UnmarshalFixedUnprefixedText("UnprefixedAddress", input, a[:])
 }
@@ -404,7 +404,7 @@ func NewMixedcaseAddressFromString(hexaddr string) (*MixedcaseAddress, error) {
 	if !IsHexAddress(hexaddr) {
 		return nil, errors.New("invalid address")
 	}
-	a := FromHex(hexaddr)
+	a := FromHexAddress(hexaddr)
 	return &MixedcaseAddress{addr: BytesToAddress(a), original: hexaddr}, nil
 }
 
@@ -418,10 +418,10 @@ func (ma *MixedcaseAddress) UnmarshalJSON(input []byte) error {
 
 // MarshalJSON marshals the original value
 func (ma MixedcaseAddress) MarshalJSON() ([]byte, error) {
-	if strings.HasPrefix(ma.original, "0x") || strings.HasPrefix(ma.original, "0X") {
-		return json.Marshal(fmt.Sprintf("0x%s", ma.original[2:]))
+	if strings.HasPrefix(ma.original, "Q") {
+		return json.Marshal(fmt.Sprintf("Q%s", ma.original[2:]))
 	}
-	return json.Marshal(fmt.Sprintf("0x%s", ma.original))
+	return json.Marshal(fmt.Sprintf("Q%s", ma.original))
 }
 
 // Address returns the address
