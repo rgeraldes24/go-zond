@@ -227,7 +227,7 @@ func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 	}{
 		{
 			body: `{"query": "{block {number transactions { from { address } to { address } value hash type accessList { address storageKeys } index}}}"}`,
-			want: `{"data":{"block":{"number":"0x1","transactions":[{"from":{"address":"0x20a1a68e6818a1142f85671db01ef7226debf822"},"to":{"address":"0x0000000000000000000000000000000000000dad"},"value":"0x64","hash":"0xb1f09f2f538e9651622d4d80a698d4a73096f3c9b5fdd5a4bed000e661a348d8","type":"0x2","accessList":[],"index":"0x0"},{"from":{"address":"0x20a1a68e6818a1142f85671db01ef7226debf822"},"to":{"address":"0x0000000000000000000000000000000000000dad"},"value":"0x32","hash":"0x2236c0393d39c4842d7463aa32788f3a9d278f46e8000c02377bbb0692ce29bb","type":"0x2","accessList":[{"address":"0x0000000000000000000000000000000000000dad","storageKeys":["0x0000000000000000000000000000000000000000000000000000000000000000"]}],"index":"0x1"}]}}}`,
+			want: `{"data":{"block":{"number":"0x1","transactions":[{"from":{"address":"Q20a1a68e6818a1142f85671db01ef7226debf822"},"to":{"address":"Q0000000000000000000000000000000000000dad"},"value":"0x64","hash":"0xb1f09f2f538e9651622d4d80a698d4a73096f3c9b5fdd5a4bed000e661a348d8","type":"0x2","accessList":[],"index":"0x0"},{"from":{"address":"Q20a1a68e6818a1142f85671db01ef7226debf822"},"to":{"address":"Q0000000000000000000000000000000000000dad"},"value":"0x32","hash":"0x2236c0393d39c4842d7463aa32788f3a9d278f46e8000c02377bbb0692ce29bb","type":"0x2","accessList":[{"address":"Q0000000000000000000000000000000000000dad","storageKeys":["0x0000000000000000000000000000000000000000000000000000000000000000"]}],"index":"0x1"}]}}}`,
 			code: 200,
 		},
 	} {
@@ -341,7 +341,7 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 		},
 		// Test values for a non-existent account.
 		{
-			body: fmt.Sprintf(`{ block { account(address: "%s") { balance transactionCount code } } }`, "0x1111111111111111111111111111111111111111"),
+			body: fmt.Sprintf(`{ block { account(address: "%s") { balance transactionCount code } } }`, "Q1111111111111111111111111111111111111111"),
 			want: `{"block":{"account":{"balance":"0x0","transactionCount":"0x0","code":"0x"}}}`,
 		},
 	} {

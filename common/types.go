@@ -333,12 +333,12 @@ func (a Address) MarshalText() ([]byte, error) {
 
 // UnmarshalText parses a hash in hex syntax.
 func (a *Address) UnmarshalText(input []byte) error {
-	return hexutil.UnmarshalFixedText("Address", input, a[:])
+	return hexutil.UnmarshalFixedTextAddress("Address", input, a[:])
 }
 
 // UnmarshalJSON parses a hash in hex syntax.
 func (a *Address) UnmarshalJSON(input []byte) error {
-	return hexutil.UnmarshalFixedJSON(addressT, input, a[:])
+	return hexutil.UnmarshalFixedJSONAddress(addressT, input, a[:])
 }
 
 // Scan implements Scanner for database/sql.
@@ -379,7 +379,7 @@ type UnprefixedAddress Address
 
 // UnmarshalText decodes the address from hex. The Q prefix is optional.
 func (a *UnprefixedAddress) UnmarshalText(input []byte) error {
-	return hexutil.UnmarshalFixedUnprefixedText("UnprefixedAddress", input, a[:])
+	return hexutil.UnmarshalFixedUnprefixedTextAddress("UnprefixedAddress", input, a[:])
 }
 
 // MarshalText encodes the address as hex.
@@ -410,7 +410,7 @@ func NewMixedcaseAddressFromString(hexaddr string) (*MixedcaseAddress, error) {
 
 // UnmarshalJSON parses MixedcaseAddress
 func (ma *MixedcaseAddress) UnmarshalJSON(input []byte) error {
-	if err := hexutil.UnmarshalFixedJSON(addressT, input, ma.addr[:]); err != nil {
+	if err := hexutil.UnmarshalFixedJSONAddress(addressT, input, ma.addr[:]); err != nil {
 		return err
 	}
 	return json.Unmarshal(input, &ma.original)

@@ -101,11 +101,11 @@ func TestAddressUnmarshalJSON(t *testing.T) {
 	}{
 		{"", true, nil},
 		{`""`, true, nil},
-		{`"0x"`, true, nil},
-		{`"0x00"`, true, nil},
-		{`"0xG000000000000000000000000000000000000000"`, true, nil},
-		{`"0x0000000000000000000000000000000000000000"`, false, big.NewInt(0)},
-		{`"0x0000000000000000000000000000000000000010"`, false, big.NewInt(16)},
+		{`"Q"`, true, nil},
+		{`"Q00"`, true, nil},
+		{`"QG000000000000000000000000000000000000000"`, true, nil},
+		{`"Q0000000000000000000000000000000000000000"`, false, big.NewInt(0)},
+		{`"Q0000000000000000000000000000000000000010"`, false, big.NewInt(16)},
 	}
 	for i, test := range tests {
 		var v Address
@@ -182,7 +182,6 @@ func TestMixedcaseAddressMarshal(t *testing.T) {
 
 func TestMixedcaseAccount_Address(t *testing.T) {
 	// https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md
-	// Note: 0X{checksum_addr} is not valid according to spec above
 
 	var res []struct {
 		A     MixedcaseAddress
@@ -191,7 +190,6 @@ func TestMixedcaseAccount_Address(t *testing.T) {
 	if err := json.Unmarshal([]byte(`[
 		{"A" : "Qae967917c465db8578ca9024c205720b1a3651A9", "Valid": false},
 		{"A" : "QAe967917c465db8578ca9024c205720b1a3651A9", "Valid": true},
-		{"A" : "QAe967917c465db8578ca9024c205720b1a3651A9", "Valid": false},
 		{"A" : "Q1111111111111111111112222222222223333323", "Valid": true}
 		]`), &res); err != nil {
 		t.Fatal(err)
@@ -206,13 +204,14 @@ func TestMixedcaseAccount_Address(t *testing.T) {
 	// These should throw exceptions:
 	var r2 []MixedcaseAddress
 	for _, r := range []string{
-		`["0x11111111111111111111122222222222233333"]`,     // Too short
-		`["0x111111111111111111111222222222222333332"]`,    // Too short
-		`["0x11111111111111111111122222222222233333234"]`,  // Too long
-		`["0x111111111111111111111222222222222333332344"]`, // Too long
-		`["1111111111111111111112222222222223333323"]`,     // Missing 0x
-		`["x1111111111111111111112222222222223333323"]`,    // Missing 0
-		`["0xG111111111111111111112222222222223333323"]`,   //Non-hex
+		`["Q11111111111111111111122222222222233333"]`,     // Too short
+		`["Q111111111111111111111222222222222333332"]`,    // Too short
+		`["Q11111111111111111111122222222222233333234"]`,  // Too long
+		`["Q111111111111111111111222222222222333332344"]`, // Too long
+		`["1111111111111111111112222222222223333323"]`,    // Missing Q
+		// TODO(rgeraldes24): add lower case q case
+		// `["x1111111111111111111112222222222223333323"]`,    // Missing 0
+		`["QG111111111111111111112222222222223333323"]`, //Non-hex
 	} {
 		if err := json.Unmarshal([]byte(r), &r2); err == nil {
 			t.Errorf("Expected failure, input %v", r)

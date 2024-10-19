@@ -85,7 +85,7 @@ Repeat password: {{.InputLine "foobar"}}
 Your new key was generated
 `)
 	gzond.ExpectRegexp(`
-Public address of the key:   0x[0-9a-fA-F]{40}
+Public address of the key:   Q[0-9a-fA-F]{40}
 Path of the secret key file: .*UTC--.+--[0-9a-f]{40}
 
 - You can share your public address with anyone. Others need it to interact with you.

@@ -102,6 +102,14 @@ func UnmarshalFixedJSON(typ reflect.Type, input, out []byte) error {
 	return wrapTypeError(UnmarshalFixedText(typ.String(), input[1:len(input)-1], out), typ)
 }
 
+// TODO(rgeraldes24)
+func UnmarshalFixedJSONAddress(typ reflect.Type, input, out []byte) error {
+	if !isString(input) {
+		return errNonString(typ)
+	}
+	return wrapTypeError(UnmarshalFixedTextAddress(typ.String(), input[1:len(input)-1], out), typ)
+}
+
 // TODO(rgeraldes24): desc
 // UnmarshalFixedText decodes the input as a string with 0x prefix. The length of out
 // determines the required input length. This function is commonly used to implement the
@@ -124,11 +132,50 @@ func UnmarshalFixedText(typname string, input, out []byte) error {
 	return nil
 }
 
+func UnmarshalFixedTextAddress(typname string, input, out []byte) error {
+	raw, err := checkTextAddress(input, true)
+	if err != nil {
+		return err
+	}
+	if len(raw)/2 != len(out) {
+		return fmt.Errorf("hex string has length %d, want %d for %s", len(raw), len(out)*2, typname)
+	}
+	// Pre-verify syntax before modifying out.
+	for _, b := range raw {
+		if decodeNibble(b) == badNibble {
+			return ErrSyntax
+		}
+	}
+	hex.Decode(out, raw)
+	return nil
+}
+
 // UnmarshalFixedUnprefixedText decodes the input as a string with optional 0x prefix. The
 // length of out determines the required input length. This function is commonly used to
 // implement the UnmarshalText method for fixed-size types.
 func UnmarshalFixedUnprefixedText(typname string, input, out []byte) error {
 	raw, err := checkText(input, false)
+	if err != nil {
+		return err
+	}
+	if len(raw)/2 != len(out) {
+		return fmt.Errorf("hex string has length %d, want %d for %s", len(raw), len(out)*2, typname)
+	}
+	// Pre-verify syntax before modifying out.
+	for _, b := range raw {
+		if decodeNibble(b) == badNibble {
+			return ErrSyntax
+		}
+	}
+	hex.Decode(out, raw)
+	return nil
+}
+
+// UnmarshalFixedUnprefixedTextAddress decodes the input as a string with optional 0x prefix. The
+// length of out determines the required input length. This function is commonly used to
+// implement the UnmarshalText method for fixed-size types.
+func UnmarshalFixedUnprefixedTextAddress(typname string, input, out []byte) error {
+	raw, err := checkTextAddress(input, false)
 	if err != nil {
 		return err
 	}
@@ -334,6 +381,10 @@ func bytesHave0xPrefix(input []byte) bool {
 	return len(input) >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')
 }
 
+func bytesHaveQPrefix(input []byte) bool {
+	return len(input) >= 1 && input[0] == 'Q'
+}
+
 func checkText(input []byte, wantPrefix bool) ([]byte, error) {
 	if len(input) == 0 {
 		return nil, nil // empty strings are allowed
@@ -342,6 +393,21 @@ func checkText(input []byte, wantPrefix bool) ([]byte, error) {
 		input = input[2:]
 	} else if wantPrefix {
 		return nil, ErrMissingPrefix
+	}
+	if len(input)%2 != 0 {
+		return nil, ErrOddLength
+	}
+	return input, nil
+}
+
+func checkTextAddress(input []byte, wantPrefix bool) ([]byte, error) {
+	if len(input) == 0 {
+		return nil, nil // empty strings are allowed
+	}
+	if bytesHaveQPrefix(input) {
+		input = input[1:]
+	} else if wantPrefix {
+		return nil, ErrMissingQPrefix
 	}
 	if len(input)%2 != 0 {
 		return nil, ErrOddLength

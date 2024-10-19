@@ -179,7 +179,7 @@ aware of and agree upon. This consists of a small JSON file (e.g. call it `genes
     "chainId": <arbitrary positive integer>
   },
   "alloc": {},
-  "coinbase": "0x0000000000000000000000000000000000000000",
+  "coinbase": "Q0000000000000000000000000000000000000000",
   "extraData": "",
   "gasLimit": "0x2fefd8",
   "mixhash": "0x0000000000000000000000000000000000000000000000000000000000000000",

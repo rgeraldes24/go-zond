@@ -530,7 +530,7 @@ func TestBlockOverridesMarshal(t *testing.T) {
 			bo: BlockOverrides{
 				Coinbase: common.HexToAddress("Q1111111111111111111111111111111111111111"),
 			},
-			want: `{"coinbase":"0x1111111111111111111111111111111111111111"}`,
+			want: `{"coinbase":"Q1111111111111111111111111111111111111111"}`,
 		},
 		{
 			bo: BlockOverrides{

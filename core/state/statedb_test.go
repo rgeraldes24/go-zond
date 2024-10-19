@@ -1026,8 +1026,8 @@ func TestResetObject(t *testing.T) {
 		snaps, _ = snapshot.New(snapshot.Config{CacheSize: 10}, disk, tdb, types.EmptyRootHash)
 		state, _ = New(types.EmptyRootHash, db, snaps)
 		addr     = common.HexToAddress("Q1")
-		slotA    = common.HexToHash("Q1")
-		slotB    = common.HexToHash("Q2")
+		slotA    = common.HexToHash("0x1")
+		slotB    = common.HexToHash("0x2")
 	)
 	// Initialize account with balance and storage in first transaction.
 	state.SetBalance(addr, big.NewInt(1))
