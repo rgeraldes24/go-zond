@@ -900,7 +900,7 @@ func testExternalUI(api *core.SignerAPI) {
 	ctx = context.WithValue(ctx, "local", "main")
 	errs := make([]string, 0)
 
-	a := common.HexToAddress("0xdeadbeef000000000000000000000000deadbeef")
+	a := common.HexToAddress("Qdeadbeef000000000000000000000000deadbeef")
 	addErr := func(errStr string) {
 		log.Info("Test error", "err", errStr)
 		errs = append(errs, errStr)
@@ -1048,8 +1048,8 @@ func decryptSeed(keyjson []byte, auth string) ([]byte, error) {
 // GenDoc outputs examples of all structures used in json-rpc communication
 func GenDoc(ctx *cli.Context) error {
 	var (
-		a    = common.HexToAddress("0xdeadbeef000000000000000000000000deadbeef")
-		b    = common.HexToAddress("0x1111111122222222222233333333334444444444")
+		a    = common.HexToAddress("Qdeadbeef000000000000000000000000deadbeef")
+		b    = common.HexToAddress("Q1111111122222222222233333333334444444444")
 		meta = core.Metadata{
 			Scheme:    "http",
 			Local:     "localhost:8545",
@@ -1181,7 +1181,7 @@ func GenDoc(ctx *cli.Context) error {
 			&core.ListResponse{
 				Accounts: []accounts.Account{
 					{
-						Address: common.HexToAddress("0xcowbeef000000cowbeef00000000000000000c0w"),
+						Address: common.HexToAddress("Qcowbeef000000cowbeef00000000000000000c0w"),
 						URL:     accounts.URL{Path: ".. ignored .."},
 					},
 					{

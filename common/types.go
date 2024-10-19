@@ -266,11 +266,11 @@ func (a *Address) checksumHex() []byte {
 
 	// compute checksum
 	sha := sha3.NewLegacyKeccak256()
-	sha.Write(buf[2:])
+	sha.Write(buf[1:])
 	hash := sha.Sum(nil)
-	for i := 2; i < len(buf); i++ {
-		hashByte := hash[(i-2)/2]
-		if i%2 == 0 {
+	for i := 1; i < len(buf); i++ {
+		hashByte := hash[(i-1)/2]
+		if (i+1)%2 == 0 {
 			hashByte = hashByte >> 4
 		} else {
 			hashByte &= 0xf
@@ -304,7 +304,7 @@ func (a Address) Format(s fmt.State, c rune) {
 		// %x disables the checksum.
 		hex := a.hex()
 		if !s.Flag('#') {
-			hex = hex[2:]
+			hex = hex[1:]
 		}
 		if c == 'X' {
 			hex = bytes.ToUpper(hex)
@@ -419,7 +419,7 @@ func (ma *MixedcaseAddress) UnmarshalJSON(input []byte) error {
 // MarshalJSON marshals the original value
 func (ma MixedcaseAddress) MarshalJSON() ([]byte, error) {
 	if strings.HasPrefix(ma.original, "Q") {
-		return json.Marshal(fmt.Sprintf("Q%s", ma.original[2:]))
+		return json.Marshal(fmt.Sprintf("Q%s", ma.original[1:]))
 	}
 	return json.Marshal(fmt.Sprintf("Q%s", ma.original))
 }

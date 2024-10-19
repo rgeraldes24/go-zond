@@ -247,8 +247,8 @@ func benchTracer(tracerName string, test *callTracerTest, b *testing.B) {
 
 func TestInternals(t *testing.T) {
 	var (
-		to        = common.HexToAddress("0x00000000000000000000000000000000deadbeef")
-		origin    = common.HexToAddress("0x00000000000000000000000000000000feed")
+		to        = common.HexToAddress("Q00000000000000000000000000000000deadbeef")
+		origin    = common.HexToAddress("Q00000000000000000000000000000000feed")
 		txContext = vm.TxContext{
 			Origin:   origin,
 			GasPrice: big.NewInt(1),

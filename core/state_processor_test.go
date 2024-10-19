@@ -78,11 +78,11 @@ func TestStateProcessorErrors(t *testing.T) {
 			gspec = &Genesis{
 				Config: config,
 				Alloc: GenesisAlloc{
-					common.HexToAddress("0x20a1A68e6818a1142F85671DB01eF7226debf822"): GenesisAccount{
+					common.HexToAddress("Q20a1A68e6818a1142F85671DB01eF7226debf822"): GenesisAccount{
 						Balance: big.NewInt(1000000000000000000), // 1 ether
 						Nonce:   0,
 					},
-					common.HexToAddress("0x20B045A50E3C97dcf002eeFed02dB2dB22AE92A0"): GenesisAccount{
+					common.HexToAddress("Q20B045A50E3C97dcf002eeFed02dB2dB22AE92A0"): GenesisAccount{
 						Balance: big.NewInt(1000000000000000000), // 1 ether
 						Nonce:   math.MaxUint64,
 					},
@@ -230,7 +230,7 @@ func TestStateProcessorErrors(t *testing.T) {
 						ChainID: big.NewInt(1),
 					},
 					Alloc: GenesisAlloc{
-						common.HexToAddress("0x71562b71999873DB5b286dF957af199Ec94617F7"): GenesisAccount{
+						common.HexToAddress("Q71562b71999873DB5b286dF957af199Ec94617F7"): GenesisAccount{
 							Balance: big.NewInt(1000000000000000000), // 1 ether
 							Nonce:   0,
 						},
@@ -269,7 +269,7 @@ func TestStateProcessorErrors(t *testing.T) {
 			gspec = &Genesis{
 				Config: config,
 				Alloc: GenesisAlloc{
-					common.HexToAddress("0x20a1A68e6818a1142F85671DB01eF7226debf822"): GenesisAccount{
+					common.HexToAddress("Q20a1A68e6818a1142F85671DB01eF7226debf822"): GenesisAccount{
 						Balance: big.NewInt(1000000000000000000), // 1 ether
 						Nonce:   0,
 						Code:    common.FromHex("0xB0B0FACE"),
