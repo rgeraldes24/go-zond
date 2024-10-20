@@ -10,16 +10,16 @@ Output:
 ```json
 {
   "alloc": {
-    "0x1111111111111111111111111111111111111111": {
+    "Q1111111111111111111111111111111111111111": {
       "code": "0xfe",
       "balance": "0x10000000000",
       "nonce": "0x1"
     },
-    "0x20687fa825ab4ad40a89c303f22f65fef9778555": {
+    "Q20687fa825ab4ad40a89c303f22f65fef9778555": {
       "balance": "0xfff5beffffc95",
       "nonce": "0x4"
     },
-    "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
+    "Qa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
       "balance": "0x10000000000",
       "nonce": "0x1"
     }

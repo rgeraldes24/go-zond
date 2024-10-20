@@ -245,15 +245,15 @@ Output:
 ```json
 {
   "alloc": {
-    "0x8a8eafb1cf62bfbeb1741769dae1a9dd47996192": {
+    "Q8a8eafb1cf62bfbeb1741769dae1a9dd47996192": {
       "balance": "0xfeed1a9d",
       "nonce": "0x1"
     },
-    "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
+    "Qa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
       "balance": "0x5ffd4878be161d74",
       "nonce": "0xac"
     },
-    "0xc94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
+    "Qc94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
       "balance": "0xa410"
     }
   },
@@ -397,12 +397,12 @@ The transaction tool is used to perform static validity checks on transactions s
 ./evm t9n --state.fork Shanghai --input.txs testdata/15/signed_txs.rlp
 [
   {
-    "address": "0x2014ae9f42335b44f94ee97d6248c0f55f0ee16e",
+    "address": "Q2014ae9f42335b44f94ee97d6248c0f55f0ee16e",
     "hash": "0x815bdb20d68fb0844a6efc5fa63ceecfdf1dbf920ab4f088bdcefbe33e402e52",
     "intrinsicGas": "0x5208"
   },
   {
-    "address": "0x2014ae9f42335b44f94ee97d6248c0f55f0ee16e",
+    "address": "Q2014ae9f42335b44f94ee97d6248c0f55f0ee16e",
     "hash": "0x4e91af0609b40a35c409645a201f7c07f5bba8c51f853356ba92f459ce8821e7",
     "intrinsicGas": "0x5208"
   }

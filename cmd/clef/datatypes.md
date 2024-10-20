@@ -9,7 +9,7 @@ Example:
 ```json
 {
   "content_type": "text/plain",
-  "address": "0xDEADbEeF000000000000000000000000DeaDbeEf",
+  "address": "QDEADbEeF000000000000000000000000DeaDbeEf",
   "raw_data": "GUV0aGVyZXVtIFNpZ25lZCBNZXNzYWdlOgoxMWhlbGxvIHdvcmxk",
   "messages": [
     {
@@ -189,11 +189,11 @@ Example:
 {
   "accounts": [
     {
-      "address": "0xdeadbeef000000000000000000000000deadbeef",
+      "address": "Qdeadbeef000000000000000000000000deadbeef",
       "url": "keystore:///path/to/keyfile/a"
     },
     {
-      "address": "0x1111111122222222222233333333334444444444",
+      "address": "Q1111111122222222222233333333334444444444",
       "url": "keystore:///path/to/keyfile/b"
     }
   ],
@@ -215,11 +215,11 @@ Example:
 {
   "accounts": [
     {
-      "address": "0x0000000000000000000000000000000000000000",
+      "address": "Q0000000000000000000000000000000000000000",
       "url": ".. ignored .."
     },
     {
-      "address": "0xffffffffffffffffffffffffffffffffffffffff",
+      "address": "Qffffffffffffffffffffffffffffffffffffffff",
       "url": ""
     }
   ]
