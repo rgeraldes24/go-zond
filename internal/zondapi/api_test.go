@@ -1172,12 +1172,13 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 		case 2:
 			// with logs
 			// transfer(address to, uint256 value)
-			data := fmt.Sprintf("0xa9059cbb%s%s", common.HexToHash(common.BigToAddress(big.NewInt(int64(i + 1))).Hex()).String()[2:], common.BytesToHash([]byte{byte(i + 11)}).String()[2:])
+			// TODO(rgeraldes24): refactor?
+			data := fmt.Sprintf("0xa9059cbb%s%s", common.HexToHash(common.BigToHash(big.NewInt(int64(i + 1))).Hex()).String()[2:], common.BytesToHash([]byte{byte(i + 11)}).String()[2:])
 			tx, err = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: uint64(i), To: &contract, Gas: 60000, GasFeeCap: b.BaseFee(), Data: common.FromHex(data)}), signer, acc1Key)
 		case 3:
 			// dynamic fee with logs
 			// transfer(address to, uint256 value)
-			data := fmt.Sprintf("0xa9059cbb%s%s", common.HexToHash(common.BigToAddress(big.NewInt(int64(i + 1))).Hex()).String()[2:], common.BytesToHash([]byte{byte(i + 11)}).String()[2:])
+			data := fmt.Sprintf("0xa9059cbb%s%s", common.HexToHash(common.BigToHash(big.NewInt(int64(i + 1))).Hex()).String()[2:], common.BytesToHash([]byte{byte(i + 11)}).String()[2:])
 			fee := big.NewInt(500)
 			fee.Add(fee, b.BaseFee())
 			tx, err = types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: uint64(i), To: &contract, Gas: 60000, Value: big.NewInt(1), GasTipCap: big.NewInt(500), GasFeeCap: fee, Data: common.FromHex(data)}), signer, acc1Key)
