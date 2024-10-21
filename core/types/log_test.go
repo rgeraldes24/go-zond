@@ -73,9 +73,9 @@ var unmarshalLogTests = map[string]struct {
 			Data:        []byte{},
 			Index:       0,
 			TxIndex:     3,
-			TxHash:      common.HexToHash("Q3b198bfd5d2907285af009e9ae84a0ecd63677110d89d7e030251acb87f6487e"),
+			TxHash:      common.HexToHash("0x3b198bfd5d2907285af009e9ae84a0ecd63677110d89d7e030251acb87f6487e"),
 			Topics: []common.Hash{
-				common.HexToHash("Qddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"),
+				common.HexToHash("0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"),
 			},
 		},
 	},

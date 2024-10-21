@@ -288,7 +288,7 @@ func TestInternals(t *testing.T) {
 				byte(vm.CALL),
 			},
 			tracer: mkTracer("callTracer", nil),
-			want:   `{"from":"Q000000000000000000000000000000000000feed","gas":"0x13880","gasUsed":"0x5c44","to":"Q00000000000000000000000000000000deadbeef","input":"0x","calls":[{"from":"0x00000000000000000000000000000000deadbeef","gas":"0xd8cc","gasUsed":"0x0","to":"Q00000000000000000000000000000000000000ff","input":"0x","value":"0x0","type":"CALL"}],"value":"0x0","type":"CALL"}`,
+			want:   `{"from":"Q000000000000000000000000000000000000feed","gas":"0x13880","gasUsed":"0x5c44","to":"Q00000000000000000000000000000000deadbeef","input":"0x","calls":[{"from":"Q00000000000000000000000000000000deadbeef","gas":"0xd8cc","gasUsed":"0x0","to":"Q00000000000000000000000000000000000000ff","input":"0x","value":"0x0","type":"CALL"}],"value":"0x0","type":"CALL"}`,
 		},
 		{
 			name:   "Stack depletion in LOG0",
@@ -326,7 +326,7 @@ func TestInternals(t *testing.T) {
 				byte(vm.LOG0),
 			},
 			tracer: mkTracer("prestateTracer", nil),
-			want:   `{"0x0000000000000000000000000000000000000000":{"balance":"0x0"},"0x000000000000000000000000000000000000feed":{"balance":"0x1c6bf52647880"},"0x00000000000000000000000000000000deadbeef":{"balance":"0x0","code":"0x6001600052600164ffffffffff60016000f560ff6000a0"}}`,
+			want:   `{"Q0000000000000000000000000000000000000000":{"balance":"0x0"},"Q000000000000000000000000000000000000feed":{"balance":"0x1c6bf52647880"},"Q00000000000000000000000000000000deadbeef":{"balance":"0x0","code":"0x6001600052600164ffffffffff60016000f560ff6000a0"}}`,
 		},
 		{
 			// CREATE2 which requires padding memory by prestate tracer
@@ -345,7 +345,7 @@ func TestInternals(t *testing.T) {
 				byte(vm.LOG0),
 			},
 			tracer: mkTracer("prestateTracer", nil),
-			want:   `{"0x0000000000000000000000000000000000000000":{"balance":"0x0"},"0x000000000000000000000000000000000000feed":{"balance":"0x1c6bf52647880"},"0x00000000000000000000000000000000deadbeef":{"balance":"0x0","code":"0x6001600052600160ff60016000f560ff6000a0"},"0x91ff9a805d36f54e3e272e230f3e3f5c1b330804":{"balance":"0x0"}}`,
+			want:   `{"Q0000000000000000000000000000000000000000":{"balance":"0x0"},"Q000000000000000000000000000000000000feed":{"balance":"0x1c6bf52647880"},"Q00000000000000000000000000000000deadbeef":{"balance":"0x0","code":"0x6001600052600160ff60016000f560ff6000a0"},"Q91ff9a805d36f54e3e272e230f3e3f5c1b330804":{"balance":"0x0"}}`,
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {

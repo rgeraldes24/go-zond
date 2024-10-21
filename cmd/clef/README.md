@@ -174,7 +174,7 @@ Response
 {
   "id": 0,
   "jsonrpc": "2.0",
-  "result": "0xbea9183f8f4f03d427f6bcea17388bdff1cab133"
+  "result": "Qbea9183f8f4f03d427f6bcea17388bdff1cab133"
 }
 ```
 
@@ -205,8 +205,8 @@ Response
   "id": 1,
   "jsonrpc": "2.0",
   "result": [
-    "0xafb2f771f58513609765698f65d3f2f0224a956f",
-    "0xbea9183f8f4f03d427f6bcea17388bdff1cab133"
+    "Qafb2f771f58513609765698f65d3f2f0224a956f",
+    "Qbea9183f8f4f03d427f6bcea17388bdff1cab133"
   ]
 }
 ```
@@ -861,7 +861,7 @@ Example call:
   "params": [
     {
       "title": "Account password",
-      "prompt": "Please enter the password for account 0x694267f14675d7e1b9494fd8d72fefe1755710fa",
+      "prompt": "Please enter the password for account Q694267f14675d7e1b9494fd8d72fefe1755710fa",
       "isPassword": true
     }
   ]

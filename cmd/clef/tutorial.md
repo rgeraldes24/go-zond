@@ -330,8 +330,8 @@ Lastly, when we requested a transaction to be sent, Clef prompted us in the orig
 
 ```text
 --------- Transaction request-------------
-to:           0xD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3
-from:         0xD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3 [chksum ok]
+to:           QD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3
+from:         QD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3 [chksum ok]
 value:        0 wei
 gas:          0x5208 (21000)
 maxFeePerGas: 1000000000 wei

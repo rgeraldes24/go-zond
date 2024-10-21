@@ -158,7 +158,7 @@ var domainStandard = apitypes.TypedDataDomain{
 	Name:              "Ether Mail",
 	Version:           "1",
 	ChainId:           math.NewHexOrDecimal256(1),
-	VerifyingContract: "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+	VerifyingContract: "QCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
 	Salt:              "",
 }
 

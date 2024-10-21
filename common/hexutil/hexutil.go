@@ -72,6 +72,21 @@ func Decode(input string) ([]byte, error) {
 	return b, err
 }
 
+// DecodeAddress decodes a hex string with Q prefix.
+func DecodeAddress(input string) ([]byte, error) {
+	if len(input) == 0 {
+		return nil, ErrEmptyString
+	}
+	if !hasQPrefix(input) {
+		return nil, ErrMissingQPrefix
+	}
+	b, err := hex.DecodeString(input[1:])
+	if err != nil {
+		err = mapError(err)
+	}
+	return b, err
+}
+
 // MustDecode decodes a hex string with 0x prefix. It panics for invalid input.
 func MustDecode(input string) []byte {
 	dec, err := Decode(input)
@@ -189,6 +204,10 @@ func EncodeBig(bigint *big.Int) string {
 
 func has0xPrefix(input string) bool {
 	return len(input) >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')
+}
+
+func hasQPrefix(input string) bool {
+	return len(input) >= 1 && input[0] == 'Q'
 }
 
 func checkNumber(input string) (raw string, err error) {

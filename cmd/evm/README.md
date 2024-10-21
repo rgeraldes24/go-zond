@@ -191,11 +191,11 @@ Two resulting files:
 `alloc.json`:
 ```json
 {
-  "0x20687fa825ab4ad40a89c303f22f65fef9778555": {
+  "Q20687fa825ab4ad40a89c303f22f65fef9778555": {
     "balance": "0xebd44d22b000",
     "nonce": "0x1"
   },
-  "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
+  "Qa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
     "balance": "0x5ffd4878be161d74",
     "nonce": "0xac"
   }
@@ -228,7 +228,7 @@ Two resulting files:
   "rejected": [
     {
       "index": 1,
-      "error": "nonce too low: address 0x20687Fa825ab4AD40A89C303F22F65FEf9778555, tx: 0 state: 1"
+      "error": "nonce too low: address Q20687Fa825ab4AD40A89C303F22F65FEf9778555, tx: 0 state: 1"
     }
   ],
   "gasUsed": "0x5208",
@@ -280,7 +280,7 @@ Output:
     "rejected": [
       {
         "index": 1,
-        "error": "nonce too low: address 0x8A8eAFb1cf62BfBeb1741769DAE1a9dd47996192, tx: 0 state: 1"
+        "error": "nonce too low: address Q8A8eAFb1cf62BfBeb1741769DAE1a9dd47996192, tx: 0 state: 1"
       }
     ],
     "gasUsed": "0x5208"
