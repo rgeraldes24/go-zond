@@ -571,7 +571,7 @@ func testCallContractWithBlockOverrides(t *testing.T, client *rpc.Client) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !bytes.Equal(res, common.FromHex("0x0000000000000000000000000000000000000000")) {
+	if !bytes.Equal(res, common.FromHexAddress("Q0000000000000000000000000000000000000000")) {
 		t.Fatalf("unexpected result: %x", res)
 	}
 
@@ -583,7 +583,7 @@ func testCallContractWithBlockOverrides(t *testing.T, client *rpc.Client) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if !bytes.Equal(res, common.FromHex("0x1111111111111111111111111111111111111111")) {
+	if !bytes.Equal(res, common.FromHexAddress("Q1111111111111111111111111111111111111111")) {
 		t.Fatalf("unexpected result: %x", res)
 	}
 }

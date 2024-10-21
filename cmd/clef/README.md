@@ -359,7 +359,7 @@ Bash example:
   "method": "account_signData",
   "params": [
     "data/plain",
-    "0x201bdf510d5aa66d1b5db98dfb0f30d40b6ea47d",
+    "Q201bdf510d5aa66d1b5db98dfb0f30d40b6ea47d",
     "0xaabbccdd"
   ]
 }
@@ -393,7 +393,7 @@ Response
   "jsonrpc": "2.0",
   "method": "account_signTypedData",
   "params": [
-    "0x201bdf510d5aa66d1b5db98dfb0f30d40b6ea47d",
+    "Q201bdf510d5aa66d1b5db98dfb0f30d40b6ea47d",
     {
       "types": {
         "EIP712Domain": [
@@ -530,7 +530,7 @@ Invoked when there's a transaction for approval.
 Here's a method invocation:
 ```bash
 
-curl -i -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"account_signTransaction","params":[{"from":"Q694267f14675d7e1b9494fd8d72fefe1755710fa","gas":"0x333","maxFeePerGas":"0x1","maxPriorityFeePerGas":"0x1","nonce":"0x0","to":"0x07a565b7ed7d7a678680a4c162885bedbb695fe0", "value":"0x0", "data":"0x4401a6e40000000000000000000000000000000000000000000000000000000000000012"},"safeSend(address)"],"id":67}' http://localhost:8550/
+curl -i -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"account_signTransaction","params":[{"from":"Q694267f14675d7e1b9494fd8d72fefe1755710fa","gas":"0x333","maxFeePerGas":"0x1","maxPriorityFeePerGas":"0x1","nonce":"0x0","to":"Q07a565b7ed7d7a678680a4c162885bedbb695fe0", "value":"0x0", "data":"0x4401a6e40000000000000000000000000000000000000000000000000000000000000012"},"safeSend(address)"],"id":67}' http://localhost:8550/
 ```
 Results in the following invocation on the UI:
 ```json
@@ -576,7 +576,7 @@ Results in the following invocation on the UI:
 The same method invocation, but with invalid data:
 ```bash
 
-curl -i -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"account_signTransaction","params":[{"from":"Q694267f14675d7e1b9494fd8d72fefe1755710fa","gas":"0x333","maxFeePerGas":"0x1","maxPriorityFeePerGas":"0x1","nonce":"0x0","to":"0x07a565b7ed7d7a678680a4c162885bedbb695fe0", "value":"0x0", "data":"0x4401a6e40000000000000002000000000000000000000000000000000000000000000012"},"safeSend(address)"],"id":67}' http://localhost:8550/
+curl -i -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"account_signTransaction","params":[{"from":"Q694267f14675d7e1b9494fd8d72fefe1755710fa","gas":"0x333","maxFeePerGas":"0x1","maxPriorityFeePerGas":"0x1","nonce":"0x0","to":"Q07a565b7ed7d7a678680a4c162885bedbb695fe0", "value":"0x0", "data":"0x4401a6e40000000000000002000000000000000000000000000000000000000000000012"},"safeSend(address)"],"id":67}' http://localhost:8550/
 ```
 
 ```json
