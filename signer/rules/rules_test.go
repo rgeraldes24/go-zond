@@ -598,7 +598,7 @@ function ApproveSignData(r){
 	}
 	message := "baz bazonk foo"
 	hash, rawdata := accounts.TextAndHash([]byte(message))
-	addr, _ := mixAddr("z694267f14675d7e1b9494fd8d72fefe1755710fa")
+	addr, _ := mixAddr("Z694267f14675d7e1b9494fd8d72fefe1755710fa")
 
 	t.Logf("address %v %v\n", addr.String(), addr.Original())
 

@@ -262,36 +262,33 @@ func TestZondClient(t *testing.T) {
 		"Header": {
 			func(t *testing.T) { testHeader(t, chain, client) },
 		},
-		// TODO(rgeraldes24): fix
-		/*
-			"BalanceAt": {
-				func(t *testing.T) { testBalanceAt(t, client) },
-			},
-			"TxInBlockInterrupted": {
-				func(t *testing.T) { testTransactionInBlock(t, client) },
-			},
-			"ChainID": {
-				func(t *testing.T) { testChainID(t, client) },
-			},
-			"GetBlock": {
-				func(t *testing.T) { testGetBlock(t, client) },
-			},
-			"StatusFunctions": {
-				func(t *testing.T) { testStatusFunctions(t, client) },
-			},
-			"CallContract": {
-				func(t *testing.T) { testCallContract(t, client) },
-			},
-			"CallContractAtHash": {
-				func(t *testing.T) { testCallContractAtHash(t, client) },
-			},
-			"AtFunctions": {
-				func(t *testing.T) { testAtFunctions(t, client) },
-			},
-			"TransactionSender": {
-				func(t *testing.T) { testTransactionSender(t, client) },
-			},
-		*/
+		"BalanceAt": {
+			func(t *testing.T) { testBalanceAt(t, client) },
+		},
+		"TxInBlockInterrupted": {
+			func(t *testing.T) { testTransactionInBlock(t, client) },
+		},
+		"ChainID": {
+			func(t *testing.T) { testChainID(t, client) },
+		},
+		"GetBlock": {
+			func(t *testing.T) { testGetBlock(t, client) },
+		},
+		"StatusFunctions": {
+			func(t *testing.T) { testStatusFunctions(t, client) },
+		},
+		"CallContract": {
+			func(t *testing.T) { testCallContract(t, client) },
+		},
+		"CallContractAtHash": {
+			func(t *testing.T) { testCallContractAtHash(t, client) },
+		},
+		"AtFunctions": {
+			func(t *testing.T) { testAtFunctions(t, client) },
+		},
+		"TransactionSender": {
+			func(t *testing.T) { testTransactionSender(t, client) },
+		},
 	}
 
 	t.Parallel()

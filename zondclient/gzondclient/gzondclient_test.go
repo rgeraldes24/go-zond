@@ -577,7 +577,7 @@ func testCallContractWithBlockOverrides(t *testing.T, client *rpc.Client) {
 
 	// Now test with block overrides
 	bo := BlockOverrides{
-		Coinbase: common.HexToAddress("z1111111111111111111111111111111111111111"),
+		Coinbase: common.HexToAddress("Z1111111111111111111111111111111111111111"),
 	}
 	res, err = zc.CallContractWithBlockOverrides(context.Background(), msg, big.NewInt(0), &mapAcc, bo)
 	if err != nil {
