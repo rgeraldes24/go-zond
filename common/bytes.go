@@ -37,9 +37,9 @@ func FromHex(s string) []byte {
 }
 
 // FromAddressHex returns the bytes represented by the hexadecimal string s.
-// s may be prefixed with "Q".
+// s may be prefixed with "Z".
 func FromHexAddress(s string) []byte {
-	if hasQPrefix(s) {
+	if hasZPrefix(s) {
 		s = s[1:]
 	}
 	if len(s)%2 == 1 {
@@ -64,9 +64,9 @@ func has0xPrefix(str string) bool {
 	return len(str) >= 2 && str[0] == '0' && (str[1] == 'x' || str[1] == 'X')
 }
 
-// hasQPrefix validates str begins with 'Q' or 'Q'.
-func hasQPrefix(str string) bool {
-	return len(str) >= 1 && str[0] == 'Q'
+// hasZPrefix validates str begins with 'Z'.
+func hasZPrefix(str string) bool {
+	return len(str) >= 1 && str[0] == 'Z'
 }
 
 // isHexCharacter returns bool of c being a valid hexadecimal.

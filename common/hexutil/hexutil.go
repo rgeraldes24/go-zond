@@ -44,7 +44,7 @@ var (
 	ErrEmptyString    = &decError{"empty hex string"}
 	ErrSyntax         = &decError{"invalid hex string"}
 	ErrMissingPrefix  = &decError{"hex string without 0x prefix"}
-	ErrMissingQPrefix = &decError{"hex string without Q prefix"}
+	ErrMissingZPrefix = &decError{"hex string without Z prefix"}
 	ErrOddLength      = &decError{"hex string of odd length"}
 	ErrEmptyNumber    = &decError{"hex string \"0x\""}
 	ErrLeadingZero    = &decError{"hex number with leading zero digits"}
@@ -72,13 +72,13 @@ func Decode(input string) ([]byte, error) {
 	return b, err
 }
 
-// DecodeAddress decodes a hex string with Q prefix.
+// DecodeAddress decodes a hex string with Z prefix.
 func DecodeAddress(input string) ([]byte, error) {
 	if len(input) == 0 {
 		return nil, ErrEmptyString
 	}
-	if !hasQPrefix(input) {
-		return nil, ErrMissingQPrefix
+	if !hasZPrefix(input) {
+		return nil, ErrMissingZPrefix
 	}
 	b, err := hex.DecodeString(input[1:])
 	if err != nil {
@@ -96,6 +96,7 @@ func MustDecode(input string) []byte {
 	return dec
 }
 
+// TODO(rgeraldes24)
 // Encode encodes b as a hex string with 0x prefix.
 func Encode(b []byte) string {
 	enc := make([]byte, len(b)*2+2)
@@ -206,8 +207,8 @@ func has0xPrefix(input string) bool {
 	return len(input) >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')
 }
 
-func hasQPrefix(input string) bool {
-	return len(input) >= 1 && input[0] == 'Q'
+func hasZPrefix(input string) bool {
+	return len(input) >= 1 && input[0] == 'Z'
 }
 
 func checkNumber(input string) (raw string, err error) {

@@ -405,7 +405,7 @@ var (
 	}
 	MinerPendingFeeRecipientFlag = &cli.StringFlag{
 		Name:     "miner.pending.feeRecipient",
-		Usage:    "Q prefixed public address for the pending block producer (not used for actual block production)",
+		Usage:    "Z prefixed public address for the pending block producer (not used for actual block production)",
 		Category: flags.MinerCategory,
 	}
 
@@ -1158,7 +1158,7 @@ func setEtherbase(ctx *cli.Context, cfg *zondconfig.Config) {
 	if !ctx.IsSet(MinerPendingFeeRecipientFlag.Name) {
 		return
 	}
-	addr := strings.TrimPrefix(ctx.String(MinerPendingFeeRecipientFlag.Name), "Q")
+	addr := strings.TrimPrefix(ctx.String(MinerPendingFeeRecipientFlag.Name), "Z")
 	b, err := hex.DecodeString(addr)
 	if err != nil || len(b) != common.AddressLength {
 		Fatalf("-%s: invalid pending block producer address %q", MinerPendingFeeRecipientFlag.Name, addr)

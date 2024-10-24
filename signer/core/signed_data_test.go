@@ -135,17 +135,17 @@ var jsonTypedData = `
         "name": "Ether Mail",
         "version": "1",
         "chainId": "1",
-        "verifyingContract": "QCCCcccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+        "verifyingContract": "ZCCCcccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
       },
       "message": {
         "from": {
           "name": "Cow",
 		  "test": 3,
-          "wallet": "QcD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"
+          "wallet": "ZcD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"
         },
         "to": {
           "name": "Bob",
-          "wallet": "QbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+          "wallet": "ZbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
         },
         "contents": "Hello, Bob!"
       }
@@ -158,18 +158,18 @@ var domainStandard = apitypes.TypedDataDomain{
 	Name:              "Ether Mail",
 	Version:           "1",
 	ChainId:           math.NewHexOrDecimal256(1),
-	VerifyingContract: "QCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
+	VerifyingContract: "ZCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC",
 	Salt:              "",
 }
 
 var messageStandard = map[string]interface{}{
 	"from": map[string]interface{}{
 		"name":   "Cow",
-		"wallet": "QCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+		"wallet": "ZCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
 	},
 	"to": map[string]interface{}{
 		"name":   "Bob",
-		"wallet": "QbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
+		"wallet": "ZbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB",
 	},
 	"contents": "Hello, Bob!",
 }
@@ -523,7 +523,7 @@ var complexTypedData = `
     "domain": {
         "chainId": "56",
         "name": "da.systems",
-        "verifyingContract": "Q0000000000000000000000000000000020210722",
+        "verifyingContract": "Z0000000000000000000000000000000020210722",
         "version": "1"
     },
     "message": {
@@ -673,7 +673,7 @@ var complexTypedDataLCRefType = `
     "domain": {
         "chainId": "56",
         "name": "da.systems",
-        "verifyingContract": "Q0000000000000000000000000000000020210722",
+        "verifyingContract": "Z0000000000000000000000000000000020210722",
         "version": "1"
     },
     "message": {

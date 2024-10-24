@@ -46,7 +46,7 @@ var (
 	addressT = reflect.TypeOf(Address{})
 
 	// MaxAddress represents the maximum possible address value.
-	MaxAddress = HexToAddress("Qffffffffffffffffffffffffffffffffffffffff")
+	MaxAddress = HexToAddress("Zffffffffffffffffffffffffffffffffffffffff")
 
 	// MaxHash represents the maximum possible hash value.
 	MaxHash = HexToHash("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
@@ -231,7 +231,7 @@ func HexToAddress(s string) Address { return BytesToAddress(FromHexAddress(s)) }
 // IsHexAddress verifies whether a string can represent a valid hex-encoded
 // Zond address or not.
 func IsHexAddress(s string) bool {
-	if hasQPrefix(s) {
+	if hasZPrefix(s) {
 		s = s[1:]
 	}
 	return len(s) == 2*AddressLength && isHex(s)
@@ -284,7 +284,7 @@ func (a *Address) checksumHex() []byte {
 
 func (a Address) hex() []byte {
 	var buf [len(a)*2 + 1]byte
-	copy(buf[:1], "Q")
+	copy(buf[:1], "Z")
 	hex.Encode(buf[1:], a[:])
 	return buf[:]
 }
@@ -374,10 +374,10 @@ func (a *Address) UnmarshalGraphQL(input interface{}) error {
 	return err
 }
 
-// UnprefixedAddress allows marshaling an Address without Q prefix.
+// UnprefixedAddress allows marshaling an Address without Z prefix.
 type UnprefixedAddress Address
 
-// UnmarshalText decodes the address from hex. The Q prefix is optional.
+// UnmarshalText decodes the address from hex. The Z prefix is optional.
 func (a *UnprefixedAddress) UnmarshalText(input []byte) error {
 	return hexutil.UnmarshalFixedUnprefixedTextAddress("UnprefixedAddress", input, a[:])
 }
@@ -418,10 +418,10 @@ func (ma *MixedcaseAddress) UnmarshalJSON(input []byte) error {
 
 // MarshalJSON marshals the original value
 func (ma MixedcaseAddress) MarshalJSON() ([]byte, error) {
-	if strings.HasPrefix(ma.original, "Q") {
-		return json.Marshal(fmt.Sprintf("Q%s", ma.original[1:]))
+	if strings.HasPrefix(ma.original, "Z") {
+		return json.Marshal(fmt.Sprintf("Z%s", ma.original[1:]))
 	}
-	return json.Marshal(fmt.Sprintf("Q%s", ma.original))
+	return json.Marshal(fmt.Sprintf("Z%s", ma.original))
 }
 
 // Address returns the address

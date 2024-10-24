@@ -39,7 +39,7 @@ type AddressBytes []byte
 // MarshalText implements encoding.TextMarshaler
 func (b AddressBytes) MarshalText() ([]byte, error) {
 	result := make([]byte, len(b)*2+1)
-	copy(result, `Q`)
+	copy(result, `Z`)
 	hex.Encode(result[1:], b)
 	return result, nil
 }
@@ -440,8 +440,8 @@ func bytesHave0xPrefix(input []byte) bool {
 	return len(input) >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')
 }
 
-func bytesHaveQPrefix(input []byte) bool {
-	return len(input) >= 1 && input[0] == 'Q'
+func bytesHaveZPrefix(input []byte) bool {
+	return len(input) >= 1 && input[0] == 'Z'
 }
 
 func checkText(input []byte, wantPrefix bool) ([]byte, error) {
@@ -463,10 +463,10 @@ func checkTextAddress(input []byte, wantPrefix bool) ([]byte, error) {
 	if len(input) == 0 {
 		return nil, nil // empty strings are allowed
 	}
-	if bytesHaveQPrefix(input) {
+	if bytesHaveZPrefix(input) {
 		input = input[1:]
 	} else if wantPrefix {
-		return nil, ErrMissingQPrefix
+		return nil, ErrMissingZPrefix
 	}
 	if len(input)%2 != 0 {
 		return nil, ErrOddLength

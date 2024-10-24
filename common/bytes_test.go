@@ -68,7 +68,7 @@ func TestFromHex(t *testing.T) {
 }
 
 func TestFromHexAddress(t *testing.T) {
-	input := "Q01"
+	input := "Z01"
 	expected := []byte{1}
 	result := FromHexAddress(input)
 	if !bytes.Equal(expected, result) {
