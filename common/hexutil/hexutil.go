@@ -113,7 +113,7 @@ func Encode(b []byte) string {
 	return string(enc)
 }
 
-// Encode encodes b as a hex string with Z prefix.
+// EncodeAddress encodes b as a hex string with Z prefix.
 func EncodeAddress(b []byte) string {
 	enc := make([]byte, len(b)*2+1)
 	copy(enc, "Z")
