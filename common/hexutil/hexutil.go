@@ -96,6 +96,15 @@ func MustDecode(input string) []byte {
 	return dec
 }
 
+// MustDecodeAddress decodes a hex string with Z prefix. It panics for invalid input.
+func MustDecodeAddress(input string) []byte {
+	dec, err := DecodeAddress(input)
+	if err != nil {
+		panic(err)
+	}
+	return dec
+}
+
 // TODO(rgeraldes24)
 // Encode encodes b as a hex string with 0x prefix.
 func Encode(b []byte) string {
