@@ -32,8 +32,8 @@ var (
 	uint64T = reflect.TypeOf(Uint64(0))
 )
 
-// Bytes marshals/unmarshals as a JSON string with Q prefix.
-// The empty slice marshals as "Q".
+// Bytes marshals/unmarshals as a JSON string with Z prefix.
+// The empty slice marshals as "Z".
 type AddressBytes []byte
 
 // MarshalText implements encoding.TextMarshaler
@@ -69,7 +69,7 @@ func (b *AddressBytes) UnmarshalText(input []byte) error {
 
 // String returns the hex encoding of b.
 func (b AddressBytes) String() string {
-	return Encode(b)
+	return EncodeAddress(b)
 }
 
 // ImplementsGraphQLType returns true if Bytes implements the specified GraphQL type.
