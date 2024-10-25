@@ -54,7 +54,7 @@ func (b *AddressBytes) UnmarshalJSON(input []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (b *AddressBytes) UnmarshalText(input []byte) error {
-	raw, err := checkText(input, true)
+	raw, err := checkTextAddress(input, true)
 	if err != nil {
 		return err
 	}
