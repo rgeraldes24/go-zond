@@ -105,12 +105,19 @@ func MustDecodeAddress(input string) []byte {
 	return dec
 }
 
-// TODO(rgeraldes24)
 // Encode encodes b as a hex string with 0x prefix.
 func Encode(b []byte) string {
 	enc := make([]byte, len(b)*2+2)
 	copy(enc, "0x")
 	hex.Encode(enc[2:], b)
+	return string(enc)
+}
+
+// Encode encodes b as a hex string with Z prefix.
+func EncodeAddress(b []byte) string {
+	enc := make([]byte, len(b)*2+1)
+	copy(enc, "Z")
+	hex.Encode(enc[1:], b)
 	return string(enc)
 }
 
