@@ -559,7 +559,7 @@ Results in the following invocation on the UI:
           },
           {
             "type": "Info",
-            "message": "safeSend(address: 0x0000000000000000000000000000000000000012)"
+            "message": "safeSend(address: Z0000000000000000000000000000000000000012)"
           }
         ],
       "meta": {
