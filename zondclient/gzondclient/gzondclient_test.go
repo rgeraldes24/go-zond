@@ -40,13 +40,14 @@ import (
 )
 
 var (
-	testKey, _   = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-	testAddr     = testKey.GetAddress()
-	testContract = common.HexToAddress("Zbeef")
-	testEmpty    = common.HexToAddress("Zeeee")
-	testSlot     = common.HexToHash("0xdeadbeef")
-	testValue    = crypto.Keccak256Hash(testSlot[:])
-	testBalance  = big.NewInt(2e15)
+	testKey, _      = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	testAddr        = testKey.GetAddress()
+	zeroAddr, _     = common.NewAddressFromString("Z0000000000000000000000000000000000000000")
+	testContract, _ = common.NewAddressFromString("Z000000000000000000000000000000000000beef")
+	testEmpty, _    = common.NewAddressFromString("Z000000000000000000000000000000000000eeee")
+	testSlot        = common.HexToHash("0xdeadbeef")
+	testValue       = crypto.Keccak256Hash(testSlot[:])
+	testBalance     = big.NewInt(2e15)
 )
 
 func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
@@ -221,7 +222,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 		t.Fatalf("unexpected length of accesslist: %v", len(*al))
 	}
 	// address changes between calls, so we can't test for it.
-	if (*al)[0].Address == common.HexToAddress("Z0") {
+	if (*al)[0].Address == zeroAddr {
 		t.Fatalf("unexpected address: %v", (*al)[0].Address)
 	}
 	if (*al)[0].StorageKeys[0] != common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000081") {
@@ -299,7 +300,7 @@ func testGetProofCanonicalizeKeys(t *testing.T, client *rpc.Client) {
 }
 
 func testGetProofNonExistent(t *testing.T, client *rpc.Client) {
-	addr := common.HexToAddress("Z0001")
+	addr, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000001")
 	ec := New(client)
 	result, err := ec.GetProof(context.Background(), addr, nil, nil)
 	if err != nil {
@@ -518,6 +519,7 @@ func TestOverrideAccountMarshal(t *testing.T) {
 }
 
 func TestBlockOverridesMarshal(t *testing.T) {
+	coinbase, _ := common.NewAddressFromString("Z1111111111111111111111111111111111111111")
 	for i, tt := range []struct {
 		bo   BlockOverrides
 		want string
@@ -528,7 +530,7 @@ func TestBlockOverridesMarshal(t *testing.T) {
 		},
 		{
 			bo: BlockOverrides{
-				Coinbase: common.HexToAddress("Z1111111111111111111111111111111111111111"),
+				Coinbase: coinbase,
 			},
 			want: `{"coinbase":"Z1111111111111111111111111111111111111111"}`,
 		},
@@ -576,8 +578,9 @@ func testCallContractWithBlockOverrides(t *testing.T, client *rpc.Client) {
 	}
 
 	// Now test with block overrides
+	coinbase, _ := common.NewAddressFromString("Z1111111111111111111111111111111111111111")
 	bo := BlockOverrides{
-		Coinbase: common.HexToAddress("Z1111111111111111111111111111111111111111"),
+		Coinbase: coinbase,
 	}
 	res, err = zc.CallContractWithBlockOverrides(context.Background(), msg, big.NewInt(0), &mapAcc, bo)
 	if err != nil {

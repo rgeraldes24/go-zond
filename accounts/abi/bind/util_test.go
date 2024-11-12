@@ -33,6 +33,9 @@ import (
 
 var testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
+var wantedAddr1, _ = common.NewAddressFromString("Zfe66B8AED6e4fb3e12d0B65f61ef246c4d0CfFFA")
+var wantedAddr2, _ = common.NewAddressFromString("Zfe66B8AED6e4fb3e12d0B65f61ef246c4d0CfFFA")
+
 var waitDeployedTests = map[string]struct {
 	code        string
 	gas         uint64
@@ -42,13 +45,13 @@ var waitDeployedTests = map[string]struct {
 	"successful deploy": {
 		code:        `6060604052600a8060106000396000f360606040526008565b00`,
 		gas:         3000000,
-		wantAddress: common.HexToAddress("Zfe66B8AED6e4fb3e12d0B65f61ef246c4d0CfFFA"),
+		wantAddress: wantedAddr1,
 	},
 	"empty code": {
 		code:        ``,
 		gas:         300000,
 		wantErr:     bind.ErrNoCodeAfterDeploy,
-		wantAddress: common.HexToAddress("Zfe66B8AED6e4fb3e12d0B65f61ef246c4d0CfFFA"),
+		wantAddress: wantedAddr2,
 	},
 }
 
@@ -119,7 +122,7 @@ func TestWaitDeployedCornerCases(t *testing.T) {
 
 	// Create a transaction to an account.
 	code := "6060604052600a8060106000396000f360606040526008565b00"
-	to := common.HexToAddress("Z01")
+	to, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000001")
 	tx := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     0,
 		To:        &to,

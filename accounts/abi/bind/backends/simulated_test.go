@@ -587,7 +587,7 @@ func TestEstimateGasWithPrice(t *testing.T) {
 	sim := NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(params.Ether*2 + 2e17)}}, 10000000)
 	defer sim.Close()
 
-	recipient := common.HexToAddress("deadbeef")
+	recipient, _ := common.NewAddressFromString("Z00000000000000000000000000000000deadbeef")
 	var cases = []struct {
 		name        string
 		message     zond.CallMsg

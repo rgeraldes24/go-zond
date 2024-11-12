@@ -421,11 +421,12 @@ func setCredential(ctx *cli.Context) error {
 	if err := initialize(ctx); err != nil {
 		return err
 	}
-	addr := ctx.Args().First()
-	if !common.IsHexAddress(addr) {
-		utils.Fatalf("Invalid address specified: %s", addr)
+	addressStr := ctx.Args().First()
+	address, err := common.NewAddressFromString(addressStr)
+	if err != nil {
+		utils.Fatalf("Invalid address specified: %s", addressStr)
 	}
-	address := common.HexToAddress(addr)
+
 	password := utils.GetPassPhrase("Please enter a password to store for this address:", true)
 	fmt.Println()
 
@@ -451,11 +452,11 @@ func removeCredential(ctx *cli.Context) error {
 	if err := initialize(ctx); err != nil {
 		return err
 	}
-	addr := ctx.Args().First()
-	if !common.IsHexAddress(addr) {
-		utils.Fatalf("Invalid address specified: %s", addr)
+	addressStr := ctx.Args().First()
+	address, err := common.NewAddressFromString(addressStr)
+	if err != nil {
+		utils.Fatalf("Invalid address specified: %s", addressStr)
 	}
-	address := common.HexToAddress(addr)
 
 	stretchedKey, err := readMasterKey(ctx, nil)
 	if err != nil {
@@ -900,7 +901,7 @@ func testExternalUI(api *core.SignerAPI) {
 	ctx = context.WithValue(ctx, "local", "main")
 	errs := make([]string, 0)
 
-	a := common.HexToAddress("Zdeadbeef000000000000000000000000deadbeef")
+	a, _ := common.NewAddressFromString("Zdeadbeef000000000000000000000000deadbeef")
 	addErr := func(errStr string) {
 		log.Info("Test error", "err", errStr)
 		errs = append(errs, errStr)
@@ -1048,8 +1049,9 @@ func decryptSeed(keyjson []byte, auth string) ([]byte, error) {
 // GenDoc outputs examples of all structures used in json-rpc communication
 func GenDoc(ctx *cli.Context) error {
 	var (
-		a    = common.HexToAddress("Zdeadbeef000000000000000000000000deadbeef")
-		b    = common.HexToAddress("Z1111111122222222222233333333334444444444")
+		a, _ = common.NewAddressFromString("Zdeadbeef000000000000000000000000deadbeef")
+		b, _ = common.NewAddressFromString("Z1111111122222222222233333333334444444444")
+		c, _ = common.NewAddressFromString("Zcowbeef000000cowbeef00000000000000000c0w")
 		meta = core.Metadata{
 			Scheme:    "http",
 			Local:     "localhost:8545",
@@ -1181,7 +1183,7 @@ func GenDoc(ctx *cli.Context) error {
 			&core.ListResponse{
 				Accounts: []accounts.Account{
 					{
-						Address: common.HexToAddress("Zcowbeef000000cowbeef00000000000000000c0w"),
+						Address: c,
 						URL:     accounts.URL{Path: ".. ignored .."},
 					},
 					{

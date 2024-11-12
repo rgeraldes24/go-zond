@@ -60,7 +60,8 @@ var allPrecompiles = map[common.Address]PrecompiledContract{
 }
 
 func testPrecompiled(addr string, test precompiledTest, t *testing.T) {
-	p := allPrecompiles[common.HexToAddress(addr)]
+	contractAddr, _ := common.NewAddressFromString(addr)
+	p := allPrecompiles[contractAddr]
 	in := common.Hex2Bytes(test.Input)
 	gas := p.RequiredGas(in)
 	t.Run(fmt.Sprintf("%s-Gas=%d", test.Name, gas), func(t *testing.T) {
@@ -81,7 +82,8 @@ func testPrecompiled(addr string, test precompiledTest, t *testing.T) {
 }
 
 func testPrecompiledOOG(addr string, test precompiledTest, t *testing.T) {
-	p := allPrecompiles[common.HexToAddress(addr)]
+	contractAddr, _ := common.NewAddressFromString(addr)
+	p := allPrecompiles[contractAddr]
 	in := common.Hex2Bytes(test.Input)
 	gas := p.RequiredGas(in) - 1
 
@@ -122,7 +124,8 @@ func benchmarkPrecompiled(addr string, test precompiledTest, bench *testing.B) {
 	if test.NoBenchmark {
 		return
 	}
-	p := allPrecompiles[common.HexToAddress(addr)]
+	contractAddr, _ := common.NewAddressFromString(addr)
+	p := allPrecompiles[contractAddr]
 	in := common.Hex2Bytes(test.Input)
 	reqGas := p.RequiredGas(in)
 

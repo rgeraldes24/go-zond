@@ -247,7 +247,7 @@ func TestPendingTxFilter(t *testing.T) {
 		backend, sys = newTestFilterSystem(t, db, Config{})
 		api          = NewFilterAPI(sys)
 
-		to           = common.HexToAddress("Zb794f5ea0ba39494ce83a213fffba74279579268")
+		to, _        = common.NewAddressFromString("Zb794f5ea0ba39494ce83a213fffba74279579268")
 		transactions = []*types.Transaction{
 			types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &to, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
 			types.NewTx(&types.DynamicFeeTx{Nonce: 1, To: &to, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
@@ -304,7 +304,7 @@ func TestPendingTxFilterFullTx(t *testing.T) {
 		backend, sys = newTestFilterSystem(t, db, Config{})
 		api          = NewFilterAPI(sys)
 
-		to           = common.HexToAddress("Zb794f5ea0ba39494ce83a213fffba74279579268")
+		to, _        = common.NewAddressFromString("Zb794f5ea0ba39494ce83a213fffba74279579268")
 		transactions = []*types.Transaction{
 			types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &to, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
 			types.NewTx(&types.DynamicFeeTx{Nonce: 1, To: &to, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}),
@@ -475,13 +475,13 @@ func TestLogFilter(t *testing.T) {
 		backend, sys = newTestFilterSystem(t, db, Config{})
 		api          = NewFilterAPI(sys)
 
-		firstAddr      = common.HexToAddress("Z1111111111111111111111111111111111111111")
-		secondAddr     = common.HexToAddress("Z2222222222222222222222222222222222222222")
-		thirdAddress   = common.HexToAddress("Z3333333333333333333333333333333333333333")
-		notUsedAddress = common.HexToAddress("Z9999999999999999999999999999999999999999")
-		firstTopic     = common.HexToHash("0x1111111111111111111111111111111111111111111111111111111111111111")
-		secondTopic    = common.HexToHash("0x2222222222222222222222222222222222222222222222222222222222222222")
-		notUsedTopic   = common.HexToHash("0x9999999999999999999999999999999999999999999999999999999999999999")
+		firstAddr, _      = common.NewAddressFromString("Z1111111111111111111111111111111111111111")
+		secondAddr, _     = common.NewAddressFromString("Z2222222222222222222222222222222222222222")
+		thirdAddress, _   = common.NewAddressFromString("Z3333333333333333333333333333333333333333")
+		notUsedAddress, _ = common.NewAddressFromString("Z9999999999999999999999999999999999999999")
+		firstTopic        = common.HexToHash("0x1111111111111111111111111111111111111111111111111111111111111111")
+		secondTopic       = common.HexToHash("0x2222222222222222222222222222222222222222222222222222222222222222")
+		notUsedTopic      = common.HexToHash("0x9999999999999999999999999999999999999999999999999999999999999999")
 
 		// posted twice, once as regular logs and once as pending logs.
 		allLogs = []*types.Log{
@@ -592,7 +592,7 @@ func TestPendingTxFilterDeadlock(t *testing.T) {
 			default:
 			}
 
-			to := common.HexToAddress("Zb794f5ea0ba39494ce83a213fffba74279579268")
+			to, _ := common.NewAddressFromString("Zb794f5ea0ba39494ce83a213fffba74279579268")
 			tx := types.NewTx(&types.DynamicFeeTx{Nonce: i, To: &to, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil})
 			backend.txFeed.Send(core.NewTxsEvent{Txs: []*types.Transaction{tx}})
 			i++

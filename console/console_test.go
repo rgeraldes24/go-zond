@@ -93,10 +93,11 @@ func newTester(t *testing.T, confOverride func(*zondconfig.Config)) *tester {
 	if err != nil {
 		t.Fatalf("failed to create node: %v", err)
 	}
+	recipientAddr, _ := common.NewAddressFromString(testAddress)
 	zondConf := &zondconfig.Config{
 		Genesis: core.DeveloperGenesisBlock(11_500_000, common.Address{}),
 		Miner: miner.Config{
-			PendingFeeRecipient: common.HexToAddress(testAddress),
+			PendingFeeRecipient: recipientAddr,
 		},
 	}
 	if confOverride != nil {

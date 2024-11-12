@@ -83,7 +83,7 @@ func TestShaghaiSigningVitalik(t *testing.T) {
 			continue
 		}
 
-		addr := common.HexToAddress(test.addr)
+		addr, _ := common.NewAddressFromString(test.addr)
 		if from != addr {
 			t.Errorf("%d: expected %x got %x", i, addr, from)
 		}

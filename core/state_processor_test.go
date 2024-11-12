@@ -74,15 +74,17 @@ func TestStateProcessorErrors(t *testing.T) {
 
 	{ // Tests against a 'recent' chain definition
 		var (
-			db    = rawdb.NewMemoryDatabase()
-			gspec = &Genesis{
+			address0, _ = common.NewAddressFromString("Z20a1A68e6818a1142F85671DB01eF7226debf822")
+			address1, _ = common.NewAddressFromString("Z20B045A50E3C97dcf002eeFed02dB2dB22AE92A0")
+			db          = rawdb.NewMemoryDatabase()
+			gspec       = &Genesis{
 				Config: config,
 				Alloc: GenesisAlloc{
-					common.HexToAddress("Z20a1A68e6818a1142F85671DB01eF7226debf822"): GenesisAccount{
+					address0: GenesisAccount{
 						Balance: big.NewInt(1000000000000000000), // 1 ether
 						Nonce:   0,
 					},
-					common.HexToAddress("Z20B045A50E3C97dcf002eeFed02dB2dB22AE92A0"): GenesisAccount{
+					address1: GenesisAccount{
 						Balance: big.NewInt(1000000000000000000), // 1 ether
 						Nonce:   math.MaxUint64,
 					},
@@ -265,11 +267,12 @@ func TestStateProcessorErrors(t *testing.T) {
 	// ErrSenderNoEOA, for this we need the sender to have contract code
 	{
 		var (
-			db    = rawdb.NewMemoryDatabase()
-			gspec = &Genesis{
+			address, _ = common.NewAddressFromString("Z20a1A68e6818a1142F85671DB01eF7226debf822")
+			db         = rawdb.NewMemoryDatabase()
+			gspec      = &Genesis{
 				Config: config,
 				Alloc: GenesisAlloc{
-					common.HexToAddress("Z20a1A68e6818a1142F85671DB01eF7226debf822"): GenesisAccount{
+					address: GenesisAccount{
 						Balance: big.NewInt(1000000000000000000), // 1 ether
 						Nonce:   0,
 						Code:    common.FromHex("0xB0B0FACE"),

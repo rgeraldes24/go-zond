@@ -237,9 +237,11 @@ func NewAddressFromString(hexaddr string) (Address, error) {
 // IsAddress verifies whether a string can represent a valid hex-encoded
 // Zond address or not.
 func IsAddress(s string) bool {
-	if hasZPrefix(s) {
-		s = s[2:]
+	if !hasZPrefix(s) {
+		return false
 	}
+	s = s[2:]
+
 	return len(s) == 2*AddressLength && isHex(s)
 }
 
@@ -424,10 +426,10 @@ func (ma *MixedcaseAddress) UnmarshalJSON(input []byte) error {
 
 // MarshalJSON marshals the original value
 func (ma MixedcaseAddress) MarshalJSON() ([]byte, error) {
-	if strings.HasPrefix(ma.original, "0x") || strings.HasPrefix(ma.original, "0X") {
-		return json.Marshal(fmt.Sprintf("0x%s", ma.original[2:]))
+	if strings.HasPrefix(ma.original, hexutil.AddressPrefix) {
+		return json.Marshal(fmt.Sprintf(hexutil.AddressPrefix+"%s", ma.original[1:]))
 	}
-	return json.Marshal(fmt.Sprintf("0x%s", ma.original))
+	return json.Marshal(fmt.Sprintf(hexutil.AddressPrefix+"%s", ma.original))
 }
 
 // Address returns the address
