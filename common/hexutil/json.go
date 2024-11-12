@@ -39,7 +39,7 @@ type Bytes []byte
 // MarshalText implements encoding.TextMarshaler
 func (b Bytes) MarshalText() ([]byte, error) {
 	result := make([]byte, len(b)*2+2)
-	copy(result, `0x`)
+	copy(result, HexPrefix)
 	hex.Encode(result[2:], b)
 	return result, nil
 }
@@ -232,7 +232,7 @@ type Uint64 uint64
 // MarshalText implements encoding.TextMarshaler.
 func (b Uint64) MarshalText() ([]byte, error) {
 	buf := make([]byte, 2, 10)
-	copy(buf, `0x`)
+	copy(buf, HexPrefix)
 	buf = strconv.AppendUint(buf, uint64(b), 16)
 	return buf, nil
 }
@@ -322,6 +322,69 @@ func (b *Uint) UnmarshalText(input []byte) error {
 // String returns the hex encoding of b.
 func (b Uint) String() string {
 	return EncodeUint64(uint64(b))
+}
+
+// Address marshals/unmarshals as a JSON string with Z prefix.
+// The empty slice marshals as "Z".
+type Address []byte
+
+// MarshalText implements encoding.TextMarshaler
+func (a Address) MarshalText() ([]byte, error) {
+	result := make([]byte, len(a)*2+1)
+	copy(result, AddressPrefix)
+	hex.Encode(result[1:], a)
+	return result, nil
+}
+
+// UnmarshalJSON implements json.Unmarshaler.
+func (a *Address) UnmarshalJSON(input []byte) error {
+	if !isString(input) {
+		return errNonString(bytesT)
+	}
+	return wrapTypeError(a.UnmarshalText(input[1:len(input)-1]), bytesT)
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (a *Address) UnmarshalText(input []byte) error {
+	// TODO(rgeraldes24): review
+	// raw, err := checkTextAddress(input, true)
+	raw, err := checkText(input, true)
+	if err != nil {
+		return err
+	}
+	dec := make([]byte, len(raw)/2)
+	if _, err = hex.Decode(dec, raw); err != nil {
+		err = mapError(err)
+	} else {
+		*a = dec
+	}
+	return err
+}
+
+// String returns the hex encoding of a.
+func (a Address) String() string {
+	return EncodeAddress(a)
+}
+
+// TODO(rgeraldes24): review
+// ImplementsGraphQLType returns true if Bytes implements the specified GraphQL type.
+func (a Address) ImplementsGraphQLType(name string) bool { return name == "Bytes" }
+
+// UnmarshalGraphQL unmarshals the provided GraphQL query data.
+func (a *Address) UnmarshalGraphQL(input interface{}) error {
+	var err error
+	switch input := input.(type) {
+	case string:
+		// TODO(rgeraldes24): review
+		data, err := DecodeAddress(input)
+		if err != nil {
+			return err
+		}
+		*a = data
+	default:
+		err = fmt.Errorf("unexpected type %T for Bytes", input)
+	}
+	return err
 }
 
 func isString(input []byte) bool {

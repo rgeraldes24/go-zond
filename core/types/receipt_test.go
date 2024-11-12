@@ -50,10 +50,10 @@ var (
 	}
 
 	// Create a few transactions to have receipts for
-	to2 = common.HexToAddress("0x2")
-	to3 = common.HexToAddress("0x3")
-	to4 = common.HexToAddress("0x4")
-	to5 = common.HexToAddress("0x5")
+	to2 = common.HexToAddress("Z2")
+	to3 = common.HexToAddress("Z3")
+	to4 = common.HexToAddress("Z4")
+	to5 = common.HexToAddress("Z5")
 	txs = Transactions{
 		NewTx(&DynamicFeeTx{
 			Nonce:     1,
@@ -128,7 +128,7 @@ var (
 			},
 			// derived fields:
 			TxHash:            txs[0].Hash(),
-			ContractAddress:   common.HexToAddress("0x5a443704dd4b594b382c22a083e2bd3090a6fef3"),
+			ContractAddress:   common.HexToAddress("Z5a443704dd4b594b382c22a083e2bd3090a6fef3"),
 			GasUsed:           1,
 			EffectiveGasPrice: big.NewInt(11),
 			BlockHash:         blockHash,

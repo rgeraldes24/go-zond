@@ -25,6 +25,8 @@ import (
 	"testing"
 )
 
+// TODO(rgeraldes24): add tests for address
+
 func checkError(t *testing.T, input string, got, want error) bool {
 	if got == nil {
 		if want != nil {

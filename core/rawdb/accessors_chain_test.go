@@ -331,7 +331,7 @@ func TestBlockReceiptStorage(t *testing.T) {
 	db := NewMemoryDatabase()
 
 	// Create a live block since we need metadata to reconstruct the receipt
-	to1 := common.HexToAddress("0x1")
+	to1 := common.HexToAddress("Z1")
 	tx1 := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     1,
 		To:        &to1,
@@ -340,7 +340,7 @@ func TestBlockReceiptStorage(t *testing.T) {
 		GasFeeCap: big.NewInt(1),
 		Data:      nil,
 	})
-	to2 := common.HexToAddress("0x2")
+	to2 := common.HexToAddress("Z2")
 	tx2 := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     2,
 		To:        &to2,
@@ -687,7 +687,7 @@ func TestReadLogs(t *testing.T) {
 	db := NewMemoryDatabase()
 
 	// Create a live block since we need metadata to reconstruct the receipt
-	to1 := common.HexToAddress("0x1")
+	to1 := common.HexToAddress("Z1")
 	tx1 := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     1,
 		To:        &to1,
@@ -696,7 +696,7 @@ func TestReadLogs(t *testing.T) {
 		GasFeeCap: big.NewInt(1),
 		Data:      nil,
 	})
-	to2 := common.HexToAddress("0x2")
+	to2 := common.HexToAddress("Z2")
 	tx2 := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     2,
 		To:        &to2,
@@ -780,8 +780,8 @@ func TestReadLogs(t *testing.T) {
 
 func TestDeriveLogFields(t *testing.T) {
 	// Create a few transactions to have receipts for
-	to2 := common.HexToAddress("0x2")
-	to3 := common.HexToAddress("0x3")
+	to2 := common.HexToAddress("Z2")
+	to3 := common.HexToAddress("Z3")
 	txs := types.Transactions{
 		types.NewTx(&types.DynamicFeeTx{
 			Nonce:     1,

@@ -46,10 +46,12 @@ var (
 	addressT = reflect.TypeOf(Address{})
 
 	// MaxAddress represents the maximum possible address value.
-	MaxAddress = HexToAddress("0xffffffffffffffffffffffffffffffffffffffff")
+	MaxAddress, _ = NewAddressFromString("Zffffffffffffffffffffffffffffffffffffffff")
 
 	// MaxHash represents the maximum possible hash value.
 	MaxHash = HexToHash("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
+
+	ErrInvalidAddress = errors.New("invalid address")
 )
 
 // Hash represents the 32 byte Keccak256 hash of arbitrary data.
@@ -224,14 +226,18 @@ func BytesToAddress(b []byte) Address {
 // If b is larger than len(h), b will be cropped from the left.
 func BigToAddress(b *big.Int) Address { return BytesToAddress(b.Bytes()) }
 
-// HexToAddress returns Address with byte values of s.
-// If s is larger than len(h), s will be cropped from the left.
-func HexToAddress(s string) Address { return BytesToAddress(FromHex(s)) }
+// NewAddressFromString returns Address with byte values of s.
+func NewAddressFromString(hexaddr string) (Address, error) {
+	if !IsAddress(hexaddr) {
+		return Address{}, ErrInvalidAddress
+	}
+	return BytesToAddress(FromHex(strings.Replace(hexaddr, hexutil.AddressPrefix, hexutil.HexPrefix, 1))), nil
+}
 
-// IsHexAddress verifies whether a string can represent a valid hex-encoded
+// IsAddress verifies whether a string can represent a valid hex-encoded
 // Zond address or not.
-func IsHexAddress(s string) bool {
-	if has0xPrefix(s) {
+func IsAddress(s string) bool {
+	if hasZPrefix(s) {
 		s = s[2:]
 	}
 	return len(s) == 2*AddressLength && isHex(s)
@@ -401,8 +407,8 @@ func NewMixedcaseAddress(addr Address) MixedcaseAddress {
 
 // NewMixedcaseAddressFromString is mainly meant for unit-testing
 func NewMixedcaseAddressFromString(hexaddr string) (*MixedcaseAddress, error) {
-	if !IsHexAddress(hexaddr) {
-		return nil, errors.New("invalid address")
+	if !IsAddress(hexaddr) {
+		return nil, ErrInvalidAddress
 	}
 	a := FromHex(hexaddr)
 	return &MixedcaseAddress{addr: BytesToAddress(a), original: hexaddr}, nil
