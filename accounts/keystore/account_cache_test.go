@@ -192,7 +192,7 @@ func TestCacheAddDeleteOrder(t *testing.T) {
 		},
 		{
 			Address: address4,
-			URL:     accounts.URL{Scheme: KeyStoreScheme, Path: "UTC--2016-03-22T12-57-55.920751759Z--7ef5a6135f1fd6a02593eedc869c6d41d934aef8"},
+			URL:     accounts.URL{Scheme: KeyStoreScheme, Path: "UTC--2016-03-22T12-57-55.920751759Z--Z7ef5a6135f1fd6a02593eedc869c6d41d934aef8"},
 		},
 		{
 			Address: address5,

@@ -86,7 +86,7 @@ Your new key was generated
 `)
 	gzond.ExpectRegexp(`
 Public address of the key:   Z[0-9a-fA-F]{40}
-Path of the secret key file: .*UTC--.+--[0-9a-f]{40}
+Path of the secret key file: .*UTC--.+--Z[0-9a-f]{40}
 
 - You can share your public address with anyone. Others need it to interact with you.
 - You must NEVER share the secret key with anyone! The key controls access to your funds!
@@ -162,7 +162,7 @@ func TestAccountUpdate(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
 	gzond := runGzond(t, "account", "update",
 		"--datadir", datadir, "--lightkdf",
-		"206f5f53d348954856a6d2cde75ad6381945fb46")
+		"Z206f5f53d348954856a6d2cde75ad6381945fb46")
 	defer gzond.ExpectExit()
 	gzond.Expect(`
 Unlocking account Z206f5f53d348954856a6d2cde75ad6381945fb46 | Attempt 1/3
@@ -176,7 +176,7 @@ Repeat password: {{.InputLine "foobar2"}}
 
 func TestUnlockFlag(t *testing.T) {
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "206f5f53d348954856a6d2cde75ad6381945fb46", "console", "--exec", "loadScript('testdata/empty.js')")
+		"--unlock", "Z206f5f53d348954856a6d2cde75ad6381945fb46", "console", "--exec", "loadScript('testdata/empty.js')")
 	gzond.Expect(`
 Unlocking account Z206f5f53d348954856a6d2cde75ad6381945fb46 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
@@ -274,7 +274,7 @@ func TestUnlockFlagAmbiguous(t *testing.T) {
 	store := filepath.Join("..", "..", "accounts", "keystore", "testdata", "dupes")
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
 		"--unlock", "Z205547ba6232eec096770f7161d57dea54fd13d0", "--keystore",
-		store, "--unlock", "205547ba6232eec096770f7161d57dea54fd13d0",
+		store, "--unlock", "Z205547ba6232eec096770f7161d57dea54fd13d0",
 		"console", "--exec", "loadScript('testdata/empty.js')")
 	defer gzond.ExpectExit()
 
@@ -312,7 +312,7 @@ undefined
 func TestUnlockFlagAmbiguousWrongPassword(t *testing.T) {
 	store := filepath.Join("..", "..", "accounts", "keystore", "testdata", "dupes")
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "ZZ205547ba6232eec096770f7161d57dea54fd13d0", "--keystore",
+		"--unlock", "Z205547ba6232eec096770f7161d57dea54fd13d0", "--keystore",
 		store, "--unlock", "Z205547ba6232eec096770f7161d57dea54fd13d0")
 
 	defer gzond.ExpectExit()

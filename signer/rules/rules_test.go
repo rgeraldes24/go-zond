@@ -167,12 +167,12 @@ func TestSignTxRequest(t *testing.T) {
 		t.Errorf("Couldn't create evaluator %v", err)
 		return
 	}
-	to, err := mixAddr("000000000000000000000000000000000000dead")
+	to, err := mixAddr("Z000000000000000000000000000000000000dead")
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	from, err := mixAddr("0000000000000000000000000000000000001337")
+	from, err := mixAddr("Z0000000000000000000000000000000000001337")
 
 	if err != nil {
 		t.Error(err)
@@ -418,8 +418,8 @@ const ExampleTxWindow = `
 `
 
 func dummyTx(value hexutil.Big) *core.SignTxRequest {
-	to, _ := mixAddr("000000000000000000000000000000000000dead")
-	from, _ := mixAddr("000000000000000000000000000000000000dead")
+	to, _ := mixAddr("Z000000000000000000000000000000000000dead")
+	from, _ := mixAddr("Z000000000000000000000000000000000000dead")
 	n := hexutil.Uint64(3)
 	gas := hexutil.Uint64(21000)
 	maxFeePerGas := hexutil.Big(*big.NewInt(2000000))
