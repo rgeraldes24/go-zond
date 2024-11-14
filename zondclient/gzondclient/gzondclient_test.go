@@ -520,6 +520,7 @@ func TestOverrideAccountMarshal(t *testing.T) {
 
 func TestBlockOverridesMarshal(t *testing.T) {
 	coinbase, _ := common.NewAddressFromString("Z1111111111111111111111111111111111111111")
+
 	for i, tt := range []struct {
 		bo   BlockOverrides
 		want string

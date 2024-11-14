@@ -687,7 +687,7 @@ func TestReadLogs(t *testing.T) {
 	db := NewMemoryDatabase()
 
 	// Create a live block since we need metadata to reconstruct the receipt
-	to1, _ := common.NewAddressFromString("Z1")
+	to1, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000001")
 	tx1 := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     1,
 		To:        &to1,
@@ -696,7 +696,7 @@ func TestReadLogs(t *testing.T) {
 		GasFeeCap: big.NewInt(1),
 		Data:      nil,
 	})
-	to2, _ := common.NewAddressFromString("Z2")
+	to2, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000002")
 	tx2 := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     2,
 		To:        &to2,

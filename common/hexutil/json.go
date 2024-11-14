@@ -101,11 +101,38 @@ func UnmarshalFixedJSON(typ reflect.Type, input, out []byte) error {
 	return wrapTypeError(UnmarshalFixedText(typ.String(), input[1:len(input)-1], out), typ)
 }
 
+// TODO(rgeraldes24)
+func UnmarshalFixedJSONAddress(typ reflect.Type, input, out []byte) error {
+	if !isString(input) {
+		return errNonString(typ)
+	}
+	return wrapTypeError(UnmarshalFixedTextAddress(typ.String(), input[1:len(input)-1], out), typ)
+}
+
 // UnmarshalFixedText decodes the input as a string with 0x prefix. The length of out
 // determines the required input length. This function is commonly used to implement the
 // UnmarshalText method for fixed-size types.
 func UnmarshalFixedText(typname string, input, out []byte) error {
 	raw, err := checkText(input, true)
+	if err != nil {
+		return err
+	}
+	if len(raw)/2 != len(out) {
+		return fmt.Errorf("hex string has length %d, want %d for %s", len(raw), len(out)*2, typname)
+	}
+	// Pre-verify syntax before modifying out.
+	for _, b := range raw {
+		if decodeNibble(b) == badNibble {
+			return ErrSyntax
+		}
+	}
+	hex.Decode(out, raw)
+	return nil
+}
+
+// TODO(rgeraldes24): desc
+func UnmarshalFixedTextAddress(typname string, input, out []byte) error {
+	raw, err := checkTextAddress(input, true)
 	if err != nil {
 		return err
 	}
@@ -346,9 +373,7 @@ func (a *Address) UnmarshalJSON(input []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (a *Address) UnmarshalText(input []byte) error {
-	// TODO(rgeraldes24): review
-	// raw, err := checkTextAddress(input, true)
-	raw, err := checkText(input, true)
+	raw, err := checkTextAddress(input, true)
 	if err != nil {
 		return err
 	}
@@ -375,14 +400,13 @@ func (a *Address) UnmarshalGraphQL(input interface{}) error {
 	var err error
 	switch input := input.(type) {
 	case string:
-		// TODO(rgeraldes24): review
 		data, err := DecodeAddress(input)
 		if err != nil {
 			return err
 		}
 		*a = data
 	default:
-		err = fmt.Errorf("unexpected type %T for Bytes", input)
+		err = fmt.Errorf("unexpected type %T for Address", input)
 	}
 	return err
 }
@@ -395,6 +419,10 @@ func bytesHave0xPrefix(input []byte) bool {
 	return len(input) >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')
 }
 
+func bytesHaveAddressPrefix(input []byte) bool {
+	return len(input) >= 1 && input[0] == 'Z'
+}
+
 func checkText(input []byte, wantPrefix bool) ([]byte, error) {
 	if len(input) == 0 {
 		return nil, nil // empty strings are allowed
@@ -403,6 +431,21 @@ func checkText(input []byte, wantPrefix bool) ([]byte, error) {
 		input = input[2:]
 	} else if wantPrefix {
 		return nil, ErrMissingPrefix
+	}
+	if len(input)%2 != 0 {
+		return nil, ErrOddLength
+	}
+	return input, nil
+}
+
+func checkTextAddress(input []byte, wantPrefix bool) ([]byte, error) {
+	if len(input) == 0 {
+		return nil, nil // empty strings are allowed
+	}
+	if bytesHaveAddressPrefix(input) {
+		input = input[1:]
+	} else if wantPrefix {
+		return nil, ErrAddressMissingPrefix
 	}
 	if len(input)%2 != 0 {
 		return nil, ErrOddLength

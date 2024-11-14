@@ -237,10 +237,10 @@ func NewAddressFromString(hexaddr string) (Address, error) {
 // IsAddress verifies whether a string can represent a valid hex-encoded
 // Zond address or not.
 func IsAddress(s string) bool {
-	if !hasZPrefix(s) {
+	if !hasAddressPrefix(s) {
 		return false
 	}
-	s = s[2:]
+	s = s[1:]
 
 	return len(s) == 2*AddressLength && isHex(s)
 }
@@ -274,11 +274,11 @@ func (a *Address) checksumHex() []byte {
 
 	// compute checksum
 	sha := sha3.NewLegacyKeccak256()
-	sha.Write(buf[2:])
+	sha.Write(buf[1:])
 	hash := sha.Sum(nil)
-	for i := 2; i < len(buf); i++ {
-		hashByte := hash[(i-2)/2]
-		if i%2 == 0 {
+	for i := 1; i < len(buf); i++ {
+		hashByte := hash[(i-1)/2]
+		if (i+1)%2 == 0 {
 			hashByte = hashByte >> 4
 		} else {
 			hashByte &= 0xf
@@ -291,9 +291,9 @@ func (a *Address) checksumHex() []byte {
 }
 
 func (a Address) hex() []byte {
-	var buf [len(a)*2 + 2]byte
-	copy(buf[:2], "0x")
-	hex.Encode(buf[2:], a[:])
+	var buf [len(a)*2 + 1]byte
+	copy(buf[:1], hexutil.AddressPrefix)
+	hex.Encode(buf[1:], a[:])
 	return buf[:]
 }
 
@@ -312,7 +312,7 @@ func (a Address) Format(s fmt.State, c rune) {
 		// %x disables the checksum.
 		hex := a.hex()
 		if !s.Flag('#') {
-			hex = hex[2:]
+			hex = hex[1:]
 		}
 		if c == 'X' {
 			hex = bytes.ToUpper(hex)
@@ -336,17 +336,17 @@ func (a *Address) SetBytes(b []byte) {
 
 // MarshalText returns the hex representation of a.
 func (a Address) MarshalText() ([]byte, error) {
-	return hexutil.Bytes(a[:]).MarshalText()
+	return hexutil.Address(a[:]).MarshalText()
 }
 
 // UnmarshalText parses a hash in hex syntax.
 func (a *Address) UnmarshalText(input []byte) error {
-	return hexutil.UnmarshalFixedText("Address", input, a[:])
+	return hexutil.UnmarshalFixedTextAddress("Address", input, a[:])
 }
 
 // UnmarshalJSON parses a hash in hex syntax.
 func (a *Address) UnmarshalJSON(input []byte) error {
-	return hexutil.UnmarshalFixedJSON(addressT, input, a[:])
+	return hexutil.UnmarshalFixedJSONAddress(addressT, input, a[:])
 }
 
 // Scan implements Scanner for database/sql.
@@ -382,19 +382,6 @@ func (a *Address) UnmarshalGraphQL(input interface{}) error {
 	return err
 }
 
-// UnprefixedAddress allows marshaling an Address without 0x prefix.
-type UnprefixedAddress Address
-
-// UnmarshalText decodes the address from hex. The 0x prefix is optional.
-func (a *UnprefixedAddress) UnmarshalText(input []byte) error {
-	return hexutil.UnmarshalFixedUnprefixedText("UnprefixedAddress", input, a[:])
-}
-
-// MarshalText encodes the address as hex.
-func (a UnprefixedAddress) MarshalText() ([]byte, error) {
-	return []byte(hex.EncodeToString(a[:])), nil
-}
-
 // MixedcaseAddress retains the original string, which may or may not be
 // correctly checksummed
 type MixedcaseAddress struct {
@@ -407,6 +394,7 @@ func NewMixedcaseAddress(addr Address) MixedcaseAddress {
 	return MixedcaseAddress{addr: addr, original: addr.Hex()}
 }
 
+// TODO(rgeraldes24)
 // NewMixedcaseAddressFromString is mainly meant for unit-testing
 func NewMixedcaseAddressFromString(hexaddr string) (*MixedcaseAddress, error) {
 	if !IsAddress(hexaddr) {
@@ -418,7 +406,7 @@ func NewMixedcaseAddressFromString(hexaddr string) (*MixedcaseAddress, error) {
 
 // UnmarshalJSON parses MixedcaseAddress
 func (ma *MixedcaseAddress) UnmarshalJSON(input []byte) error {
-	if err := hexutil.UnmarshalFixedJSON(addressT, input, ma.addr[:]); err != nil {
+	if err := hexutil.UnmarshalFixedJSONAddress(addressT, input, ma.addr[:]); err != nil {
 		return err
 	}
 	return json.Unmarshal(input, &ma.original)

@@ -271,7 +271,11 @@ func (ac *accountCache) scanAccounts() error {
 		}
 		addr, err := common.NewAddressFromString(key.Address)
 		if err != nil {
-			log.Debug("Failed to decode keystore key", "path", path, "err", "missing or zero address")
+			log.Debug("Failed to decode keystore key", "path", path, "err", err)
+			return nil
+		}
+		if (addr == common.Address{}) {
+			log.Debug("Failed to decode keystore key", "path", path, "err", "zero address")
 			return nil
 		}
 		return &accounts.Account{

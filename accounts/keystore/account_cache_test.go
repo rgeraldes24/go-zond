@@ -34,14 +34,14 @@ import (
 )
 
 var (
-	addr1, _          = common.NewAddressFromString("2099d76d9a34cdd2694c4dc703930a6fbbc1d402")
-	addr2, _          = common.NewAddressFromString("205547bA6232eEc096770f7161d57dEA54FD13D0")
-	addr3, _          = common.NewAddressFromString("206f5f53D348954856a6D2cDe75Ad6381945fB46")
+	addr1, _          = common.NewAddressFromString("Z2099d76d9a34cdd2694c4dc703930a6fbbc1d402")
+	addr2, _          = common.NewAddressFromString("Z205547bA6232eEc096770f7161d57dEA54FD13D0")
+	addr3, _          = common.NewAddressFromString("Z206f5f53D348954856a6D2cDe75Ad6381945fB46")
 	cachetestDir, _   = filepath.Abs(filepath.Join("testdata", "keystore"))
 	cachetestAccounts = []accounts.Account{
 		{
 			Address: addr1,
-			URL:     accounts.URL{Scheme: KeyStoreScheme, Path: filepath.Join(cachetestDir, "UTC--2024-05-27T07-48-33.872599000Z--2099d76d9a34cdd2694c4dc703930a6fbbc1d402")},
+			URL:     accounts.URL{Scheme: KeyStoreScheme, Path: filepath.Join(cachetestDir, "UTC--2024-05-27T07-48-33.872599000Z--Z2099d76d9a34cdd2694c4dc703930a6fbbc1d402")},
 		},
 		{
 			Address: addr2,
@@ -259,10 +259,10 @@ func TestCacheFind(t *testing.T) {
 	cache, _ := newAccountCache(dir)
 	cache.watcher.running = true // prevent unexpected reloads
 
-	address0, _ := common.NewAddressFromString("095e7baea6a6c7c4c2dfeb977efac326af552d87")
-	address1, _ := common.NewAddressFromString("2cac1adea150210703ba75ed097ddfe24e14f213")
-	address2, _ := common.NewAddressFromString("d49ff4eeb0b2686ed89c0fc0f2b6ea533ddbbd5e")
-	address3, _ := common.NewAddressFromString("d49ff4eeb0b2686ed89c0fc0f2b6ea533ddbbd5e")
+	address0, _ := common.NewAddressFromString("Z095e7baea6a6c7c4c2dfeb977efac326af552d87")
+	address1, _ := common.NewAddressFromString("Z2cac1adea150210703ba75ed097ddfe24e14f213")
+	address2, _ := common.NewAddressFromString("Zd49ff4eeb0b2686ed89c0fc0f2b6ea533ddbbd5e")
+	address3, _ := common.NewAddressFromString("Zd49ff4eeb0b2686ed89c0fc0f2b6ea533ddbbd5e")
 	accs := []accounts.Account{
 		{
 			Address: address0,
@@ -285,7 +285,7 @@ func TestCacheFind(t *testing.T) {
 		cache.add(a)
 	}
 
-	address, _ := common.NewAddressFromString("f466859ead1932d743d622cb74fc058882e8648a")
+	address, _ := common.NewAddressFromString("Zf466859ead1932d743d622cb74fc058882e8648a")
 	nomatchAccount := accounts.Account{
 		Address: address,
 		URL:     accounts.URL{Scheme: KeyStoreScheme, Path: filepath.Join(dir, "something")},

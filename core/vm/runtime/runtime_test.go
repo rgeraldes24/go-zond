@@ -757,10 +757,10 @@ func TestRuntimeJSTracer(t *testing.T) {
 		byte(vm.RETURN),
 	}
 	main, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000aa")
-	address0, _ := common.NewAddressFromString("Zbb")
-	address1, _ := common.NewAddressFromString("Zcc")
-	address2, _ := common.NewAddressFromString("Zdd")
-	address3, _ := common.NewAddressFromString("Zee")
+	address0, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000bb")
+	address1, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000cc")
+	address2, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000dd")
+	address3, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000ee")
 	for i, jsTracer := range jsTracers {
 		for j, tc := range tests {
 			statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(rawdb.NewMemoryDatabase()), nil)

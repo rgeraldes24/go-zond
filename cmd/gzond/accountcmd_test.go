@@ -50,15 +50,15 @@ func TestAccountListEmpty(t *testing.T) {
 func TestAccountList(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
 	var want = `
-Account #0: {2099d76d9a34cdd2694c4dc703930a6fbbc1d402} keystore://{{.Datadir}}/keystore/UTC--2024-05-27T07-48-33.872599000Z--2099d76d9a34cdd2694c4dc703930a6fbbc1d402
-Account #1: {205547ba6232eec096770f7161d57dea54fd13d0} keystore://{{.Datadir}}/keystore/aaa
-Account #2: {206f5f53d348954856a6d2cde75ad6381945fb46} keystore://{{.Datadir}}/keystore/zzz
+Account #0: {Z2099d76d9a34cdd2694c4dc703930a6fbbc1d402} keystore://{{.Datadir}}/keystore/UTC--2024-05-27T07-48-33.872599000Z--Z2099d76d9a34cdd2694c4dc703930a6fbbc1d402
+Account #1: {Z205547ba6232eec096770f7161d57dea54fd13d0} keystore://{{.Datadir}}/keystore/aaa
+Account #2: {Z206f5f53d348954856a6d2cde75ad6381945fb46} keystore://{{.Datadir}}/keystore/zzz
 `
 	if runtime.GOOS == "windows" {
 		want = `
-Account #0: {2099d76d9a34cdd2694c4dc703930a6fbbc1d402} keystore://{{.Datadir}}\keystore\UTC--2024-05-27T07-48-33.872599000Z--2099d76d9a34cdd2694c4dc703930a6fbbc1d402
-Account #1: {205547ba6232eec096770f7161d57dea54fd13d0} keystore://{{.Datadir}}\keystore\aaa
-Account #2: {206f5f53d348954856a6d2cde75ad6381945fb46} keystore://{{.Datadir}}\keystore\zzz
+Account #0: {Z2099d76d9a34cdd2694c4dc703930a6fbbc1d402} keystore://{{.Datadir}}\keystore\UTC--2024-05-27T07-48-33.872599000Z--Z2099d76d9a34cdd2694c4dc703930a6fbbc1d402
+Account #1: {Z205547ba6232eec096770f7161d57dea54fd13d0} keystore://{{.Datadir}}\keystore\aaa
+Account #2: {Z206f5f53d348954856a6d2cde75ad6381945fb46} keystore://{{.Datadir}}\keystore\zzz
 `
 	}
 	{
@@ -165,7 +165,7 @@ func TestAccountUpdate(t *testing.T) {
 		"206f5f53d348954856a6d2cde75ad6381945fb46")
 	defer gzond.ExpectExit()
 	gzond.Expect(`
-Unlocking account 206f5f53d348954856a6d2cde75ad6381945fb46 | Attempt 1/3
+Unlocking account Z206f5f53d348954856a6d2cde75ad6381945fb46 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "1234567890"}}
 Please give a new password. Do not forget this password.
@@ -178,7 +178,7 @@ func TestUnlockFlag(t *testing.T) {
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
 		"--unlock", "206f5f53d348954856a6d2cde75ad6381945fb46", "console", "--exec", "loadScript('testdata/empty.js')")
 	gzond.Expect(`
-Unlocking account 206f5f53d348954856a6d2cde75ad6381945fb46 | Attempt 1/3
+Unlocking account Z206f5f53d348954856a6d2cde75ad6381945fb46 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "1234567890"}}
 undefined
@@ -198,24 +198,24 @@ undefined
 
 func TestUnlockFlagWrongPassword(t *testing.T) {
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "205547ba6232eec096770f7161d57dea54fd13d0", "console", "--exec", "loadScript('testdata/empty.js')")
+		"--unlock", "Z205547ba6232eec096770f7161d57dea54fd13d0", "console", "--exec", "loadScript('testdata/empty.js')")
 
 	defer gzond.ExpectExit()
 	gzond.Expect(`
-Unlocking account 205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 1/3
+Unlocking account Z205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "wrong1"}}
-Unlocking account 205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 2/3
+Unlocking account Z205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 2/3
 Password: {{.InputLine "wrong2"}}
-Unlocking account 205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 3/3
+Unlocking account Z205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 3/3
 Password: {{.InputLine "wrong3"}}
-Fatal: Failed to unlock account 205547ba6232eec096770f7161d57dea54fd13d0 (could not decrypt key with given password)
+Fatal: Failed to unlock account Z205547ba6232eec096770f7161d57dea54fd13d0 (could not decrypt key with given password)
 `)
 }
 
 func TestUnlockFlagMultiIndex(t *testing.T) {
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "205547ba6232eec096770f7161d57dea54fd13d0", "--unlock", "0,2", "console", "--exec", "loadScript('testdata/empty.js')")
+		"--unlock", "Z205547ba6232eec096770f7161d57dea54fd13d0", "--unlock", "0,2", "console", "--exec", "loadScript('testdata/empty.js')")
 
 	gzond.Expect(`
 Unlocking account 0 | Attempt 1/3
@@ -241,7 +241,7 @@ undefined
 
 func TestUnlockFlagPasswordFile(t *testing.T) {
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "205547ba6232eec096770f7161d57dea54fd13d0", "--password", "testdata/passwords.txt", "--unlock", "0,2", "console", "--exec", "loadScript('testdata/empty.js')")
+		"--unlock", "Z205547ba6232eec096770f7161d57dea54fd13d0", "--password", "testdata/passwords.txt", "--unlock", "0,2", "console", "--exec", "loadScript('testdata/empty.js')")
 
 	gzond.Expect(`
 undefined
@@ -262,7 +262,7 @@ undefined
 
 func TestUnlockFlagPasswordFileWrongPassword(t *testing.T) {
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "205547ba6232eec096770f7161d57dea54fd13d0", "--password",
+		"--unlock", "Z205547ba6232eec096770f7161d57dea54fd13d0", "--password",
 		"testdata/wrong-passwords.txt", "--unlock", "0,2")
 	defer gzond.ExpectExit()
 	gzond.Expect(`
@@ -273,7 +273,7 @@ Fatal: Failed to unlock account 0 (could not decrypt key with given password)
 func TestUnlockFlagAmbiguous(t *testing.T) {
 	store := filepath.Join("..", "..", "accounts", "keystore", "testdata", "dupes")
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "205547ba6232eec096770f7161d57dea54fd13d0", "--keystore",
+		"--unlock", "Z205547ba6232eec096770f7161d57dea54fd13d0", "--keystore",
 		store, "--unlock", "205547ba6232eec096770f7161d57dea54fd13d0",
 		"console", "--exec", "loadScript('testdata/empty.js')")
 	defer gzond.ExpectExit()
@@ -284,10 +284,10 @@ func TestUnlockFlagAmbiguous(t *testing.T) {
 		return abs
 	})
 	gzond.Expect(`
-Unlocking account 205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 1/3
+Unlocking account Z205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine ""}}
-Multiple key files exist for address 205547ba6232eec096770f7161d57dea54fd13d0:
+Multiple key files exist for address Z205547ba6232eec096770f7161d57dea54fd13d0:
    keystore://{{keypath "1"}}
    keystore://{{keypath "2"}}
 Testing your password against all of them...
@@ -312,8 +312,8 @@ undefined
 func TestUnlockFlagAmbiguousWrongPassword(t *testing.T) {
 	store := filepath.Join("..", "..", "accounts", "keystore", "testdata", "dupes")
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "205547ba6232eec096770f7161d57dea54fd13d0", "--keystore",
-		store, "--unlock", "205547ba6232eec096770f7161d57dea54fd13d0")
+		"--unlock", "ZZ205547ba6232eec096770f7161d57dea54fd13d0", "--keystore",
+		store, "--unlock", "Z205547ba6232eec096770f7161d57dea54fd13d0")
 
 	defer gzond.ExpectExit()
 
@@ -323,10 +323,10 @@ func TestUnlockFlagAmbiguousWrongPassword(t *testing.T) {
 		return abs
 	})
 	gzond.Expect(`
-Unlocking account 205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 1/3
+Unlocking account Z205547ba6232eec096770f7161d57dea54fd13d0 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "wrong"}}
-Multiple key files exist for address 205547ba6232eec096770f7161d57dea54fd13d0:
+Multiple key files exist for address Z205547ba6232eec096770f7161d57dea54fd13d0:
    keystore://{{keypath "1"}}
    keystore://{{keypath "2"}}
 Testing your password against all of them...

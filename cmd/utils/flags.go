@@ -196,7 +196,6 @@ var (
 		Name:  "nocode",
 		Usage: "Exclude contract code (save db lookups)",
 	}
-	// TODO(rgeraldes24): review
 	StartKeyFlag = &cli.StringFlag{
 		Name:  "start",
 		Usage: "Start position. Either a hash or address",
