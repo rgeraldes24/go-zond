@@ -232,6 +232,7 @@ func TestStateProcessorErrors(t *testing.T) {
 						ChainID: big.NewInt(1),
 					},
 					Alloc: GenesisAlloc{
+						// TODO(rgeraldes24)
 						common.HexToAddress("Z71562b71999873DB5b286dF957af199Ec94617F7"): GenesisAccount{
 							Balance: big.NewInt(1000000000000000000), // 1 ether
 							Nonce:   0,

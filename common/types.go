@@ -51,7 +51,7 @@ var (
 	// MaxHash represents the maximum possible hash value.
 	MaxHash = HexToHash("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
 
-	ErrInvalidAddress = errors.New("invalid address")
+	ErrInvalidAddress = errors.New("invalid address: an address is a 40 character hex string prefixed by a Z character")
 )
 
 // Hash represents the 32 byte Keccak256 hash of arbitrary data.
@@ -231,7 +231,8 @@ func NewAddressFromString(hexaddr string) (Address, error) {
 	if !IsAddress(hexaddr) {
 		return Address{}, ErrInvalidAddress
 	}
-	return BytesToAddress(FromHex(strings.Replace(hexaddr, hexutil.AddressPrefix, hexutil.HexPrefix, 1))), nil
+	rawAddr, _ := hex.DecodeString(hexaddr[1:])
+	return BytesToAddress(rawAddr), nil
 }
 
 // IsAddress verifies whether a string can represent a valid hex-encoded
@@ -394,14 +395,13 @@ func NewMixedcaseAddress(addr Address) MixedcaseAddress {
 	return MixedcaseAddress{addr: addr, original: addr.Hex()}
 }
 
-// TODO(rgeraldes24)
 // NewMixedcaseAddressFromString is mainly meant for unit-testing
 func NewMixedcaseAddressFromString(hexaddr string) (*MixedcaseAddress, error) {
 	if !IsAddress(hexaddr) {
 		return nil, ErrInvalidAddress
 	}
-	a := FromHex(hexaddr)
-	return &MixedcaseAddress{addr: BytesToAddress(a), original: hexaddr}, nil
+	rawAddr, _ := hex.DecodeString(hexaddr[1:])
+	return &MixedcaseAddress{addr: BytesToAddress(rawAddr), original: hexaddr}, nil
 }
 
 // UnmarshalJSON parses MixedcaseAddress
