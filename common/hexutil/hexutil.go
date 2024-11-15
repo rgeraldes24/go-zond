@@ -215,6 +215,15 @@ func EncodeAddress(address []byte) string {
 	return string(enc)
 }
 
+// MustDecodeAddress decodes a hex string with Z prefix. It panics for invalid input.
+func MustDecodeAddress(input string) []byte {
+	dec, err := DecodeAddress(input)
+	if err != nil {
+		panic(err)
+	}
+	return dec
+}
+
 func has0xPrefix(input string) bool {
 	return len(input) >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')
 }
