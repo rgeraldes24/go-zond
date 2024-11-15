@@ -101,7 +101,6 @@ func UnmarshalFixedJSON(typ reflect.Type, input, out []byte) error {
 	return wrapTypeError(UnmarshalFixedText(typ.String(), input[1:len(input)-1], out), typ)
 }
 
-// TODO(rgeraldes24)
 func UnmarshalFixedJSONAddress(typ reflect.Type, input, out []byte) error {
 	if !isString(input) {
 		return errNonString(typ)
@@ -130,7 +129,6 @@ func UnmarshalFixedText(typname string, input, out []byte) error {
 	return nil
 }
 
-// TODO(rgeraldes24): desc
 func UnmarshalFixedTextAddress(typname string, input, out []byte) error {
 	raw, err := checkTextAddress(input, true)
 	if err != nil {

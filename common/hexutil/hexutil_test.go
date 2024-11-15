@@ -50,7 +50,6 @@ var (
 		{referenceBig("-80a7f2c1bcc396c00"), "-0x80a7f2c1bcc396c00"},
 	}
 
-	// TODO(rgeraldes24): review
 	encodeAddressTests = []marshalTest{
 		{[]byte{}, "Z"},
 		{[]byte{0}, "Z00"},
@@ -124,7 +123,6 @@ var (
 		},
 	}
 
-	// TODO(rgeraldes24): review
 	decodeAddressTests = []unmarshalTest{ // invalid
 		{input: ``, wantErr: ErrEmptyString},
 		{input: `0`, wantErr: ErrAddressMissingPrefix},
@@ -206,7 +204,6 @@ func TestDecodeBig(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24)
 func TestEncodeAddress(t *testing.T) {
 	for _, test := range encodeAddressTests {
 		enc := EncodeAddress(test.input.([]byte))
@@ -216,7 +213,6 @@ func TestEncodeAddress(t *testing.T) {
 	}
 }
 
-// TODO(rgeraldes24)
 func TestDecodeAddress(t *testing.T) {
 	for _, test := range decodeAddressTests {
 		dec, err := DecodeAddress(test.input)

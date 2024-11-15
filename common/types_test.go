@@ -177,10 +177,6 @@ func TestMixedcaseAddressMarshal(t *testing.T) {
 }
 
 func TestMixedcaseAccount_Address(t *testing.T) {
-	// TODO(rgeraldes24)
-	// https://github.com/ethereum/EIPs/blob/master/EIPS/eip-55.md
-	// Note: 0X{checksum_addr} is not valid according to spec above
-
 	var res []struct {
 		A     MixedcaseAddress
 		Valid bool
@@ -207,8 +203,8 @@ func TestMixedcaseAccount_Address(t *testing.T) {
 		`["Z11111111111111111111122222222222233333234"]`,  // Too long
 		`["Z111111111111111111111222222222222333332344"]`, // Too long
 		`["1111111111111111111112222222222223333323"]`,    // Missing Z
-		// TODO(rgeraldes24): add lower case z case?
-		`["ZG111111111111111111112222222222223333323"]`, //Non-hex
+		`["z1111111111111111111112222222222223333323"]`,   // Lower case Z
+		`["ZG111111111111111111112222222222223333323"]`,   //Non-hex
 	} {
 		if err := json.Unmarshal([]byte(r), &r2); err == nil {
 			t.Errorf("Expected failure, input %v", r)

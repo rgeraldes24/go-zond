@@ -51,7 +51,7 @@ var (
 	// MaxHash represents the maximum possible hash value.
 	MaxHash = HexToHash("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
 
-	ErrInvalidAddress = errors.New("invalid address: an address is a 40 character hex string prefixed by a Z character")
+	ErrInvalidAddress = errors.New("invalid address: a Zond address is a 40 character hex string prefixed by a Z character")
 )
 
 // Hash represents the 32 byte Keccak256 hash of arbitrary data.
