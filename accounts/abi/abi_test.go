@@ -337,8 +337,8 @@ func ExampleJSON() {
 	if err != nil {
 		panic(err)
 	}
-	addr, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000001")
-	out, err := abi.Pack("isBar", addr)
+	address, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000001")
+	out, err := abi.Pack("isBar", address)
 	if err != nil {
 		panic(err)
 	}

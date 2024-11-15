@@ -120,9 +120,8 @@ func TestPassingBlockNumber(t *testing.T) {
 			codeAtBytes: []byte{1, 2, 3},
 		},
 	}
-	addr, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000000")
-
-	bc := bind.NewBoundContract(addr, abi.ABI{
+	contractAddr, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000000")
+	bc := bind.NewBoundContract(contractAddr, abi.ABI{
 		Methods: map[string]abi.Method{
 			"something": {
 				Name:    "something",
@@ -235,9 +234,9 @@ func TestUnpackIndexedSliceTyLogIntoMap(t *testing.T) {
 }
 
 func TestUnpackIndexedArrayTyLogIntoMap(t *testing.T) {
-	addr1, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000000")
-	addr2, _ := common.NewAddressFromString("Z376c47978271565f56DEB45495afa69E59c16Ab2")
-	arrBytes, err := rlp.EncodeToBytes([2]common.Address{addr1, addr2})
+	address1, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000000")
+	address2, _ := common.NewAddressFromString("Z376c47978271565f56DEB45495afa69E59c16Ab2")
+	arrBytes, err := rlp.EncodeToBytes([2]common.Address{address1, address2})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -358,9 +357,9 @@ func unpackAndCheck(t *testing.T, bc *bind.BoundContract, expected map[string]in
 }
 
 func newMockLog(topics []common.Hash, txHash common.Hash) types.Log {
-	addr, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000000")
+	address, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000000")
 	return types.Log{
-		Address:     addr,
+		Address:     address,
 		Topics:      topics,
 		Data:        hexutil.MustDecode(hexData),
 		BlockNumber: uint64(26),
@@ -373,7 +372,7 @@ func newMockLog(topics []common.Hash, txHash common.Hash) types.Log {
 }
 
 func TestCall(t *testing.T) {
-	addr, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000000")
+	contractAddr, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000000")
 	var method, methodWithArg = "something", "somethingArrrrg"
 	tests := []struct {
 		name, method string
@@ -474,7 +473,7 @@ func TestCall(t *testing.T) {
 		wantErr: true,
 	}}
 	for _, test := range tests {
-		bc := bind.NewBoundContract(addr, abi.ABI{
+		bc := bind.NewBoundContract(contractAddr, abi.ABI{
 			Methods: map[string]abi.Method{
 				method: {
 					Name:    method,
