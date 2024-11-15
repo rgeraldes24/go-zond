@@ -83,7 +83,7 @@ type cipherparamsJSON struct {
 func (k *Key) MarshalJSON() (j []byte, err error) {
 	seed := k.Dilithium.GetSeed()
 	jStruct := plainKeyJSON{
-		hex.EncodeToString(k.Address[:]),
+		k.Address.Hex(),
 		common.Bytes2Hex(seed[:]),
 		k.Id.String(),
 		version,
