@@ -132,15 +132,15 @@ func minerTestGenesisBlock(gasLimit uint64, faucet common.Address) *core.Genesis
 
 func createMiner(t *testing.T) *Miner {
 	// Create Ethash config
-	recipientAddr, _ := common.NewAddressFromString("Z0000000000000000000000000000000123456789")
+	feeRecipient, _ := common.NewAddressFromString("Z0000000000000000000000000000000123456789")
 	config := Config{
-		PendingFeeRecipient: recipientAddr,
+		PendingFeeRecipient: feeRecipient,
 	}
 	// Create chainConfig
 	chainDB := rawdb.NewMemoryDatabase()
 	triedb := trie.NewDatabase(chainDB, nil)
-	faucetAddr, _ := common.NewAddressFromString("Z0000000000000000000000000000000000012345")
-	genesis := minerTestGenesisBlock(11_500_000, faucetAddr)
+	faucet, _ := common.NewAddressFromString("Z0000000000000000000000000000000000012345")
+	genesis := minerTestGenesisBlock(11_500_000, faucet)
 	chainConfig, _, err := core.SetupGenesisBlock(chainDB, triedb, genesis)
 	if err != nil {
 		t.Fatalf("can't create new chain config: %v", err)
