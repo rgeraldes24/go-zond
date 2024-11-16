@@ -132,6 +132,7 @@ func TestIterativeDump(t *testing.T) {
 	}
 }
 
+// TODO(rgeraldes24): review
 func TestNull(t *testing.T) {
 	s := newStateEnv()
 	address, _ := common.NewAddressFromString("Z823140710bf13990e4500136726d8b55")
