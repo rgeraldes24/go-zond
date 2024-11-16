@@ -27,7 +27,6 @@ import (
 	"math/rand"
 	"reflect"
 	"strconv"
-	"strings"
 
 	"github.com/theQRL/go-zond/common/hexutil"
 	"golang.org/x/crypto/sha3"
@@ -414,10 +413,7 @@ func (ma *MixedcaseAddress) UnmarshalJSON(input []byte) error {
 
 // MarshalJSON marshals the original value
 func (ma MixedcaseAddress) MarshalJSON() ([]byte, error) {
-	if strings.HasPrefix(ma.original, hexutil.AddressPrefix) {
-		return json.Marshal(fmt.Sprintf(hexutil.AddressPrefix+"%s", ma.original[1:]))
-	}
-	return json.Marshal(fmt.Sprintf(hexutil.AddressPrefix+"%s", ma.original))
+	return json.Marshal(ma.original)
 }
 
 // Address returns the address
@@ -441,19 +437,6 @@ func (ma *MixedcaseAddress) ValidChecksum() bool {
 // Original returns the mixed-case input string
 func (ma *MixedcaseAddress) Original() string {
 	return ma.original
-}
-
-// AddressEIP55 is an alias of Address with a customized json marshaller
-type AddressEIP55 Address
-
-// String returns the hex representation of the address in the manner of EIP55.
-func (addr AddressEIP55) String() string {
-	return Address(addr).Hex()
-}
-
-// MarshalJSON marshals the address in the manner of EIP55.
-func (addr AddressEIP55) MarshalJSON() ([]byte, error) {
-	return json.Marshal(addr.String())
 }
 
 type Decimal uint64
