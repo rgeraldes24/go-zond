@@ -210,7 +210,7 @@ function ApproveListing() {
 }
 
 function ApproveSignData(req) {
-    if (req.address.toLowerCase() == "Zd9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3") {
+    if (req.address.toLowerCase() == "zd9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3") {
         if (req.messages[0].value.indexOf("bazonk") >= 0) {
             return "Approve"
         }
