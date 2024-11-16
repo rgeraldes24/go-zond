@@ -17,7 +17,6 @@
 package keystore
 
 import (
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -84,7 +83,7 @@ type cipherparamsJSON struct {
 func (k *Key) MarshalJSON() (j []byte, err error) {
 	seed := k.Dilithium.GetSeed()
 	jStruct := plainKeyJSON{
-		k.Address.Hex(),
+		hexutil.EncodeAddress(k.Address[:]),
 		common.Bytes2Hex(seed[:]),
 		k.Id.String(),
 		version,
@@ -188,10 +187,10 @@ func writeKeyFile(file string, content []byte) error {
 }
 
 // keyFileName implements the naming convention for keyfiles:
-// UTC--<created_at UTC ISO8601>-Z<address hex>
+// UTC--<created_at UTC ISO8601>-<z-prefixed address hex>
 func keyFileName(keyAddr common.Address) string {
 	ts := time.Now().UTC()
-	return fmt.Sprintf("UTC--%s--Z%s", toISO8601(ts), hex.EncodeToString(keyAddr[:]))
+	return fmt.Sprintf("UTC--%s--%s", toISO8601(ts), hexutil.EncodeAddress(keyAddr[:]))
 }
 
 func toISO8601(t time.Time) string {
