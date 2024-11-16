@@ -422,7 +422,6 @@ func TestTransactionSizes(t *testing.T) {
 	signer := NewShanghaiSigner(big.NewInt(123))
 	key, _ := pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	to, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000001")
-	address0, _ = common.NewAddressFromString("Z00000000000000000000000000000000000000001")
 	for i, txdata := range []TxData{
 		&DynamicFeeTx{
 			ChainID:   big.NewInt(123),
@@ -433,7 +432,7 @@ func TestTransactionSizes(t *testing.T) {
 			Value:     big.NewInt(1),
 			AccessList: AccessList{
 				AccessTuple{
-					Address:     address0,
+					Address:     to,
 					StorageKeys: []common.Hash{common.HexToHash("0x01")},
 				}},
 		},
