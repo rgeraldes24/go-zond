@@ -336,7 +336,7 @@ func benchmarkNonModifyingCode(gas uint64, code []byte, name string, tracerCode 
 		cfg.State.CreateAccount(eoa)
 		cfg.State.SetNonce(eoa, 100)
 	}
-	reverting, _ := common.NewAddressFromString("Z00000000000000000000000000000000EE")
+	reverting, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000EE")
 	{
 		cfg.State.CreateAccount(reverting)
 		cfg.State.SetCode(reverting, []byte{
