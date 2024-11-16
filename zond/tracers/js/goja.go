@@ -21,7 +21,6 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
-	"strings"
 
 	"github.com/dop251/goja"
 
@@ -74,8 +73,7 @@ func fromBuf(vm *goja.Runtime, bufType goja.Value, buf goja.Value, allowString b
 		if !allowString {
 			break
 		}
-		// NOTE(rgeraldes24): support Zond addresses with mandatory prefix
-		if strings.HasPrefix(obj.String(), hexutil.AddressPrefix) {
+		if common.IsAddress(obj.String()) {
 			return hexutil.DecodeAddress(obj.String())
 		}
 
