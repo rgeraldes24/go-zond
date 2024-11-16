@@ -21,6 +21,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"strings"
 
 	"github.com/dop251/goja"
 
@@ -73,6 +74,11 @@ func fromBuf(vm *goja.Runtime, bufType goja.Value, buf goja.Value, allowString b
 		if !allowString {
 			break
 		}
+		// NOTE(rgeraldes24): support Zond addresses with mandatory prefix
+		if strings.HasPrefix(obj.String(), hexutil.AddressPrefix) {
+			return hexutil.DecodeAddress(obj.String())
+		}
+
 		return common.FromHex(obj.String()), nil
 
 	case "Array":
@@ -372,6 +378,7 @@ func wrapError(context string, err error) error {
 	return fmt.Errorf("%v    in server-side tracer function '%v'", err, context)
 }
 
+// TODO(rgeraldes24): address without prefix
 // setBuiltinFunctions injects Go functions which are available to tracers into the environment.
 // It depends on type converters having been set up.
 func (t *jsTracer) setBuiltinFunctions() {

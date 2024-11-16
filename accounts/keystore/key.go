@@ -28,6 +28,7 @@ import (
 	"github.com/theQRL/go-qrllib/dilithium"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 )
 
@@ -105,7 +106,7 @@ func (k *Key) UnmarshalJSON(j []byte) (err error) {
 		return err
 	}
 	k.Id = *u
-	addr, err := hex.DecodeString(keyJSON.Address)
+	addr, err := hexutil.DecodeAddress(keyJSON.Address)
 	if err != nil {
 		return err
 	}

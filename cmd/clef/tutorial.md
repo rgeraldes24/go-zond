@@ -76,9 +76,9 @@ This will prompt the user within the Clef CLI to confirm or deny the request:
 A request has been made to list all accounts.
 You can select which accounts the caller can see
   [x] ZD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3
-    URL: keystore://$HOME/.zond/rinkeby/keystore/UTC--2017-04-14T15-15-00.327614556Z--d9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3
+    URL: keystore://$HOME/.zond/rinkeby/keystore/UTC--2017-04-14T15-15-00.327614556Z--Zd9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3
   [x] Z086278A6C067775F71d6B2BB1856Db6E28c30418
-    URL: keystore://$HOME/.zond/rinkeby/keystore/UTC--2018-02-06T22-53-11.211657239Z--086278a6c067775f71d6b2bb1856db6e28c30418
+    URL: keystore://$HOME/.zond/rinkeby/keystore/UTC--2018-02-06T22-53-11.211657239Z--Z086278a6c067775f71d6b2bb1856db6e28c30418
 -------------------------------------------
 Request context:
 	NA -> NA -> NA

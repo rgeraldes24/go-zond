@@ -231,7 +231,7 @@ func TestNoStepExec(t *testing.T) {
 func TestIsPrecompile(t *testing.T) {
 	chaincfg := &params.ChainConfig{ChainID: big.NewInt(1)}
 	txCtx := vm.TxContext{GasPrice: big.NewInt(100000)}
-	tracer, err := newJsTracer("{addr: toAddress('0000000000000000000000000000000000000020'), res: null, step: function() { this.res = isPrecompiled(this.addr); }, fault: function() {}, result: function() { return this.res; }}", nil, nil)
+	tracer, err := newJsTracer("{addr: toAddress('Z0000000000000000000000000000000000000020'), res: null, step: function() { this.res = isPrecompiled(this.addr); }, fault: function() {}, result: function() { return this.res; }}", nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -245,7 +245,7 @@ func TestIsPrecompile(t *testing.T) {
 		t.Errorf("tracer should not consider unavailable contract as precompile in shanghai")
 	}
 
-	tracer, _ = newJsTracer("{addr: toAddress('0000000000000000000000000000000000000001'), res: null, step: function() { this.res = isPrecompiled(this.addr); }, fault: function() {}, result: function() { return this.res; }}", nil, nil)
+	tracer, _ = newJsTracer("{addr: toAddress('Z0000000000000000000000000000000000000001'), res: null, step: function() { this.res = isPrecompiled(this.addr); }, fault: function() {}, result: function() { return this.res; }}", nil, nil)
 	blockCtx = vm.BlockContext{BlockNumber: big.NewInt(250)}
 	res, err = runTrace(tracer, &vmContext{blockCtx, txCtx}, chaincfg, nil)
 	if err != nil {

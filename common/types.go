@@ -368,7 +368,7 @@ func (a Address) Value() (driver.Value, error) {
 	return a[:], nil
 }
 
-// ImplementsGraphQLType returns true if Hash implements the specified GraphQL type.
+// ImplementsGraphQLType returns true if Address implements the specified GraphQL type.
 func (a Address) ImplementsGraphQLType(name string) bool { return name == "Address" }
 
 // UnmarshalGraphQL unmarshals the provided GraphQL query data.

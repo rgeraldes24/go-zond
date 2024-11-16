@@ -100,7 +100,7 @@ func TestAccountImport(t *testing.T) {
 		{
 			name:   "correct account",
 			seed:   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdeffcad0b19bb29d4674531d6f115237e16",
-			output: "Address: {20b0ebf635349c8167daac7d7246b8e0d892926f}\n",
+			output: "Address: {Z20b0ebf635349c8167daac7d7246b8e0d892926f}\n",
 		},
 		{
 			name:   "invalid character",

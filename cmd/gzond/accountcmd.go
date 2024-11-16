@@ -319,6 +319,6 @@ func accountImport(ctx *cli.Context) error {
 	if err != nil {
 		utils.Fatalf("Could not create the account: %v", err)
 	}
-	fmt.Printf("Address: {%x}\n", acct.Address)
+	fmt.Printf("Address: {Z%x}\n", acct.Address)
 	return nil
 }

@@ -33,7 +33,7 @@ import (
 
 var testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
-var wantedAddr, _ = common.NewAddressFromString("0xfe66B8AED6e4fb3e12d0B65f61ef246c4d0CfFFA")
+var wantedAddr, _ = common.NewAddressFromString("Zfe66B8AED6e4fb3e12d0B65f61ef246c4d0CfFFA")
 var waitDeployedTests = map[string]struct {
 	code        string
 	gas         uint64

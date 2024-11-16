@@ -389,7 +389,6 @@ func (a Address) String() string {
 	return EncodeAddress(a)
 }
 
-// TODO(rgeraldes24): review
 // ImplementsGraphQLType returns true if Bytes implements the specified GraphQL type.
 func (a Address) ImplementsGraphQLType(name string) bool { return name == "Bytes" }
 

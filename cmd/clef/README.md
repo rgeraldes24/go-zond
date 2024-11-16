@@ -674,11 +674,11 @@ Invoked when a request for account listing has been made.
     {
       "accounts": [
         {
-          "url": "keystore:///home/bazonk/.zond/keystore/UTC--2017-11-20T14-44-54.089682944Z--123409812340981234098123409812deadbeef42",
+          "url": "keystore:///home/bazonk/.zond/keystore/UTC--2017-11-20T14-44-54.089682944Z--Z123409812340981234098123409812deadbeef42",
           "address": "Z123409812340981234098123409812deadbeef42"
         },
         {
-          "url": "keystore:///home/bazonk/.zond/keystore/UTC--2017-11-23T21-59-03.199240693Z--cafebabedeadbeef34098123409812deadbeef42",
+          "url": "keystore:///home/bazonk/.zond/keystore/UTC--2017-11-23T21-59-03.199240693Z--Zcafebabedeadbeef34098123409812deadbeef42",
           "address": "Zcafebabedeadbeef34098123409812deadbeef42"
         }
       ],
