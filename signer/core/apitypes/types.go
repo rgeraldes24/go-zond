@@ -467,11 +467,8 @@ func (typedData *TypedData) EncodePrimitiveValue(encType string, encValue interf
 		switch val := encValue.(type) {
 		case string:
 			if common.IsAddress(val) {
-				addr, err := common.NewAddressFromString(val)
-				if err != nil {
-					return nil, err
-				}
-				copy(retval[12:], addr.Bytes())
+				address, _ := common.NewAddressFromString(val)
+				copy(retval[12:], address.Bytes())
 				return retval, nil
 			}
 		case []byte:
@@ -658,11 +655,11 @@ func formatPrimitiveValue(encType string, encValue interface{}) (string, error) 
 		if stringValue, ok := encValue.(string); !ok {
 			return "", fmt.Errorf("could not format value %v as address", encValue)
 		} else {
-			addr, err := common.NewAddressFromString(stringValue)
+			address, err := common.NewAddressFromString(stringValue)
 			if err != nil {
 				return "", err
 			}
-			return addr.String(), nil
+			return address.String(), nil
 		}
 	case "bool":
 		if boolValue, ok := encValue.(bool); !ok {
