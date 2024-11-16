@@ -68,8 +68,8 @@ func BenchmarkTransactionTrace(b *testing.B) {
 		byte(vm.PUSH1), 0, // jumpdestination
 		byte(vm.JUMP),
 	}
-	addr, _ := common.NewAddressFromString("Z00000000000000000000000000000000deadbeef")
-	alloc[addr] = core.GenesisAccount{
+	address, _ := common.NewAddressFromString("Z00000000000000000000000000000000deadbeef")
+	alloc[address] = core.GenesisAccount{
 		Nonce:   1,
 		Code:    loop,
 		Balance: big.NewInt(1),
