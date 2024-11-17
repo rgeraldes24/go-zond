@@ -344,7 +344,7 @@ func (a *Address) UnmarshalText(input []byte) error {
 	return hexutil.UnmarshalFixedTextAddress("Address", input, a[:])
 }
 
-// UnmarshalJSON parses a hash in hex syntax.
+// UnmarshalJSON parses a address in hex syntax.
 func (a *Address) UnmarshalJSON(input []byte) error {
 	return hexutil.UnmarshalFixedJSONAddress(addressT, input, a[:])
 }

@@ -58,7 +58,7 @@ func TestIsAddress(t *testing.T) {
 
 	for _, test := range tests {
 		if result := IsAddress(test.str); result != test.exp {
-			t.Errorf("IsHexAddress(%s) == %v; expected %v",
+			t.Errorf("IsAddress(%s) == %v; expected %v",
 				test.str, result, test.exp)
 		}
 	}

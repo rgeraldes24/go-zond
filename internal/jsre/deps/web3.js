@@ -2235,7 +2235,7 @@ var toTwosComplement = function (number) {
  * @return {Boolean}
 */
 var isStrictAddress = function (address) {
-    return /^0x[0-9a-f]{40}$/i.test(address);
+    return /^Z[0-9a-f]{40}$/i.test(address);
 };
 
 /**
@@ -2246,11 +2246,10 @@ var isStrictAddress = function (address) {
  * @return {Boolean}
 */
 var isAddress = function (address) {
-    if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+    if (!/^Z[0-9a-f]{40}$/i.test(address)) {
         // check if it has the basic requirements of an address
         return false;
-    } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
-        // If it's all small caps or all caps, return true
+    } else if (/^Z[0-9a-f]{40}$/.test(address)) {
         return true;
     } else {
         // Otherwise check each case
@@ -2267,7 +2266,7 @@ var isAddress = function (address) {
 */
 var isChecksumAddress = function (address) {
     // Check each case
-    address = address.replace('0x','');
+    address = address.replace('Z','');
     var addressHash = sha3(address.toLowerCase());
 
     for (var i = 0; i < 40; i++ ) {
@@ -2291,9 +2290,9 @@ var isChecksumAddress = function (address) {
 var toChecksumAddress = function (address) {
     if (typeof address === 'undefined') return '';
 
-    address = address.toLowerCase().replace('0x','');
+    address = address.toLowerCase().replace('Z','');
     var addressHash = sha3(address);
-    var checksumAddress = '0x';
+    var checksumAddress = 'Z';
 
     for (var i = 0; i < address.length; i++ ) {
         // If ith character is 9 to f then make it uppercase
@@ -2307,7 +2306,7 @@ var toChecksumAddress = function (address) {
 };
 
 /**
- * Transforms given string to valid 20 bytes-length address with 0x prefix
+ * Transforms given string to valid 20 bytes-length address with Z prefix
  *
  * @method toAddress
  * @param {String} address
@@ -2319,10 +2318,10 @@ var toAddress = function (address) {
     }
 
     if (/^[0-9a-f]{40}$/.test(address)) {
-        return '0x' + address;
+        return 'Z' + address;
     }
 
-    return '0x' + padLeft(toHex(address).substr(2), 40);
+    return 'Z' + padLeft(toHex(address).substr(2), 40);
 };
 
 /**
@@ -3916,11 +3915,11 @@ var outputPostFormatter = function(post){
 var inputAddressFormatter = function (address) {
     var iban = new Iban(address);
     if (iban.isValid() && iban.isDirect()) {
-        return '0x' + iban.address();
+        return 'Z' + iban.address();
     } else if (utils.isStrictAddress(address)) {
         return address;
     } else if (utils.isAddress(address)) {
-        return '0x' + address;
+        return 'Z' + address;
     }
     throw new Error('invalid address');
 };

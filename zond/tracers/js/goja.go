@@ -73,6 +73,7 @@ func fromBuf(vm *goja.Runtime, bufType goja.Value, buf goja.Value, allowString b
 		if !allowString {
 			break
 		}
+		// If the specified value is a valid address, return it
 		if common.IsAddress(obj.String()) {
 			return hexutil.DecodeAddress(obj.String())
 		}

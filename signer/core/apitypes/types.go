@@ -466,8 +466,7 @@ func (typedData *TypedData) EncodePrimitiveValue(encType string, encValue interf
 		retval := make([]byte, 32)
 		switch val := encValue.(type) {
 		case string:
-			if common.IsAddress(val) {
-				address, _ := common.NewAddressFromString(val)
+			if address, err := common.NewAddressFromString(val); err == nil {
 				copy(retval[12:], address.Bytes())
 				return retval, nil
 			}
