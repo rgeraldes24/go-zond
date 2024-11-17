@@ -1157,13 +1157,13 @@ func setEtherbase(ctx *cli.Context, cfg *zondconfig.Config) {
 	if !ctx.IsSet(MinerPendingFeeRecipientFlag.Name) {
 		return
 	}
-	addrStr := ctx.String(MinerPendingFeeRecipientFlag.Name)
-	addr, err := common.NewAddressFromString(addrStr)
+	feeRecipientStr := ctx.String(MinerPendingFeeRecipientFlag.Name)
+	feeRecipient, err := common.NewAddressFromString(feeRecipientStr)
 	if err != nil {
-		Fatalf("-%s: invalid pending block producer address %q", MinerPendingFeeRecipientFlag.Name, addrStr)
+		Fatalf("-%s: invalid pending block producer address %q", MinerPendingFeeRecipientFlag.Name, feeRecipientStr)
 		return
 	}
-	cfg.Miner.PendingFeeRecipient = addr
+	cfg.Miner.PendingFeeRecipient = feeRecipient
 }
 
 // MakePasswordList reads password lines from the file specified by the global --password flag.

@@ -50,7 +50,7 @@ var (
 	// MaxHash represents the maximum possible hash value.
 	MaxHash = HexToHash("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
 
-	ErrInvalidAddress = errors.New("invalid address: a Zond address is a 40 character hex string prefixed by a Z character")
+	ErrInvalidAddress = errors.New("invalid address")
 )
 
 // Hash represents the 32 byte Keccak256 hash of arbitrary data.
@@ -308,6 +308,7 @@ func (a Address) Format(s fmt.State, c rune) {
 		s.Write(q)
 		s.Write(a.checksumHex())
 		s.Write(q)
+	// TODO(rgeraldes24): review
 	case 'x', 'X':
 		// %x disables the checksum.
 		hex := a.hex()
