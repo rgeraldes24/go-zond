@@ -308,7 +308,6 @@ func (a Address) Format(s fmt.State, c rune) {
 		s.Write(q)
 		s.Write(a.checksumHex())
 		s.Write(q)
-	// TODO(rgeraldes24): review
 	case 'x', 'X':
 		// %x disables the checksum.
 		hex := a.hex()
