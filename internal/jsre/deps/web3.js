@@ -5291,12 +5291,6 @@ var methods = function () {
         outputFormatter: formatters.outputBlockFormatter
     });
 
-    var getCompilers = new Method({
-        name: 'getCompilers',
-        call: 'zond_getCompilers',
-        params: 0
-    });
-
     var getBlockTransactionCount = new Method({
         name: 'getBlockTransactionCount',
         call: getBlockTransactionCountCall,
@@ -5389,7 +5383,6 @@ var methods = function () {
         getStorageAt,
         getCode,
         getBlock,
-        getCompilers,
         getBlockTransactionCount,
         getTransaction,
         getTransactionFromBlock,
@@ -5408,14 +5401,6 @@ var methods = function () {
 
 var properties = function () {
     return [
-        new Property({
-            name: 'coinbase',
-            getter: 'zond_coinbase'
-        }),
-        new Property({
-            name: 'mining',
-            getter: 'zond_mining'
-        }),
         new Property({
             name: 'syncing',
             getter: 'zond_syncing',
