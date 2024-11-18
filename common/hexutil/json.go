@@ -39,7 +39,7 @@ type Bytes []byte
 // MarshalText implements encoding.TextMarshaler
 func (b Bytes) MarshalText() ([]byte, error) {
 	result := make([]byte, len(b)*2+2)
-	copy(result, HexPrefix)
+	copy(result, `0x`)
 	hex.Encode(result[2:], b)
 	return result, nil
 }
@@ -101,6 +101,7 @@ func UnmarshalFixedJSON(typ reflect.Type, input, out []byte) error {
 	return wrapTypeError(UnmarshalFixedText(typ.String(), input[1:len(input)-1], out), typ)
 }
 
+// TODO()
 func UnmarshalFixedJSONAddress(typ reflect.Type, input, out []byte) error {
 	if !isString(input) {
 		return errNonString(typ)
@@ -257,7 +258,7 @@ type Uint64 uint64
 // MarshalText implements encoding.TextMarshaler.
 func (b Uint64) MarshalText() ([]byte, error) {
 	buf := make([]byte, 2, 10)
-	copy(buf, HexPrefix)
+	copy(buf, `0x`)
 	buf = strconv.AppendUint(buf, uint64(b), 16)
 	return buf, nil
 }
