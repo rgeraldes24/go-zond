@@ -207,7 +207,7 @@ func DecodeZ(input string) ([]byte, error) {
 	return b, err
 }
 
-// EncodeZ encodes b as a hex string with 0x prefix.
+// EncodeZ encodes b as a hex string with Z prefix.
 func EncodeZ(b []byte) string {
 	enc := make([]byte, len(b)*2+1)
 	copy(enc, PrefixZ)
