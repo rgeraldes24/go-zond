@@ -390,7 +390,7 @@ func (b BytesZ) String() string {
 	return EncodeZ(b)
 }
 
-// ImplementsGraphQLType returns true if Bytes implements the specified GraphQL type.
+// ImplementsGraphQLType returns true if BytesZ implements the specified GraphQL type.
 func (b BytesZ) ImplementsGraphQLType(name string) bool { return name == "BytesZ" }
 
 // UnmarshalGraphQL unmarshals the provided GraphQL query data.
