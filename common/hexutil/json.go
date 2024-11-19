@@ -27,6 +27,7 @@ import (
 
 var (
 	bytesT  = reflect.TypeOf(Bytes(nil))
+	byteszT = reflect.TypeOf(BytesZ(nil))
 	bigT    = reflect.TypeOf((*Big)(nil))
 	uintT   = reflect.TypeOf(Uint(0))
 	uint64T = reflect.TypeOf(Uint64(0))
@@ -101,12 +102,11 @@ func UnmarshalFixedJSON(typ reflect.Type, input, out []byte) error {
 	return wrapTypeError(UnmarshalFixedText(typ.String(), input[1:len(input)-1], out), typ)
 }
 
-// TODO()
-func UnmarshalFixedJSONAddress(typ reflect.Type, input, out []byte) error {
+func UnmarshalFixedJSONZ(typ reflect.Type, input, out []byte) error {
 	if !isString(input) {
 		return errNonString(typ)
 	}
-	return wrapTypeError(UnmarshalFixedTextAddress(typ.String(), input[1:len(input)-1], out), typ)
+	return wrapTypeError(UnmarshalFixedTextZ(typ.String(), input[1:len(input)-1], out), typ)
 }
 
 // UnmarshalFixedText decodes the input as a string with 0x prefix. The length of out
@@ -130,8 +130,8 @@ func UnmarshalFixedText(typname string, input, out []byte) error {
 	return nil
 }
 
-func UnmarshalFixedTextAddress(typname string, input, out []byte) error {
-	raw, err := checkTextAddress(input, true)
+func UnmarshalFixedTextZ(typname string, input, out []byte) error {
+	raw, err := checkTextZ(input, true)
 	if err != nil {
 		return err
 	}
@@ -350,29 +350,29 @@ func (b Uint) String() string {
 	return EncodeUint64(uint64(b))
 }
 
-// Address marshals/unmarshals as a JSON string with Z prefix.
+// BytesZ marshals/unmarshals as a JSON string with Z prefix.
 // The empty slice marshals as "Z".
-type Address []byte
+type BytesZ []byte
 
 // MarshalText implements encoding.TextMarshaler
-func (a Address) MarshalText() ([]byte, error) {
-	result := make([]byte, len(a)*2+1)
-	copy(result, AddressPrefix)
-	hex.Encode(result[1:], a)
+func (b BytesZ) MarshalText() ([]byte, error) {
+	result := make([]byte, len(b)*2+1)
+	copy(result, PrefixZ)
+	hex.Encode(result[1:], b)
 	return result, nil
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
-func (a *Address) UnmarshalJSON(input []byte) error {
+func (b *BytesZ) UnmarshalJSON(input []byte) error {
 	if !isString(input) {
-		return errNonString(bytesT)
+		return errNonString(byteszT)
 	}
-	return wrapTypeError(a.UnmarshalText(input[1:len(input)-1]), bytesT)
+	return wrapTypeError(b.UnmarshalText(input[1:len(input)-1]), bytesT)
 }
 
 // UnmarshalText implements encoding.TextUnmarshaler.
-func (a *Address) UnmarshalText(input []byte) error {
-	raw, err := checkTextAddress(input, true)
+func (b *BytesZ) UnmarshalText(input []byte) error {
+	raw, err := checkTextZ(input, true)
 	if err != nil {
 		return err
 	}
@@ -380,31 +380,31 @@ func (a *Address) UnmarshalText(input []byte) error {
 	if _, err = hex.Decode(dec, raw); err != nil {
 		err = mapError(err)
 	} else {
-		*a = dec
+		*b = dec
 	}
 	return err
 }
 
-// String returns the hex encoding of a.
-func (a Address) String() string {
-	return EncodeAddress(a)
+// String returns the hex encoding of b.
+func (b BytesZ) String() string {
+	return EncodeZ(b)
 }
 
 // ImplementsGraphQLType returns true if Bytes implements the specified GraphQL type.
-func (a Address) ImplementsGraphQLType(name string) bool { return name == "Bytes" }
+func (b BytesZ) ImplementsGraphQLType(name string) bool { return name == "BytesZ" }
 
 // UnmarshalGraphQL unmarshals the provided GraphQL query data.
-func (a *Address) UnmarshalGraphQL(input interface{}) error {
+func (b *BytesZ) UnmarshalGraphQL(input interface{}) error {
 	var err error
 	switch input := input.(type) {
 	case string:
-		data, err := DecodeAddress(input)
+		data, err := DecodeZ(input)
 		if err != nil {
 			return err
 		}
-		*a = data
+		*b = data
 	default:
-		err = fmt.Errorf("unexpected type %T for Address", input)
+		err = fmt.Errorf("unexpected type %T for BytesZ", input)
 	}
 	return err
 }
@@ -417,7 +417,7 @@ func bytesHave0xPrefix(input []byte) bool {
 	return len(input) >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')
 }
 
-func bytesHaveAddressPrefix(input []byte) bool {
+func bytesHaveZPrefix(input []byte) bool {
 	return len(input) >= 1 && input[0] == 'Z'
 }
 
@@ -436,14 +436,14 @@ func checkText(input []byte, wantPrefix bool) ([]byte, error) {
 	return input, nil
 }
 
-func checkTextAddress(input []byte, wantPrefix bool) ([]byte, error) {
+func checkTextZ(input []byte, wantPrefix bool) ([]byte, error) {
 	if len(input) == 0 {
 		return nil, nil // empty strings are allowed
 	}
-	if bytesHaveAddressPrefix(input) {
+	if bytesHaveZPrefix(input) {
 		input = input[1:]
 	} else if wantPrefix {
-		return nil, ErrAddressMissingPrefix
+		return nil, ErrMissingPrefixZ
 	}
 	if len(input)%2 != 0 {
 		return nil, ErrOddLength

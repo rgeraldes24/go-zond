@@ -38,24 +38,24 @@ import (
 )
 
 const (
-	HexPrefix     = "0x"
-	AddressPrefix = "Z"
+	Prefix0x = "0x"
+	PrefixZ  = "Z"
 
 	uintBits = 32 << (uint64(^uint(0)) >> 63)
 )
 
 // Errors
 var (
-	ErrEmptyString          = &decError{"empty hex string"}
-	ErrSyntax               = &decError{"invalid hex string"}
-	ErrMissingPrefix        = &decError{"hex string without 0x prefix"}
-	ErrAddressMissingPrefix = &decError{"address hex string without Z prefix"}
-	ErrOddLength            = &decError{"hex string of odd length"}
-	ErrEmptyNumber          = &decError{"hex string \"0x\""}
-	ErrLeadingZero          = &decError{"hex number with leading zero digits"}
-	ErrUint64Range          = &decError{"hex number > 64 bits"}
-	ErrUintRange            = &decError{fmt.Sprintf("hex number > %d bits", uintBits)}
-	ErrBig256Range          = &decError{"hex number > 256 bits"}
+	ErrEmptyString    = &decError{"empty hex string"}
+	ErrSyntax         = &decError{"invalid hex string"}
+	ErrMissingPrefix  = &decError{"hex string without 0x prefix"}
+	ErrMissingPrefixZ = &decError{"hex string without Z prefix"}
+	ErrOddLength      = &decError{"hex string of odd length"}
+	ErrEmptyNumber    = &decError{"hex string \"0x\""}
+	ErrLeadingZero    = &decError{"hex number with leading zero digits"}
+	ErrUint64Range    = &decError{"hex number > 64 bits"}
+	ErrUintRange      = &decError{fmt.Sprintf("hex number > %d bits", uintBits)}
+	ErrBig256Range    = &decError{"hex number > 256 bits"}
 )
 
 type decError struct{ msg string }
@@ -89,7 +89,7 @@ func MustDecode(input string) []byte {
 // Encode encodes b as a hex string with 0x prefix.
 func Encode(b []byte) string {
 	enc := make([]byte, len(b)*2+2)
-	copy(enc, HexPrefix)
+	copy(enc, Prefix0x)
 	hex.Encode(enc[2:], b)
 	return string(enc)
 }
@@ -120,7 +120,7 @@ func MustDecodeUint64(input string) uint64 {
 // EncodeUint64 encodes i as a hex string with 0x prefix.
 func EncodeUint64(i uint64) string {
 	enc := make([]byte, 2, 10)
-	copy(enc, HexPrefix)
+	copy(enc, Prefix0x)
 	return string(strconv.AppendUint(enc, i, 16))
 }
 
@@ -184,21 +184,21 @@ func MustDecodeBig(input string) *big.Int {
 // EncodeBig encodes bigint as a hex string with 0x prefix.
 func EncodeBig(bigint *big.Int) string {
 	if sign := bigint.Sign(); sign == 0 {
-		return HexPrefix + "0"
+		return Prefix0x + "0"
 	} else if sign > 0 {
-		return HexPrefix + bigint.Text(16)
+		return Prefix0x + bigint.Text(16)
 	} else {
-		return "-" + HexPrefix + bigint.Text(16)[1:]
+		return "-" + Prefix0x + bigint.Text(16)[1:]
 	}
 }
 
-// DecodeAddress decodes a hex string with Z prefix as an address.
-func DecodeAddress(input string) ([]byte, error) {
+// DecodeZ decodes a hex string with Z prefix.
+func DecodeZ(input string) ([]byte, error) {
 	if len(input) == 0 {
 		return nil, ErrEmptyString
 	}
-	if !hasAddressPrefix(input) {
-		return nil, ErrAddressMissingPrefix
+	if !hasZPrefix(input) {
+		return nil, ErrMissingPrefixZ
 	}
 	b, err := hex.DecodeString(input[1:])
 	if err != nil {
@@ -207,17 +207,17 @@ func DecodeAddress(input string) ([]byte, error) {
 	return b, err
 }
 
-// EncodeAddress encodes address as a hex string with Z prefix.
-func EncodeAddress(address []byte) string {
-	enc := make([]byte, len(address)*2+1)
-	copy(enc, AddressPrefix)
-	hex.Encode(enc[1:], address)
+// EncodeZ encodes b as a hex string with 0x prefix.
+func EncodeZ(b []byte) string {
+	enc := make([]byte, len(b)*2+1)
+	copy(enc, PrefixZ)
+	hex.Encode(enc[1:], b)
 	return string(enc)
 }
 
-// MustDecodeAddress decodes a hex string with Z prefix. It panics for invalid input.
-func MustDecodeAddress(input string) []byte {
-	dec, err := DecodeAddress(input)
+// MustDecodeZ decodes a hex string with Z prefix. It panics for invalid input.
+func MustDecodeZ(input string) []byte {
+	dec, err := DecodeZ(input)
 	if err != nil {
 		panic(err)
 	}
@@ -228,7 +228,7 @@ func has0xPrefix(input string) bool {
 	return len(input) >= 2 && input[0] == '0' && (input[1] == 'x' || input[1] == 'X')
 }
 
-func hasAddressPrefix(input string) bool {
+func hasZPrefix(input string) bool {
 	return len(input) >= 1 && input[0] == 'Z'
 }
 

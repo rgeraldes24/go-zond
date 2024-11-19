@@ -50,7 +50,7 @@ var (
 		{referenceBig("-80a7f2c1bcc396c00"), "-0x80a7f2c1bcc396c00"},
 	}
 
-	encodeAddressTests = []marshalTest{
+	encodeZTests = []marshalTest{
 		{[]byte{}, "Z"},
 		{[]byte{0}, "Z00"},
 		{[]byte{0, 0, 1, 2}, "Z00000102"},
@@ -123,10 +123,10 @@ var (
 		},
 	}
 
-	decodeAddressTests = []unmarshalTest{ // invalid
+	decodeZTests = []unmarshalTest{ // invalid
 		{input: ``, wantErr: ErrEmptyString},
-		{input: `0`, wantErr: ErrAddressMissingPrefix},
-		{input: `z`, wantErr: ErrAddressMissingPrefix},
+		{input: `0`, wantErr: ErrMissingPrefixZ},
+		{input: `z`, wantErr: ErrMissingPrefixZ},
 		{input: `Z0`, wantErr: ErrOddLength},
 		{input: `Z023`, wantErr: ErrOddLength},
 		{input: `Zzz`, wantErr: ErrSyntax},
@@ -204,18 +204,18 @@ func TestDecodeBig(t *testing.T) {
 	}
 }
 
-func TestEncodeAddress(t *testing.T) {
-	for _, test := range encodeAddressTests {
-		enc := EncodeAddress(test.input.([]byte))
+func TestEncodeZ(t *testing.T) {
+	for _, test := range encodeZTests {
+		enc := EncodeZ(test.input.([]byte))
 		if enc != test.want {
 			t.Errorf("input %x: wrong encoding %s", test.input, enc)
 		}
 	}
 }
 
-func TestDecodeAddress(t *testing.T) {
-	for _, test := range decodeAddressTests {
-		dec, err := DecodeAddress(test.input)
+func TestDecodeZ(t *testing.T) {
+	for _, test := range decodeZTests {
+		dec, err := DecodeZ(test.input)
 		if !checkError(t, test.input, err, test.wantErr) {
 			continue
 		}

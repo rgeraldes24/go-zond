@@ -41,7 +41,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"golang.org/x/crypto/pbkdf2"
@@ -190,7 +189,7 @@ func EncryptKey(key *Key, auth string, scryptN, scryptP int) ([]byte, error) {
 		return nil, err
 	}
 	encryptedKeyJSONV3 := encryptedKeyJSONV3{
-		hexutil.EncodeAddress(key.Address[:]),
+		fmt.Sprintf("%#x", key.Address),
 		cryptoStruct,
 		key.Id.String(),
 		version,

@@ -27,7 +27,6 @@ import (
 	"github.com/theQRL/go-qrllib/dilithium"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 )
 
@@ -83,7 +82,7 @@ type cipherparamsJSON struct {
 func (k *Key) MarshalJSON() (j []byte, err error) {
 	seed := k.Dilithium.GetSeed()
 	jStruct := plainKeyJSON{
-		hexutil.EncodeAddress(k.Address[:]),
+		fmt.Sprintf("%#x", k.Address),
 		common.Bytes2Hex(seed[:]),
 		k.Id.String(),
 		version,
@@ -105,12 +104,12 @@ func (k *Key) UnmarshalJSON(j []byte) (err error) {
 		return err
 	}
 	k.Id = *u
-	addr, err := hexutil.DecodeAddress(keyJSON.Address)
+	addr, err := common.NewAddressFromString(keyJSON.Address)
 	if err != nil {
 		return err
 	}
 
-	k.Address = common.BytesToAddress(addr)
+	k.Address = addr
 	k.Dilithium, err = pqcrypto.HexToDilithium(keyJSON.HexSeed)
 	if err != nil {
 		return err
@@ -190,7 +189,7 @@ func writeKeyFile(file string, content []byte) error {
 // UTC--<created_at UTC ISO8601>-<z-prefixed address hex>
 func keyFileName(keyAddr common.Address) string {
 	ts := time.Now().UTC()
-	return fmt.Sprintf("UTC--%s--%s", toISO8601(ts), hexutil.EncodeAddress(keyAddr[:]))
+	return fmt.Sprintf("UTC--%s--%#x", toISO8601(ts), keyAddr)
 }
 
 func toISO8601(t time.Time) string {
