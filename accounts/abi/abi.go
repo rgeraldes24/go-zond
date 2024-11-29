@@ -37,9 +37,9 @@ type ABI struct {
 	Events      map[string]Event
 	Errors      map[string]Error
 
-	// TODO(rgeraldes24):  legacy fallback
-	// Additional "special" functions. It's separated from the original default fallback.
-	// Each contract can only define one fallback and receive function.
+	// Additional "special" functions.
+	// It's separated from the original default fallback. Each contract
+	// can only define one fallback and receive function.
 	Fallback Method
 	Receive  Method
 }
