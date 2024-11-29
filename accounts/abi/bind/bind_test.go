@@ -521,7 +521,7 @@ var bindTests = []struct {
 
 		`Structs`,
 		`
-		pragma solidity ^0.6.5;
+		pragma hyperion ^0.6.5;
 			pragma experimental ABIEncoderV2;
 			contract Structs {
 				struct A {
@@ -1196,7 +1196,7 @@ var bindTests = []struct {
 	}, {
 		`Tuple`,
 		`
-		pragma solidity >=0.4.19 <0.6.0;
+		pragma hyperion >=0.4.19 <0.6.0;
 		pragma experimental ABIEncoderV2;
 
 		contract Tuple {
@@ -1410,7 +1410,7 @@ var bindTests = []struct {
 	}, {
 		"Overload",
 		`
-		pragma solidity ^0.5.10;
+		pragma hyperion ^0.5.10;
 
 		contract overload {
 		  mapping(address => uint256) balances;
@@ -1505,7 +1505,7 @@ var bindTests = []struct {
 	{
 		"IdentifierCollision",
 		`
-		pragma solidity >=0.4.19 <0.6.0;
+		pragma hyperion >=0.4.19 <0.6.0;
 
 		contract IdentifierCollision {
 			uint public _myVar;
@@ -1548,7 +1548,7 @@ var bindTests = []struct {
 	{
 		"MultiContracts",
 		`
-		pragma solidity ^0.5.11;
+		pragma hyperion ^0.5.11;
 		pragma experimental ABIEncoderV2;
 
 		library ExternalLib {
@@ -1630,7 +1630,7 @@ var bindTests = []struct {
 	// Test the existence of the free retrieval calls
 	{
 		`PureAndView`,
-		`pragma solidity >=0.6.0;
+		`pragma hyperion >=0.6.0;
 		contract PureAndView {
 			function PureFunc() public pure returns (uint) {
 				return 42;
@@ -1682,11 +1682,11 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// Test fallback separation introduced in v0.6.0
+	// Test fallback separation introduced in v0.6.0 // TODO(rgeraldes24)
 	{
 		`NewFallbacks`,
 		`
-		pragma solidity >=0.6.0 <0.7.0;
+		pragma hyperion >=0.6.0 <0.7.0;
 	
 		contract NewFallbacks {
 			event Fallback(bytes data);
@@ -1776,7 +1776,7 @@ var bindTests = []struct {
 	{
 		`NewSingleStructArgument`,
 		`
-		 pragma solidity ^0.8.0;
+		 pragma hyperion ^0.8.0;
 
 		 contract NewSingleStructArgument {
 			 struct MyStruct{
@@ -1843,11 +1843,11 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// Test errors introduced in v0.8.4
+	// Test errors introduced in v0.8.4 // TODO(rgeraldes24)
 	{
 		`NewErrors`,
 		`
-		pragma solidity >0.8.4;
+		pragma hyperion >0.8.4;
 	
 		contract NewErrors {
 			error MyError(uint256);
@@ -1901,7 +1901,7 @@ var bindTests = []struct {
 	{
 		name: `ConstructorWithStructParam`,
 		contract: `
-		pragma solidity >=0.8.0 <0.9.0;
+		pragma hyperion >=0.8.0 <0.9.0;
 		
 		contract ConstructorWithStructParam {
 			struct StructType {
@@ -1946,7 +1946,7 @@ var bindTests = []struct {
 		name: `NameConflict`,
 		contract: `
 		// SPDX-License-Identifier: GPL-3.0
-		pragma solidity >=0.4.22 <0.9.0;
+		pragma hyperion >=0.4.22 <0.9.0;
 		contract oracle {
 			struct request {
 				 bytes data;
@@ -1994,7 +1994,7 @@ var bindTests = []struct {
 		name: "RangeKeyword",
 		contract: `
 		// SPDX-License-Identifier: GPL-3.0
-		pragma solidity >=0.4.22 <0.9.0;
+		pragma hyperion >=0.4.22 <0.9.0;
 		contract keywordcontract {
 			function functionWithKeywordParameter(range uint256) public pure {}
 		}
@@ -2030,7 +2030,7 @@ var bindTests = []struct {
 		name: "NumericMethodName",
 		contract: `
 		// SPDX-License-Identifier: GPL-3.0
-		pragma solidity >=0.4.22 <0.9.0;
+		pragma hyperion >=0.4.22 <0.9.0;
 
 		contract NumericMethodName {
 			event _1TestEvent(address _param);

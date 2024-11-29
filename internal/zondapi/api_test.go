@@ -235,7 +235,7 @@ func (b testBackend) ChainDb() zonddb.Database          { return b.db }
 func (b testBackend) AccountManager() *accounts.Manager { return nil }
 func (b testBackend) ExtRPCEnabled() bool               { return false }
 func (b testBackend) RPCGasCap() uint64                 { return 10000000 }
-func (b testBackend) RPCEVMTimeout() time.Duration      { return time.Second }
+func (b testBackend) RPCZVMTimeout() time.Duration      { return time.Second }
 func (b testBackend) RPCTxFeeCap() float64              { return 0 }
 func (b testBackend) SetHead(number uint64)             {}
 func (b testBackend) HeaderByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Header, error) {
@@ -316,16 +316,16 @@ func (b testBackend) GetReceipts(ctx context.Context, hash common.Hash) (types.R
 	return receipts, nil
 }
 
-func (b testBackend) GetEVM(ctx context.Context, msg *core.Message, state *state.StateDB, header *types.Header, vmConfig *vm.Config, blockContext *vm.BlockContext) *vm.EVM {
+func (b testBackend) GetZVM(ctx context.Context, msg *core.Message, state *state.StateDB, header *types.Header, vmConfig *vm.Config, blockContext *vm.BlockContext) *vm.ZVM {
 	if vmConfig == nil {
 		vmConfig = b.chain.GetVMConfig()
 	}
-	txContext := core.NewEVMTxContext(msg)
-	context := core.NewEVMBlockContext(header, b.chain, nil)
+	txContext := core.NewZVMTxContext(msg)
+	context := core.NewZVMBlockContext(header, b.chain, nil)
 	if blockContext != nil {
 		context = *blockContext
 	}
-	return vm.NewEVM(context, txContext, state, b.chain.Config(), *vmConfig)
+	return vm.NewZVM(context, txContext, state, b.chain.Config(), *vmConfig)
 }
 func (b testBackend) SubscribeChainEvent(ch chan<- core.ChainEvent) event.Subscription {
 	panic("implement me")
@@ -579,7 +579,7 @@ func TestCall(t *testing.T) {
 		//
 		// // SPDX-License-Identifier: GPL-3.0
 		//
-		//  pragma solidity >=0.7.0 <0.8.0;
+		//  pragma hyperion >=0.7.0 <0.8.0;
 		//
 		//  /**
 		//   * @title Storage
@@ -1141,7 +1141,7 @@ func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Ha
 				acc1Addr: {Balance: big.NewInt(params.Ether)},
 				acc2Addr: {Balance: big.NewInt(params.Ether)},
 				// // SPDX-License-Identifier: GPL-3.0
-				// pragma solidity >=0.7.0 <0.9.0;
+				// pragma hyperion >=0.7.0 <0.9.0;
 				//
 				// contract Token {
 				//     event Transfer(address indexed from, address indexed to, uint256 value);
