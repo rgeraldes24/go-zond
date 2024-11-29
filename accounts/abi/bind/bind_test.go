@@ -1682,7 +1682,7 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// Test fallback separation introduced in v0.6.0 // TODO(rgeraldes24)
+	// Test fallback separation
 	{
 		`NewFallbacks`,
 		`
@@ -1843,7 +1843,7 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// Test errors introduced in v0.8.4 // TODO(rgeraldes24)
+	// Test errors
 	{
 		`NewErrors`,
 		`
