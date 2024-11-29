@@ -383,7 +383,7 @@ var bindStructType = map[Lang]func(kind abi.Type, structs map[string]*tmplStruct
 func bindStructTypeGo(kind abi.Type, structs map[string]*tmplStruct) string {
 	switch kind.T {
 	case abi.TupleTy:
-		// TODO(rgeraldes24): review version/legacy code
+		// TODO(now.youtrack.cloud/issue/TGZ-29)
 		// We compose a raw struct name and a canonical parameter expression
 		// together here. The reason is before hyperion v0.5.11, kind.TupleRawName
 		// is empty, so we use canonical parameter expression to distinguish

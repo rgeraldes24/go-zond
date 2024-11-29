@@ -521,6 +521,7 @@ var bindTests = []struct {
 
 		`Structs`,
 		`
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion ^0.6.5;
 			pragma experimental ABIEncoderV2;
 			contract Structs {
@@ -1196,6 +1197,7 @@ var bindTests = []struct {
 	}, {
 		`Tuple`,
 		`
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion >=0.4.19 <0.6.0;
 		pragma experimental ABIEncoderV2;
 
@@ -1410,6 +1412,7 @@ var bindTests = []struct {
 	}, {
 		"Overload",
 		`
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion ^0.5.10;
 
 		contract overload {
@@ -1505,6 +1508,7 @@ var bindTests = []struct {
 	{
 		"IdentifierCollision",
 		`
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion >=0.4.19 <0.6.0;
 
 		contract IdentifierCollision {
@@ -1548,6 +1552,7 @@ var bindTests = []struct {
 	{
 		"MultiContracts",
 		`
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion ^0.5.11;
 		pragma experimental ABIEncoderV2;
 
@@ -1630,7 +1635,9 @@ var bindTests = []struct {
 	// Test the existence of the free retrieval calls
 	{
 		`PureAndView`,
-		`pragma hyperion >=0.6.0;
+		`
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
+		pragma hyperion >=0.6.0;
 		contract PureAndView {
 			function PureFunc() public pure returns (uint) {
 				return 42;
@@ -1686,6 +1693,7 @@ var bindTests = []struct {
 	{
 		`NewFallbacks`,
 		`
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion >=0.6.0 <0.7.0;
 	
 		contract NewFallbacks {
@@ -1776,6 +1784,7 @@ var bindTests = []struct {
 	{
 		`NewSingleStructArgument`,
 		`
+		 // TODO(now.youtrack.cloud/issue/TGZ-30)
 		 pragma hyperion ^0.8.0;
 
 		 contract NewSingleStructArgument {
@@ -1847,6 +1856,7 @@ var bindTests = []struct {
 	{
 		`NewErrors`,
 		`
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion >0.8.4;
 	
 		contract NewErrors {
@@ -1901,6 +1911,7 @@ var bindTests = []struct {
 	{
 		name: `ConstructorWithStructParam`,
 		contract: `
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion >=0.8.0 <0.9.0;
 		
 		contract ConstructorWithStructParam {
@@ -1946,6 +1957,7 @@ var bindTests = []struct {
 		name: `NameConflict`,
 		contract: `
 		// SPDX-License-Identifier: GPL-3.0
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion >=0.4.22 <0.9.0;
 		contract oracle {
 			struct request {
@@ -1994,6 +2006,7 @@ var bindTests = []struct {
 		name: "RangeKeyword",
 		contract: `
 		// SPDX-License-Identifier: GPL-3.0
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion >=0.4.22 <0.9.0;
 		contract keywordcontract {
 			function functionWithKeywordParameter(range uint256) public pure {}
@@ -2030,6 +2043,7 @@ var bindTests = []struct {
 		name: "NumericMethodName",
 		contract: `
 		// SPDX-License-Identifier: GPL-3.0
+		// TODO(now.youtrack.cloud/issue/TGZ-30)
 		pragma hyperion >=0.4.22 <0.9.0;
 
 		contract NumericMethodName {
