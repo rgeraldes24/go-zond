@@ -16,6 +16,18 @@
 
 package bind
 
+import (
+	"fmt"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"runtime"
+	"strings"
+	"testing"
+
+	"github.com/theQRL/go-zond/common"
+)
+
 var bindTests = []struct {
 	name     string
 	contract string
@@ -28,6 +40,7 @@ var bindTests = []struct {
 	aliases  map[string]string
 	types    []string
 }{
+
 	// Test that the binding is available in combined and separate forms too
 	{
 		`Empty`,
@@ -54,7 +67,7 @@ var bindTests = []struct {
 	// Test that all the official sample contracts bind correctly
 	{
 		`Token`,
-		`https://ethereum.org/token`,
+		`https://theqrl.org/token`,
 		[]string{`60606040526040516107fd3803806107fd83398101604052805160805160a05160c051929391820192909101600160a060020a0333166000908152600360209081526040822086905581548551838052601f6002600019610100600186161502019093169290920482018390047f290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e56390810193919290918801908390106100e857805160ff19168380011785555b506101189291505b8082111561017157600081556001016100b4565b50506002805460ff19168317905550505050610658806101a56000396000f35b828001600101855582156100ac579182015b828111156100ac5782518260005055916020019190600101906100fa565b50508060016000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061017557805160ff19168380011785555b506100c89291506100b4565b5090565b82800160010185558215610165579182015b8281111561016557825182600050559160200191906001019061018756606060405236156100775760e060020a600035046306fdde03811461007f57806323b872dd146100dc578063313ce5671461010e57806370a082311461011a57806395d89b4114610132578063a9059cbb1461018e578063cae9ca51146101bd578063dc3080f21461031c578063dd62ed3e14610341575b610365610002565b61036760008054602060026001831615610100026000190190921691909104601f810182900490910260809081016040526060828152929190828280156104eb5780601f106104c0576101008083540402835291602001916104eb565b6103d5600435602435604435600160a060020a038316600090815260036020526040812054829010156104f357610002565b6103e760025460ff1681565b6103d560043560036020526000908152604090205481565b610367600180546020600282841615610100026000190190921691909104601f810182900490910260809081016040526060828152929190828280156104eb5780601f106104c0576101008083540402835291602001916104eb565b610365600435602435600160a060020a033316600090815260036020526040902054819010156103f157610002565b60806020604435600481810135601f8101849004909302840160405260608381526103d5948235946024803595606494939101919081908382808284375094965050505050505060006000836004600050600033600160a060020a03168152602001908152602001600020600050600087600160a060020a031681526020019081526020016000206000508190555084905080600160a060020a0316638f4ffcb1338630876040518560e060020a0281526004018085600160a060020a0316815260200184815260200183600160a060020a03168152602001806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600f02600301f150905090810190601f1680156102f25780820380516001836020036101000a031916815260200191505b50955050505050506000604051808303816000876161da5a03f11561000257505050509392505050565b6005602090815260043560009081526040808220909252602435815220546103d59081565b60046020818152903560009081526040808220909252602435815220546103d59081565b005b60405180806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600f02600301f150905090810190601f1680156103c75780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b60408051918252519081900360200190f35b6060908152602090f35b600160a060020a03821660009081526040902054808201101561041357610002565b806003600050600033600160a060020a03168152602001908152602001600020600082828250540392505081905550806003600050600084600160a060020a0316815260200190815260200160002060008282825054019250508190555081600160a060020a031633600160a060020a03167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef836040518082815260200191505060405180910390a35050565b820191906000526020600020905b8154815290600101906020018083116104ce57829003601f168201915b505050505081565b600160a060020a03831681526040812054808301101561051257610002565b600160a060020a0380851680835260046020908152604080852033949094168086529382528085205492855260058252808520938552929052908220548301111561055c57610002565b816003600050600086600160a060020a03168152602001908152602001600020600082828250540392505081905550816003600050600085600160a060020a03168152602001908152602001600020600082828250540192505081905550816005600050600086600160a060020a03168152602001908152602001600020600050600033600160a060020a0316815260200190815260200160002060008282825054019250508190555082600160a060020a031633600160a060020a03167fddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef846040518082815260200191505060405180910390a3939250505056`},
 		[]string{`[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"spentAllowance","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"inputs":[{"name":"initialSupply","type":"uint256"},{"name":"tokenName","type":"string"},{"name":"decimalUnits","type":"uint8"},{"name":"tokenSymbol","type":"string"}],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"}]`},
 		`"github.com/theQRL/go-zond/common"`,
@@ -70,7 +83,7 @@ var bindTests = []struct {
 	},
 	{
 		`Crowdsale`,
-		`https://ethereum.org/crowdsale`,
+		`https://theqrl.org/crowdsale`,
 		[]string{`606060408190526007805460ff1916905560a0806105a883396101006040529051608051915160c05160e05160008054600160a060020a03199081169095178155670de0b6b3a7640000958602600155603c9093024201600355930260045560058054909216909217905561052f90819061007990396000f36060604052361561006c5760e060020a600035046301cb3b20811461008257806329dcb0cf1461014457806338af3eed1461014d5780636e66f6e91461015f5780637a3a0e84146101715780637b3e5e7b1461017a578063a035b1fe14610183578063dc0d3dff1461018c575b61020060075460009060ff161561032357610002565b61020060035460009042106103205760025460015490106103cb576002548154600160a060020a0316908290606082818181858883f150915460025460408051600160a060020a039390931683526020830191909152818101869052517fe842aea7a5f1b01049d752008c53c52890b1a6daf660cf39e8eec506112bbdf6945090819003909201919050a15b60405160008054600160a060020a039081169230909116319082818181858883f150506007805460ff1916600117905550505050565b6103a160035481565b6103ab600054600160a060020a031681565b6103ab600554600160a060020a031681565b6103a160015481565b6103a160025481565b6103a160045481565b6103be60043560068054829081101561000257506000526002027ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f8101547ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d409190910154600160a060020a03919091169082565b005b505050815481101561000257906000526020600020906002020160005060008201518160000160006101000a815481600160a060020a030219169083021790555060208201518160010160005055905050806002600082828250540192505081905550600560009054906101000a9004600160a060020a0316600160a060020a031663a9059cbb3360046000505484046040518360e060020a0281526004018083600160a060020a03168152602001828152602001925050506000604051808303816000876161da5a03f11561000257505060408051600160a060020a03331681526020810184905260018183015290517fe842aea7a5f1b01049d752008c53c52890b1a6daf660cf39e8eec506112bbdf692509081900360600190a15b50565b5060a0604052336060908152346080819052600680546001810180835592939282908280158290116102025760020281600202836000526020600020918201910161020291905b8082111561039d57805473ffffffffffffffffffffffffffffffffffffffff19168155600060019190910190815561036a565b5090565b6060908152602090f35b600160a060020a03166060908152602090f35b6060918252608052604090f35b5b60065481101561010e576006805482908110156100025760009182526002027ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f0190600680549254600160a060020a0316928490811015610002576002027ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d40015460405190915082818181858883f19350505050507fe842aea7a5f1b01049d752008c53c52890b1a6daf660cf39e8eec506112bbdf660066000508281548110156100025760008290526002027ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f01548154600160a060020a039190911691908490811015610002576002027ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d40015460408051600160a060020a0394909416845260208401919091526000838201525191829003606001919050a16001016103cc56`},
 		[]string{`[{"constant":false,"inputs":[],"name":"checkGoalReached","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"deadline","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"beneficiary","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":true,"inputs":[],"name":"tokenReward","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":true,"inputs":[],"name":"fundingGoal","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"amountRaised","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"price","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"funders","outputs":[{"name":"addr","type":"address"},{"name":"amount","type":"uint256"}],"type":"function"},{"inputs":[{"name":"ifSuccessfulSendTo","type":"address"},{"name":"fundingGoalInEthers","type":"uint256"},{"name":"durationInMinutes","type":"uint256"},{"name":"etherCostOfEachToken","type":"uint256"},{"name":"addressOfTokenUsedAsReward","type":"address"}],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"backer","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"isContribution","type":"bool"}],"name":"FundTransfer","type":"event"}]`},
 		`"github.com/theQRL/go-zond/common"`,
@@ -86,7 +99,7 @@ var bindTests = []struct {
 	},
 	{
 		`DAO`,
-		`https://ethereum.org/dao`,
+		`https://theqrl.org/dao`,
 		[]string{`606060405260405160808061145f833960e06040529051905160a05160c05160008054600160a060020a03191633179055600184815560028490556003839055600780549182018082558280158290116100b8576003028160030283600052602060002091820191016100b891906101c8565b50506060919091015160029190910155600160a060020a0381166000146100a65760008054600160a060020a031916821790555b505050506111f18061026e6000396000f35b505060408051608081018252600080825260208281018290528351908101845281815292820192909252426060820152600780549194509250811015610002579081527fa66cc928b5edb82af9bd49922954155ab7b0942694bea4ce44661d9a8736c6889050815181546020848101517401000000000000000000000000000000000000000002600160a060020a03199290921690921760a060020a60ff021916178255604083015180516001848101805460008281528690209195600293821615610100026000190190911692909204601f9081018390048201949192919091019083901061023e57805160ff19168380011785555b50610072929150610226565b5050600060028201556001015b8082111561023a578054600160a860020a031916815560018181018054600080835592600290821615610100026000190190911604601f81901061020c57506101bb565b601f0160209004906000526020600020908101906101bb91905b8082111561023a5760008155600101610226565b5090565b828001600101855582156101af579182015b828111156101af57825182600050559160200191906001019061025056606060405236156100b95760e060020a6000350463013cf08b81146100bb578063237e9492146101285780633910682114610281578063400e3949146102995780635daf08ca146102a257806369bd34361461032f5780638160f0b5146103385780638da5cb5b146103415780639644fcbd14610353578063aa02a90f146103be578063b1050da5146103c7578063bcca1fd3146104b5578063d3c0715b146104dc578063eceb29451461058d578063f2fde38b1461067b575b005b61069c6004356004805482908110156100025790600052602060002090600a02016000506005810154815460018301546003840154600485015460068601546007870154600160a060020a03959095169750929560020194919360ff828116946101009093041692919089565b60408051602060248035600481810135601f81018590048502860185019096528585526107759581359591946044949293909201918190840183828082843750949650505050505050600060006004600050848154811015610002575090527f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19e600a8402908101547f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19b909101904210806101e65750600481015460ff165b8061026757508060000160009054906101000a9004600160a060020a03168160010160005054846040518084600160a060020a0316606060020a0281526014018381526020018280519060200190808383829060006004602084601f0104600f02600301f15090500193505050506040518091039020816007016000505414155b8061027757506001546005820154105b1561109257610002565b61077560043560066020526000908152604090205481565b61077560055481565b61078760043560078054829081101561000257506000526003026000805160206111d18339815191528101547fa66cc928b5edb82af9bd49922954155ab7b0942694bea4ce44661d9a8736c68a820154600160a060020a0382169260a060020a90920460ff16917fa66cc928b5edb82af9bd49922954155ab7b0942694bea4ce44661d9a8736c689019084565b61077560025481565b61077560015481565b610830600054600160a060020a031681565b604080516020604435600481810135601f81018490048402850184019095528484526100b9948135946024803595939460649492939101918190840183828082843750949650505050505050600080548190600160a060020a03908116339091161461084d57610002565b61077560035481565b604080516020604435600481810135601f8101849004840285018401909552848452610775948135946024803595939460649492939101918190840183828082843750506040805160209735808a0135601f81018a90048a0283018a019093528282529698976084979196506024909101945090925082915084018382808284375094965050505050505033600160a060020a031660009081526006602052604081205481908114806104ab5750604081205460078054909190811015610002579082526003026000805160206111d1833981519152015460a060020a900460ff16155b15610ce557610002565b6100b960043560243560443560005433600160a060020a03908116911614610b1857610002565b604080516020604435600481810135601f810184900484028501840190955284845261077594813594602480359593946064949293910191819084018382808284375094965050505050505033600160a060020a031660009081526006602052604081205481908114806105835750604081205460078054909190811015610002579082526003026000805160206111d18339815191520181505460a060020a900460ff16155b15610f1d57610002565b604080516020606435600481810135601f81018490048402850184019095528484526107759481359460248035956044359560849492019190819084018382808284375094965050505050505060006000600460005086815481101561000257908252600a027f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19b01815090508484846040518084600160a060020a0316606060020a0281526014018381526020018280519060200190808383829060006004602084601f0104600f02600301f150905001935050505060405180910390208160070160005054149150610cdc565b6100b960043560005433600160a060020a03908116911614610f0857610002565b604051808a600160a060020a031681526020018981526020018060200188815260200187815260200186815260200185815260200184815260200183815260200182810382528981815460018160011615610100020316600290048152602001915080546001816001161561010002031660029004801561075e5780601f106107335761010080835404028352916020019161075e565b820191906000526020600020905b81548152906001019060200180831161074157829003601f168201915b50509a505050505050505050505060405180910390f35b60408051918252519081900360200190f35b60408051600160a060020a038616815260208101859052606081018390526080918101828152845460026001821615610100026000190190911604928201839052909160a08301908590801561081e5780601f106107f35761010080835404028352916020019161081e565b820191906000526020600020905b81548152906001019060200180831161080157829003601f168201915b50509550505050505060405180910390f35b60408051600160a060020a03929092168252519081900360200190f35b600160a060020a03851660009081526006602052604081205414156108a957604060002060078054918290556001820180825582801582901161095c5760030281600302836000526020600020918201910161095c9190610a4f565b600160a060020a03851660009081526006602052604090205460078054919350908390811015610002575060005250600381026000805160206111d183398151915201805474ff0000000000000000000000000000000000000000191660a060020a85021781555b60408051600160a060020a03871681526020810186905281517f27b022af4a8347100c7a041ce5ccf8e14d644ff05de696315196faae8cd50c9b929181900390910190a15050505050565b505050915081506080604051908101604052808681526020018581526020018481526020014281526020015060076000508381548110156100025790600052602060002090600302016000508151815460208481015160a060020a02600160a060020a03199290921690921774ff00000000000000000000000000000000000000001916178255604083015180516001848101805460008281528690209195600293821615610100026000190190911692909204601f90810183900482019491929190910190839010610ad357805160ff19168380011785555b50610b03929150610abb565b5050600060028201556001015b80821115610acf57805474ffffffffffffffffffffffffffffffffffffffffff1916815560018181018054600080835592600290821615610100026000190190911604601f819010610aa15750610a42565b601f016020900490600052602060002090810190610a4291905b80821115610acf5760008155600101610abb565b5090565b82800160010185558215610a36579182015b82811115610a36578251826000505591602001919060010190610ae5565b50506060919091015160029190910155610911565b600183905560028290556003819055604080518481526020810184905280820183905290517fa439d3fa452be5e0e1e24a8145e715f4fd8b9c08c96a42fd82a855a85e5d57de9181900360600190a1505050565b50508585846040518084600160a060020a0316606060020a0281526014018381526020018280519060200190808383829060006004602084601f0104600f02600301f150905001935050505060405180910390208160070160005081905550600260005054603c024201816003016000508190555060008160040160006101000a81548160ff0219169083021790555060008160040160016101000a81548160ff02191690830217905550600081600501600050819055507f646fec02522b41e7125cfc859a64fd4f4cefd5dc3b6237ca0abe251ded1fa881828787876040518085815260200184600160a060020a03168152602001838152602001806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600f02600301f150905090810190601f168015610cc45780820380516001836020036101000a031916815260200191505b509550505050505060405180910390a1600182016005555b50949350505050565b6004805460018101808355909190828015829011610d1c57600a0281600a028360005260206000209182019101610d1c9190610db8565b505060048054929450918491508110156100025790600052602060002090600a02016000508054600160a060020a031916871781556001818101879055855160028381018054600082815260209081902096975091959481161561010002600019011691909104601f90810182900484019391890190839010610ed857805160ff19168380011785555b50610b6c929150610abb565b50506001015b80821115610acf578054600160a060020a03191681556000600182810182905560028381018054848255909281161561010002600019011604601f819010610e9c57505b5060006003830181905560048301805461ffff191690556005830181905560068301819055600783018190556008830180548282559082526020909120610db2916002028101905b80821115610acf57805474ffffffffffffffffffffffffffffffffffffffffff1916815560018181018054600080835592600290821615610100026000190190911604601f819010610eba57505b5050600101610e44565b601f016020900490600052602060002090810190610dfc9190610abb565b601f016020900490600052602060002090810190610e929190610abb565b82800160010185558215610da6579182015b82811115610da6578251826000505591602001919060010190610eea565b60008054600160a060020a0319168217905550565b600480548690811015610002576000918252600a027f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19b01905033600160a060020a0316600090815260098201602052604090205490915060ff1660011415610f8457610002565b33600160a060020a031660009081526009820160205260409020805460ff1916600190811790915560058201805490910190558315610fcd576006810180546001019055610fda565b6006810180546000190190555b7fc34f869b7ff431b034b7b9aea9822dac189a685e0b015c7d1be3add3f89128e8858533866040518085815260200184815260200183600160a060020a03168152602001806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600f02600301f150905090810190601f16801561107a5780820380516001836020036101000a031916815260200191505b509550505050505060405180910390a1509392505050565b6006810154600354901315611158578060000160009054906101000a9004600160a060020a0316600160a060020a03168160010160005054670de0b6b3a76400000284604051808280519060200190808383829060006004602084601f0104600f02600301f150905090810190601f1680156111225780820380516001836020036101000a031916815260200191505b5091505060006040518083038185876185025a03f15050505060048101805460ff191660011761ff00191661010017905561116d565b60048101805460ff191660011761ff00191690555b60068101546005820154600483015460408051888152602081019490945283810192909252610100900460ff166060830152517fd220b7272a8b6d0d7d6bcdace67b936a8f175e6d5c1b3ee438b72256b32ab3af9181900360800190a1509291505056a66cc928b5edb82af9bd49922954155ab7b0942694bea4ce44661d9a8736c688`},
 		[]string{`[{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"proposals","outputs":[{"name":"recipient","type":"address"},{"name":"amount","type":"uint256"},{"name":"description","type":"string"},{"name":"votingDeadline","type":"uint256"},{"name":"executed","type":"bool"},{"name":"proposalPassed","type":"bool"},{"name":"numberOfVotes","type":"uint256"},{"name":"currentResult","type":"int256"},{"name":"proposalHash","type":"bytes32"}],"type":"function"},{"constant":false,"inputs":[{"name":"proposalNumber","type":"uint256"},{"name":"transactionBytecode","type":"bytes"}],"name":"executeProposal","outputs":[{"name":"result","type":"int256"}],"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"memberId","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"numProposals","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"members","outputs":[{"name":"member","type":"address"},{"name":"canVote","type":"bool"},{"name":"name","type":"string"},{"name":"memberSince","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"debatingPeriodInMinutes","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"minimumQuorum","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[{"name":"targetMember","type":"address"},{"name":"canVote","type":"bool"},{"name":"memberName","type":"string"}],"name":"changeMembership","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"majorityMargin","outputs":[{"name":"","type":"int256"}],"type":"function"},{"constant":false,"inputs":[{"name":"beneficiary","type":"address"},{"name":"etherAmount","type":"uint256"},{"name":"JobDescription","type":"string"},{"name":"transactionBytecode","type":"bytes"}],"name":"newProposal","outputs":[{"name":"proposalID","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[{"name":"minimumQuorumForProposals","type":"uint256"},{"name":"minutesForDebate","type":"uint256"},{"name":"marginOfVotesForMajority","type":"int256"}],"name":"changeVotingRules","outputs":[],"type":"function"},{"constant":false,"inputs":[{"name":"proposalNumber","type":"uint256"},{"name":"supportsProposal","type":"bool"},{"name":"justificationText","type":"string"}],"name":"vote","outputs":[{"name":"voteID","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[{"name":"proposalNumber","type":"uint256"},{"name":"beneficiary","type":"address"},{"name":"etherAmount","type":"uint256"},{"name":"transactionBytecode","type":"bytes"}],"name":"checkProposalCode","outputs":[{"name":"codeChecksOut","type":"bool"}],"type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"type":"function"},{"inputs":[{"name":"minimumQuorumForProposals","type":"uint256"},{"name":"minutesForDebate","type":"uint256"},{"name":"marginOfVotesForMajority","type":"int256"},{"name":"congressLeader","type":"address"}],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"proposalID","type":"uint256"},{"indexed":false,"name":"recipient","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"description","type":"string"}],"name":"ProposalAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"proposalID","type":"uint256"},{"indexed":false,"name":"position","type":"bool"},{"indexed":false,"name":"voter","type":"address"},{"indexed":false,"name":"justification","type":"string"}],"name":"Voted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"proposalID","type":"uint256"},{"indexed":false,"name":"result","type":"int256"},{"indexed":false,"name":"quorum","type":"uint256"},{"indexed":false,"name":"active","type":"bool"}],"name":"ProposalTallied","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"member","type":"address"},{"indexed":false,"name":"isMember","type":"bool"}],"name":"MembershipChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"minimumQuorum","type":"uint256"},{"indexed":false,"name":"debatingPeriodInMinutes","type":"uint256"},{"indexed":false,"name":"majorityMargin","type":"int256"}],"name":"ChangeOfRules","type":"event"}]`},
 		`"github.com/theQRL/go-zond/common"`,
@@ -100,83 +113,90 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// Test that named and anonymous inputs are handled correctly
-	{
-		`InputChecker`, ``, []string{``},
-		[]string{`
-			[
-				{"type":"function","name":"noInput","constant":true,"inputs":[],"outputs":[]},
-				{"type":"function","name":"namedInput","constant":true,"inputs":[{"name":"str","type":"string"}],"outputs":[]},
-				{"type":"function","name":"anonInput","constant":true,"inputs":[{"name":"","type":"string"}],"outputs":[]},
-				{"type":"function","name":"namedInputs","constant":true,"inputs":[{"name":"str1","type":"string"},{"name":"str2","type":"string"}],"outputs":[]},
-				{"type":"function","name":"anonInputs","constant":true,"inputs":[{"name":"","type":"string"},{"name":"","type":"string"}],"outputs":[]},
-				{"type":"function","name":"mixedInputs","constant":true,"inputs":[{"name":"","type":"string"},{"name":"str","type":"string"}],"outputs":[]}
-			]
-		`},
-		`
-			"fmt"
+	// TODO(rgeraldes24)
+	/*
+		// Test that named and anonymous inputs are handled correctly
+		{
+			`InputChecker`, ``, []string{``},
+			[]string{`
+				[
+					{"type":"function","name":"noInput","constant":true,"inputs":[],"outputs":[]},
+					{"type":"function","name":"namedInput","constant":true,"inputs":[{"name":"str","type":"string"}],"outputs":[]},
+					{"type":"function","name":"anonInput","constant":true,"inputs":[{"name":"","type":"string"}],"outputs":[]},
+					{"type":"function","name":"namedInputs","constant":true,"inputs":[{"name":"str1","type":"string"},{"name":"str2","type":"string"}],"outputs":[]},
+					{"type":"function","name":"anonInputs","constant":true,"inputs":[{"name":"","type":"string"},{"name":"","type":"string"}],"outputs":[]},
+					{"type":"function","name":"mixedInputs","constant":true,"inputs":[{"name":"","type":"string"},{"name":"str","type":"string"}],"outputs":[]}
+				]
+			`},
+			`
+				"fmt"
 
-			"github.com/theQRL/go-zond/common"
-		`,
-		`if b, err := NewInputChecker(common.Address{}, nil); b == nil || err != nil {
-			 t.Fatalf("binding (%v) nil or error (%v) not nil", b, nil)
-		 } else if false { // Don't run, just compile and test types
-			 var err error
+				"github.com/theQRL/go-zond/common"
+			`,
+			`if b, err := NewInputChecker(common.Address{}, nil); b == nil || err != nil {
+				t.Fatalf("binding (%v) nil or error (%v) not nil", b, nil)
+			} else if false { // Don't run, just compile and test types
+				var err error
 
-			 err = b.NoInput(nil)
-			 err = b.NamedInput(nil, "")
-			 err = b.AnonInput(nil, "")
-			 err = b.NamedInputs(nil, "", "")
-			 err = b.AnonInputs(nil, "", "")
-			 err = b.MixedInputs(nil, "", "")
+				err = b.NoInput(nil)
+				err = b.NamedInput(nil, "")
+				err = b.AnonInput(nil, "")
+				err = b.NamedInputs(nil, "", "")
+				err = b.AnonInputs(nil, "", "")
+				err = b.MixedInputs(nil, "", "")
 
-			 fmt.Println(err)
-		 }`,
-		nil,
-		nil,
-		nil,
-		nil,
-	},
-	// Test that named and anonymous outputs are handled correctly
-	{
-		`OutputChecker`, ``, []string{``},
-		[]string{`
-			[
-				{"type":"function","name":"noOutput","constant":true,"inputs":[],"outputs":[]},
-				{"type":"function","name":"namedOutput","constant":true,"inputs":[],"outputs":[{"name":"str","type":"string"}]},
-				{"type":"function","name":"anonOutput","constant":true,"inputs":[],"outputs":[{"name":"","type":"string"}]},
-				{"type":"function","name":"namedOutputs","constant":true,"inputs":[],"outputs":[{"name":"str1","type":"string"},{"name":"str2","type":"string"}]},
-				{"type":"function","name":"collidingOutputs","constant":true,"inputs":[],"outputs":[{"name":"str","type":"string"},{"name":"Str","type":"string"}]},
-				{"type":"function","name":"anonOutputs","constant":true,"inputs":[],"outputs":[{"name":"","type":"string"},{"name":"","type":"string"}]},
-				{"type":"function","name":"mixedOutputs","constant":true,"inputs":[],"outputs":[{"name":"","type":"string"},{"name":"str","type":"string"}]}
-			]
-		`},
-		`
-			"fmt"
+				fmt.Println(err)
+			}`,
+			nil,
+			nil,
+			nil,
+			nil,
+		},
+	*/
+	/*
+		// Test that named and anonymous outputs are handled correctly
+		{
+			`OutputChecker`, ``, []string{``},
+			[]string{`
+				[
+					{"type":"function","name":"noOutput","constant":true,"inputs":[],"outputs":[]},
+					{"type":"function","name":"namedOutput","constant":true,"inputs":[],"outputs":[{"name":"str","type":"string"}]},
+					{"type":"function","name":"anonOutput","constant":true,"inputs":[],"outputs":[{"name":"","type":"string"}]},
+					{"type":"function","name":"namedOutputs","constant":true,"inputs":[],"outputs":[{"name":"str1","type":"string"},{"name":"str2","type":"string"}]},
+					{"type":"function","name":"collidingOutputs","constant":true,"inputs":[],"outputs":[{"name":"str","type":"string"},{"name":"Str","type":"string"}]},
+					{"type":"function","name":"anonOutputs","constant":true,"inputs":[],"outputs":[{"name":"","type":"string"},{"name":"","type":"string"}]},
+					{"type":"function","name":"mixedOutputs","constant":true,"inputs":[],"outputs":[{"name":"","type":"string"},{"name":"str","type":"string"}]}
+				]
+			`},
+			`
+				"fmt"
 
-			"github.com/theQRL/go-zond/common"
-		`,
-		`if b, err := NewOutputChecker(common.Address{}, nil); b == nil || err != nil {
-			 t.Fatalf("binding (%v) nil or error (%v) not nil", b, nil)
-		 } else if false { // Don't run, just compile and test types
-			 var str1, str2 string
-			 var err error
+				"github.com/theQRL/go-zond/common"
+			`,
+			`
+				if b, err := NewOutputChecker(common.Address{}, nil); b == nil || err != nil {
+					t.Fatalf("binding (%v) nil or error (%v) not nil", b, nil)
+				} else if false { // Don't run, just compile and test types
+					var str1, str2 string
+					var err error
 
-			 err              = b.NoOutput(nil)
-			 str1, err        = b.NamedOutput(nil)
-			 str1, err        = b.AnonOutput(nil)
-			 res, _          := b.NamedOutputs(nil)
-			 str1, str2, err  = b.CollidingOutputs(nil)
-			 str1, str2, err  = b.AnonOutputs(nil)
-			 str1, str2, err  = b.MixedOutputs(nil)
+					err              = b.NoOutput(nil)
+					str1, err        = b.NamedOutput(nil)
+					str1, err        = b.AnonOutput(nil)
+					res, _          := b.NamedOutputs(nil)
+					str1, str2, err  = b.CollidingOutputs(nil)
+					str1, str2, err  = b.AnonOutputs(nil)
+					str1, str2, err  = b.MixedOutputs(nil)
 
-			 fmt.Println(str1, str2, res.Str1, res.Str2, err)
-		 }`,
-		nil,
-		nil,
-		nil,
-		nil,
-	},
+					fmt.Println(str1, str2, res.Str1, res.Str2, err)
+				}
+			`,
+			nil,
+			nil,
+			nil,
+			nil,
+		},
+	*/
 	// Tests that named, anonymous and indexed events are handled correctly
 	{
 		`EventChecker`, ``, []string{``},
@@ -197,117 +217,57 @@ var bindTests = []struct {
 
 			"github.com/theQRL/go-zond/common"
 		`,
-		`if e, err := NewEventChecker(common.Address{}, nil); e == nil || err != nil {
-			 t.Fatalf("binding (%v) nil or error (%v) not nil", e, nil)
-		 } else if false { // Don't run, just compile and test types
-			 var (
-				 err  error
-			   res  bool
-				 str  string
-				 dat  []byte
-				 hash common.Hash
-			 )
-			 _, err = e.FilterEmpty(nil)
-			 _, err = e.FilterIndexed(nil, []common.Address{}, []*big.Int{})
-
-			 mit, err := e.FilterMixed(nil, []common.Address{})
-
-			 res = mit.Next()  // Make sure the iterator has a Next method
-			 err = mit.Error() // Make sure the iterator has an Error method
-			 err = mit.Close() // Make sure the iterator has a Close method
-
-			 fmt.Println(mit.Event.Raw.BlockHash) // Make sure the raw log is contained within the results
-			 fmt.Println(mit.Event.Num)           // Make sure the unpacked non-indexed fields are present
-			 fmt.Println(mit.Event.Addr)          // Make sure the reconstructed indexed fields are present
-
-			 dit, err := e.FilterDynamic(nil, []string{}, [][]byte{})
-
-			 str  = dit.Event.Str    // Make sure non-indexed strings retain their type
-			 dat  = dit.Event.Dat    // Make sure non-indexed bytes retain their type
-			 hash = dit.Event.IdxStr // Make sure indexed strings turn into hashes
-			 hash = dit.Event.IdxDat // Make sure indexed bytes turn into hashes
-
-			 sink := make(chan *EventCheckerMixed)
-			 sub, err := e.WatchMixed(nil, sink, []common.Address{})
-			 defer sub.Unsubscribe()
-
-			 event := <-sink
-			 fmt.Println(event.Raw.BlockHash) // Make sure the raw log is contained within the results
-			 fmt.Println(event.Num)           // Make sure the unpacked non-indexed fields are present
-			 fmt.Println(event.Addr)          // Make sure the reconstructed indexed fields are present
-
-			 fmt.Println(res, str, dat, hash, err)
-
-			 oit, err := e.FilterUnnamed(nil, []*big.Int{}, []*big.Int{})
-
-			 arg0  := oit.Event.Arg0    // Make sure unnamed arguments are handled correctly
-			 arg1  := oit.Event.Arg1    // Make sure unnamed arguments are handled correctly
-			 fmt.Println(arg0, arg1)
-		 }
-		 // Run a tiny reflection test to ensure disallowed methods don't appear
-		 if _, ok := reflect.TypeOf(&EventChecker{}).MethodByName("FilterAnonymous"); ok {
-		 	t.Errorf("binding has disallowed method (FilterAnonymous)")
-		 }`,
-		nil,
-		nil,
-		nil,
-		nil,
-	},
-	// Test that contract interactions (deploy, transact and call) generate working code
-	{
-		`Interactor`,
 		`
-			contract Interactor {
-				string public deployString;
-				string public transactString;
+			if e, err := NewEventChecker(common.Address{}, nil); e == nil || err != nil {
+				t.Fatalf("binding (%v) nil or error (%v) not nil", e, nil)
+			} else if false { // Don't run, just compile and test types
+				var (
+					err  error
+				res  bool
+					str  string
+					dat  []byte
+					hash common.Hash
+				)
+				_, err = e.FilterEmpty(nil)
+				_, err = e.FilterIndexed(nil, []common.Address{}, []*big.Int{})
 
-				function Interactor(string str) {
-				  deployString = str;
-				}
+				mit, err := e.FilterMixed(nil, []common.Address{})
 
-				function transact(string str) {
-				  transactString = str;
-				}
+				res = mit.Next()  // Make sure the iterator has a Next method
+				err = mit.Error() // Make sure the iterator has an Error method
+				err = mit.Close() // Make sure the iterator has a Close method
+
+				fmt.Println(mit.Event.Raw.BlockHash) // Make sure the raw log is contained within the results
+				fmt.Println(mit.Event.Num)           // Make sure the unpacked non-indexed fields are present
+				fmt.Println(mit.Event.Addr)          // Make sure the reconstructed indexed fields are present
+
+				dit, err := e.FilterDynamic(nil, []string{}, [][]byte{})
+
+				str  = dit.Event.Str    // Make sure non-indexed strings retain their type
+				dat  = dit.Event.Dat    // Make sure non-indexed bytes retain their type
+				hash = dit.Event.IdxStr // Make sure indexed strings turn into hashes
+				hash = dit.Event.IdxDat // Make sure indexed bytes turn into hashes
+
+				sink := make(chan *EventCheckerMixed)
+				sub, err := e.WatchMixed(nil, sink, []common.Address{})
+				defer sub.Unsubscribe()
+
+				event := <-sink
+				fmt.Println(event.Raw.BlockHash) // Make sure the raw log is contained within the results
+				fmt.Println(event.Num)           // Make sure the unpacked non-indexed fields are present
+				fmt.Println(event.Addr)          // Make sure the reconstructed indexed fields are present
+
+				fmt.Println(res, str, dat, hash, err)
+
+				oit, err := e.FilterUnnamed(nil, []*big.Int{}, []*big.Int{})
+
+				arg0  := oit.Event.Arg0    // Make sure unnamed arguments are handled correctly
+				arg1  := oit.Event.Arg1    // Make sure unnamed arguments are handled correctly
+				fmt.Println(arg0, arg1)
 			}
-		`,
-		[]string{`6060604052604051610328380380610328833981016040528051018060006000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10608d57805160ff19168380011785555b50607c9291505b8082111560ba57838155600101606b565b50505061026a806100be6000396000f35b828001600101855582156064579182015b828111156064578251826000505591602001919060010190609e565b509056606060405260e060020a60003504630d86a0e181146100315780636874e8091461008d578063d736c513146100ea575b005b610190600180546020600282841615610100026000190190921691909104601f810182900490910260809081016040526060828152929190828280156102295780601f106101fe57610100808354040283529160200191610229565b61019060008054602060026001831615610100026000190190921691909104601f810182900490910260809081016040526060828152929190828280156102295780601f106101fe57610100808354040283529160200191610229565b60206004803580820135601f81018490049093026080908101604052606084815261002f946024939192918401918190838280828437509496505050505050508060016000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061023157805160ff19168380011785555b506102619291505b808211156102665760008155830161017d565b60405180806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600f02600301f150905090810190601f1680156101f05780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b820191906000526020600020905b81548152906001019060200180831161020c57829003601f168201915b505050505081565b82800160010185558215610175579182015b82811115610175578251826000505591602001919060010190610243565b505050565b509056`},
-		[]string{`[{"constant":true,"inputs":[],"name":"transactString","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[],"name":"deployString","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"str","type":"string"}],"name":"transact","outputs":[],"type":"function"},{"inputs":[{"name":"str","type":"string"}],"type":"constructor"}]`},
-		`
-			"math/big"
-
-			"github.com/theQRL/go-zond/accounts/abi/bind"
-			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-			"github.com/theQRL/go-zond/core"
-			"github.com/theQRL/go-zond/crypto"
-		`,
-		`
-			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
-			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-
-			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-			defer sim.Close()
-
-			// Deploy an interaction tester contract and call a transaction on it
-			_, _, interactor, err := DeployInteractor(auth, sim, "Deploy string")
-			if err != nil {
-				t.Fatalf("Failed to deploy interactor contract: %v", err)
-			}
-			if _, err := interactor.Transact(auth, "Transact string"); err != nil {
-				t.Fatalf("Failed to transact with interactor contract: %v", err)
-			}
-			// Commit all pending transactions in the simulator and check the contract state
-			sim.Commit()
-
-			if str, err := interactor.DeployString(nil); err != nil {
-				t.Fatalf("Failed to retrieve deploy string: %v", err)
-			} else if str != "Deploy string" {
-				t.Fatalf("Deploy string mismatch: have '%s', want 'Deploy string'", str)
-			}
-			if str, err := interactor.TransactString(nil); err != nil {
-				t.Fatalf("Failed to retrieve transact string: %v", err)
-			} else if str != "Transact string" {
-				t.Fatalf("Transact string mismatch: have '%s', want 'Transact string'", str)
+			// Run a tiny reflection test to ensure disallowed methods don't appear
+			if _, ok := reflect.TypeOf(&EventChecker{}).MethodByName("FilterAnonymous"); ok {
+			t.Errorf("binding has disallowed method (FilterAnonymous)")
 			}
 		`,
 		nil,
@@ -315,219 +275,287 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// Tests that plain values can be properly returned and deserialized
-	{
-		`Getter`,
-		`
-			contract Getter {
-				function getter() constant returns (string, int, bytes32) {
-					return ("Hi", 1, sha3(""));
+	/*
+		// Test that contract interactions (deploy, transact and call) generate working code
+		{
+			`Interactor`,
+			`
+				contract Interactor {
+					string public deployString;
+					string public transactString;
+
+					function Interactor(string str) {
+						deployString = str;
+					}
+
+					function transact(string str) {
+						transactString = str;
+					}
 				}
-			}
-		`,
-		[]string{`606060405260dc8060106000396000f3606060405260e060020a6000350463993a04b78114601a575b005b600060605260c0604052600260809081527f486900000000000000000000000000000000000000000000000000000000000060a05260017fc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a47060e0829052610100819052606060c0908152600261012081905281906101409060a09080838184600060046012f1505081517fffff000000000000000000000000000000000000000000000000000000000000169091525050604051610160819003945092505050f3`},
-		[]string{`[{"constant":true,"inputs":[],"name":"getter","outputs":[{"name":"","type":"string"},{"name":"","type":"int256"},{"name":"","type":"bytes32"}],"type":"function"}]`},
-		`
-			"math/big"
+			`,
+			[]string{`6060604052604051610328380380610328833981016040528051018060006000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10608d57805160ff19168380011785555b50607c9291505b8082111560ba57838155600101606b565b50505061026a806100be6000396000f35b828001600101855582156064579182015b828111156064578251826000505591602001919060010190609e565b509056606060405260e060020a60003504630d86a0e181146100315780636874e8091461008d578063d736c513146100ea575b005b610190600180546020600282841615610100026000190190921691909104601f810182900490910260809081016040526060828152929190828280156102295780601f106101fe57610100808354040283529160200191610229565b61019060008054602060026001831615610100026000190190921691909104601f810182900490910260809081016040526060828152929190828280156102295780601f106101fe57610100808354040283529160200191610229565b60206004803580820135601f81018490049093026080908101604052606084815261002f946024939192918401918190838280828437509496505050505050508060016000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061023157805160ff19168380011785555b506102619291505b808211156102665760008155830161017d565b60405180806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600f02600301f150905090810190601f1680156101f05780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b820191906000526020600020905b81548152906001019060200180831161020c57829003601f168201915b505050505081565b82800160010185558215610175579182015b82811115610175578251826000505591602001919060010190610243565b505050565b509056`},
+			[]string{`[{"constant":true,"inputs":[],"name":"transactString","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[],"name":"deployString","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"str","type":"string"}],"name":"transact","outputs":[],"type":"function"},{"inputs":[{"name":"str","type":"string"}],"type":"constructor"}]`},
+			`
+				"math/big"
 
-			"github.com/theQRL/go-zond/accounts/abi/bind"
-			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-			"github.com/theQRL/go-zond/core"
-			"github.com/theQRL/go-zond/crypto"
-		`,
-		`
-			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
-			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+				"github.com/theQRL/go-zond/accounts/abi/bind"
+				"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+				"github.com/theQRL/go-zond/core"
+				"github.com/theQRL/go-zond/crypto"
+			`,
+			`
+				// Generate a new random account and a funded simulator
+				key, _ := crypto.GenerateDilithiumKey()
+				auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
-			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-			defer sim.Close()
+				sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+				defer sim.Close()
 
-			// Deploy a tuple tester contract and execute a structured call on it
-			_, _, getter, err := DeployGetter(auth, sim)
-			if err != nil {
-				t.Fatalf("Failed to deploy getter contract: %v", err)
-			}
-			sim.Commit()
-
-			if str, num, _, err := getter.Getter(nil); err != nil {
-				t.Fatalf("Failed to call anonymous field retriever: %v", err)
-			} else if str != "Hi" || num.Cmp(big.NewInt(1)) != 0 {
-				t.Fatalf("Retrieved value mismatch: have %v/%v, want %v/%v", str, num, "Hi", 1)
-			}
-		`,
-		nil,
-		nil,
-		nil,
-		nil,
-	},
-	// Tests that tuples can be properly returned and deserialized
-	{
-		`Tupler`,
-		`
-			contract Tupler {
-				function tuple() constant returns (string a, int b, bytes32 c) {
-					return ("Hi", 1, sha3(""));
+				// Deploy an interaction tester contract and call a transaction on it
+				_, _, interactor, err := DeployInteractor(auth, sim, "Deploy string")
+				if err != nil {
+					t.Fatalf("Failed to deploy interactor contract: %v", err)
 				}
-			}
-		`,
-		[]string{`606060405260dc8060106000396000f3606060405260e060020a60003504633175aae28114601a575b005b600060605260c0604052600260809081527f486900000000000000000000000000000000000000000000000000000000000060a05260017fc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a47060e0829052610100819052606060c0908152600261012081905281906101409060a09080838184600060046012f1505081517fffff000000000000000000000000000000000000000000000000000000000000169091525050604051610160819003945092505050f3`},
-		[]string{`[{"constant":true,"inputs":[],"name":"tuple","outputs":[{"name":"a","type":"string"},{"name":"b","type":"int256"},{"name":"c","type":"bytes32"}],"type":"function"}]`},
-		`
-			"math/big"
-
-			"github.com/theQRL/go-zond/accounts/abi/bind"
-			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-			"github.com/theQRL/go-zond/core"
-			"github.com/theQRL/go-zond/crypto"
-		`,
-		`
-			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
-			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-
-			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-			defer sim.Close()
-
-			// Deploy a tuple tester contract and execute a structured call on it
-			_, _, tupler, err := DeployTupler(auth, sim)
-			if err != nil {
-				t.Fatalf("Failed to deploy tupler contract: %v", err)
-			}
-			sim.Commit()
-
-			if res, err := tupler.Tuple(nil); err != nil {
-				t.Fatalf("Failed to call structure retriever: %v", err)
-			} else if res.A != "Hi" || res.B.Cmp(big.NewInt(1)) != 0 {
-				t.Fatalf("Retrieved value mismatch: have %v/%v, want %v/%v", res.A, res.B, "Hi", 1)
-			}
-		`,
-		nil,
-		nil,
-		nil,
-		nil,
-	},
-	// Tests that arrays/slices can be properly returned and deserialized.
-	// Only addresses are tested, remainder just compiled to keep the test small.
-	{
-		`Slicer`,
-		`
-			contract Slicer {
-				function echoAddresses(address[] input) constant returns (address[] output) {
-					return input;
+				if _, err := interactor.Transact(auth, "Transact string"); err != nil {
+					t.Fatalf("Failed to transact with interactor contract: %v", err)
 				}
-				function echoInts(int[] input) constant returns (int[] output) {
-					return input;
+				// Commit all pending transactions in the simulator and check the contract state
+				sim.Commit()
+
+				if str, err := interactor.DeployString(nil); err != nil {
+					t.Fatalf("Failed to retrieve deploy string: %v", err)
+				} else if str != "Deploy string" {
+					t.Fatalf("Deploy string mismatch: have '%s', want 'Deploy string'", str)
 				}
-				function echoFancyInts(uint24[23] input) constant returns (uint24[23] output) {
-					return input;
+				if str, err := interactor.TransactString(nil); err != nil {
+					t.Fatalf("Failed to retrieve transact string: %v", err)
+				} else if str != "Transact string" {
+					t.Fatalf("Transact string mismatch: have '%s', want 'Transact string'", str)
 				}
-				function echoBools(bool[] input) constant returns (bool[] output) {
-					return input;
-				}
-			}
-		`,
-		[]string{`606060405261015c806100126000396000f3606060405260e060020a6000350463be1127a3811461003c578063d88becc014610092578063e15a3db71461003c578063f637e5891461003c575b005b604080516020600480358082013583810285810185019096528085526100ee959294602494909392850192829185019084908082843750949650505050505050604080516020810190915260009052805b919050565b604080516102e0818101909252610138916004916102e491839060179083908390808284375090955050505050506102e0604051908101604052806017905b60008152602001906001900390816100d15790505081905061008d565b60405180806020018281038252838181518152602001915080519060200190602002808383829060006004602084601f0104600f02600301f1509050019250505060405180910390f35b60405180826102e0808381846000600461015cf15090500191505060405180910390f3`},
-		[]string{`[{"constant":true,"inputs":[{"name":"input","type":"address[]"}],"name":"echoAddresses","outputs":[{"name":"output","type":"address[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"input","type":"uint24[23]"}],"name":"echoFancyInts","outputs":[{"name":"output","type":"uint24[23]"}],"type":"function"},{"constant":true,"inputs":[{"name":"input","type":"int256[]"}],"name":"echoInts","outputs":[{"name":"output","type":"int256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"input","type":"bool[]"}],"name":"echoBools","outputs":[{"name":"output","type":"bool[]"}],"type":"function"}]`},
-		`
-			"math/big"
-			"reflect"
+			`,
+			nil,
+			nil,
+			nil,
+			nil,
+		},
 
-			"github.com/theQRL/go-zond/accounts/abi/bind"
-			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-			"github.com/theQRL/go-zond/common"
-			"github.com/theQRL/go-zond/core"
-			"github.com/theQRL/go-zond/crypto"
-		`,
-		`
-			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
-			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+			// Tests that plain values can be properly returned and deserialized
+			{
+				`Getter`,
+				`
+					contract Getter {
+						function getter() constant returns (string, int, bytes32) {
+							return ("Hi", 1, sha3(""));
+						}
+					}
+				`,
+				[]string{`606060405260dc8060106000396000f3606060405260e060020a6000350463993a04b78114601a575b005b600060605260c0604052600260809081527f486900000000000000000000000000000000000000000000000000000000000060a05260017fc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a47060e0829052610100819052606060c0908152600261012081905281906101409060a09080838184600060046012f1505081517fffff000000000000000000000000000000000000000000000000000000000000169091525050604051610160819003945092505050f3`},
+				[]string{`[{"constant":true,"inputs":[],"name":"getter","outputs":[{"name":"","type":"string"},{"name":"","type":"int256"},{"name":"","type":"bytes32"}],"type":"function"}]`},
+				`
+					"math/big"
 
-			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-			defer sim.Close()
+					"github.com/theQRL/go-zond/accounts/abi/bind"
+					"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+					"github.com/theQRL/go-zond/core"
+					"github.com/theQRL/go-zond/crypto"
+				`,
+				`
+					// Generate a new random account and a funded simulator
+					key, _ := crypto.GenerateDilithiumKey()
+					auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
-			// Deploy a slice tester contract and execute a n array call on it
-			_, _, slicer, err := DeploySlicer(auth, sim)
-			if err != nil {
-					t.Fatalf("Failed to deploy slicer contract: %v", err)
-			}
-			sim.Commit()
+					sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+					defer sim.Close()
 
-			if out, err := slicer.EchoAddresses(nil, []common.Address{auth.From, common.Address{}}); err != nil {
-					t.Fatalf("Failed to call slice echoer: %v", err)
-			} else if !reflect.DeepEqual(out, []common.Address{auth.From, common.Address{}}) {
-					t.Fatalf("Slice return mismatch: have %v, want %v", out, []common.Address{auth.From, common.Address{}})
-			}
-		`,
-		nil,
-		nil,
-		nil,
-		nil,
-	},
-	// Tests that anonymous default methods can be correctly invoked
-	{
-		`Defaulter`,
-		`
-			contract Defaulter {
-				address public caller;
+					// Deploy a tuple tester contract and execute a structured call on it
+					_, _, getter, err := DeployGetter(auth, sim)
+					if err != nil {
+						t.Fatalf("Failed to deploy getter contract: %v", err)
+					}
+					sim.Commit()
 
-				function() {
-					caller = msg.sender;
-				}
-			}
-		`,
-		[]string{`6060604052606a8060106000396000f360606040523615601d5760e060020a6000350463fc9c8d3981146040575b605e6000805473ffffffffffffffffffffffffffffffffffffffff191633179055565b606060005473ffffffffffffffffffffffffffffffffffffffff1681565b005b6060908152602090f3`},
-		[]string{`[{"constant":true,"inputs":[],"name":"caller","outputs":[{"name":"","type":"address"}],"type":"function"}]`},
-		`
-			"math/big"
+					if str, num, _, err := getter.Getter(nil); err != nil {
+						t.Fatalf("Failed to call anonymous field retriever: %v", err)
+					} else if str != "Hi" || num.Cmp(big.NewInt(1)) != 0 {
+						t.Fatalf("Retrieved value mismatch: have %v/%v, want %v/%v", str, num, "Hi", 1)
+					}
+				`,
+				nil,
+				nil,
+				nil,
+				nil,
+			},
 
-			"github.com/theQRL/go-zond/accounts/abi/bind"
-			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-			"github.com/theQRL/go-zond/core"
-			"github.com/theQRL/go-zond/crypto"
-		`,
-		`
-			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
-			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+				// Tests that tuples can be properly returned and deserialized
+				{
+					`Tupler`,
+					`
+						contract Tupler {
+							function tuple() constant returns (string a, int b, bytes32 c) {
+								return ("Hi", 1, sha3(""));
+							}
+						}
+					`,
+					[]string{`606060405260dc8060106000396000f3606060405260e060020a60003504633175aae28114601a575b005b600060605260c0604052600260809081527f486900000000000000000000000000000000000000000000000000000000000060a05260017fc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a47060e0829052610100819052606060c0908152600261012081905281906101409060a09080838184600060046012f1505081517fffff000000000000000000000000000000000000000000000000000000000000169091525050604051610160819003945092505050f3`},
+					[]string{`[{"constant":true,"inputs":[],"name":"tuple","outputs":[{"name":"a","type":"string"},{"name":"b","type":"int256"},{"name":"c","type":"bytes32"}],"type":"function"}]`},
+					`
+						"math/big"
 
-			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-			defer sim.Close()
+						"github.com/theQRL/go-zond/accounts/abi/bind"
+						"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+						"github.com/theQRL/go-zond/core"
+						"github.com/theQRL/go-zond/crypto"
+					`,
+					`
+						// Generate a new random account and a funded simulator
+						key, _ := crypto.GenerateDilithiumKey()
+						auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
-			// Deploy a default method invoker contract and execute its default method
-			_, _, defaulter, err := DeployDefaulter(auth, sim)
-			if err != nil {
-				t.Fatalf("Failed to deploy defaulter contract: %v", err)
-			}
-			if _, err := (&DefaulterRaw{defaulter}).Transfer(auth); err != nil {
-				t.Fatalf("Failed to invoke default method: %v", err)
-			}
-			sim.Commit()
+						sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+						defer sim.Close()
 
-			if caller, err := defaulter.Caller(nil); err != nil {
-				t.Fatalf("Failed to call address retriever: %v", err)
-			} else if (caller != auth.From) {
-				t.Fatalf("Address mismatch: have %v, want %v", caller, auth.From)
-			}
-		`,
-		nil,
-		nil,
-		nil,
-		nil,
-	},
+						// Deploy a tuple tester contract and execute a structured call on it
+						_, _, tupler, err := DeployTupler(auth, sim)
+						if err != nil {
+							t.Fatalf("Failed to deploy tupler contract: %v", err)
+						}
+						sim.Commit()
+
+						if res, err := tupler.Tuple(nil); err != nil {
+							t.Fatalf("Failed to call structure retriever: %v", err)
+						} else if res.A != "Hi" || res.B.Cmp(big.NewInt(1)) != 0 {
+							t.Fatalf("Retrieved value mismatch: have %v/%v, want %v/%v", res.A, res.B, "Hi", 1)
+						}
+					`,
+					nil,
+					nil,
+					nil,
+					nil,
+				},
+
+					// Tests that arrays/slices can be properly returned and deserialized.
+					// Only addresses are tested, remainder just compiled to keep the test small.
+					{
+						`Slicer`,
+						`
+							contract Slicer {
+								function echoAddresses(address[] input) constant returns (address[] output) {
+									return input;
+								}
+								function echoInts(int[] input) constant returns (int[] output) {
+									return input;
+								}
+								function echoFancyInts(uint24[23] input) constant returns (uint24[23] output) {
+									return input;
+								}
+								function echoBools(bool[] input) constant returns (bool[] output) {
+									return input;
+								}
+							}
+						`,
+						[]string{`606060405261015c806100126000396000f3606060405260e060020a6000350463be1127a3811461003c578063d88becc014610092578063e15a3db71461003c578063f637e5891461003c575b005b604080516020600480358082013583810285810185019096528085526100ee959294602494909392850192829185019084908082843750949650505050505050604080516020810190915260009052805b919050565b604080516102e0818101909252610138916004916102e491839060179083908390808284375090955050505050506102e0604051908101604052806017905b60008152602001906001900390816100d15790505081905061008d565b60405180806020018281038252838181518152602001915080519060200190602002808383829060006004602084601f0104600f02600301f1509050019250505060405180910390f35b60405180826102e0808381846000600461015cf15090500191505060405180910390f3`},
+						[]string{`[{"constant":true,"inputs":[{"name":"input","type":"address[]"}],"name":"echoAddresses","outputs":[{"name":"output","type":"address[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"input","type":"uint24[23]"}],"name":"echoFancyInts","outputs":[{"name":"output","type":"uint24[23]"}],"type":"function"},{"constant":true,"inputs":[{"name":"input","type":"int256[]"}],"name":"echoInts","outputs":[{"name":"output","type":"int256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"input","type":"bool[]"}],"name":"echoBools","outputs":[{"name":"output","type":"bool[]"}],"type":"function"}]`},
+						`
+							"math/big"
+							"reflect"
+
+							"github.com/theQRL/go-zond/accounts/abi/bind"
+							"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+							"github.com/theQRL/go-zond/common"
+							"github.com/theQRL/go-zond/core"
+							"github.com/theQRL/go-zond/crypto"
+						`,
+						`
+							// Generate a new random account and a funded simulator
+							key, _ := crypto.GenerateDilithiumKey()
+							auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+
+							sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+							defer sim.Close()
+
+							// Deploy a slice tester contract and execute a n array call on it
+							_, _, slicer, err := DeploySlicer(auth, sim)
+							if err != nil {
+									t.Fatalf("Failed to deploy slicer contract: %v", err)
+							}
+							sim.Commit()
+
+							if out, err := slicer.EchoAddresses(nil, []common.Address{auth.From, common.Address{}}); err != nil {
+									t.Fatalf("Failed to call slice echoer: %v", err)
+							} else if !reflect.DeepEqual(out, []common.Address{auth.From, common.Address{}}) {
+									t.Fatalf("Slice return mismatch: have %v, want %v", out, []common.Address{auth.From, common.Address{}})
+							}
+						`,
+						nil,
+						nil,
+						nil,
+						nil,
+					},
+
+						// Tests that anonymous default methods can be correctly invoked
+						{
+							`Defaulter`,
+							`
+								contract Defaulter {
+									address public caller;
+
+									function() {
+										caller = msg.sender;
+									}
+								}
+							`,
+							[]string{`6060604052606a8060106000396000f360606040523615601d5760e060020a6000350463fc9c8d3981146040575b605e6000805473ffffffffffffffffffffffffffffffffffffffff191633179055565b606060005473ffffffffffffffffffffffffffffffffffffffff1681565b005b6060908152602090f3`},
+							[]string{`[{"constant":true,"inputs":[],"name":"caller","outputs":[{"name":"","type":"address"}],"type":"function"}]`},
+							`
+								"math/big"
+
+								"github.com/theQRL/go-zond/accounts/abi/bind"
+								"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+								"github.com/theQRL/go-zond/core"
+								"github.com/theQRL/go-zond/crypto"
+							`,
+							`
+								// Generate a new random account and a funded simulator
+								key, _ := crypto.GenerateDilithiumKey()
+								auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+
+								sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+								defer sim.Close()
+
+								// Deploy a default method invoker contract and execute its default method
+								_, _, defaulter, err := DeployDefaulter(auth, sim)
+								if err != nil {
+									t.Fatalf("Failed to deploy defaulter contract: %v", err)
+								}
+								if _, err := (&DefaulterRaw{defaulter}).Transfer(auth); err != nil {
+									t.Fatalf("Failed to invoke default method: %v", err)
+								}
+								sim.Commit()
+
+								if caller, err := defaulter.Caller(nil); err != nil {
+									t.Fatalf("Failed to call address retriever: %v", err)
+								} else if (caller != auth.From) {
+									t.Fatalf("Address mismatch: have %v, want %v", caller, auth.From)
+								}
+							`,
+							nil,
+							nil,
+							nil,
+							nil,
+						},
+	*/
 	// Tests that structs are correctly unpacked
 	{
 
 		`Structs`,
 		`
-		pragma hyperion >=0.1.0;
+			pragma hyperion >=0.1.0;
 			pragma experimental ABIEncoderV2;
 			contract Structs {
 				struct A {
 					bytes32 B;
 				}
-				
+
 				function F() public view returns (A[] memory a, uint256[] memory c, bool[] memory d) {
 					A[] memory a = new A[](2);
 					a[0].B = bytes32(uint256(1234) << 96);
@@ -535,7 +563,7 @@ var bindTests = []struct {
 					bool[] memory d;
 					return (a, c, d);
 				}
-			
+
 				function G() public view returns (A[] memory a) {
 					A[] memory a = new A[](2);
 					a[0].B = bytes32(uint256(1234) << 96);
@@ -555,12 +583,12 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
+			key, _ := crypto.GenerateDilithiumKey()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-		
+
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
 			defer sim.Close()
-		
+
 			// Deploy a structs method invoker contract and execute its default method
 			_, _, structs, err := DeployStructs(auth, sim)
 			if err != nil {
@@ -580,46 +608,48 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// Tests that non-existent contracts are reported as such (though only simulator test)
-	{
-		`NonExistent`,
-		`
-			contract NonExistent {
-				function String() constant returns(string) {
-					return "I don't exist";
+	/*
+		// Tests that non-existent contracts are reported as such (though only simulator test)
+		{
+			`NonExistent`,
+			`
+				contract NonExistent {
+					function String() constant returns(string) {
+						return "I don't exist";
+					}
 				}
-			}
-		`,
-		[]string{`6060604052609f8060106000396000f3606060405260e060020a6000350463f97a60058114601a575b005b600060605260c0604052600d60809081527f4920646f6e27742065786973740000000000000000000000000000000000000060a052602060c0908152600d60e081905281906101009060a09080838184600060046012f15050815172ffffffffffffffffffffffffffffffffffffff1916909152505060405161012081900392509050f3`},
-		[]string{`[{"constant":true,"inputs":[],"name":"String","outputs":[{"name":"","type":"string"}],"type":"function"}]`},
-		`
-			"github.com/theQRL/go-zond/accounts/abi/bind"
-			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-			"github.com/theQRL/go-zond/common"
-			"github.com/theQRL/go-zond/core"
-		`,
-		`
-			// Create a simulator and wrap a non-deployed contract
+			`,
+			[]string{`6060604052609f8060106000396000f3606060405260e060020a6000350463f97a60058114601a575b005b600060605260c0604052600d60809081527f4920646f6e27742065786973740000000000000000000000000000000000000060a052602060c0908152600d60e081905281906101009060a09080838184600060046012f15050815172ffffffffffffffffffffffffffffffffffffff1916909152505060405161012081900392509050f3`},
+			[]string{`[{"constant":true,"inputs":[],"name":"String","outputs":[{"name":"","type":"string"}],"type":"function"}]`},
+			`
+				"github.com/theQRL/go-zond/accounts/abi/bind"
+				"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+				"github.com/theQRL/go-zond/common"
+				"github.com/theQRL/go-zond/core"
+			`,
+			`
+				// Create a simulator and wrap a non-deployed contract
 
-			sim := backends.NewSimulatedBackend(core.GenesisAlloc{}, uint64(10000000000))
-			defer sim.Close()
+				sim := backends.NewSimulatedBackend(core.GenesisAlloc{}, uint64(10000000000))
+				defer sim.Close()
 
-			nonexistent, err := NewNonExistent(common.Address{}, sim)
-			if err != nil {
-				t.Fatalf("Failed to access non-existent contract: %v", err)
-			}
-			// Ensure that contract calls fail with the appropriate error
-			if res, err := nonexistent.String(nil); err == nil {
-				t.Fatalf("Call succeeded on non-existent contract: %v", res)
-			} else if (err != bind.ErrNoCode) {
-				t.Fatalf("Error mismatch: have %v, want %v", err, bind.ErrNoCode)
-			}
-		`,
-		nil,
-		nil,
-		nil,
-		nil,
-	},
+				nonexistent, err := NewNonExistent(common.Address{}, sim)
+				if err != nil {
+					t.Fatalf("Failed to access non-existent contract: %v", err)
+				}
+				// Ensure that contract calls fail with the appropriate error
+				if res, err := nonexistent.String(nil); err == nil {
+					t.Fatalf("Call succeeded on non-existent contract: %v", res)
+				} else if (err != bind.ErrNoCode) {
+					t.Fatalf("Error mismatch: have %v, want %v", err, bind.ErrNoCode)
+				}
+			`,
+			nil,
+			nil,
+			nil,
+			nil,
+		},
+	*/
 	{
 		`NonExistentStruct`,
 		`
@@ -659,147 +689,152 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// Tests that gas estimation works for contracts with weird gas mechanics too.
-	{
-		`FunkyGasPattern`,
-		`
-			contract FunkyGasPattern {
-				string public field;
+	/*
+		// Tests that gas estimation works for contracts with weird gas mechanics too.
+		{
+			`FunkyGasPattern`,
+			`
+				contract FunkyGasPattern {
+					string public field;
 
-				function SetField(string value) {
-					// This check will screw gas estimation! Good, good!
-					if (msg.gas < 100000) {
-						throw;
+					function SetField(string value) {
+						// This check will screw gas estimation! Good, good!
+						if (msg.gas < 100000) {
+							throw;
+						}
+						field = value;
 					}
-					field = value;
 				}
-			}
-		`,
-		[]string{`606060405261021c806100126000396000f3606060405260e060020a600035046323fcf32a81146100265780634f28bf0e1461007b575b005b6040805160206004803580820135601f8101849004840285018401909552848452610024949193602493909291840191908190840183828082843750949650505050505050620186a05a101561014e57610002565b6100db60008054604080516020601f600260001961010060018816150201909516949094049384018190048102820181019092528281529291908301828280156102145780601f106101e957610100808354040283529160200191610214565b60405180806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600302600f01f150905090810190601f16801561013b5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b505050565b8060006000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106101b557805160ff19168380011785555b506101499291505b808211156101e557600081556001016101a1565b82800160010185558215610199579182015b828111156101995782518260005055916020019190600101906101c7565b5090565b820191906000526020600020905b8154815290600101906020018083116101f757829003601f168201915b50505050508156`},
-		[]string{`[{"constant":false,"inputs":[{"name":"value","type":"string"}],"name":"SetField","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"field","outputs":[{"name":"","type":"string"}],"type":"function"}]`},
-		`
-			"math/big"
+			`,
+			[]string{`606060405261021c806100126000396000f3606060405260e060020a600035046323fcf32a81146100265780634f28bf0e1461007b575b005b6040805160206004803580820135601f8101849004840285018401909552848452610024949193602493909291840191908190840183828082843750949650505050505050620186a05a101561014e57610002565b6100db60008054604080516020601f600260001961010060018816150201909516949094049384018190048102820181019092528281529291908301828280156102145780601f106101e957610100808354040283529160200191610214565b60405180806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600302600f01f150905090810190601f16801561013b5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b505050565b8060006000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106101b557805160ff19168380011785555b506101499291505b808211156101e557600081556001016101a1565b82800160010185558215610199579182015b828111156101995782518260005055916020019190600101906101c7565b5090565b820191906000526020600020905b8154815290600101906020018083116101f757829003601f168201915b50505050508156`},
+			[]string{`[{"constant":false,"inputs":[{"name":"value","type":"string"}],"name":"SetField","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"field","outputs":[{"name":"","type":"string"}],"type":"function"}]`},
+			`
+				"math/big"
 
-			"github.com/theQRL/go-zond/accounts/abi/bind"
-			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-			"github.com/theQRL/go-zond/core"
-			"github.com/theQRL/go-zond/crypto"
-		`,
-		`
-			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
-			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+				"github.com/theQRL/go-zond/accounts/abi/bind"
+				"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+				"github.com/theQRL/go-zond/core"
+				"github.com/theQRL/go-zond/crypto"
+			`,
+			`
+				// Generate a new random account and a funded simulator
+				key, _ := crypto.GenerateDilithiumKey()
+				auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
-			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-			defer sim.Close()
+				sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+				defer sim.Close()
 
-			// Deploy a funky gas pattern contract
-			_, _, limiter, err := DeployFunkyGasPattern(auth, sim)
-			if err != nil {
-				t.Fatalf("Failed to deploy funky contract: %v", err)
-			}
-			sim.Commit()
-
-			// Set the field with automatic estimation and check that it succeeds
-			if _, err := limiter.SetField(auth, "automatic"); err != nil {
-				t.Fatalf("Failed to call automatically gased transaction: %v", err)
-			}
-			sim.Commit()
-
-			if field, _ := limiter.Field(nil); field != "automatic" {
-				t.Fatalf("Field mismatch: have %v, want %v", field, "automatic")
-			}
-		`,
-		nil,
-		nil,
-		nil,
-		nil,
-	},
-	// Test that constant functions can be called from an (optional) specified address
-	{
-		`CallFrom`,
-		`
-			contract CallFrom {
-				function callFrom() constant returns(address) {
-					return msg.sender;
+				// Deploy a funky gas pattern contract
+				_, _, limiter, err := DeployFunkyGasPattern(auth, sim)
+				if err != nil {
+					t.Fatalf("Failed to deploy funky contract: %v", err)
 				}
-			}
-		`, []string{`6060604052346000575b6086806100176000396000f300606060405263ffffffff60e060020a60003504166349f8e98281146022575b6000565b34600057602c6055565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b335b905600a165627a7a72305820aef6b7685c0fa24ba6027e4870404a57df701473fe4107741805c19f5138417c0029`},
-		[]string{`[{"constant":true,"inputs":[],"name":"callFrom","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"}]`},
-		`
-			"math/big"
+				sim.Commit()
 
-			"github.com/theQRL/go-zond/accounts/abi/bind"
-			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-			"github.com/theQRL/go-zond/common"
-			"github.com/theQRL/go-zond/core"
-			"github.com/theQRL/go-zond/crypto"
-		`,
-		`
-			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
-			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-
-			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-			defer sim.Close()
-
-			// Deploy a sender tester contract and execute a structured call on it
-			_, _, callfrom, err := DeployCallFrom(auth, sim)
-			if err != nil {
-				t.Fatalf("Failed to deploy sender contract: %v", err)
-			}
-			sim.Commit()
-
-			if res, err := callfrom.CallFrom(nil); err != nil {
-				t.Errorf("Failed to call constant function: %v", err)
-			} else if res != (common.Address{}) {
-				t.Errorf("Invalid address returned, want: %x, got: %x", (common.Address{}), res)
-			}
-
-			for _, addr := range []common.Address{common.Address{}, common.Address{1}, common.Address{2}} {
-				if res, err := callfrom.CallFrom(&bind.CallOpts{From: addr}); err != nil {
-					t.Fatalf("Failed to call constant function: %v", err)
-				} else if res != addr {
-					t.Fatalf("Invalid address returned, want: %x, got: %x", addr, res)
+				// Set the field with automatic estimation and check that it succeeds
+				if _, err := limiter.SetField(auth, "automatic"); err != nil {
+					t.Fatalf("Failed to call automatically gased transaction: %v", err)
 				}
-			}
-		`,
-		nil,
-		nil,
-		nil,
-		nil,
-	},
+				sim.Commit()
+
+				if field, _ := limiter.Field(nil); field != "automatic" {
+					t.Fatalf("Field mismatch: have %v, want %v", field, "automatic")
+				}
+			`,
+			nil,
+			nil,
+			nil,
+			nil,
+		},
+
+			// Test that constant functions can be called from an (optional) specified address
+			{
+				`CallFrom`,
+				`
+					contract CallFrom {
+						function callFrom() constant returns(address) {
+							return msg.sender;
+						}
+					}
+				`,
+				[]string{`6060604052346000575b6086806100176000396000f300606060405263ffffffff60e060020a60003504166349f8e98281146022575b6000565b34600057602c6055565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b335b905600a165627a7a72305820aef6b7685c0fa24ba6027e4870404a57df701473fe4107741805c19f5138417c0029`},
+				[]string{`[{"constant":true,"inputs":[],"name":"callFrom","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"}]`},
+				`
+					"math/big"
+
+					"github.com/theQRL/go-zond/accounts/abi/bind"
+					"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+					"github.com/theQRL/go-zond/common"
+					"github.com/theQRL/go-zond/core"
+					"github.com/theQRL/go-zond/crypto"
+				`,
+				`
+					// Generate a new random account and a funded simulator
+					key, _ := crypto.GenerateDilithiumKey()
+					auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+
+					sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+					defer sim.Close()
+
+					// Deploy a sender tester contract and execute a structured call on it
+					_, _, callfrom, err := DeployCallFrom(auth, sim)
+					if err != nil {
+						t.Fatalf("Failed to deploy sender contract: %v", err)
+					}
+					sim.Commit()
+
+					if res, err := callfrom.CallFrom(nil); err != nil {
+						t.Errorf("Failed to call constant function: %v", err)
+					} else if res != (common.Address{}) {
+						t.Errorf("Invalid address returned, want: %x, got: %x", (common.Address{}), res)
+					}
+
+					for _, addr := range []common.Address{common.Address{}, common.Address{1}, common.Address{2}} {
+						if res, err := callfrom.CallFrom(&bind.CallOpts{From: addr}); err != nil {
+							t.Fatalf("Failed to call constant function: %v", err)
+						} else if res != addr {
+							t.Fatalf("Invalid address returned, want: %x, got: %x", addr, res)
+						}
+					}
+				`,
+				nil,
+				nil,
+				nil,
+				nil,
+			},
+	*/
 	// Tests that methods and returns with underscores inside work correctly.
 	{
 		`Underscorer`,
 		`
-		contract Underscorer {
-			function UnderscoredOutput() constant returns (int _int, string _string) {
-				return (314, "pi");
+			contract Underscorer {
+				function UnderscoredOutput() constant returns (int _int, string _string) {
+					return (314, "pi");
+				}
+				function LowerLowerCollision() constant returns (int _res, int res) {
+					return (1, 2);
+				}
+				function LowerUpperCollision() constant returns (int _res, int Res) {
+					return (1, 2);
+				}
+				function UpperLowerCollision() constant returns (int _Res, int res) {
+					return (1, 2);
+				}
+				function UpperUpperCollision() constant returns (int _Res, int Res) {
+					return (1, 2);
+				}
+				function PurelyUnderscoredOutput() constant returns (int _, int res) {
+					return (1, 2);
+				}
+				function AllPurelyUnderscoredOutput() constant returns (int _, int __) {
+					return (1, 2);
+				}
+				function _under_scored_func() constant returns (int _int) {
+					return 0;
+				}
 			}
-			function LowerLowerCollision() constant returns (int _res, int res) {
-				return (1, 2);
-			}
-			function LowerUpperCollision() constant returns (int _res, int Res) {
-				return (1, 2);
-			}
-			function UpperLowerCollision() constant returns (int _Res, int res) {
-				return (1, 2);
-			}
-			function UpperUpperCollision() constant returns (int _Res, int Res) {
-				return (1, 2);
-			}
-			function PurelyUnderscoredOutput() constant returns (int _, int res) {
-				return (1, 2);
-			}
-			function AllPurelyUnderscoredOutput() constant returns (int _, int __) {
-				return (1, 2);
-			}
-			function _under_scored_func() constant returns (int _int) {
-				return 0;
-			}
-		}
-		`, []string{`6060604052341561000f57600080fd5b6103858061001e6000396000f30060606040526004361061008e576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806303a592131461009357806346546dbe146100c357806367e6633d146100ec5780639df4848514610181578063af7486ab146101b1578063b564b34d146101e1578063e02ab24d14610211578063e409ca4514610241575b600080fd5b341561009e57600080fd5b6100a6610271565b604051808381526020018281526020019250505060405180910390f35b34156100ce57600080fd5b6100d6610286565b6040518082815260200191505060405180910390f35b34156100f757600080fd5b6100ff61028e565b6040518083815260200180602001828103825283818151815260200191508051906020019080838360005b8381101561014557808201518184015260208101905061012a565b50505050905090810190601f1680156101725780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b341561018c57600080fd5b6101946102dc565b604051808381526020018281526020019250505060405180910390f35b34156101bc57600080fd5b6101c46102f1565b604051808381526020018281526020019250505060405180910390f35b34156101ec57600080fd5b6101f4610306565b604051808381526020018281526020019250505060405180910390f35b341561021c57600080fd5b61022461031b565b604051808381526020018281526020019250505060405180910390f35b341561024c57600080fd5b610254610330565b604051808381526020018281526020019250505060405180910390f35b60008060016002819150809050915091509091565b600080905090565b6000610298610345565b61013a8090506040805190810160405280600281526020017f7069000000000000000000000000000000000000000000000000000000000000815250915091509091565b60008060016002819150809050915091509091565b60008060016002819150809050915091509091565b60008060016002819150809050915091509091565b60008060016002819150809050915091509091565b60008060016002819150809050915091509091565b6020604051908101604052806000815250905600a165627a7a72305820d1a53d9de9d1e3d55cb3dc591900b63c4f1ded79114f7b79b332684840e186a40029`},
+		`,
+		[]string{`6060604052341561000f57600080fd5b6103858061001e6000396000f30060606040526004361061008e576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff16806303a592131461009357806346546dbe146100c357806367e6633d146100ec5780639df4848514610181578063af7486ab146101b1578063b564b34d146101e1578063e02ab24d14610211578063e409ca4514610241575b600080fd5b341561009e57600080fd5b6100a6610271565b604051808381526020018281526020019250505060405180910390f35b34156100ce57600080fd5b6100d6610286565b6040518082815260200191505060405180910390f35b34156100f757600080fd5b6100ff61028e565b6040518083815260200180602001828103825283818151815260200191508051906020019080838360005b8381101561014557808201518184015260208101905061012a565b50505050905090810190601f1680156101725780820380516001836020036101000a031916815260200191505b50935050505060405180910390f35b341561018c57600080fd5b6101946102dc565b604051808381526020018281526020019250505060405180910390f35b34156101bc57600080fd5b6101c46102f1565b604051808381526020018281526020019250505060405180910390f35b34156101ec57600080fd5b6101f4610306565b604051808381526020018281526020019250505060405180910390f35b341561021c57600080fd5b61022461031b565b604051808381526020018281526020019250505060405180910390f35b341561024c57600080fd5b610254610330565b604051808381526020018281526020019250505060405180910390f35b60008060016002819150809050915091509091565b600080905090565b6000610298610345565b61013a8090506040805190810160405280600281526020017f7069000000000000000000000000000000000000000000000000000000000000815250915091509091565b60008060016002819150809050915091509091565b60008060016002819150809050915091509091565b60008060016002819150809050915091509091565b60008060016002819150809050915091509091565b60008060016002819150809050915091509091565b6020604051908101604052806000815250905600a165627a7a72305820d1a53d9de9d1e3d55cb3dc591900b63c4f1ded79114f7b79b332684840e186a40029`},
 		[]string{`[{"constant":true,"inputs":[],"name":"LowerUpperCollision","outputs":[{"name":"_res","type":"int256"},{"name":"Res","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"_under_scored_func","outputs":[{"name":"_int","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"UnderscoredOutput","outputs":[{"name":"_int","type":"int256"},{"name":"_string","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"PurelyUnderscoredOutput","outputs":[{"name":"_","type":"int256"},{"name":"res","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"UpperLowerCollision","outputs":[{"name":"_Res","type":"int256"},{"name":"res","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"AllPurelyUnderscoredOutput","outputs":[{"name":"_","type":"int256"},{"name":"__","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"UpperUpperCollision","outputs":[{"name":"_Res","type":"int256"},{"name":"Res","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"LowerLowerCollision","outputs":[{"name":"_res","type":"int256"},{"name":"res","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"}]`},
 		`
 			"fmt"
@@ -812,7 +847,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
+			key, _ := crypto.GenerateDilithiumKey()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -906,7 +941,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
+			key, _ := crypto.GenerateDilithiumKey()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -1087,16 +1122,16 @@ var bindTests = []struct {
 		[]string{`6060604052341561000f57600080fd5b6106438061001e6000396000f300606060405260043610610057576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063344248551461005c5780638ed4573a1461011457806398ed1856146101ab575b600080fd5b341561006757600080fd5b610112600480806107800190600580602002604051908101604052809291906000905b828210156101055783826101800201600480602002604051908101604052809291906000905b828210156100f25783826060020160038060200260405190810160405280929190826003602002808284378201915050505050815260200190600101906100b0565b505050508152602001906001019061008a565b5050505091905050610208565b005b341561011f57600080fd5b61012761021d565b604051808260056000925b8184101561019b578284602002015160046000925b8184101561018d5782846020020151600360200280838360005b8381101561017c578082015181840152602081019050610161565b505050509050019260010192610147565b925050509260010192610132565b9250505091505060405180910390f35b34156101b657600080fd5b6101de6004808035906020019091908035906020019091908035906020019091905050610309565b604051808267ffffffffffffffff1667ffffffffffffffff16815260200191505060405180910390f35b80600090600561021992919061035f565b5050565b6102256103b0565b6000600580602002604051908101604052809291906000905b8282101561030057838260040201600480602002604051908101604052809291906000905b828210156102ed578382016003806020026040519081016040528092919082600380156102d9576020028201916000905b82829054906101000a900467ffffffffffffffff1667ffffffffffffffff16815260200190600801906020826007010492830192600103820291508084116102945790505b505050505081526020019060010190610263565b505050508152602001906001019061023e565b50505050905090565b60008360058110151561031857fe5b600402018260048110151561032957fe5b018160038110151561033757fe5b6004918282040191900660080292509250509054906101000a900467ffffffffffffffff1681565b826005600402810192821561039f579160200282015b8281111561039e5782518290600461038e9291906103df565b5091602001919060040190610375565b5b5090506103ac919061042d565b5090565b610780604051908101604052806005905b6103c9610459565b8152602001906001900390816103c15790505090565b826004810192821561041c579160200282015b8281111561041b5782518290600361040b929190610488565b50916020019190600101906103f2565b5b5090506104299190610536565b5090565b61045691905b8082111561045257600081816104499190610562565b50600401610433565b5090565b90565b610180604051908101604052806004905b6104726105a7565b81526020019060019003908161046a5790505090565b82600380016004900481019282156105255791602002820160005b838211156104ef57835183826101000a81548167ffffffffffffffff021916908367ffffffffffffffff16021790555092602001926008016020816007010492830192600103026104a3565b80156105235782816101000a81549067ffffffffffffffff02191690556008016020816007010492830192600103026104ef565b505b50905061053291906105d9565b5090565b61055f91905b8082111561055b57600081816105529190610610565b5060010161053c565b5090565b90565b50600081816105719190610610565b50600101600081816105839190610610565b50600101600081816105959190610610565b5060010160006105a59190610610565b565b6060604051908101604052806003905b600067ffffffffffffffff168152602001906001900390816105b75790505090565b61060d91905b8082111561060957600081816101000a81549067ffffffffffffffff0219169055506001016105df565b5090565b90565b50600090555600a165627a7a7230582087e5a43f6965ab6ef7a4ff056ab80ed78fd8c15cff57715a1bf34ec76a93661c0029`},
 		[]string{`[{"constant":false,"inputs":[{"name":"arr","type":"uint64[3][4][5]"}],"name":"storeDeepUintArray","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"retrieveDeepArray","outputs":[{"name":"","type":"uint64[3][4][5]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"deepUint64Array","outputs":[{"name":"","type":"uint64"}],"payable":false,"stateMutability":"view","type":"function"}]`},
 		`
-			"math/big"
+					"math/big"
 
-			"github.com/theQRL/go-zond/accounts/abi/bind"
-			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-			"github.com/theQRL/go-zond/core"
-			"github.com/theQRL/go-zond/crypto"
-		`,
+					"github.com/theQRL/go-zond/accounts/abi/bind"
+					"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+					"github.com/theQRL/go-zond/core"
+					"github.com/theQRL/go-zond/crypto"
+				`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
+			key, _ := crypto.GenerateDilithiumKey()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -1193,33 +1228,34 @@ var bindTests = []struct {
 		nil,
 		nil,
 		nil,
-	}, {
+	},
+	{
 		`Tuple`,
 		`
-		pragma hyperion >=0.1.0;
-		pragma experimental ABIEncoderV2;
+			pragma hyperion >=0.1.0;
+			pragma experimental ABIEncoderV2;
 
-		contract Tuple {
-			struct S { uint a; uint[] b; T[] c; }
-			struct T { uint x; uint y; }
-			struct P { uint8 x; uint8 y; }
-			struct Q { uint16 x; uint16 y; }
-			event TupleEvent(S a, T[2][] b, T[][2] c, S[] d, uint[] e);
-			event TupleEvent2(P[]);
+			contract Tuple {
+				struct S { uint a; uint[] b; T[] c; }
+				struct T { uint x; uint y; }
+				struct P { uint8 x; uint8 y; }
+				struct Q { uint16 x; uint16 y; }
+				event TupleEvent(S a, T[2][] b, T[][2] c, S[] d, uint[] e);
+				event TupleEvent2(P[]);
 
-			function func1(S memory a, T[2][] memory b, T[][2] memory c, S[] memory d, uint[] memory e) public pure returns (S memory, T[2][] memory, T[][2] memory, S[] memory, uint[] memory) {
-				return (a, b, c, d, e);
+				function func1(S memory a, T[2][] memory b, T[][2] memory c, S[] memory d, uint[] memory e) public pure returns (S memory, T[2][] memory, T[][2] memory, S[] memory, uint[] memory) {
+					return (a, b, c, d, e);
+				}
+				function func2(S memory a, T[2][] memory b, T[][2] memory c, S[] memory d, uint[] memory e) public {
+					emit TupleEvent(a, b, c, d, e);
+				}
+				function func3(Q[] memory) public pure {} // call function, nothing to return
 			}
-			function func2(S memory a, T[2][] memory b, T[][2] memory c, S[] memory d, uint[] memory e) public {
-				emit TupleEvent(a, b, c, d, e);
-			}
-			function func3(Q[] memory) public pure {} // call function, nothing to return
-		}
 		`,
 		[]string{`60806040523480156100115760006000fd5b50610017565b6110b2806100266000396000f3fe60806040523480156100115760006000fd5b50600436106100465760003560e01c8063443c79b41461004c578063d0062cdd14610080578063e4d9a43b1461009c57610046565b60006000fd5b610066600480360361006191908101906107b8565b6100b8565b604051610077959493929190610ccb565b60405180910390f35b61009a600480360361009591908101906107b8565b6100ef565b005b6100b660048036036100b19190810190610775565b610136565b005b6100c061013a565b60606100ca61015e565b606060608989898989945094509450945094506100e2565b9550955095509550959050565b7f18d6e66efa53739ca6d13626f35ebc700b31cced3eddb50c70bbe9c082c6cd008585858585604051610126959493929190610ccb565b60405180910390a15b5050505050565b5b50565b60405180606001604052806000815260200160608152602001606081526020015090565b60405180604001604052806002905b606081526020019060019003908161016d57905050905661106e565b600082601f830112151561019d5760006000fd5b81356101b06101ab82610d6f565b610d41565b915081818352602084019350602081019050838560808402820111156101d65760006000fd5b60005b8381101561020757816101ec888261037a565b8452602084019350608083019250505b6001810190506101d9565b5050505092915050565b600082601f83011215156102255760006000fd5b600261023861023382610d98565b610d41565b9150818360005b83811015610270578135860161025588826103f3565b8452602084019350602083019250505b60018101905061023f565b5050505092915050565b600082601f830112151561028e5760006000fd5b81356102a161029c82610dbb565b610d41565b915081818352602084019350602081019050838560408402820111156102c75760006000fd5b60005b838110156102f857816102dd888261058b565b8452602084019350604083019250505b6001810190506102ca565b5050505092915050565b600082601f83011215156103165760006000fd5b813561032961032482610de4565b610d41565b9150818183526020840193506020810190508360005b83811015610370578135860161035588826105d8565b8452602084019350602083019250505b60018101905061033f565b5050505092915050565b600082601f830112151561038e5760006000fd5b60026103a161039c82610e0d565b610d41565b915081838560408402820111156103b85760006000fd5b60005b838110156103e957816103ce88826106fe565b8452602084019350604083019250505b6001810190506103bb565b5050505092915050565b600082601f83011215156104075760006000fd5b813561041a61041582610e30565b610d41565b915081818352602084019350602081019050838560408402820111156104405760006000fd5b60005b83811015610471578161045688826106fe565b8452602084019350604083019250505b600181019050610443565b5050505092915050565b600082601f830112151561048f5760006000fd5b81356104a261049d82610e59565b610d41565b915081818352602084019350602081019050838560208402820111156104c85760006000fd5b60005b838110156104f957816104de8882610760565b8452602084019350602083019250505b6001810190506104cb565b5050505092915050565b600082601f83011215156105175760006000fd5b813561052a61052582610e82565b610d41565b915081818352602084019350602081019050838560208402820111156105505760006000fd5b60005b8381101561058157816105668882610760565b8452602084019350602083019250505b600181019050610553565b5050505092915050565b60006040828403121561059e5760006000fd5b6105a86040610d41565b905060006105b88482850161074b565b60008301525060206105cc8482850161074b565b60208301525092915050565b6000606082840312156105eb5760006000fd5b6105f56060610d41565b9050600061060584828501610760565b600083015250602082013567ffffffffffffffff8111156106265760006000fd5b6106328482850161047b565b602083015250604082013567ffffffffffffffff8111156106535760006000fd5b61065f848285016103f3565b60408301525092915050565b60006060828403121561067e5760006000fd5b6106886060610d41565b9050600061069884828501610760565b600083015250602082013567ffffffffffffffff8111156106b95760006000fd5b6106c58482850161047b565b602083015250604082013567ffffffffffffffff8111156106e65760006000fd5b6106f2848285016103f3565b60408301525092915050565b6000604082840312156107115760006000fd5b61071b6040610d41565b9050600061072b84828501610760565b600083015250602061073f84828501610760565b60208301525092915050565b60008135905061075a8161103a565b92915050565b60008135905061076f81611054565b92915050565b6000602082840312156107885760006000fd5b600082013567ffffffffffffffff8111156107a35760006000fd5b6107af8482850161027a565b91505092915050565b6000600060006000600060a086880312156107d35760006000fd5b600086013567ffffffffffffffff8111156107ee5760006000fd5b6107fa8882890161066b565b955050602086013567ffffffffffffffff8111156108185760006000fd5b61082488828901610189565b945050604086013567ffffffffffffffff8111156108425760006000fd5b61084e88828901610211565b935050606086013567ffffffffffffffff81111561086c5760006000fd5b61087888828901610302565b925050608086013567ffffffffffffffff8111156108965760006000fd5b6108a288828901610503565b9150509295509295909350565b60006108bb8383610a6a565b60808301905092915050565b60006108d38383610ac2565b905092915050565b60006108e78383610c36565b905092915050565b60006108fb8383610c8d565b60408301905092915050565b60006109138383610cbc565b60208301905092915050565b600061092a82610f0f565b6109348185610fb7565b935061093f83610eab565b8060005b8381101561097157815161095788826108af565b975061096283610f5c565b9250505b600181019050610943565b5085935050505092915050565b600061098982610f1a565b6109938185610fc8565b9350836020820285016109a585610ebb565b8060005b858110156109e257848403895281516109c285826108c7565b94506109cd83610f69565b925060208a019950505b6001810190506109a9565b50829750879550505050505092915050565b60006109ff82610f25565b610a098185610fd3565b935083602082028501610a1b85610ec5565b8060005b85811015610a585784840389528151610a3885826108db565b9450610a4383610f76565b925060208a019950505b600181019050610a1f565b50829750879550505050505092915050565b610a7381610f30565b610a7d8184610fe4565b9250610a8882610ed5565b8060005b83811015610aba578151610aa087826108ef565b9650610aab83610f83565b9250505b600181019050610a8c565b505050505050565b6000610acd82610f3b565b610ad78185610fef565b9350610ae283610edf565b8060005b83811015610b14578151610afa88826108ef565b9750610b0583610f90565b9250505b600181019050610ae6565b5085935050505092915050565b6000610b2c82610f51565b610b368185611011565b9350610b4183610eff565b8060005b83811015610b73578151610b598882610907565b9750610b6483610faa565b9250505b600181019050610b45565b5085935050505092915050565b6000610b8b82610f46565b610b958185611000565b9350610ba083610eef565b8060005b83811015610bd2578151610bb88882610907565b9750610bc383610f9d565b9250505b600181019050610ba4565b5085935050505092915050565b6000606083016000830151610bf76000860182610cbc565b5060208301518482036020860152610c0f8282610b80565b91505060408301518482036040860152610c298282610ac2565b9150508091505092915050565b6000606083016000830151610c4e6000860182610cbc565b5060208301518482036020860152610c668282610b80565b91505060408301518482036040860152610c808282610ac2565b9150508091505092915050565b604082016000820151610ca36000850182610cbc565b506020820151610cb66020850182610cbc565b50505050565b610cc581611030565b82525050565b600060a0820190508181036000830152610ce58188610bdf565b90508181036020830152610cf9818761091f565b90508181036040830152610d0d818661097e565b90508181036060830152610d2181856109f4565b90508181036080830152610d358184610b21565b90509695505050505050565b6000604051905081810181811067ffffffffffffffff82111715610d655760006000fd5b8060405250919050565b600067ffffffffffffffff821115610d875760006000fd5b602082029050602081019050919050565b600067ffffffffffffffff821115610db05760006000fd5b602082029050919050565b600067ffffffffffffffff821115610dd35760006000fd5b602082029050602081019050919050565b600067ffffffffffffffff821115610dfc5760006000fd5b602082029050602081019050919050565b600067ffffffffffffffff821115610e255760006000fd5b602082029050919050565b600067ffffffffffffffff821115610e485760006000fd5b602082029050602081019050919050565b600067ffffffffffffffff821115610e715760006000fd5b602082029050602081019050919050565b600067ffffffffffffffff821115610e9a5760006000fd5b602082029050602081019050919050565b6000819050602082019050919050565b6000819050919050565b6000819050602082019050919050565b6000819050919050565b6000819050602082019050919050565b6000819050602082019050919050565b6000819050602082019050919050565b600081519050919050565b600060029050919050565b600081519050919050565b600060029050919050565b600081519050919050565b600081519050919050565b600081519050919050565b6000602082019050919050565b6000602082019050919050565b6000602082019050919050565b6000602082019050919050565b6000602082019050919050565b6000602082019050919050565b6000602082019050919050565b600082825260208201905092915050565b600081905092915050565b600082825260208201905092915050565b600081905092915050565b600082825260208201905092915050565b600082825260208201905092915050565b600082825260208201905092915050565b600061ffff82169050919050565b6000819050919050565b61104381611022565b811415156110515760006000fd5b50565b61105d81611030565b8114151561106b5760006000fd5b50565bfea365627a7a72315820d78c6ba7ee332581e6c4d9daa5fc07941841230f7ce49edf6e05b1b63853e8746c6578706572696d656e74616cf564736f6c634300050c0040`},
 		[]string{`
-[{"anonymous":false,"inputs":[{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"indexed":false,"internalType":"struct Tuple.S","name":"a","type":"tuple"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"indexed":false,"internalType":"struct Tuple.T[2][]","name":"b","type":"tuple[2][]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"indexed":false,"internalType":"struct Tuple.T[][2]","name":"c","type":"tuple[][2]"},{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"indexed":false,"internalType":"struct Tuple.S[]","name":"d","type":"tuple[]"},{"indexed":false,"internalType":"uint256[]","name":"e","type":"uint256[]"}],"name":"TupleEvent","type":"event"},{"anonymous":false,"inputs":[{"components":[{"internalType":"uint8","name":"x","type":"uint8"},{"internalType":"uint8","name":"y","type":"uint8"}],"indexed":false,"internalType":"struct Tuple.P[]","name":"","type":"tuple[]"}],"name":"TupleEvent2","type":"event"},{"constant":true,"inputs":[{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S","name":"a","type":"tuple"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[2][]","name":"b","type":"tuple[2][]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[][2]","name":"c","type":"tuple[][2]"},{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S[]","name":"d","type":"tuple[]"},{"internalType":"uint256[]","name":"e","type":"uint256[]"}],"name":"func1","outputs":[{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S","name":"","type":"tuple"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[2][]","name":"","type":"tuple[2][]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[][2]","name":"","type":"tuple[][2]"},{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S[]","name":"","type":"tuple[]"},{"internalType":"uint256[]","name":"","type":"uint256[]"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":false,"inputs":[{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S","name":"a","type":"tuple"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[2][]","name":"b","type":"tuple[2][]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[][2]","name":"c","type":"tuple[][2]"},{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S[]","name":"d","type":"tuple[]"},{"internalType":"uint256[]","name":"e","type":"uint256[]"}],"name":"func2","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"components":[{"internalType":"uint16","name":"x","type":"uint16"},{"internalType":"uint16","name":"y","type":"uint16"}],"internalType":"struct Tuple.Q[]","name":"","type":"tuple[]"}],"name":"func3","outputs":[],"payable":false,"stateMutability":"pure","type":"function"}]
-		`},
+		[{"anonymous":false,"inputs":[{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"indexed":false,"internalType":"struct Tuple.S","name":"a","type":"tuple"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"indexed":false,"internalType":"struct Tuple.T[2][]","name":"b","type":"tuple[2][]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"indexed":false,"internalType":"struct Tuple.T[][2]","name":"c","type":"tuple[][2]"},{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"indexed":false,"internalType":"struct Tuple.S[]","name":"d","type":"tuple[]"},{"indexed":false,"internalType":"uint256[]","name":"e","type":"uint256[]"}],"name":"TupleEvent","type":"event"},{"anonymous":false,"inputs":[{"components":[{"internalType":"uint8","name":"x","type":"uint8"},{"internalType":"uint8","name":"y","type":"uint8"}],"indexed":false,"internalType":"struct Tuple.P[]","name":"","type":"tuple[]"}],"name":"TupleEvent2","type":"event"},{"constant":true,"inputs":[{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S","name":"a","type":"tuple"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[2][]","name":"b","type":"tuple[2][]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[][2]","name":"c","type":"tuple[][2]"},{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S[]","name":"d","type":"tuple[]"},{"internalType":"uint256[]","name":"e","type":"uint256[]"}],"name":"func1","outputs":[{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S","name":"","type":"tuple"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[2][]","name":"","type":"tuple[2][]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[][2]","name":"","type":"tuple[][2]"},{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S[]","name":"","type":"tuple[]"},{"internalType":"uint256[]","name":"","type":"uint256[]"}],"payable":false,"stateMutability":"pure","type":"function"},{"constant":false,"inputs":[{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S","name":"a","type":"tuple"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[2][]","name":"b","type":"tuple[2][]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[][2]","name":"c","type":"tuple[][2]"},{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256[]","name":"b","type":"uint256[]"},{"components":[{"internalType":"uint256","name":"x","type":"uint256"},{"internalType":"uint256","name":"y","type":"uint256"}],"internalType":"struct Tuple.T[]","name":"c","type":"tuple[]"}],"internalType":"struct Tuple.S[]","name":"d","type":"tuple[]"},{"internalType":"uint256[]","name":"e","type":"uint256[]"}],"name":"func2","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"components":[{"internalType":"uint16","name":"x","type":"uint16"},{"internalType":"uint16","name":"y","type":"uint16"}],"internalType":"struct Tuple.Q[]","name":"","type":"tuple[]"}],"name":"func3","outputs":[],"payable":false,"stateMutability":"pure","type":"function"}]
+				`},
 		`
 			"math/big"
 			"reflect"
@@ -1231,7 +1267,7 @@ var bindTests = []struct {
 		`,
 
 		`
-			key, _ := crypto.GenerateKey()
+			key, _ := crypto.GenerateDilithiumKey()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -1338,33 +1374,103 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	{
-		`UseLibrary`,
-		`
-		library Math {
-    		function add(uint a, uint b) public view returns(uint) {
-        		return a + b;
-    		}
-		}
+	// TODO(rgeraldes24): Failed to deploy test contract: stack underflow (0 <=> 2)
+	/*
+		{
+			`UseLibrary`,
+			`
+				library Math {
+					function add(uint a, uint b) public view returns(uint) {
+						return a + b;
+					}
+				}
 
-		contract UseLibrary {
-			function add (uint c, uint d) public view returns(uint) {
-        		return Math.add(c,d);
-    		}
-		}
+				contract UseLibrary {
+					function add (uint c, uint d) public view returns(uint) {
+						return Math.add(c,d);
+					}
+				}
+			`,
+			[]string{
+				// Bytecode for the UseLibrary contract
+				`608060405234801561001057600080fd5b5061011d806100206000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c8063771602f714602d575b600080fd5b604d60048036036040811015604157600080fd5b5080359060200135605f565b60408051918252519081900360200190f35b600073__$b98c933f0a6ececcd167bd4f9d3299b1a0$__63771602f784846040518363ffffffff1660e01b8152600401808381526020018281526020019250505060206040518083038186803b15801560b757600080fd5b505af415801560ca573d6000803e3d6000fd5b505050506040513d602081101560df57600080fd5b5051939250505056fea265627a7a72305820eb5c38f42445604cfa43d85e3aa5ecc48b0a646456c902dd48420ae7241d06f664736f6c63430005090032`,
+				// Bytecode for the Math contract
+				`60a3610024600b82828239805160001a607314601757fe5b30600052607381538281f3fe730000000000000000000000000000000000000000301460806040526004361060335760003560e01c8063771602f7146038575b600080fd5b605860048036036040811015604c57600080fd5b5080359060200135606a565b60408051918252519081900360200190f35b019056fea265627a7a723058206fc6c05f3078327f9c763edffdb5ab5f8bd212e293a1306c7d0ad05af3ad35f464736f6c63430005090032`,
+			},
+			[]string{
+				`[{"constant":true,"inputs":[{"name":"c","type":"uint256"},{"name":"d","type":"uint256"}],"name":"add","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]`,
+				`[{"constant":true,"inputs":[{"name":"a","type":"uint256"},{"name":"b","type":"uint256"}],"name":"add","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]`,
+			},
+			`
+				"math/big"
+
+				"github.com/theQRL/go-zond/accounts/abi/bind"
+				"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+				"github.com/theQRL/go-zond/core"
+				"github.com/theQRL/go-zond/crypto"
+			`,
+			`
+				// Generate a new random account and a funded simulator
+				key, _ := crypto.GenerateDilithiumKey()
+				auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+
+				sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+				defer sim.Close()
+
+				//deploy the test contract
+				_, _, testContract, err := DeployUseLibrary(auth, sim)
+				if err != nil {
+					t.Fatalf("Failed to deploy test contract: %v", err)
+				}
+
+				// Finish deploy.
+				sim.Commit()
+
+				// Check that the library contract has been deployed
+				// by calling the contract's add function.
+				res, err := testContract.Add(&bind.CallOpts{
+					From: auth.From,
+					Pending: false,
+				}, big.NewInt(1), big.NewInt(2))
+				if err != nil {
+					t.Fatalf("Failed to call linked contract: %v", err)
+				}
+				if res.Cmp(big.NewInt(3)) != 0 {
+					t.Fatalf("Add did not return the correct result: %d != %d", res, 3)
+				}
+			`,
+			nil,
+			map[string]string{
+				"b98c933f0a6ececcd167bd4f9d3299b1a0": "Math",
+			},
+			nil,
+			[]string{"UseLibrary", "Math"},
+		},
+	*/
+	{
+		"Overload",
+		`
+			pragma hyperion >=0.1.0;
+
+			contract overload {
+				mapping(address => uint256) balances;
+
+				event bar(uint256 i);
+				event bar(uint256 i, uint256 j);
+
+				function foo(uint256 i) public {
+					emit bar(i);
+				}
+				function foo(uint256 i, uint256 j) public {
+					emit bar(i, j);
+				}
+			}
 		`,
-		[]string{
-			// Bytecode for the UseLibrary contract
-			`608060405234801561001057600080fd5b5061011d806100206000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c8063771602f714602d575b600080fd5b604d60048036036040811015604157600080fd5b5080359060200135605f565b60408051918252519081900360200190f35b600073__$b98c933f0a6ececcd167bd4f9d3299b1a0$__63771602f784846040518363ffffffff1660e01b8152600401808381526020018281526020019250505060206040518083038186803b15801560b757600080fd5b505af415801560ca573d6000803e3d6000fd5b505050506040513d602081101560df57600080fd5b5051939250505056fea265627a7a72305820eb5c38f42445604cfa43d85e3aa5ecc48b0a646456c902dd48420ae7241d06f664736f6c63430005090032`,
-			// Bytecode for the Math contract
-			`60a3610024600b82828239805160001a607314601757fe5b30600052607381538281f3fe730000000000000000000000000000000000000000301460806040526004361060335760003560e01c8063771602f7146038575b600080fd5b605860048036036040811015604c57600080fd5b5080359060200135606a565b60408051918252519081900360200190f35b019056fea265627a7a723058206fc6c05f3078327f9c763edffdb5ab5f8bd212e293a1306c7d0ad05af3ad35f464736f6c63430005090032`,
-		},
-		[]string{
-			`[{"constant":true,"inputs":[{"name":"c","type":"uint256"},{"name":"d","type":"uint256"}],"name":"add","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]`,
-			`[{"constant":true,"inputs":[{"name":"a","type":"uint256"},{"name":"b","type":"uint256"}],"name":"add","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]`,
-		},
+		[]string{`608060405234801561001057600080fd5b50610153806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c806304bc52f81461003b5780632fbebd3814610073575b600080fd5b6100716004803603604081101561005157600080fd5b8101908080359060200190929190803590602001909291905050506100a1565b005b61009f6004803603602081101561008957600080fd5b81019080803590602001909291905050506100e4565b005b7fae42e9514233792a47a1e4554624e83fe852228e1503f63cd383e8a431f4f46d8282604051808381526020018281526020019250505060405180910390a15050565b7f0423a1321222a0a8716c22b92fac42d85a45a612b696a461784d9fa537c81e5c816040518082815260200191505060405180910390a15056fea265627a7a72305820e22b049858b33291cbe67eeaece0c5f64333e439d27032ea8337d08b1de18fe864736f6c634300050a0032`},
+		[]string{`[{"constant":false,"inputs":[{"name":"i","type":"uint256"},{"name":"j","type":"uint256"}],"name":"foo","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"i","type":"uint256"}],"name":"foo","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"i","type":"uint256"}],"name":"bar","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"i","type":"uint256"},{"indexed":false,"name":"j","type":"uint256"}],"name":"bar","type":"event"}]`},
 		`
 			"math/big"
+			"time"
 
 			"github.com/theQRL/go-zond/accounts/abi/bind"
 			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
@@ -1372,130 +1478,64 @@ var bindTests = []struct {
 			"github.com/theQRL/go-zond/crypto"
 		`,
 		`
-			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
+			// Initialize test accounts
+			key, _ := crypto.GenerateDilithiumKey()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
 			defer sim.Close()
 
-			//deploy the test contract
-			_, _, testContract, err := DeployUseLibrary(auth, sim)
+			// deploy the test contract
+			_, _, contract, err := DeployOverload(auth, sim)
 			if err != nil {
-				t.Fatalf("Failed to deploy test contract: %v", err)
+				t.Fatalf("Failed to deploy contract: %v", err)
 			}
-
 			// Finish deploy.
 			sim.Commit()
 
-			// Check that the library contract has been deployed
-			// by calling the contract's add function.
-			res, err := testContract.Add(&bind.CallOpts{
-				From: auth.From,
-				Pending: false,
-			}, big.NewInt(1), big.NewInt(2))
-			if err != nil {
-				t.Fatalf("Failed to call linked contract: %v", err)
-			}
-			if res.Cmp(big.NewInt(3)) != 0 {
-				t.Fatalf("Add did not return the correct result: %d != %d", res, 3)
-			}
-		`,
-		nil,
-		map[string]string{
-			"b98c933f0a6ececcd167bd4f9d3299b1a0": "Math",
-		},
-		nil,
-		[]string{"UseLibrary", "Math"},
-	}, {
-		"Overload",
-		`
-		pragma hyperion >=0.1.0;
+			resCh, stopCh := make(chan uint64), make(chan struct{})
 
-		contract overload {
-		  mapping(address => uint256) balances;
+			go func() {
+				barSink := make(chan *OverloadBar)
+				sub, _ := contract.WatchBar(nil, barSink)
+				defer sub.Unsubscribe()
 
-		  event bar(uint256 i);
-		  event bar(uint256 i, uint256 j);
+				bar0Sink := make(chan *OverloadBar0)
+				sub0, _ := contract.WatchBar0(nil, bar0Sink)
+				defer sub0.Unsubscribe()
 
-		  function foo(uint256 i) public {
-			  emit bar(i);
-		  }
-		  function foo(uint256 i, uint256 j) public {
-			  emit bar(i, j);
-		  }
-		}
-		`,
-		[]string{`608060405234801561001057600080fd5b50610153806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c806304bc52f81461003b5780632fbebd3814610073575b600080fd5b6100716004803603604081101561005157600080fd5b8101908080359060200190929190803590602001909291905050506100a1565b005b61009f6004803603602081101561008957600080fd5b81019080803590602001909291905050506100e4565b005b7fae42e9514233792a47a1e4554624e83fe852228e1503f63cd383e8a431f4f46d8282604051808381526020018281526020019250505060405180910390a15050565b7f0423a1321222a0a8716c22b92fac42d85a45a612b696a461784d9fa537c81e5c816040518082815260200191505060405180910390a15056fea265627a7a72305820e22b049858b33291cbe67eeaece0c5f64333e439d27032ea8337d08b1de18fe864736f6c634300050a0032`},
-		[]string{`[{"constant":false,"inputs":[{"name":"i","type":"uint256"},{"name":"j","type":"uint256"}],"name":"foo","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"i","type":"uint256"}],"name":"foo","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"i","type":"uint256"}],"name":"bar","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"i","type":"uint256"},{"indexed":false,"name":"j","type":"uint256"}],"name":"bar","type":"event"}]`},
-		`
-		"math/big"
-		"time"
-
-		"github.com/theQRL/go-zond/accounts/abi/bind"
-		"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-		"github.com/theQRL/go-zond/core"
-		"github.com/theQRL/go-zond/crypto"
-		`,
-		`
-		// Initialize test accounts
-		key, _ := crypto.GenerateKey()
-		auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-		sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-		defer sim.Close()
-
-		// deploy the test contract
-		_, _, contract, err := DeployOverload(auth, sim)
-		if err != nil {
-			t.Fatalf("Failed to deploy contract: %v", err)
-		}
-		// Finish deploy.
-		sim.Commit()
-
-		resCh, stopCh := make(chan uint64), make(chan struct{})
-
-		go func() {
-			barSink := make(chan *OverloadBar)
-			sub, _ := contract.WatchBar(nil, barSink)
-			defer sub.Unsubscribe()
-
-			bar0Sink := make(chan *OverloadBar0)
-			sub0, _ := contract.WatchBar0(nil, bar0Sink)
-			defer sub0.Unsubscribe()
-
-			for {
-				select {
-				case ev := <-barSink:
-					resCh <- ev.I.Uint64()
-				case ev := <-bar0Sink:
-					resCh <- ev.I.Uint64() + ev.J.Uint64()
-				case <-stopCh:
-					return
+				for {
+					select {
+					case ev := <-barSink:
+						resCh <- ev.I.Uint64()
+					case ev := <-bar0Sink:
+						resCh <- ev.I.Uint64() + ev.J.Uint64()
+					case <-stopCh:
+						return
+					}
 				}
+			}()
+			contract.Foo(auth, big.NewInt(1), big.NewInt(2))
+			sim.Commit()
+			select {
+			case n := <-resCh:
+				if n != 3 {
+					t.Fatalf("Invalid bar0 event")
+				}
+			case <-time.NewTimer(3 * time.Second).C:
+				t.Fatalf("Wait bar0 event timeout")
 			}
-		}()
-		contract.Foo(auth, big.NewInt(1), big.NewInt(2))
-		sim.Commit()
-		select {
-		case n := <-resCh:
-			if n != 3 {
-				t.Fatalf("Invalid bar0 event")
-			}
-		case <-time.NewTimer(3 * time.Second).C:
-			t.Fatalf("Wait bar0 event timeout")
-		}
 
-		contract.Foo0(auth, big.NewInt(1))
-		sim.Commit()
-		select {
-		case n := <-resCh:
-			if n != 1 {
-				t.Fatalf("Invalid bar event")
+			contract.Foo0(auth, big.NewInt(1))
+			sim.Commit()
+			select {
+			case n := <-resCh:
+				if n != 1 {
+					t.Fatalf("Invalid bar event")
+				}
+			case <-time.NewTimer(3 * time.Second).C:
+				t.Fatalf("Wait bar event timeout")
 			}
-		case <-time.NewTimer(3 * time.Second).C:
-			t.Fatalf("Wait bar event timeout")
-		}
-		close(stopCh)
+			close(stopCh)
 		`,
 		nil,
 		nil,
@@ -1505,40 +1545,40 @@ var bindTests = []struct {
 	{
 		"IdentifierCollision",
 		`
-		pragma hyperion >=0.1.0;
+			pragma hyperion >=0.1.0;
 
-		contract IdentifierCollision {
-			uint public _myVar;
+			contract IdentifierCollision {
+				uint public _myVar;
 
-			function MyVar() public view returns (uint) {
-				return _myVar;
+				function MyVar() public view returns (uint) {
+					return _myVar;
+				}
 			}
-		}
 		`,
 		[]string{"60806040523480156100115760006000fd5b50610017565b60c3806100256000396000f3fe608060405234801560105760006000fd5b506004361060365760003560e01c806301ad4d8714603c5780634ef1f0ad146058576036565b60006000fd5b60426074565b6040518082815260200191505060405180910390f35b605e607d565b6040518082815260200191505060405180910390f35b60006000505481565b60006000600050549050608b565b9056fea265627a7a7231582067c8d84688b01c4754ba40a2a871cede94ea1f28b5981593ab2a45b46ac43af664736f6c634300050c0032"},
 		[]string{`[{"constant":true,"inputs":[],"name":"MyVar","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"_myVar","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]`},
 		`
-		"math/big"
+			"math/big"
 
-		"github.com/theQRL/go-zond/accounts/abi/bind"
-		"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-		"github.com/theQRL/go-zond/crypto"
-		"github.com/theQRL/go-zond/core"
-		`,
+			"github.com/theQRL/go-zond/accounts/abi/bind"
+			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+			"github.com/theQRL/go-zond/crypto"
+			"github.com/theQRL/go-zond/core"
+			`,
 		`
-		// Initialize test accounts
-		key, _ := crypto.GenerateKey()
-		addr := crypto.PubkeyToAddress(key.PublicKey)
+			// Initialize test accounts
+			key, _ := crypto.GenerateDilithiumKey()
+			addr := key.GetAddress()
 
-		// Deploy registrar contract
-		sim := backends.NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-		defer sim.Close()
+			// Deploy registrar contract
+			sim := backends.NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+			defer sim.Close()
 
-		transactOpts, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-		_, _, _, err := DeployIdentifierCollision(transactOpts, sim)
-		if err != nil {
-			t.Fatalf("failed to deploy contract: %v", err)
-		}
+			transactOpts, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+			_, _, _, err := DeployIdentifierCollision(transactOpts, sim)
+			if err != nil {
+				t.Fatalf("failed to deploy contract: %v", err)
+			}
 		`,
 		nil,
 		nil,
@@ -1548,28 +1588,28 @@ var bindTests = []struct {
 	{
 		"MultiContracts",
 		`
-		pragma hyperion >=0.1.0;
-		pragma experimental ABIEncoderV2;
+			pragma hyperion >=0.1.0;
+			pragma experimental ABIEncoderV2;
 
-		library ExternalLib {
-			struct SharedStruct{
-				uint256 f1;
-				bytes32 f2;
+			library ExternalLib {
+				struct SharedStruct{
+					uint256 f1;
+					bytes32 f2;
+				}
 			}
-		}
 
-		contract ContractOne {
-			function foo(ExternalLib.SharedStruct memory s) pure public {
-				// Do stuff
+			contract ContractOne {
+				function foo(ExternalLib.SharedStruct memory s) pure public {
+					// Do stuff
+				}
 			}
-		}
 
-		contract ContractTwo {
-			function bar(ExternalLib.SharedStruct memory s) pure public {
-				// Do stuff
+			contract ContractTwo {
+				function bar(ExternalLib.SharedStruct memory s) pure public {
+					// Do stuff
+				}
 			}
-		}
-        `,
+		`,
 		[]string{
 			`60806040523480156100115760006000fd5b50610017565b6101b5806100266000396000f3fe60806040523480156100115760006000fd5b50600436106100305760003560e01c80639d8a8ba81461003657610030565b60006000fd5b610050600480360361004b91908101906100d1565b610052565b005b5b5056610171565b6000813590506100698161013d565b92915050565b6000604082840312156100825760006000fd5b61008c60406100fb565b9050600061009c848285016100bc565b60008301525060206100b08482850161005a565b60208301525092915050565b6000813590506100cb81610157565b92915050565b6000604082840312156100e45760006000fd5b60006100f28482850161006f565b91505092915050565b6000604051905081810181811067ffffffffffffffff8211171561011f5760006000fd5b8060405250919050565b6000819050919050565b6000819050919050565b61014681610129565b811415156101545760006000fd5b50565b61016081610133565b8114151561016e5760006000fd5b50565bfea365627a7a72315820749274eb7f6c01010d5322af4e1668b0a154409eb7968bd6cae5524c7ed669bb6c6578706572696d656e74616cf564736f6c634300050c0040`,
 			`60806040523480156100115760006000fd5b50610017565b6101b5806100266000396000f3fe60806040523480156100115760006000fd5b50600436106100305760003560e01c8063db8ba08c1461003657610030565b60006000fd5b610050600480360361004b91908101906100d1565b610052565b005b5b5056610171565b6000813590506100698161013d565b92915050565b6000604082840312156100825760006000fd5b61008c60406100fb565b9050600061009c848285016100bc565b60008301525060206100b08482850161005a565b60208301525092915050565b6000813590506100cb81610157565b92915050565b6000604082840312156100e45760006000fd5b60006100f28482850161006f565b91505092915050565b6000604051905081810181811067ffffffffffffffff8211171561011f5760006000fd5b8060405250919050565b6000819050919050565b6000819050919050565b61014681610129565b811415156101545760006000fd5b50565b61016081610133565b8114151561016e5760006000fd5b50565bfea365627a7a723158209bc28ee7ea97c131a13330d77ec73b4493b5c59c648352da81dd288b021192596c6578706572696d656e74616cf564736f6c634300050c0040`,
@@ -1581,47 +1621,47 @@ var bindTests = []struct {
 			`[]`,
 		},
 		`
-		"math/big"
+			"math/big"
 
-		"github.com/theQRL/go-zond/accounts/abi/bind"
-		"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-		"github.com/theQRL/go-zond/crypto"
-		"github.com/theQRL/go-zond/core"
-        `,
+			"github.com/theQRL/go-zond/accounts/abi/bind"
+			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+			"github.com/theQRL/go-zond/crypto"
+			"github.com/theQRL/go-zond/core"
+		`,
 		`
-		key, _ := crypto.GenerateKey()
-		addr := crypto.PubkeyToAddress(key.PublicKey)
+			key, _ := crypto.GenerateDilithiumKey()
+			addr := key.GetAddress()
 
-		// Deploy registrar contract
-		sim := backends.NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-		defer sim.Close()
+			// Deploy registrar contract
+			sim := backends.NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+			defer sim.Close()
 
-		transactOpts, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-		_, _, c1, err := DeployContractOne(transactOpts, sim)
-		if err != nil {
-			t.Fatal("Failed to deploy contract")
-		}
-		sim.Commit()
-		err = c1.Foo(nil, ExternalLibSharedStruct{
-			F1: big.NewInt(100),
-			F2: [32]byte{0x01, 0x02, 0x03},
-		})
-		if err != nil {
-			t.Fatal("Failed to invoke function")
-		}
-		_, _, c2, err := DeployContractTwo(transactOpts, sim)
-		if err != nil {
-			t.Fatal("Failed to deploy contract")
-		}
-		sim.Commit()
-		err = c2.Bar(nil, ExternalLibSharedStruct{
-			F1: big.NewInt(100),
-			F2: [32]byte{0x01, 0x02, 0x03},
-		})
-		if err != nil {
-			t.Fatal("Failed to invoke function")
-		}
-        `,
+			transactOpts, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+			_, _, c1, err := DeployContractOne(transactOpts, sim)
+			if err != nil {
+				t.Fatal("Failed to deploy contract")
+			}
+			sim.Commit()
+			err = c1.Foo(nil, ExternalLibSharedStruct{
+				F1: big.NewInt(100),
+				F2: [32]byte{0x01, 0x02, 0x03},
+			})
+			if err != nil {
+				t.Fatal("Failed to invoke function")
+			}
+			_, _, c2, err := DeployContractTwo(transactOpts, sim)
+			if err != nil {
+				t.Fatal("Failed to deploy contract")
+			}
+			sim.Commit()
+			err = c2.Bar(nil, ExternalLibSharedStruct{
+				F1: big.NewInt(100),
+				F2: [32]byte{0x01, 0x02, 0x03},
+			})
+			if err != nil {
+				t.Fatal("Failed to invoke function")
+			}
+		`,
 		nil,
 		nil,
 		nil,
@@ -1631,15 +1671,15 @@ var bindTests = []struct {
 	{
 		`PureAndView`,
 		`
-		pragma hyperion >=0.1.0;
-		contract PureAndView {
-			function PureFunc() public pure returns (uint) {
-				return 42;
+			pragma hyperion >=0.1.0;
+			contract PureAndView {
+				function PureFunc() public pure returns (uint) {
+					return 42;
+				}
+				function ViewFunc() public view returns (uint) {
+					return block.number;
+				}
 			}
-			function ViewFunc() public view returns (uint) {
-				return block.number;
-			}
-		}
 		`,
 		[]string{`608060405234801561001057600080fd5b5060b68061001f6000396000f3fe6080604052348015600f57600080fd5b506004361060325760003560e01c806376b5686a146037578063bb38c66c146053575b600080fd5b603d606f565b6040518082815260200191505060405180910390f35b60596077565b6040518082815260200191505060405180910390f35b600043905090565b6000602a90509056fea2646970667358221220d158c2ab7fdfce366a7998ec79ab84edd43b9815630bbaede2c760ea77f29f7f64736f6c63430006000033`},
 		[]string{`[{"inputs": [],"name": "PureFunc","outputs": [{"internalType": "uint256","name": "","type": "uint256"}],"stateMutability": "pure","type": "function"},{"inputs": [],"name": "ViewFunc","outputs": [{"internalType": "uint256","name": "","type": "uint256"}],"stateMutability": "view","type": "function"}]`},
@@ -1653,7 +1693,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateKey()
+			key, _ := crypto.GenerateDilithiumKey()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -1683,54 +1723,55 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
+
 	// Test fallback separation
 	{
 		`NewFallbacks`,
 		`
-		pragma hyperion >=0.1.0;
-	
-		contract NewFallbacks {
-			event Fallback(bytes data);
-			fallback() external {
-				emit Fallback(msg.data);
+			pragma hyperion >=0.1.0;
+
+			contract NewFallbacks {
+				event Fallback(bytes data);
+				fallback() external {
+					emit Fallback(msg.data);
+				}
+
+				event Received(address addr, uint value);
+				receive() external payable {
+					emit Received(msg.sender, msg.value);
+				}
 			}
-	
-			event Received(address addr, uint value);
-			receive() external payable {
-				emit Received(msg.sender, msg.value);
-			}
-		}
-	   `,
+		`,
 		[]string{"6080604052348015600f57600080fd5b506101078061001f6000396000f3fe608060405236605f577f88a5966d370b9919b20f3e2c13ff65706f196a4e32cc2c12bf57088f885258743334604051808373ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a1005b348015606a57600080fd5b507f9043988963722edecc2099c75b0af0ff76af14ffca42ed6bce059a20a2a9f98660003660405180806020018281038252848482818152602001925080828437600081840152601f19601f820116905080830192505050935050505060405180910390a100fea26469706673582212201f994dcfbc53bf610b19176f9a361eafa77b447fd9c796fa2c615dfd0aaf3b8b64736f6c634300060c0033"},
 		[]string{`[{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bytes","name":"data","type":"bytes"}],"name":"Fallback","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"addr","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Received","type":"event"},{"stateMutability":"nonpayable","type":"fallback"},{"stateMutability":"payable","type":"receive"}]`},
 		`
 			"bytes"
 			"math/big"
-	
+
 			"github.com/theQRL/go-zond/accounts/abi/bind"
 			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
 			"github.com/theQRL/go-zond/core"
 			"github.com/theQRL/go-zond/crypto"
-	   `,
+		`,
 		`
-			key, _ := crypto.GenerateKey()
-			addr := crypto.PubkeyToAddress(key.PublicKey)
-	
+			key, _ := crypto.GenerateDilithiumKey()
+			addr := key.GetAddress()
+
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(10000000000000000)}}, 1000000)
 			defer sim.Close()
-	
+
 			opts, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 			_, _, c, err := DeployNewFallbacks(opts, sim)
 			if err != nil {
 				t.Fatalf("Failed to deploy contract: %v", err)
 			}
 			sim.Commit()
-	
+
 			// Test receive function
 			opts.Value = big.NewInt(100)
 			c.Receive(opts)
 			sim.Commit()
-	
+
 			var gotEvent bool
 			iter, _ := c.FilterReceived(nil)
 			defer iter.Close()
@@ -1747,14 +1788,14 @@ var bindTests = []struct {
 			if !gotEvent {
 				t.Fatal("Expect to receive event emitted by receive")
 			}
-	
+
 			// Test fallback function
 			gotEvent = false
 			opts.Value = nil
 			calldata := []byte{0x01, 0x02, 0x03}
 			c.Fallback(opts, calldata)
 			sim.Commit()
-	
+
 			iter2, _ := c.FilterFallback(nil)
 			defer iter2.Close()
 			for iter2.Next() {
@@ -1767,7 +1808,7 @@ var bindTests = []struct {
 			if !gotEvent {
 				t.Fatal("Expect to receive event emitted by fallback")
 			}
-	   `,
+		`,
 		nil,
 		nil,
 		nil,
@@ -1777,19 +1818,19 @@ var bindTests = []struct {
 	{
 		`NewSingleStructArgument`,
 		`
-		 pragma hyperion >=0.1.0;
+			pragma hyperion >=0.1.0;
 
-		 contract NewSingleStructArgument {
-			 struct MyStruct{
-				 uint256 a;
-				 uint256 b;
-			 }
-			 event StructEvent(MyStruct s);
-			 function TestEvent() public {
-				 emit StructEvent(MyStruct({a: 1, b: 2}));
-			 }
-		 }
-	   `,
+			contract NewSingleStructArgument {
+				struct MyStruct{
+					uint256 a;
+					uint256 b;
+				}
+				event StructEvent(MyStruct s);
+				function TestEvent() public {
+					emit StructEvent(MyStruct({a: 1, b: 2}));
+				}
+			}
+		`,
 		[]string{"608060405234801561001057600080fd5b50610113806100206000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c806324ec1d3f14602d575b600080fd5b60336035565b005b7fb4b2ff75e30cb4317eaae16dd8a187dd89978df17565104caa6c2797caae27d460405180604001604052806001815260200160028152506040516078919060ba565b60405180910390a1565b6040820160008201516096600085018260ad565b50602082015160a7602085018260ad565b50505050565b60b48160d3565b82525050565b600060408201905060cd60008301846082565b92915050565b600081905091905056fea26469706673582212208823628796125bf9941ce4eda18da1be3cf2931b231708ab848e1bd7151c0c9a64736f6c63430008070033"},
 		[]string{`[{"anonymous":false,"inputs":[{"components":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256","name":"b","type":"uint256"}],"indexed":false,"internalType":"struct Test.MyStruct","name":"s","type":"tuple"}],"name":"StructEvent","type":"event"},{"inputs":[],"name":"TestEvent","outputs":[],"stateMutability":"nonpayable","type":"function"}]`},
 		`
@@ -1800,12 +1841,12 @@ var bindTests = []struct {
 			"github.com/theQRL/go-zond/core"
 			"github.com/theQRL/go-zond/crypto"
 			"github.com/theQRL/go-zond/zond/zondconfig"
-	   `,
+		`,
 		`
 			var (
-				key, _  = crypto.GenerateKey()
+				key, _  = crypto.GenerateDilithiumKey()
 				user, _ = bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfigDefaults.Miner.GasCeil)
+				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfig.Defaults.Miner.GasCeil)
 			)
 			defer sim.Close()
 
@@ -1838,7 +1879,7 @@ var bindTests = []struct {
 			if count != 1 {
 				t.Fatal("Unexpected contract event number")
 			}
-			`,
+		`,
 		nil,
 		nil,
 		nil,
@@ -1848,37 +1889,37 @@ var bindTests = []struct {
 	{
 		`NewErrors`,
 		`
-		pragma hyperion >=0.1.0;
-	
-		contract NewErrors {
-			error MyError(uint256);
-			error MyError1(uint256);
-			error MyError2(uint256, uint256);
-			error MyError3(uint256 a, uint256 b, uint256 c);
-			function Error() public pure {
-				revert MyError3(1,2,3);
+			pragma hyperion >=0.1.0;
+
+			contract NewErrors {
+				error MyError(uint256);
+				error MyError1(uint256);
+				error MyError2(uint256, uint256);
+				error MyError3(uint256 a, uint256 b, uint256 c);
+				function Error() public pure {
+					revert MyError3(1,2,3);
+				}
 			}
-		}
-	   `,
+		`,
 		[]string{"0x6080604052348015600f57600080fd5b5060998061001e6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c8063726c638214602d575b600080fd5b60336035565b005b60405163024876cd60e61b815260016004820152600260248201526003604482015260640160405180910390fdfea264697066735822122093f786a1bc60216540cd999fbb4a6109e0fef20abcff6e9107fb2817ca968f3c64736f6c63430008070033"},
 		[]string{`[{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"MyError","type":"error"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"MyError1","type":"error"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"MyError2","type":"error"},{"inputs":[{"internalType":"uint256","name":"a","type":"uint256"},{"internalType":"uint256","name":"b","type":"uint256"},{"internalType":"uint256","name":"c","type":"uint256"}],"name":"MyError3","type":"error"},{"inputs":[],"name":"Error","outputs":[],"stateMutability":"pure","type":"function"}]`},
 		`
 			"math/big"
-	
+
 			"github.com/theQRL/go-zond/accounts/abi/bind"
 			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
 			"github.com/theQRL/go-zond/core"
 			"github.com/theQRL/go-zond/crypto"
 			"github.com/theQRL/go-zond/zond/zondconfig"
-	   `,
+		`,
 		`
 			var (
-				key, _  = crypto.GenerateKey()
+				key, _  = crypto.GenerateDilithiumKey()
 				user, _ = bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfigDefaults.Miner.GasCeil)
+				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfig.Defaults.Miner.GasCeil)
 			)
 			defer sim.Close()
-	
+
 			_, tx, contract, err := DeployNewErrors(user, sim)
 			if err != nil {
 				t.Fatal(err)
@@ -1893,7 +1934,7 @@ var bindTests = []struct {
 			}
 			// TODO (MariusVanDerWijden unpack error using abigen
 			// once that is implemented
-	   `,
+		`,
 		nil,
 		nil,
 		nil,
@@ -1902,15 +1943,15 @@ var bindTests = []struct {
 	{
 		name: `ConstructorWithStructParam`,
 		contract: `
-		pragma hyperion >=0.1.0;
-		
-		contract ConstructorWithStructParam {
-			struct StructType {
-				uint256 field;
+			pragma hyperion >=0.1.0;
+
+			contract ConstructorWithStructParam {
+				struct StructType {
+					uint256 field;
+				}
+
+				constructor(StructType memory st) {}
 			}
-		
-			constructor(StructType memory st) {}
-		}
 		`,
 		bytecode: []string{`0x608060405234801561001057600080fd5b506040516101c43803806101c48339818101604052810190610032919061014a565b50610177565b6000604051905090565b600080fd5b600080fd5b6000601f19601f8301169050919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6100958261004c565b810181811067ffffffffffffffff821117156100b4576100b361005d565b5b80604052505050565b60006100c7610038565b90506100d3828261008c565b919050565b6000819050919050565b6100eb816100d8565b81146100f657600080fd5b50565b600081519050610108816100e2565b92915050565b60006020828403121561012457610123610047565b5b61012e60206100bd565b9050600061013e848285016100f9565b60008301525092915050565b6000602082840312156101605761015f610042565b5b600061016e8482850161010e565b91505092915050565b603f806101856000396000f3fe6080604052600080fdfea2646970667358221220cdffa667affecefac5561f65f4a4ba914204a8d4eb859d8cd426fb306e5c12a364736f6c634300080a0033`},
 		abi:      []string{`[{"inputs":[{"components":[{"internalType":"uint256","name":"field","type":"uint256"}],"internalType":"struct ConstructorWithStructParam.StructType","name":"st","type":"tuple"}],"stateMutability":"nonpayable","type":"constructor"}]`},
@@ -1925,9 +1966,9 @@ var bindTests = []struct {
 		`,
 		tester: `
 			var (
-				key, _  = crypto.GenerateKey()
+				key, _  = crypto.GenerateDilithiumKey()
 				user, _ = bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfigDefaults.Miner.GasCeil)
+				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfig.Defaults.Miner.GasCeil)
 			)
 			defer sim.Close()
 
@@ -1936,7 +1977,7 @@ var bindTests = []struct {
 				t.Fatalf("DeployConstructorWithStructParam() got err %v; want nil err", err)
 			}
 			sim.Commit()
-			
+
 			if _, err = bind.WaitDeployed(nil, sim, tx); err != nil {
 				t.Logf("Deployment tx: %+v", tx)
 				t.Errorf("bind.WaitDeployed(nil, %T, <deployment tx>) got err %v; want nil err", sim, err)
@@ -1946,19 +1987,19 @@ var bindTests = []struct {
 	{
 		name: `NameConflict`,
 		contract: `
-		// SPDX-License-Identifier: GPL-3.0
-		pragma hyperion >=0.1.0;
-		contract oracle {
-			struct request {
-				 bytes data;
-				 bytes _data;
+			// SPDX-License-Identifier: GPL-3.0
+			pragma hyperion >=0.1.0;
+			contract oracle {
+				struct request {
+						bytes data;
+						bytes _data;
+				}
+				event log (int msg, int _msg);
+				function addRequest(request memory req) public pure {}
+				function getRequest() pure public returns (request memory) {
+						return request("", "");
+				}
 			}
-			event log (int msg, int _msg);
-			function addRequest(request memory req) public pure {}
-			function getRequest() pure public returns (request memory) {
-				 return request("", "");
-			}
-		}
 		`,
 		bytecode: []string{"0x608060405234801561001057600080fd5b5061042b806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c8063c2bb515f1461003b578063cce7b04814610059575b600080fd5b610043610075565b60405161005091906101af565b60405180910390f35b610073600480360381019061006e91906103ac565b6100b5565b005b61007d6100b8565b604051806040016040528060405180602001604052806000815250815260200160405180602001604052806000815250815250905090565b50565b604051806040016040528060608152602001606081525090565b600081519050919050565b600082825260208201905092915050565b60005b8381101561010c5780820151818401526020810190506100f1565b8381111561011b576000848401525b50505050565b6000601f19601f8301169050919050565b600061013d826100d2565b61014781856100dd565b93506101578185602086016100ee565b61016081610121565b840191505092915050565b600060408301600083015184820360008601526101888282610132565b915050602083015184820360208601526101a28282610132565b9150508091505092915050565b600060208201905081810360008301526101c9818461016b565b905092915050565b6000604051905090565b600080fd5b600080fd5b600080fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b61022282610121565b810181811067ffffffffffffffff82111715610241576102406101ea565b5b80604052505050565b60006102546101d1565b90506102608282610219565b919050565b600080fd5b600080fd5b600080fd5b600067ffffffffffffffff82111561028f5761028e6101ea565b5b61029882610121565b9050602081019050919050565b82818337600083830152505050565b60006102c76102c284610274565b61024a565b9050828152602081018484840111156102e3576102e261026f565b5b6102ee8482856102a5565b509392505050565b600082601f83011261030b5761030a61026a565b5b813561031b8482602086016102b4565b91505092915050565b60006040828403121561033a576103396101e5565b5b610344604061024a565b9050600082013567ffffffffffffffff81111561036457610363610265565b5b610370848285016102f6565b600083015250602082013567ffffffffffffffff81111561039457610393610265565b5b6103a0848285016102f6565b60208301525092915050565b6000602082840312156103c2576103c16101db565b5b600082013567ffffffffffffffff8111156103e0576103df6101e0565b5b6103ec84828501610324565b9150509291505056fea264697066735822122033bca1606af9b6aeba1673f98c52003cec19338539fb44b86690ce82c51483b564736f6c634300080e0033"},
 		abi:      []string{`[ { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "int256", "name": "msg", "type": "int256" }, { "indexed": false, "internalType": "int256", "name": "_msg", "type": "int256" } ], "name": "log", "type": "event" }, { "inputs": [ { "components": [ { "internalType": "bytes", "name": "data", "type": "bytes" }, { "internalType": "bytes", "name": "_data", "type": "bytes" } ], "internalType": "struct oracle.request", "name": "req", "type": "tuple" } ], "name": "addRequest", "outputs": [], "stateMutability": "pure", "type": "function" }, { "inputs": [], "name": "getRequest", "outputs": [ { "components": [ { "internalType": "bytes", "name": "data", "type": "bytes" }, { "internalType": "bytes", "name": "_data", "type": "bytes" } ], "internalType": "struct oracle.request", "name": "", "type": "tuple" } ], "stateMutability": "pure", "type": "function" } ]`},
@@ -1973,9 +2014,9 @@ var bindTests = []struct {
 		`,
 		tester: `
 			var (
-				key, _  = crypto.GenerateKey()
+				key, _  = crypto.GenerateDilithiumKey()
 				user, _ = bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfigDefaults.Miner.GasCeil)
+				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfig.Defaults.Miner.GasCeil)
 			)
 			defer sim.Close()
 
@@ -1984,7 +2025,7 @@ var bindTests = []struct {
 				t.Fatalf("DeployNameConflict() got err %v; want nil err", err)
 			}
 			sim.Commit()
-			
+
 			if _, err = bind.WaitDeployed(nil, sim, tx); err != nil {
 				t.Logf("Deployment tx: %+v", tx)
 				t.Errorf("bind.WaitDeployed(nil, %T, <deployment tx>) got err %v; want nil err", sim, err)
@@ -1994,11 +2035,11 @@ var bindTests = []struct {
 	{
 		name: "RangeKeyword",
 		contract: `
-		// SPDX-License-Identifier: GPL-3.0
-		pragma hyperion >=0.1.0;
-		contract keywordcontract {
-			function functionWithKeywordParameter(range uint256) public pure {}
-		}
+			// SPDX-License-Identifier: GPL-3.0
+			pragma hyperion >=0.1.0;
+			contract keywordcontract {
+				function functionWithKeywordParameter(range uint256) public pure {}
+			}
 		`,
 		bytecode: []string{"0x608060405234801561001057600080fd5b5060dc8061001f6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c8063527a119f14602d575b600080fd5b60436004803603810190603f9190605b565b6045565b005b50565b6000813590506055816092565b92915050565b600060208284031215606e57606d608d565b5b6000607a848285016048565b91505092915050565b6000819050919050565b600080fd5b6099816083565b811460a357600080fd5b5056fea2646970667358221220d4f4525e2615516394055d369fb17df41c359e5e962734f27fd683ea81fd9db164736f6c63430008070033"},
 		abi:      []string{`[{"inputs":[{"internalType":"uint256","name":"range","type":"uint256"}],"name":"functionWithKeywordParameter","outputs":[],"stateMutability":"pure","type":"function"}]`},
@@ -2013,9 +2054,9 @@ var bindTests = []struct {
 		`,
 		tester: `
 			var (
-				key, _  = crypto.GenerateKey()
+				key, _  = crypto.GenerateDilithiumKey()
 				user, _ = bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfigDefaults.Miner.GasCeil)
+				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfig.Defaults.Miner.GasCeil)
 			)
 			_, tx, _, err := DeployRangeKeyword(user, sim)
 			if err != nil {
@@ -2027,18 +2068,19 @@ var bindTests = []struct {
 				t.Errorf("error deploying the contract: %v", err)
 			}
 		`,
-	}, {
+	},
+	{
 		name: "NumericMethodName",
 		contract: `
-		// SPDX-License-Identifier: GPL-3.0
-		pragma hyperion >=0.1.0;
+			// SPDX-License-Identifier: GPL-3.0
+			pragma hyperion >=0.1.0;
 
-		contract NumericMethodName {
-			event _1TestEvent(address _param);
-			function _1test() public pure {}
-			function __1test() public pure {}
-			function __2test() public pure {}
-		}
+			contract NumericMethodName {
+				event _1TestEvent(address _param);
+				function _1test() public pure {}
+				function __1test() public pure {}
+				function __2test() public pure {}
+			}
 		`,
 		bytecode: []string{"0x6080604052348015600f57600080fd5b5060958061001e6000396000f3fe6080604052348015600f57600080fd5b5060043610603c5760003560e01c80639d993132146041578063d02767c7146049578063ffa02795146051575b600080fd5b60476059565b005b604f605b565b005b6057605d565b005b565b565b56fea26469706673582212200382ca602dff96a7e2ba54657985e2b4ac423a56abe4a1f0667bc635c4d4371f64736f6c63430008110033"},
 		abi:      []string{`[{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_param","type":"address"}],"name":"_1TestEvent","type":"event"},{"inputs":[],"name":"_1test","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"__1test","outputs":[],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"__2test","outputs":[],"stateMutability":"pure","type":"function"}]`},
@@ -2049,12 +2091,10 @@ var bindTests = []struct {
 			if b, err := NewNumericMethodName(common.Address{}, nil); b == nil || err != nil {
 				t.Fatalf("combined binding (%v) nil or error (%v) not nil", b, nil)
 			}
-`,
+		`,
 	},
 }
 
-// TODO(now.youtrack.cloud/issue/TGZ-2)
-/*
 // Tests that packages generated by the binder can be successfully compiled and
 // the requested tester run against it.
 func TestGolangBindings(t *testing.T) {
@@ -2105,7 +2145,7 @@ func TestGolangBindings(t *testing.T) {
 			}
 		})
 	}
-	// Convert the package to go modules and use the current source for go-ethereum
+	// Convert the package to go modules and use the current source for go-zond
 	moder := exec.Command(gocmd, "mod", "init", "bindtest")
 	moder.Dir = pkg
 	if out, err := moder.CombinedOutput(); err != nil {
@@ -2129,4 +2169,3 @@ func TestGolangBindings(t *testing.T) {
 		t.Fatalf("failed to run binding test: %v\n%s", err, out)
 	}
 }
-*/
