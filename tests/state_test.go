@@ -56,16 +56,11 @@ func TestState(t *testing.T) {
 	// Uses 1GB RAM per tested fork
 	st.skipLoad(`^stStaticCall/static_Call1MB`)
 
-	// Broken tests:
-	// EOF is not part of cancun
-	st.skipLoad(`^stEOF/`)
-
 	// For Istanbul, older tests were moved into LegacyTests
 	for _, dir := range []string{
-		// TODO(rgeraldes24)
-		// filepath.Join(baseDir, "EIPTests", "StateTests"),
-		// stateTestDir,
-		// legacyStateTestDir,
+		filepath.Join(baseDir, "EIPTests", "StateTests"),
+		stateTestDir,
+		legacyStateTestDir,
 		benchmarksDir,
 	} {
 		st.walk(t, dir, func(t *testing.T, name string, test *StateTest) {
