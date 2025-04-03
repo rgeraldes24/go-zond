@@ -4,7 +4,6 @@
             {
                 "blockHeader" : {
                     "Istanbul" : {
-                        "difficulty" : "0x020000",
                         "gasLimit" : "0x7fffffffffffffff",
                         "timestamp" : "0x03e8",
                         "gasUsed" : "352271",
@@ -12,7 +11,6 @@
                         "stateRoot" : "0x768e1b21bb153172a54e0f1a85304970a36d4b638abee73cceb4657359f5ce6f"
                     },
                     "Berlin" : {
-                        "difficulty" : "0x020000",
                         "gasLimit" : "0x7fffffffffffffff",
                         "timestamp" : "0x03e8",
                         "gasUsed" : "0x056843",
@@ -20,7 +18,6 @@
                         "stateRoot" : "0xac816ae15ff889bbc1859f928edf43b1f09465a776e8899c94e7bfd53c3718b9"
                     },
                     "London" : {
-                        "difficulty" : "0x020000",
                         "gasLimit" : "0x7fffffffffffffff",
                         "timestamp" : "0x03e8",
                         "gasUsed" : "0x056843",
@@ -92,7 +89,6 @@
         "genesisBlockHeader" : {
             "bloom" : "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
             "coinbase" : "0x945304eb96065b2a98b57a48a06ae28d285a71b5",
-            "difficulty" : "131072",
             "extraData" : "0x42",
             "gasLimit" : "0x7fffffffffffffff",
             "gasUsed" : "0",
@@ -104,7 +100,6 @@
             "stateRoot" : "0xf99eb1626cfa6db435c0836235942d7ccaa935f1ae247d3f1c21e495685f903a",
             "timestamp" : "0x03b6",
             "transactionsTrie" : "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-            "uncleHash" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347"
         },
         "pre" : {
             "0x095e7baea6a6c7c4c2dfeb977efac326af552d87" : {

@@ -75,7 +75,6 @@
                 "coinbase": {
                     "$ref": "#/definitions/AddressMaybePrefixOrEmpty"
                 },
-                "difficulty": {
                     "$ref": "#/definitions/ConfusedHexType"
                 },
                 "extraData": {
@@ -114,7 +113,6 @@
                 "transactionsTrie": {
                     "$ref": "#/definitions/ConfusedHexType"
                 },
-                "uncleHash": {
                     "$ref": "#/definitions/ConfusedHexType"
                 }
             }

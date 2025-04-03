@@ -85,7 +85,6 @@
                 "coinbase": {
                     "$ref": "#/definitions/AddressMaybePrefixOrEmpty"
                 },
-                "difficulty": {
                     "$ref": "#/definitions/IntegerOrConfusedHex"
                 },
                 "expectException": {
@@ -127,7 +126,6 @@
                 "transactionsTrie": {
                     "$ref": "#/definitions/IntegerOrConfusedHex"
                 },
-                "uncleHash": {
                     "$ref": "#/definitions/IntegerOrConfusedHex"
                 },
                 "updatePow": {
@@ -137,7 +135,6 @@
         },
         "BlockHeaderPremine": {
             "properties": {
-                "difficulty": {
                     "$ref": "#/definitions/IntegerOrConfusedHex"
                 },
                 "gasLimit": {

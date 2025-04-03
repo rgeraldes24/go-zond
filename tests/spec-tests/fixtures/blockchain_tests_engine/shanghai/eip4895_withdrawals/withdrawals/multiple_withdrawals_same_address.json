@@ -3,13 +3,11 @@
         "network": "Cancun",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "uncleHash": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
             "coinbase": "0x0000000000000000000000000000000000000000",
             "stateRoot": "0x81b8dfb06a3603705c8658f845e7a37a3f81ec7822b807c2b00d159a3f3d9c41",
             "transactionsTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "receiptTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "bloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "difficulty": "0x00",
             "number": "0x00",
             "gasLimit": "0x016345785d8a0000",
             "gasUsed": "0x00",
@@ -19,8 +17,6 @@
             "nonce": "0x0000000000000000",
             "baseFeePerGas": "0x07",
             "withdrawalsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-            "blobGasUsed": "0x00",
-            "excessBlobGas": "0x00",
             "parentBeaconBlockRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
             "hash": "0x8ba38087683998a300783eac66c9fc8bd09163da324b10643e0d06bd128a9e97"
         },
@@ -145,8 +141,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x944fae01a11f4d8964b9f23c944ba61e3a1af3ac4a1dbea28ef5159e1cb6bf8e",
                         "transactions": [],
                         "withdrawals": [
@@ -269,8 +263,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xf3ed45a6c29fc2c150cc361fdfea15ffcd0f95975915efa6f85ae76cd0d44150",
                         "transactions": [],
                         "withdrawals": [
@@ -393,8 +385,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x30838392b030a1d9dbf58cf5bb15c70f32bce2d55046eb364c64a6a4b2b6abfb",
                         "transactions": [],
                         "withdrawals": [
@@ -517,8 +507,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xb9d8602f661bfe1b6dbdec4aac066a64da3b3d17b5e4ed55d0cb29adbf36fd6f",
                         "transactions": [],
                         "withdrawals": [
@@ -641,8 +629,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x4b6ab2beeece6f458acd49e44dd41d1f5f45749c8064655487ec91db8693e1f1",
                         "transactions": [],
                         "withdrawals": [
@@ -765,8 +751,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x283a2eb3e16894b0ea2449585ba18d197cfbfa12183fcd226ddb138c9325c85b",
                         "transactions": [],
                         "withdrawals": [
@@ -889,8 +873,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x8d4ce3b8b1e27b54487390e0accb624833983c9cc1609792f15f39580d0ee8d3",
                         "transactions": [],
                         "withdrawals": [
@@ -1013,8 +995,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x62135a9bdee53265cd30cb553b87d68a305409b86d3b51743393fa70e66acac8",
                         "transactions": [],
                         "withdrawals": [
@@ -1137,8 +1117,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xa0f974ba3dc88b275c36450eb9e6f88585b68261ac9eaf5100093895c4d148de",
                         "transactions": [],
                         "withdrawals": [
@@ -1261,8 +1239,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xf78bbe18e0b79142f9e7557e48da922119bcba2775bac121036504e9288ad084",
                         "transactions": [],
                         "withdrawals": [
@@ -1385,8 +1361,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xae3f9f5ba9936762e45c030fad644c232d56289bf84cf58f52db845780e8bd73",
                         "transactions": [],
                         "withdrawals": [
@@ -1515,13 +1489,11 @@
         "network": "Cancun",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "uncleHash": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
             "coinbase": "0x0000000000000000000000000000000000000000",
             "stateRoot": "0x81b8dfb06a3603705c8658f845e7a37a3f81ec7822b807c2b00d159a3f3d9c41",
             "transactionsTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "receiptTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "bloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "difficulty": "0x00",
             "number": "0x00",
             "gasLimit": "0x016345785d8a0000",
             "gasUsed": "0x00",
@@ -1531,8 +1503,6 @@
             "nonce": "0x0000000000000000",
             "baseFeePerGas": "0x07",
             "withdrawalsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-            "blobGasUsed": "0x00",
-            "excessBlobGas": "0x00",
             "parentBeaconBlockRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
             "hash": "0x8ba38087683998a300783eac66c9fc8bd09163da324b10643e0d06bd128a9e97"
         },
@@ -1647,8 +1617,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x58b71016824927e7b30dcd247481ed889628edf0827b82bbe9fbd351df52b614",
                         "transactions": [],
                         "withdrawals": [
@@ -2737,13 +2705,11 @@
         "network": "Prague",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "uncleHash": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
             "coinbase": "0x0000000000000000000000000000000000000000",
             "stateRoot": "0x6f978e5ec827eef738381e1ca1e9332001ac548e31fdb82b90319b3ae94e22d7",
             "transactionsTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "receiptTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "bloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "difficulty": "0x00",
             "number": "0x00",
             "gasLimit": "0x016345785d8a0000",
             "gasUsed": "0x00",
@@ -2753,8 +2719,6 @@
             "nonce": "0x0000000000000000",
             "baseFeePerGas": "0x07",
             "withdrawalsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-            "blobGasUsed": "0x00",
-            "excessBlobGas": "0x00",
             "parentBeaconBlockRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
             "requestsHash": "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
             "hash": "0xf2f32387a72edb36cf2ffc14ae548c04625433039f9d5b3d7622e32a026dfa24"
@@ -3065,8 +3029,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x24c033776ae2a05fab04ec628a556118479eaa27d52c222d62e29736e6a79488",
                         "transactions": [],
                         "withdrawals": [
@@ -3190,8 +3152,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x5c09d5118d8b335df0dddcfb7bfa6514153c6add3ff5624ba6adad0fa05a3749",
                         "transactions": [],
                         "withdrawals": [
@@ -3315,8 +3275,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x92f0aed2d1876acc986e57274d2264ba9d5ff0f44c4996239eb319433013fff8",
                         "transactions": [],
                         "withdrawals": [
@@ -3440,8 +3398,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x5449a79a627c222ba6a6bc307d2d1f87d845eaae0477e91aec66c881a7a6b7a5",
                         "transactions": [],
                         "withdrawals": [
@@ -3565,8 +3521,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xbeb42edfce2e46545da0780f3c15a797cb4134f872ad1100d8dcb2f367bc5cfc",
                         "transactions": [],
                         "withdrawals": [
@@ -3690,8 +3644,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xec834815c058915fe052b8710e7a2763a88565a35f9f2bb025104b26f1c346e8",
                         "transactions": [],
                         "withdrawals": [
@@ -3815,8 +3767,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x7f116919bedb2315725693896bc1f86c4d1657e8fc602e68e9a9ef72fb093eb8",
                         "transactions": [],
                         "withdrawals": [
@@ -3940,8 +3890,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x062843311ab69f9a0799e1c9c97cb3cca7a242b80d82bdce8a4d987c76e9d9e1",
                         "transactions": [],
                         "withdrawals": [
@@ -4065,8 +4013,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x86a7e4a72b90f1fb9620298424d44d8c7203e9aa10adccd205139f8112f2361f",
                         "transactions": [],
                         "withdrawals": [
@@ -4190,8 +4136,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xa89acd96ffcd78d67db00815bb353c192c635daf925f1dbc03498beeaeeeb7d7",
                         "transactions": [],
                         "withdrawals": [
@@ -4315,8 +4259,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x35796975fb2652bd598eb1c7750a4d3b6e63d407d413b09f01413617db5fe707",
                         "transactions": [],
                         "withdrawals": [
@@ -4440,8 +4382,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xa1f7eae7e841cb02fe816efbc52b457e4bc32bcac30f42e0239b4c903eacef97",
                         "transactions": [],
                         "withdrawals": [
@@ -4565,8 +4505,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xe4cb15baac8ec415b4058486a9fe1abfc5c4185ce24b3c2d2d9cf5fe1bdf3138",
                         "transactions": [],
                         "withdrawals": [
@@ -4690,8 +4628,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xf40f7428abf1b6ba41568b6f1b483ffed2865bf87c80ea7c5663d790dbc41749",
                         "transactions": [],
                         "withdrawals": [
@@ -4815,8 +4751,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x847dceca7a09039ae35c06fa15824286f221985fdc6fa83807d705758db83d13",
                         "transactions": [],
                         "withdrawals": [
@@ -4940,8 +4874,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x34ddc1d8dc5e85c0a5c0fd2ce21678c64facb8d3508ffc02dda98a54d327ba36",
                         "transactions": [],
                         "withdrawals": [
@@ -5065,8 +4997,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0xf5450bf898559c3f60d3ea67dee6afc157447ae780e067a5617d5587667d97bf",
                         "transactions": [],
                         "withdrawals": [
@@ -5190,8 +5120,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x9038be6830e886adb1e70f6bb1bba2fb86a1d729d1c475c55388a886baafea57",
                         "transactions": [],
                         "withdrawals": [
@@ -5321,13 +5249,11 @@
         "network": "Prague",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "uncleHash": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
             "coinbase": "0x0000000000000000000000000000000000000000",
             "stateRoot": "0x6f978e5ec827eef738381e1ca1e9332001ac548e31fdb82b90319b3ae94e22d7",
             "transactionsTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "receiptTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "bloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "difficulty": "0x00",
             "number": "0x00",
             "gasLimit": "0x016345785d8a0000",
             "gasUsed": "0x00",
@@ -5337,8 +5263,6 @@
             "nonce": "0x0000000000000000",
             "baseFeePerGas": "0x07",
             "withdrawalsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-            "blobGasUsed": "0x00",
-            "excessBlobGas": "0x00",
             "parentBeaconBlockRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
             "requestsHash": "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
             "hash": "0xf2f32387a72edb36cf2ffc14ae548c04625433039f9d5b3d7622e32a026dfa24"
@@ -5615,8 +5539,6 @@
                         "extraData": "0x",
                         "prevRandao": "0x0000000000000000000000000000000000000000000000000000000000000000",
                         "baseFeePerGas": "0x7",
-                        "blobGasUsed": "0x0",
-                        "excessBlobGas": "0x0",
                         "blockHash": "0x2fb448cd21e5ec647ad4662f62b98707a2e2f8ce423eff8dc8c8369dd8052c67",
                         "transactions": [],
                         "withdrawals": [
@@ -7378,13 +7300,11 @@
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "uncleHash": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
             "coinbase": "0x0000000000000000000000000000000000000000",
             "stateRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "transactionsTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "receiptTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "bloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "difficulty": "0x00",
             "number": "0x00",
             "gasLimit": "0x016345785d8a0000",
             "gasUsed": "0x00",
@@ -8685,13 +8605,11 @@
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "uncleHash": "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
             "coinbase": "0x0000000000000000000000000000000000000000",
             "stateRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "transactionsTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "receiptTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "bloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-            "difficulty": "0x00",
             "number": "0x00",
             "gasLimit": "0x016345785d8a0000",
             "gasUsed": "0x00",

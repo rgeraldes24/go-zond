@@ -17,7 +17,6 @@
         "genesisBlockHeader" : {
             "bloom" : "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
             "coinbase" : "0x8888f1f195afa192cfee860698584c030f4c9db1",
-            "difficulty" : "231072",
             "extraData" : "0x42",
             "gasLimit" : "3141592",
             "gasUsed" : "0",
@@ -29,7 +28,6 @@
             "mixHash" : "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "nonce" : "0x0102030405060708",
             "transactionsTrie" : "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-            "uncleHash" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347"
         },
         "sealEngine" : "NoProof",
         "expect" : [
@@ -91,7 +89,6 @@
                 "blocknumber" : "3",
                 "blockHeader" : {
                     "RelTimestamp" : "288",
-                    "difficulty" : "206229"
                 },
                 "transactions" : [
                     {
@@ -112,7 +109,6 @@
                 "//blocknumber" : "4",
                 "blockHeader" : {
                     "RelTimestamp" : "218",
-                    "difficulty" : "207045"
                 },
                 "expectException" : {
                     ">=Istanbul" : "TR_GasLimitReached"
@@ -139,7 +135,6 @@
                 "//blocknumber" : "5",
                 "blockHeader" : {
                     "RelTimestamp" : "258",
-                    "difficulty" : "206637"
                 },
                 "expectException" : {
                     ">=Istanbul" : "TR_GasLimitReached"
@@ -167,7 +162,6 @@
                 "//blocknumber" : "6",
                 "blockHeader" : {
                     "//difficulty" : "209493 instead of 206229 (all of the others)",
-                    "difficulty" : "209493",
                     "RelTimestamp" : "5"
                 },
                 "transactions" : [
@@ -189,7 +183,6 @@
                 "//blocknumber" : "7",
                 "blockHeader" : {
                     "RelTimestamp" : "288",
-                    "difficulty" : "206229"
                 },
                 "transactions" : [
                     {
@@ -210,7 +203,6 @@
                 "//blocknumber" : "8",
                 "blockHeader" : {
                     "//difficulty" : "209493 instead of 206229 (all of the others)",
-                    "difficulty" : "199293"
                 },
                 "transactions" : [
                     {
@@ -231,7 +223,6 @@
                 "//blocknumber" : "9",
                 "blockHeader" : {
                     "RelTimestamp" : "288",
-                    "difficulty" : "206229"
                 },
                 "transactions" : [
                     {
@@ -252,7 +243,6 @@
                 "//blocknumber" : "10",
                 "blockHeader" : {
                     "RelTimestamp" : "288",
-                    "difficulty" : "206229"
                 },
                 "transactions" : [
                 ],
@@ -264,7 +254,6 @@
                 "//blocknumber" : "11",
                 "blockHeader" : {
                     "RelTimestamp" : "288",
-                    "difficulty" : "206229"
                 },
                 "transactions" : [
                     {
@@ -285,7 +274,6 @@
                 "//blocknumber" : "12",
                 "blockHeader" : {
                     "RelTimestamp" : "200",
-                    "difficulty" : "207249"
                 },
                "expectException" : {
                     ">=Istanbul" : "TR_NoFunds"
@@ -312,7 +300,6 @@
                 "//blocknumber" : "13",
                 "blockHeader" : {
                     "RelTimestamp" : "288",
-                    "difficulty" : "206229"
                 },
                 "transactions" : [
                     {
