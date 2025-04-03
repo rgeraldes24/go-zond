@@ -18,7 +18,7 @@
             "hash": "0x1dc21f519328bd14d43ecbc376926b365daf7e7ce870434f79c0d72f93239ea6"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x3660006000376040610200366000600060095af1600055610200516001556102205160025500",
@@ -26,7 +26,7 @@
                     "0x00": "0xdeadbeef"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
                 "nonce": "0x00",
                 "balance": "0x3635c9adc5dea00000",
                 "code": "0x",
@@ -34,7 +34,7 @@
             }
         },
         "postState": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0186a0",
                 "code": "0x3660006000376040610200366000600060095af1600055610200516001556102205160025500",
@@ -44,13 +44,13 @@
                     "0x02": "0x548083b610bb8591ca50418eabd15b6489a936b178a435b4c182ffa475eba4d8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
                 "nonce": "0x01",
                 "balance": "0x3635c9adc5de934054",
                 "code": "0x",
                 "storage": {}
             },
-            "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba": {
+            "Z2adc25665018aa1fe0e6bc666dac8fc2697ff9ba": {
                 "nonce": "0x00",
                 "balance": "0x1bc16d674ed3390c",
                 "code": "0x",
@@ -66,7 +66,7 @@
             {
                 "blockHeader": {
                     "parentHash": "0x1dc21f519328bd14d43ecbc376926b365daf7e7ce870434f79c0d72f93239ea6",
-                    "coinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
+                    "coinbase": "Z2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
                     "stateRoot": "0x3b25d19ee8f7a62711d12650ade62049133937d616238744a4e2fe3d1d0adee1",
                     "transactionsTrie": "0xb87328c09994e33fb9f5cba180699b3c48f678baa05d3a84c063313758ed3aee",
                     "receiptTrie": "0x5416304e80753723d8624d92d16b9caa2b78ecc91ecc0f9849d5c7ce6edd84ef",
