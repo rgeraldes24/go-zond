@@ -1,5 +1,5 @@
 {
-    "solidityExample" : {
+    "hyperionExample" : {
         "_info" : {
             "comment" : "An example test for using solidity contracts in the test",
             "filling-rpc-server" : "evm version 1.13.11-unstable-765f2904-20240124",
@@ -7,13 +7,12 @@
             "generatedTestHash" : "9d7e8c2b97d93e29a3795d2f43a03a383876123950ea0a6d223faddebed28991",
             "lllcversion" : "Version: 0.5.14-develop.2023.7.11+commit.c58ab2c6.mod.Linux.g++",
             "solidity" : "Version: 0.8.21+commit.d9974bed.Linux.g++",
-            "source" : "src/GeneralStateTestsFiller/stExample/solidityExampleFiller.yml",
+            "source" : "src/GeneralStateTestsFiller/stExample/hyperionExampleFiller.yml",
             "sourceHash" : "eeb2f84776c4cb71c359a9a792b91ecfe1cd86344d329e11d5cf2f9f804bcd1b"
         },
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x05f5e100",
             "currentNumber" : "0x01",

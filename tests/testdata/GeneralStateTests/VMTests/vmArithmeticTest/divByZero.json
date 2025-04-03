@@ -107,7 +107,7 @@
                 "97" : "mulmod_neg2_neg1_0"
             },
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/VMTests/vmArithmeticTest/divByZeroFiller.yml",
             "sourceHash" : "fc839b4a5f88c85f17559dfdc6295100e93c4a2a9002d6345be05f909806e216"
         },
@@ -129,7 +129,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x05f5e100",
             "currentNumber" : "0x01",

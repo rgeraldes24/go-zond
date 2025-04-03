@@ -17,7 +17,6 @@
             "nonce": "0x0000000000000000",
             "baseFeePerGas": "0x07",
             "withdrawalsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-            "parentBeaconBlockRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
             "hash": "0xc8a610e7a873c47c02883cdeea2be583937771b9affa9059fffc14c5dfbb025c"
         },
         "pre": {
@@ -143,7 +142,6 @@
                     "nonce": "0x0000000000000000",
                     "baseFeePerGas": "0x07",
                     "withdrawalsRoot": "0x23e387493a982bbd1022d502e2cecab24f6bb8159be25c06ac52d66e2e848ee5",
-                    "parentBeaconBlockRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "hash": "0x1f8aa53c1836461ab0760cc5506e8e26eea410cc59b8f34015ab6d5127636f48"
                 },
                 "transactions": [
@@ -211,7 +209,6 @@
                     "nonce": "0x0000000000000000",
                     "baseFeePerGas": "0x07",
                     "withdrawalsRoot": "0x1f57cf256e3a54bebeb294433811b7fba82fe0cdc9b81f0b56ec472daa82efc7",
-                    "parentBeaconBlockRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "hash": "0xcf7f0447d0c35db4d17d83bcd7e85f508e1fc0c2bc19825ae0838b02dec7425d"
                 },
                 "transactions": [
@@ -298,7 +295,6 @@
             "nonce": "0x0000000000000000",
             "baseFeePerGas": "0x07",
             "withdrawalsRoot": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
-            "parentBeaconBlockRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
             "requestsHash": "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
             "hash": "0x2b262fe9b246af8bc7d2c39bcbaf8f47e3d0064571c9f7e09ba426ce13340fa3"
         },
@@ -545,7 +541,6 @@
                     "nonce": "0x0000000000000000",
                     "baseFeePerGas": "0x07",
                     "withdrawalsRoot": "0x23e387493a982bbd1022d502e2cecab24f6bb8159be25c06ac52d66e2e848ee5",
-                    "parentBeaconBlockRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "requestsHash": "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
                     "hash": "0x75d0f28728acb3e5575eaaabe6fafea25553d067788b40fd86eac22aabf6f652"
                 },
@@ -614,7 +609,6 @@
                     "nonce": "0x0000000000000000",
                     "baseFeePerGas": "0x07",
                     "withdrawalsRoot": "0x1f57cf256e3a54bebeb294433811b7fba82fe0cdc9b81f0b56ec472daa82efc7",
-                    "parentBeaconBlockRoot": "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "requestsHash": "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
                     "hash": "0x419be63826e40694403db5b41a859cc46d0943cc6ab0783a3a93ca298394c063"
                 },

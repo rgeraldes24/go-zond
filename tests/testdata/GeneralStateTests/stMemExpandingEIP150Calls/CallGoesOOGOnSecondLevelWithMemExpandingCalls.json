@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "43bb5e73bfa3e83bcac488692d9854774dfd7d540843ca989d1a9b2086d71e73",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stMemExpandingEIP150Calls/CallGoesOOGOnSecondLevelWithMemExpandingCallsFiller.json",
             "sourceHash" : "1d8cbbf8e9fbbc4b73cc6653c68cc09577991d0d9048be4602bd7ef589e98a13"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x989680",
             "currentNumber" : "0x01",

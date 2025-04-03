@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "ebd06ab33c4bf0135d25d4f8e1dff6c356cd924d4fe2312e90c6f2aaa2af350e",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stTransactionTest/InternalCallHittingGasLimit2Filler.json",
             "sourceHash" : "3798e19551507df4a73cd2e6e971e33e5519bd76000d52916f2204a318546759"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adf5374fce5edbc8e2a8697c15331677e6ebf0b",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0xba96",
             "currentNumber" : "0x01",

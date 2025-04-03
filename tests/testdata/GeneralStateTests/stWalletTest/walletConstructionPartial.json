@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "1ce15e64056f57311bd54ee5e9eff146b9da72fd76c71bb57ee524ed095b04a3",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stWalletTest/walletConstructionPartialFiller.json",
             "sourceHash" : "d3270cb542c2ee5a06e5af6665be640bab48e042842562723211503951d657b1"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x989680",
             "currentNumber" : "0x01",

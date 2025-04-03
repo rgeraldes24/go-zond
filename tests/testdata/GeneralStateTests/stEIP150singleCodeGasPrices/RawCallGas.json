@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "6c20ba5d4bc743c9ccb23b37d10b172336f36430bc8e203776b273f6e5e8d83c",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stEIP150singleCodeGasPrices/RawCallGasFiller.json",
             "sourceHash" : "2f4a66078ae0706154e3b062319035d2bcd53ae538e9564e50d6902bdfac0987"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x989680",
             "currentNumber" : "0x01",

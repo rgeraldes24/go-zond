@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "f9b09ff3b5570d04dc6c57e9a847c3227fa0365079d839c89602cc74438f8d72",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stStaticCall/static_callcodecall_10_SuicideEnd2Filler.json",
             "sourceHash" : "e49214c0048ba6e0d7483ac4ffd0558863dae5441302be345dca769053b16f6f"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x01c9c380",
             "currentNumber" : "0x01",

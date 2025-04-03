@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "6430b8391209e1be258e918ac5f9a67d73252881d78cd3d2dbac8f9471205e02",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stTransactionTest/ContractStoreClearsOOGFiller.json",
             "sourceHash" : "654acc6b5d4046f9615913327479d4e0233e6537051bc4d9ce666fd8004f8ef8"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x0186a0",
             "currentNumber" : "0x01",

@@ -1,12 +1,11 @@
 # An example of using solidity contracts in the test
 # More examples at https://ethereum-tests.readthedocs.io/en/latest/state-transition-tutorial.html#solidity-tests
-solidityExample:
+hyperionExample:
   _info:
     comment: An example test for using solidity contracts in the test
 
   env:
     currentCoinbase: 2adc25665018aa1fe0e6bc666dac8fc2697ff9ba
-    currentDifficulty: '0x20000'
     currentGasLimit: "100000000"
     currentNumber: "1"
     currentTimestamp: "1000"

@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "602792bb210497100a96f818e652c1c41e438495469d356408fcaea2bff550e8",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stWalletTest/walletExecuteOverDailyLimitMultiOwnerFiller.json",
             "sourceHash" : "b42792de0d2b38a039107a7ce65dbab4a040039e6889f0d538b499a13568e5c1"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x05f5e100",
             "currentNumber" : "0x01",

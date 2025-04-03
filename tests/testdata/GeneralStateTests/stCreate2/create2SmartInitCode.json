@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "bb8e087940569d268935f2f1f9e2735adc0ef61448b0cb1b4a3bf04b2d39a16f",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stCreate2/create2SmartInitCodeFiller.json",
             "sourceHash" : "49662a41994dc46a2747d3310023efb28d9bce38dfbb8b6be38475f0e14c2736"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x0b00000000",
             "currentNumber" : "0x01",

@@ -1,5 +1,5 @@
 {
-    "solidityExample_d0g0v0_Cancun" : {
+    "hyperionExample_d0g0v0_Cancun" : {
         "_info" : {
             "comment" : "An example test for using solidity contracts in the test",
             "filling-rpc-server" : "evmone-t8n 0.14.0-13+commit.4d363c36",
@@ -7,8 +7,8 @@
             "fixture-format" : "blockchain_test",
             "generatedTestHash" : "ae5db40258d26a5ca49f6ffb199add936f2022ac9ff94d41adae9212ea906313",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
-            "source" : "src/GeneralStateTestsFiller/stExample/solidityExampleFiller.yml",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "source" : "src/GeneralStateTestsFiller/stExample/hyperionExampleFiller.yml",
             "sourceHash" : "183aba76ca652aca9dba9268833bc330bb2c52d0d83d0f00d5d1bd167f983b5d"
         },
         "blocks" : [
@@ -24,7 +24,6 @@
                     "mixHash" : "0x0000000000000000000000000000000000000000000000000000000000020000",
                     "nonce" : "0x0000000000000000",
                     "number" : "0x01",
-                    "parentBeaconBlockRoot" : "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "parentHash" : "0x2bd0f5b117bff2896264994c3d44169106af4f1ced4949521caecc5ea72c5648",
                     "receiptTrie" : "0x8560690af929551571bc1385f70c39c932a89e08b43355d540a38125ebd87490",
                     "stateRoot" : "0xc5052d8bf09efc0fb298bcaa2e58a1e7c1ea2fb1c426a29ae69622e074d8c4b2",
@@ -75,7 +74,6 @@
             "mixHash" : "0x0000000000000000000000000000000000000000000000000000000000020000",
             "nonce" : "0x0000000000000000",
             "number" : "0x00",
-            "parentBeaconBlockRoot" : "0x0000000000000000000000000000000000000000000000000000000000000000",
             "parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
             "receiptTrie" : "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "stateRoot" : "0x5b10cee9610fab5ceec587e190917d6011b16bda7d3b0dd15535278326472f88",
@@ -159,7 +157,7 @@
         },
         "sealEngine" : "NoProof"
     },
-    "solidityExample_d0g0v0_Prague" : {
+    "hyperionExample_d0g0v0_Prague" : {
         "_info" : {
             "comment" : "An example test for using solidity contracts in the test",
             "filling-rpc-server" : "evmone-t8n 0.14.0-13+commit.4d363c36",
@@ -167,8 +165,8 @@
             "fixture-format" : "blockchain_test",
             "generatedTestHash" : "b143376842724bd8e0e491a1e37eb4ab004f931d54fcb9a637f01804129b9f0e",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
-            "source" : "src/GeneralStateTestsFiller/stExample/solidityExampleFiller.yml",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "source" : "src/GeneralStateTestsFiller/stExample/hyperionExampleFiller.yml",
             "sourceHash" : "183aba76ca652aca9dba9268833bc330bb2c52d0d83d0f00d5d1bd167f983b5d"
         },
         "blocks" : [
@@ -184,7 +182,6 @@
                     "mixHash" : "0x0000000000000000000000000000000000000000000000000000000000020000",
                     "nonce" : "0x0000000000000000",
                     "number" : "0x01",
-                    "parentBeaconBlockRoot" : "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "parentHash" : "0x07a3f3d59294181e92247d2b582928226c07faacfda89a3a6a0843726ea35b1e",
                     "receiptTrie" : "0x8560690af929551571bc1385f70c39c932a89e08b43355d540a38125ebd87490",
                     "requestsHash" : "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -236,7 +233,6 @@
             "mixHash" : "0x0000000000000000000000000000000000000000000000000000000000020000",
             "nonce" : "0x0000000000000000",
             "number" : "0x00",
-            "parentBeaconBlockRoot" : "0x0000000000000000000000000000000000000000000000000000000000000000",
             "parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
             "receiptTrie" : "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "requestsHash" : "0xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",

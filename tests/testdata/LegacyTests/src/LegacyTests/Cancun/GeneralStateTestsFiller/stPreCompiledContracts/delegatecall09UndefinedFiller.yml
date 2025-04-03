@@ -7,7 +7,6 @@ delegatecall09Undefined:
       In case the precompile is undefined, the call should succeed and no gas should be consumed.
   env:
     currentCoinbase: a94f5374fce5edbc8e2a8697c15331677e6ebf0b
-    currentDifficulty: 1
     currentGasLimit: 1000000
     currentNumber: 1
     currentTimestamp: 1000

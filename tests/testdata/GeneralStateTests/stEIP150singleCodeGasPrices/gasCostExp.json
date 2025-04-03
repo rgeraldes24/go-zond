@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "9887b391150d2245d404a368f785b50ffae84850db68d69453f6422d64acf882",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stEIP150singleCodeGasPrices/gasCostExpFiller.yml",
             "sourceHash" : "2a172482225b533a7e3fccc23fd7bb2b531ca5c60b7f4c9bc262e52baa959c1a"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x05f5e100",
             "currentNumber" : "0x01",

@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "86605731b1a8644a93a409f119a8c011de9dca0218ee046565ef3c9440ebace6",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stEIP150Specific/Transaction64Rule_d64e0Filler.json",
             "sourceHash" : "a0eeed9dc64ec3ccb92b48eb3d571235a68c638eb61dac69b25fd45b3d0806bb"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x989680",
             "currentNumber" : "0x01",

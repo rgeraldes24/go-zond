@@ -7,7 +7,6 @@ StaticcallForPrecompilesIssue683:
       Pullrequest link with original bytecode: https://github.com/dapphub/dapptools/pull/360
   env:
     currentCoinbase: '0xcafe000000000000000000000000000000000001'
-    currentDifficulty: '0x20000'
     currentGasLimit: '10000000'
     currentNumber: '1'
     currentTimestamp: '1000'

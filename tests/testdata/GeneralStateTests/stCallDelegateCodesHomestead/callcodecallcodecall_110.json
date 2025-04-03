@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "f53c85799b91b629e124caf75958a07c7c35eba37059ff0e5f2b10412d0e4dd6",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stCallDelegateCodesHomestead/callcodecallcodecall_110Filler.json",
             "sourceHash" : "d4605fb91d69b376185d1c2be6c087bda5503d4d66c64c34c31925b6379ed6db"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x01c9c380",
             "currentNumber" : "0x01",

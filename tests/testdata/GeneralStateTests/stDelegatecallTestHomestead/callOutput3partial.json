@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "65ff05a60c231af166165038c034391545cb9f9a6dea3bc1effb30b76f3f88d5",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stDelegatecallTestHomestead/callOutput3partialFiller.json",
             "sourceHash" : "7e69609c322519323bd49ad9378105fc519de7380dea27ed47aad2f20db9514e"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x0f4240",
             "currentNumber" : "0x01",

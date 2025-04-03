@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "05cea8a72e18ecc360b0413b863d8560726f20c81388fc65d3e0cfe6f2b71d55",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stWalletTest/multiOwnedChangeOwner_fromNotOwnerFiller.json",
             "sourceHash" : "b6f542d61baa6694a034858938c8d744b60c5ce23da1051777e89076a7993372"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x05f5e100",
             "currentNumber" : "0x01",

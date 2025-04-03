@@ -180,7 +180,6 @@
                         "currentCoinbase": {
                             "$ref": "#/definitions/HexData"
                         },
-                        "currentDifficulty": {
                             "$ref": "#/definitions/ConfusedHexType"
                         },
                         "currentGasLimit": {
@@ -198,7 +197,6 @@
                     },
                     "required": [
                         "currentCoinbase",
-                        "currentDifficulty",
                         "currentGasLimit",
                         "currentNumber",
                         "currentTimestamp",

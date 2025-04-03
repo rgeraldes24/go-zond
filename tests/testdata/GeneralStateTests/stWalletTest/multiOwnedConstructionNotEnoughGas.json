@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "13a8ebee25c5ff64f78d5678f87e26884406974432eae6d1a2d9baf65b6e4dc1",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stWalletTest/multiOwnedConstructionNotEnoughGasFiller.json",
             "sourceHash" : "880abcd631573dd4e461bd0b2735882e61093e5c22155e2fc9cca3e77b8a6268"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x0f4240",
             "currentNumber" : "0x01",

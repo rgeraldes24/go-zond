@@ -7,7 +7,6 @@ DelegatecallToPrecompileFromTransaction:
       It should execute successfully for each precompiled contract.
   env:
     currentCoinbase: '0xcafe000000000000000000000000000000000001'
-    currentDifficulty: '0x20000'
     currentGasLimit: '10000000'
     currentNumber: '1'
     currentTimestamp: '1000'

@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "d23f7be0eff51f0afc4512b0395819d9427e49caba714b70690cc5eaa8fd4423",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stZeroCallsRevert/ZeroValue_DELEGATECALL_ToEmpty_OOGRevert_ParisFiller.json",
             "sourceHash" : "71f469f91b02e58c245de713a5f08ff9017c65739a955c46d0c1fc5874937ec9"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x989680",
             "currentNumber" : "0x01",

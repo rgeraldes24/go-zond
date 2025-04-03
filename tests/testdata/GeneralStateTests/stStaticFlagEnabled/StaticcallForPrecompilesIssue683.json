@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "4251e4bf2b9f7c156a04a09dbe38d97842b84cef05edfb0018ed6e5d00e302ab",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stStaticFlagEnabled/StaticcallForPrecompilesIssue683Filler.yml",
             "sourceHash" : "854ca31bee31d3a36116496a352f21b9da4f9fdfc40f4c63252575d4906db7a8"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0xcafe000000000000000000000000000000000001",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x989680",
             "currentNumber" : "0x01",

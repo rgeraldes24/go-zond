@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "46b347c3b3fa0607f4582aa2799fded7e7547655133d4114526632b98a3f158b",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stZeroKnowledge/ecmul_7827-6598_5617_21000_96Filler.json",
             "sourceHash" : "34221f5611afdfd2b31953633e15d3e60a205b45ecc44b36b0abe8ea7f8b9911"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x3535353535353535353535353535353535353535",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x05f5e100",
             "currentNumber" : "0x01",

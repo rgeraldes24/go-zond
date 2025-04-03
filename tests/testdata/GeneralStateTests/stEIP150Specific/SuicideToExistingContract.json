@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "73a3bd2d254669294297267dbb24637c87c7e51217a03aaacd9735a836cba128",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stEIP150Specific/SuicideToExistingContractFiller.json",
             "sourceHash" : "a689e775a3fa8b9ca976789e6bea9cd42c03795904ac527418d74fd3f7b53c3b"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x989680",
             "currentNumber" : "0x01",

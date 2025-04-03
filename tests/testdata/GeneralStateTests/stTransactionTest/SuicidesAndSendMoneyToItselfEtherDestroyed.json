@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "b179fdecd63f9b52046a4a96ff3adf1ffcbbdaf27478338dcdbc0f9f73927656",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stTransactionTest/SuicidesAndSendMoneyToItselfEtherDestroyedFiller.json",
             "sourceHash" : "cd47746d59ceb3c560959d27aa9e6a35682535739fe19b88c7aa91b0369bda4a"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x0f4240",
             "currentNumber" : "0x01",

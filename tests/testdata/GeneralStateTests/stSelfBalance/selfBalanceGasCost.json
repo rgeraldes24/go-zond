@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "b6d265a26e88f85f296c8bfd00aa460fd150cae4e56bf48baaf17cf439bc42ac",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stSelfBalance/selfBalanceGasCostFiller.json",
             "sourceHash" : "5cbf5938bb61583c3420a72b06e264412696e74bfd9ba69871662bdf89cf9cb1"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x02540be400",
             "currentNumber" : "0x01",

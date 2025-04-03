@@ -1,5 +1,5 @@
 {
-    "solidityExample_d0g0v0_Berlin" : {
+    "hyperionExample_d0g0v0_Berlin" : {
         "_info" : {
             "comment" : "An example test for using solidity contracts in the test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-d8e0807d-20240306",
@@ -7,7 +7,7 @@
             "generatedTestHash" : "56ad95b1b40b8b0aacd9955650525509d26ccc364a81e5b7b1e20d4ac136c014",
             "lllcversion" : "Version: 0.5.14-develop.2023.7.11+commit.c58ab2c6.mod.Linux.g++",
             "solidity" : "Version: 0.8.21+commit.d9974bed.Linux.g++",
-            "source" : "src/GeneralStateTestsFiller/stExample/solidityExampleFiller.yml",
+            "source" : "src/GeneralStateTestsFiller/stExample/hyperionExampleFiller.yml",
             "sourceHash" : "eeb2f84776c4cb71c359a9a792b91ecfe1cd86344d329e11d5cf2f9f804bcd1b"
         },
         "blocks" : [
@@ -131,7 +131,7 @@
         },
         "sealEngine" : "NoProof"
     },
-    "solidityExample_d0g0v0_Cancun" : {
+    "hyperionExample_d0g0v0_Cancun" : {
         "_info" : {
             "comment" : "An example test for using solidity contracts in the test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-d8e0807d-20240306",
@@ -139,7 +139,7 @@
             "generatedTestHash" : "4da7eda36e111eab45262b772618909fffa9adce719784b35d97d0cba91e8b54",
             "lllcversion" : "Version: 0.5.14-develop.2023.7.11+commit.c58ab2c6.mod.Linux.g++",
             "solidity" : "Version: 0.8.21+commit.d9974bed.Linux.g++",
-            "source" : "src/GeneralStateTestsFiller/stExample/solidityExampleFiller.yml",
+            "source" : "src/GeneralStateTestsFiller/stExample/hyperionExampleFiller.yml",
             "sourceHash" : "eeb2f84776c4cb71c359a9a792b91ecfe1cd86344d329e11d5cf2f9f804bcd1b"
         },
         "blocks" : [
@@ -155,7 +155,6 @@
                     "mixHash" : "0x0000000000000000000000000000000000000000000000000000000000020000",
                     "nonce" : "0x0000000000000000",
                     "number" : "0x01",
-                    "parentBeaconBlockRoot" : "0x0000000000000000000000000000000000000000000000000000000000000000",
                     "parentHash" : "0x9ad3240cfe779971bab331aea296d280992470757f29375f5ebd3ec2a499b5be",
                     "receiptTrie" : "0x8560690af929551571bc1385f70c39c932a89e08b43355d540a38125ebd87490",
                     "stateRoot" : "0x33210f3914f70c314bd926ff7db55b39c4bef165dfdd11aef5ba197810150f33",
@@ -195,7 +194,6 @@
             "mixHash" : "0x0000000000000000000000000000000000000000000000000000000000020000",
             "nonce" : "0x0000000000000000",
             "number" : "0x00",
-            "parentBeaconBlockRoot" : "0x0000000000000000000000000000000000000000000000000000000000000000",
             "parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
             "receiptTrie" : "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "stateRoot" : "0xbeb211abbf10a2d9d2393221d12c2edd36cf673f91e3c964f9f04460d972703d",
@@ -279,7 +277,7 @@
         },
         "sealEngine" : "NoProof"
     },
-    "solidityExample_d0g0v0_London" : {
+    "hyperionExample_d0g0v0_London" : {
         "_info" : {
             "comment" : "An example test for using solidity contracts in the test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-d8e0807d-20240306",
@@ -287,7 +285,7 @@
             "generatedTestHash" : "1c2bdd76ab16121e32a9cf53270633b7fc7ec31c5a99dfd8c389531241a5d9ff",
             "lllcversion" : "Version: 0.5.14-develop.2023.7.11+commit.c58ab2c6.mod.Linux.g++",
             "solidity" : "Version: 0.8.21+commit.d9974bed.Linux.g++",
-            "source" : "src/GeneralStateTestsFiller/stExample/solidityExampleFiller.yml",
+            "source" : "src/GeneralStateTestsFiller/stExample/hyperionExampleFiller.yml",
             "sourceHash" : "eeb2f84776c4cb71c359a9a792b91ecfe1cd86344d329e11d5cf2f9f804bcd1b"
         },
         "blocks" : [
@@ -413,7 +411,7 @@
         },
         "sealEngine" : "NoProof"
     },
-    "solidityExample_d0g0v0_Paris" : {
+    "hyperionExample_d0g0v0_Paris" : {
         "_info" : {
             "comment" : "An example test for using solidity contracts in the test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-d8e0807d-20240306",
@@ -421,7 +419,7 @@
             "generatedTestHash" : "d4461b6a2f8bb283b69ed8a35976b071bf5372a511b64cd2e4aa663d5bed90ec",
             "lllcversion" : "Version: 0.5.14-develop.2023.7.11+commit.c58ab2c6.mod.Linux.g++",
             "solidity" : "Version: 0.8.21+commit.d9974bed.Linux.g++",
-            "source" : "src/GeneralStateTestsFiller/stExample/solidityExampleFiller.yml",
+            "source" : "src/GeneralStateTestsFiller/stExample/hyperionExampleFiller.yml",
             "sourceHash" : "eeb2f84776c4cb71c359a9a792b91ecfe1cd86344d329e11d5cf2f9f804bcd1b"
         },
         "blocks" : [
@@ -540,7 +538,7 @@
         },
         "sealEngine" : "NoProof"
     },
-    "solidityExample_d0g0v0_Shanghai" : {
+    "hyperionExample_d0g0v0_Shanghai" : {
         "_info" : {
             "comment" : "An example test for using solidity contracts in the test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-d8e0807d-20240306",
@@ -548,7 +546,7 @@
             "generatedTestHash" : "9504addea48356cabf678cdd909cd5e656cb52e52bc6e052e82fcbb84260ebf1",
             "lllcversion" : "Version: 0.5.14-develop.2023.7.11+commit.c58ab2c6.mod.Linux.g++",
             "solidity" : "Version: 0.8.21+commit.d9974bed.Linux.g++",
-            "source" : "src/GeneralStateTestsFiller/stExample/solidityExampleFiller.yml",
+            "source" : "src/GeneralStateTestsFiller/stExample/hyperionExampleFiller.yml",
             "sourceHash" : "eeb2f84776c4cb71c359a9a792b91ecfe1cd86344d329e11d5cf2f9f804bcd1b"
         },
         "blocks" : [

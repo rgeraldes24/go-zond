@@ -15,7 +15,6 @@ extCodeHashDeletedAccount1Cancun:
       Same as extCodeHashDeletedAccount1Cancun test but with dynamic account suicide for Cancun
   env:
     currentCoinbase: 2adc25665018aa1fe0e6bc666dac8fc2697ff9ba
-    currentDifficulty: '0x20000'
     currentGasLimit: "1000000"
     currentNumber: "1"
     currentTimestamp: "1000"

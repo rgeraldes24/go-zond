@@ -182,7 +182,6 @@
                         "currentCoinbase": {
                             "$ref": "#/definitions/HexMaybePrefix"
                         },
-                        "currentDifficulty": {
                             "$ref": "#/definitions/IntegerOrConfusedHex"
                         },
                         "currentGasLimit": {
@@ -200,7 +199,6 @@
                     },
                     "required": [
                         "currentCoinbase",
-                        "currentDifficulty",
                         "currentGasLimit",
                         "currentNumber",
                         "currentTimestamp",

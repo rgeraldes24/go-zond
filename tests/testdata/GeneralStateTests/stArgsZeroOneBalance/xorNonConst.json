@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "7666dab73e7a466bfaf48a1a198ae126165a9e91a3a3a8450dd8efc1c0b9d28f",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stArgsZeroOneBalance/xorNonConstFiller.yml",
             "sourceHash" : "8b8c8723389c453b31502bdab13f1a999b91432fe1952b1369de904d316207a4"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x0f4240",
             "currentNumber" : "0x01",

@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "864fea3c175c4c9500def44c28182ec62fcca07c69c70b2083b94d7d3eb55473",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stTransactionTest/NoSrcAccountCreateFiller.yml",
             "sourceHash" : "182352f1f80fe427221a4c2fc5118997d1160212d843df179a5ac21fffd9d8d7"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x05500000",
             "currentNumber" : "0x01",

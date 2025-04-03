@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "546e32bb0ac6e53785af1f4fe7581dd134dc5056325458758f17b9a6d1177458",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stCallDelegateCodesCallCodeHomestead/callcodecallcallcode_101_SuicideEndFiller.json",
             "sourceHash" : "5314cf4b39d238a83c4b899dd4c216c714da975f6304af73093f6b17e7dd1544"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x01c9c380",
             "currentNumber" : "0x01",

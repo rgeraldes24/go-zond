@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "7ea020dd7ee1c63d49682b7619f8954780b38f02779df6c548f85a10394b9aa5",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stStaticCall/static_CREATE_ContractSuicideDuringInit_ThenStoreThenReturnFiller.json",
             "sourceHash" : "dc3c40d7957ad2ca5fdcb4b3b2ae924cba1704cca6597e881905f6ed6ae51911"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x989680",
             "currentNumber" : "0x01",

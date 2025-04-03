@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "e3998fe469c9f5757ffe5bc87c4ad4e7c7852c268c46098588e36062f92a4481",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stTransactionTest/SuicidesAndInternalCallSuicidesBonusGasAtCallFiller.json",
             "sourceHash" : "28fb3b180dee809ff302d02f271de703d207aeb7010e95d4c293948ec0306433"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x0f4240",
             "currentNumber" : "0x01",

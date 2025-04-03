@@ -153,7 +153,7 @@
                 "99" : "invalid_g2_subgroup"
             },
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stZeroKnowledge/ecpairing_inputsFiller.yml",
             "sourceHash" : "2bfe99b225d347e02f367de0a0592e4d6b475792188ca8ee8650614917444232"
         },
@@ -175,7 +175,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x00000000000000000000000000000000c014bace",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0xe4e1c0",
             "currentNumber" : "0x01",

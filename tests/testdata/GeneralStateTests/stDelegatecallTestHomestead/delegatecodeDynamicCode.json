@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "05ea020c8e4ba5acbd4c124c23e56dc0bec1bfe4266f4ef09b2dc0ee0b046e69",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stDelegatecallTestHomestead/delegatecodeDynamicCodeFiller.json",
             "sourceHash" : "10c00d5f94f70609c832e12e906fcb03d8e497bb63b4521d8462755bc7878e9f"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x0f4240",
             "currentNumber" : "0x01",

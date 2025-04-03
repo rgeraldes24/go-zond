@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "4b088dabceba3c5dcf5a414aa9413ba576ad189bd815e83de1210b0331382448",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stStaticCall/static_call_OOG_additionalGasCosts1Filler.json",
             "sourceHash" : "1671327ac021d2da46adb3a2057bab1a285a9c869790dc26c4ead2a2812243e3"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0xb2d05e00",
             "currentNumber" : "0x01",

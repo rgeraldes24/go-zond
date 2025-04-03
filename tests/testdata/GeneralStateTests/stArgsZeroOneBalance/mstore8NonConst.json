@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "bda2e2c97cd0c7673ae6a9ee57d73e94fc87acea638a50862cdfd2334db16cac",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stArgsZeroOneBalance/mstore8NonConstFiller.yml",
             "sourceHash" : "ab55fd3c67a65ac6a3ec731c78c546ce207cb63958d71de3a5469381e2518dbf"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x0f4240",
             "currentNumber" : "0x01",

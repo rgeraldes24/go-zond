@@ -7,7 +7,7 @@
             "fixture-format" : "state_test",
             "generatedTestHash" : "226c34f47edbb0bb111d5099b5b7a04fe9c5c8b0a6ca0e10efcd2fd96d6b6f9f",
             "lllcversion" : "Version: 0.5.14-develop.2024.11.5+commit.b2b86751.mod.Linux.g++",
-            "solidity" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
+            "hyperion" : "Version: 0.8.24+commit.e11b9ed9.Linux.g++",
             "source" : "src/GeneralStateTestsFiller/stStaticCall/static_callcodecallcallcode_101_OOGEFiller.json",
             "sourceHash" : "ffc06b8da9e5233285ec3fa3b5aa01ede1fd1c83d16b0a83772006e23c656a10"
         },
@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentDifficulty" : "0x020000",
             "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x01c9c380",
             "currentNumber" : "0x01",
