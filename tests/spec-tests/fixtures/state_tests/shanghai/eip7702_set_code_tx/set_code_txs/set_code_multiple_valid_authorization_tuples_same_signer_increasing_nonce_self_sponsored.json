@@ -1,5 +1,5 @@
 {
-    "tests/prague/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_multiple_valid_authorization_tuples_same_signer_increasing_nonce_self_sponsored[fork_Prague-state_test]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_multiple_valid_authorization_tuples_same_signer_increasing_nonce_self_sponsored[fork_Prague-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10,7 +10,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
                 "nonce": "0x00",
                 "balance": "0x3635c9adc5dea00000",
                 "code": "0x",
@@ -186,7 +186,7 @@
                     "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                 }
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {

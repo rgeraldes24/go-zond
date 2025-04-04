@@ -1,9 +1,9 @@
 {
-    "tests/constantinople/eip1014_create2/test_recreate.py::test_recreate[fork_Paris-blockchain_test_engine-recreate_on_separate_block_False]": {
-        "network": "Paris",
+    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_Paris-blockchain_test_engine-recreate_on_separate_block_False]": {
+        "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "coinbase": "0x0000000000000000000000000000000000000000",
+            "coinbase": "Z0000000000000000000000000000000000000000",
             "stateRoot": "0x505721270b6f8e490a52f75aff2d978bc9c1cbadfab062e8c9b4b983f5fd631b",
             "transactionsTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "receiptTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
@@ -19,7 +19,7 @@
             "hash": "0xbdf75c2d997a8b32c515e32b7a7272b51a3b9f80779ffe128816c42997082212"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x36600060003760003660006000f5",
@@ -33,7 +33,7 @@
             }
         },
         "postState": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x03",
                 "balance": "0x00",
                 "code": "0x36600060003760003660006000f5",
@@ -66,7 +66,7 @@
         },
         "lastblockhash": "0x37f81f6cb8396eadc713515c13ddd416a728b1b4e9c8a129bfe4503089e7abcb",
         "config": {
-            "network": "Paris"
+            "network": "Shanghai"
         },
         "engineNewPayloads": [
             {
@@ -137,11 +137,11 @@
             }
         }
     },
-    "tests/constantinople/eip1014_create2/test_recreate.py::test_recreate[fork_Paris-blockchain_test_engine-recreate_on_separate_block_True]": {
-        "network": "Paris",
+    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_Paris-blockchain_test_engine-recreate_on_separate_block_True]": {
+        "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "coinbase": "0x0000000000000000000000000000000000000000",
+            "coinbase": "Z0000000000000000000000000000000000000000",
             "stateRoot": "0x505721270b6f8e490a52f75aff2d978bc9c1cbadfab062e8c9b4b983f5fd631b",
             "transactionsTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "receiptTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
@@ -157,7 +157,7 @@
             "hash": "0xbdf75c2d997a8b32c515e32b7a7272b51a3b9f80779ffe128816c42997082212"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x36600060003760003660006000f5",
@@ -171,7 +171,7 @@
             }
         },
         "postState": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x03",
                 "balance": "0x00",
                 "code": "0x36600060003760003660006000f5",
@@ -204,7 +204,7 @@
         },
         "lastblockhash": "0x96da181c986d81c7e6f193f7abc5cb2497d52a9b986c565af6f9d6de62993287",
         "config": {
-            "network": "Paris"
+            "network": "Shanghai"
         },
         "engineNewPayloads": [
             {
@@ -298,11 +298,11 @@
             }
         }
     },
-    "tests/constantinople/eip1014_create2/test_recreate.py::test_recreate[fork_Shanghai-blockchain_test_engine-recreate_on_separate_block_False]": {
+    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_Shanghai-blockchain_test_engine-recreate_on_separate_block_False]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "coinbase": "0x0000000000000000000000000000000000000000",
+            "coinbase": "Z0000000000000000000000000000000000000000",
             "stateRoot": "0x505721270b6f8e490a52f75aff2d978bc9c1cbadfab062e8c9b4b983f5fd631b",
             "transactionsTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "receiptTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
@@ -319,7 +319,7 @@
             "hash": "0x038f927401bcdcf5b9c4645a3f9463d968c7563611699e04a0c8b3cbe7d6421a"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x36600060003760003660006000f5",
@@ -333,7 +333,7 @@
             }
         },
         "postState": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x03",
                 "balance": "0x00",
                 "code": "0x36600060003760003660006000f5",
@@ -439,11 +439,11 @@
             }
         }
     },
-    "tests/constantinople/eip1014_create2/test_recreate.py::test_recreate[fork_Shanghai-blockchain_test_engine-recreate_on_separate_block_True]": {
+    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_Shanghai-blockchain_test_engine-recreate_on_separate_block_True]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "coinbase": "0x0000000000000000000000000000000000000000",
+            "coinbase": "Z0000000000000000000000000000000000000000",
             "stateRoot": "0x505721270b6f8e490a52f75aff2d978bc9c1cbadfab062e8c9b4b983f5fd631b",
             "transactionsTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "receiptTrie": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
@@ -460,7 +460,7 @@
             "hash": "0x038f927401bcdcf5b9c4645a3f9463d968c7563611699e04a0c8b3cbe7d6421a"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x36600060003760003660006000f5",
@@ -474,7 +474,7 @@
             }
         },
         "postState": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x03",
                 "balance": "0x00",
                 "code": "0x36600060003760003660006000f5",

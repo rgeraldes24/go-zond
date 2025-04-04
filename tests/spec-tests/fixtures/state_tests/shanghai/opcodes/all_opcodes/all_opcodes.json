@@ -1,5 +1,5 @@
 {
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Berlin-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Berlin-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7,7 +7,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -1569,7 +1569,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3316,7 +3316,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Byzantium-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Byzantium-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3324,7 +3324,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -4886,7 +4886,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6618,7 +6618,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Cancun-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Cancun-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6629,7 +6629,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -8191,7 +8191,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -9959,7 +9959,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_ConstantinopleFix-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_ConstantinopleFix-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9967,7 +9967,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -11529,7 +11529,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -13274,7 +13274,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Frontier-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Frontier-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -13282,7 +13282,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -14844,7 +14844,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -16573,7 +16573,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Homestead-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Homestead-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -16581,7 +16581,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -18143,7 +18143,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -19873,7 +19873,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Istanbul-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Istanbul-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -19881,7 +19881,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -21443,7 +21443,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -23190,7 +23190,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_London-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_London-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -23199,7 +23199,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -24761,7 +24761,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -26509,7 +26509,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Paris-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Paris-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -26519,7 +26519,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -28081,7 +28081,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -29829,7 +29829,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Prague-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Prague-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -29840,7 +29840,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -31402,7 +31402,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -33175,7 +33175,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Shanghai-state_test]": {
+    "tests/shanghai/opcodes/test_all_opcodes.py::test_all_opcodes[fork_Shanghai-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -33185,7 +33185,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x0a",
                 "code": "0x600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160016001600160010000",
@@ -34747,7 +34747,7 @@
             "data": [
                 "0x"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {

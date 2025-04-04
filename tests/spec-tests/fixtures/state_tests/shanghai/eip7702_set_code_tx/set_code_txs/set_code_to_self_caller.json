@@ -1,5 +1,5 @@
 {
-    "tests/prague/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALL-evm_code_type_LEGACY-state_test-value_0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALL-evm_code_type_LEGACY-state_test-value_0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10,7 +10,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60005415600e580157600160015500602e5801565b60016000556000600060006000600073a94f5374fce5edbc8e2a8697c15331677e6ebf0b5af1600255005b",
@@ -51,7 +51,7 @@
                     "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                 }
             ],
-            "sender": "0x8a0a19589531694250d570040a0c4b74576919b8",
+            "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
             "secretKey": "0x9e7645d0cfd9c3a04eb7a9db59a4eb7d359f2e75c9164a9d6b9a7d54e1b6a36f"
         },
         "post": {
@@ -122,7 +122,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALL-evm_code_type_LEGACY-state_test-value_1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALL-evm_code_type_LEGACY-state_test-value_1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -133,7 +133,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60005415600e580157600160015500602e5801565b60016000556000600060006000600173a94f5374fce5edbc8e2a8697c15331677e6ebf0b5af1600255005b",
@@ -174,7 +174,7 @@
                     "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                 }
             ],
-            "sender": "0x8a0a19589531694250d570040a0c4b74576919b8",
+            "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
             "secretKey": "0x9e7645d0cfd9c3a04eb7a9db59a4eb7d359f2e75c9164a9d6b9a7d54e1b6a36f"
         },
         "post": {
@@ -245,7 +245,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALLCODE-evm_code_type_LEGACY-state_test-value_0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALLCODE-evm_code_type_LEGACY-state_test-value_0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -256,7 +256,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60005415600e580157600160015500602e5801565b60016000556000600060006000600073a94f5374fce5edbc8e2a8697c15331677e6ebf0b5af2600255005b",
@@ -297,7 +297,7 @@
                     "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                 }
             ],
-            "sender": "0x8a0a19589531694250d570040a0c4b74576919b8",
+            "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
             "secretKey": "0x9e7645d0cfd9c3a04eb7a9db59a4eb7d359f2e75c9164a9d6b9a7d54e1b6a36f"
         },
         "post": {
@@ -368,7 +368,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALLCODE-evm_code_type_LEGACY-state_test-value_1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALLCODE-evm_code_type_LEGACY-state_test-value_1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -379,7 +379,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60005415600e580157600160015500602e5801565b60016000556000600060006000600173a94f5374fce5edbc8e2a8697c15331677e6ebf0b5af2600255005b",
@@ -420,7 +420,7 @@
                     "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                 }
             ],
-            "sender": "0x8a0a19589531694250d570040a0c4b74576919b8",
+            "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
             "secretKey": "0x9e7645d0cfd9c3a04eb7a9db59a4eb7d359f2e75c9164a9d6b9a7d54e1b6a36f"
         },
         "post": {
@@ -491,7 +491,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_DELEGATECALL-evm_code_type_LEGACY-state_test-value_0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_DELEGATECALL-evm_code_type_LEGACY-state_test-value_0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -502,7 +502,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60005415600e580157600160015500602c5801565b6001600055600060006000600073a94f5374fce5edbc8e2a8697c15331677e6ebf0b5af4600255005b",
@@ -543,7 +543,7 @@
                     "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                 }
             ],
-            "sender": "0x8a0a19589531694250d570040a0c4b74576919b8",
+            "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
             "secretKey": "0x9e7645d0cfd9c3a04eb7a9db59a4eb7d359f2e75c9164a9d6b9a7d54e1b6a36f"
         },
         "post": {
@@ -614,7 +614,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_DELEGATECALL-evm_code_type_LEGACY-state_test-value_1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_DELEGATECALL-evm_code_type_LEGACY-state_test-value_1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -625,7 +625,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60005415600e580157600160015500602c5801565b6001600055600060006000600073a94f5374fce5edbc8e2a8697c15331677e6ebf0b5af4600255005b",
@@ -666,7 +666,7 @@
                     "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                 }
             ],
-            "sender": "0x8a0a19589531694250d570040a0c4b74576919b8",
+            "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
             "secretKey": "0x9e7645d0cfd9c3a04eb7a9db59a4eb7d359f2e75c9164a9d6b9a7d54e1b6a36f"
         },
         "post": {
@@ -737,7 +737,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_STATICCALL-evm_code_type_LEGACY-state_test-value_0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_STATICCALL-evm_code_type_LEGACY-state_test-value_0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -748,7 +748,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60005415600e580157600160015500602c5801565b6001600055600060006000600073a94f5374fce5edbc8e2a8697c15331677e6ebf0b5afa600255005b",
@@ -789,7 +789,7 @@
                     "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                 }
             ],
-            "sender": "0x8a0a19589531694250d570040a0c4b74576919b8",
+            "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
             "secretKey": "0x9e7645d0cfd9c3a04eb7a9db59a4eb7d359f2e75c9164a9d6b9a7d54e1b6a36f"
         },
         "post": {
@@ -858,7 +858,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_STATICCALL-evm_code_type_LEGACY-state_test-value_1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_STATICCALL-evm_code_type_LEGACY-state_test-value_1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -869,7 +869,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60005415600e580157600160015500602c5801565b6001600055600060006000600073a94f5374fce5edbc8e2a8697c15331677e6ebf0b5afa600255005b",
@@ -910,7 +910,7 @@
                     "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                 }
             ],
-            "sender": "0x8a0a19589531694250d570040a0c4b74576919b8",
+            "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
             "secretKey": "0x9e7645d0cfd9c3a04eb7a9db59a4eb7d359f2e75c9164a9d6b9a7d54e1b6a36f"
         },
         "post": {

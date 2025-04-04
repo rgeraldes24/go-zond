@@ -1,5 +1,5 @@
 {
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7,7 +7,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -39,7 +39,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -97,7 +97,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -105,7 +105,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -137,7 +137,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -195,7 +195,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -203,7 +203,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -235,7 +235,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -297,7 +297,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -305,7 +305,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -337,7 +337,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -399,7 +399,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -407,7 +407,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -439,7 +439,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -497,7 +497,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -505,7 +505,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -537,7 +537,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -595,7 +595,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -603,7 +603,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -635,7 +635,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -695,7 +695,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Berlin-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -703,7 +703,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -735,7 +735,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -793,7 +793,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -801,7 +801,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -833,7 +833,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -891,7 +891,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -899,7 +899,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -931,7 +931,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -989,7 +989,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -997,7 +997,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -1029,7 +1029,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -1091,7 +1091,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1099,7 +1099,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -1131,7 +1131,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -1193,7 +1193,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1201,7 +1201,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -1233,7 +1233,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -1291,7 +1291,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1299,7 +1299,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -1331,7 +1331,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -1389,7 +1389,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1397,7 +1397,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -1429,7 +1429,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -1489,7 +1489,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Byzantium-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1497,7 +1497,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -1529,7 +1529,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -1587,7 +1587,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1598,7 +1598,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -1630,7 +1630,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -1696,7 +1696,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1707,7 +1707,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -1739,7 +1739,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -1805,7 +1805,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1816,7 +1816,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -1848,7 +1848,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -1918,7 +1918,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1929,7 +1929,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -1961,7 +1961,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -2031,7 +2031,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2042,7 +2042,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -2074,7 +2074,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -2140,7 +2140,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2151,7 +2151,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -2183,7 +2183,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -2249,7 +2249,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2260,7 +2260,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -2292,7 +2292,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -2360,7 +2360,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Cancun-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2371,7 +2371,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -2403,7 +2403,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -2469,7 +2469,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2477,7 +2477,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -2509,7 +2509,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -2567,7 +2567,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2575,7 +2575,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -2607,7 +2607,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -2665,7 +2665,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2673,7 +2673,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -2705,7 +2705,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -2767,7 +2767,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2775,7 +2775,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -2807,7 +2807,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -2869,7 +2869,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2877,7 +2877,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -2909,7 +2909,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -2967,7 +2967,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2975,7 +2975,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -3007,7 +3007,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3065,7 +3065,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3073,7 +3073,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -3105,7 +3105,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3165,7 +3165,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_ConstantinopleFix-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3173,7 +3173,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -3205,7 +3205,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3263,7 +3263,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3271,7 +3271,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -3303,7 +3303,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3361,7 +3361,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3369,7 +3369,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -3401,7 +3401,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3459,7 +3459,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3467,7 +3467,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -3499,7 +3499,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3561,7 +3561,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3569,7 +3569,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -3601,7 +3601,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3663,7 +3663,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3671,7 +3671,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -3703,7 +3703,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3761,7 +3761,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3769,7 +3769,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -3801,7 +3801,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3859,7 +3859,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3867,7 +3867,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -3899,7 +3899,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -3959,7 +3959,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Frontier-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3967,7 +3967,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -3999,7 +3999,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -4057,7 +4057,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4065,7 +4065,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -4097,7 +4097,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -4155,7 +4155,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4163,7 +4163,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -4195,7 +4195,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -4253,7 +4253,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4261,7 +4261,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -4293,7 +4293,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -4355,7 +4355,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4363,7 +4363,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -4395,7 +4395,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -4457,7 +4457,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4465,7 +4465,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -4497,7 +4497,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -4555,7 +4555,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4563,7 +4563,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -4595,7 +4595,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -4653,7 +4653,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4661,7 +4661,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -4693,7 +4693,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -4753,7 +4753,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Homestead-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4761,7 +4761,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -4793,7 +4793,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -4851,7 +4851,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4859,7 +4859,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -4891,7 +4891,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -4949,7 +4949,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4957,7 +4957,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -4989,7 +4989,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -5047,7 +5047,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5055,7 +5055,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -5087,7 +5087,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -5149,7 +5149,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5157,7 +5157,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -5189,7 +5189,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -5251,7 +5251,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5259,7 +5259,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -5291,7 +5291,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -5349,7 +5349,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5357,7 +5357,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -5389,7 +5389,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -5447,7 +5447,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5455,7 +5455,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -5487,7 +5487,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -5547,7 +5547,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Istanbul-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5555,7 +5555,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -5587,7 +5587,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -5645,7 +5645,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5654,7 +5654,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -5686,7 +5686,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -5744,7 +5744,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5753,7 +5753,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -5785,7 +5785,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -5843,7 +5843,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5852,7 +5852,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -5884,7 +5884,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -5946,7 +5946,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5955,7 +5955,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -5987,7 +5987,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6049,7 +6049,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6058,7 +6058,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -6090,7 +6090,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6148,7 +6148,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6157,7 +6157,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -6189,7 +6189,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6247,7 +6247,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6256,7 +6256,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -6288,7 +6288,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6348,7 +6348,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_London-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6357,7 +6357,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -6389,7 +6389,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6447,7 +6447,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6457,7 +6457,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -6489,7 +6489,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6547,7 +6547,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6557,7 +6557,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -6589,7 +6589,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6647,7 +6647,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6657,7 +6657,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -6689,7 +6689,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6751,7 +6751,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6761,7 +6761,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -6793,7 +6793,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6855,7 +6855,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6865,7 +6865,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -6897,7 +6897,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -6955,7 +6955,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6965,7 +6965,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -6997,7 +6997,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -7055,7 +7055,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7065,7 +7065,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -7097,7 +7097,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -7157,7 +7157,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Paris-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7167,7 +7167,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -7199,7 +7199,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -7257,7 +7257,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7268,7 +7268,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -7300,7 +7300,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -7371,7 +7371,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7382,7 +7382,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -7414,7 +7414,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -7485,7 +7485,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7496,7 +7496,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -7528,7 +7528,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -7603,7 +7603,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7614,7 +7614,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -7646,7 +7646,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -7721,7 +7721,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7732,7 +7732,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -7764,7 +7764,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -7835,7 +7835,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7846,7 +7846,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -7878,7 +7878,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -7949,7 +7949,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7960,7 +7960,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -7992,7 +7992,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -8065,7 +8065,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Prague-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8076,7 +8076,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -8108,7 +8108,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -8179,7 +8179,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 0 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 0 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8189,7 +8189,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006000600037600051600055596000f3",
@@ -8221,7 +8221,7 @@
             "data": [
                 "0x03"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -8279,7 +8279,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 1 0]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 1 0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8289,7 +8289,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60006001600037600051600055596000f3",
@@ -8321,7 +8321,7 @@
             "data": [
                 "0x02"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -8379,7 +8379,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 1 1]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 1 1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8389,7 +8389,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001600037600051600055596000f3",
@@ -8421,7 +8421,7 @@
             "data": [
                 "0x01"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -8483,7 +8483,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 1 2]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 1 2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8493,7 +8493,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60026001600037600051600055596000f3",
@@ -8525,7 +8525,7 @@
             "data": [
                 "0x00"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -8587,7 +8587,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 neg6 9]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 neg6 9]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8597,7 +8597,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60097ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -8629,7 +8629,7 @@
             "data": [
                 "0x05"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -8687,7 +8687,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 neg6 ff]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-cdc 0 neg6 ff]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8697,7 +8697,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60ff7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa600037600051600055596000f3",
@@ -8729,7 +8729,7 @@
             "data": [
                 "0x04"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -8787,7 +8787,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-sec]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-sec]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8797,7 +8797,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x6005565b005b6042601f536101036000601f3760005180606014600357640badc0ffee60ff55",
@@ -8829,7 +8829,7 @@
             "data": [
                 "0x11"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -8889,7 +8889,7 @@
             }
         }
     },
-    "tests/frontier/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-underflow]": {
+    "tests/shanghai/opcodes/test_calldatacopy.py::test_calldatacopy[fork_Shanghai-state_test-underflow]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8899,7 +8899,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x00",
                 "code": "0x60016001556001600237",
@@ -8931,7 +8931,7 @@
             "data": [
                 "0x10"
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {

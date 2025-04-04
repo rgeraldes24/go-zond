@@ -1,5 +1,5 @@
 {
-    "tests/berlin/eip2930_access_list/test_acl.py::test_access_list[fork_Berlin-state_test]": {
+    "tests/shanghai/eip2930_access_list/test_acl.py::test_access_list[fork_Berlin-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7,7 +7,7 @@
             "currentTimestamp": "0x03e8",
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x03",
                 "code": "0x5854505854",
@@ -43,7 +43,7 @@
                     }
                 ]
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -97,7 +97,7 @@
             }
         }
     },
-    "tests/berlin/eip2930_access_list/test_acl.py::test_access_list[fork_Cancun-state_test]": {
+    "tests/shanghai/eip2930_access_list/test_acl.py::test_access_list[fork_Cancun-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -108,7 +108,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x03",
                 "code": "0x5854505854",
@@ -144,7 +144,7 @@
                     }
                 ]
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -200,7 +200,7 @@
             }
         }
     },
-    "tests/berlin/eip2930_access_list/test_acl.py::test_access_list[fork_London-state_test]": {
+    "tests/shanghai/eip2930_access_list/test_acl.py::test_access_list[fork_London-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -209,7 +209,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x03",
                 "code": "0x5854505854",
@@ -245,7 +245,7 @@
                     }
                 ]
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -293,7 +293,7 @@
             }
         }
     },
-    "tests/berlin/eip2930_access_list/test_acl.py::test_access_list[fork_Paris-state_test]": {
+    "tests/shanghai/eip2930_access_list/test_acl.py::test_access_list[fork_Paris-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -303,7 +303,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x03",
                 "code": "0x5854505854",
@@ -339,7 +339,7 @@
                     }
                 ]
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -387,7 +387,7 @@
             }
         }
     },
-    "tests/berlin/eip2930_access_list/test_acl.py::test_access_list[fork_Prague-state_test]": {
+    "tests/shanghai/eip2930_access_list/test_acl.py::test_access_list[fork_Prague-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -398,7 +398,7 @@
             "currentExcessBlobGas": "0x00"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x03",
                 "code": "0x5854505854",
@@ -434,7 +434,7 @@
                     }
                 ]
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {
@@ -495,7 +495,7 @@
             }
         }
     },
-    "tests/berlin/eip2930_access_list/test_acl.py::test_access_list[fork_Shanghai-state_test]": {
+    "tests/shanghai/eip2930_access_list/test_acl.py::test_access_list[fork_Shanghai-state_test]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -505,7 +505,7 @@
             "currentBaseFee": "0x07"
         },
         "pre": {
-            "0x0000000000000000000000000000000000001000": {
+            "Z0000000000000000000000000000000000001000": {
                 "nonce": "0x01",
                 "balance": "0x03",
                 "code": "0x5854505854",
@@ -541,7 +541,7 @@
                     }
                 ]
             ],
-            "sender": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "secretKey": "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8"
         },
         "post": {

@@ -1,5 +1,5 @@
 {
-    "tests/prague/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-non_zero_address-r=2**256]": {
+    "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-non_zero_address-r=2**256]": {
         "result": {
             "Prague": {
                 "intrinsicGas": "0x00",
@@ -23,7 +23,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-non_zero_address-s=2**256]": {
+    "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-non_zero_address-s=2**256]": {
         "result": {
             "Prague": {
                 "intrinsicGas": "0x00",
@@ -47,7 +47,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-non_zero_address-v=2**8,r=s=2**256]": {
+    "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-non_zero_address-v=2**8,r=s=2**256]": {
         "result": {
             "Prague": {
                 "intrinsicGas": "0x00",
@@ -71,7 +71,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-non_zero_address-v=2**8]": {
+    "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-non_zero_address-v=2**8]": {
         "result": {
             "Prague": {
                 "intrinsicGas": "0x00",
@@ -95,7 +95,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-reset_delegation_address-r=2**256]": {
+    "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-reset_delegation_address-r=2**256]": {
         "result": {
             "Prague": {
                 "intrinsicGas": "0x00",
@@ -119,7 +119,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-reset_delegation_address-s=2**256]": {
+    "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-reset_delegation_address-s=2**256]": {
         "result": {
             "Prague": {
                 "intrinsicGas": "0x00",
@@ -143,7 +143,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-reset_delegation_address-v=2**8,r=s=2**256]": {
+    "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-reset_delegation_address-v=2**8,r=s=2**256]": {
         "result": {
             "Prague": {
                 "intrinsicGas": "0x00",
@@ -167,7 +167,7 @@
             }
         }
     },
-    "tests/prague/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-reset_delegation_address-v=2**8]": {
+    "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Prague-transaction_test-reset_delegation_address-v=2**8]": {
         "result": {
             "Prague": {
                 "intrinsicGas": "0x00",

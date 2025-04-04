@@ -50,11 +50,6 @@ func TestState(t *testing.T) {
 	st.slow(`^stStaticCall/static_Return50000`)
 	st.slow(`^stSystemOperationsTest/CallRecursiveBomb`)
 	st.slow(`^stTransactionTest/Opcodes_TransactionInit`)
-	// Very time consuming
-	st.skipLoad(`^stTimeConsuming/`)
-	st.skipLoad(`.*vmPerformance/loop.*`)
-	// Uses 1GB RAM per tested fork
-	st.skipLoad(`^stStaticCall/static_Call1MB`)
 
 	// For Istanbul, older tests were moved into LegacyTests
 	for _, dir := range []string{
