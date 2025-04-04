@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-protected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-protected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -103,7 +103,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-protected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-protected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -207,7 +207,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-protected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-protected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -311,7 +311,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-protected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-protected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -415,7 +415,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-protected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-protected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -514,7 +514,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-protected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-protected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -613,7 +613,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-unprotected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-unprotected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -717,7 +717,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-unprotected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-unprotected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -821,7 +821,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-unprotected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-unprotected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -925,7 +925,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-unprotected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-unprotected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1029,7 +1029,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-unprotected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-unprotected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1128,7 +1128,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test--type_0-unprotected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test--type_0-unprotected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1227,7 +1227,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-protected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-protected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1319,7 +1319,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-protected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-protected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1411,7 +1411,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-protected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-protected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1503,7 +1503,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-protected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-protected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1595,7 +1595,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-protected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-protected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1682,7 +1682,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-protected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-protected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1769,7 +1769,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-unprotected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-unprotected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1861,7 +1861,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-unprotected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-unprotected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1953,7 +1953,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-unprotected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-unprotected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2045,7 +2045,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-unprotected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-unprotected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2137,7 +2137,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-unprotected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-unprotected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2224,7 +2224,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-state_test-contract_creating-type_0-unprotected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-state_test-contract_creating-type_0-unprotected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",

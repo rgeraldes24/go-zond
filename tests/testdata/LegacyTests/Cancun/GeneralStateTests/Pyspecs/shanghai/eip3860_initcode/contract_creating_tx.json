@@ -1,5 +1,5 @@
 {
-    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Cancun-state_test-max_size_ones]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-state_test-max_size_ones]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -61,7 +61,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Cancun-state_test-max_size_zeros]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-state_test-max_size_zeros]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -123,7 +123,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Cancun-state_test-over_limit_ones]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-state_test-over_limit_ones]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -186,7 +186,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Cancun-state_test-over_limit_zeros]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-state_test-over_limit_zeros]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",

@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/yul/test_yul_example.py::test_yul[fork_Berlin-blockchain_test]": {
+    "tests/shanghai/yul/test_yul_example.py::test_yul[fork_Shanghai-blockchain_test]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -364,7 +364,7 @@
             }
         }
     },
-    "tests/shanghai/yul/test_yul_example.py::test_yul[fork_ConstantinopleFix-blockchain_test]": {
+    "tests/shanghai/yul/test_yul_example.py::test_yul[fork_Shanghai-blockchain_test]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -477,7 +477,7 @@
             }
         }
     },
-    "tests/shanghai/yul/test_yul_example.py::test_yul[fork_Homestead-blockchain_test]": {
+    "tests/shanghai/yul/test_yul_example.py::test_yul[fork_Shanghai-blockchain_test]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

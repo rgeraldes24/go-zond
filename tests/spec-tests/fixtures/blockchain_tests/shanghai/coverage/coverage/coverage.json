@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/coverage/test_coverage.py::test_coverage[fork_Berlin-blockchain_test]": {
+    "tests/shanghai/coverage/test_coverage.py::test_coverage[fork_Shanghai-blockchain_test]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -386,7 +386,7 @@
             }
         }
     },
-    "tests/shanghai/coverage/test_coverage.py::test_coverage[fork_ConstantinopleFix-blockchain_test]": {
+    "tests/shanghai/coverage/test_coverage.py::test_coverage[fork_Shanghai-blockchain_test]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -508,7 +508,7 @@
             }
         }
     },
-    "tests/shanghai/coverage/test_coverage.py::test_coverage[fork_Homestead-blockchain_test]": {
+    "tests/shanghai/coverage/test_coverage.py::test_coverage[fork_Shanghai-blockchain_test]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

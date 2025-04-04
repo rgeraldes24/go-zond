@@ -1,5 +1,5 @@
 {
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip6780_selfdestruct/test_selfdestruct_revert.py::test_selfdestruct_not_created_in_same_tx_with_revert[fork_Cancun-state_test-no_outer_selfdestruct]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip6780_selfdestruct/test_selfdestruct_revert.py::test_selfdestruct_not_created_in_same_tx_with_revert[fork_Shanghai-state_test-no_outer_selfdestruct]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -75,7 +75,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip6780_selfdestruct/test_selfdestruct_revert.py::test_selfdestruct_not_created_in_same_tx_with_revert[fork_Cancun-state_test-outer_selfdestruct_after_inner_call]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip6780_selfdestruct/test_selfdestruct_revert.py::test_selfdestruct_not_created_in_same_tx_with_revert[fork_Shanghai-state_test-outer_selfdestruct_after_inner_call]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -151,7 +151,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip6780_selfdestruct/test_selfdestruct_revert.py::test_selfdestruct_not_created_in_same_tx_with_revert[fork_Cancun-state_test-outer_selfdestruct_before_inner_call]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip6780_selfdestruct/test_selfdestruct_revert.py::test_selfdestruct_not_created_in_same_tx_with_revert[fork_Shanghai-state_test-outer_selfdestruct_before_inner_call]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",

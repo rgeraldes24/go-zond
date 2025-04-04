@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_gas.py::test_self_set_code_cost[fork_Prague-state_test-pre_authorized_False]": {
+    "tests/shanghai/eip7702_set_code_tx/test_gas.py::test_self_set_code_cost[fork_Shanghai-state_test-pre_authorized_False]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -120,7 +120,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_gas.py::test_self_set_code_cost[fork_Prague-state_test-pre_authorized_True]": {
+    "tests/shanghai/eip7702_set_code_tx/test_gas.py::test_self_set_code_cost[fork_Shanghai-state_test-pre_authorized_True]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",

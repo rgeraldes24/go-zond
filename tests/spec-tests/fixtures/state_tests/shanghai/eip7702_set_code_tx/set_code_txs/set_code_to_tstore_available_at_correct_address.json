@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_available_at_correct_address[fork_Prague-call_opcode_CALL-evm_code_type_LEGACY-state_test-call_eoa_first_False]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_available_at_correct_address[fork_Shanghai-call_opcode_CALL-evm_code_type_LEGACY-state_test-call_eoa_first_False]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -130,7 +130,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_available_at_correct_address[fork_Prague-call_opcode_CALL-evm_code_type_LEGACY-state_test-call_eoa_first_True]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_available_at_correct_address[fork_Shanghai-call_opcode_CALL-evm_code_type_LEGACY-state_test-call_eoa_first_True]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",

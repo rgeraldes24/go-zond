@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_address_and_authority_warm_state[fork_Prague-evm_code_type_LEGACY-blockchain_test-call_authority_first_then_set_code_address]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_address_and_authority_warm_state[fork_Shanghai-evm_code_type_LEGACY-blockchain_test-call_authority_first_then_set_code_address]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -288,7 +288,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_address_and_authority_warm_state[fork_Prague-evm_code_type_LEGACY-blockchain_test-call_set_code_address_first_then_authority]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_address_and_authority_warm_state[fork_Shanghai-evm_code_type_LEGACY-blockchain_test-call_set_code_address_first_then_authority]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

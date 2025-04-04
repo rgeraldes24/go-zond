@@ -1,5 +1,5 @@
 {
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Cancun-state_test-invalid_undoes_all]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Shanghai-state_test-invalid_undoes_all]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -68,7 +68,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Cancun-state_test-invalid_undoes_tstorage_after_successful_call]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Shanghai-state_test-invalid_undoes_tstorage_after_successful_call]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -137,7 +137,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Cancun-state_test-manipulate_in_reentrant_call]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Shanghai-state_test-manipulate_in_reentrant_call]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -206,7 +206,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Cancun-state_test-revert_undoes_all]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Shanghai-state_test-revert_undoes_all]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -275,7 +275,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Cancun-state_test-revert_undoes_tstorage_after_successful_call]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Shanghai-state_test-revert_undoes_tstorage_after_successful_call]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -344,7 +344,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Cancun-state_test-tload_after_reentrant_tstore]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Shanghai-state_test-tload_after_reentrant_tstore]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -413,7 +413,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Cancun-state_test-tstore_before_invalid_has_no_effect]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Shanghai-state_test-tstore_before_invalid_has_no_effect]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -482,7 +482,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Cancun-state_test-tstore_before_revert_has_no_effect]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Shanghai-state_test-tstore_before_revert_has_no_effect]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -551,7 +551,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Cancun-state_test-tstore_in_call_then_tload_return_in_staticcall]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Shanghai-state_test-tstore_in_call_then_tload_return_in_staticcall]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -620,7 +620,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Cancun-state_test-tstore_in_reentrant_call]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage_reentrancy_contexts.py::test_reentrant_call[fork_Shanghai-state_test-tstore_in_reentrant_call]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",

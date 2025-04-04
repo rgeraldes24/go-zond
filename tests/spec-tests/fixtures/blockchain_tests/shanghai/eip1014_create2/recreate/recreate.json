@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_Berlin-blockchain_test-recreate_on_separate_block_False]": {
+    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_Shanghai-blockchain_test-recreate_on_separate_block_False]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -203,7 +203,7 @@
             }
         }
     },
-    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_Berlin-blockchain_test-recreate_on_separate_block_True]": {
+    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_Shanghai-blockchain_test-recreate_on_separate_block_True]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -430,7 +430,7 @@
             }
         }
     },
-    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_ConstantinopleFix-blockchain_test-recreate_on_separate_block_False]": {
+    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_Shanghai-blockchain_test-recreate_on_separate_block_False]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -634,7 +634,7 @@
             }
         }
     },
-    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_ConstantinopleFix-blockchain_test-recreate_on_separate_block_True]": {
+    "tests/shanghai/eip1014_create2/test_recreate.py::test_recreate[fork_Shanghai-blockchain_test-recreate_on_separate_block_True]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

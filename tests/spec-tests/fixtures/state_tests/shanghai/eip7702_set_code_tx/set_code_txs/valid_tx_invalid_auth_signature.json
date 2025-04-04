@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-r=0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-r=0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -113,7 +113,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-r=2**256-1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-r=2**256-1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -227,7 +227,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-r=SECP256K1N+1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-r=SECP256K1N+1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -341,7 +341,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-r=SECP256K1N-1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-r=SECP256K1N-1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -455,7 +455,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-r=SECP256K1N]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-r=SECP256K1N]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -569,7 +569,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-s=0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-s=0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -683,7 +683,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-s=2**256-1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-s=2**256-1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -797,7 +797,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-s=SECP256K1N+1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-s=SECP256K1N+1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -911,7 +911,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-s=SECP256K1N-1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-s=SECP256K1N-1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1026,7 +1026,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-s=SECP256K1N]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-s=SECP256K1N]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1140,7 +1140,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-s=SECP256K1N_OVER_2+1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-s=SECP256K1N_OVER_2+1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1255,7 +1255,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-s=SECP256K1N_OVER_2-1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-s=SECP256K1N_OVER_2-1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1376,7 +1376,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-s=SECP256K1N_OVER_2]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-s=SECP256K1N_OVER_2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1497,7 +1497,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-v=2**8-1,r=s=2**256-1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-v=2**8-1,r=s=2**256-1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1611,7 +1611,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-v=2**8-1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-v=2**8-1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1725,7 +1725,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-v=27]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-v=27]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1839,7 +1839,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-v=28]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-v=28]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1953,7 +1953,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-v=2]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-v=2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2067,7 +2067,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-v=35]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-v=35]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2181,7 +2181,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-v=36]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-v=36]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2295,7 +2295,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Prague-state_test-v=r=s=0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_valid_tx_invalid_auth_signature[fork_Shanghai-state_test-v=r=s=0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",

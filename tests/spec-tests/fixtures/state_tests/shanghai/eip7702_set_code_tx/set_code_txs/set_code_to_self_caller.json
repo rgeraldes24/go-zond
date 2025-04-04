@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALL-evm_code_type_LEGACY-state_test-value_0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Shanghai-call_opcode_CALL-evm_code_type_LEGACY-state_test-value_0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -122,7 +122,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALL-evm_code_type_LEGACY-state_test-value_1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Shanghai-call_opcode_CALL-evm_code_type_LEGACY-state_test-value_1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -245,7 +245,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALLCODE-evm_code_type_LEGACY-state_test-value_0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Shanghai-call_opcode_CALLCODE-evm_code_type_LEGACY-state_test-value_0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -368,7 +368,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_CALLCODE-evm_code_type_LEGACY-state_test-value_1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Shanghai-call_opcode_CALLCODE-evm_code_type_LEGACY-state_test-value_1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -491,7 +491,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_DELEGATECALL-evm_code_type_LEGACY-state_test-value_0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Shanghai-call_opcode_DELEGATECALL-evm_code_type_LEGACY-state_test-value_0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -614,7 +614,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_DELEGATECALL-evm_code_type_LEGACY-state_test-value_1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Shanghai-call_opcode_DELEGATECALL-evm_code_type_LEGACY-state_test-value_1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -737,7 +737,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_STATICCALL-evm_code_type_LEGACY-state_test-value_0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Shanghai-call_opcode_STATICCALL-evm_code_type_LEGACY-state_test-value_0]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -858,7 +858,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Prague-call_opcode_STATICCALL-evm_code_type_LEGACY-state_test-value_1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_self_caller[fork_Shanghai-call_opcode_STATICCALL-evm_code_type_LEGACY-state_test-value_1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",

@@ -1,5 +1,5 @@
 {
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-full_memory_clean]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-full_memory_clean]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -68,7 +68,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-full_memory_copy]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-full_memory_copy]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -137,7 +137,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-full_memory_copy_offset]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-full_memory_copy_offset]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -206,7 +206,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-full_memory_rewrite]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-full_memory_rewrite]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -275,7 +275,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-full_word_forward_overwrite]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-full_word_forward_overwrite]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -344,7 +344,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-full_word_rewrite]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-full_word_rewrite]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -413,7 +413,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-mid_word_multi_word_rewrite]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-mid_word_multi_word_rewrite]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -482,7 +482,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-mid_word_single_byte_rewrite]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-mid_word_single_byte_rewrite]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -551,7 +551,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-mid_word_single_word_rewrite]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-mid_word_single_word_rewrite]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -620,7 +620,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-out_of_bounds_memory_extension]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-out_of_bounds_memory_extension]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -689,7 +689,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-single_byte_forward_overwrite]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-single_byte_forward_overwrite]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -758,7 +758,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-single_byte_memory_extension]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-single_byte_memory_extension]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -827,7 +827,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-single_byte_rewrite]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-single_byte_rewrite]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -896,7 +896,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-single_word_memory_extension]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-single_word_memory_extension]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -965,7 +965,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-single_word_minus_one_byte_memory_extension]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-single_word_minus_one_byte_memory_extension]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -1034,7 +1034,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-single_word_plus_one_byte_memory_extension]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-single_word_plus_one_byte_memory_extension]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -1103,7 +1103,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-two_words_backward_overwrite]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-two_words_backward_overwrite]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -1172,7 +1172,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-two_words_backward_overwrite_single_byte_offset]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-two_words_backward_overwrite_single_byte_offset]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -1241,7 +1241,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-two_words_forward_overwrite]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-two_words_forward_overwrite]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -1310,7 +1310,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-zero_inputs]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-zero_inputs]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -1379,7 +1379,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Cancun-state_test-zero_length_out_of_bounds_destination]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip5656_mcopy/test_mcopy.py::test_valid_mcopy_operations[fork_Shanghai-state_test-zero_length_out_of_bounds_destination]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",

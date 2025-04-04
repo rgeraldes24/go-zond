@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Prague-state_test-call_type_CALLCODE]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Shanghai-state_test-call_type_CALLCODE]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -152,7 +152,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Prague-state_test-call_type_CALL]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Shanghai-state_test-call_type_CALL]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -307,7 +307,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Prague-state_test-call_type_DELEGATECALL]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Shanghai-state_test-call_type_DELEGATECALL]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",

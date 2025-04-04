@@ -1,5 +1,5 @@
 {
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage.py::test_gas_usage[fork_Cancun-state_test-tload]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage.py::test_gas_usage[fork_Shanghai-state_test-tload]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -68,7 +68,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage.py::test_gas_usage[fork_Cancun-state_test-tstore_cold]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage.py::test_gas_usage[fork_Shanghai-state_test-tstore_cold]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -137,7 +137,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage.py::test_gas_usage[fork_Cancun-state_test-tstore_tload]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage.py::test_gas_usage[fork_Shanghai-state_test-tstore_tload]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -206,7 +206,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage.py::test_gas_usage[fork_Cancun-state_test-tstore_warm]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip1153_tstore/test_tstorage.py::test_gas_usage[fork_Shanghai-state_test-tstore_warm]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",

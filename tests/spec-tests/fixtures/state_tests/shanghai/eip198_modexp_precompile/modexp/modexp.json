@@ -1,5 +1,5 @@
 {
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -95,7 +95,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -191,7 +191,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case3-raw-input-out-of-gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -279,7 +279,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case4-extra-data_07]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -375,7 +375,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case5-raw-input]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -471,7 +471,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -567,7 +567,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -663,7 +663,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -759,7 +759,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -855,7 +855,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -951,7 +951,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1047,7 +1047,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1143,7 +1143,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1239,7 +1239,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1335,7 +1335,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1431,7 +1431,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Berlin-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1527,7 +1527,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1623,7 +1623,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1719,7 +1719,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case3-raw-input-out-of-gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1807,7 +1807,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case4-extra-data_07]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1903,7 +1903,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case5-raw-input]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -1999,7 +1999,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2095,7 +2095,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2191,7 +2191,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2287,7 +2287,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2383,7 +2383,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2479,7 +2479,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2575,7 +2575,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2671,7 +2671,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2767,7 +2767,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2863,7 +2863,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -2959,7 +2959,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Byzantium-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3055,7 +3055,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3162,7 +3162,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3269,7 +3269,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case3-raw-input-out-of-gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3368,7 +3368,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case4-extra-data_07]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3475,7 +3475,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case5-raw-input]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3582,7 +3582,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3689,7 +3689,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3796,7 +3796,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -3903,7 +3903,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4010,7 +4010,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4117,7 +4117,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4224,7 +4224,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4331,7 +4331,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4438,7 +4438,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4545,7 +4545,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4652,7 +4652,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4759,7 +4759,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4855,7 +4855,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -4951,7 +4951,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case3-raw-input-out-of-gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5039,7 +5039,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case4-extra-data_07]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5135,7 +5135,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case5-raw-input]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5231,7 +5231,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5327,7 +5327,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5423,7 +5423,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5519,7 +5519,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5615,7 +5615,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5711,7 +5711,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5807,7 +5807,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5903,7 +5903,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -5999,7 +5999,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6095,7 +6095,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6191,7 +6191,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_ConstantinopleFix-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6287,7 +6287,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6383,7 +6383,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6479,7 +6479,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case3-raw-input-out-of-gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6567,7 +6567,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case4-extra-data_07]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6663,7 +6663,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case5-raw-input]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6759,7 +6759,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6855,7 +6855,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -6951,7 +6951,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7047,7 +7047,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7143,7 +7143,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7239,7 +7239,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7335,7 +7335,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7431,7 +7431,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7527,7 +7527,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7623,7 +7623,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7719,7 +7719,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Istanbul-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7815,7 +7815,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -7912,7 +7912,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8009,7 +8009,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case3-raw-input-out-of-gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8098,7 +8098,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case4-extra-data_07]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8195,7 +8195,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case5-raw-input]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8292,7 +8292,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8389,7 +8389,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8486,7 +8486,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8583,7 +8583,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8680,7 +8680,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8777,7 +8777,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8874,7 +8874,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -8971,7 +8971,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9068,7 +9068,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9165,7 +9165,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9262,7 +9262,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_London-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9359,7 +9359,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9457,7 +9457,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9555,7 +9555,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case3-raw-input-out-of-gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9645,7 +9645,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case4-extra-data_07]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9743,7 +9743,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case5-raw-input]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9841,7 +9841,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -9939,7 +9939,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10037,7 +10037,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10135,7 +10135,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10233,7 +10233,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10331,7 +10331,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10429,7 +10429,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10527,7 +10527,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10625,7 +10625,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10723,7 +10723,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10821,7 +10821,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -10919,7 +10919,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case1]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -11031,7 +11031,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case2]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -11143,7 +11143,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case3-raw-input-out-of-gas]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -11247,7 +11247,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case4-extra-data_07]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -11359,7 +11359,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-EIP-198-case5-raw-input]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -11471,7 +11471,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -11583,7 +11583,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -11695,7 +11695,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -11807,7 +11807,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -11919,7 +11919,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -12031,7 +12031,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -12143,7 +12143,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -12255,7 +12255,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -12367,7 +12367,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -12479,7 +12479,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -12591,7 +12591,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-state_test-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",

@@ -1,5 +1,5 @@
 {
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip4844_blobs/test_blob_txs.py::test_invalid_tx_max_fee_per_blob_gas_state[fork_Cancun-state_test-insufficient_max_fee_per_blob_gas]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip4844_blobs/test_blob_txs.py::test_invalid_tx_max_fee_per_blob_gas_state[fork_Shanghai-state_test-insufficient_max_fee_per_blob_gas]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -71,7 +71,7 @@
             ]
         }
     },
-    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip4844_blobs/test_blob_txs.py::test_invalid_tx_max_fee_per_blob_gas_state[fork_Cancun-state_test-invalid_max_fee_per_blob_gas]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/cancun/eip4844_blobs/test_blob_txs.py::test_invalid_tx_max_fee_per_blob_gas_state[fork_Shanghai-state_test-invalid_max_fee_per_blob_gas]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",

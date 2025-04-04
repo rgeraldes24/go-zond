@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_contract_deployment.py::test_system_contract_deployment[fork_CancunToPragueAtTime15k-blockchain_test-deploy_after_fork-nonzero_balance]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_contract_deployment.py::test_system_contract_deployment[fork_ShanghaiToPragueAtTime15k-blockchain_test-deploy_after_fork-nonzero_balance]": {
         "network": "CancunToPragueAtTime15k",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -332,7 +332,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_contract_deployment.py::test_system_contract_deployment[fork_CancunToPragueAtTime15k-blockchain_test-deploy_after_fork-zero_balance]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_contract_deployment.py::test_system_contract_deployment[fork_ShanghaiToPragueAtTime15k-blockchain_test-deploy_after_fork-zero_balance]": {
         "network": "CancunToPragueAtTime15k",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -659,7 +659,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_contract_deployment.py::test_system_contract_deployment[fork_CancunToPragueAtTime15k-blockchain_test-deploy_before_fork-nonzero_balance]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_contract_deployment.py::test_system_contract_deployment[fork_ShanghaiToPragueAtTime15k-blockchain_test-deploy_before_fork-nonzero_balance]": {
         "network": "CancunToPragueAtTime15k",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -990,7 +990,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_contract_deployment.py::test_system_contract_deployment[fork_CancunToPragueAtTime15k-blockchain_test-deploy_before_fork-zero_balance]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_contract_deployment.py::test_system_contract_deployment[fork_ShanghaiToPragueAtTime15k-blockchain_test-deploy_before_fork-zero_balance]": {
         "network": "CancunToPragueAtTime15k",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_non_empty_storage[fork_Prague-state_test-non_zero_nonce]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_non_empty_storage[fork_Shanghai-state_test-non_zero_nonce]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
@@ -128,7 +128,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_non_empty_storage[fork_Prague-state_test-zero_nonce]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_non_empty_storage[fork_Shanghai-state_test-zero_nonce]": {
         "env": {
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",

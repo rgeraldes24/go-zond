@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Prague-call_opcode_CALL-evm_code_type_LEGACY-blockchain_test-return_opcode_RETURN]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Shanghai-call_opcode_CALL-evm_code_type_LEGACY-blockchain_test-return_opcode_RETURN]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -274,7 +274,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Prague-call_opcode_CALL-evm_code_type_LEGACY-blockchain_test-return_opcode_REVERT]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Shanghai-call_opcode_CALL-evm_code_type_LEGACY-blockchain_test-return_opcode_REVERT]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -549,7 +549,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Prague-call_opcode_CALLCODE-evm_code_type_LEGACY-blockchain_test-return_opcode_RETURN]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Shanghai-call_opcode_CALLCODE-evm_code_type_LEGACY-blockchain_test-return_opcode_RETURN]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -824,7 +824,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Prague-call_opcode_CALLCODE-evm_code_type_LEGACY-blockchain_test-return_opcode_REVERT]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Shanghai-call_opcode_CALLCODE-evm_code_type_LEGACY-blockchain_test-return_opcode_REVERT]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1099,7 +1099,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Prague-call_opcode_DELEGATECALL-evm_code_type_LEGACY-blockchain_test-return_opcode_RETURN]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Shanghai-call_opcode_DELEGATECALL-evm_code_type_LEGACY-blockchain_test-return_opcode_RETURN]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1374,7 +1374,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Prague-call_opcode_DELEGATECALL-evm_code_type_LEGACY-blockchain_test-return_opcode_REVERT]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Shanghai-call_opcode_DELEGATECALL-evm_code_type_LEGACY-blockchain_test-return_opcode_REVERT]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1649,7 +1649,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Prague-call_opcode_STATICCALL-evm_code_type_LEGACY-blockchain_test-return_opcode_RETURN]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Shanghai-call_opcode_STATICCALL-evm_code_type_LEGACY-blockchain_test-return_opcode_RETURN]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1924,7 +1924,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Prague-call_opcode_STATICCALL-evm_code_type_LEGACY-blockchain_test-return_opcode_REVERT]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_set_code_to_tstore_reentry[fork_Shanghai-call_opcode_STATICCALL-evm_code_type_LEGACY-blockchain_test-return_opcode_REVERT]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
