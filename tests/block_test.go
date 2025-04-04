@@ -31,9 +31,6 @@ func TestBlockchain(t *testing.T) {
 	// as blockchain tests, since the latter also covers things like receipt root
 	bt.skipLoad(`^GeneralStateTests/`)
 
-	// Skip random failures due to selfish mining test
-	bt.skipLoad(`.*bcForgedTest/bcForkUncle\.json`)
-
 	// Slow tests
 	bt.slow(`.*bcExploitTest/DelegateCallSpam.json`)
 	bt.slow(`.*bcExploitTest/ShanghaiLove.json`)
