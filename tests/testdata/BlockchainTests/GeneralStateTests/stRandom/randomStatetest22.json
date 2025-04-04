@@ -39,7 +39,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0x7dc3ea5a58e13921d0bf2712a9f749b93746dfb77e07c79a80436bae932c8643",
-                        "s" : "0x22f1afb4f689907f6f46fbbedd91daa563a61ed54fb28592352be80371d52ecf",
+                        "publicKey" : "0x22f1afb4f689907f6f46fbbedd91daa563a61ed54fb28592352be80371d52ecf",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0x095e7baea6a6c7c4c2dfeb977efac326af552d87",
                         "v" : "0x1b",
@@ -85,7 +85,7 @@
         "lastblockhash" : "0xf242f849eed2ec0b8cdccb132dc177fab191d0d5c6771285b221cbf011121567",
         "network" : "Cancun",
         "postState" : {
-            "0x000000000000417fffffffffffffffffffffffff" : {
+            "Z000000000000417fffffffffffffffffffffffff" : {
                 "balance" : "0x6c243ae4",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -123,7 +123,7 @@
             }
         },
         "pre" : {
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -195,7 +195,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0x7dc3ea5a58e13921d0bf2712a9f749b93746dfb77e07c79a80436bae932c8643",
-                        "s" : "0x22f1afb4f689907f6f46fbbedd91daa563a61ed54fb28592352be80371d52ecf",
+                        "publicKey" : "0x22f1afb4f689907f6f46fbbedd91daa563a61ed54fb28592352be80371d52ecf",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0x095e7baea6a6c7c4c2dfeb977efac326af552d87",
                         "v" : "0x1b",
@@ -242,7 +242,7 @@
         "lastblockhash" : "0x82dc58eed0cff8763bf69162641fd48666b395a555b1f0b5b24a484020d7d1da",
         "network" : "Prague",
         "postState" : {
-            "0x000000000000417fffffffffffffffffffffffff" : {
+            "Z000000000000417fffffffffffffffffffffffff" : {
                 "balance" : "0x6c243ae4",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -288,7 +288,7 @@
             }
         },
         "pre" : {
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",

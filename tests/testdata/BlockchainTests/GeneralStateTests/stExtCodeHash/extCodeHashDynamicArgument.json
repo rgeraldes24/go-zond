@@ -39,7 +39,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0x1db69b84483623ff57fc70882046b8645249e5abc5ef7bfb509165e9d7d402a2",
-                        "s" : "0x03e4a95b853b64d648876168fba9af8bc8e74a59455a849e8d7f9debff888e43",
+                        "publicKey" : "0x03e4a95b853b64d648876168fba9af8bc8e74a59455a849e8d7f9debff888e43",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0xdeadbeef00000000000000000000000000000000",
                         "v" : "0x1c",
@@ -85,14 +85,14 @@
         "lastblockhash" : "0x487bd62bfefa9d9aa3922e13d86270ae12768a6758abebd28e949d2799779665",
         "network" : "Cancun",
         "postState" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -100,28 +100,28 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7605ff3",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640001",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -130,28 +130,28 @@
             }
         },
         "pre" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -159,14 +159,14 @@
                     "0x00" : "0xdeadbeef"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -217,7 +217,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0x1db69b84483623ff57fc70882046b8645249e5abc5ef7bfb509165e9d7d402a2",
-                        "s" : "0x03e4a95b853b64d648876168fba9af8bc8e74a59455a849e8d7f9debff888e43",
+                        "publicKey" : "0x03e4a95b853b64d648876168fba9af8bc8e74a59455a849e8d7f9debff888e43",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0xdeadbeef00000000000000000000000000000000",
                         "v" : "0x1c",
@@ -264,14 +264,14 @@
         "lastblockhash" : "0x151b0acf63ce27fe088559bfc2476c3473f9259e906e73e819db2cf4143590a5",
         "network" : "Prague",
         "postState" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
@@ -279,7 +279,7 @@
                     "0x00" : "0xfcbff8c0f1c1f9e41a5713b2bf2078a8ed95a59fca06e77f07b90cb6e39d1069"
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -287,28 +287,28 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7605ff3",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640001",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -317,35 +317,35 @@
             }
         },
         "pre" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -353,14 +353,14 @@
                     "0x00" : "0xdeadbeef"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -410,7 +410,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0x7118ce1029391c63796a72c2a66efc1f09e081d023c66271905a99e88387945d",
-                        "s" : "0x2cc2f2d5e0e82c7f2c8a1bd7d2058428fe9648814d582be4cf7e87ea04b04753",
+                        "publicKey" : "0x2cc2f2d5e0e82c7f2c8a1bd7d2058428fe9648814d582be4cf7e87ea04b04753",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0xdeadbeef00000000000000000000000000000000",
                         "v" : "0x1c",
@@ -456,14 +456,14 @@
         "lastblockhash" : "0xd273fe6800e1114fc64c9bc4d0f135f6016282eef041c03e55beea0aede23131",
         "network" : "Cancun",
         "postState" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -471,14 +471,14 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a75fa473",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640001",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -486,14 +486,14 @@
                     "0x00" : "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -502,28 +502,28 @@
             }
         },
         "pre" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -531,14 +531,14 @@
                     "0x00" : "0xdeadbeef"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -589,7 +589,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0x7118ce1029391c63796a72c2a66efc1f09e081d023c66271905a99e88387945d",
-                        "s" : "0x2cc2f2d5e0e82c7f2c8a1bd7d2058428fe9648814d582be4cf7e87ea04b04753",
+                        "publicKey" : "0x2cc2f2d5e0e82c7f2c8a1bd7d2058428fe9648814d582be4cf7e87ea04b04753",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0xdeadbeef00000000000000000000000000000000",
                         "v" : "0x1c",
@@ -636,14 +636,14 @@
         "lastblockhash" : "0x28f773700eaf01ee34fb738c35a3fb79bba5b015d4c70782a1250551a03d1486",
         "network" : "Prague",
         "postState" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
@@ -651,7 +651,7 @@
                     "0x00" : "0xfcbff8c0f1c1f9e41a5713b2bf2078a8ed95a59fca06e77f07b90cb6e39d1069"
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -659,14 +659,14 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a75fa473",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640001",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -674,14 +674,14 @@
                     "0x00" : "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -690,35 +690,35 @@
             }
         },
         "pre" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -726,14 +726,14 @@
                     "0x00" : "0xdeadbeef"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -783,7 +783,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0xcdd185f38319c7dc5d190b5b235354afe51f81afd09086ab4e6873bf15587019",
-                        "s" : "0x59608a459cba241eb2c9d407e5bd1dd48c0a9dacf84a8eff97c199b1cffec9bf",
+                        "publicKey" : "0x59608a459cba241eb2c9d407e5bd1dd48c0a9dacf84a8eff97c199b1cffec9bf",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0xdeadbeef00000000000000000000000000000000",
                         "v" : "0x1c",
@@ -829,14 +829,14 @@
         "lastblockhash" : "0x2782a94454ecde6a2d2b5d241a3848555a506adb3a531c54e9e4005f3c680be7",
         "network" : "Cancun",
         "postState" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -844,14 +844,14 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a75c3793",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640001",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -860,14 +860,14 @@
                     "0x01" : "0x02"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -876,28 +876,28 @@
             }
         },
         "pre" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -905,14 +905,14 @@
                     "0x00" : "0xdeadbeef"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -963,7 +963,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0xcdd185f38319c7dc5d190b5b235354afe51f81afd09086ab4e6873bf15587019",
-                        "s" : "0x59608a459cba241eb2c9d407e5bd1dd48c0a9dacf84a8eff97c199b1cffec9bf",
+                        "publicKey" : "0x59608a459cba241eb2c9d407e5bd1dd48c0a9dacf84a8eff97c199b1cffec9bf",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0xdeadbeef00000000000000000000000000000000",
                         "v" : "0x1c",
@@ -1010,14 +1010,14 @@
         "lastblockhash" : "0x12880f415366c8d66c80c9f9bcda1ade7ccc704249b9c5a5c7a089f1521e289c",
         "network" : "Prague",
         "postState" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
@@ -1025,7 +1025,7 @@
                     "0x00" : "0xfcbff8c0f1c1f9e41a5713b2bf2078a8ed95a59fca06e77f07b90cb6e39d1069"
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -1033,14 +1033,14 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a75c3793",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640001",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -1049,14 +1049,14 @@
                     "0x01" : "0x02"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -1065,35 +1065,35 @@
             }
         },
         "pre" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -1101,14 +1101,14 @@
                     "0x00" : "0xdeadbeef"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -1158,7 +1158,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0xc4ab048fe6f41c4ff6d6589890bea12a65ca17edafe63249693ce61c7d920659",
-                        "s" : "0x55661656c0ffe65e39bf18ccee43e43cc71f9ccf07d36ee0a76e3469e87bf57b",
+                        "publicKey" : "0x55661656c0ffe65e39bf18ccee43e43cc71f9ccf07d36ee0a76e3469e87bf57b",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0xdeadbeef00000000000000000000000000000000",
                         "v" : "0x1b",
@@ -1204,14 +1204,14 @@
         "lastblockhash" : "0x249324d0a39ca2160a2a11a914ca330d6f611e344683e45f9fa11494fd556769",
         "network" : "Cancun",
         "postState" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -1219,14 +1219,14 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a75f40eb",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640001",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -1234,14 +1234,14 @@
                     "0x00" : "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -1250,28 +1250,28 @@
             }
         },
         "pre" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -1279,14 +1279,14 @@
                     "0x00" : "0xdeadbeef"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -1337,7 +1337,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0xc4ab048fe6f41c4ff6d6589890bea12a65ca17edafe63249693ce61c7d920659",
-                        "s" : "0x55661656c0ffe65e39bf18ccee43e43cc71f9ccf07d36ee0a76e3469e87bf57b",
+                        "publicKey" : "0x55661656c0ffe65e39bf18ccee43e43cc71f9ccf07d36ee0a76e3469e87bf57b",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0xdeadbeef00000000000000000000000000000000",
                         "v" : "0x1b",
@@ -1384,14 +1384,14 @@
         "lastblockhash" : "0xa44d9cd8869723d9f39ea2381e8a6341fe9d18a2dbd7d15ba58004fd4962e976",
         "network" : "Prague",
         "postState" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
@@ -1399,7 +1399,7 @@
                     "0x00" : "0xfcbff8c0f1c1f9e41a5713b2bf2078a8ed95a59fca06e77f07b90cb6e39d1069"
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -1407,14 +1407,14 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a75f40eb",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640001",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -1422,14 +1422,14 @@
                     "0x00" : "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -1438,35 +1438,35 @@
             }
         },
         "pre" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -1474,14 +1474,14 @@
                     "0x00" : "0xdeadbeef"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -1531,7 +1531,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0x7457553f2108fc48404d5a0c6d8976612a0997dad06ddb037568864c17235c21",
-                        "s" : "0x33a7d4f0fa02bda053312d09f3f198ca95e4a0701544484d4146a0dc92a30693",
+                        "publicKey" : "0x33a7d4f0fa02bda053312d09f3f198ca95e4a0701544484d4146a0dc92a30693",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0xdeadbeef00000000000000000000000000000000",
                         "v" : "0x1c",
@@ -1577,14 +1577,14 @@
         "lastblockhash" : "0x7e94392f77ac7f99a4c94bfdeeb69d67a35fbac5b91a5759144c4fb522bb0d2e",
         "network" : "Cancun",
         "postState" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -1592,28 +1592,28 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a75ffc6b",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640001",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -1622,28 +1622,28 @@
             }
         },
         "pre" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -1651,14 +1651,14 @@
                     "0x00" : "0xdeadbeef"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -1709,7 +1709,7 @@
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
                         "signature" : "0x7457553f2108fc48404d5a0c6d8976612a0997dad06ddb037568864c17235c21",
-                        "s" : "0x33a7d4f0fa02bda053312d09f3f198ca95e4a0701544484d4146a0dc92a30693",
+                        "publicKey" : "0x33a7d4f0fa02bda053312d09f3f198ca95e4a0701544484d4146a0dc92a30693",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "0xdeadbeef00000000000000000000000000000000",
                         "v" : "0x1c",
@@ -1756,14 +1756,14 @@
         "lastblockhash" : "0xe1f22f49888fc4f7bbe75c2507aa839f7fed41cc6016f8f66b6473e5054c4709",
         "network" : "Prague",
         "postState" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
@@ -1771,7 +1771,7 @@
                     "0x00" : "0xfcbff8c0f1c1f9e41a5713b2bf2078a8ed95a59fca06e77f07b90cb6e39d1069"
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -1779,28 +1779,28 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a75ffc6b",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640001",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -1809,35 +1809,35 @@
             }
         },
         "pre" : {
-            "0x0000000000000000000000000000000000000002" : {
+            "Z0000000000000000000000000000000000000002" : {
                 "balance" : "0x0a",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000000" : {
+            "Zdeadbeef00000000000000000000000000000000" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x6000353f6000556000353b60015500",
                 "nonce" : "0x00",
@@ -1845,14 +1845,14 @@
                     "0x00" : "0xdeadbeef"
                 }
             },
-            "0xdeadbeef00000000000000000000000000000001" : {
+            "Zdeadbeef00000000000000000000000000000001" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x1234",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xdeadbeef00000000000000000000000000000002" : {
+            "Zdeadbeef00000000000000000000000000000002" : {
                 "balance" : "0x0de0b6b3a7640000",
                 "code" : "0x",
                 "nonce" : "0x00",

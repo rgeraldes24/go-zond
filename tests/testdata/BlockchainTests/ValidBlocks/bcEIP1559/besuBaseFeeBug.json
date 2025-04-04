@@ -41,7 +41,7 @@
                         "gasPrice" : "0x04fb5ca3",
                         "nonce" : "0x00",
                         "signature" : "0xd70e11df72dd3539fb4ad37f007bb5534b31829dac8887263b1023e1c1d50790",
-                        "s" : "0x541eb56b97eb8c5e03b7a592e4f416ca76f62613657d1626f41d2e5ea8d52b8f",
+                        "publicKey" : "0x541eb56b97eb8c5e03b7a592e4f416ca76f62613657d1626f41d2e5ea8d52b8f",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "v" : "0x1b",
@@ -82,7 +82,7 @@
                         "gasPrice" : "0x059ac838",
                         "nonce" : "0x01",
                         "signature" : "0x85e3eb2ac48b5b6e58c3ffd2418aab67bbec104b1a9c2f39bc7c0bb48e448008",
-                        "s" : "0x18e27811a86508e7fffb560599540649816192a902e61183a5d652dc565f2b0f",
+                        "publicKey" : "0x18e27811a86508e7fffb560599540649816192a902e61183a5d652dc565f2b0f",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "v" : "0x1c",
@@ -128,7 +128,7 @@
         "lastblockhash" : "0x5551fca61618452cb628dea8bdb7e7065355e54553ff61f46f274b4c851e17ad",
         "network" : "Cancun",
         "postState" : {
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -138,14 +138,14 @@
                     "0x1ab2" : "0x54c99451"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x01f8def8808b023c411f9e88bec5",
                 "code" : "0x",
                 "nonce" : "0x02",
                 "storage" : {
                 }
             },
-            "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x00",
                 "code" : "0x623fffff60002000",
                 "nonce" : "0x00",
@@ -154,7 +154,7 @@
             }
         },
         "pre" : {
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -162,14 +162,14 @@
                     "0x12e2" : "0x54c98c81"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x01f8def8808b02452c9a00000000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x00",
                 "code" : "0x623fffff60002000",
                 "nonce" : "0x00",
@@ -222,7 +222,7 @@
                         "gasPrice" : "0x04fb5ca3",
                         "nonce" : "0x00",
                         "signature" : "0xd70e11df72dd3539fb4ad37f007bb5534b31829dac8887263b1023e1c1d50790",
-                        "s" : "0x541eb56b97eb8c5e03b7a592e4f416ca76f62613657d1626f41d2e5ea8d52b8f",
+                        "publicKey" : "0x541eb56b97eb8c5e03b7a592e4f416ca76f62613657d1626f41d2e5ea8d52b8f",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "v" : "0x1b",
@@ -264,7 +264,7 @@
                         "gasPrice" : "0x059ac838",
                         "nonce" : "0x01",
                         "signature" : "0x85e3eb2ac48b5b6e58c3ffd2418aab67bbec104b1a9c2f39bc7c0bb48e448008",
-                        "s" : "0x18e27811a86508e7fffb560599540649816192a902e61183a5d652dc565f2b0f",
+                        "publicKey" : "0x18e27811a86508e7fffb560599540649816192a902e61183a5d652dc565f2b0f",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "v" : "0x1c",
@@ -311,7 +311,7 @@
         "lastblockhash" : "0xc5f3dafe2762af00a637572e42a9a4e8c8b64ead37befd061afa0d8d12b6e7cb",
         "network" : "Prague",
         "postState" : {
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
@@ -320,7 +320,7 @@
                     "0x01" : "0xa3a2232253281d2e4538a8aeb656b10c897236f11bc466caed38a0702c1e7f73"
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -330,14 +330,14 @@
                     "0x1ab2" : "0x54c99451"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x01f8def8808b023c411f9e88bec5",
                 "code" : "0x",
                 "nonce" : "0x02",
                 "storage" : {
                 }
             },
-            "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x00",
                 "code" : "0x623fffff60002000",
                 "nonce" : "0x00",
@@ -346,14 +346,14 @@
             }
         },
         "pre" : {
-            "0x0000f90827f1c53a10cb7a02335b175320002935" : {
+            "Z0000f90827f1c53a10cb7a02335b175320002935" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604657602036036042575f35600143038111604257611fff81430311604257611fff9006545f5260205ff35b5f5ffd5b5f35611fff60014303065500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -361,14 +361,14 @@
                     "0x12e2" : "0x54c98c81"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x01f8def8808b02452c9a00000000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x00",
                 "code" : "0x623fffff60002000",
                 "nonce" : "0x00",

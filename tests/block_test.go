@@ -34,7 +34,6 @@ func TestBlockchain(t *testing.T) {
 	// Slow tests
 	bt.slow(`.*bcExploitTest/DelegateCallSpam.json`)
 	bt.slow(`.*bcExploitTest/ShanghaiLove.json`)
-	bt.slow(`.*bcExploitTest/SuicideIssue.json`)
 	bt.slow(`.*/bcForkStressTest/`)
 	bt.slow(`.*/bcGasPricerTest/RPC_API_Test.json`)
 	bt.slow(`.*/bcWalletTest/`)
