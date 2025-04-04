@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::test_use_value_in_contract[fork_Cancun-blockchain_test_engine]": {
+    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::test_use_value_in_contract[fork_Shanghai-blockchain_test_engine]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -172,7 +172,7 @@
             }
         }
     },
-    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::test_use_value_in_contract[fork_Prague-blockchain_test_engine]": {
+    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::test_use_value_in_contract[fork_Shanghai-blockchain_test_engine]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

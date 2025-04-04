@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-protected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-protected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -259,7 +259,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-protected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-protected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -519,7 +519,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-protected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-protected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -779,7 +779,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-protected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-protected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1039,7 +1039,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-protected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-protected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1292,7 +1292,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-protected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-protected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1545,7 +1545,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-unprotected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-unprotected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1805,7 +1805,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-unprotected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-unprotected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2065,7 +2065,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-unprotected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-unprotected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2325,7 +2325,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-unprotected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-unprotected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2585,7 +2585,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-unprotected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-unprotected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2838,7 +2838,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test--type_0-unprotected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test--type_0-unprotected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3091,7 +3091,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-protected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-protected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3339,7 +3339,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-protected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-protected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3587,7 +3587,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-protected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-protected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3835,7 +3835,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-protected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-protected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4083,7 +4083,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-protected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-protected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4324,7 +4324,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-protected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-protected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4565,7 +4565,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-unprotected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-unprotected-exact_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4813,7 +4813,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-unprotected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-unprotected-exact_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5061,7 +5061,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-unprotected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-unprotected-extra_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5309,7 +5309,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-unprotected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-unprotected-extra_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5557,7 +5557,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-unprotected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-unprotected-insufficient_gas-floor_gas_greater_than_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5798,7 +5798,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Prague-blockchain_test-contract_creating-type_0-unprotected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_transaction_validity.py::test_transaction_validity_type_0[fork_Shanghai-blockchain_test-contract_creating-type_0-unprotected-insufficient_gas-floor_gas_less_than_or_equal_to_intrinsic_gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

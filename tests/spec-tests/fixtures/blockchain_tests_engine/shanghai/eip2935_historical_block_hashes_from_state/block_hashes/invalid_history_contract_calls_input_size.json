@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls_input_size[fork_Prague-blockchain_test_engine-too_large]": {
+    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls_input_size[fork_Shanghai-blockchain_test_engine-too_large]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -247,7 +247,7 @@
             }
         }
     },
-    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls_input_size[fork_Prague-blockchain_test_engine-too_small]": {
+    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls_input_size[fork_Shanghai-blockchain_test_engine-too_small]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -495,7 +495,7 @@
             }
         }
     },
-    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls_input_size[fork_Prague-blockchain_test_engine-zero_size]": {
+    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls_input_size[fork_Shanghai-blockchain_test_engine-zero_size]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Prague-blockchain_test-consolidation+deposit+withdrawal]": {
+    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Shanghai-blockchain_test-consolidation+deposit+withdrawal]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -271,7 +271,7 @@
             }
         }
     },
-    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Prague-blockchain_test-consolidation+withdrawal+deposit]": {
+    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Shanghai-blockchain_test-consolidation+withdrawal+deposit]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -543,7 +543,7 @@
             }
         }
     },
-    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Prague-blockchain_test-deposit+consolidation+withdrawal]": {
+    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Shanghai-blockchain_test-deposit+consolidation+withdrawal]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -815,7 +815,7 @@
             }
         }
     },
-    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Prague-blockchain_test-deposit+withdrawal+consolidation]": {
+    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Shanghai-blockchain_test-deposit+withdrawal+consolidation]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1087,7 +1087,7 @@
             }
         }
     },
-    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Prague-blockchain_test-withdrawal+consolidation+deposit]": {
+    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Shanghai-blockchain_test-withdrawal+consolidation+deposit]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1359,7 +1359,7 @@
             }
         }
     },
-    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Prague-blockchain_test-withdrawal+deposit+consolidation]": {
+    "tests/shanghai/eip7685_general_purpose_el_requests/test_deposits_withdrawals_consolidations.py::test_valid_deposit_withdrawal_consolidation_request_from_same_tx[fork_Shanghai-blockchain_test-withdrawal+deposit+consolidation]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

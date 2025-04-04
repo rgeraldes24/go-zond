@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Cancun-blockchain_test-tx_after_withdrawals_block]": {
+    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Shanghai-blockchain_test-tx_after_withdrawals_block]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -159,7 +159,7 @@
             }
         }
     },
-    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Cancun-blockchain_test-tx_in_withdrawals_block]": {
+    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Shanghai-blockchain_test-tx_in_withdrawals_block]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -288,7 +288,7 @@
             }
         }
     },
-    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Prague-blockchain_test-tx_after_withdrawals_block]": {
+    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Shanghai-blockchain_test-tx_after_withdrawals_block]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -571,7 +571,7 @@
             }
         }
     },
-    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Prague-blockchain_test-tx_in_withdrawals_block]": {
+    "tests/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Shanghai-blockchain_test-tx_in_withdrawals_block]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

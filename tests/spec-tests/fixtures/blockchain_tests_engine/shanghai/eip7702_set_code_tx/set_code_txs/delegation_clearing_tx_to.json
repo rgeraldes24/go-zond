@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_delegation_clearing_tx_to[fork_Prague-blockchain_test_engine-delegated_account-not_self_sponsored]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_delegation_clearing_tx_to[fork_Shanghai-blockchain_test_engine-delegated_account-not_self_sponsored]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -250,7 +250,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_delegation_clearing_tx_to[fork_Prague-blockchain_test_engine-delegated_account-self_sponsored]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_delegation_clearing_tx_to[fork_Shanghai-blockchain_test_engine-delegated_account-self_sponsored]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -489,7 +489,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_delegation_clearing_tx_to[fork_Prague-blockchain_test_engine-undelegated_account-not_self_sponsored]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_delegation_clearing_tx_to[fork_Shanghai-blockchain_test_engine-undelegated_account-not_self_sponsored]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -722,7 +722,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_delegation_clearing_tx_to[fork_Prague-blockchain_test_engine-undelegated_account-self_sponsored]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_delegation_clearing_tx_to[fork_Shanghai-blockchain_test_engine-undelegated_account-self_sponsored]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

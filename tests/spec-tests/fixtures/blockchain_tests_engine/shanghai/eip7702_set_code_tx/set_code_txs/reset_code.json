@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_reset_code[fork_Prague-blockchain_test_engine-not_self_sponsored]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_reset_code[fork_Shanghai-blockchain_test_engine-not_self_sponsored]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -266,7 +266,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_reset_code[fork_Prague-blockchain_test_engine-self_sponsored]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_reset_code[fork_Shanghai-blockchain_test_engine-self_sponsored]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_creating_delegation_designation_contract[fork_Prague-blockchain_test-create_opcode_CREATE2]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_creating_delegation_designation_contract[fork_Shanghai-blockchain_test-create_opcode_CREATE2]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -259,7 +259,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_creating_delegation_designation_contract[fork_Prague-blockchain_test-create_opcode_CREATE]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_creating_delegation_designation_contract[fork_Shanghai-blockchain_test-create_opcode_CREATE]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

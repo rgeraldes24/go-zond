@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls[fork_Prague-blockchain_test_engine-2**64-1]": {
+    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls[fork_Shanghai-blockchain_test_engine-2**64-1]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -248,7 +248,7 @@
             }
         }
     },
-    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls[fork_Prague-blockchain_test_engine-2**64]": {
+    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls[fork_Shanghai-blockchain_test_engine-2**64]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -497,7 +497,7 @@
             }
         }
     },
-    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls[fork_Prague-blockchain_test_engine-current_block]": {
+    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls[fork_Shanghai-blockchain_test_engine-current_block]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -746,7 +746,7 @@
             }
         }
     },
-    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls[fork_Prague-blockchain_test_engine-future_block]": {
+    "tests/shanghai/eip2935_historical_block_hashes_from_state/test_block_hashes.py::test_invalid_history_contract_calls[fork_Shanghai-blockchain_test_engine-future_block]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

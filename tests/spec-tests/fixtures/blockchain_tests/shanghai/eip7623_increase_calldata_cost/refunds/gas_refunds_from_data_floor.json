@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Prague-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_EQUAL_TO_DATA_FLOOR]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Shanghai-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_EQUAL_TO_DATA_FLOOR]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -278,7 +278,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Prague-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_GREATER_THAN_DATA_FLOOR]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Shanghai-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_GREATER_THAN_DATA_FLOOR]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -557,7 +557,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Prague-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_LESS_THAN_DATA_FLOOR]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Shanghai-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_LESS_THAN_DATA_FLOOR]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -836,7 +836,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Prague-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY|STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_EQUAL_TO_DATA_FLOOR]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Shanghai-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY|STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_EQUAL_TO_DATA_FLOOR]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1117,7 +1117,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Prague-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY|STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_GREATER_THAN_DATA_FLOOR]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Shanghai-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY|STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_GREATER_THAN_DATA_FLOOR]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1398,7 +1398,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Prague-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY|STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_LESS_THAN_DATA_FLOOR]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Shanghai-blockchain_test-refund_type_RefundType.AUTHORIZATION_EXISTING_AUTHORITY|STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_LESS_THAN_DATA_FLOOR]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1679,7 +1679,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Prague-blockchain_test-refund_type_RefundType.STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_EQUAL_TO_DATA_FLOOR]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Shanghai-blockchain_test-refund_type_RefundType.STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_EQUAL_TO_DATA_FLOOR]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1937,7 +1937,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Prague-blockchain_test-refund_type_RefundType.STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_GREATER_THAN_DATA_FLOOR]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Shanghai-blockchain_test-refund_type_RefundType.STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_GREATER_THAN_DATA_FLOOR]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2195,7 +2195,7 @@
             }
         }
     },
-    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Prague-blockchain_test-refund_type_RefundType.STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_LESS_THAN_DATA_FLOOR]": {
+    "tests/shanghai/eip7623_increase_calldata_cost/test_refunds.py::test_gas_refunds_from_data_floor[fork_Shanghai-blockchain_test-refund_type_RefundType.STORAGE_CLEAR-refund_test_type_RefundTestType.EXECUTION_GAS_MINUS_REFUND_LESS_THAN_DATA_FLOOR]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

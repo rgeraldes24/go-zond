@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Prague-blockchain_test-no_deposits_non_empty_requests_list]": {
+    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Shanghai-blockchain_test-no_deposits_non_empty_requests_list]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -213,7 +213,7 @@
             }
         }
     },
-    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Prague-blockchain_test-single_deposit_amount_mismatch]": {
+    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Shanghai-blockchain_test-single_deposit_amount_mismatch]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -454,7 +454,7 @@
             }
         }
     },
-    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Prague-blockchain_test-single_deposit_credentials_mismatch]": {
+    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Shanghai-blockchain_test-single_deposit_credentials_mismatch]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -695,7 +695,7 @@
             }
         }
     },
-    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Prague-blockchain_test-single_deposit_duplicate_in_requests_list]": {
+    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Shanghai-blockchain_test-single_deposit_duplicate_in_requests_list]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -936,7 +936,7 @@
             }
         }
     },
-    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Prague-blockchain_test-single_deposit_empty_requests_list]": {
+    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Shanghai-blockchain_test-single_deposit_empty_requests_list]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1177,7 +1177,7 @@
             }
         }
     },
-    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Prague-blockchain_test-single_deposit_index_mismatch]": {
+    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Shanghai-blockchain_test-single_deposit_index_mismatch]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1418,7 +1418,7 @@
             }
         }
     },
-    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Prague-blockchain_test-single_deposit_pubkey_mismatch]": {
+    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Shanghai-blockchain_test-single_deposit_pubkey_mismatch]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1659,7 +1659,7 @@
             }
         }
     },
-    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Prague-blockchain_test-single_deposit_signature_mismatch]": {
+    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Shanghai-blockchain_test-single_deposit_signature_mismatch]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1900,7 +1900,7 @@
             }
         }
     },
-    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Prague-blockchain_test-two_deposits_out_of_order]": {
+    "tests/shanghai/eip6110_deposits/test_deposits.py::test_deposit_negative[fork_Shanghai-blockchain_test-two_deposits_out_of_order]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

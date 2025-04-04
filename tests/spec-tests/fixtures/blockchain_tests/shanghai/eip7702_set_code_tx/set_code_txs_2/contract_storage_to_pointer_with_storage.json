@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Prague-blockchain_test-call_type_CALLCODE]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Shanghai-blockchain_test-call_type_CALLCODE]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -306,7 +306,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Prague-blockchain_test-call_type_CALL]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Shanghai-blockchain_test-call_type_CALL]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -615,7 +615,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Prague-blockchain_test-call_type_DELEGATECALL]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs_2.py::test_contract_storage_to_pointer_with_storage[fork_Shanghai-blockchain_test-call_type_DELEGATECALL]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

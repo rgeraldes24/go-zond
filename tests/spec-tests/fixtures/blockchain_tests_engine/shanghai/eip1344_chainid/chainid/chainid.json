@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip1344_chainid/test_chainid.py::test_chainid[fork_Cancun-blockchain_test_engine]": {
+    "tests/shanghai/eip1344_chainid/test_chainid.py::test_chainid[fork_Shanghai-blockchain_test_engine]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -125,7 +125,7 @@
             }
         }
     },
-    "tests/shanghai/eip1344_chainid/test_chainid.py::test_chainid[fork_Paris-blockchain_test_engine]": {
+    "tests/shanghai/eip1344_chainid/test_chainid.py::test_chainid[fork_Shanghai-blockchain_test_engine]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -226,7 +226,7 @@
             }
         }
     },
-    "tests/shanghai/eip1344_chainid/test_chainid.py::test_chainid[fork_Prague-blockchain_test_engine]": {
+    "tests/shanghai/eip1344_chainid/test_chainid.py::test_chainid[fork_Shanghai-blockchain_test_engine]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_nonce_validity[fork_Prague-blockchain_test-nonce=0,account_nonce=1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_nonce_validity[fork_Shanghai-blockchain_test-nonce=0,account_nonce=1]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -292,7 +292,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_nonce_validity[fork_Prague-blockchain_test-nonce=1,account_nonce=0]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_nonce_validity[fork_Shanghai-blockchain_test-nonce=1,account_nonce=0]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -573,7 +573,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_nonce_validity[fork_Prague-blockchain_test-nonce=2**64-1]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_nonce_validity[fork_Shanghai-blockchain_test-nonce=2**64-1]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -866,7 +866,7 @@
             }
         }
     },
-    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_nonce_validity[fork_Prague-blockchain_test-nonce=2**64-2]": {
+    "tests/shanghai/eip7702_set_code_tx/test_set_code_txs.py::test_nonce_validity[fork_Shanghai-blockchain_test-nonce=2**64-2]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

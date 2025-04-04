@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Prague-blockchain_test-no_withdrawals_non_empty_requests_list]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Shanghai-blockchain_test-no_withdrawals_non_empty_requests_list]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -213,7 +213,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Prague-blockchain_test-single_withdrawal_request_amount_mismatch]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Shanghai-blockchain_test-single_withdrawal_request_amount_mismatch]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -454,7 +454,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Prague-blockchain_test-single_withdrawal_request_empty_requests_list]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Shanghai-blockchain_test-single_withdrawal_request_empty_requests_list]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -695,7 +695,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Prague-blockchain_test-single_withdrawal_request_public_key_mismatch]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Shanghai-blockchain_test-single_withdrawal_request_public_key_mismatch]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -936,7 +936,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Prague-blockchain_test-single_withdrawal_request_source_address_mismatch]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Shanghai-blockchain_test-single_withdrawal_request_source_address_mismatch]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1177,7 +1177,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Prague-blockchain_test-single_withdrawal_requests_duplicate_in_requests_list]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Shanghai-blockchain_test-single_withdrawal_requests_duplicate_in_requests_list]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1418,7 +1418,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Prague-blockchain_test-two_withdrawal_requests_out_of_order]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests_negative[fork_Shanghai-blockchain_test-two_withdrawal_requests_out_of_order]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

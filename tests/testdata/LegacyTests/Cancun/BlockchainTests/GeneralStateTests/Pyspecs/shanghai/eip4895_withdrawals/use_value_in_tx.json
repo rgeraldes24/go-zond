@@ -1,5 +1,5 @@
 {
-    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Cancun-blockchain_test-tx_after_withdrawals_block]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Shanghai-blockchain_test-tx_after_withdrawals_block]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",
@@ -154,7 +154,7 @@
         },
         "sealEngine" : "NoProof"
     },
-    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Cancun-blockchain_test-tx_in_withdrawals_block]" : {
+    "src/GeneralStateTestsFiller/Pyspecs/shanghai/eip4895_withdrawals/test_withdrawals.py::TestUseValueInTx::test_use_value_in_tx[fork_Shanghai-blockchain_test-tx_in_withdrawals_block]" : {
         "_info" : {
             "comment" : "`execution-spec-tests` generated test",
             "filling-rpc-server" : "evm version 1.14.0-unstable-7aafad22-20240406",

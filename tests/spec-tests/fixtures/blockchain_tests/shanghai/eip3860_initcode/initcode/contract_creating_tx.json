@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Cancun-blockchain_test-max_size_ones]": {
+    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-blockchain_test-max_size_ones]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -132,7 +132,7 @@
             }
         }
     },
-    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Cancun-blockchain_test-max_size_zeros]": {
+    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-blockchain_test-max_size_zeros]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -265,7 +265,7 @@
             }
         }
     },
-    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Cancun-blockchain_test-over_limit_ones]": {
+    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-blockchain_test-over_limit_ones]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -387,7 +387,7 @@
             }
         }
     },
-    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Cancun-blockchain_test-over_limit_zeros]": {
+    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-blockchain_test-over_limit_zeros]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -509,7 +509,7 @@
             }
         }
     },
-    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Prague-blockchain_test-max_size_ones]": {
+    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-blockchain_test-max_size_ones]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -763,7 +763,7 @@
             }
         }
     },
-    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Prague-blockchain_test-max_size_zeros]": {
+    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-blockchain_test-max_size_zeros]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1017,7 +1017,7 @@
             }
         }
     },
-    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Prague-blockchain_test-over_limit_ones]": {
+    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-blockchain_test-over_limit_ones]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1258,7 +1258,7 @@
             }
         }
     },
-    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Prague-blockchain_test-over_limit_zeros]": {
+    "tests/shanghai/eip3860_initcode/test_initcode.py::test_contract_creating_tx[fork_Shanghai-blockchain_test-over_limit_zeros]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

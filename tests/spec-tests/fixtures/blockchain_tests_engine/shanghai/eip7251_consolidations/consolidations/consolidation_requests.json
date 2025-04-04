@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-multiple_block_above_max_consolidation_requests_from_eoa]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-multiple_block_above_max_consolidation_requests_from_eoa]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -422,7 +422,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-multiple_block_fee_increments]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-multiple_block_fee_increments]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4351,7 +4351,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_request_first_oog]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_request_first_oog]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4619,7 +4619,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_request_first_reverts]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_request_first_reverts]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4887,7 +4887,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_request_from_different_eoa]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_request_from_different_eoa]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5170,7 +5170,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_request_from_same_eoa]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_request_from_same_eoa]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5441,7 +5441,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_request_last_oog]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_request_last_oog]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5709,7 +5709,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_request_last_reverts]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_request_last_reverts]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5977,7 +5977,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -6403,7 +6403,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_caller_oog]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_caller_oog]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -6676,7 +6676,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_caller_reverts]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_caller_reverts]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -6949,7 +6949,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_first_oog]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_first_oog]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -7373,7 +7373,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_first_reverts]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_first_reverts]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -7797,7 +7797,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_last_oog]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_last_oog]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -8223,7 +8223,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_last_reverts]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_multiple_consolidation_requests_from_contract_last_reverts]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -8649,7 +8649,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_single_consolidation_request_delegatecall_staticcall_callcode]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_single_consolidation_request_delegatecall_staticcall_callcode]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -8978,7 +8978,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_single_consolidation_request_from_contract]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_single_consolidation_request_from_contract]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -9257,7 +9257,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_single_consolidation_request_from_eoa]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_single_consolidation_request_from_eoa]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -9524,7 +9524,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_single_consolidation_request_from_eoa_equal_pubkeys]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_single_consolidation_request_from_eoa_equal_pubkeys]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -9791,7 +9791,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_single_consolidation_request_from_eoa_input_too_long]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_single_consolidation_request_from_eoa_input_too_long]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -10052,7 +10052,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_single_consolidation_request_from_eoa_input_too_short]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_single_consolidation_request_from_eoa_input_too_short]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -10313,7 +10313,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_single_consolidation_request_from_eoa_insufficient_fee]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_single_consolidation_request_from_eoa_insufficient_fee]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -10574,7 +10574,7 @@
             }
         }
     },
-    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Prague-blockchain_test_engine-single_block_single_consolidation_request_from_eoa_max_pubkeys]": {
+    "tests/shanghai/eip7251_consolidations/test_consolidations.py::test_consolidation_requests[fork_Shanghai-blockchain_test_engine-single_block_single_consolidation_request_from_eoa_max_pubkeys]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

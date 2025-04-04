@@ -1,5 +1,5 @@
 {
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case1]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -131,7 +131,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case2]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -263,7 +263,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case3-raw-input-out-of-gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -387,7 +387,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case4-extra-data_07]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -519,7 +519,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case5-raw-input]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -651,7 +651,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -783,7 +783,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -915,7 +915,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1047,7 +1047,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1179,7 +1179,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1311,7 +1311,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1443,7 +1443,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1575,7 +1575,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1707,7 +1707,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1839,7 +1839,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -1971,7 +1971,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Cancun-blockchain_test_engine-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2103,7 +2103,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case1]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2210,7 +2210,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case2]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2317,7 +2317,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case3-raw-input-out-of-gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2416,7 +2416,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case4-extra-data_07]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2523,7 +2523,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case5-raw-input]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2630,7 +2630,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2737,7 +2737,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2844,7 +2844,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -2951,7 +2951,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3058,7 +3058,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3165,7 +3165,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3272,7 +3272,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3379,7 +3379,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3486,7 +3486,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3593,7 +3593,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3700,7 +3700,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Paris-blockchain_test_engine-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -3807,7 +3807,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-EIP-198-case1]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case1]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4060,7 +4060,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-EIP-198-case2]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case2]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4313,7 +4313,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-EIP-198-case3-raw-input-out-of-gas]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case3-raw-input-out-of-gas]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4558,7 +4558,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-EIP-198-case4-extra-data_07]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case4-extra-data_07]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4811,7 +4811,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-EIP-198-case5-raw-input]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-EIP-198-case5-raw-input]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5064,7 +5064,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_-ExpectedOutput_call_return_code_0x01-returned_data_0x]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5317,7 +5317,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_00-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5570,7 +5570,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0001-ExpectedOutput_call_return_code_0x01-returned_data_0x0000]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5823,7 +5823,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_0002-ExpectedOutput_call_return_code_0x01-returned_data_0x0001]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -6076,7 +6076,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_01-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -6329,7 +6329,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -6582,7 +6582,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x00]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -6835,7 +6835,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_00-exponent_00-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -7088,7 +7088,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_01-exponent_01-modulus_02-ExpectedOutput_call_return_code_0x01-returned_data_0x01]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -7341,7 +7341,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_02-exponent_01-modulus_03-ExpectedOutput_call_return_code_0x01-returned_data_0x02]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -7594,7 +7594,7 @@
             }
         }
     },
-    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Prague-blockchain_test_engine-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
+    "tests/byzantium/eip198_modexp_precompile/test_modexp.py::test_modexp[fork_Shanghai-blockchain_test_engine-ModExpInput_base_02-exponent_02-modulus_05-ExpectedOutput_call_return_code_0x01-returned_data_0x04]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",

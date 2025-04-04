@@ -1,5 +1,5 @@
 {
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-multiple_block_above_max_withdrawal_requests_from_eoa]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-multiple_block_above_max_withdrawal_requests_from_eoa]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -803,7 +803,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-multiple_block_fee_increments]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-multiple_block_fee_increments]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4406,7 +4406,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_max_withdrawal_requests_from_eoa]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_max_withdrawal_requests_from_eoa]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -4926,7 +4926,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_request_first_oog]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_request_first_oog]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5219,7 +5219,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_request_first_reverts]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_request_first_reverts]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5512,7 +5512,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_request_from_different_eoa]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_request_from_different_eoa]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -5819,7 +5819,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_request_from_same_eoa]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_request_from_same_eoa]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -6114,7 +6114,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_request_last_oog]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_request_last_oog]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -6407,7 +6407,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_request_last_reverts]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_request_last_reverts]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -6700,7 +6700,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_requests_from_contract]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_requests_from_contract]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -7022,7 +7022,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_caller_oog]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_caller_oog]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -7310,7 +7310,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_caller_reverts]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_caller_reverts]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -7598,7 +7598,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_first_oog]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_first_oog]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -7918,7 +7918,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_first_reverts]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_first_reverts]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -8238,7 +8238,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_last_oog]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_last_oog]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -8560,7 +8560,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_last_reverts]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_multiple_withdrawal_requests_from_contract_last_reverts]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -8880,7 +8880,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_single_withdrawal_request_delegatecall_staticcall_callcode]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_single_withdrawal_request_delegatecall_staticcall_callcode]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -9249,7 +9249,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_single_withdrawal_request_from_contract]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_single_withdrawal_request_from_contract]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -9540,7 +9540,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_single_withdrawal_request_from_eoa]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_single_withdrawal_request_from_eoa]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -9819,7 +9819,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_single_withdrawal_request_from_eoa_input_too_long]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_single_withdrawal_request_from_eoa_input_too_long]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -10095,7 +10095,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_single_withdrawal_request_from_eoa_input_too_short]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_single_withdrawal_request_from_eoa_input_too_short]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -10371,7 +10371,7 @@
             }
         }
     },
-    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Prague-blockchain_test-single_block_single_withdrawal_request_from_eoa_insufficient_fee]": {
+    "tests/shanghai/eip7002_el_triggerable_withdrawals/test_withdrawal_requests.py::test_withdrawal_requests[fork_Shanghai-blockchain_test-single_block_single_withdrawal_request_from_eoa_insufficient_fee]": {
         "network": "Shanghai",
         "genesisBlockHeader": {
             "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
