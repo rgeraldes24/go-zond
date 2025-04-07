@@ -17,7 +17,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "Z2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x01312d00",
             "currentNumber" : "0x01",
             "currentRandom" : "0x0000000000000000000000000000000000000000000000000000000000020000",
@@ -92,21 +91,21 @@
             ]
         },
         "pre" : {
-            "0x000000000000000000000000000000000000c0de" : {
+            "Z000000000000000000000000000000000000c0de" : {
                 "balance" : "0x00",
                 "code" : "0x69600a80600080396000f360b01b6000908152355a90600080f0905a9003600a5560005500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0bebc200",
                 "code" : "0x",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" : {
+            "Zbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" : {
                 "balance" : "0x00",
                 "code" : "0x60003560005260008036818061c0de62989680f16000556001805500",
                 "nonce" : "0x01",

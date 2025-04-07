@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "Z945304eb96065b2a98b57a48a06ae28d285a71b5",
-            "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x7fffffffffffffff",
             "currentNumber" : "0x01",
             "currentRandom" : "0x0000000000000000000000000000000000000000000000000000000000020000",
@@ -71,7 +70,7 @@
                     "txbytes" : "0xf90111800a845a11064f94095e7baea6a6c7c4c2dfeb977efac326af552d8784030247dcb8ab7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000c3507f000000000000000000000000ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000c35059a17f0000000000000000000000000000000000000000000000000000000000000001f38f07bf1ba0ba31755c635c7ac33d7d4929d4871ac09a2e017af3d96bad79fa0b76a19866b5a01aae441221c391df52b783c8cb94dee5284616cfdac4c0d7e215f802d3c360da"
                 }
             ],
-            "Prague" : [
+            "Shanghai" : [
                 {
                     "hash" : "0x24ebcb45baa4552b7de87041f50bc37a964be788c018005787e4b95998b97142",
                     "indexes" : {
@@ -108,7 +107,7 @@
             ]
         },
         "pre" : {
-            "0x095e7baea6a6c7c4c2dfeb977efac326af552d87" : {
+            "Z095e7baea6a6c7c4c2dfeb977efac326af552d87" : {
                 "balance" : "0x00",
                 "code" : "0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000c3507f000000000000000000000000ffffffffffffffffffffffffffffffffffffffff7f000000000000000000000000000000000000000000000000000000000000c35059a17f0000000000000000000000000000000000000000000000000000000000000001f38f07bf60005155",
                 "nonce" : "0x00",
@@ -140,7 +139,7 @@
             "gasPrice" : "0x0a",
             "nonce" : "0x00",
             "secretKey" : "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8",
-            "sender" : "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "to" : "Z095e7baea6a6c7c4c2dfeb977efac326af552d87",
             "value" : [
                 "0x030247dc"

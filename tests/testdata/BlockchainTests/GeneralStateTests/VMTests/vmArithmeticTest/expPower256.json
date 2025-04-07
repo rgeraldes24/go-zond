@@ -42,23 +42,14 @@
                         "publicKey" : "0x776b02f9f5773238d3ff36b74a123f409cd6420908d7855bbe4c8ff63e00d698",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "Zcccccccccccccccccccccccccccccccccccccccc",
-                        "v" : "0x1b",
                         "value" : "0x01"
                     }
                 ],
-
                 "withdrawals" : [
                 ]
             }
         ],
         "config" : {
-            "blobSchedule" : {
-                "Cancun" : {
-                    "baseFeeUpdateFraction" : "0x32f0ed",
-                    "max" : "0x06",
-                    "target" : "0x03"
-                }
-            },
             "chainid" : "0x01",
             "network" : "Shanghai"
         },
@@ -276,23 +267,14 @@
                         "publicKey" : "0x776b02f9f5773238d3ff36b74a123f409cd6420908d7855bbe4c8ff63e00d698",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "Zcccccccccccccccccccccccccccccccccccccccc",
-                        "v" : "0x1b",
                         "value" : "0x01"
                     }
                 ],
-
                 "withdrawals" : [
                 ]
             }
         ],
         "config" : {
-            "blobSchedule" : {
-                "Prague" : {
-                    "baseFeeUpdateFraction" : "0x4c6964",
-                    "max" : "0x09",
-                    "target" : "0x06"
-                }
-            },
             "chainid" : "0x01",
             "network" : "Shanghai"
         },

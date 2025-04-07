@@ -18,7 +18,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "Z2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x05f5e100",
             "currentNumber" : "0x01",
             "currentRandom" : "0x0000000000000000000000000000000000000000000000000000000000020000",
@@ -219,35 +218,35 @@
             ]
         },
         "pre" : {
-            "0x0000000000000000000000000000000000001000" : {
+            "Z0000000000000000000000000000000000001000" : {
                 "balance" : "0xff000000000000",
                 "code" : "0x33ff00",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000000000000000000000000000000000001001" : {
+            "Z0000000000000000000000000000000000001001" : {
                 "balance" : "0x100000000000",
                 "code" : "0x61deadff00",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0x0000000000000000000000000000000000001002" : {
+            "Z0000000000000000000000000000000000001002" : {
                 "balance" : "0x100000000000",
                 "code" : "0x30ff00",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x5af3107a4000",
                 "code" : "0x",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xcccccccccccccccccccccccccccccccccccccccc" : {
+            "Zcccccccccccccccccccccccccccccccccccccccc" : {
                 "balance" : "0x100000000000",
                 "code" : "0x600060006000600060006004355af100",
                 "nonce" : "0x00",

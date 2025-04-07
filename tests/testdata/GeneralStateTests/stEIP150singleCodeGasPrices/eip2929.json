@@ -69,7 +69,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "Z2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x05f5e100",
             "currentNumber" : "0x01",
             "currentRandom" : "0x0000000000000000000000000000000000000000000000000000000000020000",
@@ -1975,7 +1974,7 @@
                     "txbytes" : "0xf8c6800a8404c4b40094cccccccccccccccccccccccccccccccccccccccc01b864048071d30000000000000000000000000000000000000000000000000000000000000021000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000021ca07a92e6835b05d44ad4c27e7631f45aff632267ac37417d1482240a61fc92709aa04c723ab2d7880df4c9c3e326436e0661947df3fe37d72c382d5fafd4b8f39c28"
                 }
             ],
-            "Prague" : [
+            "Shanghai" : [
                 {
                     "hash" : "0x44bc367c6a5fa1458a1d326353a626854cc8e9acd815945e2a6f4d347d331c28",
                     "indexes" : {
@@ -3960,7 +3959,7 @@
             "gasPrice" : "0x0a",
             "nonce" : "0x00",
             "secretKey" : "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8",
-            "sender" : "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "to" : "Zcccccccccccccccccccccccccccccccccccccccc",
             "value" : [
                 "0x01"

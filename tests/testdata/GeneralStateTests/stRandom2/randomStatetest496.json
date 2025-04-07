@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "Z945304eb96065b2a98b57a48a06ae28d285a71b5",
-            "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x7fffffffffffffff",
             "currentNumber" : "0x01",
             "currentRandom" : "0x0000000000000000000000000000000000000000000000000000000000020000",
@@ -71,7 +70,7 @@
                     "txbytes" : "0xf8f2800a845419707a94095e7baea6a6c7c4c2dfeb977efac326af552d87840f4c9558b88c7f000000000000000000000000ffffffffffffffffffffffffffffffffffffffff457f0000000000000000000000000000000000000000000000000000000000000000355b7f00000000000000000000000000000000000000000000000000000000000000017f000000000000000000000000000000000000000000000000000000000000c3500b0b0207961ba00c85fabcd705cdbadd6c6fddfedbcc8a7b96d9d18dc13a7ba819d68b8de37389a03ecae6a0bfe2072b01e55294bde5b5581f4772e2e761b4bbe929ab7792f2e5d9"
                 }
             ],
-            "Prague" : [
+            "Shanghai" : [
                 {
                     "hash" : "0xb55347b61ac70856cb0a756c6360b483fa566a522cbdd3126c8d907ee4b43a77",
                     "indexes" : {
@@ -108,7 +107,7 @@
             ]
         },
         "pre" : {
-            "0x095e7baea6a6c7c4c2dfeb977efac326af552d87" : {
+            "Z095e7baea6a6c7c4c2dfeb977efac326af552d87" : {
                 "balance" : "0x00",
                 "code" : "0x7f000000000000000000000000ffffffffffffffffffffffffffffffffffffffff457f0000000000000000000000000000000000000000000000000000000000000000355b7f00000000000000000000000000000000000000000000000000000000000000017f000000000000000000000000000000000000000000000000000000000000c3500b0b0207965560005155",
                 "nonce" : "0x00",
@@ -140,7 +139,7 @@
             "gasPrice" : "0x0a",
             "nonce" : "0x00",
             "secretKey" : "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8",
-            "sender" : "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+            "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "to" : "Z095e7baea6a6c7c4c2dfeb977efac326af552d87",
             "value" : [
                 "0x0f4c9558"

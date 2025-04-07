@@ -41,7 +41,7 @@
                         "signature" : "0x7e09e26678ed4fac08a249ebe8ed680bf9051a5e14ad223e4b2b9d26e0208f37",
                         "publicKey" : "0x5f6e3f188e3e6eab7d7d3b6568f5eac7d687b08d307d3154ccd8c87b4630509b",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-                        "to" : "0x1000000000000000000000000000000000000000",
+                        "to" : "Z1000000000000000000000000000000000000000",
                         "v" : "0x1b",
                         "value" : "0x00"
                     }
@@ -53,13 +53,6 @@
             }
         ],
         "config" : {
-            "blobSchedule" : {
-                "Cancun" : {
-                    "baseFeeUpdateFraction" : "0x32f0ed",
-                    "max" : "0x06",
-                    "target" : "0x03"
-                }
-            },
             "chainid" : "0x01",
             "network" : "Shanghai"
         },
@@ -93,7 +86,7 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0x1000000000000000000000000000000000000000" : {
+            "Z1000000000000000000000000000000000000000" : {
                 "balance" : "0x00",
                 "code" : "0x5a80545a905090036005900360015500",
                 "nonce" : "0x00",
@@ -101,7 +94,7 @@
                     "0x01" : "0x0834"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x3635c9adc5de991934",
                 "code" : "0x",
                 "nonce" : "0x01",
@@ -117,14 +110,14 @@
                 "storage" : {
                 }
             },
-            "0x1000000000000000000000000000000000000000" : {
+            "Z1000000000000000000000000000000000000000" : {
                 "balance" : "0x00",
                 "code" : "0x5a80545a905090036005900360015500",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x3635c9adc5dea00000",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -177,7 +170,7 @@
                         "signature" : "0x7e09e26678ed4fac08a249ebe8ed680bf9051a5e14ad223e4b2b9d26e0208f37",
                         "publicKey" : "0x5f6e3f188e3e6eab7d7d3b6568f5eac7d687b08d307d3154ccd8c87b4630509b",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-                        "to" : "0x1000000000000000000000000000000000000000",
+                        "to" : "Z1000000000000000000000000000000000000000",
                         "v" : "0x1b",
                         "value" : "0x00"
                     }
@@ -189,13 +182,6 @@
             }
         ],
         "config" : {
-            "blobSchedule" : {
-                "Prague" : {
-                    "baseFeeUpdateFraction" : "0x4c6964",
-                    "max" : "0x09",
-                    "target" : "0x06"
-                }
-            },
             "chainid" : "0x01",
             "network" : "Shanghai"
         },
@@ -230,7 +216,7 @@
                     "0x00" : "0xdedcfe17798df315c0e34c32964b42b70462507303ff1e82747f396303c93c91"
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
@@ -238,7 +224,7 @@
                     "0x03e8" : "0x03e8"
                 }
             },
-            "0x1000000000000000000000000000000000000000" : {
+            "Z1000000000000000000000000000000000000000" : {
                 "balance" : "0x00",
                 "code" : "0x5a80545a905090036005900360015500",
                 "nonce" : "0x00",
@@ -246,7 +232,7 @@
                     "0x01" : "0x0834"
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x3635c9adc5de991934",
                 "code" : "0x",
                 "nonce" : "0x01",
@@ -262,21 +248,21 @@
                 "storage" : {
                 }
             },
-            "0x000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
+            "Z000f3df6d732807ef1319fb7b8bb8522d0beac02" : {
                 "balance" : "0x00",
                 "code" : "0x3373fffffffffffffffffffffffffffffffffffffffe14604d57602036146024575f5ffd5b5f35801560495762001fff810690815414603c575f5ffd5b62001fff01545f5260205ff35b5f5ffd5b62001fff42064281555f359062001fff015500",
                 "nonce" : "0x01",
                 "storage" : {
                 }
             },
-            "0x1000000000000000000000000000000000000000" : {
+            "Z1000000000000000000000000000000000000000" : {
                 "balance" : "0x00",
                 "code" : "0x5a80545a905090036005900360015500",
                 "nonce" : "0x00",
                 "storage" : {
                 }
             },
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x3635c9adc5dea00000",
                 "code" : "0x",
                 "nonce" : "0x00",

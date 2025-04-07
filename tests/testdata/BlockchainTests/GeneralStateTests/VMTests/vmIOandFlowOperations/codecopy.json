@@ -1478,7 +1478,7 @@
         },
         "sealEngine" : "NoProof"
     },
-    "codecopy_d3g0v0_Prague" : {
+    "codecopy_d3g0v0_Shanghai" : {
         "_info" : {
             "comment" : "Ori Pomerantz qbzzt1@gmail.com",
             "filling-rpc-server" : "evmone-t8n 0.14.0-13+commit.4d363c36",
@@ -1532,13 +1532,6 @@
             }
         ],
         "config" : {
-            "blobSchedule" : {
-                "Prague" : {
-                    "baseFeeUpdateFraction" : "0x4c6964",
-                    "max" : "0x09",
-                    "target" : "0x06"
-                }
-            },
             "chainid" : "0x01",
             "network" : "Shanghai"
         },

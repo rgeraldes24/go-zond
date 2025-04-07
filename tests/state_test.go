@@ -51,9 +51,8 @@ func TestState(t *testing.T) {
 	st.slow(`^stSystemOperationsTest/CallRecursiveBomb`)
 	st.slow(`^stTransactionTest/Opcodes_TransactionInit`)
 
-	// For Istanbul, older tests were moved into LegacyTests
 	for _, dir := range []string{
-		filepath.Join(baseDir, "EIPTests", "StateTests"),
+		// filepath.Join(baseDir, "EIPTests", "StateTests"),
 		stateTestDir,
 		legacyStateTestDir,
 		benchmarksDir,

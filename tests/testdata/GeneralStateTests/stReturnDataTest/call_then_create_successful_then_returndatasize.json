@@ -29,7 +29,6 @@
         "env" : {
             "currentBaseFee" : "0x0a",
             "currentCoinbase" : "Z2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
-            "currentExcessBlobGas" : "0x00",
             "currentGasLimit" : "0x1a00000000",
             "currentNumber" : "0x01",
             "currentRandom" : "0x0000000000000000000000000000000000000000000000000000000000020000",
@@ -53,21 +52,21 @@
                             "storage" : {
                             }
                         },
-                        "0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" : {
+                        "Z0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" : {
                             "balance" : "0x00",
                             "code" : "0x60006000600060006000730aabbccdd5c57f15886f9b263e2f6d2d6c7b5ec6640900000000f150600e80603c60003960006000f0503d6000550000fe6211223360005260206000f30000",
                             "nonce" : "0x01",
                             "storage" : {
                             }
                         },
-                        "0x945304eb96065b2a98b57a48a06ae28d285a71b5" : {
+                        "Z945304eb96065b2a98b57a48a06ae28d285a71b5" : {
                             "balance" : "0x00",
                             "code" : "0x0000000000000000000000000000000000000000000000000000000000112233",
                             "nonce" : "0x01",
                             "storage" : {
                             }
                         },
-                        "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+                        "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                             "balance" : "0x63fff67e9a",
                             "code" : "0x",
                             "nonce" : "0x01",
@@ -78,7 +77,7 @@
                     "txbytes" : "0xf862800a850a00000000940f572e5295c57f15886f9b263e2f6d2d6c7b5ec680801ba0be56d61b678ad2c41b294c70b5213913b9a6f17753ba7aadc171c9a2474f66a8a04814800401028ca339e8af9f4a6253bddd3f9df8f1dc6da275d19862e9f28642"
                 }
             ],
-            "Prague" : [
+            "Shanghai" : [
                 {
                     "hash" : "0x2763a803a4686ea0a03e73146af57ed7e3753a67963e6fb6b7677c2f73f81dd5",
                     "indexes" : {
@@ -95,21 +94,21 @@
                             "storage" : {
                             }
                         },
-                        "0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" : {
+                        "Z0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" : {
                             "balance" : "0x00",
                             "code" : "0x60006000600060006000730aabbccdd5c57f15886f9b263e2f6d2d6c7b5ec6640900000000f150600e80603c60003960006000f0503d6000550000fe6211223360005260206000f30000",
                             "nonce" : "0x01",
                             "storage" : {
                             }
                         },
-                        "0x945304eb96065b2a98b57a48a06ae28d285a71b5" : {
+                        "Z945304eb96065b2a98b57a48a06ae28d285a71b5" : {
                             "balance" : "0x00",
                             "code" : "0x0000000000000000000000000000000000000000000000000000000000112233",
                             "nonce" : "0x01",
                             "storage" : {
                             }
                         },
-                        "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+                        "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                             "balance" : "0x63fff67e9a",
                             "code" : "0x",
                             "nonce" : "0x01",
