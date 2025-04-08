@@ -249,8 +249,8 @@
                         "data": "0x",
                         "accessList": [],
                         "v": "0x00",
-                        "r": "0xf40bedc1bd397d1f545b68206b38585f661cf4ac2490e3c0621d4ff6b9353b82",
-                        "s": "0x516c28d5f36d362900192a3e2c8f57c129c623faf1d5be760565af11d0d44753",
+                        "publicKey": "0xf40bedc1bd397d1f545b68206b38585f661cf4ac2490e3c0621d4ff6b9353b82",
+                        "signature": "0x516c28d5f36d362900192a3e2c8f57c129c623faf1d5be760565af11d0d44753",
                         "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "authorizationList": [
                             {
@@ -258,8 +258,8 @@
                                 "address": "0x0000000000000000000000000000000000001000",
                                 "nonce": "0x00",
                                 "v": "0x00",
-                                "r": "0xc975e08bd506eb09434c6162f16c4115224d6f7760fae99e3949798d8c2c1c35",
-                                "s": "0x2918292179188590f6f1508770cb45a305ac43d2465da14c64db52abafeb91e9",
+                                "publicKey": "0xc975e08bd506eb09434c6162f16c4115224d6f7760fae99e3949798d8c2c1c35",
+                                "signature": "0x2918292179188590f6f1508770cb45a305ac43d2465da14c64db52abafeb91e9",
                                 "signer": "0x8a0a19589531694250d570040a0c4b74576919b8"
                             }
                         ]
@@ -274,8 +274,8 @@
                         "value": "0x00",
                         "data": "0x",
                         "v": "0x26",
-                        "r": "0x66c3f6d08ee34b3afdc80b4d5d0b9114e4e4505eb5a6644960a9b885b7b8772f",
-                        "s": "0x52e3ee0b1e4c13d5d605872004e8b8ff192a874101a30f9627a9a1b582ce2573",
+                        "publicKey": "0x66c3f6d08ee34b3afdc80b4d5d0b9114e4e4505eb5a6644960a9b885b7b8772f",
+                        "signature": "0x52e3ee0b1e4c13d5d605872004e8b8ff192a874101a30f9627a9a1b582ce2573",
                         "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                     }
                 ],
@@ -315,8 +315,8 @@
                         "value": "0x00",
                         "data": "0x",
                         "v": "0x26",
-                        "r": "0xca90815215ed918ba2779fc988e6b83fd1efc0365657ea736b28342036f49dfc",
-                        "s": "0x464b51887d68ad1d22ac56d974f83c265dd07bb0a5821040f464bc705ee908ea",
+                        "publicKey": "0xca90815215ed918ba2779fc988e6b83fd1efc0365657ea736b28342036f49dfc",
+                        "signature": "0x464b51887d68ad1d22ac56d974f83c265dd07bb0a5821040f464bc705ee908ea",
                         "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                     }
                 ],

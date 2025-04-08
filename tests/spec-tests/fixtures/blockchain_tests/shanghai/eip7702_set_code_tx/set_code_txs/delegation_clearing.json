@@ -254,8 +254,8 @@
                         "data": "0x",
                         "accessList": [],
                         "v": "0x00",
-                        "r": "0x68fced34423edb72674c9f57b6dc988616710c4997b24d72774d3a6cae287515",
-                        "s": "0x1cdcc4ce45c1b4d55bae90bd2f1f8a83bc30a2e18b1752adcd57980d53c38315",
+                        "publicKey": "0x68fced34423edb72674c9f57b6dc988616710c4997b24d72774d3a6cae287515",
+                        "signature": "0x1cdcc4ce45c1b4d55bae90bd2f1f8a83bc30a2e18b1752adcd57980d53c38315",
                         "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
                         "authorizationList": [
                             {
@@ -263,8 +263,8 @@
                                 "address": "0x0000000000000000000000000000000000000000",
                                 "nonce": "0x01",
                                 "v": "0x01",
-                                "r": "0x4da7d232a1bb13981b069aa957f942db7f1304e0949cf9336a0943bb91e9fda3",
-                                "s": "0x49d38da4d2bf09638b1b30d598760d075f10081eb265c0538eb215d907f20652",
+                                "publicKey": "0x4da7d232a1bb13981b069aa957f942db7f1304e0949cf9336a0943bb91e9fda3",
+                                "signature": "0x49d38da4d2bf09638b1b30d598760d075f10081eb265c0538eb215d907f20652",
                                 "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                             }
                         ]
@@ -536,8 +536,8 @@
                         "data": "0x",
                         "accessList": [],
                         "v": "0x01",
-                        "r": "0xfe7e1e9ef5d840a7074c1459b1348699021698fd486417115fce0f1a7d909cb1",
-                        "s": "0x6cf77e0be6fe2b84f4540503b23e437cb8f5aa5ca04e3210f78a7fa7ce042620",
+                        "publicKey": "0xfe7e1e9ef5d840a7074c1459b1348699021698fd486417115fce0f1a7d909cb1",
+                        "signature": "0x6cf77e0be6fe2b84f4540503b23e437cb8f5aa5ca04e3210f78a7fa7ce042620",
                         "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "authorizationList": [
                             {
@@ -545,8 +545,8 @@
                                 "address": "0x0000000000000000000000000000000000000000",
                                 "nonce": "0x02",
                                 "v": "0x01",
-                                "r": "0x87d47c20cc6cbb366429833a106eb65230a37aa39b95a459f1de93e35b4427c2",
-                                "s": "0x5097128d26c30d70fc2613117088f46861b800ce8c51ed162bc78ca185ee9bfb",
+                                "publicKey": "0x87d47c20cc6cbb366429833a106eb65230a37aa39b95a459f1de93e35b4427c2",
+                                "signature": "0x5097128d26c30d70fc2613117088f46861b800ce8c51ed162bc78ca185ee9bfb",
                                 "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                             }
                         ]
@@ -812,8 +812,8 @@
                         "data": "0x",
                         "accessList": [],
                         "v": "0x00",
-                        "r": "0x56868f9ab7f03a5d9ac565763d4d57421e1db9a6242fcd7ee9a9956c08b99e34",
-                        "s": "0x7cc31924938bb0577e4a32100e6212a6938d9ebe096d1863db4342fc1394fe2b",
+                        "publicKey": "0x56868f9ab7f03a5d9ac565763d4d57421e1db9a6242fcd7ee9a9956c08b99e34",
+                        "signature": "0x7cc31924938bb0577e4a32100e6212a6938d9ebe096d1863db4342fc1394fe2b",
                         "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
                         "authorizationList": [
                             {
@@ -821,8 +821,8 @@
                                 "address": "0x0000000000000000000000000000000000000000",
                                 "nonce": "0x00",
                                 "v": "0x00",
-                                "r": "0xdef12aa13571bba668b619dc7523da4a44b4373f26ff19356a6b58a66217839f",
-                                "s": "0x130454fb52ed23b604de189d89b7b119698408a1cd80995959c8e3560aabb8ca",
+                                "publicKey": "0xdef12aa13571bba668b619dc7523da4a44b4373f26ff19356a6b58a66217839f",
+                                "signature": "0x130454fb52ed23b604de189d89b7b119698408a1cd80995959c8e3560aabb8ca",
                                 "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                             }
                         ]
@@ -1082,8 +1082,8 @@
                         "data": "0x",
                         "accessList": [],
                         "v": "0x00",
-                        "r": "0xd1f8ab6dadc60a5dec6980ea02f14b2688ad05aa3e07e354062afe192d180e4f",
-                        "s": "0x561037743f2caa2502ef5467106ea9bc8f0e5847399bcd221411d2eb83db7194",
+                        "publicKey": "0xd1f8ab6dadc60a5dec6980ea02f14b2688ad05aa3e07e354062afe192d180e4f",
+                        "signature": "0x561037743f2caa2502ef5467106ea9bc8f0e5847399bcd221411d2eb83db7194",
                         "sender": "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "authorizationList": [
                             {
@@ -1091,8 +1091,8 @@
                                 "address": "0x0000000000000000000000000000000000000000",
                                 "nonce": "0x01",
                                 "v": "0x01",
-                                "r": "0x4da7d232a1bb13981b069aa957f942db7f1304e0949cf9336a0943bb91e9fda3",
-                                "s": "0x49d38da4d2bf09638b1b30d598760d075f10081eb265c0538eb215d907f20652",
+                                "publicKey": "0x4da7d232a1bb13981b069aa957f942db7f1304e0949cf9336a0943bb91e9fda3",
+                                "signature": "0x49d38da4d2bf09638b1b30d598760d075f10081eb265c0538eb215d907f20652",
                                 "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                             }
                         ]

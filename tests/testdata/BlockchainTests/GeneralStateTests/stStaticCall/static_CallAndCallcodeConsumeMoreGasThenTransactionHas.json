@@ -42,23 +42,14 @@
                         "publicKey" : "0x1cdd876e136c164ba4d985f32a62c8c3e5778e91bca1718c3f75d05d491dc556",
                         "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "to" : "Z1000000000000000000000000000000000000000",
-                        "v" : "0x1c",
                         "value" : "0x00"
                     }
                 ],
-
                 "withdrawals" : [
                 ]
             }
         ],
         "config" : {
-            "blobSchedule" : {
-                "Cancun" : {
-                    "baseFeeUpdateFraction" : "0x32f0ed",
-                    "max" : "0x06",
-                    "target" : "0x03"
-                }
-            },
             "chainid" : "0x01",
             "network" : "Shanghai"
         },
@@ -447,13 +438,6 @@
             }
         ],
         "config" : {
-            "blobSchedule" : {
-                "Cancun" : {
-                    "baseFeeUpdateFraction" : "0x32f0ed",
-                    "max" : "0x06",
-                    "target" : "0x03"
-                }
-            },
             "chainid" : "0x01",
             "network" : "Shanghai"
         },

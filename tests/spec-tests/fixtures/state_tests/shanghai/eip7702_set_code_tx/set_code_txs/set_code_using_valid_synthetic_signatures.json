@@ -45,8 +45,8 @@
                     "address": "0x0000000000000000000000000000000000001000",
                     "nonce": "0x00",
                     "v": "0x00",
-                    "r": "0x01",
-                    "s": "0x01",
+                    "publicKey": "0x01",
+                    "signature": "0x01",
                     "signer": "0x7c98f1c8dc92f5a9abb6007ee831a4e31d104bdc"
                 }
             ],
@@ -165,8 +165,8 @@
                     "address": "0x0000000000000000000000000000000000001000",
                     "nonce": "0x00",
                     "v": "0x00",
-                    "r": "0x01",
-                    "s": "0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0",
+                    "publicKey": "0x01",
+                    "signature": "0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0",
                     "signer": "0x1adfc71c73ee7f57d027847138bf3f07a7dbdf39"
                 }
             ],
@@ -285,8 +285,8 @@
                     "address": "0x0000000000000000000000000000000000001000",
                     "nonce": "0x00",
                     "v": "0x00",
-                    "r": "0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd036413f",
-                    "s": "0x01",
+                    "publicKey": "0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd036413f",
+                    "signature": "0x01",
                     "signer": "0x2b71df50f79d18b48e92a915c2683f7aa5b8fb6e"
                 }
             ],
@@ -405,8 +405,8 @@
                     "address": "0x0000000000000000000000000000000000001000",
                     "nonce": "0x00",
                     "v": "0x01",
-                    "r": "0x01",
-                    "s": "0x01",
+                    "publicKey": "0x01",
+                    "signature": "0x01",
                     "signer": "0x98819367593544e6471a3f1b3a35c37232acf875"
                 }
             ],
@@ -525,8 +525,8 @@
                     "address": "0x0000000000000000000000000000000000001000",
                     "nonce": "0x00",
                     "v": "0x01",
-                    "r": "0x01",
-                    "s": "0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0",
+                    "publicKey": "0x01",
+                    "signature": "0x7fffffffffffffffffffffffffffffff5d576e7357a4501ddfe92f46681b20a0",
                     "signer": "0x375ce41e81c764aead9c0ae1e90d01d0d9e629e1"
                 }
             ],
@@ -645,8 +645,8 @@
                     "address": "0x0000000000000000000000000000000000001000",
                     "nonce": "0x00",
                     "v": "0x01",
-                    "r": "0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd036413f",
-                    "s": "0x01",
+                    "publicKey": "0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd036413f",
+                    "signature": "0x01",
                     "signer": "0x8dbd05ecb7773c0bedf55563f80c36194ee55ebf"
                 }
             ],

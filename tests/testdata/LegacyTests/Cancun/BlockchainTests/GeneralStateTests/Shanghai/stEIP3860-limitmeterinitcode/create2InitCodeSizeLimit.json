@@ -36,10 +36,10 @@
                         "gasLimit" : "0xe4e1c0",
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
-                        "r" : "0x110f52aeb16c3e91943160d2e89c416b06dc47c7484a882324c6d0d362a26cd0",
-                        "s" : "0x774c7a35a3503be3867e7bb56885a9056ab1b7e5bfad19b1b0a3550d49a89d6f",
-                        "sender" : "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-                        "to" : "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+                        "publicKey" : "0x110f52aeb16c3e91943160d2e89c416b06dc47c7484a882324c6d0d362a26cd0",
+                        "signature" : "0x774c7a35a3503be3867e7bb56885a9056ab1b7e5bfad19b1b0a3550d49a89d6f",
+                        "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+                        "to" : "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "v" : "0x1b",
                         "value" : "0x00"
                     }
@@ -103,7 +103,7 @@
             }
         },
         "pre" : {
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0bebc200",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -165,10 +165,10 @@
                         "gasLimit" : "0xe4e1c0",
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
-                        "r" : "0x110f52aeb16c3e91943160d2e89c416b06dc47c7484a882324c6d0d362a26cd0",
-                        "s" : "0x774c7a35a3503be3867e7bb56885a9056ab1b7e5bfad19b1b0a3550d49a89d6f",
-                        "sender" : "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-                        "to" : "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+                        "publicKey" : "0x110f52aeb16c3e91943160d2e89c416b06dc47c7484a882324c6d0d362a26cd0",
+                        "signature" : "0x774c7a35a3503be3867e7bb56885a9056ab1b7e5bfad19b1b0a3550d49a89d6f",
+                        "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+                        "to" : "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "v" : "0x1b",
                         "value" : "0x00"
                     }
@@ -235,7 +235,7 @@
             }
         },
         "pre" : {
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0bebc200",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -296,10 +296,10 @@
                         "gasLimit" : "0xe4e1c0",
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
-                        "r" : "0xfa5e0f7c53cba5169bd5b239b479ba8668cf69d8c06d24b00a585b995a1c2c67",
-                        "s" : "0x56382ddd27880d6393b3f905dc75db8a0c30eeb1c9a8443ac53723ca4feba37c",
-                        "sender" : "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-                        "to" : "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+                        "publicKey" : "0xfa5e0f7c53cba5169bd5b239b479ba8668cf69d8c06d24b00a585b995a1c2c67",
+                        "signature" : "0x56382ddd27880d6393b3f905dc75db8a0c30eeb1c9a8443ac53723ca4feba37c",
+                        "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+                        "to" : "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "v" : "0x1c",
                         "value" : "0x00"
                     }
@@ -363,7 +363,7 @@
             }
         },
         "pre" : {
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0bebc200",
                 "code" : "0x",
                 "nonce" : "0x00",
@@ -425,10 +425,10 @@
                         "gasLimit" : "0xe4e1c0",
                         "gasPrice" : "0x0a",
                         "nonce" : "0x00",
-                        "r" : "0xfa5e0f7c53cba5169bd5b239b479ba8668cf69d8c06d24b00a585b995a1c2c67",
-                        "s" : "0x56382ddd27880d6393b3f905dc75db8a0c30eeb1c9a8443ac53723ca4feba37c",
-                        "sender" : "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-                        "to" : "0xb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+                        "publicKey" : "0xfa5e0f7c53cba5169bd5b239b479ba8668cf69d8c06d24b00a585b995a1c2c67",
+                        "signature" : "0x56382ddd27880d6393b3f905dc75db8a0c30eeb1c9a8443ac53723ca4feba37c",
+                        "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
+                        "to" : "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                         "v" : "0x1c",
                         "value" : "0x00"
                     }
@@ -485,7 +485,7 @@
             }
         },
         "pre" : {
-            "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+            "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                 "balance" : "0x0bebc200",
                 "code" : "0x",
                 "nonce" : "0x00",

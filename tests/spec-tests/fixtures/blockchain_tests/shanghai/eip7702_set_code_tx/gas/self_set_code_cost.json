@@ -235,8 +235,8 @@
                         "data": "0x",
                         "accessList": [],
                         "v": "0x01",
-                        "r": "0x412add516b4681b7b69278537b60dab4cac3da236ec18fdd4b7d5b7387eb8acf",
-                        "s": "0x5d1e187e84b91247c8f50b665fae1835a365d92091239d72cb3934727fd8c8fe",
+                        "publicKey": "0x412add516b4681b7b69278537b60dab4cac3da236ec18fdd4b7d5b7387eb8acf",
+                        "signature": "0x5d1e187e84b91247c8f50b665fae1835a365d92091239d72cb3934727fd8c8fe",
                         "sender": "Z8a0a19589531694250d570040a0c4b74576919b8",
                         "authorizationList": [
                             {
@@ -244,8 +244,8 @@
                                 "address": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
                                 "nonce": "0x00",
                                 "v": "0x00",
-                                "r": "0x54c7c92b1eede176959eefeb0ccce5c0e794991f16c1e8ac01700d162eb563bf",
-                                "s": "0x71b8d0e049596a2602ef18ca11a6d1c3e6a6ee21394b652ac0ad91533ac3a772",
+                                "publicKey": "0x54c7c92b1eede176959eefeb0ccce5c0e794991f16c1e8ac01700d162eb563bf",
+                                "signature": "0x71b8d0e049596a2602ef18ca11a6d1c3e6a6ee21394b652ac0ad91533ac3a772",
                                 "signer": "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b"
                             }
                         ]
@@ -520,8 +520,8 @@
                         "value": "0x00",
                         "data": "0x",
                         "v": "0x26",
-                        "r": "0xb40ebf5833618c93a48a79729e122ac82af3fed824fc1fe42a4ff7ddbd408cc4",
-                        "s": "0x5aceac157ca531fc1af242f6471a164f54c09172d2fed8b4b0f74402b49893bf",
+                        "publicKey": "0xb40ebf5833618c93a48a79729e122ac82af3fed824fc1fe42a4ff7ddbd408cc4",
+                        "signature": "0x5aceac157ca531fc1af242f6471a164f54c09172d2fed8b4b0f74402b49893bf",
                         "sender": "Z8a0a19589531694250d570040a0c4b74576919b8"
                     }
                 ],
