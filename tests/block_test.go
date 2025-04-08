@@ -16,56 +16,51 @@
 
 package tests
 
-// import (
-// 	"testing"
+import (
+	"testing"
 
-// 	"github.com/theQRL/go-zond/common"
-// 	"github.com/theQRL/go-zond/core/rawdb"
-// )
+	"github.com/theQRL/go-zond/common"
+	"github.com/theQRL/go-zond/core/rawdb"
+)
 
-// func TestBlockchain(t *testing.T) {
-// 	bt := new(testMatcher)
-// 	// General state tests are 'exported' as blockchain tests, but we can run them natively.
-// 	// For speedier CI-runs, the line below can be uncommented, so those are skipped.
-// 	// For now, in hardfork-times (Berlin), we run the tests both as StateTests and
-// 	// as blockchain tests, since the latter also covers things like receipt root
-// 	bt.skipLoad(`^GeneralStateTests/`)
+func TestBlockchain(t *testing.T) {
+	bt := new(testMatcher)
 
-// 	// Slow tests
-// 	bt.slow(`.*bcExploitTest/DelegateCallSpam.json`)
-// 	bt.slow(`.*bcExploitTest/ShanghaiLove.json`)
-// 	bt.slow(`.*/bcForkStressTest/`)
-// 	bt.slow(`.*/bcGasPricerTest/RPC_API_Test.json`)
-// 	bt.slow(`.*/bcWalletTest/`)
+	// Slow tests
+	bt.slow(`.*bcExploitTest/DelegateCallSpam.json`)
+	bt.slow(`.*bcExploitTest/ShanghaiLove.json`)
+	bt.slow(`.*/bcForkStressTest/`)
+	bt.slow(`.*/bcGasPricerTest/RPC_API_Test.json`)
+	bt.slow(`.*/bcWalletTest/`)
 
-// 	bt.walk(t, blockTestDir, func(t *testing.T, name string, test *BlockTest) {
-// 		execBlockTest(t, bt, test)
-// 	})
-// }
+	bt.walk(t, blockTestDir, func(t *testing.T, name string, test *BlockTest) {
+		execBlockTest(t, bt, test)
+	})
+}
 
-// // TestExecutionSpec runs the test fixtures from execution-spec-tests.
-// func TestExecutionSpec(t *testing.T) {
-// 	if !common.FileExist(executionSpecDir) {
-// 		t.Skipf("directory %s does not exist", executionSpecDir)
-// 	}
-// 	bt := new(testMatcher)
+// TestExecutionSpec runs the test fixtures from execution-spec-tests.
+func TestExecutionSpec(t *testing.T) {
+	if !common.FileExist(executionSpecDir) {
+		t.Skipf("directory %s does not exist", executionSpecDir)
+	}
+	bt := new(testMatcher)
 
-// 	bt.walk(t, executionSpecDir, func(t *testing.T, name string, test *BlockTest) {
-// 		execBlockTest(t, bt, test)
-// 	})
-// }
+	bt.walk(t, executionSpecDir, func(t *testing.T, name string, test *BlockTest) {
+		execBlockTest(t, bt, test)
+	})
+}
 
-// func execBlockTest(t *testing.T, bt *testMatcher, test *BlockTest) {
-// 	if err := bt.checkFailure(t, test.Run(false, rawdb.HashScheme, nil)); err != nil {
-// 		t.Errorf("test in hash mode without snapshotter failed: %v", err)
-// 	}
-// 	if err := bt.checkFailure(t, test.Run(true, rawdb.HashScheme, nil)); err != nil {
-// 		t.Errorf("test in hash mode with snapshotter failed: %v", err)
-// 	}
-// 	if err := bt.checkFailure(t, test.Run(false, rawdb.PathScheme, nil)); err != nil {
-// 		t.Errorf("test in path mode without snapshotter failed: %v", err)
-// 	}
-// 	if err := bt.checkFailure(t, test.Run(true, rawdb.PathScheme, nil)); err != nil {
-// 		t.Errorf("test in path mode with snapshotter failed: %v", err)
-// 	}
-// }
+func execBlockTest(t *testing.T, bt *testMatcher, test *BlockTest) {
+	if err := bt.checkFailure(t, test.Run(false, rawdb.HashScheme, nil)); err != nil {
+		t.Errorf("test in hash mode without snapshotter failed: %v", err)
+	}
+	if err := bt.checkFailure(t, test.Run(true, rawdb.HashScheme, nil)); err != nil {
+		t.Errorf("test in hash mode with snapshotter failed: %v", err)
+	}
+	if err := bt.checkFailure(t, test.Run(false, rawdb.PathScheme, nil)); err != nil {
+		t.Errorf("test in path mode without snapshotter failed: %v", err)
+	}
+	if err := bt.checkFailure(t, test.Run(true, rawdb.PathScheme, nil)); err != nil {
+		t.Errorf("test in path mode with snapshotter failed: %v", err)
+	}
+}
