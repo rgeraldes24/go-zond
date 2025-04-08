@@ -52,9 +52,7 @@ func TestState(t *testing.T) {
 	st.slow(`^stTransactionTest/Opcodes_TransactionInit`)
 
 	for _, dir := range []string{
-		// filepath.Join(baseDir, "EIPTests", "StateTests"),
 		stateTestDir,
-		legacyStateTestDir,
 		benchmarksDir,
 	} {
 		st.walk(t, dir, func(t *testing.T, name string, test *StateTest) {
