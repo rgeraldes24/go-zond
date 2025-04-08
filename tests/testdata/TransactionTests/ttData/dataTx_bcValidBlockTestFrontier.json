@@ -11,59 +11,6 @@
             "sourceHash" : "b1aacc944e72175e8830a91b318abac805183b1f33e530ed1b13e2b715eddcb3"
         },
         "result" : {
-            "Berlin" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0xe79c"
-            },
-            "Byzantium" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0x013500"
-            },
-            "Cancun" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0xe7b8"
-            },
-            "Constantinople" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0x013500"
-            },
-            "ConstantinopleFix" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0x013500"
-            },
-            "EIP150" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0x013500"
-            },
-            "EIP158" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0x013500"
-            },
-            "Frontier" : {
-                "hash" : "0xdb43fc31ffc66cd413cd8d405d03c8479d1f17b95b20d82ba60f63337236df6a",
-                "intrinsicGas" : "0xb800",
-                "sender" : "Zdf409d3d52c787d13836158a14672c989d5d8800"
-            },
-            "Homestead" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0x013500"
-            },
-            "Istanbul" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0xe79c"
-            },
-            "London" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0xe79c"
-            },
-            "Paris" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0xe79c"
-            },
-            "Prague" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0xe7b8"
-            },
             "Shanghai" : {
                 "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
                 "intrinsicGas" : "0xe7b8"

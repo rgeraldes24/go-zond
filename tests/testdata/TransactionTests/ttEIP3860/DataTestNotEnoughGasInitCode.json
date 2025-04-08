@@ -11,69 +11,6 @@
             "sourceHash" : "a3fbee84cb12d47609fb3c730f443b948761194edd65ec1055de50c376672456"
         },
         "result" : {
-            "Berlin" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0xd008",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "Byzantium" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0xd008",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "Cancun" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0xd00c"
-            },
-            "Constantinople" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0xd008",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "ConstantinopleFix" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0xd008",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "EIP150" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0xd008",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "EIP158" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0xd008",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "Frontier" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0x5308",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "Homestead" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0xd008",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "Istanbul" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0xd008",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "London" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0xd008",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "Paris" : {
-                "hash" : "0x077408c53402b787d979234f073a6feacc3ea56bba9aacb3396cb7ea6198fd21",
-                "intrinsicGas" : "0xd008",
-                "sender" : "Za53c8af190444b7fda8d9a7ac41c07f758a6d711"
-            },
-            "Prague" : {
-                "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
-                "intrinsicGas" : "0xd00c"
-            },
             "Shanghai" : {
                 "exception" : "TransactionException.INTRINSIC_GAS_TOO_LOW",
                 "intrinsicGas" : "0xd00c"

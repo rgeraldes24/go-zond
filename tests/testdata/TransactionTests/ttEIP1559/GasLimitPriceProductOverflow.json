@@ -11,58 +11,6 @@
             "sourceHash" : "f6bb2441f1f9aa9df89ecb0a471a0a985bcf1012eb0cbc4f5ef5ac95b8cdca54"
         },
         "result" : {
-            "Berlin" : {
-                "exception" : "TransactionException.TYPE_NOT_SUPPORTED",
-                "intrinsicGas" : "0x00"
-            },
-            "Byzantium" : {
-                "exception" : "TransactionException.TYPE_NOT_SUPPORTED",
-                "intrinsicGas" : "0x00"
-            },
-            "Cancun" : {
-                "exception" : "TransactionException.GASLIMIT_PRICE_PRODUCT_OVERFLOW",
-                "intrinsicGas" : "0x5208"
-            },
-            "Constantinople" : {
-                "exception" : "TransactionException.TYPE_NOT_SUPPORTED",
-                "intrinsicGas" : "0x00"
-            },
-            "ConstantinopleFix" : {
-                "exception" : "TransactionException.TYPE_NOT_SUPPORTED",
-                "intrinsicGas" : "0x00"
-            },
-            "EIP150" : {
-                "exception" : "TransactionException.TYPE_NOT_SUPPORTED",
-                "intrinsicGas" : "0x00"
-            },
-            "EIP158" : {
-                "exception" : "TransactionException.TYPE_NOT_SUPPORTED",
-                "intrinsicGas" : "0x00"
-            },
-            "Frontier" : {
-                "exception" : "TransactionException.TYPE_NOT_SUPPORTED",
-                "intrinsicGas" : "0x00"
-            },
-            "Homestead" : {
-                "exception" : "TransactionException.TYPE_NOT_SUPPORTED",
-                "intrinsicGas" : "0x00"
-            },
-            "Istanbul" : {
-                "exception" : "TransactionException.TYPE_NOT_SUPPORTED",
-                "intrinsicGas" : "0x00"
-            },
-            "London" : {
-                "exception" : "TransactionException.GASLIMIT_PRICE_PRODUCT_OVERFLOW",
-                "intrinsicGas" : "0x5208"
-            },
-            "Paris" : {
-                "exception" : "TransactionException.GASLIMIT_PRICE_PRODUCT_OVERFLOW",
-                "intrinsicGas" : "0x5208"
-            },
-            "Prague" : {
-                "exception" : "TransactionException.GASLIMIT_PRICE_PRODUCT_OVERFLOW",
-                "intrinsicGas" : "0x5208"
-            },
             "Shanghai" : {
                 "exception" : "TransactionException.GASLIMIT_PRICE_PRODUCT_OVERFLOW",
                 "intrinsicGas" : "0x5208"
