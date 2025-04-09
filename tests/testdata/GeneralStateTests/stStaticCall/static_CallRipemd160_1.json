@@ -12,18 +12,6 @@
             "sourceHash" : "f63cf77b0c66b92acd742b218d13ee0042bf9ad12d3c4b13e0575b5aee64459d"
         },
         "config" : {
-            "blobSchedule" : {
-                "Cancun" : {
-                    "baseFeeUpdateFraction" : "0x32f0ed",
-                    "max" : "0x06",
-                    "target" : "0x03"
-                },
-                "Prague" : {
-                    "baseFeeUpdateFraction" : "0x4c6964",
-                    "max" : "0x09",
-                    "target" : "0x06"
-                }
-            },
             "chainid" : "0x01"
         },
         "env" : {
@@ -35,36 +23,6 @@
             "currentTimestamp" : "0x03e8"
         },
         "post" : {
-            "Cancun" : [
-                {
-                    "hash" : "0x21692d42bba13c464b644d8be5c58239b6138fd178fcd952184898560cce0c72",
-                    "indexes" : {
-                        "data" : 0,
-                        "gas" : 0,
-                        "value" : 0
-                    },
-                    "logs" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-                    "state" : {
-                        "0x095e7baea6a6c7c4c2dfeb977efac326af552d87" : {
-                            "balance" : "0x0132b3a0",
-                            "code" : "0x60206000600060006003610258fa60025560005160005500",
-                            "nonce" : "0x00",
-                            "storage" : {
-                                "0x00" : "0x9c1185a5c5e9fc54612808977ee8f548b2258d31",
-                                "0x02" : "0x01"
-                            }
-                        },
-                        "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
-                            "balance" : "0x0de0b6b3a75869de",
-                            "code" : "0x",
-                            "nonce" : "0x01",
-                            "storage" : {
-                            }
-                        }
-                    },
-                    "txbytes" : "0xf863800a830592a894095e7baea6a6c7c4c2dfeb977efac326af552d87830186a0801ca082a671a227220f2b04a9aa780da80015d702902cb314f4900b727ae835a6e613a02a8d1cd19b7388c9b4211156827537f3c9792e3dda07ed0343d0d16c1ffdc497"
-                }
-            ],
             "Shanghai" : [
                 {
                     "hash" : "0x21692d42bba13c464b644d8be5c58239b6138fd178fcd952184898560cce0c72",
@@ -75,7 +33,7 @@
                     },
                     "logs" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
                     "state" : {
-                        "0x095e7baea6a6c7c4c2dfeb977efac326af552d87" : {
+                        "Z095e7baea6a6c7c4c2dfeb977efac326af552d87" : {
                             "balance" : "0x0132b3a0",
                             "code" : "0x60206000600060006003610258fa60025560005160005500",
                             "nonce" : "0x00",
@@ -84,7 +42,7 @@
                                 "0x02" : "0x01"
                             }
                         },
-                        "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
+                        "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
                             "balance" : "0x0de0b6b3a75869de",
                             "code" : "0x",
                             "nonce" : "0x01",
