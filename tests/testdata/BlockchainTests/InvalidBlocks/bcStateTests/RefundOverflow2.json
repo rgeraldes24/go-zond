@@ -1,5 +1,5 @@
 {
-    "RefundOverflow2_Cancun" : {
+    "RefundOverflow2_Shanghai" : {
         "_info" : {
             "comment" : "check what happens when gas limit overflow. transaction should be rejected. must be a blockchain test",
             "filling-rpc-server" : "evmone-t8n 0.14.0-13+commit.4d363c36",
@@ -98,13 +98,6 @@
             }
         ],
         "config" : {
-            "blobSchedule" : {
-                "Cancun" : {
-                    "baseFeeUpdateFraction" : "0x32f0ed",
-                    "max" : "0x06",
-                    "target" : "0x03"
-                }
-            },
             "chainid" : "0x01",
             "network" : "Shanghai"
         },

@@ -1,5 +1,5 @@
 {
-    "randomStatetest61BC_Cancun" : {
+    "randomStatetest61BC_Shanghai" : {
         "_info" : {
             "comment" : "",
             "filling-rpc-server" : "evmone-t8n 0.14.0-13+commit.4d363c36",
@@ -54,13 +54,6 @@
             }
         ],
         "config" : {
-            "blobSchedule" : {
-                "Cancun" : {
-                    "baseFeeUpdateFraction" : "0x32f0ed",
-                    "max" : "0x06",
-                    "target" : "0x03"
-                }
-            },
             "chainid" : "0x01",
             "network" : "Shanghai"
         },
