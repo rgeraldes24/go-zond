@@ -204,19 +204,7 @@
         },
         "lastblockhash": "0x782e8ed46454b732fad6de830d3900484193fbc7e90d89ee702cf994576a064b",
         "config": {
-            "network": "Shanghai",
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                },
-                "Prague": {
-                    "target": "0x06",
-                    "max": "0x09",
-                    "baseFeeUpdateFraction": "0x4c6964"
-                }
-            }
+            "network": "Shanghai"
         },
         "engineNewPayloads": [
             {

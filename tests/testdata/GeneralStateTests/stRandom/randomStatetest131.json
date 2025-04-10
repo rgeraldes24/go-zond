@@ -12,18 +12,6 @@
             "sourceHash" : "3aa68e6bcdb6a46465ad438f22a9386c1152a5d046e646661b6e20bbe36bbd26"
         },
         "config" : {
-            "blobSchedule" : {
-                "Cancun" : {
-                    "baseFeeUpdateFraction" : "0x32f0ed",
-                    "max" : "0x06",
-                    "target" : "0x03"
-                },
-                "Prague" : {
-                    "baseFeeUpdateFraction" : "0x4c6964",
-                    "max" : "0x09",
-                    "target" : "0x06"
-                }
-            },
             "chainid" : "0x01"
         },
         "env" : {

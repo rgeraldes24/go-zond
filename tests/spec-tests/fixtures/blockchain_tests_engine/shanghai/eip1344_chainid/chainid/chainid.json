@@ -71,14 +71,7 @@
         },
         "lastblockhash": "0x83784a173bb666e4f353b0b887369113e9d8465be0b314bfa48703de255460d6",
         "config": {
-            "network": "Shanghai",
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                }
-            }
+            "network": "Shanghai"
         },
         "engineNewPayloads": [
             {
@@ -413,19 +406,7 @@
         },
         "lastblockhash": "0x60735fd8929dbf9b2995d63dae49b7d3e13aafbcbf18e6e1ed18be60ca324613",
         "config": {
-            "network": "Shanghai",
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                },
-                "Prague": {
-                    "target": "0x06",
-                    "max": "0x09",
-                    "baseFeeUpdateFraction": "0x4c6964"
-                }
-            }
+            "network": "Shanghai"
         },
         "engineNewPayloads": [
             {

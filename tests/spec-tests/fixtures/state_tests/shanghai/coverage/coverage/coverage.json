@@ -4,7 +4,7 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
         },
         "pre": {
             "Z0000000000000000000000000000000000001000": {
@@ -54,7 +54,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x600060011b600060011c600a600b600c600d600e9080815f61010262010203630102030460015060046010600039",
@@ -102,7 +102,7 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
         },
         "pre": {
             "Z0000000000000000000000000000000000001000": {
@@ -152,7 +152,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x600060011b600060011c600a600b600c600d600e9080815f61010262010203630102030460015060046010600039",
@@ -200,9 +200,9 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
             "currentRandom": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "currentBaseFee": "0x07",
+            "currentBaseFee": "0x07"
         },
         "pre": {
             "Z0000000000000000000000000000000000001000": {
@@ -256,7 +256,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x600060011b600060011c600a600b600c600d600e9080815f61010262010203630102030460015060046010600039",
@@ -284,15 +284,7 @@
                 }
             ]
         },
-        "config": {
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                }
-            }
-        },
+        "config": {},
         "_info": {
             "hash": "0x84a6a8df9cc1b5609ecb49463f914a9fdd494ec33d212b4327f1817db4a675b7",
             "comment": "`execution-spec-tests` generated test",
@@ -312,7 +304,7 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
         },
         "pre": {
             "Z0000000000000000000000000000000000001000": {
@@ -362,7 +354,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x600060011b600060011c600a600b600c600d600e9080815f61010262010203630102030460015060046010600039",
@@ -410,7 +402,7 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
         },
         "pre": {
             "Z0000000000000000000000000000000000001000": {
@@ -460,7 +452,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x600060011b600060011c600a600b600c600d600e9080815f61010262010203630102030460015060046010600039",
@@ -508,7 +500,7 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
         },
         "pre": {
             "Z0000000000000000000000000000000000001000": {
@@ -558,7 +550,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x600060011b600060011c600a600b600c600d600e9080815f61010262010203630102030460015060046010600039",
@@ -606,7 +598,7 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
             "currentBaseFee": "0x07"
         },
         "pre": {
@@ -657,7 +649,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x600060011b600060011c600a600b600c600d600e9080815f61010262010203630102030460015060046010600039",
@@ -705,7 +697,7 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
             "currentRandom": "0x0000000000000000000000000000000000000000000000000000000000000000",
             "currentBaseFee": "0x07"
         },
@@ -757,7 +749,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x600060011b600060011c600a600b600c600d600e9080815f61010262010203630102030460015060046010600039",
@@ -805,9 +797,9 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
             "currentRandom": "0x0000000000000000000000000000000000000000000000000000000000000000",
-            "currentBaseFee": "0x07",
+            "currentBaseFee": "0x07"
         },
         "pre": {
             "Z0000000000000000000000000000000000001000": {
@@ -861,7 +853,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x600060011b600060011c600a600b600c600d600e9080815f61010262010203630102030460015060046010600039",
@@ -889,20 +881,7 @@
                 }
             ]
         },
-        "config": {
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                },
-                "Prague": {
-                    "target": "0x06",
-                    "max": "0x09",
-                    "baseFeeUpdateFraction": "0x4c6964"
-                }
-            }
-        },
+        "config": {},
         "_info": {
             "hash": "0x4a1f9154fe691b2078bf49ba7662986d920a28057a13f3231d282dd30eb9d039",
             "comment": "`execution-spec-tests` generated test",
@@ -922,7 +901,7 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
             "currentRandom": "0x0000000000000000000000000000000000000000000000000000000000000000",
             "currentBaseFee": "0x07"
         },
@@ -974,7 +953,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x600060011b600060011c600a600b600c600d600e9080815f61010262010203630102030460015060046010600039",

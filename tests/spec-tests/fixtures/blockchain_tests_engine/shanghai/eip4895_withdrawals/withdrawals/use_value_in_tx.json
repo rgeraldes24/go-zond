@@ -58,14 +58,7 @@
         },
         "lastblockhash": "0xee509805da690dba2035141a8bedcb028a6b3bd7ba3defd2e7e4e465a46783fa",
         "config": {
-            "network": "Shanghai",
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                }
-            }
+            "network": "Shanghai"
         },
         "engineNewPayloads": [
             {
@@ -194,14 +187,7 @@
         },
         "lastblockhash": "0x93ba43976ae2b42938748d0dc8bac627e08d39b94334f071426217e432b139bf",
         "config": {
-            "network": "Shanghai",
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                }
-            }
+            "network": "Shanghai"
         },
         "engineNewPayloads": [
             {
@@ -431,19 +417,7 @@
         },
         "lastblockhash": "0xd4cd0f6448f562a987887807759fea8202217a60f1ec85c5dc9f2e84d6890b06",
         "config": {
-            "network": "Shanghai",
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                },
-                "Prague": {
-                    "target": "0x06",
-                    "max": "0x09",
-                    "baseFeeUpdateFraction": "0x4c6964"
-                }
-            }
+            "network": "Shanghai"
         },
         "engineNewPayloads": [
             {
@@ -687,19 +661,7 @@
         },
         "lastblockhash": "0x7bc0620ce78dab97cd913419bbcc24dc20544f536a29cc0a7d35876971954023",
         "config": {
-            "network": "Shanghai",
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                },
-                "Prague": {
-                    "target": "0x06",
-                    "max": "0x09",
-                    "baseFeeUpdateFraction": "0x4c6964"
-                }
-            }
+            "network": "Shanghai"
         },
         "engineNewPayloads": [
             {

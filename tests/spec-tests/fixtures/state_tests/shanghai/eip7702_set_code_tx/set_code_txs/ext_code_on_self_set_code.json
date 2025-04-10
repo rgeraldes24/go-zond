@@ -4,7 +4,7 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
             "currentRandom": "0x0000000000000000000000000000000000000000000000000000000000000000",
             "currentBaseFee": "0x07",
         },
@@ -65,7 +65,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0x0000000000000000000000000000000000001000": {
+                        "Z0000000000000000000000000000000000001000": {
                             "nonce": "0x01",
                             "balance": "0x00",
                             "code": "0x73a94f5374fce5edbc8e2a8697c15331677e6ebf0b3b60015573a94f5374fce5edbc8e2a8697c15331677e6ebf0b3f60025573a94f5374fce5edbc8e2a8697c15331677e6ebf0b3b6000600073a94f5374fce5edbc8e2a8697c15331677e6ebf0b3c60005160035573a94f5374fce5edbc8e2a8697c15331677e6ebf0b3160045500",
@@ -91,20 +91,7 @@
                 }
             ]
         },
-        "config": {
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                },
-                "Prague": {
-                    "target": "0x06",
-                    "max": "0x09",
-                    "baseFeeUpdateFraction": "0x4c6964"
-                }
-            }
-        },
+        "config": {},
         "_info": {
             "hash": "0x3b80a88b4ce2f266efb396bd8a984502209ae3aabc25e1d8633e4648eed0df65",
             "comment": "`execution-spec-tests` generated test",
@@ -126,7 +113,7 @@
             "currentCoinbase": "0x2adc25665018aa1fe0e6bc666dac8fc2697ff9ba",
             "currentGasLimit": "0x016345785d8a0000",
             "currentNumber": "0x01",
-            "currentTimestamp": "0x03e8",
+            "currentTimestamp": "0x03e8"
             "currentRandom": "0x0000000000000000000000000000000000000000000000000000000000000000",
             "currentBaseFee": "0x07",
         },
@@ -193,7 +180,7 @@
                         "value": 0
                     },
                     "state": {
-                        "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
+                        "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b": {
                             "nonce": "0x01",
                             "balance": "0x01",
                             "code": "0xef01000000000000000000000000000000000000001000",
@@ -220,20 +207,7 @@
                 }
             ]
         },
-        "config": {
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                },
-                "Prague": {
-                    "target": "0x06",
-                    "max": "0x09",
-                    "baseFeeUpdateFraction": "0x4c6964"
-                }
-            }
-        },
+        "config": {},
         "_info": {
             "hash": "0xa84b5c844ef67eb0292ee7ef8185a7443e77f83af07159b6c85b5a6080dde07c",
             "comment": "`execution-spec-tests` generated test",

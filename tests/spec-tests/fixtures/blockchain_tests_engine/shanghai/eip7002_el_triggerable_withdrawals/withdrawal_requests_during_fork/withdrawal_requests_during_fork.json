@@ -210,19 +210,7 @@
         },
         "lastblockhash": "0x0a7014ae53a646ed4a03aee3547141945678aed143f806e2a500ba8909cd96d5",
         "config": {
-            "network": "CancunToPragueAtTime15k",
-            "blobSchedule": {
-                "Cancun": {
-                    "target": "0x03",
-                    "max": "0x06",
-                    "baseFeeUpdateFraction": "0x32f0ed"
-                },
-                "Prague": {
-                    "target": "0x06",
-                    "max": "0x09",
-                    "baseFeeUpdateFraction": "0x4c6964"
-                }
-            }
+            "network": "CancunToPragueAtTime15k"
         },
         "engineNewPayloads": [
             {
