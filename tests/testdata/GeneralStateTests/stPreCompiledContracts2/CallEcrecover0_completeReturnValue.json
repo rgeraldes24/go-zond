@@ -24,36 +24,6 @@
             "currentTimestamp" : "0x03e8"
         },
         "post" : {
-            "Cancun" : [
-                {
-                    "hash" : "0xdfdaed410e606d283c2e11d7ff26f8b90ac4da9950145e12072df209c9c66f27",
-                    "indexes" : {
-                        "data" : 0,
-                        "gas" : 0,
-                        "value" : 0
-                    },
-                    "logs" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-                    "state" : {
-                        "Z095e7baea6a6c7c4c2dfeb977efac326af552d87" : {
-                            "balance" : "0x0132b3a0",
-                            "code" : "0x7f18c547e4f7b0f325ad1e56f57e26c745b09a3e503d86e00e5255ff7f715d3d1c600052601c6020527f73b1693892219d736caba55bdb67216e485557ea6b6af75f37096c9aa6a5a75f6040527feeb940b1d03b21e36b0e47e79769f095fe2ab855bd91e3a38756b7d75a9c4549606052602060806080600060006001610bb8f160025560805160005500",
-                            "nonce" : "0x00",
-                            "storage" : {
-                                "0x00" : "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-                                "0x02" : "0x01"
-                            }
-                        },
-                        "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
-                            "balance" : "0x0de0b6b3a7580a20",
-                            "code" : "0x",
-                            "nonce" : "0x01",
-                            "storage" : {
-                            }
-                        }
-                    },
-                    "txbytes" : "0xf863800a830592a894095e7baea6a6c7c4c2dfeb977efac326af552d87830186a0801ca082a671a227220f2b04a9aa780da80015d702902cb314f4900b727ae835a6e613a02a8d1cd19b7388c9b4211156827537f3c9792e3dda07ed0343d0d16c1ffdc497"
-                }
-            ],
             "Shanghai" : [
                 {
                     "hash" : "0xdfdaed410e606d283c2e11d7ff26f8b90ac4da9950145e12072df209c9c66f27",

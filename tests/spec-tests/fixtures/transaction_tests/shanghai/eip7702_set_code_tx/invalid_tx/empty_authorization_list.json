@@ -1,7 +1,7 @@
 {
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_empty_authorization_list[fork_Shanghai-transaction_test]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_EMPTY_AUTHORIZATION_LIST"
             }

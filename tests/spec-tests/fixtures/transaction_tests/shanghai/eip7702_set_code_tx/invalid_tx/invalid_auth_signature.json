@@ -1,7 +1,7 @@
 {
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Shanghai-transaction_test-non_zero_address-r=2**256]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE|TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE_S_TOO_HIGH"
             }
@@ -25,7 +25,7 @@
     },
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Shanghai-transaction_test-non_zero_address-s=2**256]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE|TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE_S_TOO_HIGH"
             }
@@ -49,7 +49,7 @@
     },
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Shanghai-transaction_test-non_zero_address-v=2**8,r=s=2**256]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE|TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE_S_TOO_HIGH"
             }
@@ -73,7 +73,7 @@
     },
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Shanghai-transaction_test-non_zero_address-v=2**8]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE|TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE_S_TOO_HIGH"
             }
@@ -97,7 +97,7 @@
     },
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Shanghai-transaction_test-reset_delegation_address-r=2**256]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE|TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE_S_TOO_HIGH"
             }
@@ -121,7 +121,7 @@
     },
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Shanghai-transaction_test-reset_delegation_address-s=2**256]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE|TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE_S_TOO_HIGH"
             }
@@ -145,7 +145,7 @@
     },
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Shanghai-transaction_test-reset_delegation_address-v=2**8,r=s=2**256]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE|TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE_S_TOO_HIGH"
             }
@@ -169,7 +169,7 @@
     },
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_auth_signature[fork_Shanghai-transaction_test-reset_delegation_address-v=2**8]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE|TransactionException.TYPE_4_INVALID_AUTHORITY_SIGNATURE_S_TOO_HIGH"
             }

@@ -1,7 +1,7 @@
 {
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_tx_invalid_auth_chain_id[fork_Shanghai-transaction_test-non_zero_address-auth_chain_id=2**256]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_INVALID_AUTHORIZATION_FORMAT"
             }
@@ -25,7 +25,7 @@
     },
     "tests/shanghai/eip7702_set_code_tx/test_invalid_tx.py::test_invalid_tx_invalid_auth_chain_id[fork_Shanghai-transaction_test-reset_delegation_address-auth_chain_id=2**256]": {
         "result": {
-            "Prague": {
+            "Shanghai": {
                 "intrinsicGas": "0x00",
                 "exception": "TransactionException.TYPE_4_INVALID_AUTHORIZATION_FORMAT"
             }
