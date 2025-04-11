@@ -24,35 +24,6 @@
             "currentTimestamp" : "0x03e8"
         },
         "post" : {
-            "Cancun" : [
-                {
-                    "hash" : "0xa4143a2e32ab2411eea2fb3a6be3932deb33178c833a483cb636ea0f5bb7323d",
-                    "indexes" : {
-                        "data" : 0,
-                        "gas" : 0,
-                        "value" : 0
-                    },
-                    "logs" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-                    "state" : {
-                        "Z1000000000000000000000000000000000000000" : {
-                            "balance" : "0x03e8",
-                            "code" : "0x60406000604060006103e873945304eb96065b2a98b57a48a06ae28d285a71b561c350f260005500",
-                            "nonce" : "0x00",
-                            "storage" : {
-                                "0x00" : "0x01"
-                            }
-                        },
-                        "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
-                            "balance" : "0x05ede0f4",
-                            "code" : "0x",
-                            "nonce" : "0x01",
-                            "storage" : {
-                            }
-                        }
-                    },
-                    "txbytes" : "0xf860800a8310074894100000000000000000000000000000000000000080801ca007cbbe409147df9be7005ca95f2caef2b64b8b7945a7f25b8aaff8c8847e8751a0195fc2725e62cdac1fc79a78d4769c5b3782d2ac2780d3443fd9c58ccacda7b2"
-                }
-            ],
             "Shanghai" : [
                 {
                     "hash" : "0xa4143a2e32ab2411eea2fb3a6be3932deb33178c833a483cb636ea0f5bb7323d",

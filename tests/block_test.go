@@ -17,6 +17,7 @@
 package tests
 
 import (
+	"math/rand"
 	"testing"
 
 	"github.com/theQRL/go-zond/common"
@@ -29,8 +30,6 @@ func TestBlockchain(t *testing.T) {
 	// Slow tests
 	bt.slow(`.*bcExploitTest/DelegateCallSpam.json`)
 	bt.slow(`.*bcExploitTest/ShanghaiLove.json`)
-	bt.slow(`.*/bcForkStressTest/`)
-	bt.slow(`.*/bcGasPricerTest/RPC_API_Test.json`)
 	bt.slow(`.*/bcWalletTest/`)
 
 	bt.walk(t, blockTestDir, func(t *testing.T, name string, test *BlockTest) {
@@ -38,29 +37,38 @@ func TestBlockchain(t *testing.T) {
 	})
 }
 
-// TestExecutionSpec runs the test fixtures from execution-spec-tests.
-func TestExecutionSpec(t *testing.T) {
-	if !common.FileExist(executionSpecDir) {
-		t.Skipf("directory %s does not exist", executionSpecDir)
+// TestExecutionSpecBlocktests runs the test fixtures from execution-spec-tests.
+func TestExecutionSpecBlocktests(t *testing.T) {
+	if !common.FileExist(executionSpecBlockchainTestDir) {
+		t.Skipf("directory %s does not exist", executionSpecBlockchainTestDir)
 	}
 	bt := new(testMatcher)
 
-	bt.walk(t, executionSpecDir, func(t *testing.T, name string, test *BlockTest) {
+	bt.walk(t, executionSpecBlockchainTestDir, func(t *testing.T, name string, test *BlockTest) {
 		execBlockTest(t, bt, test)
 	})
 }
 
 func execBlockTest(t *testing.T, bt *testMatcher, test *BlockTest) {
-	if err := bt.checkFailure(t, test.Run(false, rawdb.HashScheme, nil)); err != nil {
-		t.Errorf("test in hash mode without snapshotter failed: %v", err)
+	// Define all the different flag combinations we should run the tests with,
+	// picking only one for short tests.
+	//
+	// Note, witness building and self-testing is always enabled as it's a very
+	// good test to ensure that we don't break it.
+	var (
+		snapshotConf = []bool{false, true}
+		dbschemeConf = []string{rawdb.HashScheme, rawdb.PathScheme}
+	)
+	if testing.Short() {
+		snapshotConf = []bool{snapshotConf[rand.Int()%2]}
+		dbschemeConf = []string{dbschemeConf[rand.Int()%2]}
 	}
-	if err := bt.checkFailure(t, test.Run(true, rawdb.HashScheme, nil)); err != nil {
-		t.Errorf("test in hash mode with snapshotter failed: %v", err)
-	}
-	if err := bt.checkFailure(t, test.Run(false, rawdb.PathScheme, nil)); err != nil {
-		t.Errorf("test in path mode without snapshotter failed: %v", err)
-	}
-	if err := bt.checkFailure(t, test.Run(true, rawdb.PathScheme, nil)); err != nil {
-		t.Errorf("test in path mode with snapshotter failed: %v", err)
+	for _, snapshot := range snapshotConf {
+		for _, dbscheme := range dbschemeConf {
+			if err := bt.checkFailure(t, test.Run(snapshot, dbscheme, nil)); err != nil {
+				t.Errorf("test with config {snapshotter:%v, scheme:%v} failed: %v", snapshot, dbscheme, err)
+				return
+			}
+		}
 	}
 }

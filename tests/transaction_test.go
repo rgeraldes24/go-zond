@@ -19,7 +19,7 @@ package tests
 import (
 	"testing"
 
-	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/common"
 )
 
 func TestTransaction(t *testing.T) {
@@ -27,8 +27,19 @@ func TestTransaction(t *testing.T) {
 
 	txt := new(testMatcher)
 	txt.walk(t, transactionTestDir, func(t *testing.T, name string, test *TransactionTest) {
-		cfg := params.MainnetChainConfig
-		if err := txt.checkFailure(t, test.Run(cfg)); err != nil {
+		if err := txt.checkFailure(t, test.Run()); err != nil {
+			t.Error(err)
+		}
+	})
+}
+func TestExecutionSpecTransaction(t *testing.T) {
+	if !common.FileExist(executionSpecStateTestDir) {
+		t.Skipf("directory %s does not exist", executionSpecStateTestDir)
+	}
+	st := new(testMatcher)
+
+	st.walk(t, executionSpecTransactionTestDir, func(t *testing.T, name string, test *TransactionTest) {
+		if err := st.checkFailure(t, test.Run()); err != nil {
 			t.Error(err)
 		}
 	})

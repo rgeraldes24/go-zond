@@ -21,7 +21,7 @@
             "currentNumber" : "0x01",
             "currentRandom" : "0x0000000000000000000000000000000000000000000000000000000000000001",
             "currentTimestamp" : "0x61a8d289",
-            "previousHash" : "0x5e20a0453cecd065ea59c37ac63e079ee08998b6045136a8ce6635c7912ec0b6"
+            "withdrawals" : []
         },
         "post" : {
             "Shanghai" : [
@@ -71,8 +71,10 @@
             "gasLimit" : [
                 "0x3b9aca00"
             ],
+            "maxFeePerGas" : "0x01",
+            "maxPriorityFeePerGas" : "0x00",
             "nonce" : "0x00",
-            "secretKey" : "0x45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8",
+            "seed" : "0x41f6e321b31e72173f8ff2e292359e1862f24fba42fe6f97efaf641980eff29862f24fba42fe6f97efaf641980eff298",
             "sender" : "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b",
             "to" : "Zbe7c43a580000000000000000000000000000001",
             "value" : [

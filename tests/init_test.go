@@ -39,8 +39,10 @@ var (
 	stateTestDir       = filepath.Join(baseDir, "GeneralStateTests")
 	transactionTestDir = filepath.Join(baseDir, "TransactionTests")
 	rlpTestDir         = filepath.Join(baseDir, "RLPTests")
-	executionSpecDir   = filepath.Join(".", "spec-tests", "fixtures")
-	benchmarksDir      = filepath.Join(".", "benchmarks")
+	executionSpecBlockchainTestDir  = filepath.Join(".", "spec-tests", "fixtures", "blockchain_tests")
+	executionSpecStateTestDir       = filepath.Join(".", "spec-tests", "fixtures", "state_tests")
+	executionSpecTransactionTestDir = filepath.Join(".", "spec-tests", "fixtures", "transaction_tests")
+	benchmarksDir      = filepath.Join(".", "zvm-benchmarks")
 )
 
 func readJSON(reader io.Reader, value interface{}) error {
@@ -105,7 +107,7 @@ type testFailure struct {
 	reason string
 }
 
-// skipShortMode skips tests matching when the -short flag is used.
+// slow adds expected slow tests matching the pattern.
 func (tm *testMatcher) slow(pattern string) {
 	tm.slowpat = append(tm.slowpat, regexp.MustCompile(pattern))
 }
