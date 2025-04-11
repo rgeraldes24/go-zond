@@ -29,8 +29,6 @@ import (
 	"sort"
 	"strings"
 	"testing"
-
-	"github.com/theQRL/go-zond/params"
 )
 
 var (
@@ -90,16 +88,10 @@ func findLine(data []byte, offset int64) (line int) {
 
 // testMatcher controls skipping and chain config assignment to tests.
 type testMatcher struct {
-	configpat      []testConfig
 	failpat        []testFailure
 	skiploadpat    []*regexp.Regexp
 	slowpat        []*regexp.Regexp
 	runonlylistpat *regexp.Regexp
-}
-
-type testConfig struct {
-	p      *regexp.Regexp
-	config params.ChainConfig
 }
 
 type testFailure struct {
@@ -112,28 +104,8 @@ func (tm *testMatcher) slow(pattern string) {
 	tm.slowpat = append(tm.slowpat, regexp.MustCompile(pattern))
 }
 
-// skipLoad skips JSON loading of tests matching the pattern.
-func (tm *testMatcher) skipLoad(pattern string) {
-	tm.skiploadpat = append(tm.skiploadpat, regexp.MustCompile(pattern))
-}
-
-// fails adds an expected failure for tests matching the pattern.
-//
-//nolint:unused
-func (tm *testMatcher) fails(pattern string, reason string) {
-	if reason == "" {
-		panic("empty fail reason")
-	}
-	tm.failpat = append(tm.failpat, testFailure{regexp.MustCompile(pattern), reason})
-}
-
 func (tm *testMatcher) runonly(pattern string) {
 	tm.runonlylistpat = regexp.MustCompile(pattern)
-}
-
-// config defines chain config for tests matching the pattern.
-func (tm *testMatcher) config(pattern string, cfg params.ChainConfig) {
-	tm.configpat = append(tm.configpat, testConfig{regexp.MustCompile(pattern), cfg})
 }
 
 // findSkip matches name against test skip patterns.
@@ -155,16 +127,6 @@ func (tm *testMatcher) findSkip(name string) (reason string, skipload bool) {
 		}
 	}
 	return "", false
-}
-
-// findConfig returns the chain config matching defined patterns.
-func (tm *testMatcher) findConfig(t *testing.T) *params.ChainConfig {
-	for _, m := range tm.configpat {
-		if m.p.MatchString(t.Name()) {
-			return &m.config
-		}
-	}
-	return new(params.ChainConfig)
 }
 
 // checkFailure checks whether a failure is expected.
