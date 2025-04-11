@@ -24,43 +24,6 @@
             "currentTimestamp" : "0x03e8"
         },
         "post" : {
-            "Cancun" : [
-                {
-                    "hash" : "0x049c6b93c21eca46608bebcacb29f10cf18f324681c9f2dd593aa81a02f489ef",
-                    "indexes" : {
-                        "data" : 0,
-                        "gas" : 0,
-                        "value" : 0
-                    },
-                    "logs" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-                    "state" : {
-                        "Z1000000000000000000000000000000000000000" : {
-                            "balance" : "0x10c8e0",
-                            "code" : "0x60016000526040600060406000731000000000000000000000000000000000000001620186a0f400",
-                            "nonce" : "0x00",
-                            "storage" : {
-                                "0x01" : "0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b",
-                                "0x02" : "0x01"
-                            }
-                        },
-                        "Z1000000000000000000000000000000000000001" : {
-                            "balance" : "0x00",
-                            "code" : "0x346000553360015560003560025500",
-                            "nonce" : "0x00",
-                            "storage" : {
-                            }
-                        },
-                        "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
-                            "balance" : "0x2386f26fb64f98",
-                            "code" : "0x",
-                            "nonce" : "0x01",
-                            "storage" : {
-                            }
-                        }
-                    },
-                    "txbytes" : "0xf860800a8306e9d994100000000000000000000000000000000000000080801ca0334306f65e075082f467ce5b3e0e9f1d0208298b6b4d8742162b4f5e7f769bd1a0726fdf8f6593b922628956f15e49fb97e84745fdd56ee4794fae4d31d80dd7dd"
-                }
-            ],
             "Shanghai" : [
                 {
                     "hash" : "0x049c6b93c21eca46608bebcacb29f10cf18f324681c9f2dd593aa81a02f489ef",

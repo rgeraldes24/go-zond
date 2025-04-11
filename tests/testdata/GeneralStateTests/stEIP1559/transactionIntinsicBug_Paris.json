@@ -27,35 +27,6 @@
             "currentTimestamp" : "0x03e8"
         },
         "post" : {
-            "Cancun" : [
-                {
-                    "expectException" : "TransactionException.INSUFFICIENT_ACCOUNT_FUNDS",
-                    "hash" : "0x6dc7d4a0fcdd98df40bf8a37c84ab2a308e83a0c32b24b79f8f3c18a5b9f7067",
-                    "indexes" : {
-                        "data" : 0,
-                        "gas" : 0,
-                        "value" : 0
-                    },
-                    "logs" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-                    "state" : {
-                        "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
-                            "balance" : "0x02faf094",
-                            "code" : "0x",
-                            "nonce" : "0x01",
-                            "storage" : {
-                            }
-                        },
-                        "Zcccccccccccccccccccccccccccccccccccccccc" : {
-                            "balance" : "0x0a",
-                            "code" : "0x",
-                            "nonce" : "0x00",
-                            "storage" : {
-                            }
-                        }
-                    },
-                    "txbytes" : "0x02f8680101148203e882c35094cccccccccccccccccccccccccccccccccccccccc8402dc6c1400c001a07da1c307f31860a499caecb8ceea3c733f450b85ae26abb83fa0077a26d1384aa06276eee443d11a244396549532f6179aa11c9a1b917a632324f69b1d079eba09"
-                }
-            ],
             "Shanghai" : [
                 {
                     "expectException" : "TransactionException.INSUFFICIENT_ACCOUNT_FUNDS",

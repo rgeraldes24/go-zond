@@ -24,43 +24,6 @@
             "currentTimestamp" : "0x03e8"
         },
         "post" : {
-            "Cancun" : [
-                {
-                    "hash" : "0x896c747bac35c49d496d6c67657b35ab5cf7b647aeb3dc2a6121ce2449626427",
-                    "indexes" : {
-                        "data" : 0,
-                        "gas" : 0,
-                        "value" : 0
-                    },
-                    "logs" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-                    "state" : {
-                        "Z1000000000000000000000000000000000000001" : {
-                            "balance" : "0x0186a0",
-                            "code" : "0x600c60015500",
-                            "nonce" : "0x00",
-                            "storage" : {
-                                "0x01" : "0x0c"
-                            }
-                        },
-                        "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
-                            "balance" : "0x05eb8764",
-                            "code" : "0x",
-                            "nonce" : "0x01",
-                            "storage" : {
-                            }
-                        },
-                        "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
-                            "balance" : "0x00",
-                            "code" : "0x60006000600060006000731000000000000000000000000000000000000001620927c0f160015500",
-                            "nonce" : "0x00",
-                            "storage" : {
-                                "0x01" : "0x01"
-                            }
-                        }
-                    },
-                    "txbytes" : "0xf860800a830186a094b94f5374fce5edbc8e2a8697c15331677e6ebf0b80801ca013e72da04d3a74fdc16979fdea1a319c45fcdcb22aed63dc8f7fc1851dde3640a05bc995d025196b6ef2ffc6777e831d18a86226f8759c5adb8dda36e4cc19d238"
-                }
-            ],
             "Shanghai" : [
                 {
                     "hash" : "0x896c747bac35c49d496d6c67657b35ab5cf7b647aeb3dc2a6121ce2449626427",

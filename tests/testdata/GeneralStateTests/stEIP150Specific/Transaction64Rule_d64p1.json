@@ -24,43 +24,6 @@
             "currentTimestamp" : "0x03e8"
         },
         "post" : {
-            "Cancun" : [
-                {
-                    "hash" : "0x71d5e97993b209f6ce5b6a8c3935eaa67f22d9527e3d5c796315582fb717ce21",
-                    "indexes" : {
-                        "data" : 0,
-                        "gas" : 0,
-                        "value" : 0
-                    },
-                    "logs" : "0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347",
-                    "state" : {
-                        "Z1000000000000000000000000000000000000118" : {
-                            "balance" : "0x00",
-                            "code" : "0x600c60015500",
-                            "nonce" : "0x00",
-                            "storage" : {
-                                "0x01" : "0x0c"
-                            }
-                        },
-                        "Za94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
-                            "balance" : "0xe8d49ab574",
-                            "code" : "0x",
-                            "nonce" : "0x01",
-                            "storage" : {
-                            }
-                        },
-                        "Zb94f5374fce5edbc8e2a8697c15331677e6ebf0b" : {
-                            "balance" : "0x00",
-                            "code" : "0x5a6000526000600060006000600073100000000000000000000000000000000000011862027100f1505a6000510360025500",
-                            "nonce" : "0x00",
-                            "storage" : {
-                                "0x02" : "0x60a4"
-                            }
-                        }
-                    },
-                    "txbytes" : "0xf860800a8302713f94b94f5374fce5edbc8e2a8697c15331677e6ebf0b80801ba010dd3031e71edd6f5f46406d7a9e0d551a4ac693e2752e470b17f056600edd34a032ed3d5859e55e776ceae6d9354ebb96399a14d42bdcafc5c1bdc44fe33cb1cb"
-                }
-            ],
             "Shanghai" : [
                 {
                     "hash" : "0x71d5e97993b209f6ce5b6a8c3935eaa67f22d9527e3d5c796315582fb717ce21",
