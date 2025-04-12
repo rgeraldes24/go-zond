@@ -33,6 +33,7 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/state/snapshot"
+	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/zond/tracers/logger"
 )
@@ -238,23 +239,20 @@ func runBenchmark(b *testing.B, t *StateTest) {
 				return
 			}
 
-			// TODO(rgeraldes24): update txBytes field
 			// Try to recover tx with current signer
-			/*
-				if len(post.TxBytes) != 0 {
-					var ttx types.Transaction
-					err := ttx.UnmarshalBinary(post.TxBytes)
-					if err != nil {
-						b.Error(err)
-						return
-					}
-
-					if _, err := types.Sender(types.LatestSigner(config), &ttx); err != nil {
-						b.Error(err)
-						return
-					}
+			if len(post.TxBytes) != 0 {
+				var ttx types.Transaction
+				err := ttx.UnmarshalBinary(post.TxBytes)
+				if err != nil {
+					b.Error(err)
+					return
 				}
-			*/
+
+				if _, err := types.Sender(types.LatestSigner(config), &ttx); err != nil {
+					b.Error(err)
+					return
+				}
+			}
 
 			// Prepare the ZVM.
 			txContext := core.NewZVMTxContext(msg)
