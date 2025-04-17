@@ -82,7 +82,7 @@ var bindTests = []struct {
 	},
 	{
 		`Crowdsale`,
-		`https://ethereum.org/crowdsale`,
+		`https://ethereum.org/cro	wdsale`,
 		[]string{`606060408190526007805460ff1916905560a0806105a883396101006040529051608051915160c05160e05160008054600160a060020a03199081169095178155670de0b6b3a7640000958602600155603c9093024201600355930260045560058054909216909217905561052f90819061007990396000f36060604052361561006c5760e060020a600035046301cb3b20811461008257806329dcb0cf1461014457806338af3eed1461014d5780636e66f6e91461015f5780637a3a0e84146101715780637b3e5e7b1461017a578063a035b1fe14610183578063dc0d3dff1461018c575b61020060075460009060ff161561032357610002565b61020060035460009042106103205760025460015490106103cb576002548154600160a060020a0316908290606082818181858883f150915460025460408051600160a060020a039390931683526020830191909152818101869052517fe842aea7a5f1b01049d752008c53c52890b1a6daf660cf39e8eec506112bbdf6945090819003909201919050a15b60405160008054600160a060020a039081169230909116319082818181858883f150506007805460ff1916600117905550505050565b6103a160035481565b6103ab600054600160a060020a031681565b6103ab600554600160a060020a031681565b6103a160015481565b6103a160025481565b6103a160045481565b6103be60043560068054829081101561000257506000526002027ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f8101547ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d409190910154600160a060020a03919091169082565b005b505050815481101561000257906000526020600020906002020160005060008201518160000160006101000a815481600160a060020a030219169083021790555060208201518160010160005055905050806002600082828250540192505081905550600560009054906101000a9004600160a060020a0316600160a060020a031663a9059cbb3360046000505484046040518360e060020a0281526004018083600160a060020a03168152602001828152602001925050506000604051808303816000876161da5a03f11561000257505060408051600160a060020a03331681526020810184905260018183015290517fe842aea7a5f1b01049d752008c53c52890b1a6daf660cf39e8eec506112bbdf692509081900360600190a15b50565b5060a0604052336060908152346080819052600680546001810180835592939282908280158290116102025760020281600202836000526020600020918201910161020291905b8082111561039d57805473ffffffffffffffffffffffffffffffffffffffff19168155600060019190910190815561036a565b5090565b6060908152602090f35b600160a060020a03166060908152602090f35b6060918252608052604090f35b5b60065481101561010e576006805482908110156100025760009182526002027ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f0190600680549254600160a060020a0316928490811015610002576002027ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d40015460405190915082818181858883f19350505050507fe842aea7a5f1b01049d752008c53c52890b1a6daf660cf39e8eec506112bbdf660066000508281548110156100025760008290526002027ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d3f01548154600160a060020a039190911691908490811015610002576002027ff652222313e28459528d920b65115c16c04f3efc82aaedc97be59f3f377c0d40015460408051600160a060020a0394909416845260208401919091526000838201525191829003606001919050a16001016103cc56`},
 		[]string{`[{"constant":false,"inputs":[],"name":"checkGoalReached","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"deadline","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"beneficiary","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":true,"inputs":[],"name":"tokenReward","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":true,"inputs":[],"name":"fundingGoal","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"amountRaised","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"price","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"funders","outputs":[{"name":"addr","type":"address"},{"name":"amount","type":"uint256"}],"type":"function"},{"inputs":[{"name":"ifSuccessfulSendTo","type":"address"},{"name":"fundingGoalInEthers","type":"uint256"},{"name":"durationInMinutes","type":"uint256"},{"name":"etherCostOfEachToken","type":"uint256"},{"name":"addressOfTokenUsedAsReward","type":"address"}],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"backer","type":"address"},{"indexed":false,"name":"amount","type":"uint256"},{"indexed":false,"name":"isContribution","type":"bool"}],"name":"FundTransfer","type":"event"}]`},
 		`"github.com/theQRL/go-zond/common"`,
@@ -112,26 +112,25 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	/*
-			// Test that named and anonymous inputs are handled correctly
-			{
-				`InputChecker`, ``, []string{``},
-				[]string{`
+	// Test that named and anonymous inputs are handled correctly
+	{
+		`InputChecker`, ``, []string{``},
+		[]string{`
 					[
-						{"type":"function","name":"noInput","constant":true,"inputs":[],"outputs":[]},
-						{"type":"function","name":"namedInput","constant":true,"inputs":[{"name":"str","type":"string"}],"outputs":[]},
-						{"type":"function","name":"anonInput","constant":true,"inputs":[{"name":"","type":"string"}],"outputs":[]},
-						{"type":"function","name":"namedInputs","constant":true,"inputs":[{"name":"str1","type":"string"},{"name":"str2","type":"string"}],"outputs":[]},
-						{"type":"function","name":"anonInputs","constant":true,"inputs":[{"name":"","type":"string"},{"name":"","type":"string"}],"outputs":[]},
-						{"type":"function","name":"mixedInputs","constant":true,"inputs":[{"name":"","type":"string"},{"name":"str","type":"string"}],"outputs":[]}
+						{"type":"function","name":"noInput","stateMutability":"view","inputs":[],"outputs":[]},
+						{"type":"function","name":"namedInput","stateMutability":"view","inputs":[{"name":"str","type":"string"}],"outputs":[]},
+						{"type":"function","name":"anonInput","stateMutability":"view","inputs":[{"name":"","type":"string"}],"outputs":[]},
+						{"type":"function","name":"namedInputs","stateMutability":"view","inputs":[{"name":"str1","type":"string"},{"name":"str2","type":"string"}],"outputs":[]},
+						{"type":"function","name":"anonInputs","stateMutability":"view","inputs":[{"name":"","type":"string"},{"name":"","type":"string"}],"outputs":[]},
+						{"type":"function","name":"mixedInputs","stateMutability":"view","inputs":[{"name":"","type":"string"},{"name":"str","type":"string"}],"outputs":[]}
 					]
 				`},
-				`
+		`
 					"fmt"
 
 					"github.com/theQRL/go-zond/common"
 				`,
-				`if b, err := NewInputChecker(common.Address{}, nil); b == nil || err != nil {
+		`if b, err := NewInputChecker(common.Address{}, nil); b == nil || err != nil {
 					 t.Fatalf("binding (%v) nil or error (%v) not nil", b, nil)
 				 } else if false { // Don't run, just compile and test types
 					 var err error
@@ -145,32 +144,31 @@ var bindTests = []struct {
 
 					 fmt.Println(err)
 				 }`,
-				nil,
-				nil,
-				nil,
-				nil,
-			},
-
-		// Test that named and anonymous outputs are handled correctly
-		{
-			`OutputChecker`, ``, []string{``},
-			[]string{`
+		nil,
+		nil,
+		nil,
+		nil,
+	},
+	// Test that named and anonymous outputs are handled correctly
+	{
+		`OutputChecker`, ``, []string{``},
+		[]string{`
 								[
-									{"type":"function","name":"noOutput","constant":true,"inputs":[],"outputs":[]},
-									{"type":"function","name":"namedOutput","constant":true,"inputs":[],"outputs":[{"name":"str","type":"string"}]},
-									{"type":"function","name":"anonOutput","constant":true,"inputs":[],"outputs":[{"name":"","type":"string"}]},
-									{"type":"function","name":"namedOutputs","constant":true,"inputs":[],"outputs":[{"name":"str1","type":"string"},{"name":"str2","type":"string"}]},
-									{"type":"function","name":"collidingOutputs","constant":true,"inputs":[],"outputs":[{"name":"str","type":"string"},{"name":"Str","type":"string"}]},
-									{"type":"function","name":"anonOutputs","constant":true,"inputs":[],"outputs":[{"name":"","type":"string"},{"name":"","type":"string"}]},
-									{"type":"function","name":"mixedOutputs","constant":true,"inputs":[],"outputs":[{"name":"","type":"string"},{"name":"str","type":"string"}]}
+									{"type":"function","name":"noOutput","stateMutability":"view","inputs":[],"outputs":[]},
+									{"type":"function","name":"namedOutput","stateMutability":"view","inputs":[],"outputs":[{"name":"str","type":"string"}]},
+									{"type":"function","name":"anonOutput","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"}]},
+									{"type":"function","name":"namedOutputs","stateMutability":"view","inputs":[],"outputs":[{"name":"str1","type":"string"},{"name":"str2","type":"string"}]},
+									{"type":"function","name":"collidingOutputs","stateMutability":"view","inputs":[],"outputs":[{"name":"str","type":"string"},{"name":"Str","type":"string"}]},
+									{"type":"function","name":"anonOutputs","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"},{"name":"","type":"string"}]},
+									{"type":"function","name":"mixedOutputs","stateMutability":"view","inputs":[],"outputs":[{"name":"","type":"string"},{"name":"str","type":"string"}]}
 								]
 							`},
-			`
+		`
 								"fmt"
 
 								"github.com/theQRL/go-zond/common"
 							`,
-			`if b, err := NewOutputChecker(common.Address{}, nil); b == nil || err != nil {
+		`if b, err := NewOutputChecker(common.Address{}, nil); b == nil || err != nil {
 								 t.Fatalf("binding (%v) nil or error (%v) not nil", b, nil)
 							 } else if false { // Don't run, just compile and test types
 								 var str1, str2 string
@@ -186,12 +184,11 @@ var bindTests = []struct {
 
 								 fmt.Println(str1, str2, res.Str1, res.Str2, err)
 							 }`,
-			nil,
-			nil,
-			nil,
-			nil,
-		},
-	*/
+		nil,
+		nil,
+		nil,
+		nil,
+	},
 	// Tests that named, anonymous and indexed events are handled correctly
 	{
 		`EventChecker`, ``, []string{``},
@@ -268,82 +265,81 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	/*
-					// Test that contract interactions (deploy, transact and call) generate working code
-					{
-						`Interactor`,
-						`
-							contract Interactor {
-								string public deployString;
-								string public transactString;
+	// Test that contract interactions (deploy, transact and call) generate working code
+	{
+		`Interactor`,
+		`
+			contract Interactor {
+				string public deployString;
+				string public transactString;
 
-								function Interactor(string str) {
-								  deployString = str;
-								}
+				function Interactor(string str) {
+					deployString = str;
+				}
 
-								function transact(string str) {
-								  transactString = str;
-								}
-							}
-						`,
-						[]string{`6060604052604051610328380380610328833981016040528051018060006000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10608d57805160ff19168380011785555b50607c9291505b8082111560ba57838155600101606b565b50505061026a806100be6000396000f35b828001600101855582156064579182015b828111156064578251826000505591602001919060010190609e565b509056606060405260e060020a60003504630d86a0e181146100315780636874e8091461008d578063d736c513146100ea575b005b610190600180546020600282841615610100026000190190921691909104601f810182900490910260809081016040526060828152929190828280156102295780601f106101fe57610100808354040283529160200191610229565b61019060008054602060026001831615610100026000190190921691909104601f810182900490910260809081016040526060828152929190828280156102295780601f106101fe57610100808354040283529160200191610229565b60206004803580820135601f81018490049093026080908101604052606084815261002f946024939192918401918190838280828437509496505050505050508060016000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061023157805160ff19168380011785555b506102619291505b808211156102665760008155830161017d565b60405180806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600f02600301f150905090810190601f1680156101f05780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b820191906000526020600020905b81548152906001019060200180831161020c57829003601f168201915b505050505081565b82800160010185558215610175579182015b82811115610175578251826000505591602001919060010190610243565b505050565b509056`},
-						[]string{`[{"constant":true,"inputs":[],"name":"transactString","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":true,"inputs":[],"name":"deployString","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"str","type":"string"}],"name":"transact","outputs":[],"type":"function"},{"inputs":[{"name":"str","type":"string"}],"type":"constructor"}]`},
-						`
-							"math/big"
+				function transact(string str) {
+					transactString = str;
+				}
+			}
+		`,
+		[]string{`6060604052604051610328380380610328833981016040528051018060006000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10608d57805160ff19168380011785555b50607c9291505b8082111560ba57838155600101606b565b50505061026a806100be6000396000f35b828001600101855582156064579182015b828111156064578251826000505591602001919060010190609e565b509056606060405260e060020a60003504630d86a0e181146100315780636874e8091461008d578063d736c513146100ea575b005b610190600180546020600282841615610100026000190190921691909104601f810182900490910260809081016040526060828152929190828280156102295780601f106101fe57610100808354040283529160200191610229565b61019060008054602060026001831615610100026000190190921691909104601f810182900490910260809081016040526060828152929190828280156102295780601f106101fe57610100808354040283529160200191610229565b60206004803580820135601f81018490049093026080908101604052606084815261002f946024939192918401918190838280828437509496505050505050508060016000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061023157805160ff19168380011785555b506102619291505b808211156102665760008155830161017d565b60405180806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600f02600301f150905090810190601f1680156101f05780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b820191906000526020600020905b81548152906001019060200180831161020c57829003601f168201915b505050505081565b82800160010185558215610175579182015b82811115610175578251826000505591602001919060010190610243565b505050565b509056`},
+		[]string{`[{"stateMutability":"view","inputs":[],"name":"transactString","outputs":[{"name":"","type":"string"}],"type":"function"},{"stateMutability":"view","inputs":[],"name":"deployString","outputs":[{"name":"","type":"string"}],"type":"function"},{"constant":false,"inputs":[{"name":"str","type":"string"}],"name":"transact","outputs":[],"type":"function"},{"inputs":[{"name":"str","type":"string"}],"type":"constructor"}]`},
+		`
+			"math/big"
 
-							"github.com/theQRL/go-zond/accounts/abi/bind"
-							"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-							"github.com/theQRL/go-zond/core"
-							"github.com/theQRL/go-zond/crypto"
-						`,
-						`
-							// Generate a new random account and a funded simulator
-							key, _ := crypto.GenerateKey()
-							auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+			"github.com/theQRL/go-zond/accounts/abi/bind"
+			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+			"github.com/theQRL/go-zond/core"
+			"github.com/theQRL/go-zond/crypto"
+		`,
+		`
+			// Generate a new random account and a funded simulator
+			key, _ := crypto.GenerateDilithiumKey()
+			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
-							sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-							defer sim.Close()
+			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+			defer sim.Close()
 
-							// Deploy an interaction tester contract and call a transaction on it
-							_, _, interactor, err := DeployInteractor(auth, sim, "Deploy string")
-							if err != nil {
-								t.Fatalf("Failed to deploy interactor contract: %v", err)
-							}
-							if _, err := interactor.Transact(auth, "Transact string"); err != nil {
-								t.Fatalf("Failed to transact with interactor contract: %v", err)
-							}
-							// Commit all pending transactions in the simulator and check the contract state
-							sim.Commit()
+			// Deploy an interaction tester contract and call a transaction on it
+			_, _, interactor, err := DeployInteractor(auth, sim, "Deploy string")
+			if err != nil {
+				t.Fatalf("Failed to deploy interactor contract: %v", err)
+			}
+			if _, err := interactor.Transact(auth, "Transact string"); err != nil {
+				t.Fatalf("Failed to transact with interactor contract: %v", err)
+			}
+			// Commit all pending transactions in the simulator and check the contract state
+			sim.Commit()
 
-							if str, err := interactor.DeployString(nil); err != nil {
-								t.Fatalf("Failed to retrieve deploy string: %v", err)
-							} else if str != "Deploy string" {
-								t.Fatalf("Deploy string mismatch: have '%s', want 'Deploy string'", str)
-							}
-							if str, err := interactor.TransactString(nil); err != nil {
-								t.Fatalf("Failed to retrieve transact string: %v", err)
-							} else if str != "Transact string" {
-								t.Fatalf("Transact string mismatch: have '%s', want 'Transact string'", str)
-							}
-						`,
-						nil,
-						nil,
-						nil,
-						nil,
-					},
-					// Tests that plain values can be properly returned and deserialized
-					{
-						`Getter`,
-						`
+			if str, err := interactor.DeployString(nil); err != nil {
+				t.Fatalf("Failed to retrieve deploy string: %v", err)
+			} else if str != "Deploy string" {
+				t.Fatalf("Deploy string mismatch: have '%s', want 'Deploy string'", str)
+			}
+			if str, err := interactor.TransactString(nil); err != nil {
+				t.Fatalf("Failed to retrieve transact string: %v", err)
+			} else if str != "Transact string" {
+				t.Fatalf("Transact string mismatch: have '%s', want 'Transact string'", str)
+			}
+		`,
+		nil,
+		nil,
+		nil,
+		nil,
+	},
+	// Tests that plain values can be properly returned and deserialized
+	{
+		`Getter`,
+		`
 							contract Getter {
 								function getter() constant returns (string, int, bytes32) {
 									return ("Hi", 1, sha3(""));
 								}
 							}
 						`,
-						[]string{`606060405260dc8060106000396000f3606060405260e060020a6000350463993a04b78114601a575b005b600060605260c0604052600260809081527f486900000000000000000000000000000000000000000000000000000000000060a05260017fc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a47060e0829052610100819052606060c0908152600261012081905281906101409060a09080838184600060046012f1505081517fffff000000000000000000000000000000000000000000000000000000000000169091525050604051610160819003945092505050f3`},
-						[]string{`[{"constant":true,"inputs":[],"name":"getter","outputs":[{"name":"","type":"string"},{"name":"","type":"int256"},{"name":"","type":"bytes32"}],"type":"function"}]`},
-						`
+		[]string{`606060405260dc8060106000396000f3606060405260e060020a6000350463993a04b78114601a575b005b600060605260c0604052600260809081527f486900000000000000000000000000000000000000000000000000000000000060a05260017fc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a47060e0829052610100819052606060c0908152600261012081905281906101409060a09080838184600060046012f1505081517fffff000000000000000000000000000000000000000000000000000000000000169091525050604051610160819003945092505050f3`},
+		[]string{`[{"stateMutability":"pure","inputs":[],"name":"getter","outputs":[{"name":"","type":"string"},{"name":"","type":"int256"},{"name":"","type":"bytes32"}],"type":"function"}]`},
+		`
 							"math/big"
 
 							"github.com/theQRL/go-zond/accounts/abi/bind"
@@ -351,9 +347,9 @@ var bindTests = []struct {
 							"github.com/theQRL/go-zond/core"
 							"github.com/theQRL/go-zond/crypto"
 						`,
-						`
+		`
 							// Generate a new random account and a funded simulator
-							key, _ := crypto.GenerateKey()
+							key, _ := crypto.GenerateDilithiumKey()
 							auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 							sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -372,24 +368,24 @@ var bindTests = []struct {
 								t.Fatalf("Retrieved value mismatch: have %v/%v, want %v/%v", str, num, "Hi", 1)
 							}
 						`,
-						nil,
-						nil,
-						nil,
-						nil,
-					},
-					// Tests that tuples can be properly returned and deserialized
-					{
-						`Tupler`,
-						`
-							contract Tupler {
-								function tuple() constant returns (string a, int b, bytes32 c) {
-									return ("Hi", 1, sha3(""));
-								}
-							}
-						`,
-						[]string{`606060405260dc8060106000396000f3606060405260e060020a60003504633175aae28114601a575b005b600060605260c0604052600260809081527f486900000000000000000000000000000000000000000000000000000000000060a05260017fc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a47060e0829052610100819052606060c0908152600261012081905281906101409060a09080838184600060046012f1505081517fffff000000000000000000000000000000000000000000000000000000000000169091525050604051610160819003945092505050f3`},
-						[]string{`[{"constant":true,"inputs":[],"name":"tuple","outputs":[{"name":"a","type":"string"},{"name":"b","type":"int256"},{"name":"c","type":"bytes32"}],"type":"function"}]`},
-						`
+		nil,
+		nil,
+		nil,
+		nil,
+	},
+	// Tests that tuples can be properly returned and deserialized
+	{
+		`Tupler`,
+		`
+			contract Tupler {
+				function tuple() constant returns (string a, int b, bytes32 c) {
+					return ("Hi", 1, sha3(""));
+				}
+			}
+		`,
+		[]string{`606060405260dc8060106000396000f3606060405260e060020a60003504633175aae28114601a575b005b600060605260c0604052600260809081527f486900000000000000000000000000000000000000000000000000000000000060a05260017fc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a47060e0829052610100819052606060c0908152600261012081905281906101409060a09080838184600060046012f1505081517fffff000000000000000000000000000000000000000000000000000000000000169091525050604051610160819003945092505050f3`},
+		[]string{`[{"stateMutability":"pure","inputs":[],"name":"tuple","outputs":[{"name":"a","type":"string"},{"name":"b","type":"int256"},{"name":"c","type":"bytes32"}],"type":"function"}]`},
+		`
 							"math/big"
 
 							"github.com/theQRL/go-zond/accounts/abi/bind"
@@ -397,9 +393,9 @@ var bindTests = []struct {
 							"github.com/theQRL/go-zond/core"
 							"github.com/theQRL/go-zond/crypto"
 						`,
-						`
+		`
 							// Generate a new random account and a funded simulator
-							key, _ := crypto.GenerateKey()
+							key, _ := crypto.GenerateDilithiumKey()
 							auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 							sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -418,16 +414,16 @@ var bindTests = []struct {
 								t.Fatalf("Retrieved value mismatch: have %v/%v, want %v/%v", res.A, res.B, "Hi", 1)
 							}
 						`,
-						nil,
-						nil,
-						nil,
-						nil,
-					},
-		// Tests that arrays/slices can be properly returned and deserialized.
-		// Only addresses are tested, remainder just compiled to keep the test small.
-		{
-			`Slicer`,
-			`
+		nil,
+		nil,
+		nil,
+		nil,
+	},
+	// Tests that arrays/slices can be properly returned and deserialized.
+	// Only addresses are tested, remainder just compiled to keep the test small.
+	{
+		`Slicer`,
+		`
 								contract Slicer {
 									function echoAddresses(address[] input) constant returns (address[] output) {
 										return input;
@@ -443,9 +439,9 @@ var bindTests = []struct {
 									}
 								}
 							`,
-			[]string{`606060405261015c806100126000396000f3606060405260e060020a6000350463be1127a3811461003c578063d88becc014610092578063e15a3db71461003c578063f637e5891461003c575b005b604080516020600480358082013583810285810185019096528085526100ee959294602494909392850192829185019084908082843750949650505050505050604080516020810190915260009052805b919050565b604080516102e0818101909252610138916004916102e491839060179083908390808284375090955050505050506102e0604051908101604052806017905b60008152602001906001900390816100d15790505081905061008d565b60405180806020018281038252838181518152602001915080519060200190602002808383829060006004602084601f0104600f02600301f1509050019250505060405180910390f35b60405180826102e0808381846000600461015cf15090500191505060405180910390f3`},
-			[]string{`[{"constant":true,"inputs":[{"name":"input","type":"address[]"}],"name":"echoAddresses","outputs":[{"name":"output","type":"address[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"input","type":"uint24[23]"}],"name":"echoFancyInts","outputs":[{"name":"output","type":"uint24[23]"}],"type":"function"},{"constant":true,"inputs":[{"name":"input","type":"int256[]"}],"name":"echoInts","outputs":[{"name":"output","type":"int256[]"}],"type":"function"},{"constant":true,"inputs":[{"name":"input","type":"bool[]"}],"name":"echoBools","outputs":[{"name":"output","type":"bool[]"}],"type":"function"}]`},
-			`
+		[]string{`606060405261015c806100126000396000f3606060405260e060020a6000350463be1127a3811461003c578063d88becc014610092578063e15a3db71461003c578063f637e5891461003c575b005b604080516020600480358082013583810285810185019096528085526100ee959294602494909392850192829185019084908082843750949650505050505050604080516020810190915260009052805b919050565b604080516102e0818101909252610138916004916102e491839060179083908390808284375090955050505050506102e0604051908101604052806017905b60008152602001906001900390816100d15790505081905061008d565b60405180806020018281038252838181518152602001915080519060200190602002808383829060006004602084601f0104600f02600301f1509050019250505060405180910390f35b60405180826102e0808381846000600461015cf15090500191505060405180910390f3`},
+		[]string{`[{"stateMutability":"view","inputs":[{"name":"input","type":"address[]"}],"name":"echoAddresses","outputs":[{"name":"output","type":"address[]"}],"type":"function"},{"stateMutability":"view","inputs":[{"name":"input","type":"uint24[23]"}],"name":"echoFancyInts","outputs":[{"name":"output","type":"uint24[23]"}],"type":"function"},{"stateMutability":"view","inputs":[{"name":"input","type":"int256[]"}],"name":"echoInts","outputs":[{"name":"output","type":"int256[]"}],"type":"function"},{"stateMutability":"view","inputs":[{"name":"input","type":"bool[]"}],"name":"echoBools","outputs":[{"name":"output","type":"bool[]"}],"type":"function"}]`},
+		`
 								"math/big"
 								"reflect"
 
@@ -455,7 +451,7 @@ var bindTests = []struct {
 								"github.com/theQRL/go-zond/core"
 								"github.com/theQRL/go-zond/crypto"
 							`,
-			`
+		`
 								// Generate a new random account and a funded simulator
 								key, _ := crypto.GenerateDilithiumKey()
 								auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
@@ -476,71 +472,67 @@ var bindTests = []struct {
 										t.Fatalf("Slice return mismatch: have %v, want %v", out, []common.Address{auth.From, common.Address{}})
 								}
 							`,
-			nil,
-			nil,
-			nil,
-			nil,
-		},
+		nil,
+		nil,
+		nil,
+		nil,
+	},
+	// Tests that anonymous default methods can be correctly invoked
+	{
+		`Defaulter`,
+		`
+							contract Defaulter {
+								address public caller;
 
-			// Tests that anonymous default methods can be correctly invoked
-			{
-				`Defaulter`,
-				`
-								contract Defaulter {
-									address public caller;
-
-									function() {
-										caller = msg.sender;
-									}
+								function() {
+									caller = msg.sender;
 								}
-							`,
-				[]string{`6060604052606a8060106000396000f360606040523615601d5760e060020a6000350463fc9c8d3981146040575b605e6000805473ffffffffffffffffffffffffffffffffffffffff191633179055565b606060005473ffffffffffffffffffffffffffffffffffffffff1681565b005b6060908152602090f3`},
-				[]string{`[{"constant":true,"inputs":[],"name":"caller","outputs":[{"name":"","type":"address"}],"type":"function"}]`},
-				`
-								"math/big"
+							}
+						`,
+		[]string{`6060604052606a8060106000396000f360606040523615601d5760e060020a6000350463fc9c8d3981146040575b605e6000805473ffffffffffffffffffffffffffffffffffffffff191633179055565b606060005473ffffffffffffffffffffffffffffffffffffffff1681565b005b6060908152602090f3`},
+		[]string{`[{"stateMutability":"view","inputs":[],"name":"caller","outputs":[{"name":"","type":"address"}],"type":"function"}]`},
+		`
+							"math/big"
 
-								"github.com/theQRL/go-zond/accounts/abi/bind"
-								"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-								"github.com/theQRL/go-zond/core"
-								"github.com/theQRL/go-zond/crypto"
-							`,
-				`
-								// Generate a new random account and a funded simulator
-								key, _ := crypto.GenerateDilithiumKey()
-								auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+							"github.com/theQRL/go-zond/accounts/abi/bind"
+							"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+							"github.com/theQRL/go-zond/core"
+							"github.com/theQRL/go-zond/crypto"
+						`,
+		`
+							// Generate a new random account and a funded simulator
+							key, _ := crypto.GenerateDilithiumKey()
+							auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
-								sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-								defer sim.Close()
+							sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+							defer sim.Close()
 
-								// Deploy a default method invoker contract and execute its default method
-								_, _, defaulter, err := DeployDefaulter(auth, sim)
-								if err != nil {
-									t.Fatalf("Failed to deploy defaulter contract: %v", err)
-								}
-								if _, err := (&DefaulterRaw{defaulter}).Transfer(auth); err != nil {
-									t.Fatalf("Failed to invoke default method: %v", err)
-								}
-								sim.Commit()
+							// Deploy a default method invoker contract and execute its default method
+							_, _, defaulter, err := DeployDefaulter(auth, sim)
+							if err != nil {
+								t.Fatalf("Failed to deploy defaulter contract: %v", err)
+							}
+							if _, err := (&DefaulterRaw{defaulter}).Transfer(auth); err != nil {
+								t.Fatalf("Failed to invoke default method: %v", err)
+							}
+							sim.Commit()
 
-								if caller, err := defaulter.Caller(nil); err != nil {
-									t.Fatalf("Failed to call address retriever: %v", err)
-								} else if (caller != auth.From) {
-									t.Fatalf("Address mismatch: have %v, want %v", caller, auth.From)
-								}
-							`,
-				nil,
-				nil,
-				nil,
-				nil,
-			},
-	*/
+							if caller, err := defaulter.Caller(nil); err != nil {
+								t.Fatalf("Failed to call address retriever: %v", err)
+							} else if (caller != auth.From) {
+								t.Fatalf("Address mismatch: have %v, want %v", caller, auth.From)
+							}
+						`,
+		nil,
+		nil,
+		nil,
+		nil,
+	},
 	// Tests that structs are correctly unpacked
 	{
 
 		`Structs`,
 		`
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion ^0.6.5;
 						pragma experimental ABIEncoderV2;
 						contract Structs {
 							struct A {
@@ -599,49 +591,46 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// TODO(rgeraldes24): constant
-	/*
-		// Tests that non-existent contracts are reported as such (though only simulator test)
-		{
-			`NonExistent`,
-			`
-							contract NonExistent {
-								function String() constant returns(string) {
-									return "I don't exist";
-								}
-							}
-						`,
-			[]string{`6060604052609f8060106000396000f3606060405260e060020a6000350463f97a60058114601a575b005b600060605260c0604052600d60809081527f4920646f6e27742065786973740000000000000000000000000000000000000060a052602060c0908152600d60e081905281906101009060a09080838184600060046012f15050815172ffffffffffffffffffffffffffffffffffffff1916909152505060405161012081900392509050f3`},
-			[]string{`[{"constant":true,"inputs":[],"name":"String","outputs":[{"name":"","type":"string"}],"type":"function"}]`},
-			`
-							"github.com/theQRL/go-zond/accounts/abi/bind"
-							"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-							"github.com/theQRL/go-zond/common"
-							"github.com/theQRL/go-zond/core"
-						`,
-			`
-							// Create a simulator and wrap a non-deployed contract
+	// Tests that non-existent contracts are reported as such (though only simulator test)
+	{
+		`NonExistent`,
+		`
+			contract NonExistent {
+				function String() constant returns(string) {
+					return "I don't exist";
+				}
+			}
+		`,
+		[]string{`6060604052609f8060106000396000f3606060405260e060020a6000350463f97a60058114601a575b005b600060605260c0604052600d60809081527f4920646f6e27742065786973740000000000000000000000000000000000000060a052602060c0908152600d60e081905281906101009060a09080838184600060046012f15050815172ffffffffffffffffffffffffffffffffffffff1916909152505060405161012081900392509050f3`},
+		[]string{`[{"stateMutability":"pure","inputs":[],"name":"String","outputs":[{"name":"","type":"string"}],"type":"function"}]`},
+		`
+			"github.com/theQRL/go-zond/accounts/abi/bind"
+			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+			"github.com/theQRL/go-zond/common"
+			"github.com/theQRL/go-zond/core"
+		`,
+		`
+			// Create a simulator and wrap a non-deployed contract
 
-							sim := backends.NewSimulatedBackend(core.GenesisAlloc{}, uint64(10000000000))
-							defer sim.Close()
+			sim := backends.NewSimulatedBackend(core.GenesisAlloc{}, uint64(10000000000))
+			defer sim.Close()
 
-							nonexistent, err := NewNonExistent(common.Address{}, sim)
-							if err != nil {
-								t.Fatalf("Failed to access non-existent contract: %v", err)
-							}
-							// Ensure that contract calls fail with the appropriate error
-							if res, err := nonexistent.String(nil); err == nil {
-								t.Fatalf("Call succeeded on non-existent contract: %v", res)
-							} else if (err != bind.ErrNoCode) {
-								t.Fatalf("Error mismatch: have %v, want %v", err, bind.ErrNoCode)
-							}
-						`,
-			nil,
-			nil,
-			nil,
-			nil,
-		},
-	*/
+			nonexistent, err := NewNonExistent(common.Address{}, sim)
+			if err != nil {
+				t.Fatalf("Failed to access non-existent contract: %v", err)
+			}
+			// Ensure that contract calls fail with the appropriate error
+			if res, err := nonexistent.String(nil); err == nil {
+				t.Fatalf("Call succeeded on non-existent contract: %v", res)
+			} else if (err != bind.ErrNoCode) {
+				t.Fatalf("Error mismatch: have %v, want %v", err, bind.ErrNoCode)
+			}
+		`,
+		nil,
+		nil,
+		nil,
+		nil,
+	},
 	{
 		`NonExistentStruct`,
 		`
@@ -681,12 +670,10 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// TODO(rgeraldes24): limiter.Field(nil) generates a transaction and it should not
-	/*
-		// Tests that gas estimation works for contracts with weird gas mechanics too.
-		{
-			`FunkyGasPattern`,
-			`
+	// Tests that gas estimation works for contracts with weird gas mechanics too.
+	{
+		`FunkyGasPattern`,
+		`
 								contract FunkyGasPattern {
 									string public field;
 
@@ -699,9 +686,9 @@ var bindTests = []struct {
 									}
 								}
 							`,
-			[]string{`606060405261021c806100126000396000f3606060405260e060020a600035046323fcf32a81146100265780634f28bf0e1461007b575b005b6040805160206004803580820135601f8101849004840285018401909552848452610024949193602493909291840191908190840183828082843750949650505050505050620186a05a101561014e57610002565b6100db60008054604080516020601f600260001961010060018816150201909516949094049384018190048102820181019092528281529291908301828280156102145780601f106101e957610100808354040283529160200191610214565b60405180806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600302600f01f150905090810190601f16801561013b5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b505050565b8060006000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106101b557805160ff19168380011785555b506101499291505b808211156101e557600081556001016101a1565b82800160010185558215610199579182015b828111156101995782518260005055916020019190600101906101c7565b5090565b820191906000526020600020905b8154815290600101906020018083116101f757829003601f168201915b50505050508156`},
-			[]string{`[{"constant":false,"inputs":[{"name":"value","type":"string"}],"name":"SetField","outputs":[],"type":"function"},{"constant":true,"inputs":[],"name":"field","outputs":[{"name":"","type":"string"}],"type":"function"}]`},
-			`
+		[]string{`606060405261021c806100126000396000f3606060405260e060020a600035046323fcf32a81146100265780634f28bf0e1461007b575b005b6040805160206004803580820135601f8101849004840285018401909552848452610024949193602493909291840191908190840183828082843750949650505050505050620186a05a101561014e57610002565b6100db60008054604080516020601f600260001961010060018816150201909516949094049384018190048102820181019092528281529291908301828280156102145780601f106101e957610100808354040283529160200191610214565b60405180806020018281038252838181518152602001915080519060200190808383829060006004602084601f0104600302600f01f150905090810190601f16801561013b5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b505050565b8060006000509080519060200190828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106101b557805160ff19168380011785555b506101499291505b808211156101e557600081556001016101a1565b82800160010185558215610199579182015b828111156101995782518260005055916020019190600101906101c7565b5090565b820191906000526020600020905b8154815290600101906020018083116101f757829003601f168201915b50505050508156`},
+		[]string{`[{"constant":false,"inputs":[{"name":"value","type":"string"}],"name":"SetField","outputs":[],"type":"function"},{"stateMutability":"view","inputs":[],"name":"field","outputs":[{"name":"","type":"string"}],"type":"function"}]`},
+		`
 								"math/big"
 
 								"github.com/theQRL/go-zond/accounts/abi/bind"
@@ -709,7 +696,7 @@ var bindTests = []struct {
 								"github.com/theQRL/go-zond/core"
 								"github.com/theQRL/go-zond/crypto"
 							`,
-			`
+		`
 								// Generate a new random account and a funded simulator
 								key, _ := crypto.GenerateDilithiumKey()
 								auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
@@ -730,30 +717,28 @@ var bindTests = []struct {
 								}
 								sim.Commit()
 
-								if field, err := limiter.Field(nil); field != "automatic" {
+								if field, _ := limiter.Field(nil); field != "automatic" {
 									t.Fatalf("Field mismatch: have %v, want %v", field, "automatic")
 								}
 							`,
-			nil,
-			nil,
-			nil,
-			nil,
-		},
-	*/
-	// TODO(rgeraldes24): constant
-	/*
-		// Test that constant functions can be called from an (optional) specified address
-		{
-			`CallFrom`,
-			`
-						contract CallFrom {
-							function callFrom() constant returns(address) {
-								return msg.sender;
-							}
-						}
-					`, []string{`6060604052346000575b6086806100176000396000f300606060405263ffffffff60e060020a60003504166349f8e98281146022575b6000565b34600057602c6055565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b335b905600a165627a7a72305820aef6b7685c0fa24ba6027e4870404a57df701473fe4107741805c19f5138417c0029`},
-			[]string{`[{"constant":true,"inputs":[],"name":"callFrom","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"}]`},
-			`
+		nil,
+		nil,
+		nil,
+		nil,
+	},
+	// Test that constant functions can be called from an (optional) specified address
+	{
+		`CallFrom`,
+		`
+			contract CallFrom {
+				function callFrom() constant returns(address) {
+					return msg.sender;
+				}
+			}
+		`,
+		[]string{`6060604052346000575b6086806100176000396000f300606060405263ffffffff60e060020a60003504166349f8e98281146022575b6000565b34600057602c6055565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b335b905600a165627a7a72305820aef6b7685c0fa24ba6027e4870404a57df701473fe4107741805c19f5138417c0029`},
+		[]string{`[{"stateMutability":"view","inputs":[],"name":"callFrom","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"}]`},
+		`
 						"math/big"
 
 						"github.com/theQRL/go-zond/accounts/abi/bind"
@@ -762,9 +747,9 @@ var bindTests = []struct {
 						"github.com/theQRL/go-zond/core"
 						"github.com/theQRL/go-zond/crypto"
 					`,
-			`
+		`
 						// Generate a new random account and a funded simulator
-						key, _ := crypto.GenerateKey()
+						key, _ := crypto.GenerateDilithiumKey()
 						auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 						sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -791,12 +776,11 @@ var bindTests = []struct {
 							}
 						}
 					`,
-			nil,
-			nil,
-			nil,
-			nil,
-		},
-	*/
+		nil,
+		nil,
+		nil,
+		nil,
+	},
 	// Tests that methods and returns with underscores inside work correctly.
 	{
 		`Underscorer`,
@@ -1225,8 +1209,6 @@ var bindTests = []struct {
 	}, {
 		`Tuple`,
 		`
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion >=0.4.19 <0.6.0;
 					pragma experimental ABIEncoderV2;
 
 					contract Tuple {
@@ -1368,11 +1350,9 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-	// TODO(rgeraldes24): library address
-	/*
-		{
-			`UseLibrary`,
-			`
+	{
+		`UseLibrary`,
+		`
 						library Math {
 				    		function add(uint a, uint b) public view returns(uint) {
 				        		return a + b;
@@ -1385,68 +1365,64 @@ var bindTests = []struct {
 				    		}
 						}
 						`,
-			[]string{
-				// Bytecode for the UseLibrary contract
-				`608060405234801561001057600080fd5b5061011d806100206000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c8063771602f714602d575b600080fd5b604d60048036036040811015604157600080fd5b5080359060200135605f565b60408051918252519081900360200190f35b600073__$b98c933f0a6ececcd167bd4f9d3299b1a0$__63771602f784846040518363ffffffff1660e01b8152600401808381526020018281526020019250505060206040518083038186803b15801560b757600080fd5b505af415801560ca573d6000803e3d6000fd5b505050506040513d602081101560df57600080fd5b5051939250505056fea265627a7a72305820eb5c38f42445604cfa43d85e3aa5ecc48b0a646456c902dd48420ae7241d06f664736f6c63430005090032`,
-				// Bytecode for the Math contract
-				`60a3610024600b82828239805160001a607314601757fe5b30600052607381538281f3fe730000000000000000000000000000000000000000301460806040526004361060335760003560e01c8063771602f7146038575b600080fd5b605860048036036040811015604c57600080fd5b5080359060200135606a565b60408051918252519081900360200190f35b019056fea265627a7a723058206fc6c05f3078327f9c763edffdb5ab5f8bd212e293a1306c7d0ad05af3ad35f464736f6c63430005090032`,
-			},
-			[]string{
-				`[{"constant":true,"inputs":[{"name":"c","type":"uint256"},{"name":"d","type":"uint256"}],"name":"add","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]`,
-				`[{"constant":true,"inputs":[{"name":"a","type":"uint256"},{"name":"b","type":"uint256"}],"name":"add","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]`,
-			},
-			`
-							"math/big"
-
-							"github.com/theQRL/go-zond/accounts/abi/bind"
-							"github.com/theQRL/go-zond/accounts/abi/bind/backends"
-							"github.com/theQRL/go-zond/core"
-							"github.com/theQRL/go-zond/crypto"
-						`,
-			`
-							// Generate a new random account and a funded simulator
-							key, _ := crypto.GenerateDilithiumKey()
-							auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
-
-							sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
-							defer sim.Close()
-
-							//deploy the test contract
-							_, _, testContract, err := DeployUseLibrary(auth, sim)
-							if err != nil {
-								t.Fatalf("Failed to deploy test contract: %v", err)
-							}
-
-							// Finish deploy.
-							sim.Commit()
-
-							// Check that the library contract has been deployed
-							// by calling the contract's add function.
-							res, err := testContract.Add(&bind.CallOpts{
-								From: auth.From,
-								Pending: false,
-							}, big.NewInt(1), big.NewInt(2))
-							if err != nil {
-								t.Fatalf("Failed to call linked contract: %v", err)
-							}
-							if res.Cmp(big.NewInt(3)) != 0 {
-								t.Fatalf("Add did not return the correct result: %d != %d", res, 3)
-							}
-						`,
-			nil,
-			map[string]string{
-				"b98c933f0a6ececcd167bd4f9d3299b1a0": "Math",
-			},
-			nil,
-			[]string{"UseLibrary", "Math"},
+		[]string{
+			// Bytecode for the UseLibrary contract
+			`608060405234801561001057600080fd5b5061011d806100206000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c8063771602f714602d575b600080fd5b604d60048036036040811015604157600080fd5b5080359060200135605f565b60408051918252519081900360200190f35b600073__$b98c933f0a6ececcd167bd4f9d3299b1a0$__63771602f784846040518363ffffffff1660e01b8152600401808381526020018281526020019250505060206040518083038186803b15801560b757600080fd5b505af415801560ca573d6000803e3d6000fd5b505050506040513d602081101560df57600080fd5b5051939250505056fea265627a7a72305820eb5c38f42445604cfa43d85e3aa5ecc48b0a646456c902dd48420ae7241d06f664736f6c63430005090032`,
+			// Bytecode for the Math contract
+			`60a3610024600b82828239805160001a607314601757fe5b30600052607381538281f3fe730000000000000000000000000000000000000000301460806040526004361060335760003560e01c8063771602f7146038575b600080fd5b605860048036036040811015604c57600080fd5b5080359060200135606a565b60408051918252519081900360200190f35b019056fea265627a7a723058206fc6c05f3078327f9c763edffdb5ab5f8bd212e293a1306c7d0ad05af3ad35f464736f6c63430005090032`,
 		},
-	*/
+		[]string{
+			`[{"constant":true,"inputs":[{"name":"c","type":"uint256"},{"name":"d","type":"uint256"}],"name":"add","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]`,
+			`[{"constant":true,"inputs":[{"name":"a","type":"uint256"},{"name":"b","type":"uint256"}],"name":"add","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]`,
+		},
+		`
+			"math/big"
+
+			"github.com/theQRL/go-zond/accounts/abi/bind"
+			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
+			"github.com/theQRL/go-zond/core"
+			"github.com/theQRL/go-zond/crypto"
+		`,
+		`
+			// Generate a new random account and a funded simulator
+			key, _ := crypto.GenerateDilithiumKey()
+			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
+
+			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
+			defer sim.Close()
+
+			//deploy the test contract
+			_, _, testContract, err := DeployUseLibrary(auth, sim)
+			if err != nil {
+				t.Fatalf("Failed to deploy test contract: %v", err)
+			}
+
+			// Finish deploy.
+			sim.Commit()
+
+			// Check that the library contract has been deployed
+			// by calling the contract's add function.
+			res, err := testContract.Add(&bind.CallOpts{
+				From: auth.From,
+				Pending: false,
+			}, big.NewInt(1), big.NewInt(2))
+			if err != nil {
+				t.Fatalf("Failed to call linked contract: %v", err)
+			}
+			if res.Cmp(big.NewInt(3)) != 0 {
+				t.Fatalf("Add did not return the correct result: %d != %d", res, 3)
+			}
+		`,
+		nil,
+		map[string]string{
+			"b98c933f0a6ececcd167bd4f9d3299b1a0": "Math",
+		},
+		nil,
+		[]string{"UseLibrary", "Math"},
+	},
 	{
 		"Overload",
 		`
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion ^0.5.10;
-
 					contract overload {
 					  mapping(address => uint256) balances;
 
@@ -1540,9 +1516,6 @@ var bindTests = []struct {
 	{
 		"IdentifierCollision",
 		`
-						// TODO(now.youtrack.cloud/issue/TGZ-30)
-						pragma hyperion >=0.4.19 <0.6.0;
-
 						contract IdentifierCollision {
 							uint public _myVar;
 
@@ -1584,8 +1557,6 @@ var bindTests = []struct {
 	{
 		"MultiContracts",
 		`
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion ^0.5.11;
 					pragma experimental ABIEncoderV2;
 
 					library ExternalLib {
@@ -1668,8 +1639,6 @@ var bindTests = []struct {
 	{
 		`PureAndView`,
 		`
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion >=0.6.0;
 					contract PureAndView {
 						function PureFunc() public pure returns (uint) {
 							return 42;
@@ -1725,9 +1694,6 @@ var bindTests = []struct {
 	{
 		`NewFallbacks`,
 		`
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion >=0.6.0 <0.7.0;
-
 					contract NewFallbacks {
 						event Fallback(bytes data);
 						fallback() external {
@@ -1817,9 +1783,6 @@ var bindTests = []struct {
 	{
 		`NewSingleStructArgument`,
 		`
-					 // TODO(now.youtrack.cloud/issue/TGZ-30)
-					 pragma hyperion ^0.8.0;
-
 					 contract NewSingleStructArgument {
 						 struct MyStruct{
 							 uint256 a;
@@ -1885,14 +1848,10 @@ var bindTests = []struct {
 		nil,
 		nil,
 	},
-
 	// Test errors
 	{
 		`NewErrors`,
 		`
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion >0.8.4;
-
 					contract NewErrors {
 						error MyError(uint256);
 						error MyError1(uint256);
@@ -1945,9 +1904,6 @@ var bindTests = []struct {
 	{
 		name: `ConstructorWithStructParam`,
 		contract: `
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion >=0.8.0 <0.9.0;
-
 					contract ConstructorWithStructParam {
 						struct StructType {
 							uint256 field;
@@ -1990,9 +1946,6 @@ var bindTests = []struct {
 	{
 		name: `NameConflict`,
 		contract: `
-					// SPDX-License-Identifier: GPL-3.0
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion >=0.4.22 <0.9.0;
 					contract oracle {
 						struct request {
 							 bytes data;
@@ -2040,8 +1993,6 @@ var bindTests = []struct {
 		name: "RangeKeyword",
 		contract: `
 					// SPDX-License-Identifier: GPL-3.0
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion >=0.4.22 <0.9.0;
 					contract keywordcontract {
 						function functionWithKeywordParameter(range uint256) public pure {}
 					}
@@ -2078,8 +2029,6 @@ var bindTests = []struct {
 		name: "NumericMethodName",
 		contract: `
 					// SPDX-License-Identifier: GPL-3.0
-					// TODO(now.youtrack.cloud/issue/TGZ-30)
-					pragma hyperion >=0.4.22 <0.9.0;
 
 					contract NumericMethodName {
 						event _1TestEvent(address _param);
