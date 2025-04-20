@@ -601,7 +601,7 @@ func accountImport(c *cli.Context) error {
 		return err
 	}
 	ui.ShowInfo(fmt.Sprintf(`Key imported:
-  Address %v
+  Address %s
   Keystore file: %v
 
 The key is now encrypted; losing the password will result in permanently losing
