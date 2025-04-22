@@ -16,12 +16,12 @@
 
 package params
 
-// These are the multipliers for ether denominations.
-// Example: To get the wei value of an amount in 'gwei', use
+// These are the multipliers for ZND denominations.
+// Example: To get the planck value of an amount in 'gplanck', use
 //
-//	new(big.Int).Mul(value, big.NewInt(params.GWei))
+//	new(big.Int).Mul(value, big.NewInt(params.GPlanck))
 const (
-	Wei   = 1
-	GWei  = 1e9
-	Ether = 1e18
+	Planck  = 1
+	GPlanck = 1e9
+	ZND     = 1e18
 )

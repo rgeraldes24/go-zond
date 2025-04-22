@@ -175,7 +175,7 @@ func TestFilters(t *testing.T) {
 		gspec = &core.Genesis{
 			Config: params.TestChainConfig,
 			Alloc: core.GenesisAlloc{
-				addr:      {Balance: big.NewInt(0).Mul(big.NewInt(100), big.NewInt(params.Ether))},
+				addr:      {Balance: big.NewInt(0).Mul(big.NewInt(100), big.NewInt(params.ZND))},
 				contract:  {Balance: big.NewInt(0), Code: bytecode},
 				contract2: {Balance: big.NewInt(0), Code: bytecode},
 			},

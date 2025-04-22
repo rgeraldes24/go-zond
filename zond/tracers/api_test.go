@@ -193,17 +193,17 @@ func TestTraceCall(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: core.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[1].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[2].addr: {Balance: big.NewInt(params.Ether)},
+			accounts[0].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[1].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[2].addr: {Balance: big.NewInt(params.ZND)},
 		},
 	}
 	genBlocks := 10
 	signer := types.ShanghaiSigner{ChainId: big.NewInt(1)}
 	backend := newTestBackend(t, genBlocks, genesis, func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
-		//    value: 1000 wei
-		//    fee:   0 wei
+		//    value: 1000 planck
+		//    fee:   0 planck
 		tx := types.NewTx(&types.DynamicFeeTx{
 			Nonce:     uint64(i),
 			To:        &accounts[1].addr,
@@ -336,16 +336,16 @@ func TestTraceTransaction(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: core.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[1].addr: {Balance: big.NewInt(params.Ether)},
+			accounts[0].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[1].addr: {Balance: big.NewInt(params.ZND)},
 		},
 	}
 	target := common.Hash{}
 	signer := types.ShanghaiSigner{ChainId: big.NewInt(1)}
 	backend := newTestBackend(t, 1, genesis, func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
-		//    value: 1000 wei
-		//    fee:   0 wei
+		//    value: 1000 planck
+		//    fee:   0 planck
 		tx := types.NewTx(&types.DynamicFeeTx{
 			Nonce:     uint64(i),
 			To:        &accounts[1].addr,
@@ -392,9 +392,9 @@ func TestTraceBlock(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: core.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[1].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[2].addr: {Balance: big.NewInt(params.Ether)},
+			accounts[0].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[1].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[2].addr: {Balance: big.NewInt(params.ZND)},
 		},
 	}
 	genBlocks := 10
@@ -402,8 +402,8 @@ func TestTraceBlock(t *testing.T) {
 	var txHash common.Hash
 	backend := newTestBackend(t, genBlocks, genesis, func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
-		//    value: 1000 wei
-		//    fee:   0 wei
+		//    value: 1000 planck
+		//    fee:   0 planck
 		tx := types.NewTx(&types.DynamicFeeTx{
 			Nonce:     uint64(i),
 			To:        &accounts[1].addr,
@@ -483,9 +483,9 @@ func TestTracingWithOverrides(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: core.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[1].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[2].addr: {Balance: big.NewInt(params.Ether)},
+			accounts[0].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[1].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[2].addr: {Balance: big.NewInt(params.ZND)},
 			// An account with existing storage
 			storageAccount: {
 				Balance: new(big.Int),
@@ -500,8 +500,8 @@ func TestTracingWithOverrides(t *testing.T) {
 	signer := types.ShanghaiSigner{ChainId: big.NewInt(1)}
 	backend := newTestBackend(t, genBlocks, genesis, func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
-		//    value: 1000 wei
-		//    fee:   0 wei
+		//    value: 1000 planck
+		//    fee:   0 planck
 		tx := types.NewTx(&types.DynamicFeeTx{
 			Nonce:     uint64(i),
 			To:        &accounts[1].addr,
@@ -538,7 +538,7 @@ func TestTracingWithOverrides(t *testing.T) {
 			},
 			config: &TraceCallConfig{
 				StateOverrides: &zondapi.StateOverride{
-					randomAccounts[0].addr: zondapi.OverrideAccount{Balance: newRPCBalance(new(big.Int).Mul(big.NewInt(1), big.NewInt(params.Ether)))},
+					randomAccounts[0].addr: zondapi.OverrideAccount{Balance: newRPCBalance(new(big.Int).Mul(big.NewInt(1), big.NewInt(params.ZND)))},
 				},
 			},
 			want: `{"gas":21000,"failed":false,"returnValue":""}`,
@@ -853,9 +853,9 @@ func TestTraceChain(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: core.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[1].addr: {Balance: big.NewInt(params.Ether)},
-			accounts[2].addr: {Balance: big.NewInt(params.Ether)},
+			accounts[0].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[1].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[2].addr: {Balance: big.NewInt(params.ZND)},
 		},
 	}
 	genBlocks := 50
@@ -868,8 +868,8 @@ func TestTraceChain(t *testing.T) {
 	)
 	backend := newTestBackend(t, genBlocks, genesis, func(i int, b *core.BlockGen) {
 		// Transfer from account[0] to account[1]
-		//    value: 1000 wei
-		//    fee:   0 wei
+		//    value: 1000 planck
+		//    fee:   0 planck
 		for j := 0; j < i+1; j++ {
 			tx := types.NewTx(&types.DynamicFeeTx{
 				Nonce:     nonce,
