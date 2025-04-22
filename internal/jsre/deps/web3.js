@@ -2113,12 +2113,12 @@ var toHex = function (val) {
  * Returns value of unit in Planck
  *
  * @method getValueOfUnit
- * @param {String} unit the unit to convert to, default ether
+ * @param {String} unit the unit to convert to, default znd
  * @returns {BigNumber} value of the unit (in Planck)
  * @throws error if the unit is not correct:w
  */
 var getValueOfUnit = function (unit) {
-    unit = unit ? unit.toLowerCase() : 'ether';
+    unit = unit ? unit.toLowerCase() : 'znd';
     var unitValue = unitMap[unit];
     if (unitValue === undefined) {
         throw new Error('This unit doesn\'t exists, please use the one of the following units' + JSON.stringify(unitMap, null, 2));
@@ -2144,7 +2144,7 @@ var getValueOfUnit = function (unit) {
  *
  * @method fromPlanck
  * @param {Number|String} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert to, default ether
+ * @param {String} unit the unit to convert to, default znd
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
 var fromPlanck = function(number, unit) {
@@ -2171,7 +2171,7 @@ var fromPlanck = function(number, unit) {
  *
  * @method toPlanck
  * @param {Number|String|BigNumber} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert from, default ether
+ * @param {String} unit the unit to convert from, default znd
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
 var toPlanck = function(number, unit) {
