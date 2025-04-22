@@ -60,7 +60,7 @@ var Defaults = Config{
 	RPCGasCap:          50000000,
 	RPCZVMTimeout:      5 * time.Second,
 	GPO:                FullNodeGPO,
-	RPCTxFeeCap:        1, // 1 ZND
+	RPCTxFeeCap:        1, // 1 znd
 }
 
 //go:generate go run github.com/fjl/gencodec -type Config -formats toml -out gen_config.go
@@ -134,7 +134,7 @@ type Config struct {
 	RPCZVMTimeout time.Duration
 
 	// RPCTxFeeCap is the global transaction fee(price * gaslimit) cap for
-	// send-transaction variants. The unit is ZND.
+	// send-transaction variants. The unit is znd.
 	RPCTxFeeCap float64
 }
 

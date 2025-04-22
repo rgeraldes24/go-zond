@@ -352,7 +352,7 @@ const ExampleTxWindow = `
 	// Time window: 1 week
 	var window = 1000* 3600*24*7;
 
-	// Limit : 1 ZND
+	// Limit : 1 znd
 	var limit = new BigNumber("1e18");
 
 	function isLimitOk(transaction){

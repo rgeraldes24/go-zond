@@ -16,7 +16,7 @@
 
 package params
 
-// These are the multipliers for ZND denominations.
+// These are the multipliers for znd denominations.
 // Example: To get the planck value of an amount in 'gplanck', use
 //
 //	new(big.Int).Mul(value, big.NewInt(params.GPlanck))
