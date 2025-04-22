@@ -2125,7 +2125,7 @@ var getValueOfUnit = function (unit) {
 };
 
 /**
- * Takes a number of planck and converts it to any other ZND unit.
+ * Takes a number of planck and converts it to any other znd unit.
  *
  * Possible units are:
  *   SI Short   Other
@@ -2151,7 +2151,6 @@ var fromPlanck = function(number, unit) {
     return isBigNumber(number) ? returnValue : returnValue.toString(10);
 };
 
-// TODO(rgeraldes24)
 /**
  * Takes a number of a unit and converts it to planck.
  *
@@ -3146,7 +3145,7 @@ module.exports = {
  */
 
 var utils = require('../utils/utils');
-var coder = require('../hyperion/coder'); // TODO(rgeraldes24)
+var coder = require('../hyperion/coder');
 var formatters = require('./formatters');
 var sha3 = require('../utils/sha3');
 var Filter = require('./filter');
