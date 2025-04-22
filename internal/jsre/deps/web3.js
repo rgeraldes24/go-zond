@@ -1766,13 +1766,8 @@ var ZOND_UNITS = [
     'kplanck',
     'Mplanck',
     'Gplanck',
-    'szabo',
-    'finney',
-    'femtoether',
-    'picoether',
-    'nanoether',
-    'microether',
-    'milliether',
+    'Tplanck',
+    'Pplanck',
     'nano',
     'micro',
     'milli',
@@ -1794,7 +1789,7 @@ var ZOND_UNITS = [
 module.exports = {
     ZOND_PADDING: 32,
     ZOND_SIGNATURE_LENGTH: 4,
-    ZOND_UNITS: ZND_UNITS,
+    ZOND_UNITS: ZOND_UNITS,
     ZOND_BIGNUMBER_ROUNDING_MODE: { ROUNDING_MODE: BigNumber.ROUND_DOWN },
     ZOND_POLLING_TIMEOUT: 1000/2,
     defaultBlock: 'latest',
@@ -1884,33 +1879,25 @@ var sha3 = require('./sha3.js');
 var utf8 = require('utf8');
 
 var unitMap = {
-    'noether':      '0',
-    'wei':          '1',
-    'kwei':         '1000',
-    'Kwei':         '1000',
-    'babbage':      '1000',
-    'femtoether':   '1000',
-    'mwei':         '1000000',
-    'Mwei':         '1000000',
-    'lovelace':     '1000000',
-    'picoether':    '1000000',
-    'gwei':         '1000000000',
-    'Gwei':         '1000000000',
-    'shannon':      '1000000000',
-    'nanoether':    '1000000000',
-    'nano':         '1000000000',
-    'szabo':        '1000000000000',
-    'microether':   '1000000000000',
-    'micro':        '1000000000000',
-    'finney':       '1000000000000000',
-    'milliether':    '1000000000000000',
-    'milli':         '1000000000000000',
-    'ether':        '1000000000000000000',
-    'kether':       '1000000000000000000000',
-    'grand':        '1000000000000000000000',
-    'mether':       '1000000000000000000000000',
-    'gether':       '1000000000000000000000000000',
-    'tether':       '1000000000000000000000000000000'
+    'noznd':   '0',
+    'planck':  '1',
+    'kplanck': '1000',
+    'Kplanck': '1000',
+    'mplanck': '1000000',
+    'Mplanck': '1000000',
+    'gplanck': '1000000000',
+    'Gplanck': '1000000000',
+    'nano':    '1000000000',
+    'tplanck': '1000000000000',
+    'micro':   '1000000000000',
+    'pplanck': '1000000000000000',
+    'milli':   '1000000000000000',
+    'znd':     '1000000000000000000',
+    'kznd':    '1000000000000000000000',
+    'grand':   '1000000000000000000000',
+    'mznd':    '1000000000000000000000000',
+    'gznd':    '1000000000000000000000000000',
+    'tznd':    '1000000000000000000000000000000'
 };
 
 /**
@@ -2121,11 +2108,11 @@ var toHex = function (val) {
 };
 
 /**
- * Returns value of unit in Wei
+ * Returns value of unit in Planck
  *
  * @method getValueOfUnit
  * @param {String} unit the unit to convert to, default ether
- * @returns {BigNumber} value of the unit (in Wei)
+ * @returns {BigNumber} value of the unit (in Planck)
  * @throws error if the unit is not correct:w
  */
 var getValueOfUnit = function (unit) {
@@ -2141,14 +2128,14 @@ var getValueOfUnit = function (unit) {
  * Takes a number of planck and converts it to any other ZND unit.
  *
  * Possible units are:
- *   SI Short   SI Full        Effigy       Other
- * - kplanck    femtoether     babbage
- * - mplanck    picoether      lovelace
- * - gplanck    nanoether      shannon      nano
- * - --         microether     szabo        micro
- * - --         milliether     finney       milli
- * - ZND        --             --
- * - kZND                      --           grand
+ *   SI Short   Other
+ * - kplanck
+ * - mplanck
+ * - gplanck    nano
+ * - tplanck    micro
+ * - pplanck    milli
+ * - ZND
+ * - kZND       grand
  * - mZND
  * - gZND
  * - tZND
@@ -2169,15 +2156,14 @@ var fromPlanck = function(number, unit) {
  * Takes a number of a unit and converts it to planck.
  *
  * Possible units are:
- *   SI Short   SI Full        Effigy       Other
- * - kplanck    femtoether     babbage
- * - mplanck    picoether      lovelace
- * - gplanck    nanoether      shannon      nano
- * - --         microether     szabo        micro
- * - --         microether     szabo        micro
- * - --         milliether     finney       milli
- * - ZND        --             --
- * - kZND                      --           grand
+ *   SI Short   Other
+ * - kplanck
+ * - mplanck
+ * - gplanck    nano
+ * - tplanck    micro
+ * - pplanck    milli
+ * - ZND
+ * - kZND       grand
  * - mZND
  * - gZND
  * - tZND

@@ -223,7 +223,7 @@ Response
      - `gas` [number]: maximum amount of gas to burn
      - `maxFeePerGas` [number]: max fee per gas
      - `maxPriorityFeePerGas` [number]: max priority fee per gas
-     - `value` [number:optional]: amount of Wei to send with the transaction
+     - `value` [number:optional]: amount of Planck to send with the transaction
      - `data` [data:optional]:  input data
      - `nonce` [number]: account nonce
   1. method signature [string:optional]
