@@ -100,7 +100,7 @@ func (payload *Payload) update(r *newPayloadResult, elapsed time.Duration) {
 		payload.full = r.block
 		payload.fullFees = r.fees
 
-		feesInEther := new(big.Float).Quo(new(big.Float).SetInt(r.fees), big.NewFloat(params.Ether))
+		feesInZond := new(big.Float).Quo(new(big.Float).SetInt(r.fees), big.NewFloat(params.Zond))
 		log.Info("Updated payload",
 			"id", payload.id,
 			"number", r.block.NumberU64(),
@@ -108,7 +108,7 @@ func (payload *Payload) update(r *newPayloadResult, elapsed time.Duration) {
 			"txs", len(r.block.Transactions()),
 			"withdrawals", len(r.block.Withdrawals()),
 			"gas", r.block.GasUsed(),
-			"fees", feesInEther,
+			"fees", feesInZond,
 			"root", r.block.Root(),
 			"elapsed", common.PrettyDuration(elapsed),
 		)

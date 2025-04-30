@@ -972,8 +972,8 @@ type CallData struct {
 	From                 *common.Address // The Zond address the call is from.
 	To                   *common.Address // The Zond address the call is to.
 	Gas                  *Long           // The amount of gas provided for the call.
-	MaxFeePerGas         *hexutil.Big    // The max price of each unit of gas, in wei.
-	MaxPriorityFeePerGas *hexutil.Big    // The max tip of each unit of gas, in wei.
+	MaxFeePerGas         *hexutil.Big    // The max price of each unit of gas, in planck.
+	MaxPriorityFeePerGas *hexutil.Big    // The max tip of each unit of gas, in planck.
 	Value                *hexutil.Big    // The value sent along with the call.
 	Data                 *hexutil.Bytes  // Any data sent with the call.
 }

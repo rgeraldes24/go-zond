@@ -142,7 +142,7 @@ type CallMsg struct {
 	Gas       uint64          // if 0, the call executes with near-infinite gas
 	GasFeeCap *big.Int        // fee cap per gas.
 	GasTipCap *big.Int        // tip per gas.
-	Value     *big.Int        // amount of wei sent along with the call
+	Value     *big.Int        // amount of planck sent along with the call
 	Data      []byte          // input data, usually an ABI-encoded contract method invocation
 
 	AccessList types.AccessList // access list.

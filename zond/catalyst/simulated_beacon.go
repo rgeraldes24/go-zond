@@ -258,7 +258,7 @@ func (c *SimulatedBeacon) Rollback() {
 	c.zond.TxPool().SetGasTip(maxUint256)
 	// Set the gas tip back to accept new transactions
 	// TODO (Marius van der Wijden): set gas tip to parameter passed by config
-	c.zond.TxPool().SetGasTip(big.NewInt(params.GWei))
+	c.zond.TxPool().SetGasTip(big.NewInt(params.GPlanck))
 }
 
 // Fork sets the head to the provided hash.

@@ -42,7 +42,7 @@ const schema string = `
     type Account {
         # Address is the address owning the account.
         address: Address!
-        # Balance is the balance of the account, in wei.
+        # Balance is the balance of the account, in planck.
         balance: BigInt!
         # TransactionCount is the number of transactions sent from this account,
         # or in the case of a contract, the number of contracts created. Otherwise
@@ -83,7 +83,7 @@ const schema string = `
         validator: Long!
         # Recipient address of the withdrawn amount.
         address: Address!
-        # Amount is the withdrawal value in Gwei.
+        # Amount is the withdrawal value in Gplanck.
         amount: Long!
     }
 
@@ -102,11 +102,11 @@ const schema string = `
         # To is the account the transaction was sent to. This is null for
         # contract-creating transactions.
         to(block: Long): Account
-        # Value is the value, in wei, sent along with this transaction.
+        # Value is the value, in planck, sent along with this transaction.
         value: BigInt!
-        # MaxFeePerGas is the maximum fee per gas offered to include a transaction, in wei.
+        # MaxFeePerGas is the maximum fee per gas offered to include a transaction, in planck.
         maxFeePerGas: BigInt
-        # MaxPriorityFeePerGas is the maximum miner tip per gas offered to include a transaction, in wei.
+        # MaxPriorityFeePerGas is the maximum miner tip per gas offered to include a transaction, in planck.
         maxPriorityFeePerGas: BigInt
         # EffectiveTip is the actual amount of reward going to miner after considering the max fee cap.
         effectiveTip: BigInt
@@ -246,11 +246,11 @@ const schema string = `
         to: Address
         # Gas is the amount of gas sent with the call.
         gas: Long
-        # MaxFeePerGas is the maximum fee per gas offered, in wei.
+        # MaxFeePerGas is the maximum fee per gas offered, in planck.
         maxFeePerGas: BigInt
-        # MaxPriorityFeePerGas is the maximum miner tip per gas offered, in wei.
+        # MaxPriorityFeePerGas is the maximum miner tip per gas offered, in planck.
         maxPriorityFeePerGas: BigInt
-        # Value is the value, in wei, sent along with the call.
+        # Value is the value, in planck, sent along with the call.
         value: BigInt
         # Data is the data sent to the callee.
         data: Bytes

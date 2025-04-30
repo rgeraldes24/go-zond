@@ -926,7 +926,7 @@ var HyperionParam = require('./param');
  * @returns {HyperionParam}
  */
 var formatInputInt = function (value) {
-    BigNumber.config(c.ETH_BIGNUMBER_ROUNDING_MODE);
+    BigNumber.config(c.ZOND_BIGNUMBER_ROUNDING_MODE);
     var result = utils.padLeft(utils.toTwosComplement(value).toString(16), 64);
     return new HyperionParam(result);
 };
@@ -1758,45 +1758,40 @@ if (typeof XMLHttpRequest === 'undefined') {
  */
 
 
-/// required to define ETH_BIGNUMBER_ROUNDING_MODE
+/// required to define ZOND_BIGNUMBER_ROUNDING_MODE
 var BigNumber = require('bignumber.js');
 
-var ETH_UNITS = [
-    'wei',
-    'kwei',
-    'Mwei',
-    'Gwei',
-    'szabo',
-    'finney',
-    'femtoether',
-    'picoether',
-    'nanoether',
-    'microether',
-    'milliether',
+var ZOND_UNITS = [
+    'planck',
+    'kplanck',
+    'Mplanck',
+    'Gplanck',
+    'Tplanck',
+    'Pplanck',
     'nano',
     'micro',
     'milli',
-    'ether',
+    'zond',
     'grand',
-    'Mether',
-    'Gether',
-    'Tether',
-    'Pether',
-    'Eether',
-    'Zether',
-    'Yether',
-    'Nether',
-    'Dether',
-    'Vether',
-    'Uether'
+    'Mzond',
+    'Gzond',
+    'Tzond',
+    'Pzond',
+    'Ezond',
+    'Zzond',
+    'Yzond',
+    'Nzond',
+    'Dzond',
+    'Vzond',
+    'Uzond'
 ];
 
 module.exports = {
-    ETH_PADDING: 32,
-    ETH_SIGNATURE_LENGTH: 4,
-    ETH_UNITS: ETH_UNITS,
-    ETH_BIGNUMBER_ROUNDING_MODE: { ROUNDING_MODE: BigNumber.ROUND_DOWN },
-    ETH_POLLING_TIMEOUT: 1000/2,
+    ZOND_PADDING: 32,
+    ZOND_SIGNATURE_LENGTH: 4,
+    ZOND_UNITS: ZOND_UNITS,
+    ZOND_BIGNUMBER_ROUNDING_MODE: { ROUNDING_MODE: BigNumber.ROUND_DOWN },
+    ZOND_POLLING_TIMEOUT: 1000/2,
     defaultBlock: 'latest',
     defaultAccount: undefined
 };
@@ -1884,33 +1879,27 @@ var sha3 = require('./sha3.js');
 var utf8 = require('utf8');
 
 var unitMap = {
-    'noether':      '0',
-    'wei':          '1',
-    'kwei':         '1000',
-    'Kwei':         '1000',
-    'babbage':      '1000',
-    'femtoether':   '1000',
-    'mwei':         '1000000',
-    'Mwei':         '1000000',
-    'lovelace':     '1000000',
-    'picoether':    '1000000',
-    'gwei':         '1000000000',
-    'Gwei':         '1000000000',
-    'shannon':      '1000000000',
-    'nanoether':    '1000000000',
-    'nano':         '1000000000',
-    'szabo':        '1000000000000',
-    'microether':   '1000000000000',
-    'micro':        '1000000000000',
-    'finney':       '1000000000000000',
-    'milliether':    '1000000000000000',
-    'milli':         '1000000000000000',
-    'ether':        '1000000000000000000',
-    'kether':       '1000000000000000000000',
-    'grand':        '1000000000000000000000',
-    'mether':       '1000000000000000000000000',
-    'gether':       '1000000000000000000000000000',
-    'tether':       '1000000000000000000000000000000'
+    'nozond':   '0',
+    'planck':  '1',
+    'kplanck': '1000',
+    'Kplanck': '1000',
+    'mplanck': '1000000',
+    'Mplanck': '1000000',
+    'gplanck': '1000000000',
+    'Gplanck': '1000000000',
+    'nano':    '1000000000',
+    'tplanck': '1000000000000',
+    'Tplanck': '1000000000000',
+    'micro':   '1000000000000',
+    'pplanck': '1000000000000000',
+    'Pplanck': '1000000000000000',
+    'milli':   '1000000000000000',
+    'zond':     '1000000000000000000',
+    'kzond':    '1000000000000000000000',
+    'grand':   '1000000000000000000000',
+    'mzond':    '1000000000000000000000000',
+    'gzond':    '1000000000000000000000000000',
+    'tzond':    '1000000000000000000000000000000'
 };
 
 /**
@@ -2121,15 +2110,15 @@ var toHex = function (val) {
 };
 
 /**
- * Returns value of unit in Wei
+ * Returns value of unit in Planck
  *
  * @method getValueOfUnit
- * @param {String} unit the unit to convert to, default ether
- * @returns {BigNumber} value of the unit (in Wei)
+ * @param {String} unit the unit to convert to, default zond
+ * @returns {BigNumber} value of the unit (in Planck)
  * @throws error if the unit is not correct:w
  */
 var getValueOfUnit = function (unit) {
-    unit = unit ? unit.toLowerCase() : 'ether';
+    unit = unit ? unit.toLowerCase() : 'zond';
     var unitValue = unitMap[unit];
     if (unitValue === undefined) {
         throw new Error('This unit doesn\'t exists, please use the one of the following units' + JSON.stringify(unitMap, null, 2));
@@ -2138,55 +2127,54 @@ var getValueOfUnit = function (unit) {
 };
 
 /**
- * Takes a number of wei and converts it to any other ether unit.
+ * Takes a number of planck and converts it to any other zond unit.
  *
  * Possible units are:
- *   SI Short   SI Full        Effigy       Other
- * - kwei       femtoether     babbage
- * - mwei       picoether      lovelace
- * - gwei       nanoether      shannon      nano
- * - --         microether     szabo        micro
- * - --         milliether     finney       milli
- * - ether      --             --
- * - kether                    --           grand
- * - mether
- * - gether
- * - tether
+ *   SI Short   Other
+ * - kplanck
+ * - mplanck
+ * - gplanck    nano
+ * - tplanck    micro
+ * - pplanck    milli
+ * - zond
+ * - kzond      grand
+ * - mzond
+ * - gzond
+ * - tzond
  *
- * @method fromWei
+ * @method fromPlanck
  * @param {Number|String} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert to, default ether
+ * @param {String} unit the unit to convert to, default zond
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
-var fromWei = function(number, unit) {
+var fromPlanck = function(number, unit) {
     var returnValue = toBigNumber(number).dividedBy(getValueOfUnit(unit));
 
     return isBigNumber(number) ? returnValue : returnValue.toString(10);
 };
 
 /**
- * Takes a number of a unit and converts it to wei.
+ * Takes a number of a unit and converts it to planck.
  *
  * Possible units are:
- *   SI Short   SI Full        Effigy       Other
- * - kwei       femtoether     babbage
- * - mwei       picoether      lovelace
- * - gwei       nanoether      shannon      nano
- * - --         microether     szabo        micro
- * - --         microether     szabo        micro
- * - --         milliether     finney       milli
- * - ether      --             --
- * - kether                    --           grand
- * - mether
- * - gether
- * - tether
+ *   SI Short   Other
+ * - kplanck
+ * - mplanck
+ * - gplanck    nano
+ * - tplanck    micro
+ * - pplanck    milli
+ * - zond
+ * - kzond      grand
+ * - mzond
+ * - gzond
+ * - tzond
  *
- * @method toWei
+ * @method toPlanck
  * @param {Number|String|BigNumber} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert from, default ether
+ * @param {String} unit the unit to convert from, default zond
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
-var toWei = function(number, unit) {
+var toPlanck = function(number, unit) {
     var returnValue = toBigNumber(number).times(getValueOfUnit(unit));
 
     return isBigNumber(number) ? returnValue : returnValue.toString(10);
@@ -2452,8 +2440,8 @@ module.exports = {
     transformToFullName: transformToFullName,
     extractDisplayName: extractDisplayName,
     extractTypeName: extractTypeName,
-    toWei: toWei,
-    fromWei: fromWei,
+    toPlanck: toPlanck,
+    fromPlanck: fromPlanck,
     toBigNumber: toBigNumber,
     toTwosComplement: toTwosComplement,
     toAddress: toAddress,
@@ -2568,8 +2556,8 @@ Web3.prototype.fromUtf8 = utils.fromUtf8;
 Web3.prototype.toDecimal = utils.toDecimal;
 Web3.prototype.fromDecimal = utils.fromDecimal;
 Web3.prototype.toBigNumber = utils.toBigNumber;
-Web3.prototype.toWei = utils.toWei;
-Web3.prototype.fromWei = utils.fromWei;
+Web3.prototype.toPlanck = utils.toPlanck;
+Web3.prototype.fromPlanck = utils.fromPlanck;
 Web3.prototype.isAddress = utils.isAddress;
 Web3.prototype.isChecksumAddress = utils.isChecksumAddress;
 Web3.prototype.toChecksumAddress = utils.toChecksumAddress;
@@ -3159,7 +3147,7 @@ module.exports = {
  */
 
 var utils = require('../utils/utils');
-var coder = require('../hyperion/coder'); // TODO(rgeraldes24)
+var coder = require('../hyperion/coder');
 var formatters = require('./formatters');
 var sha3 = require('../utils/sha3');
 var Filter = require('./filter');
@@ -5997,7 +5985,7 @@ RequestManager.prototype.reset = function (keepIsSyncing) {
  */
 RequestManager.prototype.poll = function () {
     /*jshint maxcomplexity: 6 */
-    this.timeout = setTimeout(this.poll.bind(this), c.ETH_POLLING_TIMEOUT);
+    this.timeout = setTimeout(this.poll.bind(this), c.ZOND_POLLING_TIMEOUT);
 
     if (Object.keys(this.polls).length === 0) {
         return;

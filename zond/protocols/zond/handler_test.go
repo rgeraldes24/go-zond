@@ -417,7 +417,7 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 		to2 := common.Address(acc2Addr)
 		switch i {
 		case 0:
-			// In block 1, the test bank sends account #1 some ether.
+			// In block 1, the test bank sends account #1 some zond.
 			tx := types.NewTx(&types.DynamicFeeTx{
 				Nonce:     block.TxNonce(testAddr),
 				To:        &to1,
@@ -429,7 +429,7 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 			signedTx, _ := types.SignTx(tx, signer, testKey)
 			block.AddTx(signedTx)
 		case 1:
-			// In block 2, the test bank sends some more ether to account #1.
+			// In block 2, the test bank sends some more zond to account #1.
 			// acc1Addr passes it on to account #2.
 			tx1 := types.NewTx(&types.DynamicFeeTx{
 				Nonce:     block.TxNonce(testAddr),

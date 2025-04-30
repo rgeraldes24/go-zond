@@ -224,8 +224,8 @@ func (pre *Prestate) Apply(vmConfig vm.Config, chainConfig *params.ChainConfig,
 	}
 	// Apply withdrawals
 	for _, w := range pre.Env.Withdrawals {
-		// Amount is in gwei, turn into wei
-		amount := new(big.Int).Mul(new(big.Int).SetUint64(w.Amount), big.NewInt(params.GWei))
+		// Amount is in gplanck, turn into planck
+		amount := new(big.Int).Mul(new(big.Int).SetUint64(w.Amount), big.NewInt(params.GPlanck))
 		statedb.AddBalance(w.Address, amount)
 	}
 	// Commit block
