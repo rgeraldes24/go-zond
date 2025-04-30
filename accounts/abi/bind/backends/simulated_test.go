@@ -480,7 +480,7 @@ func TestEstimateGas(t *testing.T) {
 	var addr common.Address = key.GetAddress()
 	opts, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
-	sim := NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(params.ZND)}}, 10000000)
+	sim := NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(params.Zond)}}, 10000000)
 	defer sim.Close()
 
 	parsed, _ := abi.JSON(strings.NewReader(contractAbi))
@@ -585,7 +585,7 @@ func TestEstimateGasWithPrice(t *testing.T) {
 	key, _ := crypto.GenerateKey()
 	addr := crypto.PubkeyToAddress(key.PublicKey)
 
-	sim := NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(params.ZND*2 + 2e17)}}, 10000000)
+	sim := NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(params.Zond*2 + 2e17)}}, 10000000)
 	defer sim.Close()
 
 	recipient, _ := common.NewAddressFromString("Z00000000000000000000000000000000deadbeef")
@@ -617,8 +617,8 @@ func TestEstimateGasWithPrice(t *testing.T) {
 			From:      addr,
 			To:        &recipient,
 			Gas:       0,
-			GasFeeCap: big.NewInt(1e14), // gascost = 2.1znd
-			Value:     big.NewInt(1e17), // the remaining balance for fee is 2.1znd
+			GasFeeCap: big.NewInt(1e14), // gascost = 2.1zond
+			Value:     big.NewInt(1e17), // the remaining balance for fee is 2.1zond
 			Data:      nil,
 		}, 21000, nil},
 
@@ -626,18 +626,18 @@ func TestEstimateGasWithPrice(t *testing.T) {
 			From:      addr,
 			To:        &recipient,
 			Gas:       0,
-			GasFeeCap: big.NewInt(2e14), // gascost = 4.2znd,
+			GasFeeCap: big.NewInt(2e14), // gascost = 4.2zond,
 			Value:     big.NewInt(100000000000),
 			Data:      nil,
-		}, 21000, errors.New("gas required exceeds allowance (10999)")}, // 10999=(2.2znd-1000planck)/(2e14)
+		}, 21000, errors.New("gas required exceeds allowance (10999)")}, // 10999=(2.2zond-1000planck)/(2e14)
 
 		{"EstimateEIP1559WithHighFees", zond.CallMsg{
 			From:      addr,
 			To:        &addr,
 			Gas:       0,
-			GasFeeCap: big.NewInt(1e14), // maxgascost = 2.1znd
+			GasFeeCap: big.NewInt(1e14), // maxgascost = 2.1zond
 			GasTipCap: big.NewInt(1),
-			Value:     big.NewInt(1e17), // the remaining balance for fee is 2.1znd
+			Value:     big.NewInt(1e17), // the remaining balance for fee is 2.1zond
 			Data:      nil,
 		}, params.TxGas, nil},
 
@@ -645,11 +645,11 @@ func TestEstimateGasWithPrice(t *testing.T) {
 			From:      addr,
 			To:        &addr,
 			Gas:       0,
-			GasFeeCap: big.NewInt(1e14), // maxgascost = 2.1znd
+			GasFeeCap: big.NewInt(1e14), // maxgascost = 2.1zond
 			GasTipCap: big.NewInt(1),
-			Value:     big.NewInt(1e17 + 1), // the remaining balance for fee is 2.1znd
+			Value:     big.NewInt(1e17 + 1), // the remaining balance for fee is 2.1zond
 			Data:      nil,
-		}, params.TxGas, errors.New("gas required exceeds allowance (20999)")}, // 20999=(2.2znd-0.1znd-1planck)/(1e14)
+		}, params.TxGas, errors.New("gas required exceeds allowance (20999)")}, // 20999=(2.2zond-0.1zond-1planck)/(1e14)
 	}
 	for i, c := range cases {
 		got, err := sim.EstimateGas(context.Background(), c.message)

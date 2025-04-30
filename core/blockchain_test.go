@@ -2324,7 +2324,7 @@ func BenchmarkBlockChain_1x1000Executions(b *testing.B) {
 // TestInitThenFailCreateContract tests a pretty notorious case that happened
 // on mainnet over blocks 7338108, 7338110 and 7338115.
 //   - Block 7338108: address Ze771789f5cccac282f23bb7add5690e1f6ca467c is initiated
-//     with 0.001 znd (thus created but no code)
+//     with 0.001 zond (thus created but no code)
 //   - Block 7338110: a CREATE2 is attempted. The CREATE2 would deploy code on
 //     the same address Ze771789f5cccac282f23bb7add5690e1f6ca467c. However, the
 //     deployment fails due to OOG during initcode execution
@@ -2555,7 +2555,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 		key2, _ = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		addr1   = key1.GetAddress()
 		addr2   = key2.GetAddress()
-		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.ZND))
+		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Zond))
 		config  = *params.AllBeaconProtocolChanges
 		gspec   = &Genesis{
 			Config: &config,
@@ -3117,7 +3117,7 @@ func TestEIP3651(t *testing.T) {
 		key2, _ = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		addr1   = key1.GetAddress()
 		addr2   = key2.GetAddress()
-		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.ZND))
+		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Zond))
 		config  = *params.AllBeaconProtocolChanges
 		gspec   = &Genesis{
 			Config: &config,

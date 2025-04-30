@@ -1771,19 +1771,19 @@ var ZOND_UNITS = [
     'nano',
     'micro',
     'milli',
-    'znd',
+    'zond',
     'grand',
-    'Mznd',
-    'Gznd',
-    'Tznd',
-    'Pznd',
-    'Eznd',
-    'Zznd',
-    'Yznd',
-    'Nznd',
-    'Dznd',
-    'Vznd',
-    'Uznd'
+    'Mzond',
+    'Gzond',
+    'Tzond',
+    'Pzond',
+    'Ezond',
+    'Zzond',
+    'Yzond',
+    'Nzond',
+    'Dzond',
+    'Vzond',
+    'Uzond'
 ];
 
 module.exports = {
@@ -1879,7 +1879,7 @@ var sha3 = require('./sha3.js');
 var utf8 = require('utf8');
 
 var unitMap = {
-    'noznd':   '0',
+    'nozond':   '0',
     'planck':  '1',
     'kplanck': '1000',
     'Kplanck': '1000',
@@ -1894,12 +1894,12 @@ var unitMap = {
     'pplanck': '1000000000000000',
 	'Pplanck': '1000000000000000',
     'milli':   '1000000000000000',
-    'znd':     '1000000000000000000',
-    'kznd':    '1000000000000000000000',
+    'zond':     '1000000000000000000',
+    'kzond':    '1000000000000000000000',
     'grand':   '1000000000000000000000',
-    'mznd':    '1000000000000000000000000',
-    'gznd':    '1000000000000000000000000000',
-    'tznd':    '1000000000000000000000000000000'
+    'mzond':    '1000000000000000000000000',
+    'gzond':    '1000000000000000000000000000',
+    'tzond':    '1000000000000000000000000000000'
 };
 
 /**
@@ -2113,12 +2113,12 @@ var toHex = function (val) {
  * Returns value of unit in Planck
  *
  * @method getValueOfUnit
- * @param {String} unit the unit to convert to, default znd
+ * @param {String} unit the unit to convert to, default zond
  * @returns {BigNumber} value of the unit (in Planck)
  * @throws error if the unit is not correct:w
  */
 var getValueOfUnit = function (unit) {
-    unit = unit ? unit.toLowerCase() : 'znd';
+    unit = unit ? unit.toLowerCase() : 'zond';
     var unitValue = unitMap[unit];
     if (unitValue === undefined) {
         throw new Error('This unit doesn\'t exists, please use the one of the following units' + JSON.stringify(unitMap, null, 2));
@@ -2127,7 +2127,7 @@ var getValueOfUnit = function (unit) {
 };
 
 /**
- * Takes a number of planck and converts it to any other znd unit.
+ * Takes a number of planck and converts it to any other zond unit.
  *
  * Possible units are:
  *   SI Short   Other
@@ -2136,15 +2136,15 @@ var getValueOfUnit = function (unit) {
  * - gplanck    nano
  * - tplanck    micro
  * - pplanck    milli
- * - ZND
- * - kZND       grand
- * - mZND
- * - gZND
- * - tZND
+ * - zond
+ * - kzond      grand
+ * - mzond
+ * - gzond
+ * - tzond
  *
  * @method fromPlanck
  * @param {Number|String} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert to, default znd
+ * @param {String} unit the unit to convert to, default zond
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
 var fromPlanck = function(number, unit) {
@@ -2163,15 +2163,15 @@ var fromPlanck = function(number, unit) {
  * - gplanck    nano
  * - tplanck    micro
  * - pplanck    milli
- * - ZND
- * - kZND       grand
- * - mZND
- * - gZND
- * - tZND
+ * - zond
+ * - kzond      grand
+ * - mzond
+ * - gzond
+ * - tzond
  *
  * @method toPlanck
  * @param {Number|String|BigNumber} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert from, default znd
+ * @param {String} unit the unit to convert from, default zond
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
 var toPlanck = function(number, unit) {

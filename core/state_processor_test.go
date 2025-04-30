@@ -81,11 +81,11 @@ func TestStateProcessorErrors(t *testing.T) {
 				Config: config,
 				Alloc: GenesisAlloc{
 					address0: GenesisAccount{
-						Balance: big.NewInt(1000000000000000000), // 1 znd
+						Balance: big.NewInt(1000000000000000000), // 1 zond
 						Nonce:   0,
 					},
 					address1: GenesisAccount{
-						Balance: big.NewInt(1000000000000000000), // 1 znd
+						Balance: big.NewInt(1000000000000000000), // 1 zond
 						Nonce:   math.MaxUint64,
 					},
 				},
@@ -233,7 +233,7 @@ func TestStateProcessorErrors(t *testing.T) {
 					},
 					Alloc: GenesisAlloc{
 						common.HexToAddress("Z71562b71999873DB5b286dF957af199Ec94617F7"): GenesisAccount{
-							Balance: big.NewInt(1000000000000000000), // 1 znd
+							Balance: big.NewInt(1000000000000000000), // 1 zond
 							Nonce:   0,
 						},
 					},
@@ -273,7 +273,7 @@ func TestStateProcessorErrors(t *testing.T) {
 				Config: config,
 				Alloc: GenesisAlloc{
 					address: GenesisAccount{
-						Balance: big.NewInt(1000000000000000000), // 1 znd
+						Balance: big.NewInt(1000000000000000000), // 1 zond
 						Nonce:   0,
 						Code:    common.FromHex("0xB0B0FACE"),
 					},

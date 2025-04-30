@@ -193,9 +193,9 @@ func TestTraceCall(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: core.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.ZND)},
-			accounts[1].addr: {Balance: big.NewInt(params.ZND)},
-			accounts[2].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[0].addr: {Balance: big.NewInt(params.Zond)},
+			accounts[1].addr: {Balance: big.NewInt(params.Zond)},
+			accounts[2].addr: {Balance: big.NewInt(params.Zond)},
 		},
 	}
 	genBlocks := 10
@@ -336,8 +336,8 @@ func TestTraceTransaction(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: core.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.ZND)},
-			accounts[1].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[0].addr: {Balance: big.NewInt(params.Zond)},
+			accounts[1].addr: {Balance: big.NewInt(params.Zond)},
 		},
 	}
 	target := common.Hash{}
@@ -392,9 +392,9 @@ func TestTraceBlock(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: core.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.ZND)},
-			accounts[1].addr: {Balance: big.NewInt(params.ZND)},
-			accounts[2].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[0].addr: {Balance: big.NewInt(params.Zond)},
+			accounts[1].addr: {Balance: big.NewInt(params.Zond)},
+			accounts[2].addr: {Balance: big.NewInt(params.Zond)},
 		},
 	}
 	genBlocks := 10
@@ -483,9 +483,9 @@ func TestTracingWithOverrides(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: core.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.ZND)},
-			accounts[1].addr: {Balance: big.NewInt(params.ZND)},
-			accounts[2].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[0].addr: {Balance: big.NewInt(params.Zond)},
+			accounts[1].addr: {Balance: big.NewInt(params.Zond)},
+			accounts[2].addr: {Balance: big.NewInt(params.Zond)},
 			// An account with existing storage
 			storageAccount: {
 				Balance: new(big.Int),
@@ -538,7 +538,7 @@ func TestTracingWithOverrides(t *testing.T) {
 			},
 			config: &TraceCallConfig{
 				StateOverrides: &zondapi.StateOverride{
-					randomAccounts[0].addr: zondapi.OverrideAccount{Balance: newRPCBalance(new(big.Int).Mul(big.NewInt(1), big.NewInt(params.ZND)))},
+					randomAccounts[0].addr: zondapi.OverrideAccount{Balance: newRPCBalance(new(big.Int).Mul(big.NewInt(1), big.NewInt(params.Zond)))},
 				},
 			},
 			want: `{"gas":21000,"failed":false,"returnValue":""}`,
@@ -853,9 +853,9 @@ func TestTraceChain(t *testing.T) {
 	genesis := &core.Genesis{
 		Config: params.TestChainConfig,
 		Alloc: core.GenesisAlloc{
-			accounts[0].addr: {Balance: big.NewInt(params.ZND)},
-			accounts[1].addr: {Balance: big.NewInt(params.ZND)},
-			accounts[2].addr: {Balance: big.NewInt(params.ZND)},
+			accounts[0].addr: {Balance: big.NewInt(params.Zond)},
+			accounts[1].addr: {Balance: big.NewInt(params.Zond)},
+			accounts[2].addr: {Balance: big.NewInt(params.Zond)},
 		},
 	}
 	genBlocks := 50

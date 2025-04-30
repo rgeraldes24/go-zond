@@ -47,9 +47,9 @@ func (zvm *ZVM) precompile(addr common.Address) (PrecompiledContract, bool) {
 // it shouldn't be modified.
 type BlockContext struct {
 	// CanTransfer returns whether the account contains
-	// sufficient znd to transfer the value
+	// sufficient zond to transfer the value
 	CanTransfer CanTransferFunc
-	// Transfer transfers znd from one account to the other
+	// Transfer transfers zond from one account to the other
 	Transfer TransferFunc
 	// GetHash returns the hash corresponding to n
 	GetHash GetHashFunc
