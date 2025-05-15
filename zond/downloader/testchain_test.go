@@ -35,8 +35,8 @@ import (
 
 // Test chain parameters.
 var (
-	testKey, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-	testAddress = testKey.GetAddress()
+	testKey, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	testAddress = pqcrypto.MLDSA87ToAddress(testKey)
 	testDB      = rawdb.NewMemoryDatabase()
 
 	testGspec = &core.Genesis{

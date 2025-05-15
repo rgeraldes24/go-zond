@@ -144,11 +144,11 @@ func TestDerivableList(t *testing.T) {
 }
 
 func genTxs(num uint64) (types.Transactions, error) {
-	key, err := pqcrypto.HexToDilithium("deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
+	key, err := pqcrypto.HexToMLDSA87("deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef")
 	if err != nil {
 		return nil, err
 	}
-	var addr = common.Address(key.GetAddress())
+	var addr = pqcrypto.MLDSA87ToAddress(key)
 	newTx := func(i uint64) (*types.Transaction, error) {
 		signer := types.NewShanghaiSigner(big.NewInt(18))
 		utx := types.NewTx(&types.DynamicFeeTx{

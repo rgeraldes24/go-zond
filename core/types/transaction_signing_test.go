@@ -23,12 +23,13 @@ import (
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/rlp"
 )
 
 func TestShaghaiSigning(t *testing.T) {
-	key, _ := crypto.GenerateDilithiumKey()
-	addr := common.Address(key.GetAddress())
+	key, _ := crypto.GenerateMLDSA87Key()
+	addr := pqcrypto.MLDSA87ToAddress(key)
 
 	signer := NewShanghaiSigner(big.NewInt(18))
 	tx, err := SignTx(NewTx(&DynamicFeeTx{Nonce: 0, To: &addr, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}), signer, key)
@@ -46,8 +47,8 @@ func TestShaghaiSigning(t *testing.T) {
 }
 
 func TestEIP155ChainId(t *testing.T) {
-	key, _ := crypto.GenerateDilithiumKey()
-	addr := common.Address(key.GetAddress())
+	key, _ := crypto.GenerateMLDSA87Key()
+	addr := pqcrypto.MLDSA87ToAddress(key)
 
 	signer := NewShanghaiSigner(big.NewInt(18))
 	tx, err := SignTx(NewTx(&DynamicFeeTx{Nonce: 0, To: &addr, Value: new(big.Int), Gas: 0, GasFeeCap: new(big.Int), Data: nil}), signer, key)

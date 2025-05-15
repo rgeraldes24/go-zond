@@ -31,7 +31,9 @@ import (
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 )
 
-var testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+var testKey, _ = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+var testPublicKey = testKey.GetPK()
+var testKeyAddr = pqcrypto.MLDSA87PublicKeyToAddress(testPublicKey[:])
 
 var wantedAddr, _ = common.NewAddressFromString("Zfe66B8AED6e4fb3e12d0B65f61ef246c4d0CfFFA")
 var waitDeployedTests = map[string]struct {
@@ -57,7 +59,7 @@ func TestWaitDeployed(t *testing.T) {
 	for name, test := range waitDeployedTests {
 		backend := backends.NewSimulatedBackend(
 			core.GenesisAlloc{
-				testKey.GetAddress(): {Balance: big.NewInt(10000000000000000)},
+				testKeyAddr: {Balance: big.NewInt(10000000000000000)},
 			},
 			10000000,
 		)
@@ -109,7 +111,7 @@ func TestWaitDeployed(t *testing.T) {
 func TestWaitDeployedCornerCases(t *testing.T) {
 	backend := backends.NewSimulatedBackend(
 		core.GenesisAlloc{
-			testKey.GetAddress(): {Balance: big.NewInt(10000000000000000)},
+			testKeyAddr: {Balance: big.NewInt(10000000000000000)},
 		},
 		10000000,
 	)

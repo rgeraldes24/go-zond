@@ -40,8 +40,8 @@ import (
 )
 
 var (
-	testKey, _      = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-	testAddr        = testKey.GetAddress()
+	testKey, _      = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	testAddr        = pqcrypto.MLDSA87ToAddress(testKey)
 	zeroAddr, _     = common.NewAddressFromString("Z0000000000000000000000000000000000000000")
 	testContract, _ = common.NewAddressFromString("Z000000000000000000000000000000000000beef")
 	testEmpty, _    = common.NewAddressFromString("Z000000000000000000000000000000000000eeee")

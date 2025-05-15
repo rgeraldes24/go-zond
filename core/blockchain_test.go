@@ -676,8 +676,8 @@ func TestFastVsFullChains(t *testing.T) {
 func testFastVsFullChains(t *testing.T, scheme string) {
 	// Configure and generate a sample block chain
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address = key.GetAddress()
+		key, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		address = pqcrypto.MLDSA87ToAddress(key)
 		funds   = big.NewInt(1000000000000000)
 		gspec   = &Genesis{
 			Config:  params.TestChainConfig,
@@ -921,12 +921,12 @@ func TestChainTxReorgs(t *testing.T) {
 
 func testChainTxReorgs(t *testing.T, scheme string) {
 	var (
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		key2, _ = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-		key3, _ = pqcrypto.HexToDilithium("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
-		addr1   = key1.GetAddress()
-		addr2   = key2.GetAddress()
-		addr3   = key3.GetAddress()
+		key1, _ = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key2, _ = pqcrypto.HexToMLDSA87("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		key3, _ = pqcrypto.HexToMLDSA87("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
+		addr1   = pqcrypto.MLDSA87ToAddress(key1)
+		addr2   = pqcrypto.MLDSA87ToAddress(key2)
+		addr3   = pqcrypto.MLDSA87ToAddress(key3)
 		gspec   = &Genesis{
 			Config:   params.TestChainConfig,
 			GasLimit: 3141592,
@@ -1044,8 +1044,8 @@ func TestLogReorgs(t *testing.T) {
 
 func testLogReorgs(t *testing.T, scheme string) {
 	var (
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		addr1   = key1.GetAddress()
+		key1, _ = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		addr1   = pqcrypto.MLDSA87ToAddress(key1)
 
 		// this code generates a log
 		code   = common.Hex2Bytes("60606040525b7f24ec1d3ff24c2f6ff210738839dbc339cd45a5294d85c79361016243157aae7b60405180905060405180910390a15b600a8060416000396000f360606040526008565b00")
@@ -1111,8 +1111,8 @@ func TestLogRebirth(t *testing.T) {
 
 func testLogRebirth(t *testing.T, scheme string) {
 	var (
-		key1, _       = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		addr1         = key1.GetAddress()
+		key1, _       = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		addr1         = pqcrypto.MLDSA87ToAddress(key1)
 		gspec         = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{addr1: {Balance: big.NewInt(10000000000000000)}}}
 		signer        = types.LatestSigner(gspec.Config)
 		engine        = beacon.NewFaker()
@@ -1233,8 +1233,8 @@ func TestReorgSideEvent(t *testing.T) {
 
 func testReorgSideEvent(t *testing.T, scheme string) {
 	var (
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		addr1   = key1.GetAddress()
+		key1, _ = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		addr1   = pqcrypto.MLDSA87ToAddress(key1)
 		gspec   = &Genesis{
 			Config: params.TestChainConfig,
 			Alloc:  GenesisAlloc{addr1: {Balance: big.NewInt(10000000000000000)}},
@@ -1372,8 +1372,8 @@ func TestEIP161AccountRemoval(t *testing.T) {
 func testEIP161AccountRemoval(t *testing.T, scheme string) {
 	// Configure and generate a sample block chain
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address = key.GetAddress()
+		key, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		address = pqcrypto.MLDSA87ToAddress(key)
 		funds   = big.NewInt(100000000000000000)
 		theAddr = common.Address{1}
 		gspec   = &Genesis{
@@ -2019,8 +2019,8 @@ func testReorgToShorterRemovesCanonMappingHeaderChain(t *testing.T, scheme strin
 func TestTransactionIndices(t *testing.T) {
 	// Configure and generate a sample block chain
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address = key.GetAddress()
+		key, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		address = pqcrypto.MLDSA87ToAddress(key)
 		funds   = big.NewInt(100000000000000000)
 		gspec   = &Genesis{
 			Config:  params.TestChainConfig,
@@ -2132,8 +2132,8 @@ func TestSkipStaleTxIndicesInSnapSync(t *testing.T) {
 func testSkipStaleTxIndicesInSnapSync(t *testing.T, scheme string) {
 	// Configure and generate a sample block chain
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address = key.GetAddress()
+		key, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		address = pqcrypto.MLDSA87ToAddress(key)
 		funds   = big.NewInt(100000000000000000)
 		gspec   = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{address: {Balance: funds}}}
 		signer  = types.LatestSigner(gspec.Config)
@@ -2222,8 +2222,8 @@ func benchmarkLargeNumberOfValueToNonexisting(b *testing.B, numTxs, numBlocks in
 	var (
 		address, _      = common.NewAddressFromString("Z000000000000000000000000000000000000c0de")
 		signer          = types.ShanghaiSigner{}
-		testBankKey, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		testBankAddress = testBankKey.GetAddress()
+		testBankKey, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		testBankAddress = pqcrypto.MLDSA87ToAddress(testBankKey)
 		bankFunds       = big.NewInt(100000000000000000)
 		gspec           = &Genesis{
 			Config: params.TestChainConfig,
@@ -2347,8 +2347,8 @@ func testInitThenFailCreateContract(t *testing.T, scheme string) {
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address = key.GetAddress()
+		key, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		address = pqcrypto.MLDSA87ToAddress(key)
 		funds   = big.NewInt(1000000000000000)
 		bb, _   = common.NewAddressFromString("Z000000000000000000000000000000000000bbbb")
 	)
@@ -2469,8 +2469,8 @@ func testEIP2718Transition(t *testing.T, scheme string) {
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address = key.GetAddress()
+		key, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		address = pqcrypto.MLDSA87ToAddress(key)
 		funds   = big.NewInt(1000000000000000)
 		gspec   = &Genesis{
 			Config: params.TestChainConfig,
@@ -2551,10 +2551,10 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		key2, _ = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-		addr1   = key1.GetAddress()
-		addr2   = key2.GetAddress()
+		key1, _ = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key2, _ = pqcrypto.HexToMLDSA87("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		addr1   = pqcrypto.MLDSA87ToAddress(key1)
+		addr2   = pqcrypto.MLDSA87ToAddress(key2)
 		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Zond))
 		config  = *params.AllBeaconProtocolChanges
 		gspec   = &Genesis{
@@ -2688,8 +2688,8 @@ func testSetCanonical(t *testing.T, scheme string) {
 	//log.Root().SetHandler(log.LvlFilterHandler(log.LvlDebug, log.StreamHandler(os.Stderr, log.TerminalFormat(true))))
 
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address = key.GetAddress()
+		key, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		address = pqcrypto.MLDSA87ToAddress(key)
 		funds   = big.NewInt(100000000000000000)
 		gspec   = &Genesis{
 			Config:  params.TestChainConfig,
@@ -2894,8 +2894,8 @@ func testCanonicalHashMarker(t *testing.T, scheme string) {
 // TestTxIndexer tests the tx indexes are updated correctly.
 func TestTxIndexer(t *testing.T) {
 	var (
-		testBankKey, _  = pqcrypto.GenerateDilithiumKey()
-		testBankAddress = testBankKey.GetAddress()
+		testBankKey, _  = pqcrypto.GenerateMLDSA87Key()
+		testBankAddress = pqcrypto.MLDSA87ToAddress(testBankKey)
 		testBankFunds   = big.NewInt(1000000000000000000)
 
 		gspec = &Genesis{
@@ -3113,10 +3113,10 @@ func TestEIP3651(t *testing.T) {
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		key2, _ = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-		addr1   = key1.GetAddress()
-		addr2   = key2.GetAddress()
+		key1, _ = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key2, _ = pqcrypto.HexToMLDSA87("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		addr1   = pqcrypto.MLDSA87ToAddress(key1)
+		addr2   = pqcrypto.MLDSA87ToAddress(key2)
 		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Zond))
 		config  = *params.AllBeaconProtocolChanges
 		gspec   = &Genesis{

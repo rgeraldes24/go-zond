@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
@@ -63,8 +63,8 @@ func LatestSignerForChainID(chainID *big.Int) Signer {
 	return NewShanghaiSigner(chainID)
 }
 
-// SignTx signs the transaction using the given dilithium signer and private key.
-func SignTx(tx *Transaction, s Signer, d *dilithium.Dilithium) (*Transaction, error) {
+// SignTx signs the transaction using the given ML-DSA-87 signer and private key.
+func SignTx(tx *Transaction, s Signer, k *ml_dsa_87.MLDSA87) (*Transaction, error) {
 	// Check that chain ID of tx matches the signer. We also accept ID zero here,
 	// because it indicates that the chain ID was not specified in the tx.
 	// NOTE(rgeraldes24): chain ID is filled in in the WithSignatureAndPublicKey method
@@ -74,29 +74,33 @@ func SignTx(tx *Transaction, s Signer, d *dilithium.Dilithium) (*Transaction, er
 	}
 
 	h := s.Hash(tx)
-	sig, err := pqcrypto.Sign(h[:], d)
+	// TODO(rgeraldes24)
+	ctx := []byte{}
+	sig, err := pqcrypto.Sign(ctx, h[:], k)
 	if err != nil {
 		return nil, err
 	}
-	pk := d.GetPK()
+	pk := k.GetPK()
 	return tx.WithSignatureAndPublicKey(s, sig[:], pk[:])
 }
 
 // SignNewTx creates a transaction and signs it.
-func SignNewTx(d *dilithium.Dilithium, s Signer, txdata TxData) (*Transaction, error) {
+func SignNewTx(k *ml_dsa_87.MLDSA87, s Signer, txdata TxData) (*Transaction, error) {
 	tx := NewTx(txdata)
 	h := s.Hash(tx)
-	sig, err := pqcrypto.Sign(h[:], d)
+	// TODO(rgeraldes24)
+	ctx := []byte{}
+	sig, err := pqcrypto.Sign(ctx, h[:], k)
 	if err != nil {
 		return nil, err
 	}
-	pk := d.GetPK()
+	pk := k.GetPK()
 	return tx.WithSignatureAndPublicKey(s, sig, pk[:])
 }
 
 // MustSignNewTx creates a transaction and signs it.
 // This panics if the transaction cannot be signed.
-func MustSignNewTx(d *dilithium.Dilithium, s Signer, txdata TxData) *Transaction {
+func MustSignNewTx(d *ml_dsa_87.MLDSA87, s Signer, txdata TxData) *Transaction {
 	tx, err := SignNewTx(d, s, txdata)
 	if err != nil {
 		panic(err)
@@ -172,7 +176,7 @@ func (s ShanghaiSigner) Sender(tx *Transaction) (common.Address, error) {
 	if tx.ChainId().Cmp(s.ChainId) != 0 {
 		return common.Address{}, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, tx.ChainId(), s.ChainId)
 	}
-	return pqcrypto.DilithiumPKToAddress(tx.RawPublicKeyValue()), nil
+	return pqcrypto.MLDSA87PublicKeyToAddress(tx.RawPublicKeyValue()), nil
 }
 
 func (s ShanghaiSigner) Equal(s2 Signer) bool {
@@ -222,19 +226,19 @@ func (s ShanghaiSigner) Hash(tx *Transaction) common.Hash {
 }
 
 func decodeSignature(sig []byte) (signature []byte) {
-	if len(sig) != pqcrypto.DilithiumSignatureLength {
-		panic(fmt.Sprintf("wrong size for signature: got %d, want %d", len(sig), pqcrypto.DilithiumSignatureLength))
+	if len(sig) != pqcrypto.MLDSA87SignatureLength {
+		panic(fmt.Sprintf("wrong size for signature: got %d, want %d", len(sig), pqcrypto.MLDSA87SignatureLength))
 	}
-	signature = make([]byte, pqcrypto.DilithiumSignatureLength)
+	signature = make([]byte, pqcrypto.MLDSA87SignatureLength)
 	copy(signature, sig)
 	return signature
 }
 
 func decodePublicKey(pk []byte) (publicKey []byte) {
-	if len(pk) != pqcrypto.DilithiumPublicKeyLength {
-		panic(fmt.Sprintf("wrong size for dilithium publickey: got %d, want %d", len(pk), pqcrypto.DilithiumPublicKeyLength))
+	if len(pk) != pqcrypto.MLDSA87PublicKeyLength {
+		panic(fmt.Sprintf("wrong size for ML-DSA-87 publickey: got %d, want %d", len(pk), pqcrypto.MLDSA87PublicKeyLength))
 	}
-	publicKey = make([]byte, pqcrypto.DilithiumPublicKeyLength)
+	publicKey = make([]byte, pqcrypto.MLDSA87PublicKeyLength)
 	copy(publicKey, pk)
 	return publicKey
 }

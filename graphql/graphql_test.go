@@ -169,8 +169,8 @@ func TestGraphQLBlockSerialization(t *testing.T) {
 func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 	// Account for signing txes
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address = key.GetAddress()
+		key, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		address = pqcrypto.MLDSA87ToAddress(key)
 		funds   = big.NewInt(1000000000000000)
 		dad, _  = common.NewAddressFromString("Z0000000000000000000000000000000000000dad")
 	)
@@ -268,8 +268,8 @@ func TestGraphQLHTTPOnSamePort_GQLRequest_Unsuccessful(t *testing.T) {
 
 func TestGraphQLConcurrentResolvers(t *testing.T) {
 	var (
-		key, _  = crypto.GenerateDilithiumKey()
-		addr    = key.GetAddress()
+		key, _  = crypto.GenerateMLDSA87Key()
+		addr    = pqcrypto.MLDSA87ToAddress(key)
 		dadStr  = "Z0000000000000000000000000000000000000dad"
 		dad, _  = common.NewAddressFromString(dadStr)
 		genesis = &core.Genesis{
@@ -361,8 +361,8 @@ func TestGraphQLConcurrentResolvers(t *testing.T) {
 
 func TestWithdrawals(t *testing.T) {
 	var (
-		key, _ = crypto.GenerateDilithiumKey()
-		addr   = key.GetAddress()
+		key, _ = crypto.GenerateMLDSA87Key()
+		addr   = pqcrypto.MLDSA87ToAddress(key)
 
 		genesis = &core.Genesis{
 			Config:   params.AllBeaconProtocolChanges,

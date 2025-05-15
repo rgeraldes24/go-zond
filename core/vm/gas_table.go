@@ -204,7 +204,7 @@ func gasCall(zvm *ZVM, contract *Contract, stack *Stack, mem *Memory, memorySize
 	var (
 		gas            uint64
 		transfersValue = !stack.Back(2).IsZero()
-		address        = common.Address(stack.Back(1).Bytes20())
+		address        = common.Address(common.Bytes24(stack.Back(1)))
 	)
 	if transfersValue && zvm.StateDB.Empty(address) {
 		gas += params.CallNewAccountGas

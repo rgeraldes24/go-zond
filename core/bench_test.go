@@ -20,7 +20,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/consensus/beacon"
@@ -65,8 +65,8 @@ func BenchmarkInsertChain_ring1000_diskdb(b *testing.B) {
 
 var (
 	// This is the content of the genesis block used by the benchmarks.
-	benchRootKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-	benchRootAddr   = common.Address(benchRootKey.GetAddress())
+	benchRootKey, _ = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	benchRootAddr   = pqcrypto.MLDSA87ToAddress(benchRootKey)
 	benchRootFunds  = math.BigPow(2, 200)
 )
 
@@ -96,7 +96,7 @@ func genValueTx(nbytes int) func(int, *BlockGen) {
 }
 
 var (
-	ringKeys  = make([]*dilithium.Dilithium, 1000)
+	ringKeys  = make([]*ml_dsa_87.MLDSA87, 1000)
 	ringAddrs = make([]common.Address, len(ringKeys))
 )
 
@@ -104,8 +104,8 @@ func init() {
 	ringKeys[0] = benchRootKey
 	ringAddrs[0] = benchRootAddr
 	for i := 1; i < len(ringKeys); i++ {
-		ringKeys[i], _ = pqcrypto.GenerateDilithiumKey()
-		ringAddrs[i] = ringKeys[i].GetAddress()
+		ringKeys[i], _ = pqcrypto.GenerateMLDSA87Key()
+		ringAddrs[i] = pqcrypto.MLDSA87ToAddress(ringKeys[i])
 	}
 }
 

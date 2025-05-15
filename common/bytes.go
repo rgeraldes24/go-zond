@@ -18,9 +18,11 @@
 package common
 
 import (
+	"encoding/binary"
 	"encoding/hex"
 	"errors"
 
+	"github.com/holiman/uint256"
 	"github.com/theQRL/go-zond/common/hexutil"
 )
 
@@ -153,4 +155,12 @@ func TrimRightZeroes(s []byte) []byte {
 		}
 	}
 	return s[:idx]
+}
+
+func Bytes24(z *uint256.Int) [24]byte {
+	var b [24]byte
+	binary.BigEndian.PutUint64(b[0:8], z[2])
+	binary.BigEndian.PutUint64(b[8:16], z[1])
+	binary.BigEndian.PutUint64(b[16:24], z[0])
+	return b
 }

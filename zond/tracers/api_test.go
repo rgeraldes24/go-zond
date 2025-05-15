@@ -28,7 +28,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/consensus"
@@ -39,6 +39,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rpc"
@@ -812,14 +813,14 @@ func TestTracingWithOverrides(t *testing.T) {
 }
 
 type Account struct {
-	key  *dilithium.Dilithium
+	key  *ml_dsa_87.MLDSA87
 	addr common.Address
 }
 
 func newAccounts(n int) (accounts []Account) {
 	for i := 0; i < n; i++ {
-		key, _ := crypto.GenerateDilithiumKey()
-		addr := key.GetAddress()
+		key, _ := crypto.GenerateMLDSA87Key()
+		addr := pqcrypto.MLDSA87ToAddress(key)
 		accounts = append(accounts, Account{key: key, addr: addr})
 	}
 	slices.SortFunc(accounts, func(a, b Account) int { return a.addr.Cmp(b.addr) })

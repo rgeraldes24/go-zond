@@ -33,6 +33,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/zonddb"
 )
@@ -43,8 +44,8 @@ var (
 	beaconChainConfig *params.ChainConfig
 
 	// Test accounts
-	testBankKey, _  = crypto.GenerateDilithiumKey()
-	testBankAddress = testBankKey.GetAddress()
+	testBankKey, _  = crypto.GenerateMLDSA87Key()
+	testBankAddress = pqcrypto.MLDSA87ToAddress(testBankKey)
 	testBankFunds   = big.NewInt(1000000000000000000)
 
 	testUserKey, _  = crypto.GenerateKey()

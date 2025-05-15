@@ -226,7 +226,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -281,7 +281,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -327,7 +327,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -386,7 +386,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -448,7 +448,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -580,7 +580,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -631,7 +631,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -701,7 +701,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -793,7 +793,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -983,7 +983,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -1101,7 +1101,7 @@ var bindTests = []struct {
 			"github.com/theQRL/go-zond/crypto"
 		`,
 		`
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -1243,7 +1243,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -1308,7 +1308,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Initialize test accounts
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
 			defer sim.Close()
@@ -1394,7 +1394,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Initialize test accounts
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			addr := key.GetAddress()
 
 			// Deploy registrar contract
@@ -1455,7 +1455,7 @@ var bindTests = []struct {
 			"github.com/theQRL/go-zond/core"
 		`,
 		`
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			addr := key.GetAddress()
 
 			// Deploy registrar contract
@@ -1518,7 +1518,7 @@ var bindTests = []struct {
 		`,
 		`
 			// Generate a new random account and a funded simulator
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{auth.From: {Balance: big.NewInt(10000000000000000)}}, 10000000)
@@ -1576,7 +1576,7 @@ var bindTests = []struct {
 			"github.com/theQRL/go-zond/crypto"
 		`,
 		`
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			addr := key.GetAddress()
 
 			sim := backends.NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(10000000000000000)}}, 1000000)
@@ -1664,7 +1664,7 @@ var bindTests = []struct {
 		`,
 		`
 			var (
-				key, _  = crypto.GenerateDilithiumKey()
+				key, _  = crypto.GenerateMLDSA87Key()
 				user, _ = bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfig.Defaults.Miner.GasCeil)
 			)
@@ -1732,7 +1732,7 @@ var bindTests = []struct {
 		`,
 		`
 			var (
-				key, _  = crypto.GenerateDilithiumKey()
+				key, _  = crypto.GenerateMLDSA87Key()
 				user, _ = bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfig.Defaults.Miner.GasCeil)
 			)
@@ -1782,7 +1782,7 @@ var bindTests = []struct {
 		`,
 		tester: `
 			var (
-				key, _  = crypto.GenerateDilithiumKey()
+				key, _  = crypto.GenerateMLDSA87Key()
 				user, _ = bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfig.Defaults.Miner.GasCeil)
 			)
@@ -1828,7 +1828,7 @@ var bindTests = []struct {
 		`,
 		tester: `
 			var (
-				key, _  = crypto.GenerateDilithiumKey()
+				key, _  = crypto.GenerateMLDSA87Key()
 				user, _ = bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfig.Defaults.Miner.GasCeil)
 			)
@@ -1866,7 +1866,7 @@ var bindTests = []struct {
 		`,
 		tester: `
 			var (
-				key, _  = crypto.GenerateDilithiumKey()
+				key, _  = crypto.GenerateMLDSA87Key()
 				user, _ = bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 				sim     = backends.NewSimulatedBackend(core.GenesisAlloc{user.From: {Balance: big.NewInt(1000000000000000000)}}, zondconfig.Defaults.Miner.GasCeil)
 			)

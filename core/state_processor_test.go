@@ -21,7 +21,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus"
 	"github.com/theQRL/go-zond/consensus/beacon"
@@ -45,11 +45,11 @@ func TestStateProcessorErrors(t *testing.T) {
 			ChainID: big.NewInt(1),
 		}
 		signer  = types.LatestSigner(config)
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		key2, _ = pqcrypto.HexToDilithium("0202020202020202020202020202020202020202020202020202002020202020")
+		key1, _ = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key2, _ = pqcrypto.HexToMLDSA87("0202020202020202020202020202020202020202020202020202002020202020")
 	)
 
-	var mkDynamicTx = func(key *dilithium.Dilithium, nonce uint64, to common.Address, value *big.Int, gasLimit uint64, gasTipCap, gasFeeCap *big.Int) *types.Transaction {
+	var mkDynamicTx = func(key *ml_dsa_87.MLDSA87, nonce uint64, to common.Address, value *big.Int, gasLimit uint64, gasTipCap, gasFeeCap *big.Int) *types.Transaction {
 		tx, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{
 			Nonce:     nonce,
 			GasTipCap: gasTipCap,

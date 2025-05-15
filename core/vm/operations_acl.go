@@ -124,7 +124,7 @@ func gasExtCodeCopyEIP2929(zvm *ZVM, contract *Contract, stack *Stack, mem *Memo
 	if err != nil {
 		return 0, err
 	}
-	addr := common.Address(stack.peek().Bytes20())
+	addr := common.Address(common.Bytes24(stack.peek()))
 	// Check slot presence in the access list
 	if !zvm.StateDB.AddressInAccessList(addr) {
 		zvm.StateDB.AddAddressToAccessList(addr)
@@ -146,7 +146,7 @@ func gasExtCodeCopyEIP2929(zvm *ZVM, contract *Contract, stack *Stack, mem *Memo
 // - extcodesize,
 // - (ext) balance
 func gasEip2929AccountCheck(zvm *ZVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (uint64, error) {
-	addr := common.Address(stack.peek().Bytes20())
+	addr := common.Address(common.Bytes24(stack.peek()))
 	// Check slot presence in the access list
 	if !zvm.StateDB.AddressInAccessList(addr) {
 		// If the caller cannot afford the cost, this change will be rolled back
@@ -159,7 +159,7 @@ func gasEip2929AccountCheck(zvm *ZVM, contract *Contract, stack *Stack, mem *Mem
 
 func makeCallVariantGasCallEIP2929(oldCalculator gasFunc) gasFunc {
 	return func(zvm *ZVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (uint64, error) {
-		addr := common.Address(stack.Back(1).Bytes20())
+		addr := common.Address(common.Bytes24(stack.Back(1)))
 		// Check slot presence in the access list
 		warmAccess := zvm.StateDB.AddressInAccessList(addr)
 		// The WarmStorageReadCostEIP2929 (100) is already deducted in the form of a constant cost, so

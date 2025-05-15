@@ -183,7 +183,7 @@ func EncryptDataV3(data, auth []byte, scryptN, scryptP int) (CryptoJSON, error) 
 // EncryptKey encrypts a key using the specified scrypt parameters into a json
 // blob that can be decrypted later on.
 func EncryptKey(key *Key, auth string, scryptN, scryptP int) ([]byte, error) {
-	seed := key.Dilithium.GetSeed()
+	seed := key.MLDSA87.GetSeed()
 	cryptoStruct, err := EncryptDataV3(seed[:], []byte(auth), scryptN, scryptP)
 	if err != nil {
 		return nil, err
@@ -220,15 +220,16 @@ func DecryptKey(keyjson []byte, auth string) (*Key, error) {
 	if err != nil {
 		return nil, err
 	}
-	d := pqcrypto.ToDilithiumUnsafe(keyBytes)
+	d := pqcrypto.ToMLDSA87Unsafe(keyBytes)
 	id, err := uuid.FromBytes(keyId)
 	if err != nil {
 		return nil, err
 	}
+	publicKey := d.GetPK()
 	return &Key{
-		Id:        id,
-		Address:   d.GetAddress(),
-		Dilithium: d,
+		Id:      id,
+		Address: pqcrypto.MLDSA87PublicKeyToAddress(publicKey[:]),
+		MLDSA87: d,
 	}, nil
 }
 

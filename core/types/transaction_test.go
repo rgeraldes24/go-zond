@@ -25,7 +25,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/rlp"
@@ -76,8 +76,8 @@ func TestEIP2718TransactionSigHash(t *testing.T) {
 // This test checks signature operations on access list transactions.
 func TestEIP2930Signer(t *testing.T) {
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		keyAddr = common.Address(key.GetAddress())
+		key, _  = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		keyAddr = pqcrypto.MLDSA87ToAddress(key)
 		signer1 = NewShanghaiSigner(big.NewInt(1))
 		signer2 = NewShanghaiSigner(big.NewInt(2))
 		tx0     = NewTx(&DynamicFeeTx{Nonce: 1})
@@ -248,9 +248,9 @@ func decodeTx(data []byte) (*Transaction, error) {
 	return t, err
 }
 
-func defaultTestKey() (*dilithium.Dilithium, common.Address) {
-	key, _ := pqcrypto.HexToDilithium("45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8")
-	addr := key.GetAddress()
+func defaultTestKey() (*ml_dsa_87.MLDSA87, common.Address) {
+	key, _ := pqcrypto.HexToMLDSA87("45a915e4d060149eb4365960e6a7a45f334393093061116b197e3240065ff2d8")
+	addr := pqcrypto.MLDSA87ToAddress(key)
 	return key, addr
 }
 
@@ -289,7 +289,7 @@ func TestRecipientNormal(t *testing.T) {
 
 // TestTransactionCoding tests serializing/de-serializing to/from rlp and JSON.
 func TestTransactionCoding(t *testing.T) {
-	key, err := pqcrypto.GenerateDilithiumKey()
+	key, err := pqcrypto.GenerateMLDSA87Key()
 	if err != nil {
 		t.Fatalf("could not generate key: %v", err)
 	}
@@ -420,7 +420,7 @@ func assertEqual(orig *Transaction, cpy *Transaction) error {
 
 func TestTransactionSizes(t *testing.T) {
 	signer := NewShanghaiSigner(big.NewInt(123))
-	key, _ := pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	key, _ := pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	to, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000001")
 	for i, txdata := range []TxData{
 		&DynamicFeeTx{

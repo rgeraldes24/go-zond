@@ -28,6 +28,7 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/crypto/bn256"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
 )
 
@@ -94,10 +95,10 @@ func (c *depositroot) RequiredGas(input []byte) uint64 {
 
 func (c *depositroot) Run(input []byte) ([]byte, error) {
 	var (
-		pkBytes     = getData(input, 0, 2592)    // 2592 bytes
-		credsBytes  = getData(input, 2592, 32)   // 32 bytes
-		amountBytes = getData(input, 2624, 8)    // 8 bytes
-		sigBytes    = getData(input, 2632, 4595) // 4595 bytes
+		pkBytes     = getData(input, 0, pqcrypto.MLDSA87PublicKeyLength)
+		credsBytes  = getData(input, pqcrypto.MLDSA87PublicKeyLength, 32)
+		amountBytes = getData(input, pqcrypto.MLDSA87PublicKeyLength+32, 8)
+		sigBytes    = getData(input, pqcrypto.MLDSA87PublicKeyLength+32+8, pqcrypto.MLDSA87SignatureLength)
 	)
 
 	var amountUint uint64
@@ -138,8 +139,8 @@ func (d *depositdata) HashTreeRootWith(hh *ssz.Hasher) (err error) {
 	indx := hh.Index()
 
 	// Field (0) 'Pubkey'
-	if size := len(d.PublicKey); size != 2592 {
-		err = ssz.ErrBytesLengthFn("--.Pubkey", size, 2592)
+	if size := len(d.PublicKey); size != pqcrypto.MLDSA87PublicKeyLength {
+		err = ssz.ErrBytesLengthFn("--.Pubkey", size, pqcrypto.MLDSA87PublicKeyLength)
 		return
 	}
 	hh.PutBytes(d.PublicKey)
@@ -155,8 +156,8 @@ func (d *depositdata) HashTreeRootWith(hh *ssz.Hasher) (err error) {
 	hh.PutUint64(d.Amount)
 
 	// Field (3) 'Signature'
-	if size := len(d.Signature); size != 4595 {
-		err = ssz.ErrBytesLengthFn("--.Signature", size, 4595)
+	if size := len(d.Signature); size != pqcrypto.MLDSA87SignatureLength {
+		err = ssz.ErrBytesLengthFn("--.Signature", size, pqcrypto.MLDSA87SignatureLength)
 		return
 	}
 	hh.PutBytes(d.Signature)

@@ -25,7 +25,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/consensus/misc/eip1559"
@@ -207,7 +207,7 @@ func Transition(ctx *cli.Context) error {
 // txWithKey is a helper-struct, to allow us to use the types.Transaction along with
 // a `seed`-field, for input
 type txWithKey struct {
-	key *dilithium.Dilithium
+	key *ml_dsa_87.MLDSA87
 	tx  *types.Transaction
 }
 
@@ -222,10 +222,10 @@ func (t *txWithKey) UnmarshalJSON(input []byte) error {
 	}
 	if data.Seed != nil {
 		sd := *data.Seed
-		if dilithiumKey, err := pqcrypto.HexToDilithium(sd[2:]); err != nil {
+		if mlDSA87Key, err := pqcrypto.HexToMLDSA87(sd[2:]); err != nil {
 			return err
 		} else {
-			t.key = dilithiumKey
+			t.key = mlDSA87Key
 		}
 	}
 	// Now, read the transaction itself

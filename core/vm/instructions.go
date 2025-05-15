@@ -20,9 +20,11 @@ import (
 	"math"
 
 	"github.com/holiman/uint256"
+	mldsa87 "github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
 )
 
@@ -260,7 +262,7 @@ func opAddress(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeContext) ([]
 
 func opBalance(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeContext) ([]byte, error) {
 	slot := scope.Stack.peek()
-	address := common.Address(slot.Bytes20())
+	address := common.Address(common.Bytes24(slot))
 	slot.SetFromBig(interpreter.zvm.StateDB.GetBalance(address))
 	return nil, nil
 }
@@ -343,7 +345,7 @@ func opReturnDataCopy(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeConte
 
 func opExtCodeSize(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeContext) ([]byte, error) {
 	slot := scope.Stack.peek()
-	slot.SetUint64(uint64(interpreter.zvm.StateDB.GetCodeSize(slot.Bytes20())))
+	slot.SetUint64(uint64(interpreter.zvm.StateDB.GetCodeSize(common.Bytes24(slot))))
 	return nil, nil
 }
 
@@ -382,7 +384,7 @@ func opExtCodeCopy(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeContext)
 	if overflow {
 		uint64CodeOffset = math.MaxUint64
 	}
-	addr := common.Address(a.Bytes20())
+	addr := common.Address(common.Bytes24(&a))
 	codeCopy := getData(interpreter.zvm.StateDB.GetCode(addr), uint64CodeOffset, length.Uint64())
 	scope.Memory.Set(memOffset.Uint64(), length.Uint64(), codeCopy)
 
@@ -417,7 +419,7 @@ func opExtCodeCopy(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeContext)
 //     account should be regarded as a non-existent account and zero should be returned.
 func opExtCodeHash(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeContext) ([]byte, error) {
 	slot := scope.Stack.peek()
-	address := common.Address(slot.Bytes20())
+	address := common.Address(common.Bytes24(slot))
 	if interpreter.zvm.StateDB.Empty(address) {
 		slot.Clear()
 	} else {
@@ -661,7 +663,7 @@ func opCall(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeContext) ([]byt
 	gas := interpreter.zvm.callGasTemp
 	// Pop other call parameters.
 	addr, value, inOffset, inSize, retOffset, retSize := stack.pop(), stack.pop(), stack.pop(), stack.pop(), stack.pop(), stack.pop()
-	toAddr := common.Address(addr.Bytes20())
+	toAddr := common.Address(common.Bytes24(&addr))
 	// Get the arguments from the memory.
 	args := scope.Memory.GetPtr(int64(inOffset.Uint64()), int64(inSize.Uint64()))
 
@@ -702,7 +704,7 @@ func opDelegateCall(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeContext
 	gas := interpreter.zvm.callGasTemp
 	// Pop other call parameters.
 	addr, inOffset, inSize, retOffset, retSize := stack.pop(), stack.pop(), stack.pop(), stack.pop(), stack.pop()
-	toAddr := common.Address(addr.Bytes20())
+	toAddr := common.Address(common.Bytes24(&addr))
 	// Get arguments from the memory.
 	args := scope.Memory.GetPtr(int64(inOffset.Uint64()), int64(inSize.Uint64()))
 
@@ -730,7 +732,7 @@ func opStaticCall(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeContext) 
 	gas := interpreter.zvm.callGasTemp
 	// Pop other call parameters.
 	addr, inOffset, inSize, retOffset, retSize := stack.pop(), stack.pop(), stack.pop(), stack.pop(), stack.pop()
-	toAddr := common.Address(addr.Bytes20())
+	toAddr := common.Address(common.Bytes24(&addr))
 	// Get arguments from the memory.
 	args := scope.Memory.GetPtr(int64(inOffset.Uint64()), int64(inSize.Uint64()))
 
@@ -858,4 +860,33 @@ func makeSwap(size int64) executionFunc {
 		scope.Stack.swap(int(size))
 		return nil, nil
 	}
+}
+
+func opMLDSA87Verify(pc *uint64, interpreter *ZVMInterpreter, scope *ScopeContext) ([]byte, error) {
+	ctx, signature, pubKey, msgHash := scope.Stack.pop(), scope.Stack.pop(), scope.Stack.pop(), scope.Stack.pop()
+
+	ctxBytes := ctx.Bytes32()
+	signatureBytes := signature.Bytes32()
+	pubkeyBytes := pubKey.Bytes32()
+	msgBytes := msgHash.Bytes32()
+
+	valid := verifyMLDSA87(ctxBytes[:], msgBytes[:], pubkeyBytes[:], signatureBytes[:])
+
+	if valid {
+		scope.Stack.push(new(uint256.Int).SetOne())
+	} else {
+		scope.Stack.push(new(uint256.Int))
+	}
+	return nil, nil
+}
+
+func verifyMLDSA87(ctx, message, pubkey, signature []byte) bool {
+	if len(pubkey) != mldsa87.CryptoPublicKeyBytes {
+		return false
+	}
+	if len(signature) != mldsa87.CryptoBytes {
+		return false
+	}
+
+	return mldsa87.Verify(ctx, message, [4627]uint8(signature), (*[pqcrypto.MLDSA87PublicKeyLength]uint8)(pubkey))
 }

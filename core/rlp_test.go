@@ -37,8 +37,8 @@ func getBlock(transactions int, dataSize int) *types.Block {
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
-		d, _    = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		address = d.GetAddress()
+		k, _    = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		address = pqcrypto.MLDSA87ToAddress(k)
 		funds   = big.NewInt(1_000_000_000_000_000_000)
 		gspec   = &Genesis{
 			Config: params.TestChainConfig,
@@ -58,7 +58,7 @@ func getBlock(transactions int, dataSize int) *types.Block {
 						GasFeeCap: b.header.BaseFee,
 						Data:      make([]byte, dataSize),
 					})
-					signedTx, _ := types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, d)
+					signedTx, _ := types.SignTx(tx, types.ShanghaiSigner{ChainId: big.NewInt(1)}, k)
 					b.AddTx(signedTx)
 				}
 

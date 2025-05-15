@@ -22,10 +22,9 @@ import (
 	"path/filepath"
 
 	"github.com/google/uuid"
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
-	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/urfave/cli/v2"
 )
@@ -73,17 +72,17 @@ If you want to encrypt an existing private key, it can be specified by setting
 			utils.Fatalf("Error checking if keyfile exists: %v", err)
 		}
 
-		var dilithiumKey *dilithium.Dilithium
+		var mlDSA87Key *ml_dsa_87.MLDSA87
 		var err error
 		if file := ctx.String(privateKeyFlag.Name); file != "" {
 			// Load private key from file.
-			dilithiumKey, err = pqcrypto.LoadDilithium(file)
+			mlDSA87Key, err = pqcrypto.LoadMLDSA87(file)
 			if err != nil {
 				utils.Fatalf("Can't load private key: %v", err)
 			}
 		} else {
 			// If not loaded, generate random.
-			dilithiumKey, err = pqcrypto.GenerateDilithiumKey()
+			mlDSA87Key, err = pqcrypto.GenerateMLDSA87Key()
 			if err != nil {
 				utils.Fatalf("Failed to generate random private key: %v", err)
 			}
@@ -95,9 +94,9 @@ If you want to encrypt an existing private key, it can be specified by setting
 			utils.Fatalf("Failed to generate random uuid: %v", err)
 		}
 		key := &keystore.Key{
-			Id:        UUID,
-			Address:   common.Address(dilithiumKey.GetAddress()),
-			Dilithium: dilithiumKey,
+			Id:      UUID,
+			Address: pqcrypto.MLDSA87ToAddress(mlDSA87Key),
+			MLDSA87: mlDSA87Key,
 		}
 
 		// Encrypt key with passphrase.

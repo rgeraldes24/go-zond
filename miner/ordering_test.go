@@ -22,11 +22,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/txpool"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 )
 
 func TestTransactionPriceNonceSort1559(t *testing.T) {
@@ -41,9 +42,9 @@ func TestTransactionPriceNonceSort1559(t *testing.T) {
 // the same account.
 func testTransactionPriceNonceSort(t *testing.T, baseFee *big.Int) {
 	// Generate a batch of accounts to start with
-	keys := make([]*dilithium.Dilithium, 25)
+	keys := make([]*ml_dsa_87.MLDSA87, 25)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 	}
 	signer := types.LatestSignerForChainID(common.Big1)
 
@@ -51,7 +52,7 @@ func testTransactionPriceNonceSort(t *testing.T, baseFee *big.Int) {
 	groups := map[common.Address][]*txpool.LazyTransaction{}
 	expectedCount := 0
 	for start, key := range keys {
-		addr := key.GetAddress()
+		addr := pqcrypto.MLDSA87ToAddress(key)
 		count := 25
 		for i := 0; i < 25; i++ {
 			var tx *types.Transaction
@@ -125,16 +126,16 @@ func testTransactionPriceNonceSort(t *testing.T, baseFee *big.Int) {
 func TestTransactionTimeSort(t *testing.T) {
 	t.Parallel()
 	// Generate a batch of accounts to start with
-	keys := make([]*dilithium.Dilithium, 5)
+	keys := make([]*ml_dsa_87.MLDSA87, 5)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 	}
 	signer := types.ShanghaiSigner{ChainId: big.NewInt(0)}
 
 	// Generate a batch of transactions with overlapping prices, but different creation times
 	groups := map[common.Address][]*txpool.LazyTransaction{}
 	for start, key := range keys {
-		addr := key.GetAddress()
+		addr := pqcrypto.MLDSA87ToAddress(key)
 
 		tx, _ := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: 0, To: &common.Address{}, Value: big.NewInt(100), Gas: 100, Data: nil}), signer, key)
 		tx.SetTime(time.Unix(0, int64(len(keys)-start)))

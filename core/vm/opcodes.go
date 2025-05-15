@@ -64,7 +64,8 @@ const (
 
 // 0x20 range - crypto.
 const (
-	KECCAK256 OpCode = 0x20
+	KECCAK256     OpCode = 0x20
+	MLDSA87VERIFY OpCode = 0x21
 )
 
 // 0x30 range - closure state.
@@ -249,7 +250,8 @@ var opCodeToString = map[OpCode]string{
 	MULMOD: "MULMOD",
 
 	// 0x20 range - crypto.
-	KECCAK256: "KECCAK256",
+	KECCAK256:     "KECCAK256",
+	MLDSA87VERIFY: "MLDSA87VERIFY",
 
 	// 0x30 range - closure state.
 	ADDRESS:        "ADDRESS",

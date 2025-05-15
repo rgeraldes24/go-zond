@@ -217,7 +217,7 @@ func BenchmarkEncodeBlock(b *testing.B) {
 
 func makeBenchBlock() *Block {
 	var (
-		key, _   = pqcrypto.GenerateDilithiumKey()
+		key, _   = pqcrypto.GenerateMLDSA87Key()
 		txs      = make([]*Transaction, 70)
 		receipts = make([]*Receipt, len(txs))
 		signer   = LatestSigner(params.TestChainConfig)

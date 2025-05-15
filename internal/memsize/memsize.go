@@ -20,7 +20,7 @@ type MemStats struct {
 func GetMemoryUsage() uint64 {
 	// Get process memory info
 	pid := os.Getpid()
-	
+
 	// Platform-specific implementations
 	switch runtime.GOOS {
 	case "windows":
@@ -82,10 +82,10 @@ func NewMemoryPool() *MemoryPool {
 func (p *MemoryPool) UpdateStats() {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	
+
 	// Get current memory usage
 	currentUsage := GetMemoryUsage()
-	
+
 	// Update stats with current values
 	p.stats = MemStats{
 		Alloc:      currentUsage,
@@ -100,4 +100,4 @@ func (p *MemoryPool) GetStats() MemStats {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	return p.stats
-} 
+}

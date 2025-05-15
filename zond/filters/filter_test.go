@@ -118,8 +118,8 @@ func TestFilters(t *testing.T) {
 		db           = rawdb.NewMemoryDatabase()
 		backend, sys = newTestFilterSystem(t, db, Config{})
 		// Sender account
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		addr    = key1.GetAddress()
+		key1, _ = pqcrypto.HexToMLDSA87("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		addr    = pqcrypto.MLDSA87ToAddress(key1)
 		signer  = types.NewShanghaiSigner(big.NewInt(1))
 		// Logging contract
 		contract  = common.Address{0xfe}

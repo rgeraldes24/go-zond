@@ -29,7 +29,7 @@ import (
 	"math/big"
 	"os"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/rlp"
@@ -267,9 +267,9 @@ func GenerateKey() (*ecdsa.PrivateKey, error) {
 	return ecdsa.GenerateKey(S256(), rand.Reader)
 }
 
-// GenerateDilihtiumKey generates a new private key.
-func GenerateDilithiumKey() (*dilithium.Dilithium, error) {
-	return dilithium.New()
+// GenerateMLDSA87Key generates a new private key.
+func GenerateMLDSA87Key() (*ml_dsa_87.MLDSA87, error) {
+	return ml_dsa_87.New()
 }
 
 // ValidateSignatureValues verifies whether the signature values are valid with

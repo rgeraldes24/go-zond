@@ -22,7 +22,7 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/accounts/external"
 	"github.com/theQRL/go-zond/accounts/keystore"
@@ -48,7 +48,7 @@ func NewTransactorWithChainID(keyin io.Reader, passphrase string, chainID *big.I
 	if err != nil {
 		return nil, err
 	}
-	return NewKeyedTransactorWithChainID(key.Dilithium, chainID)
+	return NewKeyedTransactorWithChainID(key.MLDSA87, chainID)
 }
 
 // NewKeyStoreTransactorWithChainID is a utility method to easily create a transaction signer from
@@ -80,8 +80,8 @@ func NewKeyStoreTransactorWithChainID(keystore *keystore.KeyStore, account accou
 
 // NewKeyedTransactorWithChainID is a utility method to easily create a transaction signer
 // from a single private key.
-func NewKeyedTransactorWithChainID(d *dilithium.Dilithium, chainID *big.Int) (*TransactOpts, error) {
-	keyAddr := d.GetAddress()
+func NewKeyedTransactorWithChainID(k *ml_dsa_87.MLDSA87, chainID *big.Int) (*TransactOpts, error) {
+	keyAddr := pqcrypto.MLDSA87ToAddress(k)
 	if chainID == nil {
 		return nil, ErrNoChainID
 	}
@@ -92,11 +92,13 @@ func NewKeyedTransactorWithChainID(d *dilithium.Dilithium, chainID *big.Int) (*T
 			if address != keyAddr {
 				return nil, ErrNotAuthorized
 			}
-			signature, err := pqcrypto.Sign(signer.Hash(tx).Bytes(), d)
+			// TODO(rgeraldes24)
+			ctx := []byte{}
+			signature, err := pqcrypto.Sign(ctx, signer.Hash(tx).Bytes(), k)
 			if err != nil {
 				return nil, err
 			}
-			pk := d.GetPK()
+			pk := k.GetPK()
 			return tx.WithSignatureAndPublicKey(signer, signature, pk[:])
 		},
 		Context: context.Background(),

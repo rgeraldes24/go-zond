@@ -75,8 +75,8 @@ func (tx *DynamicFeeTx) copy() TxData {
 		ChainID:    new(big.Int),
 		GasTipCap:  new(big.Int),
 		GasFeeCap:  new(big.Int),
-		PublicKey:  make([]byte, pqcrypto.DilithiumPublicKeyLength),
-		Signature:  make([]byte, pqcrypto.DilithiumSignatureLength),
+		PublicKey:  make([]byte, pqcrypto.MLDSA87PublicKeyLength),
+		Signature:  make([]byte, pqcrypto.MLDSA87SignatureLength),
 	}
 	copy(cpy.AccessList, tx.AccessList)
 	if tx.Value != nil {
@@ -92,10 +92,10 @@ func (tx *DynamicFeeTx) copy() TxData {
 		cpy.GasFeeCap.Set(tx.GasFeeCap)
 	}
 	if tx.PublicKey != nil {
-		copy(cpy.PublicKey[:pqcrypto.DilithiumPublicKeyLength], tx.PublicKey)
+		copy(cpy.PublicKey[:pqcrypto.MLDSA87PublicKeyLength], tx.PublicKey)
 	}
 	if tx.Signature != nil {
-		copy(cpy.Signature[:pqcrypto.DilithiumSignatureLength], tx.Signature)
+		copy(cpy.Signature[:pqcrypto.MLDSA87SignatureLength], tx.Signature)
 	}
 	return cpy
 }

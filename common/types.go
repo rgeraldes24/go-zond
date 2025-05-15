@@ -37,7 +37,7 @@ const (
 	// HashLength is the expected length of the hash
 	HashLength = 32
 	// AddressLength is the expected length of the address
-	AddressLength = 20
+	AddressLength = 24
 )
 
 var (
@@ -210,7 +210,7 @@ func (h UnprefixedHash) MarshalText() ([]byte, error) {
 
 /////////// Address
 
-// Address represents the 20 byte address of a Zond account.
+// Address represents the 24 byte address of a Zond account.
 type Address [AddressLength]byte
 
 // BytesToAddress returns Address with value b.
