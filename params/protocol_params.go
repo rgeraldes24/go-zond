@@ -17,10 +17,10 @@
 package params
 
 const (
-	GasLimitBoundDivisor uint64 = 1024               // The bound divisor of the gas limit, used in update calculations.
-	MinGasLimit          uint64 = 5000               // Minimum the gas limit may ever be.
-	MaxGasLimit          uint64 = 20000000           // Maximum the gas limit
-	GenesisGasLimit      uint64 = 4712388            // Gas limit of the Genesis block.
+	GasLimitBoundDivisor uint64 = 1024     // The bound divisor of the gas limit, used in update calculations.
+	MinGasLimit          uint64 = 5000     // Minimum the gas limit may ever be.
+	MaxGasLimit          uint64 = 20000000 // Maximum the gas limit
+	GenesisGasLimit      uint64 = 4712388  // Gas limit of the Genesis block.
 
 	MaximumExtraDataSize  uint64 = 32    // Maximum size extra data may be after Genesis.
 	SloadGas              uint64 = 50    // Multiplied by the number of 32-byte words that are copied (round up) for any *COPY operation and added.
@@ -35,7 +35,8 @@ const (
 
 	Keccak256Gas     uint64 = 30 // Once per KECCAK256 operation.
 	Keccak256WordGas uint64 = 6  // Once per word of the KECCAK256 operation's data.
-	InitCodeWordGas  uint64 = 2  // Once per word of the init code when creating a contract.
+	MLDSA87VerifyGas uint64 = 5000
+	InitCodeWordGas  uint64 = 2 // Once per word of the init code when creating a contract.
 
 	SstoreSentryGasEIP2200            uint64 = 2300  // Minimum gas required to be present for an SSTORE call, not consumed
 	SstoreSetGasEIP2200               uint64 = 20000 // Once per SSTORE operation from clean zero to non-zero

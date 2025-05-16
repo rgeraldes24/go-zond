@@ -25,9 +25,11 @@ import (
 	"testing"
 
 	"github.com/holiman/uint256"
+	"github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
 )
 
@@ -45,14 +47,6 @@ type twoOperandParams struct {
 var alphabetSoup = "ABCDEF090807060504030201ffffffffffffffffffffffffffffffffffffffff"
 var commonParams []*twoOperandParams
 var twoOpMethods map[string]executionFunc
-
-type contractRef struct {
-	addr common.Address
-}
-
-func (c contractRef) Address() common.Address {
-	return c.addr
-}
 
 func init() {
 	// Params is a list of common edgecases that should be used for some common tests
@@ -699,5 +693,83 @@ func TestRandom(t *testing.T) {
 		if actual.Cmp(expected) != 0 {
 			t.Errorf("Testcase %v: expected  %x, got %x", tt.name, expected, actual)
 		}
+	}
+}
+
+func TestOpMLDSA87Verify(t *testing.T) {
+	var (
+		env            = NewZVM(BlockContext{}, TxContext{}, nil, params.TestChainConfig, Config{})
+		stack          = newstack()
+		zvmInterpreter = env.interpreter
+	)
+
+	// valid signature case
+	key, err := ml_dsa_87.New()
+	if err != nil {
+		t.Fatalf("Failed to generate ML-DSA-87 keys: %v", err)
+	}
+
+	message := []byte("test message")
+	signCtx := []byte{}
+
+	signature, err := pqcrypto.Sign(signCtx, message, key)
+	if err != nil {
+		t.Fatalf("Failed to sign the message: %v", err)
+	}
+
+	msgHash := common.BytesToHash(message)
+	publicKey := key.GetPK()
+	publicKeyItem := new(uint256.Int).SetBytes(publicKey[:])
+	signatureItem := new(uint256.Int).SetBytes(signature[:])
+	signCtxItem := new(uint256.Int).SetBytes(signCtx)
+
+	msgHashItem, overflow := uint256.FromBig(msgHash.Big())
+	if overflow {
+		t.Errorf("Invalid overflow")
+	}
+
+	stack.push(msgHashItem)
+	stack.push(publicKeyItem)
+	stack.push(signatureItem)
+	stack.push(signCtxItem)
+
+	opMLDSA87Verify(nil, zvmInterpreter, &ScopeContext{nil, stack, nil})
+	result := stack.pop()
+	if result.Uint64() != 1 {
+		t.Errorf("Verification failed for valid signature")
+	}
+
+	// invalid signature case
+	signature[0] ^= 0x01 // Flip a bit to invalidate
+
+	stack.push(msgHashItem)
+	stack.push(publicKeyItem)
+	stack.push(new(uint256.Int).SetBytes(signature[:]))
+	stack.push(signCtxItem)
+
+	opMLDSA87Verify(nil, zvmInterpreter, &ScopeContext{nil, stack, nil})
+	result = stack.pop()
+	if result.Uint64() != 0 {
+		t.Errorf("Verification succeeded for invalid signature")
+	}
+}
+
+func BenchmarkOpMLDSA87Verify(bench *testing.B) {
+	var (
+		env            = NewZVM(BlockContext{}, TxContext{}, nil, params.TestChainConfig, Config{})
+		stack          = newstack()
+		mem            = NewMemory()
+		zvmInterpreter = NewZVMInterpreter(env)
+	)
+	env.interpreter = zvmInterpreter
+	mem.Resize(32)
+	pc := uint64(0)
+	start := new(uint256.Int)
+
+	bench.ResetTimer()
+	for i := 0; i < bench.N; i++ {
+		stack.push(uint256.NewInt(32))
+		stack.push(start)
+		opMLDSA87Verify(&pc, zvmInterpreter, &ScopeContext{mem, stack, nil})
 	}
 }

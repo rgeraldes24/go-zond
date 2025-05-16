@@ -217,6 +217,13 @@ func newShanghaiInstructionSet() JumpTable {
 			maxStack:    maxStack(2, 1),
 			memorySize:  memoryKeccak256,
 		},
+		MLDSA87VERIFY: {
+			execute:     opMLDSA87Verify,
+			constantGas: params.MLDSA87VerifyGas,
+			minStack:    minStack(4, 1),
+			maxStack:    maxStack(4, 1),
+			memorySize:  memoryMLDSA87Verify,
+		},
 		ADDRESS: {
 			execute:     opAddress,
 			constantGas: GasQuickStep,
