@@ -2,9 +2,9 @@
     "wikipage_test_vector_scrypt": {
         "json": {
             "crypto" : {
-                "cipher" : "aes-128-ctr",
+                "cipher" : "aes-256-gcm",
                 "cipherparams" : {
-                    "iv" : "83dbcc02d8ccb40e466191a123791e0e"
+                    "nonce" : "83dbcc02d8ccb40e466191a123791e0e"
                 },
                 "ciphertext" : "d172bf743a674da9cdad04534d56926ef8358534d458fffccd4e6ad2fbde479c",
                 "kdf" : "scrypt",
@@ -26,9 +26,9 @@
     "wikipage_test_vector_pbkdf2": {
         "json": {
             "crypto" : {
-                "cipher" : "aes-128-ctr",
+                "cipher" : "aes-256-gcm",
                 "cipherparams" : {
-                    "iv" : "6087dab2f9fdbbfaddc31a909735c1e6"
+                    "nonce" : "6087dab2f9fdbbfaddc31a909735c1e6"
                 },
                 "ciphertext" : "5318b4d5bcd28de64ee5559e671353e16f075ecae9f99c7a79a38af5f869aa46",
                 "kdf" : "pbkdf2",
@@ -49,9 +49,9 @@
     "31_byte_key": {
         "json": {
             "crypto" : {
-                "cipher" : "aes-128-ctr",
+                "cipher" : "aes-256-gcm",
                 "cipherparams" : {
-                    "iv" : "e0c41130a323adc1446fc82f724bca2f"
+                    "nonce" : "e0c41130a323adc1446fc82f724bca2f"
                 },
                 "ciphertext" : "9517cd5bdbe69076f9bf5057248c6c050141e970efa36ce53692d5d59a3984",
                 "kdf" : "scrypt",
@@ -73,9 +73,9 @@
     "30_byte_key": {
         "json": {
             "crypto" : {
-                "cipher" : "aes-128-ctr",
+                "cipher" : "aes-256-gcm",
                 "cipherparams" : {
-                    "iv" : "3ca92af36ad7c2cd92454c59cea5ef00"
+                    "nonce" : "3ca92af36ad7c2cd92454c59cea5ef00"
                 },
                 "ciphertext" : "108b7d34f3442fc26ab1ab90ca91476ba6bfa8c00975a49ef9051dc675aa",
                 "kdf" : "scrypt",

@@ -27,8 +27,6 @@ package keystore
 
 import (
 	"bytes"
-	"crypto/aes"
-	"crypto/cipher"
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
@@ -42,6 +40,7 @@ import (
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/cypher"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"golang.org/x/crypto/pbkdf2"
 	"golang.org/x/crypto/scrypt"
@@ -147,13 +146,14 @@ func EncryptDataV3(data, auth []byte, scryptN, scryptP int) (CryptoJSON, error) 
 	if err != nil {
 		return CryptoJSON{}, err
 	}
+	// TODO(rgeraldes24)
 	encryptKey := derivedKey[:16]
 
-	iv := make([]byte, aes.BlockSize) // 16
-	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+	nonce := make([]byte, 12)
+	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
 		panic("reading from crypto/rand failed: " + err.Error())
 	}
-	cipherText, err := aesCTRXOR(encryptKey, data, iv)
+	cipherText, err := cypher.EncryptGCM(nil, encryptKey, nonce, data, nil)
 	if err != nil {
 		return CryptoJSON{}, err
 	}
@@ -166,11 +166,11 @@ func EncryptDataV3(data, auth []byte, scryptN, scryptP int) (CryptoJSON, error) 
 	scryptParamsJSON["dklen"] = scryptDKLen
 	scryptParamsJSON["salt"] = hex.EncodeToString(salt)
 	cipherParamsJSON := cipherparamsJSON{
-		IV: hex.EncodeToString(iv),
+		Nonce: hex.EncodeToString(nonce),
 	}
 
 	cryptoStruct := CryptoJSON{
-		Cipher:       "aes-128-ctr",
+		Cipher:       "aes-256-gmc",
 		CipherText:   hex.EncodeToString(cipherText),
 		CipherParams: cipherParamsJSON,
 		KDF:          keyHeaderKDF,
@@ -233,7 +233,7 @@ func DecryptKey(keyjson []byte, auth string) (*Key, error) {
 }
 
 func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
-	if cryptoJson.Cipher != "aes-128-ctr" {
+	if cryptoJson.Cipher != "aes-256-gmc" {
 		return nil, fmt.Errorf("cipher not supported: %v", cryptoJson.Cipher)
 	}
 	mac, err := hex.DecodeString(cryptoJson.MAC)
@@ -241,7 +241,7 @@ func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
 		return nil, err
 	}
 
-	iv, err := hex.DecodeString(cryptoJson.CipherParams.IV)
+	nonce, err := hex.DecodeString(cryptoJson.CipherParams.Nonce)
 	if err != nil {
 		return nil, err
 	}
@@ -261,7 +261,7 @@ func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
 		return nil, ErrDecrypt
 	}
 
-	plainText, err := aesCTRXOR(derivedKey[:16], cipherText, iv)
+	plainText, err := cypher.DecryptGCM(derivedKey, nonce, cipherText, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -319,52 +319,4 @@ func ensureInt(x interface{}) int {
 		res = int(x.(float64))
 	}
 	return res
-}
-
-func aesCTRXOR(key, inText, iv []byte) ([]byte, error) {
-	// AES-128 is selected due to size of encryptKey.
-	aesBlock, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-	stream := cipher.NewCTR(aesBlock, iv)
-	outText := make([]byte, len(inText))
-	stream.XORKeyStream(outText, inText)
-	return outText, err
-}
-
-func aesCBCDecrypt(key, cipherText, iv []byte) ([]byte, error) {
-	aesBlock, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-	decrypter := cipher.NewCBCDecrypter(aesBlock, iv)
-	paddedPlaintext := make([]byte, len(cipherText))
-	decrypter.CryptBlocks(paddedPlaintext, cipherText)
-	plaintext := pkcs7Unpad(paddedPlaintext)
-	if plaintext == nil {
-		return nil, ErrDecrypt
-	}
-	return plaintext, err
-}
-
-// From https://leanpub.com/gocrypto/read#leanpub-auto-block-cipher-modes
-func pkcs7Unpad(in []byte) []byte {
-	if len(in) == 0 {
-		return nil
-	}
-
-	padding := in[len(in)-1]
-	if int(padding) > len(in) || padding > aes.BlockSize {
-		return nil
-	} else if padding == 0 {
-		return nil
-	}
-
-	for i := len(in) - 1; i > len(in)-int(padding)-1; i-- {
-		if in[i] != padding {
-			return nil
-		}
-	}
-	return in[:len(in)-int(padding)]
 }

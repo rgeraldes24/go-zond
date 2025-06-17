@@ -76,7 +76,7 @@ type CryptoJSON struct {
 }
 
 type cipherparamsJSON struct {
-	IV string `json:"iv"`
+	Nonce string `json:"nonce"`
 }
 
 func (k *Key) MarshalJSON() (j []byte, err error) {
