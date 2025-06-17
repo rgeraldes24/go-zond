@@ -26,7 +26,6 @@ The crypto is documented at https://github.com/ethereum/wiki/wiki/Web3-Secret-St
 package keystore
 
 import (
-	"bytes"
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
@@ -39,7 +38,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/crypto/cypher"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"golang.org/x/crypto/pbkdf2"
@@ -142,22 +140,21 @@ func EncryptDataV3(data, auth []byte, scryptN, scryptP int) (CryptoJSON, error) 
 	if _, err := io.ReadFull(rand.Reader, salt); err != nil {
 		panic("reading from crypto/rand failed: " + err.Error())
 	}
+
+	iv := make([]byte, 12)
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+		panic("reading from crypto/rand failed: " + err.Error())
+	}
+
 	derivedKey, err := scrypt.Key(auth, salt, scryptN, scryptR, scryptP, scryptDKLen)
 	if err != nil {
 		return CryptoJSON{}, err
 	}
-	// TODO(rgeraldes24)
-	encryptKey := derivedKey[:16]
 
-	nonce := make([]byte, 12)
-	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-		panic("reading from crypto/rand failed: " + err.Error())
-	}
-	cipherText, err := cypher.EncryptGCM(nil, encryptKey, nonce, data, nil)
+	cipherText, err := cypher.EncryptGCM(nil, derivedKey, iv, data, nil)
 	if err != nil {
 		return CryptoJSON{}, err
 	}
-	mac := crypto.Keccak256(derivedKey[16:32], cipherText)
 
 	scryptParamsJSON := make(map[string]interface{}, 5)
 	scryptParamsJSON["n"] = scryptN
@@ -166,7 +163,7 @@ func EncryptDataV3(data, auth []byte, scryptN, scryptP int) (CryptoJSON, error) 
 	scryptParamsJSON["dklen"] = scryptDKLen
 	scryptParamsJSON["salt"] = hex.EncodeToString(salt)
 	cipherParamsJSON := cipherparamsJSON{
-		IV: hex.EncodeToString(nonce),
+		IV: hex.EncodeToString(iv),
 	}
 
 	cryptoStruct := CryptoJSON{
@@ -175,7 +172,6 @@ func EncryptDataV3(data, auth []byte, scryptN, scryptP int) (CryptoJSON, error) 
 		CipherParams: cipherParamsJSON,
 		KDF:          keyHeaderKDF,
 		KDFParams:    scryptParamsJSON,
-		MAC:          hex.EncodeToString(mac),
 	}
 	return cryptoStruct, nil
 }
@@ -236,10 +232,6 @@ func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
 	if cryptoJson.Cipher != "aes-256-gmc" {
 		return nil, fmt.Errorf("cipher not supported: %v", cryptoJson.Cipher)
 	}
-	mac, err := hex.DecodeString(cryptoJson.MAC)
-	if err != nil {
-		return nil, err
-	}
 
 	iv, err := hex.DecodeString(cryptoJson.CipherParams.IV)
 	if err != nil {
@@ -254,11 +246,6 @@ func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
 	derivedKey, err := getKDFKey(cryptoJson, auth)
 	if err != nil {
 		return nil, err
-	}
-
-	calculatedMAC := crypto.Keccak256(derivedKey[16:32], cipherText)
-	if !bytes.Equal(calculatedMAC, mac) {
-		return nil, ErrDecrypt
 	}
 
 	plainText, err := cypher.DecryptGCM(derivedKey, iv, cipherText, nil)

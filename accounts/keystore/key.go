@@ -72,7 +72,6 @@ type CryptoJSON struct {
 	CipherParams cipherparamsJSON       `json:"cipherparams"`
 	KDF          string                 `json:"kdf"`
 	KDFParams    map[string]interface{} `json:"kdfparams"`
-	MAC          string                 `json:"mac"`
 }
 
 type cipherparamsJSON struct {

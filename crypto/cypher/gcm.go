@@ -6,9 +6,7 @@ import (
 	"fmt"
 )
 
-const (
-	GCMNonceSize = 12
-)
+const GCMNonceSize = 12
 
 // EncryptGCM encrypts plaintext using AES-GCM with the given key and nonce. The ciphertext is
 // appended to dest, which must not overlap with plaintext.
