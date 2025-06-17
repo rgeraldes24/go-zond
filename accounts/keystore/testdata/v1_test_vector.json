@@ -4,7 +4,7 @@
             "Crypto": {
                 "cipher": "aes-256-gcm",
                 "cipherparams": {
-                    "nonce": "35337770fc2117994ecdcad026bccff4"
+                    "iv": "35337770fc2117994ecdcad026bccff4"
                 },
                 "ciphertext": "6143d3192db8b66eabd693d9c4e414dcfaee52abda451af79ccf474dafb35f1bfc7ea013aa9d2ee35969a1a2e8d752d0",
                 "kdf": "scrypt",

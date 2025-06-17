@@ -166,7 +166,7 @@ func EncryptDataV3(data, auth []byte, scryptN, scryptP int) (CryptoJSON, error) 
 	scryptParamsJSON["dklen"] = scryptDKLen
 	scryptParamsJSON["salt"] = hex.EncodeToString(salt)
 	cipherParamsJSON := cipherparamsJSON{
-		Nonce: hex.EncodeToString(nonce),
+		IV: hex.EncodeToString(nonce),
 	}
 
 	cryptoStruct := CryptoJSON{
@@ -241,7 +241,7 @@ func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
 		return nil, err
 	}
 
-	nonce, err := hex.DecodeString(cryptoJson.CipherParams.Nonce)
+	iv, err := hex.DecodeString(cryptoJson.CipherParams.IV)
 	if err != nil {
 		return nil, err
 	}
@@ -261,7 +261,7 @@ func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
 		return nil, ErrDecrypt
 	}
 
-	plainText, err := cypher.DecryptGCM(derivedKey, nonce, cipherText, nil)
+	plainText, err := cypher.DecryptGCM(derivedKey, iv, cipherText, nil)
 	if err != nil {
 		return nil, err
 	}
