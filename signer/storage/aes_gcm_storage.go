@@ -69,6 +69,7 @@ func (s *AESEncryptedStorage) Put(key, value string) {
 
 	// The 'additionalData' is used to place the (plaintext) KV-store key into the V,
 	// to prevent the possibility to alter a K, or swap two entries in the KV store with each other.
+	// The resulting ciphertext is 16 bytes longer than plaintext because it contains an authentication tag.
 	ciphertext, err := cypher.EncryptGCM(nil, s.key, nonce, []byte(value), []byte(key))
 	if err != nil {
 		log.Warn("Failed to encrypt entry", "err", err)

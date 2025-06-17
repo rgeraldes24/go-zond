@@ -10,9 +10,8 @@ const (
 	GCMNonceSize = 12
 )
 
-// EncryptGCM encrypts pt using AES-GCM with the given key and nonce. The ciphertext is
-// appended to dest, which must not overlap with plaintext. The resulting ciphertext is 16
-// bytes longer than plaintext because it contains an authentication tag.
+// EncryptGCM encrypts plaintext using AES-GCM with the given key and nonce. The ciphertext is
+// appended to dest, which must not overlap with plaintext.
 func EncryptGCM(dest, key, nonce, plaintext, additionalData []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -25,7 +24,7 @@ func EncryptGCM(dest, key, nonce, plaintext, additionalData []byte) ([]byte, err
 	return aesgcm.Seal(dest, nonce, plaintext, additionalData), nil
 }
 
-// decryptGCM decrypts ct using AES-GCM with the given key and nonce.
+// DecryptGCM decrypts cyphertext using AES-GCM with the given key and nonce.
 func DecryptGCM(key, nonce, cyphertext, additionalData []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
