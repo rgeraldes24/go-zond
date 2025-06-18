@@ -91,18 +91,18 @@ func TestKeyStorePassphraseDecryptionFail(t *testing.T) {
 
 // Test and utils for the key store tests in the Zond JSON tests;
 // testdataKeyStoreTests/basic_tests.json
-type KeyStoreTestV3 struct {
-	Json     encryptedKeyJSONV3
+type KeyStoreTestV1 struct {
+	Json     encryptedKeyJSONV1
 	Password string
-	Priv     string
+	Seed     string
 }
 
 // TODO(rgeraldes24)
 /*
-func TestV3_PBKDF2_1(t *testing.T) {
+func TestV1_PBKDF2_1(t *testing.T) {
 	t.Parallel()
-	tests := loadKeyStoreTestV3("testdata/v3_test_vector.json", t)
-	testDecryptV3(tests["wikipage_test_vector_pbkdf2"], t)
+	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
+	testDecryptV1(tests["wikipage_test_vector_pbkdf2"], t)
 }
 */
 
@@ -114,56 +114,56 @@ func skipIfSubmoduleMissing(t *testing.T) {
 	}
 }
 
-func TestV3_PBKDF2_2(t *testing.T) {
+func TestV1_PBKDF2_2(t *testing.T) {
 	skipIfSubmoduleMissing(t)
 	t.Parallel()
-	tests := loadKeyStoreTestV3(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV3(tests["test1"], t)
+	tests := loadKeyStoreTestV1(filepath.Join(testsSubmodule, "basic_tests.json"), t)
+	testDecryptV1(tests["test1"], t)
 }
 
-func TestV3_PBKDF2_3(t *testing.T) {
+func TestV1_PBKDF2_3(t *testing.T) {
 	skipIfSubmoduleMissing(t)
 	t.Parallel()
-	tests := loadKeyStoreTestV3(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV3(tests["python_generated_test_with_odd_iv"], t)
+	tests := loadKeyStoreTestV1(filepath.Join(testsSubmodule, "basic_tests.json"), t)
+	testDecryptV1(tests["python_generated_test_with_odd_iv"], t)
 }
 
-func TestV3_PBKDF2_4(t *testing.T) {
+func TestV1_PBKDF2_4(t *testing.T) {
 	skipIfSubmoduleMissing(t)
 	t.Parallel()
-	tests := loadKeyStoreTestV3(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV3(tests["evilnonce"], t)
+	tests := loadKeyStoreTestV1(filepath.Join(testsSubmodule, "basic_tests.json"), t)
+	testDecryptV1(tests["evilnonce"], t)
 }
 
 // TODO(rgeraldes24)
 /*
-func TestV3_Scrypt_1(t *testing.T) {
+func TestV1_Scrypt_1(t *testing.T) {
 	t.Parallel()
-	tests := loadKeyStoreTestV3("testdata/v3_test_vector.json", t)
-	testDecryptV3(tests["wikipage_test_vector_scrypt"], t)
+	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
+	testDecryptV1(tests["wikipage_test_vector_scrypt"], t)
 }
 */
 
-func TestV3_Scrypt_2(t *testing.T) {
+func TestV1_Scrypt_2(t *testing.T) {
 	skipIfSubmoduleMissing(t)
 	t.Parallel()
-	tests := loadKeyStoreTestV3(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV3(tests["test2"], t)
+	tests := loadKeyStoreTestV1(filepath.Join(testsSubmodule, "basic_tests.json"), t)
+	testDecryptV1(tests["test2"], t)
 }
 
-func testDecryptV3(test KeyStoreTestV3, t *testing.T) {
-	privBytes, _, err := decryptKeyV3(&test.Json, test.Password)
+func testDecryptV1(test KeyStoreTestV1, t *testing.T) {
+	seedBytes, _, err := decryptKeyV1(&test.Json, test.Password)
 	if err != nil {
 		t.Fatal(err)
 	}
-	privHex := hex.EncodeToString(privBytes)
-	if test.Priv != privHex {
-		t.Fatal(fmt.Errorf("Decrypted bytes not equal to test, expected %v have %v", test.Priv, privHex))
+	seedHex := hex.EncodeToString(seedBytes)
+	if test.Seed != seedHex {
+		t.Fatal(fmt.Errorf("Decrypted bytes not equal to test, expected %v have %v", test.Seed, seedHex))
 	}
 }
 
-func loadKeyStoreTestV3(file string, t *testing.T) map[string]KeyStoreTestV3 {
-	tests := make(map[string]KeyStoreTestV3)
+func loadKeyStoreTestV1(file string, t *testing.T) map[string]KeyStoreTestV1 {
+	tests := make(map[string]KeyStoreTestV1)
 	err := common.LoadJSON(file, &tests)
 	if err != nil {
 		t.Fatal(err)
@@ -173,15 +173,9 @@ func loadKeyStoreTestV3(file string, t *testing.T) map[string]KeyStoreTestV3 {
 
 // TODO(rgeraldes24)
 /*
-func TestV3_31_Byte_Key(t *testing.T) {
+func TestV1_48_Byte_Key(t *testing.T) {
 	t.Parallel()
-	tests := loadKeyStoreTestV3("testdata/v3_test_vector.json", t)
-	testDecryptV3(tests["31_byte_key"], t)
-}
-
-func TestV3_30_Byte_Key(t *testing.T) {
-	t.Parallel()
-	tests := loadKeyStoreTestV3("testdata/v3_test_vector.json", t)
-	testDecryptV3(tests["30_byte_key"], t)
+	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
+	testDecryptV1(tests["48_byte_key"], t)
 }
 */

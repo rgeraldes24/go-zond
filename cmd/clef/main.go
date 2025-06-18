@@ -1033,7 +1033,7 @@ type encryptedSeedStorage struct {
 // encryptSeed uses a similar scheme as the keystore uses, but with a different wrapping,
 // to encrypt the master seed
 func encryptSeed(seed []byte, auth []byte, scryptN, scryptP int) ([]byte, error) {
-	cryptoStruct, err := keystore.EncryptDataV3(seed, auth, scryptN, scryptP)
+	cryptoStruct, err := keystore.EncryptDataV1(seed, auth, scryptN, scryptP)
 	if err != nil {
 		return nil, err
 	}
@@ -1049,7 +1049,7 @@ func decryptSeed(keyjson []byte, auth string) ([]byte, error) {
 	if encSeed.Version != 1 {
 		log.Warn(fmt.Sprintf("unsupported encryption format of seed: %d, operation will likely fail", encSeed.Version))
 	}
-	seed, err := keystore.DecryptDataV3(encSeed.Params, auth)
+	seed, err := keystore.DecryptDataV1(encSeed.Params, auth)
 	if err != nil {
 		return nil, err
 	}

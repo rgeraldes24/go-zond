@@ -17,7 +17,7 @@
                 }
             },
             "id" : "3198bc9c-6672-5ab3-d995-4942343ae5b6",
-            "version" : 3
+            "version" : 1
         },
         "password": "testpassword",
         "priv": "7a28b5ba57c53603b0b07b56bba752f7784bf506fa95edc395f5cf6c7514fe9d"
@@ -39,35 +39,12 @@
                 }
             },
             "id" : "3198bc9c-6672-5ab3-d995-4942343ae5b6",
-            "version" : 3
+            "version" : 1
         },
         "password": "testpassword",
-        "priv": "7a28b5ba57c53603b0b07b56bba752f7784bf506fa95edc395f5cf6c7514fe9d"
+        "seed": "7a28b5ba57c53603b0b07b56bba752f7784bf506fa95edc395f5cf6c7514fe9d"
     },
-    "31_byte_key": {
-        "json": {
-            "crypto" : {
-                "cipher" : "aes-256-gcm",
-                "cipherparams" : {
-                    "iv" : "e0c41130a323adc1446fc82f724bca2f"
-                },
-                "ciphertext" : "9517cd5bdbe69076f9bf5057248c6c050141e970efa36ce53692d5d59a3984",
-                "kdf" : "scrypt",
-                "kdfparams" : {
-                    "dklen" : 32,
-                    "n" : 2,
-                    "r" : 8,
-                    "p" : 1,
-                    "salt" : "711f816911c92d649fb4c84b047915679933555030b3552c1212609b38208c63"
-                }
-            },
-            "id" : "fecfc4ce-e956-48fd-953b-30f8b52ed66c",
-            "version" : 3
-        },
-        "password": "foo",
-        "priv": "fa7b3db73dc7dfdf8c5fbdb796d741e4488628c41fc4febd9160a866ba0f35"
-    },
-    "30_byte_key": {
+    "48_byte_key": {
         "json": {
             "crypto" : {
                 "cipher" : "aes-256-gcm",
@@ -85,9 +62,9 @@
                 }
             },
             "id" : "a37e1559-5955-450d-8075-7b8931b392b2",
-            "version" : 3
+            "version" : 1
         },
         "password": "foo",
-        "priv": "81c29e8142bb6a81bef5a92bda7a8328a5c85bb2f9542e76f9b0f94fc018"
+        "seed": "81c29e8142bb6a81bef5a92bda7a8328a5c85bb2f9542e76f9b0f94fc018"
     }
 }
