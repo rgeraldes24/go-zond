@@ -3,12 +3,12 @@ The password that unlocks them is "foobar".
 
 The "good" key files which are supposed to be loadable are:
 
-- File: UTC--2024-05-27T07-48-33.872599000Z--Z20cbca9e67a94e8f5cc832b767e7a36b604bc273
-  Address: Z20CBcA9e67A94E8F5Cc832B767E7a36b604BC273
+- File: UTC--2024-05-27T07-48-33.872599000Z--Z2014d0daf1779e1319f4f93d3106d7918ba43b5a
+  Address: Z2014D0DAf1779e1319f4f93d3106D7918bA43b5A
 - File: aaa
   Address: Z206daef83fc5e0e738b80fc40b336c65fab14bf7
 - File: zzz
-  Address: Z2043e1c75dcbe80c414f82200374870705c589ef
+  Address: Z200e67b11a7af4dc6edcc7f54b32678a9e617c33
 
 The other files (including this README) are broken in various ways
 and should not be picked up by package accounts:

@@ -167,7 +167,7 @@ func EncryptDataV3(data, auth []byte, scryptN, scryptP int) (CryptoJSON, error) 
 	}
 
 	cryptoStruct := CryptoJSON{
-		Cipher:       "aes-256-gmc",
+		Cipher:       "aes-256-gcm",
 		CipherText:   hex.EncodeToString(cipherText),
 		CipherParams: cipherParamsJSON,
 		KDF:          keyHeaderKDF,
@@ -229,7 +229,7 @@ func DecryptKey(keyjson []byte, auth string) (*Key, error) {
 }
 
 func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
-	if cryptoJson.Cipher != "aes-256-gmc" {
+	if cryptoJson.Cipher != "aes-256-gcm" {
 		return nil, fmt.Errorf("cipher not supported: %v", cryptoJson.Cipher)
 	}
 
@@ -250,7 +250,7 @@ func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
 
 	plainText, err := cypher.DecryptGCM(derivedKey, iv, cipherText, nil)
 	if err != nil {
-		return nil, err
+		return nil, ErrDecrypt
 	}
 	return plainText, err
 }

@@ -50,15 +50,15 @@ func TestAccountListEmpty(t *testing.T) {
 func TestAccountList(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
 	var want = `
-Account #0: {Z20cbca9e67a94e8f5cc832b767e7a36b604bc273} keystore://{{.Datadir}}/keystore/UTC--2024-05-27T07-48-33.872599000Z--Z20cbca9e67a94e8f5cc832b767e7a36b604bc273
+Account #0: {Z2014d0daf1779e1319f4f93d3106d7918ba43b5a} keystore://{{.Datadir}}/keystore/UTC--2024-05-27T07-48-33.872599000Z--Z2014d0daf1779e1319f4f93d3106d7918ba43b5a
 Account #1: {Z206daef83fc5e0e738b80fc40b336c65fab14bf7} keystore://{{.Datadir}}/keystore/aaa
-Account #2: {Z2043e1c75dcbe80c414f82200374870705c589ef} keystore://{{.Datadir}}/keystore/zzz
+Account #2: {Z200e67b11a7af4dc6edcc7f54b32678a9e617c33} keystore://{{.Datadir}}/keystore/zzz
 `
 	if runtime.GOOS == "windows" {
 		want = `
-Account #0: {Z20cbca9e67a94e8f5cc832b767e7a36b604bc273} keystore://{{.Datadir}}\keystore\UTC--2024-05-27T07-48-33.872599000Z--Z20cbca9e67a94e8f5cc832b767e7a36b604bc273
+Account #0: {Z2014d0daf1779e1319f4f93d3106d7918ba43b5a} keystore://{{.Datadir}}\keystore\UTC--2024-05-27T07-48-33.872599000Z--Z2014d0daf1779e1319f4f93d3106d7918ba43b5a
 Account #1: {Z206daef83fc5e0e738b80fc40b336c65fab14bf7} keystore://{{.Datadir}}\keystore\aaa
-Account #2: {Z2043e1c75dcbe80c414f82200374870705c589ef} keystore://{{.Datadir}}\keystore\zzz
+Account #2: {Z200e67b11a7af4dc6edcc7f54b32678a9e617c33} keystore://{{.Datadir}}\keystore\zzz
 `
 	}
 	{
@@ -162,10 +162,10 @@ func TestAccountUpdate(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
 	gzond := runGzond(t, "account", "update",
 		"--datadir", datadir, "--lightkdf",
-		"Z2043e1c75dcbe80c414f82200374870705c589ef")
+		"Z200e67b11a7af4dc6edcc7f54b32678a9e617c33")
 	defer gzond.ExpectExit()
 	gzond.Expect(`
-Unlocking account Z2043e1c75dcbe80c414f82200374870705c589ef | Attempt 1/3
+Unlocking account Z200e67b11a7af4dc6edcc7f54b32678a9e617c33 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "1234567890"}}
 Please give a new password. Do not forget this password.
@@ -176,9 +176,9 @@ Repeat password: {{.InputLine "foobar2"}}
 
 func TestUnlockFlag(t *testing.T) {
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "Z2043e1c75dcbe80c414f82200374870705c589ef", "console", "--exec", "loadScript('testdata/empty.js')")
+		"--unlock", "Z200e67b11a7af4dc6edcc7f54b32678a9e617c33", "console", "--exec", "loadScript('testdata/empty.js')")
 	gzond.Expect(`
-Unlocking account Z2043e1c75dcbe80c414f82200374870705c589ef | Attempt 1/3
+Unlocking account Z200e67b11a7af4dc6edcc7f54b32678a9e617c33 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "1234567890"}}
 undefined
@@ -187,7 +187,7 @@ undefined
 
 	wantMessages := []string{
 		"Unlocked account",
-		"=Z2043E1C75DcBE80c414f82200374870705c589ef",
+		"=Z200E67B11A7aF4dc6edcc7f54b32678A9e617C33",
 	}
 	for _, m := range wantMessages {
 		if !strings.Contains(gzond.StderrText(), m) {
@@ -229,8 +229,8 @@ undefined
 
 	wantMessages := []string{
 		"Unlocked account",
-		"=Z20CBcA9e67A94E8F5Cc832B767E7a36b604BC273",
-		"=Z2043E1C75DcBE80c414f82200374870705c589ef",
+		"=Z2014D0DAf1779e1319f4f93d3106D7918bA43b5A",
+		"=Z200E67B11A7aF4dc6edcc7f54b32678A9e617C33",
 	}
 	for _, m := range wantMessages {
 		if !strings.Contains(gzond.StderrText(), m) {
@@ -250,8 +250,8 @@ undefined
 
 	wantMessages := []string{
 		"Unlocked account",
-		"=Z20CBcA9e67A94E8F5Cc832B767E7a36b604BC273",
-		"=Z2043E1C75DcBE80c414f82200374870705c589ef",
+		"=Z2014D0DAf1779e1319f4f93d3106D7918bA43b5A",
+		"=Z200E67B11A7aF4dc6edcc7f54b32678A9e617C33",
 	}
 	for _, m := range wantMessages {
 		if !strings.Contains(gzond.StderrText(), m) {

@@ -28,7 +28,7 @@ import (
 func TestImportRaw(t *testing.T) {
 	t.Parallel()
 	keyPath := filepath.Join(os.TempDir(), fmt.Sprintf("%v-tempkey.test", t.Name()))
-	os.WriteFile(keyPath, []byte("f29f58aff0b00de2844f7e20bd9eeaacc379150043beeb328335817512b29fbb7184da84a092f842b2a06d72a24a5d28"), 0777)
+	os.WriteFile(keyPath, []byte("9a986cb46b804d8379b7e95aeeebc0ec078404a0b3ebc93ebe6039af86d78a2f3ec37e770754f13276720e922a744b30"), 0777)
 	t.Cleanup(func() { os.Remove(keyPath) })
 
 	t.Run("happy-path", func(t *testing.T) {
@@ -37,7 +37,7 @@ func TestImportRaw(t *testing.T) {
 		clef := runClef(t, "--suppress-bootwarn", "--lightkdf", "importraw", keyPath)
 		clef.input("myverylongpassword").input("myverylongpassword")
 		if out := string(clef.Output()); !strings.Contains(out,
-			"Key imported:\n  Address Z20CBcA9e67A94E8F5Cc832B767E7a36b604BC273") {
+			"Key imported:\n  Address Z2014D0DAf1779e1319f4f93d3106D7918bA43b5A") {
 			t.Logf("Output\n%v", out)
 			t.Error("Failure")
 		}
@@ -69,7 +69,7 @@ func TestImportRaw(t *testing.T) {
 func TestListAccounts(t *testing.T) {
 	t.Parallel()
 	keyPath := filepath.Join(os.TempDir(), fmt.Sprintf("%v-tempkey.test", t.Name()))
-	os.WriteFile(keyPath, []byte("f29f58aff0b00de2844f7e20bd9eeaacc379150043beeb328335817512b29fbb7184da84a092f842b2a06d72a24a5d28"), 0777)
+	os.WriteFile(keyPath, []byte("9a986cb46b804d8379b7e95aeeebc0ec078404a0b3ebc93ebe6039af86d78a2f3ec37e770754f13276720e922a744b30"), 0777)
 	t.Cleanup(func() { os.Remove(keyPath) })
 
 	t.Run("no-accounts", func(t *testing.T) {
@@ -87,7 +87,7 @@ func TestListAccounts(t *testing.T) {
 		clef.input("myverylongpassword").input("myverylongpassword").WaitExit()
 		// Secondly, do a listing, using the same datadir
 		clef = runWithKeystore(t, clef.Datadir, "--suppress-bootwarn", "--lightkdf", "list-accounts")
-		if out := string(clef.Output()); !strings.Contains(out, "Z20CBcA9e67A94E8F5Cc832B767E7a36b604BC273 (keystore:") {
+		if out := string(clef.Output()); !strings.Contains(out, "Z2014D0DAf1779e1319f4f93d3106D7918bA43b5A (keystore:") {
 			t.Logf("Output\n%v", out)
 			t.Error("Failure")
 		}
@@ -98,7 +98,7 @@ func TestListAccounts(t *testing.T) {
 func TestListWallets(t *testing.T) {
 	t.Parallel()
 	keyPath := filepath.Join(os.TempDir(), fmt.Sprintf("%v-tempkey.test", t.Name()))
-	os.WriteFile(keyPath, []byte("f29f58aff0b00de2844f7e20bd9eeaacc379150043beeb328335817512b29fbb7184da84a092f842b2a06d72a24a5d28"), 0777)
+	os.WriteFile(keyPath, []byte("9a986cb46b804d8379b7e95aeeebc0ec078404a0b3ebc93ebe6039af86d78a2f3ec37e770754f13276720e922a744b30"), 0777)
 	t.Cleanup(func() { os.Remove(keyPath) })
 
 	t.Run("no-accounts", func(t *testing.T) {
@@ -116,7 +116,7 @@ func TestListWallets(t *testing.T) {
 		clef.input("myverylongpassword").input("myverylongpassword").WaitExit()
 		// Secondly, do a listing, using the same datadir
 		clef = runWithKeystore(t, clef.Datadir, "--suppress-bootwarn", "--lightkdf", "list-wallets")
-		if out := string(clef.Output()); !strings.Contains(out, "Account 0: Z20CBcA9e67A94E8F5Cc832B767E7a36b604BC273") {
+		if out := string(clef.Output()); !strings.Contains(out, "Account 0: Z2014D0DAf1779e1319f4f93d3106D7918bA43b5A") {
 			t.Logf("Output\n%v", out)
 			t.Error("Failure")
 		}
