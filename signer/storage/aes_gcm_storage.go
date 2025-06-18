@@ -27,8 +27,8 @@ import (
 )
 
 type storedCredential struct {
-	// The nonce
-	Nonce []byte `json:"nonce"`
+	// The iv
+	Iv []byte `json:"iv"`
 	// The ciphertext
 	CipherText []byte `json:"c"`
 }
@@ -76,7 +76,7 @@ func (s *AESEncryptedStorage) Put(key, value string) {
 		return
 	}
 
-	encrypted := storedCredential{Nonce: nonce, CipherText: ciphertext}
+	encrypted := storedCredential{Iv: nonce, CipherText: ciphertext}
 	data[key] = encrypted
 	if err = s.writeEncryptedStorage(data); err != nil {
 		log.Warn("Failed to write entry", "err", err)
@@ -99,7 +99,7 @@ func (s *AESEncryptedStorage) Get(key string) (string, error) {
 		log.Warn("Key does not exist", "key", key)
 		return "", ErrNotFound
 	}
-	entry, err := cypher.DecryptGCM(s.key, encrypted.Nonce, encrypted.CipherText, []byte(key))
+	entry, err := cypher.DecryptGCM(s.key, encrypted.Iv, encrypted.CipherText, []byte(key))
 	if err != nil {
 		log.Warn("Failed to decrypt key", "key", key)
 		return "", err
