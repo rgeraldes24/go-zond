@@ -61,8 +61,8 @@ func (s *AESEncryptedStorage) Put(key, value string) {
 		return
 	}
 
-	nonce := make([]byte, cypher.GCMNonceSize)
-	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
+	iv := make([]byte, cypher.GCMNonceSize)
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		log.Warn("Failed to generate secure random number", "err", err, "file", s.filename)
 		return
 	}
@@ -70,13 +70,13 @@ func (s *AESEncryptedStorage) Put(key, value string) {
 	// The 'additionalData' is used to place the (plaintext) KV-store key into the V,
 	// to prevent the possibility to alter a K, or swap two entries in the KV store with each other.
 	// The resulting ciphertext is 16 bytes longer than plaintext because it contains an authentication tag.
-	ciphertext, err := cypher.EncryptGCM(nil, s.key, nonce, []byte(value), []byte(key))
+	ciphertext, err := cypher.EncryptGCM(nil, s.key, iv, []byte(value), []byte(key))
 	if err != nil {
 		log.Warn("Failed to encrypt entry", "err", err)
 		return
 	}
 
-	encrypted := storedCredential{Iv: nonce, CipherText: ciphertext}
+	encrypted := storedCredential{Iv: iv, CipherText: ciphertext}
 	data[key] = encrypted
 	if err = s.writeEncryptedStorage(data); err != nil {
 		log.Warn("Failed to write entry", "err", err)

@@ -141,7 +141,7 @@ func EncryptDataV3(data, auth []byte, scryptN, scryptP int) (CryptoJSON, error) 
 		panic("reading from crypto/rand failed: " + err.Error())
 	}
 
-	iv := make([]byte, 12)
+	iv := make([]byte, cypher.GCMNonceSize)
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		panic("reading from crypto/rand failed: " + err.Error())
 	}

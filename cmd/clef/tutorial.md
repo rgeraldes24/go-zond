@@ -177,7 +177,7 @@ drwxr-x--x 3 user user 4096 Jul  1 13:45 ..
 -rw------- 1 user user  159 Jul  1 13:25 config.json
 
 $ cat ~/.clef/02f90c0603f4f2f60188/config.json
-{"ruleset_sha256":{"nonce":"SWWEtnl+R+I+wfG7","c":"I3fjmwmamxVcfGax7D0MdUOL29/rBWcs73WBILmYK0o1CrX7wSMc3y37KsmtlZUAjp0oItYq01Ow8VGUOzilG91tDHInB5YHNtm/YkufEbo="}}
+{"ruleset_sha256":{"iv":"SWWEtnl+R+I+wfG7","c":"I3fjmwmamxVcfGax7D0MdUOL29/rBWcs73WBILmYK0o1CrX7wSMc3y37KsmtlZUAjp0oItYq01Ow8VGUOzilG91tDHInB5YHNtm/YkufEbo="}}
 ```
 
 In `$HOME/.clef`, the `masterseed.json` file was created, containing the master seed. This seed was then used to derive a few other things:
