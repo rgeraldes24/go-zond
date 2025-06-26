@@ -137,7 +137,7 @@ func (ks keyStorePassphrase) JoinPath(filename string) string {
 }
 
 // Encryptdata encrypts the data given as 'data' with the password 'auth'.
-func EncryptDataV1(data, auth []byte, argon2idTime, argon2idMemory uint32, argon2idThreads uint8) (CryptoJSON, error) {
+func EncryptDataV1(data, auth []byte, argon2idT, argon2idM uint32, argon2idP uint8) (CryptoJSON, error) {
 	salt := make([]byte, 32)
 	if _, err := io.ReadFull(rand.Reader, salt); err != nil {
 		panic("reading from crypto/rand failed: " + err.Error())
@@ -148,16 +148,16 @@ func EncryptDataV1(data, auth []byte, argon2idTime, argon2idMemory uint32, argon
 		panic("reading from crypto/rand failed: " + err.Error())
 	}
 
-	derivedKey := argon2.IDKey(auth, salt, argon2idTime, argon2idMemory, argon2idThreads, argon2idDKLen)
+	derivedKey := argon2.IDKey(auth, salt, argon2idT, argon2idM, argon2idP, argon2idDKLen)
 	cipherText, err := cypher.EncryptGCM(nil, derivedKey, iv, data, nil)
 	if err != nil {
 		return CryptoJSON{}, err
 	}
 
 	argon2idParamsJSON := make(map[string]interface{}, 5)
-	argon2idParamsJSON["time"] = argon2idTime
-	argon2idParamsJSON["memory"] = argon2idMemory
-	argon2idParamsJSON["threads"] = argon2idThreads
+	argon2idParamsJSON["t"] = argon2idT
+	argon2idParamsJSON["m"] = argon2idM
+	argon2idParamsJSON["p"] = argon2idP
 	argon2idParamsJSON["dklen"] = argon2idDKLen
 	argon2idParamsJSON["salt"] = hex.EncodeToString(salt)
 	cipherParamsJSON := cipherparamsJSON{
@@ -174,7 +174,7 @@ func EncryptDataV1(data, auth []byte, argon2idTime, argon2idMemory uint32, argon
 	return cryptoStruct, nil
 }
 
-// EncryptKey encrypts a key using the specified scrypt parameters into a json
+// EncryptKey encrypts a key using the specified argon2id parameters into a json
 // blob that can be decrypted later on.
 func EncryptKey(key *Key, auth string, argon2idT, argo2idM uint32, argo2idP uint8) ([]byte, error) {
 	seed := key.Dilithium.GetSeed()
@@ -275,12 +275,12 @@ func getKDFKey(cryptoJSON CryptoJSON, auth string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	dkLen := ensureUint32(cryptoJSON.KDFParams["dklen"])
+	dkLen := uint32(ensureInt(cryptoJSON.KDFParams["dklen"]))
 
 	if cryptoJSON.KDF == keyHeaderKDF {
-		t := ensureUint32(cryptoJSON.KDFParams["t"])
-		m := ensureUint32(cryptoJSON.KDFParams["m"])
-		p := ensureUint8(cryptoJSON.KDFParams["p"])
+		t := uint32(ensureInt(cryptoJSON.KDFParams["t"]))
+		m := uint32(ensureInt(cryptoJSON.KDFParams["m"]))
+		p := uint8(ensureInt(cryptoJSON.KDFParams["p"]))
 		return argon2.IDKey(authArray, salt, t, m, p, dkLen), nil
 	}
 
@@ -290,18 +290,10 @@ func getKDFKey(cryptoJSON CryptoJSON, auth string) ([]byte, error) {
 // TODO: can we do without this when unmarshalling dynamic JSON?
 // why do integers in KDF params end up as float64 and not int after
 // unmarshal?
-func ensureUint32(x interface{}) uint32 {
-	res, ok := x.(uint32)
+func ensureInt(x interface{}) int {
+	res, ok := x.(int)
 	if !ok {
-		res = 0
-	}
-	return res
-}
-
-func ensureUint8(x interface{}) uint8 {
-	res, ok := x.(uint8)
-	if !ok {
-		res = 0
+		res = int(x.(float64))
 	}
 	return res
 }

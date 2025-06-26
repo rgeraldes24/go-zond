@@ -41,7 +41,7 @@ var (
 	}
 	lightKDFFlag = &cli.BoolFlag{
 		Name:  "lightkdf",
-		Usage: "use less secure scrypt parameters",
+		Usage: "use less secure argon2id parameters",
 	}
 )
 

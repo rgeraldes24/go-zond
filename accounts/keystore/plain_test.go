@@ -97,15 +97,6 @@ type KeyStoreTestV1 struct {
 	Seed     string
 }
 
-// TODO(rgeraldes24)
-/*
-func TestV1_PBKDF2_1(t *testing.T) {
-	t.Parallel()
-	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
-	testDecryptV1(tests["wikipage_test_vector_pbkdf2"], t)
-}
-*/
-
 var testsSubmodule = filepath.Join("..", "..", "tests", "testdata", "KeyStoreTests")
 
 func skipIfSubmoduleMissing(t *testing.T) {
@@ -114,37 +105,16 @@ func skipIfSubmoduleMissing(t *testing.T) {
 	}
 }
 
-func TestV1_PBKDF2_2(t *testing.T) {
-	skipIfSubmoduleMissing(t)
-	t.Parallel()
-	tests := loadKeyStoreTestV1(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV1(tests["test1"], t)
-}
-
-func TestV1_PBKDF2_3(t *testing.T) {
-	skipIfSubmoduleMissing(t)
-	t.Parallel()
-	tests := loadKeyStoreTestV1(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV1(tests["python_generated_test_with_odd_iv"], t)
-}
-
-func TestV1_PBKDF2_4(t *testing.T) {
-	skipIfSubmoduleMissing(t)
-	t.Parallel()
-	tests := loadKeyStoreTestV1(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV1(tests["evilnonce"], t)
-}
-
 // TODO(rgeraldes24)
 /*
-func TestV1_Scrypt_1(t *testing.T) {
+func TestV1_Argon2id_1(t *testing.T) {
 	t.Parallel()
 	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
-	testDecryptV1(tests["wikipage_test_vector_scrypt"], t)
+	testDecryptV1(tests["wikipage_test_vector_argon2id"], t)
 }
 */
 
-func TestV1_Scrypt_2(t *testing.T) {
+func TestV1_Argon2id_2(t *testing.T) {
 	skipIfSubmoduleMissing(t)
 	t.Parallel()
 	tests := loadKeyStoreTestV1(filepath.Join(testsSubmodule, "basic_tests.json"), t)

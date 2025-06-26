@@ -34,14 +34,14 @@ import (
 )
 
 var (
-	address1, _       = common.NewAddressFromString("Z2014d0daf1779e1319f4f93d3106d7918ba43b5a")
-	address2, _       = common.NewAddressFromString("Z206daef83fc5e0e738b80fc40b336c65fab14bf7")
-	address3, _       = common.NewAddressFromString("Z200e67b11a7af4dc6edcc7f54b32678a9e617c33")
+	address1, _       = common.NewAddressFromString("Z2068da65aa0167e1d55fd692786cf87117fcf3fc")
+	address2, _       = common.NewAddressFromString("Z208f56097044fc0302ee090d7f410df6a6897392")
+	address3, _       = common.NewAddressFromString("Z2061d4bb7a03eddcab945a5cfc7b5b32eac2284e")
 	cachetestDir, _   = filepath.Abs(filepath.Join("testdata", "keystore"))
 	cachetestAccounts = []accounts.Account{
 		{
 			Address: address1,
-			URL:     accounts.URL{Scheme: KeyStoreScheme, Path: filepath.Join(cachetestDir, "UTC--2024-05-27T07-48-33.872599000Z--Z2014d0daf1779e1319f4f93d3106d7918ba43b5a")},
+			URL:     accounts.URL{Scheme: KeyStoreScheme, Path: filepath.Join(cachetestDir, "UTC--2024-05-27T07-48-33.872599000Z--Z2068da65aa0167e1d55fd692786cf87117fcf3fc")},
 		},
 		{
 			Address: address2,
@@ -223,7 +223,7 @@ func TestCacheAddDeleteOrder(t *testing.T) {
 			t.Errorf("expected hasAccount(%x) to return true", a.Address)
 		}
 	}
-	address, _ := common.NewAddressFromString("Z203f93ab098e13c650f6203a3e224d385d67be2d")
+	address, _ := common.NewAddressFromString("Z20769b85de2678a06231c5debf5facc9e0e7e89a")
 	if cache.hasAddress(address) {
 		t.Errorf("expected hasAccount(%x) to return false", address)
 	}

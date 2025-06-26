@@ -31,12 +31,12 @@ const (
 
 // Tests that a json key file can be decrypted and encrypted in multiple rounds.
 func TestKeyEncryptDecrypt(t *testing.T) {
-	keyjson, err := os.ReadFile("testdata/very-light-scrypt.json")
+	keyjson, err := os.ReadFile("testdata/very-light-argon2id.json")
 	if err != nil {
 		t.Fatal(err)
 	}
 	password := ""
-	address, _ := common.NewAddressFromString("Z20eda794cbe6b5604bebc7112fae9e5350768164")
+	address, _ := common.NewAddressFromString("Z20e94467ae8d46ca41de81862e07ca54d8b86bbf")
 
 	// Do a few rounds of decryption and encryption
 	for i := 0; i < 3; i++ {
