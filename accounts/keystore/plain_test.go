@@ -29,7 +29,7 @@ import (
 func tmpKeyStoreIface(t *testing.T, encrypted bool) (dir string, ks keyStore) {
 	d := t.TempDir()
 	if encrypted {
-		ks = &keyStorePassphrase{d, veryLightScryptN, veryLightScryptP, true}
+		ks = &keyStorePassphrase{d, veryLightArgon2idT, veryLightArgon2idM, veryLightArgon2idP, true}
 	} else {
 		ks = &keyStorePlain{d}
 	}

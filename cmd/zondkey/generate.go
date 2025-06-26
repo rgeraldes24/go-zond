@@ -102,11 +102,11 @@ If you want to encrypt an existing private key, it can be specified by setting
 
 		// Encrypt key with passphrase.
 		passphrase := getPassphrase(ctx, true)
-		scryptN, scryptP := keystore.StandardScryptN, keystore.StandardScryptP
+		argon2idT, argon2idM, argon2idP := keystore.StandardArgon2idT, keystore.StandardArgon2idM, keystore.StandardArgon2idP
 		if ctx.Bool(lightKDFFlag.Name) {
-			scryptN, scryptP = keystore.LightScryptN, keystore.LightScryptP
+			argon2idT, argon2idM, argon2idP = keystore.LightArgon2idT, keystore.LightArgon2idM, keystore.LightArgon2idP
 		}
-		keyjson, err := keystore.EncryptKey(key, passphrase, scryptN, scryptP)
+		keyjson, err := keystore.EncryptKey(key, passphrase, argon2idT, argon2idM, argon2idP)
 		if err != nil {
 			utils.Fatalf("Error encrypting key: %v", err)
 		}

@@ -71,7 +71,7 @@ Change the password of a keyfile.`,
 		}
 
 		// Encrypt the key with the new passphrase.
-		newJson, err := keystore.EncryptKey(key, newPhrase, keystore.StandardScryptN, keystore.StandardScryptP)
+		newJson, err := keystore.EncryptKey(key, newPhrase, keystore.StandardArgon2idT, keystore.StandardArgon2idM, keystore.StandardArgon2idP)
 		if err != nil {
 			utils.Fatalf("Error encrypting with new password: %v", err)
 		}

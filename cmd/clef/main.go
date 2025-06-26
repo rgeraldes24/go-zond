@@ -329,9 +329,9 @@ func initializeSecrets(c *cli.Context) error {
 	if num != len(masterSeed) {
 		return errors.New("failed to read enough random")
 	}
-	n, p := keystore.StandardScryptN, keystore.StandardScryptP
+	t, m, p := keystore.StandardArgon2idT, keystore.StandardArgon2idM, keystore.StandardArgon2idP
 	if c.Bool(utils.LightKDFFlag.Name) {
-		n, p = keystore.LightScryptN, keystore.LightScryptP
+		t, m, p = keystore.LightArgon2idT, keystore.LightArgon2idM, keystore.LightArgon2idP
 	}
 	text := "The master seed of clef will be locked with a password.\nPlease specify a password. Do not forget this password!"
 	var password string
@@ -344,7 +344,7 @@ func initializeSecrets(c *cli.Context) error {
 			break
 		}
 	}
-	cipherSeed, err := encryptSeed(masterSeed, []byte(password), n, p)
+	cipherSeed, err := encryptSeed(masterSeed, []byte(password), t, m, p)
 	if err != nil {
 		return fmt.Errorf("failed to encrypt master seed: %v", err)
 	}
@@ -1032,8 +1032,8 @@ type encryptedSeedStorage struct {
 
 // encryptSeed uses a similar scheme as the keystore uses, but with a different wrapping,
 // to encrypt the master seed
-func encryptSeed(seed []byte, auth []byte, scryptN, scryptP int) ([]byte, error) {
-	cryptoStruct, err := keystore.EncryptDataV1(seed, auth, scryptN, scryptP)
+func encryptSeed(seed []byte, auth []byte, argon2idT, argon2idM uint32, argon2idP uint8) ([]byte, error) {
+	cryptoStruct, err := keystore.EncryptDataV1(seed, auth, argon2idT, argon2idM, argon2idP)
 	if err != nil {
 		return nil, err
 	}
