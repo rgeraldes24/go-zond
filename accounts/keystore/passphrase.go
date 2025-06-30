@@ -45,6 +45,7 @@ import (
 const (
 	keyHeaderKDF = "argon2id"
 
+	// TODO(rgeraldes24): desc
 	// StandardArgon2idT is the iterations parameter of Argon2id encryption algorithm, using
 	// 256MB memory and taking approximately 1s CPU time on a modern processor.
 	StandardArgon2idT uint32 = 8

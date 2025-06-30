@@ -118,7 +118,7 @@ func TestWatchNoDir(t *testing.T) {
 	t.Parallel()
 	// Create ks but not the directory that it watches.
 	dir := filepath.Join(os.TempDir(), fmt.Sprintf("zond-keystore-watchnodir-test-%d-%d", os.Getpid(), rand.Int()))
-	ks := NewKeyStore(dir, StandardArgon2idT, StandardArgon2idM, StandardArgon2idP)
+	ks := NewKeyStore(dir, LightArgon2idT, LightArgon2idM, LightArgon2idP)
 	list := ks.Accounts()
 	if len(list) > 0 {
 		t.Error("initial account list not empty:", list)

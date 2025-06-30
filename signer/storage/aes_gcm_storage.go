@@ -75,7 +75,6 @@ func (s *AESEncryptedStorage) Put(key, value string) {
 		log.Warn("Failed to encrypt entry", "err", err)
 		return
 	}
-
 	encrypted := storedCredential{Iv: iv, CipherText: ciphertext}
 	data[key] = encrypted
 	if err = s.writeEncryptedStorage(data); err != nil {
