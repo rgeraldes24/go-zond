@@ -19,7 +19,6 @@ package keystore
 import (
 	"encoding/hex"
 	"fmt"
-	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -97,28 +96,16 @@ type KeyStoreTestV1 struct {
 	Seed     string
 }
 
-var testsSubmodule = filepath.Join("..", "..", "tests", "testdata", "KeyStoreTests")
-
 func skipIfSubmoduleMissing(t *testing.T) {
 	if !common.FileExist(testsSubmodule) {
 		t.Skipf("can't find JSON tests from submodule at %s", testsSubmodule)
 	}
 }
 
-// TODO(rgeraldes24)
-/*
 func TestV1_Argon2id_1(t *testing.T) {
 	t.Parallel()
 	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
-	testDecryptV1(tests["wikipage_test_vector_argon2id"], t)
-}
-*/
-
-func TestV1_Argon2id_2(t *testing.T) {
-	skipIfSubmoduleMissing(t)
-	t.Parallel()
-	tests := loadKeyStoreTestV1(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV1(tests["test2"], t)
+	testDecryptV1(tests["test_vector_argon2id"], t)
 }
 
 func testDecryptV1(test KeyStoreTestV1, t *testing.T) {
@@ -140,12 +127,3 @@ func loadKeyStoreTestV1(file string, t *testing.T) map[string]KeyStoreTestV1 {
 	}
 	return tests
 }
-
-// TODO(rgeraldes24)
-/*
-func TestV1_48_Byte_Key(t *testing.T) {
-	t.Parallel()
-	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
-	testDecryptV1(tests["48_byte_key"], t)
-}
-*/

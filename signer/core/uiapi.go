@@ -182,7 +182,7 @@ func (s *UIServerAPI) Export(ctx context.Context, addr common.Address) (json.Raw
 	return os.ReadFile(wallet.URL().Path)
 }
 
-// TODO(rgeraldes24): example
+// TODO(rgeraldes24): desc
 // Import tries to import the given keyJSON in the local keystore. The keyJSON data is expected to be
 // in web3 keystore format. It will decrypt the keyJSON with the given passphrase and on successful
 // decryption it will encrypt the key with the given newPassphrase and store it in the keystore.

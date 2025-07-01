@@ -1,5 +1,5 @@
 {
-    "wikipage_test_vector_argon2id": {
+    "test_vector_argon2id": {
         "json": {
             "crypto" : {
                 "cipher" : "aes-256-gcm",
@@ -20,29 +20,6 @@
             "version" : 1
         },
         "password": "testpassword",
-        "priv": "7a28b5ba57c53603b0b07b56bba752f7784bf506fa95edc395f5cf6c7514fe9d"
-    },
-    "48_byte_key": {
-        "json": {
-            "crypto" : {
-                "cipher" : "aes-256-gcm",
-                "cipherparams" : {
-                    "iv" : "3ca92af36ad7c2cd92454c59cea5ef00"
-                },
-                "ciphertext" : "108b7d34f3442fc26ab1ab90ca91476ba6bfa8c00975a49ef9051dc675aa",
-                "kdf" : "argon2id",
-                "kdfparams" : {
-                    "dklen" : 32,
-                    "m" : 2,
-                    "t" : 8,
-                    "p" : 1,
-                    "salt" : "d0769e608fb86cda848065642a9c6fa046845c928175662b8e356c77f914cd3b"
-                }
-            },
-            "id" : "a37e1559-5955-450d-8075-7b8931b392b2",
-            "version" : 1
-        },
-        "password": "foo",
-        "seed": "81c29e8142bb6a81bef5a92bda7a8328a5c85bb2f9542e76f9b0f94fc018"
+        "seed": "7a28b5ba57c53603b0b07b56bba752f7784bf506fa95edc395f5cf6c7514fe9d784bf506fa95edc395f5cf6c7514fe9d"
     }
 }
