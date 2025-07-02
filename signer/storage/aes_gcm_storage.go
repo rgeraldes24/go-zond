@@ -22,7 +22,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/theQRL/go-zond/crypto/cypher"
+	"github.com/theQRL/go-zond/crypto/cipher"
 	"github.com/theQRL/go-zond/log"
 )
 
@@ -61,7 +61,7 @@ func (s *AESEncryptedStorage) Put(key, value string) {
 		return
 	}
 
-	iv := make([]byte, cypher.GCMNonceSize)
+	iv := make([]byte, cipher.GCMNonceSize)
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		log.Warn("Failed to generate secure random number", "err", err, "file", s.filename)
 		return
@@ -70,7 +70,7 @@ func (s *AESEncryptedStorage) Put(key, value string) {
 	// The 'additionalData' is used to place the (plaintext) KV-store key into the V,
 	// to prevent the possibility to alter a K, or swap two entries in the KV store with each other.
 	// The resulting ciphertext is 16 bytes longer than plaintext because it contains an authentication tag.
-	ciphertext, err := cypher.EncryptGCM(nil, s.key, iv, []byte(value), []byte(key))
+	ciphertext, err := cipher.EncryptGCM(nil, s.key, iv, []byte(value), []byte(key))
 	if err != nil {
 		log.Warn("Failed to encrypt entry", "err", err)
 		return
@@ -98,7 +98,7 @@ func (s *AESEncryptedStorage) Get(key string) (string, error) {
 		log.Warn("Key does not exist", "key", key)
 		return "", ErrNotFound
 	}
-	entry, err := cypher.DecryptGCM(s.key, encrypted.Iv, encrypted.CipherText, []byte(key))
+	entry, err := cipher.DecryptGCM(s.key, encrypted.Iv, encrypted.CipherText, []byte(key))
 	if err != nil {
 		log.Warn("Failed to decrypt key", "key", key)
 		return "", err

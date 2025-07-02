@@ -1,4 +1,4 @@
-package cypher
+package cipher
 
 import (
 	"testing"
@@ -13,7 +13,7 @@ func TestEncryptDecryptGCM(t *testing.T) {
 		key        []byte
 		iv         []byte
 		plainText  []byte
-		cypherText []byte
+		cipherText []byte
 	}{
 		{
 			common.FromHex("80ba3192c803ce965ea371d5ff073cf0f43b6a2ab576b208426e11409c09b9b0"),
@@ -45,11 +45,11 @@ func TestEncryptDecryptGCM(t *testing.T) {
 		require := require.New(t)
 		tc := tc
 		t.Run("", func(t *testing.T) {
-			cyphertext, err := EncryptGCM(nil, tc.key, tc.iv, tc.plainText, nil)
+			ciphertext, err := EncryptGCM(nil, tc.key, tc.iv, tc.plainText, nil)
 			require.NoError(err)
-			require.Equal(tc.cypherText, cyphertext)
+			require.Equal(tc.cipherText, ciphertext)
 
-			plainText, err := DecryptGCM(tc.key, tc.iv, tc.cypherText, nil)
+			plainText, err := DecryptGCM(tc.key, tc.iv, tc.cipherText, nil)
 			require.NoError(err)
 			require.Equal(tc.plainText, plainText)
 		})

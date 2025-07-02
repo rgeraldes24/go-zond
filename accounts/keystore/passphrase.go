@@ -37,7 +37,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/crypto/cypher"
+	"github.com/theQRL/go-zond/crypto/cipher"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"golang.org/x/crypto/argon2"
 )
@@ -149,13 +149,13 @@ func EncryptDataV1(data, auth []byte, argon2idT, argon2idM uint32, argon2idP uin
 		panic("reading from crypto/rand failed: " + err.Error())
 	}
 
-	iv := make([]byte, cypher.GCMNonceSize) // 12
+	iv := make([]byte, cipher.GCMNonceSize) // 12
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		panic("reading from crypto/rand failed: " + err.Error())
 	}
 
 	derivedKey := argon2.IDKey(auth, salt, argon2idT, argon2idM, argon2idP, argon2idDKLen)
-	cipherText, err := cypher.EncryptGCM(nil, derivedKey, iv, data, nil)
+	cipherText, err := cipher.EncryptGCM(nil, derivedKey, iv, data, nil)
 	if err != nil {
 		return CryptoJSON{}, err
 	}
@@ -252,7 +252,7 @@ func DecryptDataV1(cryptoJson CryptoJSON, auth string) ([]byte, error) {
 		return nil, err
 	}
 
-	plainText, err := cypher.DecryptGCM(derivedKey, iv, cipherText, nil)
+	plainText, err := cipher.DecryptGCM(derivedKey, iv, cipherText, nil)
 	if err != nil {
 		return nil, ErrDecrypt
 	}

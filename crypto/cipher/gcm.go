@@ -1,4 +1,4 @@
-package cypher
+package cipher
 
 import (
 	"crypto/aes"
@@ -22,8 +22,8 @@ func EncryptGCM(dest, key, nonce, plaintext, additionalData []byte) ([]byte, err
 	return aesgcm.Seal(dest, nonce, plaintext, additionalData), nil
 }
 
-// DecryptGCM decrypts cyphertext using AES-GCM with the given key and nonce.
-func DecryptGCM(key, nonce, cyphertext, additionalData []byte) ([]byte, error) {
+// DecryptGCM decrypts ciphertext using AES-GCM with the given key and nonce.
+func DecryptGCM(key, nonce, ciphertext, additionalData []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, fmt.Errorf("can't create block cipher: %v", err)
@@ -35,6 +35,6 @@ func DecryptGCM(key, nonce, cyphertext, additionalData []byte) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("can't create GCM: %v", err)
 	}
-	pt := make([]byte, 0, len(cyphertext))
-	return aesgcm.Open(pt, nonce, cyphertext, additionalData)
+	pt := make([]byte, 0, len(ciphertext))
+	return aesgcm.Open(pt, nonce, ciphertext, additionalData)
 }

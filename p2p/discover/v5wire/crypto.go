@@ -25,7 +25,7 @@ import (
 
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/crypto/cypher"
+	"github.com/theQRL/go-zond/crypto/cipher"
 	"github.com/theQRL/go-zond/p2p/enode"
 	"golang.org/x/crypto/hkdf"
 )
@@ -36,7 +36,7 @@ const (
 )
 
 // Nonce represents a nonce used for AES/GCM.
-type Nonce [cypher.GCMNonceSize]byte
+type Nonce [cipher.GCMNonceSize]byte
 
 // EncodePubkey encodes a public key.
 func EncodePubkey(key *ecdsa.PublicKey) []byte {
