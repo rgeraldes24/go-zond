@@ -96,7 +96,6 @@ type KeyStoreTestV1 struct {
 	Seed     string
 }
 
-// TODO(rgeraldes24)
 func TestV1_Argon2id_1(t *testing.T) {
 	t.Parallel()
 	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)

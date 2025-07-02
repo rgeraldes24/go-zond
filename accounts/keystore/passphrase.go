@@ -149,7 +149,7 @@ func EncryptDataV1(data, auth []byte, argon2idT, argon2idM uint32, argon2idP uin
 		panic("reading from crypto/rand failed: " + err.Error())
 	}
 
-	iv := make([]byte, cypher.GCMNonceSize)
+	iv := make([]byte, cypher.GCMNonceSize) // 12
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		panic("reading from crypto/rand failed: " + err.Error())
 	}
