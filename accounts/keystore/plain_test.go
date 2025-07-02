@@ -96,12 +96,7 @@ type KeyStoreTestV1 struct {
 	Seed     string
 }
 
-func skipIfSubmoduleMissing(t *testing.T) {
-	if !common.FileExist(testsSubmodule) {
-		t.Skipf("can't find JSON tests from submodule at %s", testsSubmodule)
-	}
-}
-
+// TODO(rgeraldes24)
 func TestV1_Argon2id_1(t *testing.T) {
 	t.Parallel()
 	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
