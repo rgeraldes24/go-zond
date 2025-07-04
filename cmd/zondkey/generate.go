@@ -35,9 +35,9 @@ type outputGenerate struct {
 }
 
 var (
-	privateKeyFlag = &cli.StringFlag{
-		Name:  "privatekey",
-		Usage: "file containing a raw private key to encrypt",
+	seedFlag = &cli.StringFlag{
+		Name:  "seed",
+		Usage: "file containing a raw private key seed to encrypt",
 	}
 	lightKDFFlag = &cli.BoolFlag{
 		Name:  "lightkdf",
@@ -52,13 +52,13 @@ var commandGenerate = &cli.Command{
 	Description: `
 Generate a new keyfile.
 
-If you want to encrypt an existing private key, it can be specified by setting
---privatekey with the location of the file containing the private key.
+If you want to encrypt an existing private key seed, it can be specified by setting
+--seed with the location of the file containing the private key.
 `,
 	Flags: []cli.Flag{
 		passphraseFlag,
 		jsonFlag,
-		privateKeyFlag,
+		seedFlag,
 		lightKDFFlag,
 	},
 	Action: func(ctx *cli.Context) error {
@@ -75,11 +75,11 @@ If you want to encrypt an existing private key, it can be specified by setting
 
 		var dilithiumKey *dilithium.Dilithium
 		var err error
-		if file := ctx.String(privateKeyFlag.Name); file != "" {
-			// Load private key from file.
+		if file := ctx.String(seedFlag.Name); file != "" {
+			// Load private key seed from file.
 			dilithiumKey, err = pqcrypto.LoadDilithium(file)
 			if err != nil {
-				utils.Fatalf("Can't load private key: %v", err)
+				utils.Fatalf("Can't load private key seed: %v", err)
 			}
 		} else {
 			// If not loaded, generate random.
