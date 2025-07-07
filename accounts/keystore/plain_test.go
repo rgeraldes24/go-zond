@@ -102,6 +102,12 @@ func TestV1_Argon2id_1(t *testing.T) {
 	testDecryptV1(tests["test_vector_argon2id"], t)
 }
 
+func TestV1_Argon2id_2(t *testing.T) {
+	t.Parallel()
+	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
+	testDecryptV1(tests["test_vector_argon2id_2"], t)
+}
+
 func testDecryptV1(test KeyStoreTestV1, t *testing.T) {
 	seedBytes, _, err := decryptKeyV1(&test.Json, test.Password)
 	if err != nil {
