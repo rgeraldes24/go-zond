@@ -480,7 +480,7 @@ func TestEstimateGas(t *testing.T) {
 	var addr common.Address = key.GetAddress()
 	opts, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 
-	sim := NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(params.Zond)}}, 10000000)
+	sim := NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(params.Quanta)}}, 10000000)
 	defer sim.Close()
 
 	parsed, _ := abi.JSON(strings.NewReader(contractAbi))
@@ -585,7 +585,7 @@ func TestEstimateGasWithPrice(t *testing.T) {
 	key, _ := crypto.GenerateKey()
 	addr := crypto.PubkeyToAddress(key.PublicKey)
 
-	sim := NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(params.Zond*2 + 2e17)}}, 10000000)
+	sim := NewSimulatedBackend(core.GenesisAlloc{addr: {Balance: big.NewInt(params.Quanta*2 + 2e17)}}, 10000000)
 	defer sim.Close()
 
 	recipient, _ := common.NewAddressFromString("Z00000000000000000000000000000000deadbeef")

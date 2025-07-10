@@ -2555,7 +2555,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 		key2, _ = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		addr1   = key1.GetAddress()
 		addr2   = key2.GetAddress()
-		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Zond))
+		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Quanta))
 		config  = *params.AllBeaconProtocolChanges
 		gspec   = &Genesis{
 			Config: &config,
@@ -3117,7 +3117,7 @@ func TestEIP3651(t *testing.T) {
 		key2, _ = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		addr1   = key1.GetAddress()
 		addr2   = key2.GetAddress()
-		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Zond))
+		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Quanta))
 		config  = *params.AllBeaconProtocolChanges
 		gspec   = &Genesis{
 			Config: &config,
