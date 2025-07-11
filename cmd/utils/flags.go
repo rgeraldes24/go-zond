@@ -46,7 +46,7 @@ import (
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/graphql"
 	"github.com/theQRL/go-zond/internal/flags"
-	"github.com/theQRL/go-zond/internal/zondapi"
+	"github.com/theQRL/go-zond/internal/qrlapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/metrics/exp"
@@ -180,7 +180,7 @@ var (
 	ExitWhenSyncedFlag = &cli.BoolFlag{
 		Name:     "exitwhensynced",
 		Usage:    "Exits after block synchronisation completes",
-		Category: flags.ZondCategory,
+		Category: flags.QRLCategory,
 	}
 
 	// Dump command options.
@@ -217,7 +217,7 @@ var (
 		Name:     "snapshot",
 		Usage:    `Enables snapshot-database mode (default = enable)`,
 		Value:    true,
-		Category: flags.ZondCategory,
+		Category: flags.QRLCategory,
 	}
 	LightKDFFlag = &cli.BoolFlag{
 		Name:     "lightkdf",
@@ -227,13 +227,13 @@ var (
 	ZondRequiredBlocksFlag = &cli.StringFlag{
 		Name:     "zond.requiredblocks",
 		Usage:    "Comma separated block number-to-hash mappings to require for peering (<number>=<hash>)",
-		Category: flags.ZondCategory,
+		Category: flags.QRLCategory,
 	}
 	BloomFilterSizeFlag = &cli.Uint64Flag{
 		Name:     "bloomfilter.size",
 		Usage:    "Megabytes of memory allocated to bloom-filter for pruning",
 		Value:    2048,
-		Category: flags.ZondCategory,
+		Category: flags.QRLCategory,
 	}
 	SyncModeFlag = &flags.TextMarshalerFlag{
 		Name:     "syncmode",
@@ -437,7 +437,7 @@ var (
 		Category: flags.AccountCategory,
 	}
 
-	// ZVM settings
+	// QRVM settings
 	VMEnableDebugFlag = &cli.BoolFlag{
 		Name:     "vmdebug",
 		Usage:    "Record information useful for VM and contract debugging",
@@ -447,19 +447,19 @@ var (
 	// API options.
 	RPCGlobalGasCapFlag = &cli.Uint64Flag{
 		Name:     "rpc.gascap",
-		Usage:    "Sets a cap on gas that can be used in zond_call/estimateGas (0=infinite)",
+		Usage:    "Sets a cap on gas that can be used in qrl_call/estimateGas (0=infinite)",
 		Value:    zondconfig.Defaults.RPCGasCap,
 		Category: flags.APICategory,
 	}
-	RPCGlobalZVMTimeoutFlag = &cli.DurationFlag{
-		Name:     "rpc.zvmtimeout",
-		Usage:    "Sets a timeout used for zond_call (0=infinite)",
-		Value:    zondconfig.Defaults.RPCZVMTimeout,
+	RPCGlobalQRVMTimeoutFlag = &cli.DurationFlag{
+		Name:     "rpc.qrvmtimeout",
+		Usage:    "Sets a timeout used for qrl_call (0=infinite)",
+		Value:    zondconfig.Defaults.RPCQRVMTimeout,
 		Category: flags.APICategory,
 	}
 	RPCGlobalTxFeeCapFlag = &cli.Float64Flag{
 		Name:     "rpc.txfeecap",
-		Usage:    "Sets a cap on transaction fee (in zond) that can be sent via the RPC APIs (0 = no cap)",
+		Usage:    "Sets a cap on transaction fee (in qrl) that can be sent via the RPC APIs (0 = no cap)",
 		Value:    zondconfig.Defaults.RPCTxFeeCap,
 		Category: flags.APICategory,
 	}
@@ -1569,8 +1569,8 @@ func SetZondConfig(ctx *cli.Context, stack *node.Node, cfg *zondconfig.Config) {
 	} else {
 		log.Info("Global gas cap disabled")
 	}
-	if ctx.IsSet(RPCGlobalZVMTimeoutFlag.Name) {
-		cfg.RPCZVMTimeout = ctx.Duration(RPCGlobalZVMTimeoutFlag.Name)
+	if ctx.IsSet(RPCGlobalQRVMTimeoutFlag.Name) {
+		cfg.RPCQRVMTimeout = ctx.Duration(RPCGlobalQRVMTimeoutFlag.Name)
 	}
 	if ctx.IsSet(RPCGlobalTxFeeCapFlag.Name) {
 		cfg.RPCTxFeeCap = ctx.Float64(RPCGlobalTxFeeCapFlag.Name)
@@ -1686,7 +1686,7 @@ func SetDNSDiscoveryDefaults(cfg *zondconfig.Config, genesis common.Hash) {
 }
 
 // RegisterZondService adds a Zond client to the stack.
-func RegisterZondService(stack *node.Node, cfg *zondconfig.Config) (zondapi.Backend, *zond.Zond) {
+func RegisterZondService(stack *node.Node, cfg *zondconfig.Config) (qrlapi.Backend, *zond.Zond) {
 	backend, err := zond.New(stack, cfg)
 	if err != nil {
 		Fatalf("Failed to register the Zond service: %v", err)
@@ -1696,14 +1696,14 @@ func RegisterZondService(stack *node.Node, cfg *zondconfig.Config) (zondapi.Back
 }
 
 // RegisterZondStatsService configures the Zond Stats daemon and adds it to the node.
-func RegisterZondStatsService(stack *node.Node, backend zondapi.Backend, url string) {
+func RegisterZondStatsService(stack *node.Node, backend qrlapi.Backend, url string) {
 	if err := zondstats.New(stack, backend, backend.Engine(), url); err != nil {
 		Fatalf("Failed to register the Zond Stats service: %v", err)
 	}
 }
 
 // RegisterGraphQLService adds the GraphQL API to the node.
-func RegisterGraphQLService(stack *node.Node, backend zondapi.Backend, filterSystem *filters.FilterSystem, cfg *node.Config) {
+func RegisterGraphQLService(stack *node.Node, backend qrlapi.Backend, filterSystem *filters.FilterSystem, cfg *node.Config) {
 	err := graphql.New(stack, backend, filterSystem, cfg.GraphQLCors, cfg.GraphQLVirtualHosts)
 	if err != nil {
 		Fatalf("Failed to register the GraphQL service: %v", err)
@@ -1711,7 +1711,7 @@ func RegisterGraphQLService(stack *node.Node, backend zondapi.Backend, filterSys
 }
 
 // RegisterFilterAPI adds the zond log filtering RPC API to the node.
-func RegisterFilterAPI(stack *node.Node, backend zondapi.Backend, zondcfg *zondconfig.Config) *filters.FilterSystem {
+func RegisterFilterAPI(stack *node.Node, backend qrlapi.Backend, zondcfg *zondconfig.Config) *filters.FilterSystem {
 	filterSystem := filters.NewFilterSystem(backend, filters.Config{
 		LogCacheSize: zondcfg.FilterLogCacheSize,
 	})

@@ -37,9 +37,9 @@ import (
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/filters"
-	"github.com/theQRL/go-zond/zond/zondconfig"
+	"github.com/theQRL/go-zond/qrl"
+	"github.com/theQRL/go-zond/qrl/filters"
+	"github.com/theQRL/go-zond/qrl/zondconfig"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -441,7 +441,7 @@ func newGQLService(t *testing.T, stack *node.Node, gspec *core.Genesis, genBlock
 		SnapshotCache:  5,
 	}
 	var engine consensus.Engine = beacon.NewFaker()
-	zondBackend, err := zond.New(stack, zondConf)
+	zondBackend, err := qrl.New(stack, zondConf)
 	if err != nil {
 		t.Fatalf("could not create eth backend: %v", err)
 	}

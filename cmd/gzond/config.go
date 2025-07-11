@@ -34,14 +34,14 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/internal/flags"
+	"github.com/theQRL/go-zond/internal/qrlapi"
 	"github.com/theQRL/go-zond/internal/version"
-	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/zond/catalyst"
-	"github.com/theQRL/go-zond/zond/zondconfig"
+	"github.com/theQRL/go-zond/qrl/catalyst"
+	"github.com/theQRL/go-zond/qrl/zondconfig"
 	"github.com/urfave/cli/v2"
 )
 
@@ -58,7 +58,7 @@ var (
 	configFileFlag = &cli.StringFlag{
 		Name:     "config",
 		Usage:    "TOML configuration file",
-		Category: flags.ZondCategory,
+		Category: flags.QRLCategory,
 	}
 )
 
@@ -164,8 +164,8 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gzondConfig) {
 	return stack, cfg
 }
 
-// makeFullNode loads gzond configuration and creates the Zond backend.
-func makeFullNode(ctx *cli.Context) (*node.Node, zondapi.Backend) {
+// makeFullNode loads gzond configuration and creates the QRL backend.
+func makeFullNode(ctx *cli.Context) (*node.Node, qrlapi.Backend) {
 	stack, cfg := makeConfigNode(ctx)
 	backend, zond := utils.RegisterZondService(stack, &cfg.Zond)
 

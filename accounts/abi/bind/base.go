@@ -24,7 +24,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/theQRL/go-zond"
+	qrl "github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/accounts/abi"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/types"
@@ -166,7 +166,7 @@ func (c *BoundContract) Call(opts *CallOpts, results *[]interface{}, method stri
 		return err
 	}
 	var (
-		msg    = zond.CallMsg{From: opts.From, To: &c.address, Data: input}
+		msg    = qrl.CallMsg{From: opts.From, To: &c.address, Data: input}
 		ctx    = ensureContext(opts.Context)
 		code   []byte
 		output []byte
@@ -301,7 +301,7 @@ func (c *BoundContract) estimateGasLimit(opts *TransactOpts, contract *common.Ad
 			return 0, ErrNoCode
 		}
 	}
-	msg := zond.CallMsg{
+	msg := qrl.CallMsg{
 		From:      opts.From,
 		To:        contract,
 		GasTipCap: gasTipCap,
@@ -374,7 +374,7 @@ func (c *BoundContract) FilterLogs(opts *FilterOpts, name string, query ...[]int
 	// Start the background filtering
 	logs := make(chan types.Log, 128)
 
-	config := zond.FilterQuery{
+	config := qrl.FilterQuery{
 		Addresses: []common.Address{c.address},
 		Topics:    topics,
 		FromBlock: new(big.Int).SetUint64(opts.Start),
@@ -423,7 +423,7 @@ func (c *BoundContract) WatchLogs(opts *WatchOpts, name string, query ...[]inter
 	// Start the background filtering
 	logs := make(chan types.Log, 128)
 
-	config := zond.FilterQuery{
+	config := qrl.FilterQuery{
 		Addresses: []common.Address{c.address},
 		Topics:    topics,
 	}

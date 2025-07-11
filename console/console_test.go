@@ -31,8 +31,8 @@ import (
 	"github.com/theQRL/go-zond/internal/jsre"
 	"github.com/theQRL/go-zond/miner"
 	"github.com/theQRL/go-zond/node"
-	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/zondconfig"
+	"github.com/theQRL/go-zond/qrl"
+	"github.com/theQRL/go-zond/qrl/zondconfig"
 )
 
 const (
@@ -76,7 +76,7 @@ func (p *hookedPrompter) SetWordCompleter(completer prompt.WordCompleter) {}
 type tester struct {
 	workspace string
 	stack     *node.Node
-	zond      *zond.Zond
+	qrl       *qrl.Zond
 	console   *Console
 	input     *hookedPrompter
 	output    *bytes.Buffer
@@ -103,7 +103,7 @@ func newTester(t *testing.T, confOverride func(*zondconfig.Config)) *tester {
 	if confOverride != nil {
 		confOverride(zondConf)
 	}
-	zondBackend, err := zond.New(stack, zondConf)
+	zondBackend, err := qrl.New(stack, zondConf)
 	if err != nil {
 		t.Fatalf("failed to register Zond protocol: %v", err)
 	}
@@ -134,7 +134,7 @@ func newTester(t *testing.T, confOverride func(*zondconfig.Config)) *tester {
 	return &tester{
 		workspace: workspace,
 		stack:     stack,
-		zond:      zondBackend,
+		qrl:       zondBackend,
 		console:   console,
 		input:     prompter,
 		output:    printer,
