@@ -452,6 +452,8 @@ func checkEvents(t *testing.T, want []walletEvent, have []walletEvent) {
 
 func tmpKeyStore(t *testing.T) (string, *KeyStore) {
 	d := t.TempDir()
-	newKs := func(kd string) *KeyStore { return NewKeyStore(kd, veryLightScryptN, veryLightScryptP) }
+	newKs := func(kd string) *KeyStore {
+		return NewKeyStore(kd, veryLightArgon2idT, veryLightArgon2idM, veryLightArgon2idP)
+	}
 	return d, newKs(d)
 }

@@ -23,7 +23,7 @@ import (
 )
 
 func Fuzz(input []byte) int {
-	ks := keystore.NewKeyStore("/tmp/ks", keystore.LightScryptN, keystore.LightScryptP)
+	ks := keystore.NewKeyStore("/tmp/ks", keystore.LightArgon2idT, keystore.LightArgon2idM, keystore.LightArgon2idP)
 
 	a, err := ks.NewAccount(string(input))
 	if err != nil {

@@ -17,8 +17,6 @@
 package v5wire
 
 import (
-	"crypto/aes"
-	"crypto/cipher"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"errors"
@@ -27,18 +25,18 @@ import (
 
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/cipher"
 	"github.com/theQRL/go-zond/p2p/enode"
 	"golang.org/x/crypto/hkdf"
 )
 
 const (
 	// Encryption/authentication parameters.
-	aesKeySize   = 16
-	gcmNonceSize = 12
+	aesKeySize = 16
 )
 
 // Nonce represents a nonce used for AES/GCM.
-type Nonce [gcmNonceSize]byte
+type Nonce [cipher.GCMNonceSize]byte
 
 // EncodePubkey encodes a public key.
 func EncodePubkey(key *ecdsa.PublicKey) []byte {
@@ -145,36 +143,4 @@ func ecdh(privkey *ecdsa.PrivateKey, pubkey *ecdsa.PublicKey) []byte {
 	sec[0] = 0x02 | byte(secY.Bit(0))
 	math.ReadBits(secX, sec[1:])
 	return sec
-}
-
-// encryptGCM encrypts pt using AES-GCM with the given key and nonce. The ciphertext is
-// appended to dest, which must not overlap with plaintext. The resulting ciphertext is 16
-// bytes longer than plaintext because it contains an authentication tag.
-func encryptGCM(dest, key, nonce, plaintext, authData []byte) ([]byte, error) {
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		panic(fmt.Errorf("can't create block cipher: %v", err))
-	}
-	aesgcm, err := cipher.NewGCMWithNonceSize(block, gcmNonceSize)
-	if err != nil {
-		panic(fmt.Errorf("can't create GCM: %v", err))
-	}
-	return aesgcm.Seal(dest, nonce, plaintext, authData), nil
-}
-
-// decryptGCM decrypts ct using AES-GCM with the given key and nonce.
-func decryptGCM(key, nonce, ct, authData []byte) ([]byte, error) {
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, fmt.Errorf("can't create block cipher: %v", err)
-	}
-	if len(nonce) != gcmNonceSize {
-		return nil, fmt.Errorf("invalid GCM nonce size: %d", len(nonce))
-	}
-	aesgcm, err := cipher.NewGCMWithNonceSize(block, gcmNonceSize)
-	if err != nil {
-		return nil, fmt.Errorf("can't create GCM: %v", err)
-	}
-	pt := make([]byte, 0, len(ct))
-	return aesgcm.Open(pt, nonce, ct, authData)
 }

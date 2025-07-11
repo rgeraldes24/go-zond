@@ -79,7 +79,7 @@ type Config struct {
 	ExternalSigner string `toml:",omitempty"`
 
 	// UseLightweightKDF lowers the memory and CPU requirements of the key store
-	// scrypt KDF at the expense of security.
+	// argon2id KDF at the expense of security.
 	UseLightweightKDF bool `toml:",omitempty"`
 
 	// InsecureUnlockAllowed allows user to unlock accounts in unsafe http environment.

@@ -17,13 +17,12 @@
 package storage
 
 import (
-	"crypto/aes"
-	"crypto/cipher"
 	"crypto/rand"
 	"encoding/json"
 	"io"
 	"os"
 
+	"github.com/theQRL/go-zond/crypto/cipher"
 	"github.com/theQRL/go-zond/log"
 )
 
@@ -61,7 +60,17 @@ func (s *AESEncryptedStorage) Put(key, value string) {
 		log.Warn("Failed to read encrypted storage", "err", err, "file", s.filename)
 		return
 	}
-	ciphertext, iv, err := encrypt(s.key, []byte(value), []byte(key))
+
+	iv := make([]byte, cipher.GCMNonceSize)
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+		log.Warn("Failed to generate secure random number", "err", err, "file", s.filename)
+		return
+	}
+
+	// The 'additionalData' is used to place the (plaintext) KV-store key into the V,
+	// to prevent the possibility to alter a K, or swap two entries in the KV store with each other.
+	// The resulting ciphertext is 16 bytes longer than plaintext because it contains an authentication tag.
+	ciphertext, err := cipher.EncryptGCM(nil, s.key, iv, []byte(value), []byte(key))
 	if err != nil {
 		log.Warn("Failed to encrypt entry", "err", err)
 		return
@@ -89,7 +98,7 @@ func (s *AESEncryptedStorage) Get(key string) (string, error) {
 		log.Warn("Key does not exist", "key", key)
 		return "", ErrNotFound
 	}
-	entry, err := decrypt(s.key, encrypted.Iv, encrypted.CipherText, []byte(key))
+	entry, err := cipher.DecryptGCM(s.key, encrypted.Iv, encrypted.CipherText, []byte(key))
 	if err != nil {
 		log.Warn("Failed to decrypt key", "key", key)
 		return "", err
@@ -139,40 +148,4 @@ func (s *AESEncryptedStorage) writeEncryptedStorage(creds map[string]storedCrede
 		return err
 	}
 	return nil
-}
-
-// encrypt encrypts plaintext with the given key, with additional data
-// The 'additionalData' is used to place the (plaintext) KV-store key into the V,
-// to prevent the possibility to alter a K, or swap two entries in the KV store with each other.
-func encrypt(key []byte, plaintext []byte, additionalData []byte) ([]byte, []byte, error) {
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, nil, err
-	}
-	aesgcm, err := cipher.NewGCM(block)
-	if err != nil {
-		return nil, nil, err
-	}
-	nonce := make([]byte, aesgcm.NonceSize())
-	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-		return nil, nil, err
-	}
-	ciphertext := aesgcm.Seal(nil, nonce, plaintext, additionalData)
-	return ciphertext, nonce, nil
-}
-
-func decrypt(key []byte, nonce []byte, ciphertext []byte, additionalData []byte) ([]byte, error) {
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-	aesgcm, err := cipher.NewGCM(block)
-	if err != nil {
-		return nil, err
-	}
-	plaintext, err := aesgcm.Open(nil, nonce, ciphertext, additionalData)
-	if err != nil {
-		return nil, err
-	}
-	return plaintext, nil
 }
