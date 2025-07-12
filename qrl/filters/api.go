@@ -25,7 +25,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/theQRL/go-zond"
+	qrl "github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/core/types"
@@ -262,7 +262,7 @@ func (api *FilterAPI) Logs(ctx context.Context, crit FilterCriteria) (*rpc.Subsc
 		matchedLogs = make(chan []*types.Log)
 	)
 
-	logsSub, err := api.events.SubscribeLogs(zond.FilterQuery(crit), matchedLogs)
+	logsSub, err := api.events.SubscribeLogs(qrl.FilterQuery(crit), matchedLogs)
 	if err != nil {
 		return nil, err
 	}
@@ -286,8 +286,8 @@ func (api *FilterAPI) Logs(ctx context.Context, crit FilterCriteria) (*rpc.Subsc
 }
 
 // FilterCriteria represents a request to create a new filter.
-// Same as zond.FilterQuery but with UnmarshalJSON() method.
-type FilterCriteria zond.FilterQuery
+// Same as qrl.FilterQuery but with UnmarshalJSON() method.
+type FilterCriteria qrl.FilterQuery
 
 // NewFilter creates a new filter and returns the filter id. It can be
 // used to retrieve logs when the state changes. This method cannot be
@@ -302,7 +302,7 @@ type FilterCriteria zond.FilterQuery
 // In case "fromBlock" > "toBlock" an error is returned.
 func (api *FilterAPI) NewFilter(crit FilterCriteria) (rpc.ID, error) {
 	logs := make(chan []*types.Log)
-	logsSub, err := api.events.SubscribeLogs(zond.FilterQuery(crit), logs)
+	logsSub, err := api.events.SubscribeLogs(qrl.FilterQuery(crit), logs)
 	if err != nil {
 		return "", err
 	}

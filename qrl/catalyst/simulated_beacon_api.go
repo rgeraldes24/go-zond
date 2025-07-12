@@ -33,7 +33,7 @@ type api struct {
 func (a *api) loop() {
 	var (
 		newTxs = make(chan core.NewTxsEvent)
-		sub    = a.sim.zond.TxPool().SubscribeTransactions(newTxs)
+		sub    = a.sim.qrl.TxPool().SubscribeTransactions(newTxs)
 	)
 	defer sub.Unsubscribe()
 

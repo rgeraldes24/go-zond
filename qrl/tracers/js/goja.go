@@ -28,8 +28,8 @@ import (
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/zond/tracers"
-	jsassets "github.com/theQRL/go-zond/zond/tracers/js/internal/tracers"
+	"github.com/theQRL/go-zond/qrl/tracers"
+	jsassets "github.com/theQRL/go-zond/qrl/tracers/js/internal/tracers"
 )
 
 var assetTracers = make(map[string]string)

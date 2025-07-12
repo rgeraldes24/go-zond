@@ -30,8 +30,8 @@ import (
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/qrl"
 	"github.com/theQRL/go-zond/rpc"
-	"github.com/theQRL/go-zond/zond"
 )
 
 const devEpochLength = 32
@@ -71,7 +71,7 @@ func (w *withdrawalQueue) gatherPending(maxCount int) []*types.Withdrawal {
 
 type SimulatedBeacon struct {
 	shutdownCh  chan struct{}
-	zond        *zond.Zond
+	qrl         *qrl.QRL
 	period      uint64
 	withdrawals withdrawalQueue
 
@@ -88,14 +88,14 @@ type SimulatedBeacon struct {
 //
 //   - If period is set to 0, a block is produced on every transaction.
 //     via Commit, Fork and AdjustTime.
-func NewSimulatedBeacon(period uint64, zond *zond.Zond) (*SimulatedBeacon, error) {
-	block := zond.BlockChain().CurrentBlock()
+func NewSimulatedBeacon(period uint64, qrl *qrl.QRL) (*SimulatedBeacon, error) {
+	block := qrl.BlockChain().CurrentBlock()
 	current := engine.ForkchoiceStateV1{
 		HeadBlockHash:      block.Hash(),
 		SafeBlockHash:      block.Hash(),
 		FinalizedBlockHash: block.Hash(),
 	}
-	engineAPI := newConsensusAPIWithoutHeartbeat(zond)
+	engineAPI := newConsensusAPIWithoutHeartbeat(qrl)
 
 	// if genesis block, send forkchoiceUpdated to trigger transition to PoS
 	if block.Number.Sign() == 0 {
@@ -104,7 +104,7 @@ func NewSimulatedBeacon(period uint64, zond *zond.Zond) (*SimulatedBeacon, error
 		}
 	}
 	return &SimulatedBeacon{
-		zond:               zond,
+		qrl:                qrl,
 		period:             period,
 		shutdownCh:         make(chan struct{}),
 		engineAPI:          engineAPI,
@@ -149,7 +149,7 @@ func (c *SimulatedBeacon) sealBlock(withdrawals []*types.Withdrawal, timestamp u
 	c.feeRecipientLock.Unlock()
 
 	// Reset to CurrentBlock in case of the chain was rewound
-	if header := c.zond.BlockChain().CurrentBlock(); c.curForkchoiceState.HeadBlockHash != header.Hash() {
+	if header := c.qrl.BlockChain().CurrentBlock(); c.curForkchoiceState.HeadBlockHash != header.Hash() {
 		finalizedHash := c.finalizedBlockHash(header.Number.Uint64())
 		c.setCurrentState(header.Hash(), *finalizedHash)
 	}
@@ -226,7 +226,7 @@ func (c *SimulatedBeacon) finalizedBlockHash(number uint64) *common.Hash {
 		finalizedNumber = (number - 1) / devEpochLength * devEpochLength
 	}
 
-	if finalizedBlock := c.zond.BlockChain().GetBlockByNumber(finalizedNumber); finalizedBlock != nil {
+	if finalizedBlock := c.qrl.BlockChain().GetBlockByNumber(finalizedNumber); finalizedBlock != nil {
 		fh := finalizedBlock.Hash()
 		return &fh
 	}
@@ -248,40 +248,40 @@ func (c *SimulatedBeacon) Commit() common.Hash {
 	if err := c.sealBlock(withdrawals, uint64(time.Now().Unix())); err != nil {
 		log.Warn("Error performing sealing work", "err", err)
 	}
-	return c.zond.BlockChain().CurrentBlock().Hash()
+	return c.qrl.BlockChain().CurrentBlock().Hash()
 }
 
 // Rollback un-sends previously added transactions.
 func (c *SimulatedBeacon) Rollback() {
 	// Flush all transactions from the transaction pools
 	maxUint256 := new(big.Int).Sub(new(big.Int).Lsh(common.Big1, 256), common.Big1)
-	c.zond.TxPool().SetGasTip(maxUint256)
+	c.qrl.TxPool().SetGasTip(maxUint256)
 	// Set the gas tip back to accept new transactions
 	// TODO (Marius van der Wijden): set gas tip to parameter passed by config
-	c.zond.TxPool().SetGasTip(big.NewInt(params.GPlanck))
+	c.qrl.TxPool().SetGasTip(big.NewInt(params.GPlanck))
 }
 
 // Fork sets the head to the provided hash.
 func (c *SimulatedBeacon) Fork(parentHash common.Hash) error {
 	// Ensure no pending transactions.
-	c.zond.TxPool().Sync()
-	if len(c.zond.TxPool().Pending(txpool.PendingFilter{})) != 0 {
+	c.qrl.TxPool().Sync()
+	if len(c.qrl.TxPool().Pending(txpool.PendingFilter{})) != 0 {
 		return errors.New("pending block dirty")
 	}
 
-	parent := c.zond.BlockChain().GetBlockByHash(parentHash)
+	parent := c.qrl.BlockChain().GetBlockByHash(parentHash)
 	if parent == nil {
 		return errors.New("parent not found")
 	}
-	return c.zond.BlockChain().SetHead(parent.NumberU64())
+	return c.qrl.BlockChain().SetHead(parent.NumberU64())
 }
 
 // AdjustTime creates a new block with an adjusted timestamp.
 func (c *SimulatedBeacon) AdjustTime(adjustment time.Duration) error {
-	if len(c.zond.TxPool().Pending(txpool.PendingFilter{})) != 0 {
+	if len(c.qrl.TxPool().Pending(txpool.PendingFilter{})) != 0 {
 		return errors.New("could not adjust time on non-empty block")
 	}
-	parent := c.zond.BlockChain().CurrentBlock()
+	parent := c.qrl.BlockChain().CurrentBlock()
 	if parent == nil {
 		return errors.New("parent not found")
 	}

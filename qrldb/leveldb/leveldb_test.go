@@ -21,13 +21,13 @@ import (
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/storage"
-	"github.com/theQRL/go-zond/zonddb"
-	"github.com/theQRL/go-zond/zonddb/dbtest"
+	"github.com/theQRL/go-zond/qrldb"
+	"github.com/theQRL/go-zond/qrldb/dbtest"
 )
 
 func TestLevelDB(t *testing.T) {
 	t.Run("DatabaseSuite", func(t *testing.T) {
-		dbtest.TestDatabaseSuite(t, func() zonddb.KeyValueStore {
+		dbtest.TestDatabaseSuite(t, func() qrldb.KeyValueStore {
 			db, err := leveldb.Open(storage.NewMemStorage(), nil)
 			if err != nil {
 				t.Fatal(err)
@@ -40,7 +40,7 @@ func TestLevelDB(t *testing.T) {
 }
 
 func BenchmarkLevelDB(b *testing.B) {
-	dbtest.BenchDatabaseSuite(b, func() zonddb.KeyValueStore {
+	dbtest.BenchDatabaseSuite(b, func() qrldb.KeyValueStore {
 		db, err := leveldb.Open(storage.NewMemStorage(), nil)
 		if err != nil {
 			b.Fatal(err)

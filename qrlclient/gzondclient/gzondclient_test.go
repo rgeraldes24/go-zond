@@ -23,7 +23,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/theQRL/go-zond"
+	qrl "github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
@@ -32,11 +32,11 @@ import (
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
+	qrlsvc "github.com/theQRL/go-zond/qrl"
+	"github.com/theQRL/go-zond/qrl/filters"
+	"github.com/theQRL/go-zond/qrl/qrlconfig"
+	"github.com/theQRL/go-zond/qrlclient"
 	"github.com/theQRL/go-zond/rpc"
-	zondsvc "github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/filters"
-	"github.com/theQRL/go-zond/zond/zondconfig"
-	"github.com/theQRL/go-zond/zondclient"
 )
 
 var (
@@ -58,15 +58,15 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 	if err != nil {
 		t.Fatalf("can't create new node: %v", err)
 	}
-	// Create Zond Service
-	config := &zondconfig.Config{Genesis: genesis}
-	zondservice, err := zondsvc.New(n, config)
+	// Create QRL Service
+	config := &qrlconfig.Config{Genesis: genesis}
+	qrlservice, err := qrlsvc.New(n, config)
 	if err != nil {
-		t.Fatalf("can't create new zond service: %v", err)
+		t.Fatalf("can't create new qrl service: %v", err)
 	}
-	filterSystem := filters.NewFilterSystem(zondservice.APIBackend, filters.Config{})
+	filterSystem := filters.NewFilterSystem(qrlservice.APIBackend, filters.Config{})
 	n.RegisterAPIs([]rpc.API{{
-		Namespace: "zond",
+		Namespace: "qrl",
 		Service:   filters.NewFilterAPI(filterSystem),
 	}})
 
@@ -74,7 +74,7 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 	if err := n.Start(); err != nil {
 		t.Fatalf("can't start test node: %v", err)
 	}
-	if _, err := zondservice.BlockChain().InsertChain(blocks[1:]); err != nil {
+	if _, err := qrlservice.BlockChain().InsertChain(blocks[1:]); err != nil {
 		t.Fatalf("can't import test blocks: %v", err)
 	}
 	return n, blocks
@@ -179,7 +179,7 @@ func TestGzondClient(t *testing.T) {
 func testAccessList(t *testing.T, client *rpc.Client) {
 	zc := New(client)
 	// Test transfer
-	msg := zond.CallMsg{
+	msg := qrl.CallMsg{
 		From:      testAddr,
 		To:        &common.Address{},
 		Gas:       21000,
@@ -200,7 +200,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 		t.Fatalf("unexpected length of accesslist: %v", len(*al))
 	}
 	// Test reverting transaction
-	msg = zond.CallMsg{
+	msg = qrl.CallMsg{
 		From:      testAddr,
 		To:        nil,
 		Gas:       100000,
@@ -232,7 +232,7 @@ func testAccessList(t *testing.T, client *rpc.Client) {
 
 func testGetProof(t *testing.T, client *rpc.Client, addr common.Address) {
 	zc := New(client)
-	zondcl := zondclient.NewClient(client)
+	qrlcl := qrlclient.NewClient(client)
 	result, err := zc.GetProof(context.Background(), addr, []string{testSlot.String()}, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -241,11 +241,11 @@ func testGetProof(t *testing.T, client *rpc.Client, addr common.Address) {
 		t.Fatalf("unexpected address, have: %v want: %v", result.Address, addr)
 	}
 	// test nonce
-	if nonce, _ := zondcl.NonceAt(context.Background(), result.Address, nil); result.Nonce != nonce {
+	if nonce, _ := qrlcl.NonceAt(context.Background(), result.Address, nil); result.Nonce != nonce {
 		t.Fatalf("invalid nonce, want: %v got: %v", nonce, result.Nonce)
 	}
 	// test balance
-	if balance, _ := zondcl.BalanceAt(context.Background(), result.Address, nil); result.Balance.Cmp(balance) != 0 {
+	if balance, _ := qrlcl.BalanceAt(context.Background(), result.Address, nil); result.Balance.Cmp(balance) != 0 {
 		t.Fatalf("invalid balance, want: %v got: %v", balance, result.Balance)
 	}
 
@@ -257,13 +257,13 @@ func testGetProof(t *testing.T, client *rpc.Client, addr common.Address) {
 		if proof.Key != testSlot.String() {
 			t.Fatalf("invalid storage proof key, want: %q, got: %q", testSlot.String(), proof.Key)
 		}
-		slotValue, _ := zondcl.StorageAt(context.Background(), addr, common.HexToHash(proof.Key), nil)
+		slotValue, _ := qrlcl.StorageAt(context.Background(), addr, common.HexToHash(proof.Key), nil)
 		if have, want := common.BigToHash(proof.Value), common.BytesToHash(slotValue); have != want {
 			t.Fatalf("addr %x, invalid storage proof value: have: %v, want: %v", addr, have, want)
 		}
 	}
 	// test code
-	code, _ := zondcl.CodeAt(context.Background(), addr, nil)
+	code, _ := qrlcl.CodeAt(context.Background(), addr, nil)
 	if have, want := result.CodeHash, crypto.Keccak256Hash(code); have != want {
 		t.Fatalf("codehash wrong, have %v want %v ", have, want)
 	}
@@ -371,13 +371,13 @@ func testSetHead(t *testing.T, client *rpc.Client) {
 }
 
 func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
-	zc := New(client)
-	zondcl := zondclient.NewClient(client)
+	qc := New(client)
+	qrlcl := qrlclient.NewClient(client)
 	// Subscribe to Transactions
 	ch := make(chan common.Hash)
-	zc.SubscribePendingTransactions(context.Background(), ch)
+	qc.SubscribePendingTransactions(context.Background(), ch)
 	// Send a transaction
-	chainID, err := zondcl.ChainID(context.Background())
+	chainID, err := qrlcl.ChainID(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -396,7 +396,7 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 		t.Fatal(err)
 	}
 	// Send transaction
-	err = zondcl.SendTransaction(context.Background(), signedTx)
+	err = qrlcl.SendTransaction(context.Background(), signedTx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -409,12 +409,12 @@ func testSubscribePendingTransactions(t *testing.T, client *rpc.Client) {
 
 func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
 	zc := New(client)
-	zondcl := zondclient.NewClient(client)
+	qrlcl := qrlclient.NewClient(client)
 	// Subscribe to Transactions
 	ch := make(chan *types.Transaction)
 	zc.SubscribeFullPendingTransactions(context.Background(), ch)
 	// Send a transaction
-	chainID, err := zondcl.ChainID(context.Background())
+	chainID, err := qrlcl.ChainID(context.Background())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -433,7 +433,7 @@ func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
 		t.Fatal(err)
 	}
 	// Send transaction
-	err = zondcl.SendTransaction(context.Background(), signedTx)
+	err = qrlcl.SendTransaction(context.Background(), signedTx)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -446,7 +446,7 @@ func testSubscribeFullPendingTransactions(t *testing.T, client *rpc.Client) {
 
 func testCallContract(t *testing.T, client *rpc.Client) {
 	zc := New(client)
-	msg := zond.CallMsg{
+	msg := qrl.CallMsg{
 		From:      testAddr,
 		To:        &common.Address{},
 		Gas:       21000,
@@ -557,7 +557,7 @@ func TestBlockOverridesMarshal(t *testing.T) {
 
 func testCallContractWithBlockOverrides(t *testing.T, client *rpc.Client) {
 	zc := New(client)
-	msg := zond.CallMsg{
+	msg := qrl.CallMsg{
 		From:      testAddr,
 		To:        &common.Address{},
 		Gas:       50000,

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package zond implements the Zond protocol.
+// Package qrl implements the QRL protocol.
 package qrl
 
 import (
@@ -36,8 +36,8 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/event"
+	"github.com/theQRL/go-zond/internal/qrlapi"
 	"github.com/theQRL/go-zond/internal/shutdowncheck"
-	"github.com/theQRL/go-zond/internal/zondapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/miner"
 	"github.com/theQRL/go-zond/node"
@@ -45,30 +45,30 @@ import (
 	"github.com/theQRL/go-zond/p2p/dnsdisc"
 	"github.com/theQRL/go-zond/p2p/enode"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/qrl/downloader"
+	"github.com/theQRL/go-zond/qrl/gasprice"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
+	"github.com/theQRL/go-zond/qrl/protocols/snap"
+	"github.com/theQRL/go-zond/qrl/qrlconfig"
+	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/rpc"
-	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zond/gasprice"
-	"github.com/theQRL/go-zond/zond/protocols/snap"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
-	"github.com/theQRL/go-zond/zond/zondconfig"
-	"github.com/theQRL/go-zond/zonddb"
 )
 
-// Zond implements the Zond full node service.
-type Zond struct {
-	config *zondconfig.Config
+// QRL implements the QRL full node service.
+type QRL struct {
+	config *qrlconfig.Config
 
 	// Handlers
 	txPool *txpool.TxPool
 
 	blockchain         *core.BlockChain
 	handler            *handler
-	zondDialCandidates enode.Iterator
+	qrlDialCandidates  enode.Iterator
 	snapDialCandidates enode.Iterator
 
 	// DB interfaces
-	chainDb zonddb.Database // Block chain database
+	chainDb qrldb.Database // Block chain database
 
 	eventMux       *event.TypeMux
 	engine         consensus.Engine
@@ -78,13 +78,13 @@ type Zond struct {
 	bloomIndexer      *core.ChainIndexer             // Bloom indexer operating during block imports
 	closeBloomHandler chan struct{}
 
-	APIBackend *ZondAPIBackend
+	APIBackend *QRLAPIBackend
 
 	miner    *miner.Miner
 	gasPrice *big.Int
 
 	networkID     uint64
-	netRPCService *zondapi.NetAPI
+	netRPCService *qrlapi.NetAPI
 
 	p2pServer *p2p.Server
 
@@ -93,16 +93,16 @@ type Zond struct {
 	shutdownTracker *shutdowncheck.ShutdownTracker // Tracks if and when the node has shutdown ungracefully
 }
 
-// New creates a new Zond object (including the initialisation of the common Zond object),
+// New creates a new QRL object (including the initialisation of the common QRL object),
 // whose lifecycle will be managed by the provided node.
-func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
+func New(stack *node.Node, config *qrlconfig.Config) (*QRL, error) {
 	// Ensure configuration values are compatible and sane
 	if !config.SyncMode.IsValid() {
 		return nil, fmt.Errorf("invalid sync mode %d", config.SyncMode)
 	}
 	if config.Miner.GasPrice == nil || config.Miner.GasPrice.Sign() <= 0 {
-		log.Warn("Sanitizing invalid miner gas price", "provided", config.Miner.GasPrice, "updated", zondconfig.Defaults.Miner.GasPrice)
-		config.Miner.GasPrice = new(big.Int).Set(zondconfig.Defaults.Miner.GasPrice)
+		log.Warn("Sanitizing invalid miner gas price", "provided", config.Miner.GasPrice, "updated", qrlconfig.Defaults.Miner.GasPrice)
+		config.Miner.GasPrice = new(big.Int).Set(qrlconfig.Defaults.Miner.GasPrice)
 	}
 	if config.NoPruning && config.TrieDirtyCache > 0 {
 		if config.SnapshotCache > 0 {
@@ -115,7 +115,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	}
 	log.Info("Allocated trie memory caches", "clean", common.StorageSize(config.TrieCleanCache)*1024*1024, "dirty", common.StorageSize(config.TrieDirtyCache)*1024*1024)
 
-	// Assemble the Zond object
+	// Assemble the QRL object
 	chainDb, err := stack.OpenDatabaseWithFreezer("chaindata", config.DatabaseCache, config.DatabaseHandles, config.DatabaseFreezer, "eth/db/chaindata/", false)
 	if err != nil {
 		return nil, err
@@ -130,12 +130,12 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	if err != nil {
 		return nil, err
 	}
-	engine := zondconfig.CreateConsensusEngine()
+	engine := qrlconfig.CreateConsensusEngine()
 	networkID := config.NetworkId
 	if networkID == 0 {
 		networkID = chainConfig.ChainID.Uint64()
 	}
-	zond := &Zond{
+	qrl := &QRL{
 		config:            config,
 		chainDb:           chainDb,
 		eventMux:          stack.EventMux(),
@@ -154,7 +154,7 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 	if bcVersion != nil {
 		dbVer = fmt.Sprintf("%d", *bcVersion)
 	}
-	log.Info("Initialising Zond protocol", "network", networkID, "dbversion", dbVer)
+	log.Info("Initialising QRL protocol", "network", networkID, "dbversion", dbVer)
 
 	if !config.SkipBcVersionCheck {
 		if bcVersion != nil && *bcVersion > core.BlockChainVersion {
@@ -182,70 +182,70 @@ func New(stack *node.Node, config *zondconfig.Config) (*Zond, error) {
 			StateScheme:         config.StateScheme,
 		}
 	)
-	zond.blockchain, err = core.NewBlockChain(chainDb, cacheConfig, config.Genesis, zond.engine, vmConfig, &config.TransactionHistory)
+	qrl.blockchain, err = core.NewBlockChain(chainDb, cacheConfig, config.Genesis, qrl.engine, vmConfig, &config.TransactionHistory)
 	if err != nil {
 		return nil, err
 	}
-	zond.bloomIndexer.Start(zond.blockchain)
+	qrl.bloomIndexer.Start(qrl.blockchain)
 
 	if config.TxPool.Journal != "" {
 		config.TxPool.Journal = stack.ResolvePath(config.TxPool.Journal)
 	}
-	legacyPool := legacypool.New(config.TxPool, zond.blockchain)
-	zond.txPool, err = txpool.New(new(big.Int).SetUint64(config.TxPool.PriceLimit), zond.blockchain, []txpool.SubPool{legacyPool})
+	legacyPool := legacypool.New(config.TxPool, qrl.blockchain)
+	qrl.txPool, err = txpool.New(new(big.Int).SetUint64(config.TxPool.PriceLimit), qrl.blockchain, []txpool.SubPool{legacyPool})
 	if err != nil {
 		return nil, err
 	}
 	// Permit the downloader to use the trie cache allowance during fast sync
 	cacheLimit := cacheConfig.TrieCleanLimit + cacheConfig.TrieDirtyLimit + cacheConfig.SnapshotLimit
-	if zond.handler, err = newHandler(&handlerConfig{
-		NodeID:         zond.p2pServer.Self().ID(),
+	if qrl.handler, err = newHandler(&handlerConfig{
+		NodeID:         qrl.p2pServer.Self().ID(),
 		Database:       chainDb,
-		Chain:          zond.blockchain,
-		TxPool:         zond.txPool,
+		Chain:          qrl.blockchain,
+		TxPool:         qrl.txPool,
 		Network:        networkID,
 		Sync:           config.SyncMode,
 		BloomCache:     uint64(cacheLimit),
-		EventMux:       zond.eventMux,
+		EventMux:       qrl.eventMux,
 		RequiredBlocks: config.RequiredBlocks,
 	}); err != nil {
 		return nil, err
 	}
 
-	zond.miner = miner.New(zond, config.Miner, zond.engine)
-	zond.miner.SetExtra(makeExtraData(config.Miner.ExtraData))
+	qrl.miner = miner.New(qrl, config.Miner, qrl.engine)
+	qrl.miner.SetExtra(makeExtraData(config.Miner.ExtraData))
 
-	zond.APIBackend = &ZondAPIBackend{stack.Config().ExtRPCEnabled(), zond, nil}
+	qrl.APIBackend = &QRLAPIBackend{stack.Config().ExtRPCEnabled(), qrl, nil}
 
 	gpoParams := config.GPO
 	if gpoParams.Default == nil {
 		gpoParams.Default = config.Miner.GasPrice
 	}
-	zond.APIBackend.gpo = gasprice.NewOracle(zond.APIBackend, gpoParams)
+	qrl.APIBackend.gpo = gasprice.NewOracle(qrl.APIBackend, gpoParams)
 
 	// Setup DNS discovery iterators.
 	dnsclient := dnsdisc.NewClient(dnsdisc.Config{})
-	zond.zondDialCandidates, err = dnsclient.NewIterator(zond.config.ZondDiscoveryURLs...)
+	qrl.qrlDialCandidates, err = dnsclient.NewIterator(qrl.config.QRLDiscoveryURLs...)
 	if err != nil {
 		return nil, err
 	}
-	zond.snapDialCandidates, err = dnsclient.NewIterator(zond.config.SnapDiscoveryURLs...)
+	qrl.snapDialCandidates, err = dnsclient.NewIterator(qrl.config.SnapDiscoveryURLs...)
 	if err != nil {
 		return nil, err
 	}
 
 	// Start the RPC service
-	zond.netRPCService = zondapi.NewNetAPI(zond.p2pServer, networkID)
+	qrl.netRPCService = qrlapi.NewNetAPI(qrl.p2pServer, networkID)
 
 	// Register the backend on the node
-	stack.RegisterAPIs(zond.APIs())
-	stack.RegisterProtocols(zond.Protocols())
-	stack.RegisterLifecycle(zond)
+	stack.RegisterAPIs(qrl.APIs())
+	stack.RegisterProtocols(qrl.Protocols())
+	stack.RegisterLifecycle(qrl)
 
 	// Successful startup; push a marker and check previous unclean shutdowns.
-	zond.shutdownTracker.MarkStartup()
+	qrl.shutdownTracker.MarkStartup()
 
-	return zond, nil
+	return qrl, nil
 }
 
 func makeExtraData(extra []byte) []byte {
@@ -265,10 +265,10 @@ func makeExtraData(extra []byte) []byte {
 	return extra
 }
 
-// APIs return the collection of RPC services the zond package offers.
+// APIs return the collection of RPC services the qrl package offers.
 // NOTE, some of these services probably need to be moved to somewhere else.
-func (s *Zond) APIs() []rpc.API {
-	apis := zondapi.GetAPIs(s.APIBackend)
+func (s *QRL) APIs() []rpc.API {
+	apis := qrlapi.GetAPIs(s.APIBackend)
 
 	// Append any APIs exposed explicitly by the consensus engine
 	apis = append(apis, s.engine.APIs(s.BlockChain())...)
@@ -279,7 +279,7 @@ func (s *Zond) APIs() []rpc.API {
 			Namespace: "miner",
 			Service:   NewMinerAPI(s),
 		}, {
-			Namespace: "zond",
+			Namespace: "qrl",
 			Service:   downloader.NewDownloaderAPI(s.handler.downloader, s.eventMux),
 		}, {
 			Namespace: "admin",
@@ -294,29 +294,29 @@ func (s *Zond) APIs() []rpc.API {
 	}...)
 }
 
-func (s *Zond) ResetWithGenesisBlock(gb *types.Block) {
+func (s *QRL) ResetWithGenesisBlock(gb *types.Block) {
 	s.blockchain.ResetWithGenesisBlock(gb)
 }
 
-func (s *Zond) Miner() *miner.Miner { return s.miner }
+func (s *QRL) Miner() *miner.Miner { return s.miner }
 
-func (s *Zond) AccountManager() *accounts.Manager  { return s.accountManager }
-func (s *Zond) BlockChain() *core.BlockChain       { return s.blockchain }
-func (s *Zond) TxPool() *txpool.TxPool             { return s.txPool }
-func (s *Zond) EventMux() *event.TypeMux           { return s.eventMux }
-func (s *Zond) Engine() consensus.Engine           { return s.engine }
-func (s *Zond) ChainDb() zonddb.Database           { return s.chainDb }
-func (s *Zond) IsListening() bool                  { return true } // Always listening
-func (s *Zond) Downloader() *downloader.Downloader { return s.handler.downloader }
-func (s *Zond) Synced() bool                       { return s.handler.synced.Load() }
-func (s *Zond) SetSynced()                         { s.handler.enableSyncedFeatures() }
-func (s *Zond) ArchiveMode() bool                  { return s.config.NoPruning }
-func (s *Zond) BloomIndexer() *core.ChainIndexer   { return s.bloomIndexer }
+func (s *QRL) AccountManager() *accounts.Manager  { return s.accountManager }
+func (s *QRL) BlockChain() *core.BlockChain       { return s.blockchain }
+func (s *QRL) TxPool() *txpool.TxPool             { return s.txPool }
+func (s *QRL) EventMux() *event.TypeMux           { return s.eventMux }
+func (s *QRL) Engine() consensus.Engine           { return s.engine }
+func (s *QRL) ChainDb() qrldb.Database            { return s.chainDb }
+func (s *QRL) IsListening() bool                  { return true } // Always listening
+func (s *QRL) Downloader() *downloader.Downloader { return s.handler.downloader }
+func (s *QRL) Synced() bool                       { return s.handler.synced.Load() }
+func (s *QRL) SetSynced()                         { s.handler.enableSyncedFeatures() }
+func (s *QRL) ArchiveMode() bool                  { return s.config.NoPruning }
+func (s *QRL) BloomIndexer() *core.ChainIndexer   { return s.bloomIndexer }
 
 // Protocols returns all the currently configured
 // network protocols to start.
-func (s *Zond) Protocols() []p2p.Protocol {
-	protos := zond.MakeProtocols((*zondHandler)(s.handler), s.networkID, s.zondDialCandidates)
+func (s *QRL) Protocols() []p2p.Protocol {
+	protos := qrl.MakeProtocols((*qrlHandler)(s.handler), s.networkID, s.qrlDialCandidates)
 	if s.config.SnapshotCache > 0 {
 		protos = append(protos, snap.MakeProtocols((*snapHandler)(s.handler), s.snapDialCandidates)...)
 	}
@@ -324,9 +324,9 @@ func (s *Zond) Protocols() []p2p.Protocol {
 }
 
 // Start implements node.Lifecycle, starting all internal goroutines needed by the
-// Zond protocol implementation.
-func (s *Zond) Start() error {
-	zond.StartENRUpdater(s.blockchain, s.p2pServer.LocalNode())
+// QRL protocol implementation.
+func (s *QRL) Start() error {
+	qrl.StartENRUpdater(s.blockchain, s.p2pServer.LocalNode())
 
 	// Start the bloom bits servicing goroutines
 	s.startBloomHandlers(params.BloomBitsBlocks)
@@ -343,10 +343,10 @@ func (s *Zond) Start() error {
 }
 
 // Stop implements node.Lifecycle, terminating all internal goroutines used by the
-// Zond protocol.
-func (s *Zond) Stop() error {
+// QRL protocol.
+func (s *QRL) Stop() error {
 	// Stop all the peer-related stuff first.
-	s.zondDialCandidates.Close()
+	s.qrlDialCandidates.Close()
 	s.snapDialCandidates.Close()
 	s.handler.Stop()
 
@@ -368,7 +368,7 @@ func (s *Zond) Stop() error {
 
 // SyncMode retrieves the current sync mode, either explicitly set, or derived
 // from the chain status.
-func (s *Zond) SyncMode() downloader.SyncMode {
+func (s *QRL) SyncMode() downloader.SyncMode {
 	// If we're in snap sync mode, return that directly
 	if s.handler.snapSync.Load() {
 		return downloader.SnapSync

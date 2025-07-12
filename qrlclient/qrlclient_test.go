@@ -25,7 +25,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/theQRL/go-zond"
+	qrl "github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
@@ -34,23 +34,23 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/params"
 	qrlsvc "github.com/theQRL/go-zond/qrl"
-	"github.com/theQRL/go-zond/qrl/zondconfig"
+	"github.com/theQRL/go-zond/qrl/qrlconfig"
 	"github.com/theQRL/go-zond/rpc"
 )
 
-// Verify that Client implements the zond interfaces.
+// Verify that Client implements the qrl interfaces.
 var (
-	_ = zond.ChainReader(&Client{})
-	_ = zond.TransactionReader(&Client{})
-	_ = zond.ChainStateReader(&Client{})
-	_ = zond.ChainSyncReader(&Client{})
-	_ = zond.ContractCaller(&Client{})
-	_ = zond.GasEstimator(&Client{})
-	_ = zond.GasPricer(&Client{})
-	_ = zond.LogFilterer(&Client{})
-	_ = zond.PendingStateReader(&Client{})
-	// _ = zond.PendingStateEventer(&Client{})
-	_ = zond.PendingContractCaller(&Client{})
+	_ = qrl.ChainReader(&Client{})
+	_ = qrl.TransactionReader(&Client{})
+	_ = qrl.ChainStateReader(&Client{})
+	_ = qrl.ChainSyncReader(&Client{})
+	_ = qrl.ContractCaller(&Client{})
+	_ = qrl.GasEstimator(&Client{})
+	_ = qrl.GasPricer(&Client{})
+	_ = qrl.LogFilterer(&Client{})
+	_ = qrl.PendingStateReader(&Client{})
+	// _ = qrl.PendingStateEventer(&Client{})
+	_ = qrl.PendingContractCaller(&Client{})
 )
 
 func TestToFilterArg(t *testing.T) {
@@ -65,13 +65,13 @@ func TestToFilterArg(t *testing.T) {
 
 	for _, testCase := range []struct {
 		name   string
-		input  zond.FilterQuery
+		input  qrl.FilterQuery
 		output interface{}
 		err    error
 	}{
 		{
 			"without BlockHash",
-			zond.FilterQuery{
+			qrl.FilterQuery{
 				Addresses: addresses,
 				FromBlock: big.NewInt(1),
 				ToBlock:   big.NewInt(2),
@@ -87,7 +87,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with nil fromBlock and nil toBlock",
-			zond.FilterQuery{
+			qrl.FilterQuery{
 				Addresses: addresses,
 				Topics:    [][]common.Hash{},
 			},
@@ -101,7 +101,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with negative fromBlock and negative toBlock",
-			zond.FilterQuery{
+			qrl.FilterQuery{
 				Addresses: addresses,
 				FromBlock: big.NewInt(-1),
 				ToBlock:   big.NewInt(-1),
@@ -117,7 +117,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with blockhash",
-			zond.FilterQuery{
+			qrl.FilterQuery{
 				Addresses: addresses,
 				BlockHash: &blockHash,
 				Topics:    [][]common.Hash{},
@@ -131,7 +131,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with blockhash and from block",
-			zond.FilterQuery{
+			qrl.FilterQuery{
 				Addresses: addresses,
 				BlockHash: &blockHash,
 				FromBlock: big.NewInt(1),
@@ -142,7 +142,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with blockhash and to block",
-			zond.FilterQuery{
+			qrl.FilterQuery{
 				Addresses: addresses,
 				BlockHash: &blockHash,
 				ToBlock:   big.NewInt(1),
@@ -153,7 +153,7 @@ func TestToFilterArg(t *testing.T) {
 		},
 		{
 			"with blockhash and both from / to block",
-			zond.FilterQuery{
+			qrl.FilterQuery{
 				Addresses: addresses,
 				BlockHash: &blockHash,
 				FromBlock: big.NewInt(1),
@@ -221,11 +221,11 @@ func newTestBackend(t *testing.T) (*node.Node, []*types.Block) {
 	if err != nil {
 		t.Fatalf("can't create new node: %v", err)
 	}
-	// Create Zond Service
-	config := &zondconfig.Config{Genesis: genesis}
+	// Create QRL Service
+	config := &qrlconfig.Config{Genesis: genesis}
 	qrlservice, err := qrlsvc.New(n, config)
 	if err != nil {
-		t.Fatalf("can't create new zond service: %v", err)
+		t.Fatalf("can't create new qrl service: %v", err)
 	}
 	// Import the test chain.
 	if err := n.Start(); err != nil {
@@ -315,7 +315,7 @@ func testHeader(t *testing.T, chain []*types.Block, client *rpc.Client) {
 		"future_block": {
 			block:   big.NewInt(1000000000),
 			want:    nil,
-			wantErr: zond.NotFound,
+			wantErr: qrl.NotFound,
 		},
 	}
 	for name, tt := range tests {
@@ -394,8 +394,8 @@ func testTransactionInBlock(t *testing.T, client *rpc.Client) {
 	}
 
 	// Test tx in block not found.
-	if _, err := ec.TransactionInBlock(context.Background(), block.Hash(), 20); err != zond.NotFound {
-		t.Fatal("error should be zond.NotFound")
+	if _, err := ec.TransactionInBlock(context.Background(), block.Hash(), 20); err != qrl.NotFound {
+		t.Fatal("error should be qrl.NotFound")
 	}
 
 	// Test tx in block found.
@@ -516,7 +516,7 @@ func testStatusFunctions(t *testing.T, client *rpc.Client) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	want := &zond.FeeHistory{
+	want := &qrl.FeeHistory{
 		OldestBlock: big.NewInt(2),
 		Reward: [][]*big.Int{
 			{
@@ -539,7 +539,7 @@ func testCallContractAtHash(t *testing.T, client *rpc.Client) {
 	zc := NewClient(client)
 
 	// EstimateGas
-	msg := zond.CallMsg{
+	msg := qrl.CallMsg{
 		From:  testAddr,
 		To:    &common.Address{},
 		Gas:   21000,
@@ -566,7 +566,7 @@ func testCallContract(t *testing.T, client *rpc.Client) {
 	zc := NewClient(client)
 
 	// EstimateGas
-	msg := zond.CallMsg{
+	msg := qrl.CallMsg{
 		From:  testAddr,
 		To:    &common.Address{},
 		Gas:   21000,

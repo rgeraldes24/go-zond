@@ -33,12 +33,12 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/log"
+	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/trie"
 	"github.com/theQRL/go-zond/trie/testutil"
 	"github.com/theQRL/go-zond/trie/triedb/pathdb"
 	"github.com/theQRL/go-zond/trie/trienode"
-	"github.com/theQRL/go-zond/zonddb"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -1826,7 +1826,7 @@ func makeUnevenStorageTrie(owner common.Hash, slots int, db *trie.Database) (com
 	return root, nodes, entries
 }
 
-func verifyTrie(scheme string, db zonddb.KeyValueStore, root common.Hash, t *testing.T) {
+func verifyTrie(scheme string, db qrldb.KeyValueStore, root common.Hash, t *testing.T) {
 	t.Helper()
 	triedb := trie.NewDatabase(rawdb.NewDatabase(db), newDbConfig(scheme))
 	accTrie, err := trie.New(trie.StateTrieID(root), triedb)

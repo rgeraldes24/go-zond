@@ -19,11 +19,11 @@ package qrl
 import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/txpool"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 )
 
 // syncTransactions starts sending all currently pending transactions to the given peer.
-func (h *handler) syncTransactions(p *zond.Peer) {
+func (h *handler) syncTransactions(p *qrl.Peer) {
 	var hashes []common.Hash
 	for _, batch := range h.txpool.Pending(txpool.PendingFilter{}) {
 		for _, tx := range batch {

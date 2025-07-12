@@ -21,7 +21,7 @@ import (
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/log"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 )
 
 // receiptQueue implements typedQueue and is a type adapter between the generic
@@ -73,7 +73,7 @@ func (q *receiptQueue) unreserve(peer string) int {
 
 // request is responsible for converting a generic fetch request into a receipt
 // one and sending it to the remote peer for fulfillment.
-func (q *receiptQueue) request(peer *peerConnection, req *fetchRequest, resCh chan *zond.Response) (*zond.Request, error) {
+func (q *receiptQueue) request(peer *peerConnection, req *fetchRequest, resCh chan *qrl.Response) (*qrl.Request, error) {
 	peer.log.Trace("Requesting new batch of receipts", "count", len(req.Headers), "from", req.Headers[0].Number)
 	if q.receiptFetchHook != nil {
 		q.receiptFetchHook(req.Headers)
@@ -87,8 +87,8 @@ func (q *receiptQueue) request(peer *peerConnection, req *fetchRequest, resCh ch
 
 // deliver is responsible for taking a generic response packet from the concurrent
 // fetcher, unpacking the receipt data and delivering it to the downloader's queue.
-func (q *receiptQueue) deliver(peer *peerConnection, packet *zond.Response) (int, error) {
-	receipts := *packet.Res.(*zond.ReceiptsResponse)
+func (q *receiptQueue) deliver(peer *peerConnection, packet *qrl.Response) (int, error) {
+	receipts := *packet.Res.(*qrl.ReceiptsResponse)
 	hashes := packet.Meta.([]common.Hash) // {receipt hashes}
 
 	accepted, err := q.queue.DeliverReceipts(peer.id, receipts, hashes)

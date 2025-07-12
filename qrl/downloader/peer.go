@@ -28,7 +28,7 @@ import (
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/p2p/msgrate"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 )
 
 const (
@@ -49,7 +49,7 @@ type peerConnection struct {
 
 	peer Peer
 
-	version uint       // Zond protocol version number to switch strategies
+	version uint       // QRL protocol version number to switch strategies
 	log     log.Logger // Contextual logger to add extra infos to peer logs
 	lock    sync.RWMutex
 }
@@ -57,10 +57,10 @@ type peerConnection struct {
 // Peer encapsulates the methods required to synchronise with a remote full peer.
 type Peer interface {
 	Head() common.Hash
-	RequestHeadersByHash(common.Hash, int, int, bool, chan *zond.Response) (*zond.Request, error)
-	RequestHeadersByNumber(uint64, int, int, bool, chan *zond.Response) (*zond.Request, error)
-	RequestBodies([]common.Hash, chan *zond.Response) (*zond.Request, error)
-	RequestReceipts([]common.Hash, chan *zond.Response) (*zond.Request, error)
+	RequestHeadersByHash(common.Hash, int, int, bool, chan *qrl.Response) (*qrl.Request, error)
+	RequestHeadersByNumber(uint64, int, int, bool, chan *qrl.Response) (*qrl.Request, error)
+	RequestBodies([]common.Hash, chan *qrl.Response) (*qrl.Request, error)
+	RequestReceipts([]common.Hash, chan *qrl.Response) (*qrl.Request, error)
 }
 
 // newPeerConnection creates a new downloader peer.
@@ -85,25 +85,25 @@ func (p *peerConnection) Reset() {
 // UpdateHeaderRate updates the peer's estimated header retrieval throughput with
 // the current measurement.
 func (p *peerConnection) UpdateHeaderRate(delivered int, elapsed time.Duration) {
-	p.rates.Update(zond.BlockHeadersMsg, elapsed, delivered)
+	p.rates.Update(qrl.BlockHeadersMsg, elapsed, delivered)
 }
 
 // UpdateBodyRate updates the peer's estimated body retrieval throughput with the
 // current measurement.
 func (p *peerConnection) UpdateBodyRate(delivered int, elapsed time.Duration) {
-	p.rates.Update(zond.BlockBodiesMsg, elapsed, delivered)
+	p.rates.Update(qrl.BlockBodiesMsg, elapsed, delivered)
 }
 
 // UpdateReceiptRate updates the peer's estimated receipt retrieval throughput
 // with the current measurement.
 func (p *peerConnection) UpdateReceiptRate(delivered int, elapsed time.Duration) {
-	p.rates.Update(zond.ReceiptsMsg, elapsed, delivered)
+	p.rates.Update(qrl.ReceiptsMsg, elapsed, delivered)
 }
 
 // HeaderCapacity retrieves the peer's header download allowance based on its
 // previously discovered throughput.
 func (p *peerConnection) HeaderCapacity(targetRTT time.Duration) int {
-	cap := p.rates.Capacity(zond.BlockHeadersMsg, targetRTT)
+	cap := p.rates.Capacity(qrl.BlockHeadersMsg, targetRTT)
 	if cap > MaxHeaderFetch {
 		cap = MaxHeaderFetch
 	}
@@ -113,7 +113,7 @@ func (p *peerConnection) HeaderCapacity(targetRTT time.Duration) int {
 // BodyCapacity retrieves the peer's body download allowance based on its
 // previously discovered throughput.
 func (p *peerConnection) BodyCapacity(targetRTT time.Duration) int {
-	cap := p.rates.Capacity(zond.BlockBodiesMsg, targetRTT)
+	cap := p.rates.Capacity(qrl.BlockBodiesMsg, targetRTT)
 	if cap > MaxBlockFetch {
 		cap = MaxBlockFetch
 	}
@@ -123,7 +123,7 @@ func (p *peerConnection) BodyCapacity(targetRTT time.Duration) int {
 // ReceiptCapacity retrieves the peers receipt download allowance based on its
 // previously discovered throughput.
 func (p *peerConnection) ReceiptCapacity(targetRTT time.Duration) int {
-	cap := p.rates.Capacity(zond.ReceiptsMsg, targetRTT)
+	cap := p.rates.Capacity(qrl.ReceiptsMsg, targetRTT)
 	if cap > MaxReceiptFetch {
 		cap = MaxReceiptFetch
 	}

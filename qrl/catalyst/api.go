@@ -31,14 +31,14 @@ import (
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/miner"
 	"github.com/theQRL/go-zond/node"
+	"github.com/theQRL/go-zond/qrl"
+	"github.com/theQRL/go-zond/qrl/downloader"
 	"github.com/theQRL/go-zond/rpc"
-	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/downloader"
 )
 
 // Register adds the engine API to the full node.
-func Register(stack *node.Node, backend *zond.Zond) error {
-	log.Warn("Engine API enabled", "protocol", "zond")
+func Register(stack *node.Node, backend *qrl.QRL) error {
+	log.Warn("Engine API enabled", "protocol", "qrl")
 	stack.RegisterAPIs([]rpc.API{
 		{
 			Namespace:     "engine",
@@ -83,7 +83,7 @@ var caps = []string{
 }
 
 type ConsensusAPI struct {
-	zond *zond.Zond
+	qrl *qrl.QRL
 
 	remoteBlocks *headerQueue  // Cache of remote payloads received
 	localBlocks  *payloadQueue // Cache of local payloads generated
@@ -127,22 +127,22 @@ type ConsensusAPI struct {
 
 // NewConsensusAPI creates a new consensus api for the given backend.
 // The underlying blockchain needs to have a valid terminal total difficulty set.
-func NewConsensusAPI(zond *zond.Zond) *ConsensusAPI {
-	api := newConsensusAPIWithoutHeartbeat(zond)
+func NewConsensusAPI(qrl *qrl.QRL) *ConsensusAPI {
+	api := newConsensusAPIWithoutHeartbeat(qrl)
 	go api.heartbeat()
 	return api
 }
 
 // newConsensusAPIWithoutHeartbeat creates a new consensus api for the SimulatedBeacon Node.
-func newConsensusAPIWithoutHeartbeat(zond *zond.Zond) *ConsensusAPI {
+func newConsensusAPIWithoutHeartbeat(qrl *qrl.QRL) *ConsensusAPI {
 	api := &ConsensusAPI{
-		zond:              zond,
+		qrl:               qrl,
 		remoteBlocks:      newHeaderQueue(),
 		localBlocks:       newPayloadQueue(),
 		invalidBlocksHits: make(map[common.Hash]int),
 		invalidTipsets:    make(map[common.Hash]*types.Header),
 	}
-	zond.Downloader().SetBadBlockCallback(api.setInvalidAncestor)
+	qrl.Downloader().SetBadBlockCallback(api.setInvalidAncestor)
 	return api
 }
 
@@ -183,7 +183,7 @@ func (api *ConsensusAPI) forkchoiceUpdated(update engine.ForkchoiceStateV1, payl
 	// Check whether we have the block yet in our database or not. If not, we'll
 	// need to either trigger a sync, or to reject this forkchoice update for a
 	// reason.
-	block := api.zond.BlockChain().GetBlockByHash(update.HeadBlockHash)
+	block := api.qrl.BlockChain().GetBlockByHash(update.HeadBlockHash)
 	if block == nil {
 		// If this block was previously invalidated, keep rejecting it here too
 		if res := api.checkInvalidAncestor(update.HeadBlockHash, update.HeadBlockHash); res != nil {
@@ -191,7 +191,7 @@ func (api *ConsensusAPI) forkchoiceUpdated(update engine.ForkchoiceStateV1, payl
 		}
 		// If the head hash is unknown (was not given to us in a newPayload request),
 		// we cannot resolve the header, so not much to do. This could be extended in
-		// the future to resolve from the `zond` network, but it's an unexpected case
+		// the future to resolve from the `qrl` network, but it's an unexpected case
 		// that should be fixed, not papered over.
 		header := api.remoteBlocks.get(update.HeadBlockHash)
 		if header == nil {
@@ -212,7 +212,7 @@ func (api *ConsensusAPI) forkchoiceUpdated(update engine.ForkchoiceStateV1, payl
 			}
 		}
 		log.Info("Forkchoice requested sync to new head", context...)
-		if err := api.zond.Downloader().BeaconSync(api.zond.SyncMode(), header, finalized); err != nil {
+		if err := api.qrl.Downloader().BeaconSync(api.qrl.SyncMode(), header, finalized); err != nil {
 			return engine.STATUS_SYNCING, err
 		}
 		return engine.STATUS_SYNCING, nil
@@ -224,51 +224,51 @@ func (api *ConsensusAPI) forkchoiceUpdated(update engine.ForkchoiceStateV1, payl
 			PayloadID:     id,
 		}
 	}
-	if rawdb.ReadCanonicalHash(api.zond.ChainDb(), block.NumberU64()) != update.HeadBlockHash {
+	if rawdb.ReadCanonicalHash(api.qrl.ChainDb(), block.NumberU64()) != update.HeadBlockHash {
 		// Block is not canonical, set head.
-		if latestValid, err := api.zond.BlockChain().SetCanonical(block); err != nil {
+		if latestValid, err := api.qrl.BlockChain().SetCanonical(block); err != nil {
 			return engine.ForkChoiceResponse{PayloadStatus: engine.PayloadStatusV1{Status: engine.INVALID, LatestValidHash: &latestValid}}, err
 		}
-	} else if api.zond.BlockChain().CurrentBlock().Hash() == update.HeadBlockHash {
+	} else if api.qrl.BlockChain().CurrentBlock().Hash() == update.HeadBlockHash {
 		// If the specified head matches with our local head, do nothing and keep
 		// generating the payload. It's a special corner case that a few slots are
 		// missing and we are requested to generate the payload in slot.
 	} else {
 		// If the head block is already in our canonical chain, the beacon client is
 		// probably resyncing. Ignore the update.
-		log.Info("Ignoring beacon update to old head", "number", block.NumberU64(), "hash", update.HeadBlockHash, "age", common.PrettyAge(time.Unix(int64(block.Time()), 0)), "have", api.zond.BlockChain().CurrentBlock().Number)
+		log.Info("Ignoring beacon update to old head", "number", block.NumberU64(), "hash", update.HeadBlockHash, "age", common.PrettyAge(time.Unix(int64(block.Time()), 0)), "have", api.qrl.BlockChain().CurrentBlock().Number)
 		return valid(nil), nil
 	}
-	api.zond.SetSynced()
+	api.qrl.SetSynced()
 
 	// If the beacon client also advertised a finalized block, mark the local
 	// chain final and completely in PoS mode.
 	if update.FinalizedBlockHash != (common.Hash{}) {
 		// If the finalized block is not in our canonical tree, something is wrong
-		finalBlock := api.zond.BlockChain().GetBlockByHash(update.FinalizedBlockHash)
+		finalBlock := api.qrl.BlockChain().GetBlockByHash(update.FinalizedBlockHash)
 		if finalBlock == nil {
 			log.Warn("Final block not available in database", "hash", update.FinalizedBlockHash)
 			return engine.STATUS_INVALID, engine.InvalidForkChoiceState.With(errors.New("final block not available in database"))
-		} else if rawdb.ReadCanonicalHash(api.zond.ChainDb(), finalBlock.NumberU64()) != update.FinalizedBlockHash {
+		} else if rawdb.ReadCanonicalHash(api.qrl.ChainDb(), finalBlock.NumberU64()) != update.FinalizedBlockHash {
 			log.Warn("Final block not in canonical chain", "number", block.NumberU64(), "hash", update.HeadBlockHash)
 			return engine.STATUS_INVALID, engine.InvalidForkChoiceState.With(errors.New("final block not in canonical chain"))
 		}
 		// Set the finalized block
-		api.zond.BlockChain().SetFinalized(finalBlock.Header())
+		api.qrl.BlockChain().SetFinalized(finalBlock.Header())
 	}
 	// Check if the safe block hash is in our canonical tree, if not something is wrong
 	if update.SafeBlockHash != (common.Hash{}) {
-		safeBlock := api.zond.BlockChain().GetBlockByHash(update.SafeBlockHash)
+		safeBlock := api.qrl.BlockChain().GetBlockByHash(update.SafeBlockHash)
 		if safeBlock == nil {
 			log.Warn("Safe block not available in database")
 			return engine.STATUS_INVALID, engine.InvalidForkChoiceState.With(errors.New("safe block not available in database"))
 		}
-		if rawdb.ReadCanonicalHash(api.zond.ChainDb(), safeBlock.NumberU64()) != update.SafeBlockHash {
+		if rawdb.ReadCanonicalHash(api.qrl.ChainDb(), safeBlock.NumberU64()) != update.SafeBlockHash {
 			log.Warn("Safe block not in canonical chain")
 			return engine.STATUS_INVALID, engine.InvalidForkChoiceState.With(errors.New("safe block not in canonical chain"))
 		}
 		// Set the safe block
-		api.zond.BlockChain().SetSafe(safeBlock.Header())
+		api.qrl.BlockChain().SetSafe(safeBlock.Header())
 	}
 	// If payload generation was requested, create a new block to be potentially
 	// sealed by the beacon client. The payload will be requested later, and we
@@ -295,12 +295,12 @@ func (api *ConsensusAPI) forkchoiceUpdated(update engine.ForkchoiceStateV1, payl
 		// pool will be explicitly blocked on its reset before continuing to the
 		// block production below.
 		if simulatorMode {
-			if err := api.zond.TxPool().Sync(); err != nil {
+			if err := api.qrl.TxPool().Sync(); err != nil {
 				log.Error("Failed to sync transaction pool", "err", err)
 				return valid(nil), engine.InvalidPayloadAttributes.With(err)
 			}
 		}
-		payload, err := api.zond.Miner().BuildPayload(args)
+		payload, err := api.qrl.Miner().BuildPayload(args)
 		if err != nil {
 			log.Error("Failed to build payload", "err", err)
 			return valid(nil), engine.InvalidPayloadAttributes.With(err)
@@ -379,7 +379,7 @@ func (api *ConsensusAPI) newPayload(params engine.ExecutableData) (engine.Payloa
 
 	// If we already have the block locally, ignore the entire execution and just
 	// return a fake success.
-	if block := api.zond.BlockChain().GetBlockByHash(params.BlockHash); block != nil {
+	if block := api.qrl.BlockChain().GetBlockByHash(params.BlockHash); block != nil {
 		log.Warn("Ignoring already known beacon payload", "number", params.Number, "hash", params.BlockHash, "age", common.PrettyAge(time.Unix(int64(block.Time()), 0)))
 		hash := block.Hash()
 		return engine.PayloadStatusV1{Status: engine.VALID, LatestValidHash: &hash}, nil
@@ -394,7 +394,7 @@ func (api *ConsensusAPI) newPayload(params engine.ExecutableData) (engine.Payloa
 	// our live chain. As such, payload execution will not permit reorgs and thus
 	// will not trigger a sync cycle. That is fine though, if we get a fork choice
 	// update after legit payload executions.
-	parent := api.zond.BlockChain().GetBlock(block.ParentHash(), block.NumberU64()-1)
+	parent := api.qrl.BlockChain().GetBlock(block.ParentHash(), block.NumberU64()-1)
 	if parent == nil {
 		return api.delayPayloadImport(block), nil
 	}
@@ -408,16 +408,16 @@ func (api *ConsensusAPI) newPayload(params engine.ExecutableData) (engine.Payloa
 	// tries to make it import a block. That should be denied as pushing something
 	// into the database directly will conflict with the assumptions of snap sync
 	// that it has an empty db that it can fill itself.
-	if api.zond.SyncMode() != downloader.FullSync {
+	if api.qrl.SyncMode() != downloader.FullSync {
 		return api.delayPayloadImport(block), nil
 	}
-	if !api.zond.BlockChain().HasBlockAndState(block.ParentHash(), block.NumberU64()-1) {
+	if !api.qrl.BlockChain().HasBlockAndState(block.ParentHash(), block.NumberU64()-1) {
 		api.remoteBlocks.put(block.Hash(), block.Header())
 		log.Warn("State not available, ignoring new payload")
 		return engine.PayloadStatusV1{Status: engine.ACCEPTED}, nil
 	}
 	log.Trace("Inserting block without sethead", "hash", block.Hash(), "number", block.Number)
-	if err := api.zond.BlockChain().InsertBlockWithoutSetHead(block); err != nil {
+	if err := api.qrl.BlockChain().InsertBlockWithoutSetHead(block); err != nil {
 		log.Warn("NewPayloadV1: inserting block failed", "error", err)
 
 		api.invalidLock.Lock()
@@ -448,7 +448,7 @@ func (api *ConsensusAPI) delayPayloadImport(block *types.Block) engine.PayloadSt
 	// Although we don't want to trigger a sync, if there is one already in
 	// progress, try to extend it with the current payload request to relieve
 	// some strain from the forkchoice update.
-	err := api.zond.Downloader().BeaconExtend(api.zond.SyncMode(), block.Header())
+	err := api.qrl.Downloader().BeaconExtend(api.qrl.SyncMode(), block.Header())
 	if err == nil {
 		log.Debug("Payload accepted for sync extension", "number", block.NumberU64(), "hash", block.Hash())
 		return engine.PayloadStatusV1{Status: engine.SYNCING}
@@ -457,7 +457,7 @@ func (api *ConsensusAPI) delayPayloadImport(block *types.Block) engine.PayloadSt
 	// payload as non-integratable on top of the existing sync. We'll just
 	// have to rely on the beacon client to forcefully update the head with
 	// a forkchoice update request.
-	if api.zond.SyncMode() == downloader.FullSync {
+	if api.qrl.SyncMode() == downloader.FullSync {
 		// In full sync mode, failure to import a well-formed block can only mean
 		// that the parent state is missing and the syncer rejected extending the
 		// current cycle with the new payload.
@@ -600,7 +600,7 @@ func (api *ConsensusAPI) ExchangeCapabilities([]string) []string {
 func (api *ConsensusAPI) GetPayloadBodiesByHashV1(hashes []common.Hash) []*engine.ExecutionPayloadBodyV1 {
 	bodies := make([]*engine.ExecutionPayloadBodyV1, len(hashes))
 	for i, hash := range hashes {
-		block := api.zond.BlockChain().GetBlockByHash(hash)
+		block := api.qrl.BlockChain().GetBlockByHash(hash)
 		bodies[i] = getBody(block)
 	}
 	return bodies
@@ -616,14 +616,14 @@ func (api *ConsensusAPI) GetPayloadBodiesByRangeV1(start, count hexutil.Uint64) 
 		return nil, engine.TooLargeRequest.With(fmt.Errorf("requested count too large: %v", count))
 	}
 	// limit count up until current
-	current := api.zond.BlockChain().CurrentBlock().Number.Uint64()
+	current := api.qrl.BlockChain().CurrentBlock().Number.Uint64()
 	last := uint64(start) + uint64(count) - 1
 	if last > current {
 		last = current
 	}
 	bodies := make([]*engine.ExecutionPayloadBodyV1, 0, uint64(count))
 	for i := uint64(start); i <= last; i++ {
-		block := api.zond.BlockChain().GetBlockByNumber(i)
+		block := api.qrl.BlockChain().GetBlockByNumber(i)
 		bodies = append(bodies, getBody(block))
 	}
 	return bodies, nil

@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package ethconfig contains the configuration of the QRL protocol.
-package zondconfig
+// Package qrlconfig contains the configuration of the QRL protocol.
+package qrlconfig
 
 import (
 	"time"
@@ -28,8 +28,8 @@ import (
 	"github.com/theQRL/go-zond/core/txpool/legacypool"
 	"github.com/theQRL/go-zond/miner"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zond/gasprice"
+	"github.com/theQRL/go-zond/qrl/downloader"
+	"github.com/theQRL/go-zond/qrl/gasprice"
 )
 
 // FullNodeGPO contains default gasprice oracle settings for full node.
@@ -42,7 +42,7 @@ var FullNodeGPO = gasprice.Config{
 	IgnorePrice:      gasprice.DefaultIgnorePrice,
 }
 
-// Defaults contains default settings for use on the Zond main net.
+// Defaults contains default settings for use on the QRL main net.
 var Defaults = Config{
 	SyncMode:           downloader.SnapSync,
 	NetworkId:          1,
@@ -60,15 +60,15 @@ var Defaults = Config{
 	RPCGasCap:          50000000,
 	RPCQRVMTimeout:     5 * time.Second,
 	GPO:                FullNodeGPO,
-	RPCTxFeeCap:        1, // 1 zond
+	RPCTxFeeCap:        1, // 1 quanta
 }
 
 //go:generate go run github.com/fjl/gencodec -type Config -formats toml -out gen_config.go
 
-// Config contains configuration options for of the Zond protocol.
+// Config contains configuration options for of the QRL protocol.
 type Config struct {
 	// The genesis block, which is inserted if the database is empty.
-	// If nil, the Zond main net block is used.
+	// If nil, the QRL main net block is used.
 	Genesis *core.Genesis `toml:",omitempty"`
 
 	// Network ID separates blockchains on the peer-to-peer networking level. When left
@@ -78,7 +78,7 @@ type Config struct {
 
 	// This can be set to list of enrtree:// URLs which will be queried for
 	// for nodes to connect to.
-	ZondDiscoveryURLs []string
+	QRLDiscoveryURLs  []string
 	SnapDiscoveryURLs []string
 
 	NoPruning  bool // Whether to disable pruning and flush everything to disk
@@ -87,7 +87,7 @@ type Config struct {
 	TransactionHistory uint64 `toml:",omitempty"` // The maximum number of blocks from head whose tx indices are reserved.
 	StateHistory       uint64 `toml:",omitempty"` // The maximum number of blocks from head whose state histories are reserved.
 
-	// State scheme represents the scheme used to store zond states and trie
+	// State scheme represents the scheme used to store qrl states and trie
 	// nodes on top. It can be 'hash', 'path', or none which means use the scheme
 	// consistent with persistent state.
 	StateScheme string `toml:",omitempty"`

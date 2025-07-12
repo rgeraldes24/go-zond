@@ -24,7 +24,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/theQRL/go-zond"
+	qrl "github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/state/snapshot"
@@ -32,9 +32,9 @@ import (
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/qrl/protocols/snap"
+	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/trie"
-	"github.com/theQRL/go-zond/zond/protocols/snap"
-	"github.com/theQRL/go-zond/zonddb"
 )
 
 var (
@@ -42,7 +42,7 @@ var (
 	MaxHeaderFetch  = 192 // Number of block headers to be fetched per retrieval request
 	MaxReceiptFetch = 256 // Number of transaction receipts to allow fetching per request
 
-	maxQueuedHeaders           = 32 * 1024                        // [zond/62] Maximum number of headers to queue for import (DOS protection)
+	maxQueuedHeaders           = 32 * 1024                        // [qrl/62] Maximum number of headers to queue for import (DOS protection)
 	maxHeadersProcess          = 2048                             // Number of header download results to import at once into the chain
 	maxResultsProcess          = 2048                             // Number of content download results to import at once into the chain
 	fullMaxForkAncestry uint64 = params.FullImmutabilityThreshold // Maximum chain reorganisation (locally redeclared so tests can reduce it)
@@ -88,7 +88,7 @@ type Downloader struct {
 	queue *queue   // Scheduler for selecting the hashes to download
 	peers *peerSet // Set of active peers from which download can proceed
 
-	stateDB zonddb.Database // Database to state sync into (and deduplicate via)
+	stateDB qrldb.Database // Database to state sync into (and deduplicate via)
 
 	// Statistics
 	syncStatsChainOrigin uint64       // Origin block number where syncing started at
@@ -189,7 +189,7 @@ type BlockChain interface {
 }
 
 // New creates a new downloader to fetch hashes and blocks from remote peers.
-func New(stateDb zonddb.Database, mux *event.TypeMux, chain BlockChain, dropPeer peerDropFn, success func()) *Downloader {
+func New(stateDb qrldb.Database, mux *event.TypeMux, chain BlockChain, dropPeer peerDropFn, success func()) *Downloader {
 	dl := &Downloader{
 		stateDB:        stateDb,
 		mux:            mux,
@@ -217,7 +217,7 @@ func New(stateDb zonddb.Database, mux *event.TypeMux, chain BlockChain, dropPeer
 // In addition, during the state download phase of snap synchronisation the number
 // of processed and the total number of known states are also returned. Otherwise
 // these are zero.
-func (d *Downloader) Progress() zond.SyncProgress {
+func (d *Downloader) Progress() qrl.SyncProgress {
 	// Lock the current stats and return the progress
 	d.syncStatsLock.RLock()
 	defer d.syncStatsLock.RUnlock()
@@ -234,7 +234,7 @@ func (d *Downloader) Progress() zond.SyncProgress {
 	}
 	progress, pending := d.SnapSyncer.Progress()
 
-	return zond.SyncProgress{
+	return qrl.SyncProgress{
 		StartingBlock:       d.syncStatsChainOrigin,
 		CurrentBlock:        current,
 		HighestBlock:        d.syncStatsChainHeight,

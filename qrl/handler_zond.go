@@ -21,23 +21,23 @@ import (
 
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/p2p/enode"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 )
 
-// zondHandler implements the zond.Backend interface to handle the various network
+// qrlHandler implements the qrl.Backend interface to handle the various network
 // packets that are sent as replies or broadcasts.
-type zondHandler handler
+type qrlHandler handler
 
-func (h *zondHandler) Chain() *core.BlockChain { return h.chain }
-func (h *zondHandler) TxPool() zond.TxPool     { return h.txpool }
+func (h *qrlHandler) Chain() *core.BlockChain { return h.chain }
+func (h *qrlHandler) TxPool() qrl.TxPool      { return h.txpool }
 
-// RunPeer is invoked when a peer joins on the `zond` protocol.
-func (h *zondHandler) RunPeer(peer *zond.Peer, hand zond.Handler) error {
-	return (*handler)(h).runZondPeer(peer, hand)
+// RunPeer is invoked when a peer joins on the `qrl` protocol.
+func (h *qrlHandler) RunPeer(peer *qrl.Peer, hand qrl.Handler) error {
+	return (*handler)(h).runQRLPeer(peer, hand)
 }
 
-// PeerInfo retrieves all known `zond` information about a peer.
-func (h *zondHandler) PeerInfo(id enode.ID) interface{} {
+// PeerInfo retrieves all known `qrl` information about a peer.
+func (h *qrlHandler) PeerInfo(id enode.ID) interface{} {
 	if p := h.peers.peer(id.String()); p != nil {
 		return p.info()
 	}
@@ -46,25 +46,25 @@ func (h *zondHandler) PeerInfo(id enode.ID) interface{} {
 
 // AcceptTxs retrieves whether transaction processing is enabled on the node
 // or if inbound transactions should simply be dropped.
-func (h *zondHandler) AcceptTxs() bool {
+func (h *qrlHandler) AcceptTxs() bool {
 	return h.synced.Load()
 }
 
 // Handle is invoked from a peer's message handler when it receives a new remote
 // message that the handler couldn't consume and serve itself.
-func (h *zondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
+func (h *qrlHandler) Handle(peer *qrl.Peer, packet qrl.Packet) error {
 	// Consume any broadcasts and announces, forwarding the rest to the downloader
 	switch packet := packet.(type) {
-	case *zond.NewPooledTransactionHashesPacket:
+	case *qrl.NewPooledTransactionHashesPacket:
 		return h.txFetcher.Notify(peer.ID(), packet.Types, packet.Sizes, packet.Hashes)
 
-	case *zond.TransactionsPacket:
+	case *qrl.TransactionsPacket:
 		return h.txFetcher.Enqueue(peer.ID(), *packet, false)
 
-	case *zond.PooledTransactionsResponse:
+	case *qrl.PooledTransactionsResponse:
 		return h.txFetcher.Enqueue(peer.ID(), *packet, true)
 
 	default:
-		return fmt.Errorf("unexpected zond packet type: %T", packet)
+		return fmt.Errorf("unexpected qrl packet type: %T", packet)
 	}
 }

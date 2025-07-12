@@ -40,11 +40,11 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/qrl"
+	"github.com/theQRL/go-zond/qrl/downloader"
+	"github.com/theQRL/go-zond/qrl/qrlconfig"
 	"github.com/theQRL/go-zond/rpc"
 	"github.com/theQRL/go-zond/trie"
-	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zond/zondconfig"
 )
 
 var (
@@ -92,17 +92,17 @@ func generateChain(n int) (*core.Genesis, []*types.Block) {
 
 func TestEth2AssembleBlock(t *testing.T) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
 
-	api := NewConsensusAPI(zondservice)
-	signer := types.NewShanghaiSigner(zondservice.BlockChain().Config().ChainID)
+	api := NewConsensusAPI(qrlservice)
+	signer := types.NewShanghaiSigner(qrlservice.BlockChain().Config().ChainID)
 	to := blocks[9].Coinbase()
 	tx, err := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: uint64(10), To: &to, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(875000000), Data: nil}), signer, testKey)
 	if err != nil {
 		t.Fatalf("error signing transaction, err=%v", err)
 	}
-	zondservice.TxPool().Add([]*types.Transaction{tx}, true, false)
+	qrlservice.TxPool().Add([]*types.Transaction{tx}, true, false)
 	blockParams := engine.PayloadAttributes{
 		Timestamp: blocks[9].Time() + 5,
 	}
@@ -132,14 +132,14 @@ func assembleWithTransactions(api *ConsensusAPI, parentHash common.Hash, params 
 
 func TestEth2AssembleBlockWithAnotherBlocksTxs(t *testing.T) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks[:9])
+	n, qrlservice := startQRLService(t, genesis, blocks[:9])
 	defer n.Close()
 
-	api := NewConsensusAPI(zondservice)
+	api := NewConsensusAPI(qrlservice)
 
 	// Put the 10th block's tx in the pool and produce a new block
 	txs := blocks[9].Transactions()
-	api.zond.TxPool().Add(txs, false, true)
+	api.qrl.TxPool().Add(txs, false, true)
 	blockParams := engine.PayloadAttributes{
 		Timestamp: blocks[8].Time() + 5,
 	}
@@ -152,14 +152,14 @@ func TestEth2AssembleBlockWithAnotherBlocksTxs(t *testing.T) {
 
 func TestEth2PrepareAndGetPayload(t *testing.T) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks[:9])
+	n, qrlservice := startQRLService(t, genesis, blocks[:9])
 	defer n.Close()
 
-	api := NewConsensusAPI(zondservice)
+	api := NewConsensusAPI(qrlservice)
 
 	// Put the 10th block's tx in the pool and produce a new block
 	txs := blocks[9].Transactions()
-	zondservice.TxPool().Add(txs, true, false)
+	qrlservice.TxPool().Add(txs, true, false)
 	blockParams := engine.PayloadAttributes{
 		Timestamp:   blocks[8].Time() + 5,
 		Withdrawals: []*types.Withdrawal{},
@@ -218,11 +218,11 @@ func checkLogEvents(t *testing.T, logsCh <-chan []*types.Log, rmLogsCh <-chan co
 
 func TestInvalidPayloadTimestamp(t *testing.T) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
 	var (
-		api    = NewConsensusAPI(zondservice)
-		parent = zondservice.BlockChain().CurrentBlock()
+		api    = NewConsensusAPI(qrlservice)
+		parent = qrlservice.BlockChain().CurrentBlock()
 	)
 	tests := []struct {
 		time      uint64
@@ -260,11 +260,11 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 
 func TestEth2NewBlock(t *testing.T) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
 
 	var (
-		api    = NewConsensusAPI(zondservice)
+		api    = NewConsensusAPI(qrlservice)
 		parent = blocks[len(blocks)-1]
 
 		// This QRVM code generates a log when the contract is created.
@@ -273,13 +273,13 @@ func TestEth2NewBlock(t *testing.T) {
 	// The event channels.
 	newLogCh := make(chan []*types.Log, 10)
 	rmLogsCh := make(chan core.RemovedLogsEvent, 10)
-	zondservice.BlockChain().SubscribeLogsEvent(newLogCh)
-	zondservice.BlockChain().SubscribeRemovedLogsEvent(rmLogsCh)
+	qrlservice.BlockChain().SubscribeLogsEvent(newLogCh)
+	qrlservice.BlockChain().SubscribeRemovedLogsEvent(rmLogsCh)
 
 	for i := 0; i < 10; i++ {
-		statedb, _ := zondservice.BlockChain().StateAt(parent.Root())
+		statedb, _ := qrlservice.BlockChain().StateAt(parent.Root())
 		nonce := statedb.GetNonce(testAddr)
-		signer := types.LatestSigner(zondservice.BlockChain().Config())
+		signer := types.LatestSigner(qrlservice.BlockChain().Config())
 		tx := types.NewTx(&types.DynamicFeeTx{
 			Nonce:     nonce,
 			Value:     new(big.Int),
@@ -288,7 +288,7 @@ func TestEth2NewBlock(t *testing.T) {
 			Data:      logCode,
 		})
 		signedTx, _ := types.SignTx(tx, signer, testKey)
-		zondservice.TxPool().Add([]*types.Transaction{signedTx}, true, false)
+		qrlservice.TxPool().Add([]*types.Transaction{signedTx}, true, false)
 
 		execData, err := assembleWithTransactions(api, parent.Hash(), &engine.PayloadAttributes{
 			Timestamp: parent.Time() + 5,
@@ -306,7 +306,7 @@ func TestEth2NewBlock(t *testing.T) {
 			t.Fatalf("Failed to insert block: %v", err)
 		case newResp.Status != "VALID":
 			t.Fatalf("Failed to insert block: %v", newResp.Status)
-		case zondservice.BlockChain().CurrentBlock().Number.Uint64() != block.NumberU64()-1:
+		case qrlservice.BlockChain().CurrentBlock().Number.Uint64() != block.NumberU64()-1:
 			t.Fatalf("Chain head shouldn't be updated")
 		}
 		checkLogEvents(t, newLogCh, rmLogsCh, 0, 0)
@@ -318,7 +318,7 @@ func TestEth2NewBlock(t *testing.T) {
 		if _, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
-		if have, want := zondservice.BlockChain().CurrentBlock().Number.Uint64(), block.NumberU64(); have != want {
+		if have, want := qrlservice.BlockChain().CurrentBlock().Number.Uint64(), block.NumberU64(); have != want {
 			t.Fatalf("Chain head should be updated, have %d want %d", have, want)
 		}
 		checkLogEvents(t, newLogCh, rmLogsCh, 1, 0)
@@ -328,7 +328,7 @@ func TestEth2NewBlock(t *testing.T) {
 
 	// Introduce fork chain
 	var (
-		head = zondservice.BlockChain().CurrentBlock().Number.Uint64()
+		head = qrlservice.BlockChain().CurrentBlock().Number.Uint64()
 	)
 	parent = blocks[len(blocks)-1]
 	for i := 0; i < 10; i++ {
@@ -346,7 +346,7 @@ func TestEth2NewBlock(t *testing.T) {
 		if err != nil || newResp.Status != "VALID" {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
-		if zondservice.BlockChain().CurrentBlock().Number.Uint64() != head {
+		if qrlservice.BlockChain().CurrentBlock().Number.Uint64() != head {
 			t.Fatalf("Chain head shouldn't be updated")
 		}
 
@@ -358,7 +358,7 @@ func TestEth2NewBlock(t *testing.T) {
 		if _, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
-		if zondservice.BlockChain().CurrentBlock().Number.Uint64() != block.NumberU64() {
+		if qrlservice.BlockChain().CurrentBlock().Number.Uint64() != block.NumberU64() {
 			t.Fatalf("Chain head should be updated")
 		}
 		parent, head = block, block.NumberU64()
@@ -411,8 +411,8 @@ func TestEth2DeepReorg(t *testing.T) {
 	*/
 }
 
-// startZondService creates a full node instance for testing.
-func startZondService(t *testing.T, genesis *core.Genesis, blocks []*types.Block) (*node.Node, *zond.Zond) {
+// startQRLService creates a full node instance for testing.
+func startQRLService(t *testing.T, genesis *core.Genesis, blocks []*types.Block) (*node.Node, *qrl.QRL) {
 	t.Helper()
 
 	n, err := node.New(&node.Config{
@@ -427,37 +427,37 @@ func startZondService(t *testing.T, genesis *core.Genesis, blocks []*types.Block
 
 	mcfg := miner.DefaultConfig
 	mcfg.PendingFeeRecipient = testAddr
-	zondcfg := &zondconfig.Config{Genesis: genesis, SyncMode: downloader.FullSync, TrieTimeout: time.Minute, TrieDirtyCache: 256, TrieCleanCache: 256, Miner: mcfg}
-	zondservice, err := zond.New(n, zondcfg)
+	qrlcfg := &qrlconfig.Config{Genesis: genesis, SyncMode: downloader.FullSync, TrieTimeout: time.Minute, TrieDirtyCache: 256, TrieCleanCache: 256, Miner: mcfg}
+	qrlservice, err := qrl.New(n, qrlcfg)
 	if err != nil {
-		t.Fatal("can't create zond service:", err)
+		t.Fatal("can't create qrl service:", err)
 	}
 	if err := n.Start(); err != nil {
 		t.Fatal("can't start node:", err)
 	}
-	if _, err := zondservice.BlockChain().InsertChain(blocks); err != nil {
+	if _, err := qrlservice.BlockChain().InsertChain(blocks); err != nil {
 		n.Close()
 		t.Fatal("can't import test blocks:", err)
 	}
 
-	zondservice.SetSynced()
-	return n, zondservice
+	qrlservice.SetSynced()
+	return n, qrlservice
 }
 
 func TestFullAPI(t *testing.T) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
 	var (
-		parent = zondservice.BlockChain().CurrentBlock()
+		parent = qrlservice.BlockChain().CurrentBlock()
 		// This QRVM code generates a log when the contract is created.
 		logCode = common.Hex2Bytes("60606040525b7f24ec1d3ff24c2f6ff210738839dbc339cd45a5294d85c79361016243157aae7b60405180905060405180910390a15b600a8060416000396000f360606040526008565b00")
 	)
 
 	callback := func(parent *types.Header) {
-		statedb, _ := zondservice.BlockChain().StateAt(parent.Root)
+		statedb, _ := qrlservice.BlockChain().StateAt(parent.Root)
 		nonce := statedb.GetNonce(testAddr)
-		signer := types.LatestSigner(zondservice.BlockChain().Config())
+		signer := types.LatestSigner(qrlservice.BlockChain().Config())
 		tx := types.NewTx(&types.DynamicFeeTx{
 			Nonce: nonce,
 			Value: new(big.Int),
@@ -465,14 +465,14 @@ func TestFullAPI(t *testing.T) {
 			Data:  logCode,
 		})
 		signedTx, _ := types.SignTx(tx, signer, testKey)
-		zondservice.TxPool().Add([]*types.Transaction{signedTx}, true, false)
+		qrlservice.TxPool().Add([]*types.Transaction{signedTx}, true, false)
 	}
 
-	setupBlocks(t, zondservice, 10, parent, callback, nil)
+	setupBlocks(t, qrlservice, 10, parent, callback, nil)
 }
 
-func setupBlocks(t *testing.T, zondservice *zond.Zond, n int, parent *types.Header, callback func(parent *types.Header), withdrawals [][]*types.Withdrawal) []*types.Header {
-	api := NewConsensusAPI(zondservice)
+func setupBlocks(t *testing.T, qrlservice *qrl.QRL, n int, parent *types.Header, callback func(parent *types.Header), withdrawals [][]*types.Withdrawal) []*types.Header {
+	api := NewConsensusAPI(qrlservice)
 	var blocks []*types.Header
 	for i := 0; i < n; i++ {
 		callback(parent)
@@ -497,13 +497,13 @@ func setupBlocks(t *testing.T, zondservice *zond.Zond, n int, parent *types.Head
 		if _, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
-		if zondservice.BlockChain().CurrentBlock().Number.Uint64() != payload.Number {
+		if qrlservice.BlockChain().CurrentBlock().Number.Uint64() != payload.Number {
 			t.Fatal("Chain head should be updated")
 		}
-		if zondservice.BlockChain().CurrentFinalBlock().Number.Uint64() != payload.Number-1 {
+		if qrlservice.BlockChain().CurrentFinalBlock().Number.Uint64() != payload.Number-1 {
 			t.Fatal("Finalized block should be updated")
 		}
-		parent = zondservice.BlockChain().CurrentBlock()
+		parent = qrlservice.BlockChain().CurrentBlock()
 		blocks = append(blocks, parent)
 	}
 	return blocks
@@ -528,18 +528,18 @@ We expect
 */
 func TestNewPayloadOnInvalidChain(t *testing.T) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
 
 	var (
-		api    = NewConsensusAPI(zondservice)
-		parent = zondservice.BlockChain().CurrentBlock()
-		signer = types.LatestSigner(zondservice.BlockChain().Config())
+		api    = NewConsensusAPI(qrlservice)
+		parent = qrlservice.BlockChain().CurrentBlock()
+		signer = types.LatestSigner(qrlservice.BlockChain().Config())
 		// This QRVM code generates a log when the contract is created.
 		logCode = common.Hex2Bytes("60606040525b7f24ec1d3ff24c2f6ff210738839dbc339cd45a5294d85c79361016243157aae7b60405180905060405180910390a15b600a8060416000396000f360606040526008565b00")
 	)
 	for i := 0; i < 10; i++ {
-		statedb, _ := zondservice.BlockChain().StateAt(parent.Root)
+		statedb, _ := qrlservice.BlockChain().StateAt(parent.Root)
 		tx := types.MustSignNewTx(testKey, signer, &types.DynamicFeeTx{
 			Nonce:     statedb.GetNonce(testAddr),
 			Value:     new(big.Int),
@@ -548,7 +548,7 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 			GasTipCap: big.NewInt(params.GPlanck),
 			Data:      logCode,
 		})
-		zondservice.TxPool().Add([]*types.Transaction{tx}, false, true)
+		qrlservice.TxPool().Add([]*types.Transaction{tx}, false, true)
 		var (
 			params = engine.PayloadAttributes{
 				Timestamp:             parent.Time + 1,
@@ -601,10 +601,10 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 		if _, err := api.ForkchoiceUpdatedV2(fcState, nil); err != nil {
 			t.Fatalf("Failed to insert block: %v", err)
 		}
-		if zondservice.BlockChain().CurrentBlock().Number.Uint64() != payload.ExecutionPayload.Number {
+		if qrlservice.BlockChain().CurrentBlock().Number.Uint64() != payload.ExecutionPayload.Number {
 			t.Fatalf("Chain head should be updated")
 		}
-		parent = zondservice.BlockChain().CurrentBlock()
+		parent = qrlservice.BlockChain().CurrentBlock()
 	}
 }
 
@@ -616,7 +616,7 @@ func assembleBlock(api *ConsensusAPI, parentHash common.Hash, params *engine.Pay
 		Random:       params.Random,
 		Withdrawals:  params.Withdrawals,
 	}
-	payload, err := api.zond.Miner().BuildPayload(args)
+	payload, err := api.qrl.Miner().BuildPayload(args)
 	if err != nil {
 		return nil, err
 	}
@@ -625,14 +625,14 @@ func assembleBlock(api *ConsensusAPI, parentHash common.Hash, params *engine.Pay
 
 func TestEmptyBlocks(t *testing.T) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
 
-	commonAncestor := zondservice.BlockChain().CurrentBlock()
-	api := NewConsensusAPI(zondservice)
+	commonAncestor := qrlservice.BlockChain().CurrentBlock()
+	api := NewConsensusAPI(qrlservice)
 
 	// Setup 10 blocks on the canonical chain
-	setupBlocks(t, zondservice, 10, commonAncestor, func(parent *types.Header) {}, nil)
+	setupBlocks(t, qrlservice, 10, commonAncestor, func(parent *types.Header) {}, nil)
 
 	// (1) check LatestValidHash by sending a normal payload (P1'')
 	payload := getNewPayload(t, api, commonAncestor, nil)
@@ -740,8 +740,8 @@ func decodeTransactions(enc [][]byte) ([]*types.Transaction, error) {
 func TestTrickRemoteBlockCache(t *testing.T) {
 	// Setup two nodes
 	genesis, blocks := generateChain(10)
-	nodeA, zondserviceA := startZondService(t, genesis, blocks)
-	nodeB, zondserviceB := startZondService(t, genesis, blocks)
+	nodeA, qrlserviceA := startQRLService(t, genesis, blocks)
+	nodeB, qrlserviceB := startQRLService(t, genesis, blocks)
 	defer nodeA.Close()
 	defer nodeB.Close()
 	for nodeB.Server().NodeInfo().Ports.Listener == 0 {
@@ -749,14 +749,14 @@ func TestTrickRemoteBlockCache(t *testing.T) {
 	}
 	nodeA.Server().AddPeer(nodeB.Server().Self())
 	nodeB.Server().AddPeer(nodeA.Server().Self())
-	apiA := NewConsensusAPI(zondserviceA)
-	apiB := NewConsensusAPI(zondserviceB)
+	apiA := NewConsensusAPI(qrlserviceA)
+	apiB := NewConsensusAPI(qrlserviceB)
 
-	commonAncestor := zondserviceA.BlockChain().CurrentBlock()
+	commonAncestor := qrlserviceA.BlockChain().CurrentBlock()
 
 	// Setup 10 blocks on the canonical chain
-	setupBlocks(t, zondserviceA, 10, commonAncestor, func(parent *types.Header) {}, nil)
-	commonAncestor = zondserviceA.BlockChain().CurrentBlock()
+	setupBlocks(t, qrlserviceA, 10, commonAncestor, func(parent *types.Header) {}, nil)
+	commonAncestor = qrlserviceA.BlockChain().CurrentBlock()
 
 	var invalidChain []*engine.ExecutableData
 	// create a valid payload (P1)
@@ -803,14 +803,14 @@ func TestTrickRemoteBlockCache(t *testing.T) {
 
 func TestInvalidBloom(t *testing.T) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
 
-	commonAncestor := zondservice.BlockChain().CurrentBlock()
-	api := NewConsensusAPI(zondservice)
+	commonAncestor := qrlservice.BlockChain().CurrentBlock()
+	api := NewConsensusAPI(qrlservice)
 
 	// Setup 10 blocks on the canonical chain
-	setupBlocks(t, zondservice, 10, commonAncestor, func(parent *types.Header) {}, nil)
+	setupBlocks(t, qrlservice, 10, commonAncestor, func(parent *types.Header) {}, nil)
 
 	// (1) check LatestValidHash by sending a normal payload (P1'')
 	payload := getNewPayload(t, api, commonAncestor, nil)
@@ -829,11 +829,11 @@ func TestInvalidBloom(t *testing.T) {
 // well even of the caller is not being 'serial'.
 func TestSimultaneousNewBlock(t *testing.T) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
 
 	var (
-		api    = NewConsensusAPI(zondservice)
+		api    = NewConsensusAPI(qrlservice)
 		parent = blocks[len(blocks)-1]
 	)
 	for i := 0; i < 10; i++ {
@@ -874,7 +874,7 @@ func TestSimultaneousNewBlock(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Failed to convert executable data to block %v", err)
 		}
-		if zondservice.BlockChain().CurrentBlock().Number.Uint64() != block.NumberU64()-1 {
+		if qrlservice.BlockChain().CurrentBlock().Number.Uint64() != block.NumberU64()-1 {
 			t.Fatalf("Chain head shouldn't be updated")
 		}
 		fcState := engine.ForkchoiceStateV1{
@@ -905,7 +905,7 @@ func TestSimultaneousNewBlock(t *testing.T) {
 				t.Fatal(testErr)
 			}
 		}
-		if have, want := zondservice.BlockChain().CurrentBlock().Number.Uint64(), block.NumberU64(); have != want {
+		if have, want := qrlservice.BlockChain().CurrentBlock().Number.Uint64(), block.NumberU64(); have != want {
 			t.Fatalf("Chain head should be updated, have %d want %d", have, want)
 		}
 		parent = block
@@ -917,13 +917,13 @@ func TestSimultaneousNewBlock(t *testing.T) {
 func TestWithdrawals(t *testing.T) {
 	genesis, blocks := generateChain(10)
 
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
 
-	api := NewConsensusAPI(zondservice)
+	api := NewConsensusAPI(qrlservice)
 
 	// 10: Build Shanghai block with no withdrawals.
-	parent := zondservice.BlockChain().CurrentHeader()
+	parent := qrlservice.BlockChain().CurrentHeader()
 	blockParams := engine.PayloadAttributes{
 		Timestamp:   parent.Time + 5,
 		Withdrawals: make([]*types.Withdrawal, 0),
@@ -1012,7 +1012,7 @@ func TestWithdrawals(t *testing.T) {
 	}
 
 	// 11: verify withdrawals were processed.
-	db, _, err := zondservice.APIBackend.StateAndHeaderByNumber(context.Background(), rpc.BlockNumber(execData.ExecutionPayload.Number))
+	db, _, err := qrlservice.APIBackend.StateAndHeaderByNumber(context.Background(), rpc.BlockNumber(execData.ExecutionPayload.Number))
 	if err != nil {
 		t.Fatalf("unable to load db: %v", err)
 	}
@@ -1027,11 +1027,11 @@ func TestWithdrawals(t *testing.T) {
 func TestNilWithdrawals(t *testing.T) {
 	genesis, blocks := generateChain(10)
 
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
 
-	api := NewConsensusAPI(zondservice)
-	parent := zondservice.BlockChain().CurrentHeader()
+	api := NewConsensusAPI(qrlservice)
+	parent := qrlservice.BlockChain().CurrentHeader()
 	aa := common.Address{0xaa}
 
 	type test struct {
@@ -1103,9 +1103,9 @@ func TestNilWithdrawals(t *testing.T) {
 	}
 }
 
-func setupBodies(t *testing.T) (*node.Node, *zond.Zond, []*types.Block) {
+func setupBodies(t *testing.T) (*node.Node, *qrl.QRL, []*types.Block) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startZondService(t, genesis, blocks)
+	n, zondservice := startQRLService(t, genesis, blocks)
 
 	var (
 		parent = zondservice.BlockChain().CurrentBlock()

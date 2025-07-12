@@ -35,9 +35,9 @@ import (
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/qrl/tracers/logger"
+	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/trie"
-	"github.com/theQRL/go-zond/zond/tracers/logger"
-	"github.com/theQRL/go-zond/zonddb"
 )
 
 // So we can deterministically seed different blockchains
@@ -50,7 +50,7 @@ var (
 // chain. Depending on the full flag, if creates either a full block chain or a
 // header only chain. The database and genesis specification for block generation
 // are also returned in case more test blocks are needed later.
-func newCanonical(engine consensus.Engine, n int, full bool, scheme string) (zonddb.Database, *Genesis, *BlockChain, error) {
+func newCanonical(engine consensus.Engine, n int, full bool, scheme string) (qrldb.Database, *Genesis, *BlockChain, error) {
 	var (
 		genesis = &Genesis{
 			BaseFee: big.NewInt(params.InitialBaseFee),
@@ -818,7 +818,7 @@ func testLightVsFastVsFullChainHeads(t *testing.T, scheme string) {
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, beacon.NewFaker(), int(height), nil)
 
 	// makeDb creates a db instance for testing.
-	makeDb := func() zonddb.Database {
+	makeDb := func() qrldb.Database {
 		db, err := rawdb.NewDatabaseWithFreezer(rawdb.NewMemoryDatabase(), t.TempDir(), "", false)
 		if err != nil {
 			t.Fatalf("failed to create temp freezer db: %v", err)
@@ -2923,7 +2923,7 @@ func TestTxIndexer(t *testing.T) {
 
 	// verifyIndexes checks if the transaction indexes are present or not
 	// of the specified block.
-	verifyIndexes := func(db zonddb.Database, number uint64, exist bool) {
+	verifyIndexes := func(db qrldb.Database, number uint64, exist bool) {
 		if number == 0 {
 			return
 		}
@@ -2939,12 +2939,12 @@ func TestTxIndexer(t *testing.T) {
 		}
 	}
 	// verifyRange runs verifyIndexes for a range of blocks, from and to are included.
-	verifyRange := func(db zonddb.Database, from, to uint64, exist bool) {
+	verifyRange := func(db qrldb.Database, from, to uint64, exist bool) {
 		for number := from; number <= to; number += 1 {
 			verifyIndexes(db, number, exist)
 		}
 	}
-	verify := func(db zonddb.Database, expTail uint64) {
+	verify := func(db qrldb.Database, expTail uint64) {
 		tail := rawdb.ReadTxIndexTail(db)
 		if tail == nil {
 			t.Fatal("Failed to write tx index tail")

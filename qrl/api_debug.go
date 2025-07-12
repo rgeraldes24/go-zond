@@ -28,7 +28,7 @@ import (
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/internal/zondapi"
+	"github.com/theQRL/go-zond/internal/qrlapi"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/rpc"
@@ -38,12 +38,12 @@ import (
 // DebugAPI is the collection of Zond full node APIs for debugging the
 // protocol.
 type DebugAPI struct {
-	zond *Zond
+	qrl *QRL
 }
 
 // NewDebugAPI creates a new DebugAPI instance.
-func NewDebugAPI(zond *Zond) *DebugAPI {
-	return &DebugAPI{zond: zond}
+func NewDebugAPI(qrl *QRL) *DebugAPI {
+	return &DebugAPI{qrl: qrl}
 }
 
 // DumpBlock retrieves the entire state of the database at a given block.
@@ -56,7 +56,7 @@ func (api *DebugAPI) DumpBlock(blockNr rpc.BlockNumber) (state.Dump, error) {
 		// If we're dumping the pending state, we need to request
 		// both the pending block as well as the pending state from
 		// the miner and operate on those
-		_, _, stateDb := api.zond.miner.Pending()
+		_, _, stateDb := api.qrl.miner.Pending()
 		if stateDb == nil {
 			return state.Dump{}, errors.New("pending state is not available")
 		}
@@ -65,13 +65,13 @@ func (api *DebugAPI) DumpBlock(blockNr rpc.BlockNumber) (state.Dump, error) {
 	var header *types.Header
 	switch blockNr {
 	case rpc.LatestBlockNumber:
-		header = api.zond.blockchain.CurrentBlock()
+		header = api.qrl.blockchain.CurrentBlock()
 	case rpc.FinalizedBlockNumber:
-		header = api.zond.blockchain.CurrentFinalBlock()
+		header = api.qrl.blockchain.CurrentFinalBlock()
 	case rpc.SafeBlockNumber:
-		header = api.zond.blockchain.CurrentSafeBlock()
+		header = api.qrl.blockchain.CurrentSafeBlock()
 	default:
-		block := api.zond.blockchain.GetBlockByNumber(uint64(blockNr))
+		block := api.qrl.blockchain.GetBlockByNumber(uint64(blockNr))
 		if block == nil {
 			return state.Dump{}, fmt.Errorf("block #%d not found", blockNr)
 		}
@@ -80,7 +80,7 @@ func (api *DebugAPI) DumpBlock(blockNr rpc.BlockNumber) (state.Dump, error) {
 	if header == nil {
 		return state.Dump{}, fmt.Errorf("block #%d not found", blockNr)
 	}
-	stateDb, err := api.zond.BlockChain().StateAt(header.Root)
+	stateDb, err := api.qrl.BlockChain().StateAt(header.Root)
 	if err != nil {
 		return state.Dump{}, err
 	}
@@ -89,7 +89,7 @@ func (api *DebugAPI) DumpBlock(blockNr rpc.BlockNumber) (state.Dump, error) {
 
 // Preimage is a debug API function that returns the preimage for a sha3 hash, if known.
 func (api *DebugAPI) Preimage(ctx context.Context, hash common.Hash) (hexutil.Bytes, error) {
-	if preimage := rawdb.ReadPreimage(api.zond.ChainDb(), hash); preimage != nil {
+	if preimage := rawdb.ReadPreimage(api.qrl.ChainDb(), hash); preimage != nil {
 		return preimage, nil
 	}
 	return nil, errors.New("unknown preimage")
@@ -106,7 +106,7 @@ type BadBlockArgs struct {
 // and returns them as a JSON list of block hashes.
 func (api *DebugAPI) GetBadBlocks(ctx context.Context) ([]*BadBlockArgs, error) {
 	var (
-		blocks  = rawdb.ReadAllBadBlocks(api.zond.chainDb)
+		blocks  = rawdb.ReadAllBadBlocks(api.qrl.chainDb)
 		results = make([]*BadBlockArgs, 0, len(blocks))
 	)
 	for _, block := range blocks {
@@ -119,7 +119,7 @@ func (api *DebugAPI) GetBadBlocks(ctx context.Context) ([]*BadBlockArgs, error) 
 		} else {
 			blockRlp = fmt.Sprintf("%#x", rlpBytes)
 		}
-		blockJSON = zondapi.RPCMarshalBlock(block, true, true, api.zond.APIBackend.ChainConfig())
+		blockJSON = qrlapi.RPCMarshalBlock(block, true, true, api.qrl.APIBackend.ChainConfig())
 		results = append(results, &BadBlockArgs{
 			Hash:  block.Hash(),
 			RLP:   blockRlp,
@@ -142,7 +142,7 @@ func (api *DebugAPI) AccountRange(blockNrOrHash rpc.BlockNumberOrHash, start hex
 			// If we're dumping the pending state, we need to request
 			// both the pending block as well as the pending state from
 			// the miner and operate on those
-			_, _, stateDb = api.zond.miner.Pending()
+			_, _, stateDb = api.qrl.miner.Pending()
 			if stateDb == nil {
 				return state.IteratorDump{}, errors.New("pending state is not available")
 			}
@@ -150,13 +150,13 @@ func (api *DebugAPI) AccountRange(blockNrOrHash rpc.BlockNumberOrHash, start hex
 			var header *types.Header
 			switch number {
 			case rpc.LatestBlockNumber:
-				header = api.zond.blockchain.CurrentBlock()
+				header = api.qrl.blockchain.CurrentBlock()
 			case rpc.FinalizedBlockNumber:
-				header = api.zond.blockchain.CurrentFinalBlock()
+				header = api.qrl.blockchain.CurrentFinalBlock()
 			case rpc.SafeBlockNumber:
-				header = api.zond.blockchain.CurrentSafeBlock()
+				header = api.qrl.blockchain.CurrentSafeBlock()
 			default:
-				block := api.zond.blockchain.GetBlockByNumber(uint64(number))
+				block := api.qrl.blockchain.GetBlockByNumber(uint64(number))
 				if block == nil {
 					return state.IteratorDump{}, fmt.Errorf("block #%d not found", number)
 				}
@@ -165,17 +165,17 @@ func (api *DebugAPI) AccountRange(blockNrOrHash rpc.BlockNumberOrHash, start hex
 			if header == nil {
 				return state.IteratorDump{}, fmt.Errorf("block #%d not found", number)
 			}
-			stateDb, err = api.zond.BlockChain().StateAt(header.Root)
+			stateDb, err = api.qrl.BlockChain().StateAt(header.Root)
 			if err != nil {
 				return state.IteratorDump{}, err
 			}
 		}
 	} else if hash, ok := blockNrOrHash.Hash(); ok {
-		block := api.zond.blockchain.GetBlockByHash(hash)
+		block := api.qrl.blockchain.GetBlockByHash(hash)
 		if block == nil {
 			return state.IteratorDump{}, fmt.Errorf("block %s not found", hash.Hex())
 		}
-		stateDb, err = api.zond.BlockChain().StateAt(block.Root())
+		stateDb, err = api.qrl.BlockChain().StateAt(block.Root())
 		if err != nil {
 			return state.IteratorDump{}, err
 		}
@@ -213,14 +213,14 @@ type storageEntry struct {
 func (api *DebugAPI) StorageRangeAt(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash, txIndex int, contractAddress common.Address, keyStart hexutil.Bytes, maxResult int) (StorageRangeResult, error) {
 	var block *types.Block
 
-	block, err := api.zond.APIBackend.BlockByNumberOrHash(ctx, blockNrOrHash)
+	block, err := api.qrl.APIBackend.BlockByNumberOrHash(ctx, blockNrOrHash)
 	if err != nil {
 		return StorageRangeResult{}, err
 	}
 	if block == nil {
 		return StorageRangeResult{}, fmt.Errorf("block %v not found", blockNrOrHash)
 	}
-	_, _, statedb, release, err := api.zond.stateAtTransaction(ctx, block, txIndex, 0)
+	_, _, statedb, release, err := api.qrl.stateAtTransaction(ctx, block, txIndex, 0)
 	if err != nil {
 		return StorageRangeResult{}, err
 	}
@@ -273,19 +273,19 @@ func storageRangeAt(statedb *state.StateDB, root common.Hash, address common.Add
 func (api *DebugAPI) GetModifiedAccountsByNumber(startNum uint64, endNum *uint64) ([]common.Address, error) {
 	var startBlock, endBlock *types.Block
 
-	startBlock = api.zond.blockchain.GetBlockByNumber(startNum)
+	startBlock = api.qrl.blockchain.GetBlockByNumber(startNum)
 	if startBlock == nil {
 		return nil, fmt.Errorf("start block %x not found", startNum)
 	}
 
 	if endNum == nil {
 		endBlock = startBlock
-		startBlock = api.zond.blockchain.GetBlockByHash(startBlock.ParentHash())
+		startBlock = api.qrl.blockchain.GetBlockByHash(startBlock.ParentHash())
 		if startBlock == nil {
 			return nil, fmt.Errorf("block %x has no parent", endBlock.Number())
 		}
 	} else {
-		endBlock = api.zond.blockchain.GetBlockByNumber(*endNum)
+		endBlock = api.qrl.blockchain.GetBlockByNumber(*endNum)
 		if endBlock == nil {
 			return nil, fmt.Errorf("end block %d not found", *endNum)
 		}
@@ -300,19 +300,19 @@ func (api *DebugAPI) GetModifiedAccountsByNumber(startNum uint64, endNum *uint64
 // With one parameter, returns the list of accounts modified in the specified block.
 func (api *DebugAPI) GetModifiedAccountsByHash(startHash common.Hash, endHash *common.Hash) ([]common.Address, error) {
 	var startBlock, endBlock *types.Block
-	startBlock = api.zond.blockchain.GetBlockByHash(startHash)
+	startBlock = api.qrl.blockchain.GetBlockByHash(startHash)
 	if startBlock == nil {
 		return nil, fmt.Errorf("start block %x not found", startHash)
 	}
 
 	if endHash == nil {
 		endBlock = startBlock
-		startBlock = api.zond.blockchain.GetBlockByHash(startBlock.ParentHash())
+		startBlock = api.qrl.blockchain.GetBlockByHash(startBlock.ParentHash())
 		if startBlock == nil {
 			return nil, fmt.Errorf("block %x has no parent", endBlock.Number())
 		}
 	} else {
-		endBlock = api.zond.blockchain.GetBlockByHash(*endHash)
+		endBlock = api.qrl.blockchain.GetBlockByHash(*endHash)
 		if endBlock == nil {
 			return nil, fmt.Errorf("end block %x not found", *endHash)
 		}
@@ -324,7 +324,7 @@ func (api *DebugAPI) getModifiedAccounts(startBlock, endBlock *types.Block) ([]c
 	if startBlock.Number().Uint64() >= endBlock.Number().Uint64() {
 		return nil, fmt.Errorf("start block height (%d) must be less than end block height (%d)", startBlock.Number().Uint64(), endBlock.Number().Uint64())
 	}
-	triedb := api.zond.BlockChain().TrieDB()
+	triedb := api.qrl.BlockChain().TrieDB()
 
 	oldTrie, err := trie.NewStateTrie(trie.StateTrieID(startBlock.Root()), triedb)
 	if err != nil {
@@ -362,10 +362,10 @@ func (api *DebugAPI) getModifiedAccounts(startBlock, endBlock *types.Block) ([]c
 // The (from, to) parameters are the sequence of blocks to search, which can go
 // either forwards or backwards
 func (api *DebugAPI) GetAccessibleState(from, to rpc.BlockNumber) (uint64, error) {
-	if api.zond.blockchain.TrieDB().Scheme() == rawdb.PathScheme {
+	if api.qrl.blockchain.TrieDB().Scheme() == rawdb.PathScheme {
 		return 0, errors.New("state history is not yet available in path-based scheme")
 	}
-	db := api.zond.ChainDb()
+	db := api.qrl.ChainDb()
 	var pivot uint64
 	if p := rawdb.ReadLastPivotNumber(db); p != nil {
 		pivot = *p
@@ -374,7 +374,7 @@ func (api *DebugAPI) GetAccessibleState(from, to rpc.BlockNumber) (uint64, error
 	var resolveNum = func(num rpc.BlockNumber) (uint64, error) {
 		// We don't have state for pending (-2), so treat it as latest
 		if num.Int64() < 0 {
-			block := api.zond.blockchain.CurrentBlock()
+			block := api.qrl.blockchain.CurrentBlock()
 			if block == nil {
 				return 0, errors.New("current block missing")
 			}
@@ -409,11 +409,11 @@ func (api *DebugAPI) GetAccessibleState(from, to rpc.BlockNumber) (uint64, error
 		if i < int64(pivot) {
 			continue
 		}
-		h := api.zond.BlockChain().GetHeaderByNumber(uint64(i))
+		h := api.qrl.BlockChain().GetHeaderByNumber(uint64(i))
 		if h == nil {
 			return 0, fmt.Errorf("missing header %d", i)
 		}
-		if ok, _ := api.zond.ChainDb().Has(h.Root[:]); ok {
+		if ok, _ := api.qrl.ChainDb().Has(h.Root[:]); ok {
 			return uint64(i), nil
 		}
 	}
@@ -425,21 +425,21 @@ func (api *DebugAPI) GetAccessibleState(from, to rpc.BlockNumber) (uint64, error
 // If the value is shorter than the block generation time, or even 0 or negative,
 // the node will flush trie after processing each block (effectively archive mode).
 func (api *DebugAPI) SetTrieFlushInterval(interval string) error {
-	if api.zond.blockchain.TrieDB().Scheme() == rawdb.PathScheme {
+	if api.qrl.blockchain.TrieDB().Scheme() == rawdb.PathScheme {
 		return errors.New("trie flush interval is undefined for path-based scheme")
 	}
 	t, err := time.ParseDuration(interval)
 	if err != nil {
 		return err
 	}
-	api.zond.blockchain.SetTrieFlushInterval(t)
+	api.qrl.blockchain.SetTrieFlushInterval(t)
 	return nil
 }
 
 // GetTrieFlushInterval gets the current value of in-memory trie flush interval
 func (api *DebugAPI) GetTrieFlushInterval() (string, error) {
-	if api.zond.blockchain.TrieDB().Scheme() == rawdb.PathScheme {
+	if api.qrl.blockchain.TrieDB().Scheme() == rawdb.PathScheme {
 		return "", errors.New("trie flush interval is undefined for path-based scheme")
 	}
-	return api.zond.blockchain.GetTrieFlushInterval().String(), nil
+	return api.qrl.blockchain.GetTrieFlushInterval().String(), nil
 }

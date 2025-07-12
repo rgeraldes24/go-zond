@@ -31,7 +31,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/zond/protocols/zond"
-	"github.com/theQRL/go-zond/zonddb"
+	"github.com/theQRL/go-zond/qrldb"
 )
 
 // hookedBackfiller is a tester backfiller with all interface methods mocked and
@@ -940,7 +940,7 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 	}
 }
 
-func checkSkeletonProgress(db zonddb.KeyValueReader, unpredictable bool, peers []*skeletonTestPeer, expected skeletonExpect) error {
+func checkSkeletonProgress(db qrldb.KeyValueReader, unpredictable bool, peers []*skeletonTestPeer, expected skeletonExpect) error {
 	var progress skeletonProgress
 	// Check the post-init end state if it matches the required results
 	json.Unmarshal(rawdb.ReadSkeletonSyncStatus(db), &progress)

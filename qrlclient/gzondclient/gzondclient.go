@@ -35,7 +35,7 @@ import (
 
 // Client is a wrapper around rpc.Client that implements gzond-specific functionality.
 //
-// If you want to use the standardized Zond RPC functionality, use zondclient.Client instead.
+// If you want to use the standardized QRL RPC functionality, use qrlclient.Client instead.
 type Client struct {
 	c *rpc.Client
 }
@@ -196,12 +196,12 @@ func (ec *Client) GetNodeInfo(ctx context.Context) (*p2p.NodeInfo, error) {
 
 // SubscribeFullPendingTransactions subscribes to new pending transactions.
 func (ec *Client) SubscribeFullPendingTransactions(ctx context.Context, ch chan<- *types.Transaction) (*rpc.ClientSubscription, error) {
-	return ec.c.ZondSubscribe(ctx, ch, "newPendingTransactions", true)
+	return ec.c.QRLSubscribe(ctx, ch, "newPendingTransactions", true)
 }
 
 // SubscribePendingTransactions subscribes to new pending transaction hashes.
 func (ec *Client) SubscribePendingTransactions(ctx context.Context, ch chan<- common.Hash) (*rpc.ClientSubscription, error) {
-	return ec.c.ZondSubscribe(ctx, ch, "newPendingTransactions")
+	return ec.c.QRLSubscribe(ctx, ch, "newPendingTransactions")
 }
 
 func toBlockNumArg(number *big.Int) string {

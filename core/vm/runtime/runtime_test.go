@@ -33,11 +33,11 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/zond/tracers"
-	"github.com/theQRL/go-zond/zond/tracers/logger"
+	"github.com/theQRL/go-zond/qrl/tracers"
+	"github.com/theQRL/go-zond/qrl/tracers/logger"
 
 	// force-load js tracers to trigger registration
-	_ "github.com/theQRL/go-zond/zond/tracers/js"
+	_ "github.com/theQRL/go-zond/qrl/tracers/js"
 )
 
 func TestDefaults(t *testing.T) {

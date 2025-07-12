@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package filters implements an zond filtering system for block,
+// Package filters implements a qrl filtering system for block,
 // transactions and log events.
 package filters
 
@@ -25,7 +25,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/theQRL/go-zond"
+	qrl "github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/lru"
 	"github.com/theQRL/go-zond/core"
@@ -174,7 +174,7 @@ type subscription struct {
 	id        rpc.ID
 	typ       Type
 	created   time.Time
-	logsCrit  zond.FilterQuery
+	logsCrit  qrl.FilterQuery
 	logs      chan []*types.Log
 	txs       chan []*types.Transaction
 	headers   chan *types.Header
@@ -284,7 +284,7 @@ func (es *EventSystem) subscribe(sub *subscription) *Subscription {
 // SubscribeLogs creates a subscription that will write all logs matching the
 // given criteria to the given logs channel. Default value for the from and to
 // block is "latest". If the fromBlock > toBlock an error is returned.
-func (es *EventSystem) SubscribeLogs(crit zond.FilterQuery, logs chan []*types.Log) (*Subscription, error) {
+func (es *EventSystem) SubscribeLogs(crit qrl.FilterQuery, logs chan []*types.Log) (*Subscription, error) {
 	if len(crit.Topics) > maxTopics {
 		return nil, errExceedMaxTopics
 	}
@@ -322,7 +322,7 @@ func (es *EventSystem) SubscribeLogs(crit zond.FilterQuery, logs chan []*types.L
 
 // subscribeLogs creates a subscription that will write all logs matching the
 // given criteria to the given logs channel.
-func (es *EventSystem) subscribeLogs(crit zond.FilterQuery, logs chan []*types.Log) *Subscription {
+func (es *EventSystem) subscribeLogs(crit qrl.FilterQuery, logs chan []*types.Log) *Subscription {
 	sub := &subscription{
 		id:        rpc.NewID(),
 		typ:       LogsSubscription,

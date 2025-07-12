@@ -39,11 +39,11 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/internal/zondapi"
+	"github.com/theQRL/go-zond/internal/qrlapi"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/qrl/tracers/logger"
+	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/rpc"
-	"github.com/theQRL/go-zond/zond/tracers/logger"
-	"github.com/theQRL/go-zond/zonddb"
 )
 
 var (
@@ -54,7 +54,7 @@ var (
 type testBackend struct {
 	chainConfig *params.ChainConfig
 	engine      consensus.Engine
-	chaindb     zonddb.Database
+	chaindb     qrldb.Database
 	chain       *core.BlockChain
 
 	refHook func() // Hook is invoked when the requested state is referenced
@@ -130,7 +130,7 @@ func (b *testBackend) Engine() consensus.Engine {
 	return b.engine
 }
 
-func (b *testBackend) ChainDb() zonddb.Database {
+func (b *testBackend) ChainDb() qrldb.Database {
 	return b.chaindb
 }
 
@@ -219,7 +219,7 @@ func TestTraceCall(t *testing.T) {
 	api := NewAPI(backend)
 	var testSuite = []struct {
 		blockNumber rpc.BlockNumber
-		call        zondapi.TransactionArgs
+		call        qrlapi.TransactionArgs
 		config      *TraceCallConfig
 		expectErr   error
 		expect      string
@@ -227,7 +227,7 @@ func TestTraceCall(t *testing.T) {
 		// Standard JSON trace upon the genesis, plain transfer.
 		{
 			blockNumber: rpc.BlockNumber(0),
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -239,7 +239,7 @@ func TestTraceCall(t *testing.T) {
 		// Standard JSON trace upon the head, plain transfer.
 		{
 			blockNumber: rpc.BlockNumber(genBlocks),
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -251,7 +251,7 @@ func TestTraceCall(t *testing.T) {
 		// Standard JSON trace upon the non-existent block, error expects
 		{
 			blockNumber: rpc.BlockNumber(genBlocks + 1),
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -263,7 +263,7 @@ func TestTraceCall(t *testing.T) {
 		// Standard JSON trace upon the latest block
 		{
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -275,7 +275,7 @@ func TestTraceCall(t *testing.T) {
 		// Tracing on 'pending' should fail:
 		{
 			blockNumber: rpc.PendingBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From:  &accounts[0].addr,
 				To:    &accounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -285,12 +285,12 @@ func TestTraceCall(t *testing.T) {
 		},
 		{
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From:  &accounts[0].addr,
 				Input: &hexutil.Bytes{0x43}, // blocknumber
 			},
 			config: &TraceCallConfig{
-				BlockOverrides: &zondapi.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(0x1337))},
+				BlockOverrides: &qrlapi.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(0x1337))},
 			},
 			expectErr: nil,
 			expect: ` {"gas":53020,"failed":false,"returnValue":"","structLogs":[
@@ -523,7 +523,7 @@ func TestTracingWithOverrides(t *testing.T) {
 	}
 	var testSuite = []struct {
 		blockNumber rpc.BlockNumber
-		call        zondapi.TransactionArgs
+		call        qrlapi.TransactionArgs
 		config      *TraceCallConfig
 		expectErr   error
 		want        string
@@ -531,14 +531,14 @@ func TestTracingWithOverrides(t *testing.T) {
 		// Call which can only succeed if state is state overridden
 		{
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From:  &randomAccounts[0].addr,
 				To:    &randomAccounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
 			},
 			config: &TraceCallConfig{
-				StateOverrides: &zondapi.StateOverride{
-					randomAccounts[0].addr: zondapi.OverrideAccount{Balance: newRPCBalance(new(big.Int).Mul(big.NewInt(1), big.NewInt(params.Quanta)))},
+				StateOverrides: &qrlapi.StateOverride{
+					randomAccounts[0].addr: qrlapi.OverrideAccount{Balance: newRPCBalance(new(big.Int).Mul(big.NewInt(1), big.NewInt(params.Quanta)))},
 				},
 			},
 			want: `{"gas":21000,"failed":false,"returnValue":""}`,
@@ -546,7 +546,7 @@ func TestTracingWithOverrides(t *testing.T) {
 		// Invalid call without state overriding
 		{
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From:  &randomAccounts[0].addr,
 				To:    &randomAccounts[1].addr,
 				Value: (*hexutil.Big)(big.NewInt(1000)),
@@ -572,15 +572,15 @@ func TestTracingWithOverrides(t *testing.T) {
 		//  }
 		{
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &randomAccounts[2].addr,
 				Data: newRPCBytes(common.Hex2Bytes("8381f58a")), // call number()
 			},
 			config: &TraceCallConfig{
 				//Tracer: &tracer,
-				StateOverrides: &zondapi.StateOverride{
-					randomAccounts[2].addr: zondapi.OverrideAccount{
+				StateOverrides: &qrlapi.StateOverride{
+					randomAccounts[2].addr: qrlapi.OverrideAccount{
 						Code:      newRPCBytes(common.Hex2Bytes("6080604052348015600f57600080fd5b506004361060285760003560e01c80638381f58a14602d575b600080fd5b60336049565b6040518082815260200191505060405180910390f35b6000548156fea2646970667358221220eab35ffa6ab2adfe380772a48b8ba78e82a1b820a18fcb6f59aa4efb20a5f60064736f6c63430007040033")),
 						StateDiff: newStates([]common.Hash{{}}, []common.Hash{common.BigToHash(big.NewInt(123))}),
 					},
@@ -590,20 +590,20 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		{ // Override blocknumber
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From: &accounts[0].addr,
 				// BLOCKNUMBER PUSH1 MSTORE
 				Input: newRPCBytes(common.Hex2Bytes("4360005260206000f3")),
 				//&hexutil.Bytes{0x43}, // blocknumber
 			},
 			config: &TraceCallConfig{
-				BlockOverrides: &zondapi.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(0x1337))},
+				BlockOverrides: &qrlapi.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(0x1337))},
 			},
 			want: `{"gas":59539,"failed":false,"returnValue":"0000000000000000000000000000000000000000000000000000000000001337"}`,
 		},
 		{ // Override blocknumber, and query a blockhash
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From: &accounts[0].addr,
 				Input: &hexutil.Bytes{
 					0x60, 0x00, 0x40, // BLOCKHASH(0)
@@ -617,7 +617,7 @@ func TestTracingWithOverrides(t *testing.T) {
 				}, // blocknumber
 			},
 			config: &TraceCallConfig{
-				BlockOverrides: &zondapi.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(0x1337))},
+				BlockOverrides: &qrlapi.BlockOverrides{Number: (*hexutil.Big)(big.NewInt(0x1337))},
 			},
 			want: `{"gas":72668,"failed":false,"returnValue":"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"}`,
 		},
@@ -642,14 +642,14 @@ func TestTracingWithOverrides(t *testing.T) {
 		*/
 		{ // First with only code override, not storage override
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &randomAccounts[2].addr,
 				Data: newRPCBytes(common.Hex2Bytes("f8a8fd6d")), //
 			},
 			config: &TraceCallConfig{
-				StateOverrides: &zondapi.StateOverride{
-					randomAccounts[2].addr: zondapi.OverrideAccount{
+				StateOverrides: &qrlapi.StateOverride{
+					randomAccounts[2].addr: qrlapi.OverrideAccount{
 						Code: newRPCBytes(common.Hex2Bytes("6080604052348015600f57600080fd5b506004361060325760003560e01c806366e41cb7146037578063f8a8fd6d14603f575b600080fd5b603d6057565b005b60456062565b60405190815260200160405180910390f35b610539600090815580fd5b60006001600081905550306001600160a01b03166366e41cb76040518163ffffffff1660e01b8152600401600060405180830381600087803b15801560a657600080fd5b505af192505050801560b6575060015b60e9573d80801560e1576040519150601f19603f3d011682016040523d82523d6000602084013e60e6565b606091505b50505b506000549056fea26469706673582212205ce45de745a5308f713cb2f448589177ba5a442d1a2eff945afaa8915961b4d064736f6c634300080c0033")),
 					},
 				},
@@ -658,14 +658,14 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		{ // Same again, this time with storage override
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &randomAccounts[2].addr,
 				Data: newRPCBytes(common.Hex2Bytes("f8a8fd6d")), //
 			},
 			config: &TraceCallConfig{
-				StateOverrides: &zondapi.StateOverride{
-					randomAccounts[2].addr: zondapi.OverrideAccount{
+				StateOverrides: &qrlapi.StateOverride{
+					randomAccounts[2].addr: qrlapi.OverrideAccount{
 						Code:  newRPCBytes(common.Hex2Bytes("6080604052348015600f57600080fd5b506004361060325760003560e01c806366e41cb7146037578063f8a8fd6d14603f575b600080fd5b603d6057565b005b60456062565b60405190815260200160405180910390f35b610539600090815580fd5b60006001600081905550306001600160a01b03166366e41cb76040518163ffffffff1660e01b8152600401600060405180830381600087803b15801560a657600080fd5b505af192505050801560b6575060015b60e9573d80801560e1576040519150601f19603f3d011682016040523d82523d6000602084013e60e6565b606091505b50505b506000549056fea26469706673582212205ce45de745a5308f713cb2f448589177ba5a442d1a2eff945afaa8915961b4d064736f6c634300080c0033")),
 						State: newStates([]common.Hash{{}}, []common.Hash{{}}),
 					},
@@ -675,14 +675,14 @@ func TestTracingWithOverrides(t *testing.T) {
 		},
 		{ // No state override
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &storageAccount,
 				Data: newRPCBytes(common.Hex2Bytes("f8a8fd6d")), //
 			},
 			config: &TraceCallConfig{
-				StateOverrides: &zondapi.StateOverride{
-					storageAccount: zondapi.OverrideAccount{
+				StateOverrides: &qrlapi.StateOverride{
+					storageAccount: qrlapi.OverrideAccount{
 						Code: newRPCBytes([]byte{
 							// SLOAD(3) + SLOAD(4) (which is 0x77)
 							byte(vm.PUSH1), 0x04,
@@ -710,14 +710,14 @@ func TestTracingWithOverrides(t *testing.T) {
 			// With a full override, where we set 3:0x11, the slot 4 should be
 			// removed. So SLOT(3)+SLOT(4) should be 0x11.
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &storageAccount,
 				Data: newRPCBytes(common.Hex2Bytes("f8a8fd6d")), //
 			},
 			config: &TraceCallConfig{
-				StateOverrides: &zondapi.StateOverride{
-					storageAccount: zondapi.OverrideAccount{
+				StateOverrides: &qrlapi.StateOverride{
+					storageAccount: qrlapi.OverrideAccount{
 						Code: newRPCBytes([]byte{
 							// SLOAD(3) + SLOAD(4) (which is now 0x11 + 0x00)
 							byte(vm.PUSH1), 0x04,
@@ -748,14 +748,14 @@ func TestTracingWithOverrides(t *testing.T) {
 			// With a partial override, where we set 3:0x11, the slot 4 as before.
 			// So SLOT(3)+SLOT(4) should be 0x55.
 			blockNumber: rpc.LatestBlockNumber,
-			call: zondapi.TransactionArgs{
+			call: qrlapi.TransactionArgs{
 				From: &randomAccounts[0].addr,
 				To:   &storageAccount,
 				Data: newRPCBytes(common.Hex2Bytes("f8a8fd6d")), //
 			},
 			config: &TraceCallConfig{
-				StateOverrides: &zondapi.StateOverride{
-					storageAccount: zondapi.OverrideAccount{
+				StateOverrides: &qrlapi.StateOverride{
+					storageAccount: qrlapi.OverrideAccount{
 						Code: newRPCBytes([]byte{
 							// SLOAD(3) + SLOAD(4) (which is now 0x11 + 0x44)
 							byte(vm.PUSH1), 0x04,

@@ -24,7 +24,7 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/prque"
 	"github.com/theQRL/go-zond/log"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 )
 
 // timeoutGracePeriod is the amount of time to allow for a peer to deliver a
@@ -65,12 +65,12 @@ type typedQueue interface {
 
 	// request is responsible for converting a generic fetch request into a typed
 	// one and sending it to the remote peer for fulfillment.
-	request(peer *peerConnection, req *fetchRequest, resCh chan *zond.Response) (*zond.Request, error)
+	request(peer *peerConnection, req *fetchRequest, resCh chan *qrl.Response) (*qrl.Request, error)
 
 	// deliver is responsible for taking a generic response packet from the
 	// concurrent fetcher, unpacking the type specific data and delivering
 	// it to the downloader's queue.
-	deliver(peer *peerConnection, packet *zond.Response) (int, error)
+	deliver(peer *peerConnection, packet *qrl.Response) (int, error)
 }
 
 // concurrentFetch iteratively downloads scheduled block parts, taking available
@@ -78,10 +78,10 @@ type typedQueue interface {
 // or timeouts.
 func (d *Downloader) concurrentFetch(queue typedQueue) error {
 	// Create a delivery channel to accept responses from all peers
-	responses := make(chan *zond.Response)
+	responses := make(chan *qrl.Response)
 
 	// Track the currently active requests and their timeout order
-	pending := make(map[string]*zond.Request)
+	pending := make(map[string]*qrl.Request)
 	defer func() {
 		// Abort all requests on sync cycle cancellation. The requests may still
 		// be fulfilled by the remote side, but the dispatcher will not wait to
@@ -90,8 +90,8 @@ func (d *Downloader) concurrentFetch(queue typedQueue) error {
 			req.Close()
 		}
 	}()
-	ordering := make(map[*zond.Request]int)
-	timeouts := prque.New[int64, *zond.Request](func(data *zond.Request, index int) {
+	ordering := make(map[*qrl.Request]int)
+	timeouts := prque.New[int64, *qrl.Request](func(data *qrl.Request, index int) {
 		ordering[data] = index
 	})
 
@@ -106,7 +106,7 @@ func (d *Downloader) concurrentFetch(queue typedQueue) error {
 	// all trace of a timed out request is not good. We also can't just cancel
 	// the pending request altogether as that would prevent a late response from
 	// being delivered, thus never unblocking the peer.
-	stales := make(map[string]*zond.Request)
+	stales := make(map[string]*qrl.Request)
 	defer func() {
 		// Abort all requests on sync cycle cancellation. The requests may still
 		// be fulfilled by the remote side, but the dispatcher will not wait to

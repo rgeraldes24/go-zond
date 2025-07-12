@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-// gzond is the official command-line client for Zond.
+// gzond is the official command-line client for QRL.
 package main
 
 import (
@@ -84,7 +84,7 @@ var (
 		utils.StateSchemeFlag,
 		utils.StateHistoryFlag,
 		utils.LightKDFFlag,
-		utils.ZondRequiredBlocksFlag,
+		utils.QRLRequiredBlocksFlag,
 		utils.BloomFilterSizeFlag,
 		utils.CacheFlag,
 		utils.CacheDatabaseFlag,
@@ -117,7 +117,7 @@ var (
 		utils.DeveloperPeriodFlag,
 		utils.VMEnableDebugFlag,
 		utils.NetworkIdFlag,
-		utils.ZondStatsURLFlag,
+		utils.QRLStatsURLFlag,
 		utils.NoCompactionFlag,
 		utils.GpoBlocksFlag,
 		utils.GpoPercentileFlag,

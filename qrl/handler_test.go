@@ -31,15 +31,15 @@ import (
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zonddb"
+	"github.com/theQRL/go-zond/qrl/downloader"
+	"github.com/theQRL/go-zond/qrldb"
 )
 
 var (
 	// testKey is a private key to use for funding a tester account.
 	testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
-	// testAddr is the Zond address of the tester account.
+	// testAddr is the QRL address of the tester account.
 	testAddr = testKey.GetAddress()
 )
 
@@ -125,11 +125,11 @@ func (p *testTxPool) SubscribeTransactions(ch chan<- core.NewTxsEvent) event.Sub
 	return p.txFeed.Subscribe(ch)
 }
 
-// testHandler is a live implementation of the Zond protocol handler, just
+// testHandler is a live implementation of the QRL protocol handler, just
 // preinitialized with some sane testing defaults and the transaction pool mocked
 // out.
 type testHandler struct {
-	db      zonddb.Database
+	db      qrldb.Database
 	chain   *core.BlockChain
 	txpool  *testTxPool
 	handler *handler

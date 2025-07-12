@@ -27,8 +27,8 @@ import (
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/qrl/tracers/logger"
 	"github.com/theQRL/go-zond/tests"
-	"github.com/theQRL/go-zond/zond/tracers/logger"
 )
 
 func BenchmarkTransactionTrace(b *testing.B) {

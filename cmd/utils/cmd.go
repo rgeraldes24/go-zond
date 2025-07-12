@@ -38,7 +38,7 @@ import (
 	"github.com/theQRL/go-zond/internal/debug"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/node"
-	"github.com/theQRL/go-zond/qrl/zondconfig"
+	"github.com/theQRL/go-zond/qrl/qrlconfig"
 	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/urfave/cli/v2"
@@ -77,7 +77,7 @@ func StartNode(ctx *cli.Context, stack *node.Node, isConsole bool) {
 		signal.Notify(sigc, syscall.SIGINT, syscall.SIGTERM)
 		defer signal.Stop(sigc)
 
-		minFreeDiskSpace := 2 * zondconfig.Defaults.TrieDirtyCache // Default 2 * 256Mb
+		minFreeDiskSpace := 2 * qrlconfig.Defaults.TrieDirtyCache // Default 2 * 256Mb
 		if ctx.IsSet(MinFreeDiskSpaceFlag.Name) {
 			minFreeDiskSpace = ctx.Int(MinFreeDiskSpaceFlag.Name)
 		} else if ctx.IsSet(CacheFlag.Name) || ctx.IsSet(CacheGCFlag.Name) {

@@ -21,7 +21,7 @@ import (
 	"github.com/theQRL/go-zond/tests"
 
 	// Force-load the native, to trigger registration
-	"github.com/theQRL/go-zond/zond/tracers"
+	"github.com/theQRL/go-zond/qrl/tracers"
 )
 
 // flatCallTrace is the result of a callTracerParity run.

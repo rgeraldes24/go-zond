@@ -17,25 +17,25 @@
 package qrl
 
 import (
-	"github.com/theQRL/go-zond/zond/protocols/snap"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
+	"github.com/theQRL/go-zond/qrl/protocols/snap"
 )
 
-// zondPeerInfo represents a short summary of the `zond` sub-protocol metadata known
+// qrlPeerInfo represents a short summary of the `qrl` sub-protocol metadata known
 // about a connected peer.
-type zondPeerInfo struct {
-	Version uint `json:"version"` // Zond protocol version negotiated
+type qrlPeerInfo struct {
+	Version uint `json:"version"` // QRL protocol version negotiated
 }
 
-// zondPeer is a wrapper around zond.Peer to maintain a few extra metadata.
-type zondPeer struct {
-	*zond.Peer
+// qrlPeer is a wrapper around qrl.Peer to maintain a few extra metadata.
+type qrlPeer struct {
+	*qrl.Peer
 	snapExt *snapPeer // Satellite `snap` connection
 }
 
 // info gathers and returns some `zond` protocol metadata known about a peer.
-func (p *zondPeer) info() *zondPeerInfo {
-	return &zondPeerInfo{
+func (p *qrlPeer) info() *qrlPeerInfo {
+	return &qrlPeerInfo{
 		Version: p.Version(),
 	}
 }

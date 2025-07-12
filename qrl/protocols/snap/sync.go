@@ -38,10 +38,10 @@ import (
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/p2p/msgrate"
+	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/trie"
 	"github.com/theQRL/go-zond/trie/trienode"
-	"github.com/theQRL/go-zond/zonddb"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -312,7 +312,7 @@ type accountTask struct {
 	codeTasks  map[common.Hash]struct{}    // Code hashes that need retrieval
 	stateTasks map[common.Hash]common.Hash // Account hashes->roots that need full state retrieval
 
-	genBatch zonddb.Batch    // Batch used by the node generator
+	genBatch qrldb.Batch     // Batch used by the node generator
 	genTrie  *trie.StackTrie // Node generator from storage slots
 
 	done bool // Flag whether the task can be removed
@@ -327,7 +327,7 @@ type storageTask struct {
 	root common.Hash     // Storage root hash for this instance
 	req  *storageRequest // Pending request to fill this task
 
-	genBatch zonddb.Batch    // Batch used by the node generator
+	genBatch qrldb.Batch     // Batch used by the node generator
 	genTrie  *trie.StackTrie // Node generator from storage slots
 
 	done bool // Flag whether the task can be removed
@@ -408,8 +408,8 @@ type SyncPeer interface {
 //   - The peer delivers a stale response after a previous timeout
 //   - The peer delivers a refusal to serve the requested state
 type Syncer struct {
-	db     zonddb.KeyValueStore // Database to store the trie nodes into (and dedup)
-	scheme string               // Node scheme used in node database
+	db     qrldb.KeyValueStore // Database to store the trie nodes into (and dedup)
+	scheme string              // Node scheme used in node database
 
 	root    common.Hash    // Current state trie root being synced
 	tasks   []*accountTask // Current account task set being synced
@@ -462,7 +462,7 @@ type Syncer struct {
 	bytecodeHealDups   uint64             // Number of bytecodes already processed
 	bytecodeHealNops   uint64             // Number of bytecodes not requested
 
-	stateWriter        zonddb.Batch       // Shared batch writer used for persisting raw states
+	stateWriter        qrldb.Batch        // Shared batch writer used for persisting raw states
 	accountHealed      uint64             // Number of accounts downloaded during the healing stage
 	accountHealedBytes common.StorageSize // Number of raw account bytes persisted to disk during the healing stage
 	storageHealed      uint64             // Number of storage slots downloaded during the healing stage
@@ -477,7 +477,7 @@ type Syncer struct {
 
 // NewSyncer creates a new snapshot syncer to download the Zond state over the
 // snap protocol.
-func NewSyncer(db zonddb.KeyValueStore, scheme string) *Syncer {
+func NewSyncer(db qrldb.KeyValueStore, scheme string) *Syncer {
 	return &Syncer{
 		db:     db,
 		scheme: scheme,
@@ -732,7 +732,7 @@ func (s *Syncer) loadSyncStatus() {
 			for _, task := range s.tasks {
 				task := task // closure for task.genBatch in the stacktrie writer callback
 
-				task.genBatch = zonddb.HookedBatch{
+				task.genBatch = qrldb.HookedBatch{
 					Batch: s.db.NewBatch(),
 					OnPut: func(key []byte, value []byte) {
 						s.accountBytes += common.StorageSize(len(key) + len(value))
@@ -745,7 +745,7 @@ func (s *Syncer) loadSyncStatus() {
 					for _, subtask := range subtasks {
 						subtask := subtask // closure for subtask.genBatch in the stacktrie writer callback
 
-						subtask.genBatch = zonddb.HookedBatch{
+						subtask.genBatch = qrldb.HookedBatch{
 							Batch: s.db.NewBatch(),
 							OnPut: func(key []byte, value []byte) {
 								s.storageBytes += common.StorageSize(len(key) + len(value))
@@ -799,7 +799,7 @@ func (s *Syncer) loadSyncStatus() {
 			// Make sure we don't overflow if the step is not a proper divisor
 			last = common.MaxHash
 		}
-		batch := zonddb.HookedBatch{
+		batch := qrldb.HookedBatch{
 			Batch: s.db.NewBatch(),
 			OnPut: func(key []byte, value []byte) {
 				s.accountBytes += common.StorageSize(len(key) + len(value))
@@ -1929,7 +1929,7 @@ func (s *Syncer) processStorageResponse(res *storageResponse) {
 	if res.subTask != nil {
 		res.subTask.req = nil
 	}
-	batch := zonddb.HookedBatch{
+	batch := qrldb.HookedBatch{
 		Batch: s.db.NewBatch(),
 		OnPut: func(key []byte, value []byte) {
 			s.storageBytes += common.StorageSize(len(key) + len(value))
@@ -1998,7 +1998,7 @@ func (s *Syncer) processStorageResponse(res *storageResponse) {
 					r := newHashRange(lastKey, chunks)
 
 					// Our first task is the one that was just filled by this response.
-					batch := zonddb.HookedBatch{
+					batch := qrldb.HookedBatch{
 						Batch: s.db.NewBatch(),
 						OnPut: func(key []byte, value []byte) {
 							s.storageBytes += common.StorageSize(len(key) + len(value))
@@ -2014,7 +2014,7 @@ func (s *Syncer) processStorageResponse(res *storageResponse) {
 						}, account),
 					})
 					for r.Next() {
-						batch := zonddb.HookedBatch{
+						batch := qrldb.HookedBatch{
 							Batch: s.db.NewBatch(),
 							OnPut: func(key []byte, value []byte) {
 								s.storageBytes += common.StorageSize(len(key) + len(value))
@@ -2107,7 +2107,7 @@ func (s *Syncer) processStorageResponse(res *storageResponse) {
 				}
 			}
 		}
-		if res.subTask.genBatch.ValueSize() > zonddb.IdealBatchSize || res.subTask.done {
+		if res.subTask.genBatch.ValueSize() > qrldb.IdealBatchSize || res.subTask.done {
 			if err := res.subTask.genBatch.Write(); err != nil {
 				log.Error("Failed to persist stack slots", "err", err)
 			}
@@ -2212,7 +2212,7 @@ func (s *Syncer) processTrienodeHealResponse(res *trienodeHealResponse) {
 }
 
 func (s *Syncer) commitHealer(force bool) {
-	if !force && s.healer.scheduler.MemSize() < zonddb.IdealBatchSize {
+	if !force && s.healer.scheduler.MemSize() < qrldb.IdealBatchSize {
 		return
 	}
 	batch := s.db.NewBatch()
@@ -2270,7 +2270,7 @@ func (s *Syncer) forwardAccountTask(task *accountTask) {
 	// snapshot generation.
 	oldAccountBytes := s.accountBytes
 
-	batch := zonddb.HookedBatch{
+	batch := qrldb.HookedBatch{
 		Batch: s.db.NewBatch(),
 		OnPut: func(key []byte, value []byte) {
 			s.accountBytes += common.StorageSize(len(key) + len(value))
@@ -2318,7 +2318,7 @@ func (s *Syncer) forwardAccountTask(task *accountTask) {
 			log.Error("Failed to commit stack account", "err", err)
 		}
 	}
-	if task.genBatch.ValueSize() > zonddb.IdealBatchSize || task.done {
+	if task.genBatch.ValueSize() > qrldb.IdealBatchSize || task.done {
 		if err := task.genBatch.Write(); err != nil {
 			log.Error("Failed to persist stack account", "err", err)
 		}
@@ -2922,7 +2922,7 @@ func (s *Syncer) onHealState(paths [][]byte, value []byte) error {
 		s.storageHealed += 1
 		s.storageHealedBytes += common.StorageSize(1 + 2*common.HashLength + len(value))
 	}
-	if s.stateWriter.ValueSize() > zonddb.IdealBatchSize {
+	if s.stateWriter.ValueSize() > qrldb.IdealBatchSize {
 		s.stateWriter.Write() // It's fine to ignore the error here
 		s.stateWriter.Reset()
 	}

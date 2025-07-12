@@ -33,45 +33,45 @@ import (
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/p2p/enode"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/downloader"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 )
 
-// testZondHandler is a mock event handler to listen for inbound network requests
-// on the `zond` protocol and convert them into a more easily testable form.
-type testZondHandler struct {
+// testQRLHandler is a mock event handler to listen for inbound network requests
+// on the `qrl` protocol and convert them into a more easily testable form.
+type testQRLHandler struct {
 	txAnnounces  event.Feed
 	txBroadcasts event.Feed
 }
 
-func (h *testZondHandler) Chain() *core.BlockChain                { panic("no backing chain") }
-func (h *testZondHandler) TxPool() zond.TxPool                    { panic("no backing tx pool") }
-func (h *testZondHandler) AcceptTxs() bool                        { return true }
-func (h *testZondHandler) RunPeer(*zond.Peer, zond.Handler) error { panic("not used in tests") }
-func (h *testZondHandler) PeerInfo(enode.ID) interface{}          { panic("not used in tests") }
+func (h *testQRLHandler) Chain() *core.BlockChain              { panic("no backing chain") }
+func (h *testQRLHandler) TxPool() qrl.TxPool                   { panic("no backing tx pool") }
+func (h *testQRLHandler) AcceptTxs() bool                      { return true }
+func (h *testQRLHandler) RunPeer(*qrl.Peer, qrl.Handler) error { panic("not used in tests") }
+func (h *testQRLHandler) PeerInfo(enode.ID) interface{}        { panic("not used in tests") }
 
-func (h *testZondHandler) Handle(peer *zond.Peer, packet zond.Packet) error {
+func (h *testQRLHandler) Handle(peer *qrl.Peer, packet qrl.Packet) error {
 	switch packet := packet.(type) {
-	case *zond.NewPooledTransactionHashesPacket:
+	case *qrl.NewPooledTransactionHashesPacket:
 		h.txAnnounces.Send(packet.Hashes)
 		return nil
 
-	case *zond.TransactionsPacket:
+	case *qrl.TransactionsPacket:
 		h.txBroadcasts.Send(([]*types.Transaction)(*packet))
 		return nil
 
-	case *zond.PooledTransactionsResponse:
+	case *qrl.PooledTransactionsResponse:
 		h.txBroadcasts.Send(([]*types.Transaction)(*packet))
 		return nil
 
 	default:
-		panic(fmt.Sprintf("unexpected zond packet type in tests: %T", packet))
+		panic(fmt.Sprintf("unexpected qrl packet type in tests: %T", packet))
 	}
 }
 
 // Tests that peers are correctly accepted (or rejected) based on the advertised
 // fork IDs in the protocol handshake.
-func TestForkIDSplit68(t *testing.T) { testForkIDSplit(t, zond.ETH68) }
+func TestForkIDSplit68(t *testing.T) { testForkIDSplit(t, qrl.ETH68) }
 
 func testForkIDSplit(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -93,7 +93,7 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 		_, blocksNoFork, _  = core.GenerateChainWithGenesis(gspecNoFork, engine, 2, nil)
 		_, blocksProFork, _ = core.GenerateChainWithGenesis(gspecProFork, engine, 2, nil)
 
-		zondNoFork, _ = newHandler(&handlerConfig{
+		qrlNoFork, _ = newHandler(&handlerConfig{
 			Database:   dbNoFork,
 			Chain:      chainNoFork,
 			TxPool:     newTestTxPool(),
@@ -101,7 +101,7 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 			Sync:       downloader.FullSync,
 			BloomCache: 1,
 		})
-		zondProFork, _ = newHandler(&handlerConfig{
+		qrlProFork, _ = newHandler(&handlerConfig{
 			Database:   dbProFork,
 			Chain:      chainProFork,
 			TxPool:     newTestTxPool(),
@@ -110,32 +110,32 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 			BloomCache: 1,
 		})
 	)
-	zondNoFork.Start(1000)
-	zondProFork.Start(1000)
+	qrlNoFork.Start(1000)
+	qrlProFork.Start(1000)
 
 	// Clean up everything after ourselves
 	defer chainNoFork.Stop()
 	defer chainProFork.Stop()
 
-	defer zondNoFork.Stop()
-	defer zondProFork.Stop()
+	defer qrlNoFork.Stop()
+	defer qrlProFork.Stop()
 
 	// Both nodes should allow the other to connect (same genesis, next fork is the same)
 	p2pNoFork, p2pProFork := p2p.MsgPipe()
 	defer p2pNoFork.Close()
 	defer p2pProFork.Close()
 
-	peerNoFork := zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pNoFork), p2pNoFork, nil)
-	peerProFork := zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pProFork), p2pProFork, nil)
+	peerNoFork := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pNoFork), p2pNoFork, nil)
+	peerProFork := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pProFork), p2pProFork, nil)
 	defer peerNoFork.Close()
 	defer peerProFork.Close()
 
 	errc := make(chan error, 2)
 	go func(errc chan error) {
-		errc <- zondNoFork.runZondPeer(peerProFork, func(peer *zond.Peer) error { return nil })
+		errc <- qrlNoFork.runQRLPeer(peerProFork, func(peer *qrl.Peer) error { return nil })
 	}(errc)
 	go func(errc chan error) {
-		errc <- zondProFork.runZondPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
+		errc <- qrlProFork.runQRLPeer(peerNoFork, func(peer *qrl.Peer) error { return nil })
 	}(errc)
 
 	for i := 0; i < 2; i++ {
@@ -156,17 +156,17 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 	defer p2pNoFork.Close()
 	defer p2pProFork.Close()
 
-	peerNoFork = zond.NewPeer(protocol, p2p.NewPeer(enode.ID{1}, "", nil), p2pNoFork, nil)
-	peerProFork = zond.NewPeer(protocol, p2p.NewPeer(enode.ID{2}, "", nil), p2pProFork, nil)
+	peerNoFork = qrl.NewPeer(protocol, p2p.NewPeer(enode.ID{1}, "", nil), p2pNoFork, nil)
+	peerProFork = qrl.NewPeer(protocol, p2p.NewPeer(enode.ID{2}, "", nil), p2pProFork, nil)
 	defer peerNoFork.Close()
 	defer peerProFork.Close()
 
 	errc = make(chan error, 2)
 	go func(errc chan error) {
-		errc <- zondNoFork.runZondPeer(peerProFork, func(peer *zond.Peer) error { return nil })
+		errc <- qrlNoFork.runQRLPeer(peerProFork, func(peer *qrl.Peer) error { return nil })
 	}(errc)
 	go func(errc chan error) {
-		errc <- zondProFork.runZondPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
+		errc <- qrlProFork.runQRLPeer(peerNoFork, func(peer *qrl.Peer) error { return nil })
 	}(errc)
 
 	for i := 0; i < 2; i++ {
@@ -189,17 +189,17 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 		defer p2pNoFork.Close()
 		defer p2pProFork.Close()
 
-		peerNoFork = zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pNoFork), p2pNoFork, nil)
-		peerProFork = zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pProFork), p2pProFork, nil)
+		peerNoFork = qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pNoFork), p2pNoFork, nil)
+		peerProFork = qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pProFork), p2pProFork, nil)
 		defer peerNoFork.Close()
 		defer peerProFork.Close()
 
 		errc = make(chan error, 2)
 		go func(errc chan error) {
-			errc <- zondNoFork.runZondPeer(peerProFork, func(peer *zond.Peer) error { return nil })
+			errc <- qrlNoFork.runQRLPeer(peerProFork, func(peer *qrl.Peer) error { return nil })
 		}(errc)
 		go func(errc chan error) {
-			errc <- zondProFork.runZondPeer(peerNoFork, func(peer *zond.Peer) error { return nil })
+			errc <- qrlProFork.runQRLPeer(peerNoFork, func(peer *qrl.Peer) error { return nil })
 		}(errc)
 
 		var successes int
@@ -220,7 +220,7 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 }
 
 // Tests that received transactions are added to the local pool.
-func TestRecvTransactions68(t *testing.T) { testRecvTransactions(t, zond.ETH68) }
+func TestRecvTransactions68(t *testing.T) { testRecvTransactions(t, qrl.ETH68) }
 
 func testRecvTransactions(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -240,13 +240,13 @@ func testRecvTransactions(t *testing.T, protocol uint) {
 	defer p2pSrc.Close()
 	defer p2pSink.Close()
 
-	src := zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pSrc), p2pSrc, handler.txpool)
-	sink := zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pSink), p2pSink, handler.txpool)
+	src := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pSrc), p2pSrc, handler.txpool)
+	sink := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pSink), p2pSink, handler.txpool)
 	defer src.Close()
 	defer sink.Close()
 
-	go handler.handler.runZondPeer(sink, func(peer *zond.Peer) error {
-		return zond.Handle((*zondHandler)(handler.handler), peer)
+	go handler.handler.runQRLPeer(sink, func(peer *qrl.Peer) error {
+		return qrl.Handle((*qrlHandler)(handler.handler), peer)
 	})
 	// Run the handshake locally to avoid spinning up a source handler
 	var (
@@ -283,7 +283,7 @@ func testRecvTransactions(t *testing.T, protocol uint) {
 }
 
 // This test checks that pending transactions are sent.
-func TestSendTransactions68(t *testing.T) { testSendTransactions(t, zond.ETH68) }
+func TestSendTransactions68(t *testing.T) { testSendTransactions(t, qrl.ETH68) }
 
 func testSendTransactions(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -313,13 +313,13 @@ func testSendTransactions(t *testing.T, protocol uint) {
 	defer p2pSrc.Close()
 	defer p2pSink.Close()
 
-	src := zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pSrc), p2pSrc, handler.txpool)
-	sink := zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pSink), p2pSink, handler.txpool)
+	src := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pSrc), p2pSrc, handler.txpool)
+	sink := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pSink), p2pSink, handler.txpool)
 	defer src.Close()
 	defer sink.Close()
 
-	go handler.handler.runZondPeer(src, func(peer *zond.Peer) error {
-		return zond.Handle((*zondHandler)(handler.handler), peer)
+	go handler.handler.runQRLPeer(src, func(peer *qrl.Peer) error {
+		return qrl.Handle((*qrlHandler)(handler.handler), peer)
 	})
 	// Run the handshake locally to avoid spinning up a source handler
 	var (
@@ -331,7 +331,7 @@ func testSendTransactions(t *testing.T, protocol uint) {
 	}
 	// After the handshake completes, the source handler should stream the sink
 	// the transactions, subscribe to all inbound network events
-	backend := new(testZondHandler)
+	backend := new(testQRLHandler)
 
 	anns := make(chan []common.Hash)
 	annSub := backend.txAnnounces.Subscribe(anns)
@@ -341,7 +341,7 @@ func testSendTransactions(t *testing.T, protocol uint) {
 	bcastSub := backend.txBroadcasts.Subscribe(bcasts)
 	defer bcastSub.Unsubscribe()
 
-	go zond.Handle(backend, sink)
+	go qrl.Handle(backend, sink)
 
 	// Make sure we get all the transactions on the correct channels
 	seen := make(map[common.Hash]struct{})
@@ -357,7 +357,7 @@ func testSendTransactions(t *testing.T, protocol uint) {
 					seen[hash] = struct{}{}
 				}
 			case <-bcasts:
-				t.Errorf("initial tx broadcast received on post zond/66")
+				t.Errorf("initial tx broadcast received on post qrl/66")
 			}
 
 		default:
@@ -373,7 +373,7 @@ func testSendTransactions(t *testing.T, protocol uint) {
 
 // Tests that transactions get propagated to all attached peers, either via direct
 // broadcasts or via announcements/retrievals.
-func TestTransactionPropagation68(t *testing.T) { testTransactionPropagation(t, zond.ETH68) }
+func TestTransactionPropagation68(t *testing.T) { testTransactionPropagation(t, qrl.ETH68) }
 
 func testTransactionPropagation(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -400,16 +400,16 @@ func testTransactionPropagation(t *testing.T, protocol uint) {
 		defer sourcePipe.Close()
 		defer sinkPipe.Close()
 
-		sourcePeer := zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{byte(i + 1)}, "", nil, sourcePipe), sourcePipe, source.txpool)
-		sinkPeer := zond.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{0}, "", nil, sinkPipe), sinkPipe, sink.txpool)
+		sourcePeer := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{byte(i + 1)}, "", nil, sourcePipe), sourcePipe, source.txpool)
+		sinkPeer := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{0}, "", nil, sinkPipe), sinkPipe, sink.txpool)
 		defer sourcePeer.Close()
 		defer sinkPeer.Close()
 
-		go source.handler.runZondPeer(sourcePeer, func(peer *zond.Peer) error {
-			return zond.Handle((*zondHandler)(source.handler), peer)
+		go source.handler.runQRLPeer(sourcePeer, func(peer *qrl.Peer) error {
+			return qrl.Handle((*qrlHandler)(source.handler), peer)
 		})
-		go sink.handler.runZondPeer(sinkPeer, func(peer *zond.Peer) error {
-			return zond.Handle((*zondHandler)(sink.handler), peer)
+		go sink.handler.runQRLPeer(sinkPeer, func(peer *qrl.Peer) error {
+			return qrl.Handle((*qrlHandler)(sink.handler), peer)
 		})
 	}
 	// Subscribe to all the transaction pools

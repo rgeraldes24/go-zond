@@ -36,12 +36,12 @@ import (
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/qrl/downloader"
+	"github.com/theQRL/go-zond/qrl/fetcher"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
+	"github.com/theQRL/go-zond/qrl/protocols/snap"
+	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/trie/triedb/pathdb"
-	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zond/fetcher"
-	"github.com/theQRL/go-zond/zond/protocols/snap"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
-	"github.com/theQRL/go-zond/zonddb"
 )
 
 const (
@@ -58,7 +58,7 @@ const (
 var syncChallengeTimeout = 15 * time.Second // Time allowance for a node to reply to the sync progress challenge
 
 // txPool defines the methods needed from a transaction pool implementation to
-// support all the operations needed by the Zond chain protocols.
+// support all the operations needed by the QRL chain protocols.
 type txPool interface {
 	// Has returns an indicator whether txpool has a transaction
 	// cached with the given hash.
@@ -85,7 +85,7 @@ type txPool interface {
 // node network handler.
 type handlerConfig struct {
 	NodeID         enode.ID               // P2P node ID used for tx propagation topology
-	Database       zonddb.Database        // Database for direct sync insertions
+	Database       qrldb.Database         // Database for direct sync insertions
 	Chain          *core.BlockChain       // Blockchain to serve data from
 	TxPool         txPool                 // Transaction pool to propagate from
 	Network        uint64                 // Network identifier to advertise
@@ -103,7 +103,7 @@ type handler struct {
 	snapSync atomic.Bool // Flag whether snap sync is enabled (gets disabled if we already have blocks)
 	synced   atomic.Bool // Flag whether we're considered synchronised (enables transaction processing)
 
-	database zonddb.Database
+	database qrldb.Database
 	txpool   txPool
 	chain    *core.BlockChain
 	maxPeers int
@@ -127,7 +127,7 @@ type handler struct {
 	handlerDoneCh  chan struct{}
 }
 
-// newHandler returns a handler for all Zond chain management protocol.
+// newHandler returns a handler for all QRL chain management protocol.
 func newHandler(config *handlerConfig) (*handler, error) {
 	// Create the protocol manager with the base fields
 	if config.EventMux == nil {
@@ -232,9 +232,9 @@ func (h *handler) decHandlers() {
 	h.handlerDoneCh <- struct{}{}
 }
 
-// runZondPeer registers a zond peer into the joint zond/snap peerset, adds it to
+// runQRLPeer registers a qrl peer into the joint qrl/snap peerset, adds it to
 // various subsystems and starts handling messages.
-func (h *handler) runZondPeer(peer *zond.Peer, handler zond.Handler) error {
+func (h *handler) runQRLPeer(peer *qrl.Peer, handler qrl.Handler) error {
 	if !h.incHandlers() {
 		return p2p.DiscQuitting
 	}
@@ -248,7 +248,7 @@ func (h *handler) runZondPeer(peer *zond.Peer, handler zond.Handler) error {
 		return err
 	}
 
-	// Execute the Zond handshake
+	// Execute the QRL handshake
 	var (
 		genesis = h.chain.Genesis()
 		head    = h.chain.CurrentHeader()
@@ -257,7 +257,7 @@ func (h *handler) runZondPeer(peer *zond.Peer, handler zond.Handler) error {
 	)
 	forkID := forkid.NewID(h.chain.Config(), genesis, number, head.Time)
 	if err := peer.Handshake(h.networkID, hash, genesis.Hash(), forkID, h.forkFilter); err != nil {
-		peer.Log().Debug("Zond handshake failed", "err", err)
+		peer.Log().Debug("QRL handshake failed", "err", err)
 		return err
 	}
 	reject := false // reserved peer slots
@@ -277,11 +277,11 @@ func (h *handler) runZondPeer(peer *zond.Peer, handler zond.Handler) error {
 			return p2p.DiscTooManyPeers
 		}
 	}
-	peer.Log().Debug("Zond peer connected", "name", peer.Name())
+	peer.Log().Debug("QRL peer connected", "name", peer.Name())
 
 	// Register the peer locally
 	if err := h.peers.registerPeer(peer, snap); err != nil {
-		peer.Log().Error("Zond peer registration failed", "err", err)
+		peer.Log().Error("QRL peer registration failed", "err", err)
 		return err
 	}
 	defer h.unregisterPeer(peer.ID())
@@ -292,7 +292,7 @@ func (h *handler) runZondPeer(peer *zond.Peer, handler zond.Handler) error {
 	}
 	// Register the peer in the downloader. If the downloader considers it banned, we disconnect
 	if err := h.downloader.RegisterPeer(peer.ID(), peer.Version(), peer); err != nil {
-		peer.Log().Error("Failed to register peer in zond syncer", "err", err)
+		peer.Log().Error("Failed to register peer in qrl syncer", "err", err)
 		return err
 	}
 	if snap != nil {
@@ -312,13 +312,13 @@ func (h *handler) runZondPeer(peer *zond.Peer, handler zond.Handler) error {
 
 	// If we have any explicit peer required block hashes, request them
 	for number, hash := range h.requiredBlocks {
-		resCh := make(chan *zond.Response)
+		resCh := make(chan *qrl.Response)
 
 		req, err := peer.RequestHeadersByNumber(number, 1, 0, false, resCh)
 		if err != nil {
 			return err
 		}
-		go func(number uint64, hash common.Hash, req *zond.Request) {
+		go func(number uint64, hash common.Hash, req *qrl.Request) {
 			// Ensure the request gets cancelled in case of error/drop
 			defer req.Close()
 
@@ -327,7 +327,7 @@ func (h *handler) runZondPeer(peer *zond.Peer, handler zond.Handler) error {
 
 			select {
 			case res := <-resCh:
-				headers := ([]*types.Header)(*res.Res.(*zond.BlockHeadersRequest))
+				headers := ([]*types.Header)(*res.Res.(*qrl.BlockHeadersRequest))
 				if len(headers) == 0 {
 					// Required blocks are allowed to be missing if the remote
 					// node is not yet synced
@@ -356,10 +356,10 @@ func (h *handler) runZondPeer(peer *zond.Peer, handler zond.Handler) error {
 	return handler(peer)
 }
 
-// runSnapExtension registers a `snap` peer into the joint zond/snap peerset and
+// runSnapExtension registers a `snap` peer into the joint qrl/snap peerset and
 // starts handling inbound messages. As `snap` is only a satellite protocol to
-// `zond`, all subsystem registrations and lifecycle management will be done by
-// the main `zond` handler to prevent strange races.
+// `qrl`, all subsystem registrations and lifecycle management will be done by
+// the main `qrl` handler to prevent strange races.
 func (h *handler) runSnapExtension(peer *snap.Peer, handler snap.Handler) error {
 	if !h.incHandlers() {
 		return p2p.DiscQuitting
@@ -401,11 +401,11 @@ func (h *handler) unregisterPeer(id string) {
 	// Abort if the peer does not exist
 	peer := h.peers.peer(id)
 	if peer == nil {
-		logger.Error("Zond peer removal failed", "err", errPeerNotRegistered)
+		logger.Error("QRL peer removal failed", "err", errPeerNotRegistered)
 		return
 	}
-	// Remove the `zond` peer if it exists
-	logger.Debug("Removing Zond peer", "snap", peer.snapExt != nil)
+	// Remove the `qrl` peer if it exists
+	logger.Debug("Removing QRL peer", "snap", peer.snapExt != nil)
 
 	// Remove the `snap` extension if it exists
 	if peer.snapExt != nil {
@@ -415,7 +415,7 @@ func (h *handler) unregisterPeer(id string) {
 	h.txFetcher.Drop(id)
 
 	if err := h.peers.unregisterPeer(id); err != nil {
-		logger.Error("Zond peer removal failed", "err", err)
+		logger.Error("QRL peer removal failed", "err", err)
 	}
 }
 
@@ -452,7 +452,7 @@ func (h *handler) Stop() {
 	h.peers.close()
 	h.wg.Wait()
 
-	log.Info("Zond protocol stopped")
+	log.Info("QRL protocol stopped")
 }
 
 // BroadcastTransactions will propagate a batch of transactions
@@ -466,8 +466,8 @@ func (h *handler) BroadcastTransactions(txs types.Transactions) {
 		directCount int // Number of transactions sent directly to peers (duplicates included)
 		annCount    int // Number of transactions announced across all peers (duplicates included)
 
-		txset = make(map[*zondPeer][]common.Hash) // Set peer->hash to transfer directly
-		annos = make(map[*zondPeer][]common.Hash) // Set peer->hash to announce
+		txset = make(map[*qrlPeer][]common.Hash) // Set peer->hash to transfer directly
+		annos = make(map[*qrlPeer][]common.Hash) // Set peer->hash to announce
 
 	)
 	// Broadcast transactions to a batch of peers not knowing about it

@@ -28,7 +28,7 @@ import (
 	"github.com/theQRL/go-zond/core/state"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/zond/tracers"
+	"github.com/theQRL/go-zond/qrl/tracers"
 )
 
 type account struct{}

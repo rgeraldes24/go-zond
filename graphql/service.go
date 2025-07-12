@@ -28,8 +28,8 @@ import (
 	gqlErrors "github.com/graph-gophers/graphql-go/errors"
 	"github.com/theQRL/go-zond/internal/qrlapi"
 	"github.com/theQRL/go-zond/node"
+	"github.com/theQRL/go-zond/qrl/filters"
 	"github.com/theQRL/go-zond/rpc"
-	"github.com/theQRL/go-zond/zond/filters"
 )
 
 type handler struct {

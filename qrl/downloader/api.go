@@ -21,7 +21,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/theQRL/go-zond"
+	qrl "github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/rpc"
 )
@@ -74,7 +74,7 @@ func (api *DownloaderAPI) eventLoop() {
 		started bool
 		done    bool
 
-		getProgress = func() zond.SyncProgress {
+		getProgress = func() qrl.SyncProgress {
 			return api.d.Progress()
 		}
 	)
@@ -124,7 +124,7 @@ func (api *DownloaderAPI) eventLoop() {
 	}
 }
 
-// Syncing provides information when this node starts synchronising with the Zond network and when it's finished.
+// Syncing provides information when this node starts synchronising with the QRL network and when it's finished.
 func (api *DownloaderAPI) Syncing(ctx context.Context) (*rpc.Subscription, error) {
 	notifier, supported := rpc.NotifierFromContext(ctx)
 	if !supported {
@@ -153,8 +153,8 @@ func (api *DownloaderAPI) Syncing(ctx context.Context) (*rpc.Subscription, error
 
 // SyncingResult provides information about the current synchronisation status for this node.
 type SyncingResult struct {
-	Syncing bool              `json:"syncing"`
-	Status  zond.SyncProgress `json:"status"`
+	Syncing bool             `json:"syncing"`
+	Status  qrl.SyncProgress `json:"status"`
 }
 
 // uninstallSyncSubscriptionRequest uninstalls a syncing subscription in the API event loop.

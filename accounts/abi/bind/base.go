@@ -52,9 +52,9 @@ type CallOpts struct {
 }
 
 // TransactOpts is the collection of authorization data required to create a
-// valid Zond transaction.
+// valid QRL transaction.
 type TransactOpts struct {
-	From   common.Address // Zond account to send the transaction from
+	From   common.Address // QRL account to send the transaction from
 	Nonce  *big.Int       // Nonce to use for the transaction execution (nil = use pending state)
 	Signer SignerFn       // Method to use for signing the transaction (mandatory)
 
@@ -108,11 +108,11 @@ func (m *MetaData) GetAbi() (*abi.ABI, error) {
 }
 
 // BoundContract is the base wrapper object that reflects a contract on the
-// Zond network. It contains a collection of methods that are used by the
+// QRL network. It contains a collection of methods that are used by the
 // higher level contract bindings to operate.
 type BoundContract struct {
-	address    common.Address     // Deployment address of the contract on the Zond blockchain
-	abi        abi.ABI            // Reflect based ABI to access the correct Zond methods
+	address    common.Address     // Deployment address of the contract on the QRL blockchain
+	abi        abi.ABI            // Reflect based ABI to access the correct QRL methods
 	caller     ContractCaller     // Read interface to interact with the blockchain
 	transactor ContractTransactor // Write interface to interact with the blockchain
 	filterer   ContractFilterer   // Event filtering to interact with the blockchain

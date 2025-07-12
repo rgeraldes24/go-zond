@@ -29,15 +29,15 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/log"
+	"github.com/theQRL/go-zond/qrl/tracers"
 	"github.com/theQRL/go-zond/trie"
-	"github.com/theQRL/go-zond/zond/tracers"
 )
 
 // noopReleaser is returned in case there is no operation expected
 // for releasing state.
 var noopReleaser = tracers.StateReleaseFunc(func() {})
 
-func (zond *Zond) hashState(ctx context.Context, block *types.Block, reexec uint64, base *state.StateDB, readOnly bool, preferDisk bool) (statedb *state.StateDB, release tracers.StateReleaseFunc, err error) {
+func (qrl *QRL) hashState(ctx context.Context, block *types.Block, reexec uint64, base *state.StateDB, readOnly bool, preferDisk bool) (statedb *state.StateDB, release tracers.StateReleaseFunc, err error) {
 	var (
 		current  *types.Block
 		database state.Database
@@ -51,10 +51,10 @@ func (zond *Zond) hashState(ctx context.Context, block *types.Block, reexec uint
 		// The state is available in live database, create a reference
 		// on top to prevent garbage collection and return a release
 		// function to deref it.
-		if statedb, err = zond.blockchain.StateAt(block.Root()); err == nil {
-			zond.blockchain.TrieDB().Reference(block.Root(), common.Hash{})
+		if statedb, err = qrl.blockchain.StateAt(block.Root()); err == nil {
+			qrl.blockchain.TrieDB().Reference(block.Root(), common.Hash{})
 			return statedb, func() {
-				zond.blockchain.TrieDB().Dereference(block.Root())
+				qrl.blockchain.TrieDB().Dereference(block.Root())
 			}, nil
 		}
 	}
@@ -67,7 +67,7 @@ func (zond *Zond) hashState(ctx context.Context, block *types.Block, reexec uint
 			// the internal junks created by tracing will be persisted into the disk.
 			// TODO(rjl493456442), clean cache is disabled to prevent memory leak,
 			// please re-enable it for better performance.
-			database = state.NewDatabaseWithConfig(zond.chainDb, trie.HashDefaults)
+			database = state.NewDatabaseWithConfig(qrl.chainDb, trie.HashDefaults)
 			if statedb, err = state.New(block.Root(), database, nil); err == nil {
 				log.Info("Found disk backend for state trie", "root", block.Root(), "number", block.Number())
 				return statedb, noopReleaser, nil
@@ -75,7 +75,7 @@ func (zond *Zond) hashState(ctx context.Context, block *types.Block, reexec uint
 		}
 		// The optional base statedb is given, mark the start point as parent block
 		statedb, database, triedb, report = base, base.Database(), base.Database().TrieDB(), false
-		current = zond.blockchain.GetBlock(block.ParentHash(), block.NumberU64()-1)
+		current = qrl.blockchain.GetBlock(block.ParentHash(), block.NumberU64()-1)
 	} else {
 		// Otherwise, try to reexec blocks until we find a state or reach our limit
 		current = block
@@ -84,8 +84,8 @@ func (zond *Zond) hashState(ctx context.Context, block *types.Block, reexec uint
 		// the internal junks created by tracing will be persisted into the disk.
 		// TODO(rjl493456442), clean cache is disabled to prevent memory leak,
 		// please re-enable it for better performance.
-		triedb = trie.NewDatabase(zond.chainDb, trie.HashDefaults)
-		database = state.NewDatabaseWithNodeDB(zond.chainDb, triedb)
+		triedb = trie.NewDatabase(qrl.chainDb, trie.HashDefaults)
+		database = state.NewDatabaseWithNodeDB(qrl.chainDb, triedb)
 
 		// If we didn't check the live database, do check state over ephemeral database,
 		// otherwise we would rewind past a persisted block (specific corner case is
@@ -104,7 +104,7 @@ func (zond *Zond) hashState(ctx context.Context, block *types.Block, reexec uint
 			if current.NumberU64() == 0 {
 				return nil, nil, errors.New("genesis state is missing")
 			}
-			parent := zond.blockchain.GetBlock(current.ParentHash(), current.NumberU64()-1)
+			parent := qrl.blockchain.GetBlock(current.ParentHash(), current.NumberU64()-1)
 			if parent == nil {
 				return nil, nil, fmt.Errorf("missing block %v %d", current.ParentHash(), current.NumberU64()-1)
 			}
@@ -142,10 +142,10 @@ func (zond *Zond) hashState(ctx context.Context, block *types.Block, reexec uint
 		}
 		// Retrieve the next block to regenerate and process it
 		next := current.NumberU64() + 1
-		if current = zond.blockchain.GetBlockByNumber(next); current == nil {
+		if current = qrl.blockchain.GetBlockByNumber(next); current == nil {
 			return nil, nil, fmt.Errorf("block #%d not found", next)
 		}
-		_, _, _, err := zond.blockchain.Processor().Process(current, statedb, vm.Config{})
+		_, _, _, err := qrl.blockchain.Processor().Process(current, statedb, vm.Config{})
 		if err != nil {
 			return nil, nil, fmt.Errorf("processing block %d failed: %v", current.NumberU64(), err)
 		}
@@ -174,7 +174,7 @@ func (zond *Zond) hashState(ctx context.Context, block *types.Block, reexec uint
 	return statedb, func() { triedb.Dereference(block.Root()) }, nil
 }
 
-func (zond *Zond) pathState(block *types.Block) (*state.StateDB, func(), error) {
+func (zond *QRL) pathState(block *types.Block) (*state.StateDB, func(), error) {
 	// Check if the requested state is available in the live chain.
 	statedb, err := zond.blockchain.StateAt(block.Root())
 	if err == nil {
@@ -208,7 +208,7 @@ func (zond *Zond) pathState(block *types.Block) (*state.StateDB, func(), error) 
 //   - preferDisk: This arg can be used by the caller to signal that even though the 'base' is
 //     provided, it would be preferable to start from a fresh state, if we have it
 //     on disk.
-func (zond *Zond) stateAtBlock(ctx context.Context, block *types.Block, reexec uint64, base *state.StateDB, readOnly bool, preferDisk bool) (statedb *state.StateDB, release tracers.StateReleaseFunc, err error) {
+func (zond *QRL) stateAtBlock(ctx context.Context, block *types.Block, reexec uint64, base *state.StateDB, readOnly bool, preferDisk bool) (statedb *state.StateDB, release tracers.StateReleaseFunc, err error) {
 	if zond.blockchain.TrieDB().Scheme() == rawdb.HashScheme {
 		return zond.hashState(ctx, block, reexec, base, readOnly, preferDisk)
 	}
@@ -216,7 +216,7 @@ func (zond *Zond) stateAtBlock(ctx context.Context, block *types.Block, reexec u
 }
 
 // stateAtTransaction returns the execution environment of a certain transaction.
-func (zond *Zond) stateAtTransaction(ctx context.Context, block *types.Block, txIndex int, reexec uint64) (*core.Message, vm.BlockContext, *state.StateDB, tracers.StateReleaseFunc, error) {
+func (zond *QRL) stateAtTransaction(ctx context.Context, block *types.Block, txIndex int, reexec uint64) (*core.Message, vm.BlockContext, *state.StateDB, tracers.StateReleaseFunc, error) {
 	// Short circuit if it's genesis block.
 	if block.NumberU64() == 0 {
 		return nil, vm.BlockContext{}, nil, nil, errors.New("no transaction in genesis")

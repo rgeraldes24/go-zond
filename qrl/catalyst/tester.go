@@ -23,8 +23,8 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/node"
-	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/downloader"
+	"github.com/theQRL/go-zond/qrl"
+	"github.com/theQRL/go-zond/qrl/downloader"
 )
 
 // FullSyncTester is an auxiliary service that allows Geth to perform full sync
@@ -34,7 +34,7 @@ import (
 // This tester can be only be applied for full-sync.
 type FullSyncTester struct {
 	stack   *node.Node
-	backend *zond.Zond
+	backend *qrl.QRL
 	target  common.Hash
 	closed  chan struct{}
 	wg      sync.WaitGroup
@@ -42,7 +42,7 @@ type FullSyncTester struct {
 
 // RegisterFullSyncTester registers the full-sync tester service into the node
 // stack for launching and stopping the service controlled by node.
-func RegisterFullSyncTester(stack *node.Node, backend *zond.Zond, target common.Hash) (*FullSyncTester, error) {
+func RegisterFullSyncTester(stack *node.Node, backend *qrl.QRL, target common.Hash) (*FullSyncTester, error) {
 	cl := &FullSyncTester{
 		stack:   stack,
 		backend: backend,

@@ -32,11 +32,11 @@ import (
 // AdminAPI is the collection of Zond full node related APIs for node
 // administration.
 type AdminAPI struct {
-	zond *Zond
+	zond *QRL
 }
 
 // NewAdminAPI creates a new instance of AdminAPI.
-func NewAdminAPI(zond *Zond) *AdminAPI {
+func NewAdminAPI(zond *QRL) *AdminAPI {
 	return &AdminAPI{zond: zond}
 }
 

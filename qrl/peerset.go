@@ -22,8 +22,8 @@ import (
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/zond/protocols/snap"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
+	"github.com/theQRL/go-zond/qrl/protocols/snap"
 )
 
 var (
@@ -39,19 +39,19 @@ var (
 	// a peer set, but no peer with the given id exists.
 	errPeerNotRegistered = errors.New("peer not registered")
 
-	// errSnapWithoutZond is returned if a peer attempts to connect only on the
-	// snap protocol without advertising the zond main protocol.
-	errSnapWithoutZond = errors.New("peer connected on snap without compatible zond support")
+	// errSnapWithoutQRL is returned if a peer attempts to connect only on the
+	// snap protocol without advertising the qrl main protocol.
+	errSnapWithoutQRL = errors.New("peer connected on snap without compatible qrl support")
 )
 
 // peerSet represents the collection of active peers currently participating in
-// the `zond` protocol, with or without the `snap` extension.
+// the `qrl` protocol, with or without the `snap` extension.
 type peerSet struct {
-	peers     map[string]*zondPeer // Peers connected on the `zond` protocol
-	snapPeers int                  // Number of `snap` compatible peers for connection prioritization
+	peers     map[string]*qrlPeer // Peers connected on the `qrl` protocol
+	snapPeers int                 // Number of `snap` compatible peers for connection prioritization
 
-	snapWait map[string]chan *snap.Peer // Peers connected on `zond` waiting for their snap extension
-	snapPend map[string]*snap.Peer      // Peers connected on the `snap` protocol, but not yet on `zond`
+	snapWait map[string]chan *snap.Peer // Peers connected on `qrl` waiting for their snap extension
+	snapPend map[string]*snap.Peer      // Peers connected on the `snap` protocol, but not yet on `qrl`
 
 	lock   sync.RWMutex
 	closed bool
@@ -60,20 +60,20 @@ type peerSet struct {
 // newPeerSet creates a new peer set to track the active participants.
 func newPeerSet() *peerSet {
 	return &peerSet{
-		peers:    make(map[string]*zondPeer),
+		peers:    make(map[string]*qrlPeer),
 		snapWait: make(map[string]chan *snap.Peer),
 		snapPend: make(map[string]*snap.Peer),
 	}
 }
 
-// registerSnapExtension unblocks an already connected `zond` peer waiting for its
+// registerSnapExtension unblocks an already connected `qrl` peer waiting for its
 // `snap` extension, or if no such peer exists, tracks the extension for the time
-// being until the `zond` main protocol starts looking for it.
+// being until the `qrl` main protocol starts looking for it.
 func (ps *peerSet) registerSnapExtension(peer *snap.Peer) error {
-	// Reject the peer if it advertises `snap` without `zond` as `snap` is only a
-	// satellite protocol meaningful with the chain selection of `zond`
-	if !peer.RunningCap(zond.ProtocolName, zond.ProtocolVersions) {
-		return errSnapWithoutZond
+	// Reject the peer if it advertises `snap` without `qrl` as `snap` is only a
+	// satellite protocol meaningful with the chain selection of `qrl`
+	if !peer.RunningCap(qrl.ProtocolName, qrl.ProtocolVersions) {
+		return errSnapWithoutQRL
 	}
 	// Ensure nobody can double connect
 	ps.lock.Lock()
@@ -86,7 +86,7 @@ func (ps *peerSet) registerSnapExtension(peer *snap.Peer) error {
 	if _, ok := ps.snapPend[id]; ok {
 		return errPeerAlreadyRegistered // avoid connections with the same id as pending ones
 	}
-	// Inject the peer into an `zond` counterpart is available, otherwise save for later
+	// Inject the peer into an `qrl` counterpart is available, otherwise save for later
 	if wait, ok := ps.snapWait[id]; ok {
 		delete(ps.snapWait, id)
 		wait <- peer
@@ -98,7 +98,7 @@ func (ps *peerSet) registerSnapExtension(peer *snap.Peer) error {
 
 // waitSnapExtension blocks until all satellite protocols are connected and tracked
 // by the peerset.
-func (ps *peerSet) waitSnapExtension(peer *zond.Peer) (*snap.Peer, error) {
+func (ps *peerSet) waitSnapExtension(peer *qrl.Peer) (*snap.Peer, error) {
 	// If the peer does not support a compatible `snap`, don't wait
 	if !peer.RunningCap(snap.ProtocolName, snap.ProtocolVersions) {
 		return nil, nil
@@ -130,9 +130,9 @@ func (ps *peerSet) waitSnapExtension(peer *zond.Peer) (*snap.Peer, error) {
 	return <-wait, nil
 }
 
-// registerPeer injects a new `zond` peer into the working set, or returns an error
+// registerPeer injects a new `qrl` peer into the working set, or returns an error
 // if the peer is already known.
-func (ps *peerSet) registerPeer(peer *zond.Peer, ext *snap.Peer) error {
+func (ps *peerSet) registerPeer(peer *qrl.Peer, ext *snap.Peer) error {
 	// Start tracking the new peer
 	ps.lock.Lock()
 	defer ps.lock.Unlock()
@@ -144,7 +144,7 @@ func (ps *peerSet) registerPeer(peer *zond.Peer, ext *snap.Peer) error {
 	if _, ok := ps.peers[id]; ok {
 		return errPeerAlreadyRegistered
 	}
-	eth := &zondPeer{
+	eth := &qrlPeer{
 		Peer: peer,
 	}
 	if ext != nil {
@@ -173,7 +173,7 @@ func (ps *peerSet) unregisterPeer(id string) error {
 }
 
 // peer retrieves the registered peer with the given id.
-func (ps *peerSet) peer(id string) *zondPeer {
+func (ps *peerSet) peer(id string) *qrlPeer {
 	ps.lock.RLock()
 	defer ps.lock.RUnlock()
 
@@ -182,11 +182,11 @@ func (ps *peerSet) peer(id string) *zondPeer {
 
 // peersWithoutTransaction retrieves a list of peers that do not have a given
 // transaction in their set of known hashes.
-func (ps *peerSet) peersWithoutTransaction(hash common.Hash) []*zondPeer {
+func (ps *peerSet) peersWithoutTransaction(hash common.Hash) []*qrlPeer {
 	ps.lock.RLock()
 	defer ps.lock.RUnlock()
 
-	list := make([]*zondPeer, 0, len(ps.peers))
+	list := make([]*qrlPeer, 0, len(ps.peers))
 	for _, p := range ps.peers {
 		if !p.KnownTransaction(hash) {
 			list = append(list, p)
@@ -195,9 +195,9 @@ func (ps *peerSet) peersWithoutTransaction(hash common.Hash) []*zondPeer {
 	return list
 }
 
-// len returns if the current number of `zond` peers in the set. Since the `snap`
-// peers are tied to the existence of an `zond` connection, that will always be a
-// subset of `zond`.
+// len returns if the current number of `qrl` peers in the set. Since the `snap`
+// peers are tied to the existence of an `qrl` connection, that will always be a
+// subset of `qrl`.
 func (ps *peerSet) len() int {
 	ps.lock.RLock()
 	defer ps.lock.RUnlock()

@@ -27,7 +27,7 @@ import (
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/log"
-	"github.com/theQRL/go-zond/zond/tracers"
+	"github.com/theQRL/go-zond/qrl/tracers"
 )
 
 //go:generate go run github.com/fjl/gencodec -type account -field-override accountMarshaling -out gen_account_json.go

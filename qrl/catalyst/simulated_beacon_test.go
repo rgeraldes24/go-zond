@@ -30,12 +30,12 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/downloader"
-	"github.com/theQRL/go-zond/zond/zondconfig"
+	"github.com/theQRL/go-zond/qrl"
+	"github.com/theQRL/go-zond/qrl/downloader"
+	"github.com/theQRL/go-zond/qrl/qrlconfig"
 )
 
-func startSimulatedBeaconZondService(t *testing.T, genesis *core.Genesis) (*node.Node, *zond.Zond, *SimulatedBeacon) {
+func startSimulatedBeaconQRLService(t *testing.T, genesis *core.Genesis) (*node.Node, *qrl.QRL, *SimulatedBeacon) {
 	t.Helper()
 
 	n, err := node.New(&node.Config{
@@ -49,13 +49,13 @@ func startSimulatedBeaconZondService(t *testing.T, genesis *core.Genesis) (*node
 		t.Fatal("can't create node:", err)
 	}
 
-	zondcfg := &zondconfig.Config{Genesis: genesis, SyncMode: downloader.FullSync, TrieTimeout: time.Minute, TrieDirtyCache: 256, TrieCleanCache: 256, Miner: miner.DefaultConfig}
-	zondservice, err := zond.New(n, zondcfg)
+	qrlcfg := &qrlconfig.Config{Genesis: genesis, SyncMode: downloader.FullSync, TrieTimeout: time.Minute, TrieDirtyCache: 256, TrieCleanCache: 256, Miner: miner.DefaultConfig}
+	qrlservice, err := qrl.New(n, qrlcfg)
 	if err != nil {
-		t.Fatal("can't create zond service:", err)
+		t.Fatal("can't create qrl service:", err)
 	}
 
-	simBeacon, err := NewSimulatedBeacon(1, zondservice)
+	simBeacon, err := NewSimulatedBeacon(1, qrlservice)
 	if err != nil {
 		t.Fatal("can't create simulated beacon:", err)
 	}
@@ -66,8 +66,8 @@ func startSimulatedBeaconZondService(t *testing.T, genesis *core.Genesis) (*node
 		t.Fatal("can't start node:", err)
 	}
 
-	zondservice.SetSynced()
-	return n, zondservice, simBeacon
+	qrlservice.SetSynced()
+	return n, qrlservice, simBeacon
 }
 
 // send 20 transactions, >10 withdrawals and ensure they are included in order
@@ -80,19 +80,19 @@ func TestSimulatedBeaconSendWithdrawals(t *testing.T) {
 		// testKey is a private key to use for funding a tester account.
 		testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
-		// testAddr is the Zond address of the tester account.
+		// testAddr is the QRL address of the tester account.
 		testAddr = testKey.GetAddress()
 	)
 
 	// short period (1 second) for testing purposes
 	var gasLimit uint64 = 10_000_000
 	genesis := core.DeveloperGenesisBlock(gasLimit, testAddr)
-	node, zondService, mock := startSimulatedBeaconZondService(t, genesis)
+	node, qrlService, mock := startSimulatedBeaconQRLService(t, genesis)
 	_ = mock
 	defer node.Close()
 
 	chainHeadCh := make(chan core.ChainHeadEvent, 10)
-	subscription := zondService.BlockChain().SubscribeChainHeadEvent(chainHeadCh)
+	subscription := qrlService.BlockChain().SubscribeChainHeadEvent(chainHeadCh)
 	defer subscription.Unsubscribe()
 
 	// generate some withdrawals
@@ -104,7 +104,7 @@ func TestSimulatedBeaconSendWithdrawals(t *testing.T) {
 	}
 
 	// generate a bunch of transactions
-	signer := types.NewShanghaiSigner(zondService.BlockChain().Config().ChainID)
+	signer := types.NewShanghaiSigner(qrlService.BlockChain().Config().ChainID)
 	for i := 0; i < 20; i++ {
 		tx, err := types.SignTx(types.NewTx(&types.DynamicFeeTx{Nonce: uint64(i), To: &common.Address{}, Value: big.NewInt(1000), Gas: params.TxGas, GasFeeCap: big.NewInt(params.InitialBaseFee), Data: nil}), signer, testKey)
 		if err != nil {
@@ -112,7 +112,7 @@ func TestSimulatedBeaconSendWithdrawals(t *testing.T) {
 		}
 		txs[tx.Hash()] = tx
 
-		if err := zondService.APIBackend.SendTx(context.Background(), tx); err != nil {
+		if err := qrlService.APIBackend.SendTx(context.Background(), tx); err != nil {
 			t.Fatal("SendTx failed", err)
 		}
 	}

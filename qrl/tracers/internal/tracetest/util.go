@@ -5,8 +5,8 @@ import (
 	"unicode"
 
 	// Force-load native and js packages, to trigger registration
-	_ "github.com/theQRL/go-zond/zond/tracers/js"
-	_ "github.com/theQRL/go-zond/zond/tracers/native"
+	_ "github.com/theQRL/go-zond/qrl/tracers/js"
+	_ "github.com/theQRL/go-zond/qrl/tracers/native"
 )
 
 // To generate a new callTracer test, copy paste the makeTest method below into

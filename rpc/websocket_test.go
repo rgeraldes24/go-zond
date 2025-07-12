@@ -167,7 +167,7 @@ func TestClientWebsocketPing(t *testing.T) {
 	defer client.Close()
 
 	resultChan := make(chan int)
-	sub, err := client.ZondSubscribe(ctx, resultChan, "foo")
+	sub, err := client.QRLSubscribe(ctx, resultChan, "foo")
 	if err != nil {
 		t.Fatalf("client subscribe error: %v", err)
 	}

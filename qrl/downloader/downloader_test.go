@@ -25,7 +25,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/theQRL/go-zond"
+	qrl "github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/consensus/beacon"
 	"github.com/theQRL/go-zond/core"
@@ -35,10 +35,10 @@ import (
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/params"
+	qrlproto "github.com/theQRL/go-zond/qrl/protocols/qrl"
+	"github.com/theQRL/go-zond/qrl/protocols/snap"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/trie"
-	"github.com/theQRL/go-zond/zond/protocols/snap"
-	zondproto "github.com/theQRL/go-zond/zond/protocols/zond"
 )
 
 // downloadTester is a test simulator for mocking out local block chain.
@@ -154,10 +154,10 @@ func unmarshalRlpHeaders(rlpdata []rlp.RawValue) []*types.Header {
 // RequestHeadersByHash constructs a GetBlockHeaders function based on a hashed
 // origin; associated with a particular peer in the download tester. The returned
 // function can be used to retrieve batches of headers from the particular peer.
-func (dlp *downloadTesterPeer) RequestHeadersByHash(origin common.Hash, amount int, skip int, reverse bool, sink chan *zondproto.Response) (*zondproto.Request, error) {
+func (dlp *downloadTesterPeer) RequestHeadersByHash(origin common.Hash, amount int, skip int, reverse bool, sink chan *qrlproto.Response) (*qrlproto.Request, error) {
 	// Service the header query via the live handler code
-	rlpHeaders := zondproto.ServiceGetBlockHeadersQuery(dlp.chain, &zondproto.GetBlockHeadersRequest{
-		Origin: zondproto.HashOrNumber{
+	rlpHeaders := qrlproto.ServiceGetBlockHeadersQuery(dlp.chain, &qrlproto.GetBlockHeadersRequest{
+		Origin: qrlproto.HashOrNumber{
 			Hash: origin,
 		},
 		Amount:  uint64(amount),
@@ -170,12 +170,12 @@ func (dlp *downloadTesterPeer) RequestHeadersByHash(origin common.Hash, amount i
 		hashes[i] = header.Hash()
 	}
 	// Deliver the headers to the downloader
-	req := &zondproto.Request{
+	req := &qrlproto.Request{
 		Peer: dlp.id,
 	}
-	res := &zondproto.Response{
+	res := &qrlproto.Response{
 		Req:  req,
-		Res:  (*zondproto.BlockHeadersRequest)(&headers),
+		Res:  (*qrlproto.BlockHeadersRequest)(&headers),
 		Meta: hashes,
 		Time: 1,
 		Done: make(chan error, 1), // Ignore the returned status
@@ -189,10 +189,10 @@ func (dlp *downloadTesterPeer) RequestHeadersByHash(origin common.Hash, amount i
 // RequestHeadersByNumber constructs a GetBlockHeaders function based on a numbered
 // origin; associated with a particular peer in the download tester. The returned
 // function can be used to retrieve batches of headers from the particular peer.
-func (dlp *downloadTesterPeer) RequestHeadersByNumber(origin uint64, amount int, skip int, reverse bool, sink chan *zondproto.Response) (*zondproto.Request, error) {
+func (dlp *downloadTesterPeer) RequestHeadersByNumber(origin uint64, amount int, skip int, reverse bool, sink chan *qrlproto.Response) (*qrlproto.Request, error) {
 	// Service the header query via the live handler code
-	rlpHeaders := zondproto.ServiceGetBlockHeadersQuery(dlp.chain, &zondproto.GetBlockHeadersRequest{
-		Origin: zondproto.HashOrNumber{
+	rlpHeaders := qrlproto.ServiceGetBlockHeadersQuery(dlp.chain, &qrlproto.GetBlockHeadersRequest{
+		Origin: qrlproto.HashOrNumber{
 			Number: origin,
 		},
 		Amount:  uint64(amount),
@@ -205,12 +205,12 @@ func (dlp *downloadTesterPeer) RequestHeadersByNumber(origin uint64, amount int,
 		hashes[i] = header.Hash()
 	}
 	// Deliver the headers to the downloader
-	req := &zondproto.Request{
+	req := &qrlproto.Request{
 		Peer: dlp.id,
 	}
-	res := &zondproto.Response{
+	res := &qrlproto.Response{
 		Req:  req,
-		Res:  (*zondproto.BlockHeadersRequest)(&headers),
+		Res:  (*qrlproto.BlockHeadersRequest)(&headers),
 		Meta: hashes,
 		Time: 1,
 		Done: make(chan error, 1), // Ignore the returned status
@@ -224,12 +224,12 @@ func (dlp *downloadTesterPeer) RequestHeadersByNumber(origin uint64, amount int,
 // RequestBodies constructs a getBlockBodies method associated with a particular
 // peer in the download tester. The returned function can be used to retrieve
 // batches of block bodies from the particularly requested peer.
-func (dlp *downloadTesterPeer) RequestBodies(hashes []common.Hash, sink chan *zondproto.Response) (*zondproto.Request, error) {
-	blobs := zondproto.ServiceGetBlockBodiesQuery(dlp.chain, hashes)
+func (dlp *downloadTesterPeer) RequestBodies(hashes []common.Hash, sink chan *qrlproto.Response) (*qrlproto.Request, error) {
+	blobs := qrlproto.ServiceGetBlockBodiesQuery(dlp.chain, hashes)
 
-	bodies := make([]*zondproto.BlockBody, len(blobs))
+	bodies := make([]*qrlproto.BlockBody, len(blobs))
 	for i, blob := range blobs {
-		bodies[i] = new(zondproto.BlockBody)
+		bodies[i] = new(qrlproto.BlockBody)
 		rlp.DecodeBytes(blob, bodies[i])
 	}
 	var (
@@ -248,12 +248,12 @@ func (dlp *downloadTesterPeer) RequestBodies(hashes []common.Hash, sink chan *zo
 		hash = types.DeriveSha(types.Withdrawals(body.Withdrawals), hasher)
 		withdrawalHashes[i] = hash
 	}
-	req := &zondproto.Request{
+	req := &qrlproto.Request{
 		Peer: dlp.id,
 	}
-	res := &zondproto.Response{
+	res := &qrlproto.Response{
 		Req:  req,
-		Res:  (*zondproto.BlockBodiesResponse)(&bodies),
+		Res:  (*qrlproto.BlockBodiesResponse)(&bodies),
 		Meta: [][]common.Hash{txsHashes, withdrawalHashes},
 		Time: 1,
 		Done: make(chan error, 1), // Ignore the returned status
@@ -267,8 +267,8 @@ func (dlp *downloadTesterPeer) RequestBodies(hashes []common.Hash, sink chan *zo
 // RequestReceipts constructs a getReceipts method associated with a particular
 // peer in the download tester. The returned function can be used to retrieve
 // batches of block receipts from the particularly requested peer.
-func (dlp *downloadTesterPeer) RequestReceipts(hashes []common.Hash, sink chan *zondproto.Response) (*zondproto.Request, error) {
-	blobs := zondproto.ServiceGetReceiptsQuery(dlp.chain, hashes)
+func (dlp *downloadTesterPeer) RequestReceipts(hashes []common.Hash, sink chan *qrlproto.Response) (*qrlproto.Request, error) {
+	blobs := qrlproto.ServiceGetReceiptsQuery(dlp.chain, hashes)
 
 	receipts := make([][]*types.Receipt, len(blobs))
 	for i, blob := range blobs {
@@ -279,12 +279,12 @@ func (dlp *downloadTesterPeer) RequestReceipts(hashes []common.Hash, sink chan *
 	for i, receipt := range receipts {
 		hashes[i] = types.DeriveSha(types.Receipts(receipt), hasher)
 	}
-	req := &zondproto.Request{
+	req := &qrlproto.Request{
 		Peer: dlp.id,
 	}
-	res := &zondproto.Response{
+	res := &qrlproto.Response{
 		Req:  req,
-		Res:  (*zondproto.ReceiptsResponse)(&receipts),
+		Res:  (*qrlproto.ReceiptsResponse)(&receipts),
 		Meta: hashes,
 		Time: 1,
 		Done: make(chan error, 1), // Ignore the returned status
@@ -401,8 +401,8 @@ func assertOwnChain(t *testing.T, tester *downloadTester, length int) {
 	}
 }
 
-func TestCanonicalSynchronisation68Full(t *testing.T) { testCanonSync(t, zondproto.ETH68, FullSync) }
-func TestCanonicalSynchronisation68Snap(t *testing.T) { testCanonSync(t, zondproto.ETH68, SnapSync) }
+func TestCanonicalSynchronisation68Full(t *testing.T) { testCanonSync(t, qrlproto.ETH68, FullSync) }
+func TestCanonicalSynchronisation68Snap(t *testing.T) { testCanonSync(t, qrlproto.ETH68, SnapSync) }
 
 func testCanonSync(t *testing.T, protocol uint, mode SyncMode) {
 	success := make(chan struct{})
@@ -429,9 +429,9 @@ func testCanonSync(t *testing.T, protocol uint, mode SyncMode) {
 
 // Tests that if a large batch of blocks are being downloaded, it is throttled
 // until the cached blocks are retrieved.
-func TestThrottling68Full(t *testing.T) { testThrottling(t, zondproto.ETH68, FullSync) }
+func TestThrottling68Full(t *testing.T) { testThrottling(t, qrlproto.ETH68, FullSync) }
 
-func TestThrottling68Snap(t *testing.T) { testThrottling(t, zondproto.ETH68, SnapSync) }
+func TestThrottling68Snap(t *testing.T) { testThrottling(t, qrlproto.ETH68, SnapSync) }
 
 func testThrottling(t *testing.T, protocol uint, mode SyncMode) {
 	tester := newTester(t)
@@ -508,8 +508,8 @@ func testThrottling(t *testing.T, protocol uint, mode SyncMode) {
 }
 
 // Tests that a canceled download wipes all previously accumulated state.
-func TestCancel68Full(t *testing.T) { testCancel(t, zondproto.ETH68, FullSync) }
-func TestCancel68Snap(t *testing.T) { testCancel(t, zondproto.ETH68, SnapSync) }
+func TestCancel68Full(t *testing.T) { testCancel(t, qrlproto.ETH68, FullSync) }
+func TestCancel68Snap(t *testing.T) { testCancel(t, qrlproto.ETH68, SnapSync) }
 
 func testCancel(t *testing.T, protocol uint, mode SyncMode) {
 	complete := make(chan struct{})
@@ -541,10 +541,10 @@ func testCancel(t *testing.T, protocol uint, mode SyncMode) {
 // Tests that synchronisations behave well in multi-version protocol environments
 // and not wreak havoc on other nodes in the network.
 func TestMultiProtoSynchronisation68Full(t *testing.T) {
-	testMultiProtoSync(t, zondproto.ETH68, FullSync)
+	testMultiProtoSync(t, qrlproto.ETH68, FullSync)
 }
 func TestMultiProtoSynchronisation68Snap(t *testing.T) {
-	testMultiProtoSync(t, zondproto.ETH68, SnapSync)
+	testMultiProtoSync(t, qrlproto.ETH68, SnapSync)
 }
 
 func testMultiProtoSync(t *testing.T, protocol uint, mode SyncMode) {
@@ -559,7 +559,7 @@ func testMultiProtoSync(t *testing.T, protocol uint, mode SyncMode) {
 	chain := testChainBase.shorten(blockCacheMaxItems - 15)
 
 	// Create peers of every type
-	tester.newPeer("peer 68", zondproto.ETH68, chain.blocks[1:])
+	tester.newPeer("peer 68", qrlproto.ETH68, chain.blocks[1:])
 
 	if err := tester.downloader.BeaconSync(mode, chain.blocks[len(chain.blocks)-1].Header(), nil); err != nil {
 		t.Fatalf("failed to start beacon sync: #{err}")
@@ -583,8 +583,8 @@ func testMultiProtoSync(t *testing.T, protocol uint, mode SyncMode) {
 
 // Tests that if a block is empty (e.g. header only), no body request should be
 // made, and instead the header should be assembled into a whole block in itself.
-func TestEmptyShortCircuit68Full(t *testing.T) { testEmptyShortCircuit(t, zondproto.ETH68, FullSync) }
-func TestEmptyShortCircuit68Snap(t *testing.T) { testEmptyShortCircuit(t, zondproto.ETH68, SnapSync) }
+func TestEmptyShortCircuit68Full(t *testing.T) { testEmptyShortCircuit(t, qrlproto.ETH68, FullSync) }
+func TestEmptyShortCircuit68Snap(t *testing.T) { testEmptyShortCircuit(t, qrlproto.ETH68, SnapSync) }
 
 func testEmptyShortCircuit(t *testing.T, protocol uint, mode SyncMode) {
 	success := make(chan struct{})
@@ -611,7 +611,7 @@ func testEmptyShortCircuit(t *testing.T, protocol uint, mode SyncMode) {
 	}
 	select {
 	case <-success:
-		checkProgress(t, tester.downloader, "initial", zond.SyncProgress{
+		checkProgress(t, tester.downloader, "initial", qrl.SyncProgress{
 			HighestBlock: uint64(len(chain.blocks) - 1),
 			CurrentBlock: uint64(len(chain.blocks) - 1),
 		})
@@ -640,7 +640,7 @@ func testEmptyShortCircuit(t *testing.T, protocol uint, mode SyncMode) {
 	}
 }
 
-func checkProgress(t *testing.T, d *Downloader, stage string, want zond.SyncProgress) {
+func checkProgress(t *testing.T, d *Downloader, stage string, want qrl.SyncProgress) {
 	// Mark this method as a helper to report errors at callsite, not in here
 	t.Helper()
 
@@ -652,8 +652,8 @@ func checkProgress(t *testing.T, d *Downloader, stage string, want zond.SyncProg
 
 // Tests that peers below a pre-configured checkpoint block are prevented from
 // being fast-synced from, avoiding potential cheap eclipse attacks.
-func TestBeaconSync68Full(t *testing.T) { testBeaconSync(t, zondproto.ETH68, FullSync) }
-func TestBeaconSync68Snap(t *testing.T) { testBeaconSync(t, zondproto.ETH68, SnapSync) }
+func TestBeaconSync68Full(t *testing.T) { testBeaconSync(t, qrlproto.ETH68, FullSync) }
+func TestBeaconSync68Snap(t *testing.T) { testBeaconSync(t, qrlproto.ETH68, SnapSync) }
 
 func testBeaconSync(t *testing.T, protocol uint, mode SyncMode) {
 	var cases = []struct {
@@ -698,8 +698,8 @@ func testBeaconSync(t *testing.T, protocol uint, mode SyncMode) {
 
 // Tests that synchronisation progress (origin block number, current block number
 // and highest block number) is tracked and updated correctly.
-func TestSyncProgress68Full(t *testing.T) { testSyncProgress(t, zondproto.ETH68, FullSync) }
-func TestSyncProgress68Snap(t *testing.T) { testSyncProgress(t, zondproto.ETH68, SnapSync) }
+func TestSyncProgress68Full(t *testing.T) { testSyncProgress(t, qrlproto.ETH68, FullSync) }
+func TestSyncProgress68Snap(t *testing.T) { testSyncProgress(t, qrlproto.ETH68, SnapSync) }
 
 func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	success := make(chan struct{})
@@ -707,7 +707,7 @@ func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 		success <- struct{}{}
 	})
 	defer tester.terminate()
-	checkProgress(t, tester.downloader, "pristine", zond.SyncProgress{})
+	checkProgress(t, tester.downloader, "pristine", qrl.SyncProgress{})
 
 	chain := testChainBase.shorten(blockCacheMaxItems - 15)
 	shortChain := chain.shorten(len(chain.blocks) / 2).blocks[1:]
@@ -724,7 +724,7 @@ func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	select {
 	case <-success:
 		// Ok, downloader fully cancelled after sync cycle
-		checkProgress(t, tester.downloader, "peer-half", zond.SyncProgress{
+		checkProgress(t, tester.downloader, "peer-half", qrl.SyncProgress{
 			CurrentBlock: uint64(len(chain.blocks)/2 - 1),
 			HighestBlock: uint64(len(chain.blocks)/2 - 1),
 		})
@@ -742,7 +742,7 @@ func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	select {
 	case <-success:
 		// Ok, downloader fully cancelled after sync cycle
-		checkProgress(t, tester.downloader, "peer-full", zond.SyncProgress{
+		checkProgress(t, tester.downloader, "peer-full", qrl.SyncProgress{
 			StartingBlock: startingBlock,
 			CurrentBlock:  uint64(len(chain.blocks) - 1),
 			HighestBlock:  uint64(len(chain.blocks) - 1),

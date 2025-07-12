@@ -24,17 +24,17 @@ import (
 
 // MinerAPI provides an API to control the miner.
 type MinerAPI struct {
-	z *Zond
+	q *QRL
 }
 
 // NewMinerAPI create a new MinerAPI instance.
-func NewMinerAPI(z *Zond) *MinerAPI {
-	return &MinerAPI{z}
+func NewMinerAPI(q *QRL) *MinerAPI {
+	return &MinerAPI{q}
 }
 
 // SetExtra sets the extra data string that is included when this miner mines a block.
 func (api *MinerAPI) SetExtra(extra string) (bool, error) {
-	if err := api.z.Miner().SetExtra([]byte(extra)); err != nil {
+	if err := api.q.Miner().SetExtra([]byte(extra)); err != nil {
 		return false, err
 	}
 	return true, nil
@@ -42,17 +42,17 @@ func (api *MinerAPI) SetExtra(extra string) (bool, error) {
 
 // SetGasPrice sets the minimum accepted gas price for the miner.
 func (api *MinerAPI) SetGasPrice(gasPrice hexutil.Big) bool {
-	api.z.lock.Lock()
-	api.z.gasPrice = (*big.Int)(&gasPrice)
-	api.z.lock.Unlock()
+	api.q.lock.Lock()
+	api.q.gasPrice = (*big.Int)(&gasPrice)
+	api.q.lock.Unlock()
 
-	api.z.txPool.SetGasTip((*big.Int)(&gasPrice))
-	api.z.Miner().SetGasTip((*big.Int)(&gasPrice))
+	api.q.txPool.SetGasTip((*big.Int)(&gasPrice))
+	api.q.Miner().SetGasTip((*big.Int)(&gasPrice))
 	return true
 }
 
 // SetGasLimit sets the gaslimit to target towards during mining.
 func (api *MinerAPI) SetGasLimit(gasLimit hexutil.Uint64) bool {
-	api.z.Miner().SetGasCeil(uint64(gasLimit))
+	api.q.Miner().SetGasCeil(uint64(gasLimit))
 	return true
 }

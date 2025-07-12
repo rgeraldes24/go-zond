@@ -21,7 +21,7 @@ import (
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/log"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 )
 
 // bodyQueue implements typedQueue and is a type adapter between the generic
@@ -73,7 +73,7 @@ func (q *bodyQueue) unreserve(peer string) int {
 
 // request is responsible for converting a generic fetch request into a body
 // one and sending it to the remote peer for fulfillment.
-func (q *bodyQueue) request(peer *peerConnection, req *fetchRequest, resCh chan *zond.Response) (*zond.Request, error) {
+func (q *bodyQueue) request(peer *peerConnection, req *fetchRequest, resCh chan *qrl.Response) (*qrl.Request, error) {
 	peer.log.Trace("Requesting new batch of bodies", "count", len(req.Headers), "from", req.Headers[0].Number)
 	if q.bodyFetchHook != nil {
 		q.bodyFetchHook(req.Headers)
@@ -88,8 +88,8 @@ func (q *bodyQueue) request(peer *peerConnection, req *fetchRequest, resCh chan 
 
 // deliver is responsible for taking a generic response packet from the concurrent
 // fetcher, unpacking the body data and delivering it to the downloader's queue.
-func (q *bodyQueue) deliver(peer *peerConnection, packet *zond.Response) (int, error) {
-	txs, withdrawals := packet.Res.(*zond.BlockBodiesResponse).Unpack()
+func (q *bodyQueue) deliver(peer *peerConnection, packet *qrl.Response) (int, error) {
+	txs, withdrawals := packet.Res.(*qrl.BlockBodiesResponse).Unpack()
 	hashsets := packet.Meta.([][]common.Hash) // {txs hashes, withdrawal hashes}
 
 	accepted, err := q.queue.DeliverBodies(peer.id, txs, hashsets[0], withdrawals, hashsets[1])
