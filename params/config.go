@@ -49,7 +49,7 @@ var (
 	}
 
 	// AllBeaconProtocolChanges contains every protocol change (EIPs) introduced
-	// and accepted by the Zond core developers into the Beacon consensus.
+	// and accepted by the QRL core developers into the Beacon consensus.
 	AllBeaconProtocolChanges = &ChainConfig{
 		ChainID: big.NewInt(1337),
 	}
@@ -60,7 +60,7 @@ var (
 	}
 
 	// TestChainConfig contains every protocol change (EIPs) introduced
-	// and accepted by the Zond core developers for testing proposes.
+	// and accepted by the QRL core developers for testing proposes.
 	TestChainConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
 	}

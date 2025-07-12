@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package accounts implements high level Zond account management.
+// Package accounts implements high level QRL account management.
 package accounts
 
 import (
@@ -28,10 +28,10 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
-// Account represents an Zond account located at a specific location defined
+// Account represents an QRL account located at a specific location defined
 // by the optional URL field.
 type Account struct {
-	Address common.Address `json:"address"` // Zond account address derived from the key
+	Address common.Address `json:"address"` // QRL account address derived from the key
 	URL     URL            `json:"url"`     // Optional resource locator within a backend
 }
 

@@ -29,15 +29,15 @@ import (
 	"github.com/theQRL/go-zond/rlp"
 )
 
-// AdminAPI is the collection of Zond full node related APIs for node
+// AdminAPI is the collection of QRL full node related APIs for node
 // administration.
 type AdminAPI struct {
-	zond *QRL
+	qrl *QRL
 }
 
 // NewAdminAPI creates a new instance of AdminAPI.
-func NewAdminAPI(zond *QRL) *AdminAPI {
-	return &AdminAPI{zond: zond}
+func NewAdminAPI(qrl *QRL) *AdminAPI {
+	return &AdminAPI{qrl: qrl}
 }
 
 // ExportChain exports the current blockchain into a local file,
@@ -47,7 +47,7 @@ func (api *AdminAPI) ExportChain(file string, first *uint64, last *uint64) (bool
 		return false, errors.New("last cannot be specified without first")
 	}
 	if first != nil && last == nil {
-		head := api.zond.BlockChain().CurrentHeader().Number.Uint64()
+		head := api.qrl.BlockChain().CurrentHeader().Number.Uint64()
 		last = &head
 	}
 	if _, err := os.Stat(file); err == nil {
@@ -70,10 +70,10 @@ func (api *AdminAPI) ExportChain(file string, first *uint64, last *uint64) (bool
 
 	// Export the blockchain
 	if first != nil {
-		if err := api.zond.BlockChain().ExportN(writer, *first, *last); err != nil {
+		if err := api.qrl.BlockChain().ExportN(writer, *first, *last); err != nil {
 			return false, err
 		}
-	} else if err := api.zond.BlockChain().Export(writer); err != nil {
+	} else if err := api.qrl.BlockChain().Export(writer); err != nil {
 		return false, err
 	}
 	return true, nil
@@ -129,12 +129,12 @@ func (api *AdminAPI) ImportChain(file string) (bool, error) {
 			break
 		}
 
-		if hasAllBlocks(api.zond.BlockChain(), blocks) {
+		if hasAllBlocks(api.qrl.BlockChain(), blocks) {
 			blocks = blocks[:0]
 			continue
 		}
 		// Import the batch and reset the buffer
-		if _, err := api.zond.BlockChain().InsertChain(blocks); err != nil {
+		if _, err := api.qrl.BlockChain().InsertChain(blocks); err != nil {
 			return false, fmt.Errorf("batch %d: failed to insert: %v", batch, err)
 		}
 		blocks = blocks[:0]

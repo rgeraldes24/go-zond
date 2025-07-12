@@ -35,7 +35,7 @@ const (
 )
 
 // BloomIndexer implements a core.ChainIndexer, building up a rotated bloom bits index
-// for the Zond header bloom filters, permitting blazing fast filtering.
+// for the QRL header bloom filters, permitting blazing fast filtering.
 type BloomIndexer struct {
 	size    uint64               // section size to generate bloombits for
 	db      qrldb.Database       // database instance to write index data and metadata into

@@ -4,8 +4,8 @@ The `signer` binary contains a ruleset engine, implemented with [OttoVM](https:/
 
 It enables usecases like the following:
 
-* I want to auto-approve transactions with contract `CasinoDapp`, with up to `0.05 zond` in value to maximum `1 zond` per 24h period
-* I want to auto-approve transaction to contract `ZondAlarmClock` with `data`=`0xdeadbeef`, if `value=0`, `gas < 44k` and `maxFeePerGas < 40Gplanck`
+* I want to auto-approve transactions with contract `CasinoDapp`, with up to `0.05 quanta` in value to maximum `1 quanta` per 24h period
+* I want to auto-approve transaction to contract `QRLAlarmClock` with `data`=`0xdeadbeef`, if `value=0`, `gas < 44k` and `maxFeePerGas < 40Gplanck`
 
 The two main features that are required for this to work well are;
 
@@ -149,7 +149,7 @@ function big(str) {
 // Time window: 1 week
 var window = 1000* 3600*24*7;
 
-// Limit: 1 zond
+// Limit: 1 quanta
 var limit = new BigNumber("1e18");
 
 function isLimitOk(transaction) {

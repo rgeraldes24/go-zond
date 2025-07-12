@@ -28,12 +28,12 @@ import (
 )
 
 const (
-	// handshakeTimeout is the maximum allowed time for the `zond` handshake to
+	// handshakeTimeout is the maximum allowed time for the `qrl` handshake to
 	// complete before dropping the connection.= as malicious.
 	handshakeTimeout = 5 * time.Second
 )
 
-// Handshake executes the zond protocol handshake, negotiating version number,
+// Handshake executes the qrl protocol handshake, negotiating version number,
 // network IDs, head and genesis blocks.
 func (p *Peer) Handshake(network uint64, head common.Hash, genesis common.Hash, forkID forkid.ID, forkFilter forkid.Filter) error {
 	// Send out own handshake in a new thread

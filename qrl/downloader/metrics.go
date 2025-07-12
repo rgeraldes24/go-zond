@@ -23,20 +23,20 @@ import (
 )
 
 var (
-	headerInMeter      = metrics.NewRegisteredMeter("zond/downloader/headers/in", nil)
-	headerReqTimer     = metrics.NewRegisteredTimer("zond/downloader/headers/req", nil)
-	headerDropMeter    = metrics.NewRegisteredMeter("zond/downloader/headers/drop", nil)
-	headerTimeoutMeter = metrics.NewRegisteredMeter("zond/downloader/headers/timeout", nil)
+	headerInMeter      = metrics.NewRegisteredMeter("qrl/downloader/headers/in", nil)
+	headerReqTimer     = metrics.NewRegisteredTimer("qrl/downloader/headers/req", nil)
+	headerDropMeter    = metrics.NewRegisteredMeter("qrl/downloader/headers/drop", nil)
+	headerTimeoutMeter = metrics.NewRegisteredMeter("qrl/downloader/headers/timeout", nil)
 
-	bodyInMeter      = metrics.NewRegisteredMeter("zond/downloader/bodies/in", nil)
-	bodyReqTimer     = metrics.NewRegisteredTimer("zond/downloader/bodies/req", nil)
-	bodyDropMeter    = metrics.NewRegisteredMeter("zond/downloader/bodies/drop", nil)
-	bodyTimeoutMeter = metrics.NewRegisteredMeter("zond/downloader/bodies/timeout", nil)
+	bodyInMeter      = metrics.NewRegisteredMeter("qrl/downloader/bodies/in", nil)
+	bodyReqTimer     = metrics.NewRegisteredTimer("qrl/downloader/bodies/req", nil)
+	bodyDropMeter    = metrics.NewRegisteredMeter("qrl/downloader/bodies/drop", nil)
+	bodyTimeoutMeter = metrics.NewRegisteredMeter("qrl/downloader/bodies/timeout", nil)
 
-	receiptInMeter      = metrics.NewRegisteredMeter("zond/downloader/receipts/in", nil)
-	receiptReqTimer     = metrics.NewRegisteredTimer("zond/downloader/receipts/req", nil)
-	receiptDropMeter    = metrics.NewRegisteredMeter("zond/downloader/receipts/drop", nil)
-	receiptTimeoutMeter = metrics.NewRegisteredMeter("zond/downloader/receipts/timeout", nil)
+	receiptInMeter      = metrics.NewRegisteredMeter("qrl/downloader/receipts/in", nil)
+	receiptReqTimer     = metrics.NewRegisteredTimer("qrl/downloader/receipts/req", nil)
+	receiptDropMeter    = metrics.NewRegisteredMeter("qrl/downloader/receipts/drop", nil)
+	receiptTimeoutMeter = metrics.NewRegisteredMeter("qrl/downloader/receipts/timeout", nil)
 
-	throttleCounter = metrics.NewRegisteredCounter("zond/downloader/throttle", nil)
+	throttleCounter = metrics.NewRegisteredCounter("qrl/downloader/throttle", nil)
 )

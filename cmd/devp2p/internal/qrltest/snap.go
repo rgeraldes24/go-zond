@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-package zondtest
+package qrltest
 
 // TODO(now.youtrack.cloud/issue/TGZ-6)
 /*
@@ -30,7 +30,7 @@ import (
 	"github.com/theQRL/go-zond/internal/utesting"
 	"github.com/theQRL/go-zond/trie"
 	"github.com/theQRL/go-zond/trie/trienode"
-	"github.com/theQRL/go-zond/zond/protocols/snap"
+	"github.com/theQRL/go-zond/qrl/protocols/snap"
 	"golang.org/x/crypto/sha3"
 )
 

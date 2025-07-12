@@ -47,18 +47,18 @@ import (
 	"github.com/theQRL/go-zond/trie"
 )
 
-// ZondAPI provides an API to access Zond related information.
-type ZondAPI struct {
+// QRLAPI provides an API to access QRL related information.
+type QRLAPI struct {
 	b Backend
 }
 
-// NewZondAPI creates a new Zond protocol API.
-func NewZondAPI(b Backend) *ZondAPI {
-	return &ZondAPI{b}
+// NewQRLAPI creates a new QRL protocol API.
+func NewQRLAPI(b Backend) *QRLAPI {
+	return &QRLAPI{b}
 }
 
 // GasPrice returns a suggestion for a gas price for legacy transactions.
-func (s *ZondAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
+func (s *QRLAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
 	tipcap, err := s.b.SuggestGasTipCap(ctx)
 	if err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func (s *ZondAPI) GasPrice(ctx context.Context) (*hexutil.Big, error) {
 }
 
 // MaxPriorityFeePerGas returns a suggestion for a gas tip cap for dynamic fee transactions.
-func (s *ZondAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, error) {
+func (s *QRLAPI) MaxPriorityFeePerGas(ctx context.Context) (*hexutil.Big, error) {
 	tipcap, err := s.b.SuggestGasTipCap(ctx)
 	if err != nil {
 		return nil, err
@@ -86,7 +86,7 @@ type feeHistoryResult struct {
 }
 
 // FeeHistory returns the fee market history.
-func (s *ZondAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*feeHistoryResult, error) {
+func (s *QRLAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64, lastBlock rpc.BlockNumber, rewardPercentiles []float64) (*feeHistoryResult, error) {
 	oldest, reward, baseFee, gasUsed, err := s.b.FeeHistory(ctx, uint64(blockCount), lastBlock, rewardPercentiles)
 	if err != nil {
 		return nil, err
@@ -120,7 +120,7 @@ func (s *ZondAPI) FeeHistory(ctx context.Context, blockCount math.HexOrDecimal64
 // - highestBlock:  block number of the highest block header this node has received from peers
 // - pulledStates:  number of state entries processed until now
 // - knownStates:   number of known state entries that still need to be pulled
-func (s *ZondAPI) Syncing() (interface{}, error) {
+func (s *QRLAPI) Syncing() (interface{}, error) {
 	progress := s.b.SyncProgress()
 
 	// Return not syncing if the synchronisation already completed
@@ -251,33 +251,33 @@ func (s *TxPoolAPI) Inspect() map[string]map[string]map[string]string {
 	return content
 }
 
-// EthereumAccountAPI provides an API to access accounts managed by this node.
+// QRLAccountAPI provides an API to access accounts managed by this node.
 // It offers only methods that can retrieve accounts.
-type EthereumAccountAPI struct {
+type QRLAccountAPI struct {
 	am *accounts.Manager
 }
 
-// NewEthereumAccountAPI creates a new EthereumAccountAPI.
-func NewEthereumAccountAPI(am *accounts.Manager) *EthereumAccountAPI {
-	return &EthereumAccountAPI{am: am}
+// NewQRLAccountAPI creates a new QRLAccountAPI.
+func NewQRLAccountAPI(am *accounts.Manager) *QRLAccountAPI {
+	return &QRLAccountAPI{am: am}
 }
 
 // Accounts returns the collection of accounts this node manages.
-func (s *EthereumAccountAPI) Accounts() []common.Address {
+func (s *QRLAccountAPI) Accounts() []common.Address {
 	return s.am.Accounts()
 }
 
-// BlockChainAPI provides an API to access Zond blockchain data.
+// BlockChainAPI provides an API to access QRL blockchain data.
 type BlockChainAPI struct {
 	b Backend
 }
 
-// NewBlockChainAPI creates a new Zond blockchain API.
+// NewBlockChainAPI creates a new QRL blockchain API.
 func NewBlockChainAPI(b Backend) *BlockChainAPI {
 	return &BlockChainAPI{b}
 }
 
-// ChainId is the EIP-155 replay-protection chain id for the current Zond chain config.
+// ChainId is the EIP-155 replay-protection chain id for the current chain config.
 //
 // Note, this method does not conform to EIP-695 because the configured chain ID is always
 // returned, regardless of the current head block. We used to return an error when the chain
@@ -321,7 +321,7 @@ type StorageResult struct {
 	Proof []string     `json:"proof"`
 }
 
-// proofList implements zonddb.KeyValueWriter and collects the proofs as
+// proofList implements qrldb.KeyValueWriter and collects the proofs as
 // hex-strings for delivery to rpc-caller.
 type proofList []string
 
@@ -1616,7 +1616,7 @@ func (s *TransactionAPI) Resend(ctx context.Context, sendArgs TransactionArgs, g
 }
 */
 
-// DebugAPI is the collection of Zond APIs exposed over the debugging
+// DebugAPI is the collection of QRL APIs exposed over the debugging
 // namespace.
 type DebugAPI struct {
 	b Backend
@@ -1766,7 +1766,7 @@ func (s *NetAPI) PeerCount() hexutil.Uint {
 	return hexutil.Uint(s.net.PeerCount())
 }
 
-// Version returns the current zond protocol version.
+// Version returns the current qrl protocol version.
 func (s *NetAPI) Version() string {
 	return fmt.Sprintf("%d", s.networkVersion)
 }
@@ -1781,7 +1781,7 @@ func checkTxFee(gasPrice *big.Int, gas uint64, cap float64) error {
 	feeEth := new(big.Float).Quo(new(big.Float).SetInt(new(big.Int).Mul(gasPrice, new(big.Int).SetUint64(gas))), new(big.Float).SetInt(big.NewInt(params.Quanta)))
 	feeFloat, _ := feeEth.Float64()
 	if feeFloat > cap {
-		return fmt.Errorf("tx fee (%.2f zond) exceeds the configured cap (%.2f zond)", feeFloat, cap)
+		return fmt.Errorf("tx fee (%.2f qrl) exceeds the configured cap (%.2f qrl)", feeFloat, cap)
 	}
 	return nil
 }

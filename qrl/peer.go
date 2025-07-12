@@ -33,7 +33,7 @@ type qrlPeer struct {
 	snapExt *snapPeer // Satellite `snap` connection
 }
 
-// info gathers and returns some `zond` protocol metadata known about a peer.
+// info gathers and returns some `qrl` protocol metadata known about a peer.
 func (p *qrlPeer) info() *qrlPeerInfo {
 	return &qrlPeerInfo{
 		Version: p.Version(),

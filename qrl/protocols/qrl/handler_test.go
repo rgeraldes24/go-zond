@@ -42,13 +42,13 @@ var (
 	// testKey is a private key to use for funding a tester account.
 	testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
-	// testAddr is the Zond address of the tester account.
+	// testAddr is the QRL address of the tester account.
 	testAddr = testKey.GetAddress()
 )
 
-// testBackend is a mock implementation of the live Zond message handler. Its
+// testBackend is a mock implementation of the live QRL message handler. Its
 // purpose is to allow testing the request/reply workflows and wire serialization
-// in the `zond` protocol without actually doing any data processing.
+// in the `qrl` protocol without actually doing any data processing.
 type testBackend struct {
 	db     qrldb.Database
 	chain  *core.BlockChain
@@ -417,7 +417,7 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 		to2 := common.Address(acc2Addr)
 		switch i {
 		case 0:
-			// In block 1, the test bank sends account #1 some zond.
+			// In block 1, the test bank sends account #1 some qrl.
 			tx := types.NewTx(&types.DynamicFeeTx{
 				Nonce:     block.TxNonce(testAddr),
 				To:        &to1,
@@ -429,7 +429,7 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 			signedTx, _ := types.SignTx(tx, signer, testKey)
 			block.AddTx(signedTx)
 		case 1:
-			// In block 2, the test bank sends some more zond to account #1.
+			// In block 2, the test bank sends some more qrl to account #1.
 			// acc1Addr passes it on to account #2.
 			tx1 := types.NewTx(&types.DynamicFeeTx{
 				Nonce:     block.TxNonce(testAddr),

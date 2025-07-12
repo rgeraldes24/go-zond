@@ -480,7 +480,7 @@ func (g *Genesis) MustCommit(db qrldb.Database, triedb *trie.Database) *types.Bl
 }
 
 // TODO(now.youtrack.cloud/issue/TGZ-16)
-// DefaultGenesisBlock returns the Zond main net genesis block.
+// DefaultGenesisBlock returns the QRL main net genesis block.
 func DefaultGenesisBlock() *Genesis {
 	return &Genesis{
 		Config:    params.MainnetChainConfig,

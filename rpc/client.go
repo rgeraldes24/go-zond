@@ -483,7 +483,7 @@ func (c *Client) Notify(ctx context.Context, method string, args ...interface{})
 
 // QRLSubscribe registers a subscription under the "qrl" namespace.
 func (c *Client) QRLSubscribe(ctx context.Context, channel interface{}, args ...interface{}) (*ClientSubscription, error) {
-	return c.Subscribe(ctx, "zond", channel, args...)
+	return c.Subscribe(ctx, "qrl", channel, args...)
 }
 
 // Subscribe calls the "<namespace>_subscribe" method with the given arguments,

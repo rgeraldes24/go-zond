@@ -51,7 +51,7 @@ var (
 	// testKey is a private key to use for funding a tester account.
 	testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
-	// testAddr is the Zond address of the tester account.
+	// testAddr is the QRL address of the tester account.
 	testAddr = common.Address(testKey.GetAddress())
 
 	testBalance = big.NewInt(2e18)
@@ -370,15 +370,15 @@ func TestEth2DeepReorg(t *testing.T) {
 	// before the totalTerminalDifficulty threshold
 	/*
 		genesis, blocks := generateChain(core.TriesInMemory * 2)
-		n, zondservice := startZondService(t, genesis, blocks)
+		n, qrlservice := startQRLService(t, genesis, blocks)
 		defer n.Close()
 
 		var (
-			api    = NewConsensusAPI(zondservice)
+			api    = NewConsensusAPI(qrlservice)
 			parent = blocks[len(blocks)-core.TriesInMemory-1]
-			head   = zondservice.BlockChain().CurrentBlock().Number.Uint64()
+			head   = qrlservice.BlockChain().CurrentBlock().Number.Uint64()
 		)
-		if zondservice.BlockChain().HasBlockAndState(parent.Hash(), parent.NumberU64()) {
+		if qrlservice.BlockChain().HasBlockAndState(parent.Hash(), parent.NumberU64()) {
 			t.Errorf("Block %d not pruned", parent.NumberU64())
 		}
 		for i := 0; i < 10; i++ {
@@ -397,13 +397,13 @@ func TestEth2DeepReorg(t *testing.T) {
 			if err != nil || newResp.Status != "VALID" {
 				t.Fatalf("Failed to insert block: %v", err)
 			}
-			if zondservice.BlockChain().CurrentBlock().Number.Uint64() != head {
+			if qrlservice.BlockChain().CurrentBlock().Number.Uint64() != head {
 				t.Fatalf("Chain head shouldn't be updated")
 			}
 			if err := api.setHead(block.Hash()); err != nil {
 				t.Fatalf("Failed to set head: %v", err)
 			}
-			if zondservice.BlockChain().CurrentBlock().Number.Uint64() != block.NumberU64() {
+			if qrlservice.BlockChain().CurrentBlock().Number.Uint64() != block.NumberU64() {
 				t.Fatalf("Chain head should be updated")
 			}
 			parent, head = block, block.NumberU64()
@@ -1105,18 +1105,18 @@ func TestNilWithdrawals(t *testing.T) {
 
 func setupBodies(t *testing.T) (*node.Node, *qrl.QRL, []*types.Block) {
 	genesis, blocks := generateChain(10)
-	n, zondservice := startQRLService(t, genesis, blocks)
+	n, qrlservice := startQRLService(t, genesis, blocks)
 
 	var (
-		parent = zondservice.BlockChain().CurrentBlock()
+		parent = qrlservice.BlockChain().CurrentBlock()
 		// This QRVM code generates a log when the contract is created.
 		logCode = common.Hex2Bytes("60606040525b7f24ec1d3ff24c2f6ff210738839dbc339cd45a5294d85c79361016243157aae7b60405180905060405180910390a15b600a8060416000396000f360606040526008565b00")
 	)
 
 	callback := func(parent *types.Header) {
-		statedb, _ := zondservice.BlockChain().StateAt(parent.Root)
+		statedb, _ := qrlservice.BlockChain().StateAt(parent.Root)
 		nonce := statedb.GetNonce(testAddr)
-		signer := types.LatestSigner(zondservice.BlockChain().Config())
+		signer := types.LatestSigner(qrlservice.BlockChain().Config())
 		tx := types.NewTx(&types.DynamicFeeTx{
 			Nonce: nonce,
 			Value: new(big.Int),
@@ -1124,7 +1124,7 @@ func setupBodies(t *testing.T) (*node.Node, *qrl.QRL, []*types.Block) {
 			Data:  logCode,
 		})
 		signedTx, _ := types.SignTx(tx, signer, testKey)
-		zondservice.TxPool().Add([]*types.Transaction{signedTx}, false, false)
+		qrlservice.TxPool().Add([]*types.Transaction{signedTx}, false, false)
 	}
 
 	withdrawals := make([][]*types.Withdrawal, 10)
@@ -1138,12 +1138,12 @@ func setupBodies(t *testing.T) (*node.Node, *qrl.QRL, []*types.Block) {
 		}
 	}
 
-	postShanghaiHeaders := setupBlocks(t, zondservice, 10, parent, callback, withdrawals)
+	postShanghaiHeaders := setupBlocks(t, qrlservice, 10, parent, callback, withdrawals)
 	postShanghaiBlocks := make([]*types.Block, len(postShanghaiHeaders))
 	for i, header := range postShanghaiHeaders {
-		postShanghaiBlocks[i] = zondservice.BlockChain().GetBlock(header.Hash(), header.Number.Uint64())
+		postShanghaiBlocks[i] = qrlservice.BlockChain().GetBlock(header.Hash(), header.Number.Uint64())
 	}
-	return n, zondservice, append(blocks, postShanghaiBlocks...)
+	return n, qrlservice, append(blocks, postShanghaiBlocks...)
 }
 
 func allHashes(blocks []*types.Block) []common.Hash {
@@ -1162,8 +1162,8 @@ func allBodies(blocks []*types.Block) []*types.Body {
 }
 
 func TestGetBlockBodiesByHash(t *testing.T) {
-	node, zond, blocks := setupBodies(t)
-	api := NewConsensusAPI(zond)
+	node, qrl, blocks := setupBodies(t)
+	api := NewConsensusAPI(qrl)
 	defer node.Close()
 
 	tests := []struct {
@@ -1172,8 +1172,8 @@ func TestGetBlockBodiesByHash(t *testing.T) {
 	}{
 		// First pos block
 		{
-			results: []*types.Body{zond.BlockChain().GetBlockByNumber(0).Body()},
-			hashes:  []common.Hash{zond.BlockChain().GetBlockByNumber(0).Hash()},
+			results: []*types.Body{qrl.BlockChain().GetBlockByNumber(0).Body()},
+			hashes:  []common.Hash{qrl.BlockChain().GetBlockByNumber(0).Hash()},
 		},
 		// pos blocks
 		{
@@ -1208,8 +1208,8 @@ func TestGetBlockBodiesByHash(t *testing.T) {
 }
 
 func TestGetBlockBodiesByRange(t *testing.T) {
-	node, zond, blocks := setupBodies(t)
-	api := NewConsensusAPI(zond)
+	node, qrl, blocks := setupBodies(t)
+	api := NewConsensusAPI(qrl)
 	defer node.Close()
 
 	tests := []struct {
@@ -1289,8 +1289,8 @@ func TestGetBlockBodiesByRange(t *testing.T) {
 }
 
 func TestGetBlockBodiesByRangeInvalidParams(t *testing.T) {
-	node, zond, _ := setupBodies(t)
-	api := NewConsensusAPI(zond)
+	node, qrl, _ := setupBodies(t)
+	api := NewConsensusAPI(qrl)
 	defer node.Close()
 	tests := []struct {
 		start hexutil.Uint64

@@ -35,7 +35,7 @@ import (
 	"github.com/theQRL/go-zond/trie"
 )
 
-// DebugAPI is the collection of Zond full node APIs for debugging the
+// DebugAPI is the collection of QRL full node APIs for debugging the
 // protocol.
 type DebugAPI struct {
 	qrl *QRL

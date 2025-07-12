@@ -1,4 +1,4 @@
-package zondtest
+package qrltest
 
 // TODO(now.youtrack.cloud/issue/TGZ-6)
 /*
@@ -15,8 +15,8 @@ import (
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/p2p/rlpx"
 	"github.com/theQRL/go-zond/rlp"
-	"github.com/theQRL/go-zond/zond/protocols/snap"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/snap"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 )
 
 var (
@@ -136,24 +136,24 @@ func (c *Conn) ReadEth() (any, error) {
 
 		var msg any
 		switch int(code) {
-		case zond.StatusMsg:
-			msg = new(zond.StatusPacket)
-		case zond.GetBlockHeadersMsg:
-			msg = new(zond.GetBlockHeadersPacket)
-		case zond.BlockHeadersMsg:
-			msg = new(zond.BlockHeadersPacket)
-		case zond.GetBlockBodiesMsg:
-			msg = new(zond.GetBlockBodiesPacket)
-		case zond.BlockBodiesMsg:
-			msg = new(zond.BlockBodiesPacket)
-		case zond.TransactionsMsg:
-			msg = new(zond.TransactionsPacket)
-		case zond.NewPooledTransactionHashesMsg:
-			msg = new(zond.NewPooledTransactionHashesPacket)
-		case zond.GetPooledTransactionsMsg:
-			msg = new(zond.GetPooledTransactionsPacket)
-		case zond.PooledTransactionsMsg:
-			msg = new(zond.PooledTransactionsPacket)
+		case qrl.StatusMsg:
+			msg = new(qrl.StatusPacket)
+		case qrl.GetBlockHeadersMsg:
+			msg = new(qrl.GetBlockHeadersPacket)
+		case qrl.BlockHeadersMsg:
+			msg = new(qrl.BlockHeadersPacket)
+		case qrl.GetBlockBodiesMsg:
+			msg = new(qrl.GetBlockBodiesPacket)
+		case qrl.BlockBodiesMsg:
+			msg = new(qrl.BlockBodiesPacket)
+		case qrl.TransactionsMsg:
+			msg = new(qrl.TransactionsPacket)
+		case qrl.NewPooledTransactionHashesMsg:
+			msg = new(qrl.NewPooledTransactionHashesPacket)
+		case qrl.GetPooledTransactionsMsg:
+			msg = new(qrl.GetPooledTransactionsPacket)
+		case qrl.PooledTransactionsMsg:
+			msg = new(qrl.PooledTransactionsPacket)
 		default:
 			panic(fmt.Sprintf("unhandled eth msg code %d", code))
 		}
@@ -208,7 +208,7 @@ func (c *Conn) ReadSnap() (any, error) {
 
 // peer performs both the protocol handshake and the status message
 // exchange with the node in order to peer with it.
-func (c *Conn) peer(chain *Chain, status *zond.StatusPacket) error {
+func (c *Conn) peer(chain *Chain, status *qrl.StatusPacket) error {
 	if err := c.handshake(); err != nil {
 		return fmt.Errorf("handshake failed: %v", err)
 	}
@@ -281,7 +281,7 @@ func (c *Conn) negotiateEthProtocol(caps []p2p.Cap) {
 }
 
 // statusExchange performs a `Status` message exchange with the given node.
-func (c *Conn) statusExchange(chain *Chain, status *zond.StatusPacket) error {
+func (c *Conn) statusExchange(chain *Chain, status *qrl.StatusPacket) error {
 loop:
 	for {
 		code, data, err := c.Read()
@@ -289,8 +289,8 @@ loop:
 			return fmt.Errorf("failed to read from connection: %w", err)
 		}
 		switch code {
-		case zond.StatusMsg + protoOffset(zondProto):
-			msg := new(zond.StatusPacket)
+		case qrl.StatusMsg + protoOffset(qrlProto):
+			msg := new(qrl.StatusPacket)
 			if err := rlp.DecodeBytes(data, &msg); err != nil {
 				return fmt.Errorf("error decoding status packet: %w", err)
 			}
@@ -322,13 +322,13 @@ loop:
 			return fmt.Errorf("bad status message: code %d", code)
 		}
 	}
-	// make sure zond protocol version is set for negotiation
+	// make sure qrl protocol version is set for negotiation
 	if c.negotiatedProtoVersion == 0 {
-		return errors.New("zond protocol version must be set in Conn")
+		return errors.New("qrl protocol version must be set in Conn")
 	}
 	if status == nil {
 		// default status message
-		status = &zond.StatusPacket{
+		status = &qrl.StatusPacket{
 			ProtocolVersion: uint32(c.negotiatedProtoVersion),
 			NetworkID:       chain.config.ChainID.Uint64(),
 			Head:            chain.blocks[chain.Len()-1].Hash(),
@@ -336,7 +336,7 @@ loop:
 			ForkID:          chain.ForkID(),
 		}
 	}
-	if err := c.Write(zondProto, zond.StatusMsg, status); err != nil {
+	if err := c.Write(qrlProto, qrl.StatusMsg, status); err != nil {
 		return fmt.Errorf("write to connection failed: %v", err)
 	}
 	return nil

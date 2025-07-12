@@ -24,7 +24,7 @@ import (
 )
 
 const (
-	// bloomServiceThreads is the number of goroutines used globally by a Zond
+	// bloomServiceThreads is the number of goroutines used globally by a QRL
 	// instance to service bloombits lookups for all running filters.
 	bloomServiceThreads = 16
 

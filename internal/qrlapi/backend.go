@@ -40,7 +40,7 @@ import (
 // Backend interface provides the common API services (that are provided by
 // full clients) with access to necessary functions.
 type Backend interface {
-	// General Zond API
+	// General QRL API
 	SyncProgress() qrl.SyncProgress
 
 	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
@@ -100,13 +100,13 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 	nonceLock := new(AddrLocker)
 	return []rpc.API{
 		{
-			Namespace: "zond",
-			Service:   NewZondAPI(apiBackend),
+			Namespace: "qrl",
+			Service:   NewQRLAPI(apiBackend),
 		}, {
-			Namespace: "zond",
+			Namespace: "qrl",
 			Service:   NewBlockChainAPI(apiBackend),
 		}, {
-			Namespace: "zond",
+			Namespace: "qrl",
 			Service:   NewTransactionAPI(apiBackend, nonceLock),
 		}, {
 			Namespace: "txpool",
@@ -115,8 +115,8 @@ func GetAPIs(apiBackend Backend) []rpc.API {
 			Namespace: "debug",
 			Service:   NewDebugAPI(apiBackend),
 		}, {
-			Namespace: "zond",
-			Service:   NewEthereumAccountAPI(apiBackend.AccountManager()),
+			Namespace: "qrl",
+			Service:   NewQRLAccountAPI(apiBackend.AccountManager()),
 		},
 	}
 }

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package miner implements Zond block creation.
+// Package miner implements QRL block creation.
 package miner
 
 import (
@@ -147,7 +147,7 @@ func createMiner(t *testing.T) *Miner {
 	}
 	// Create consensus engine
 	engine := beacon.New()
-	// Create Zond backend
+	// Create QRL backend
 	bc, err := core.NewBlockChain(chainDB, nil, genesis, engine, vm.Config{}, nil)
 	if err != nil {
 		t.Fatalf("can't create new chain %v", err)

@@ -210,7 +210,7 @@ func (h UnprefixedHash) MarshalText() ([]byte, error) {
 
 /////////// Address
 
-// Address represents the 20 byte address of a Zond account.
+// Address represents the 20 byte address of a QRL account.
 type Address [AddressLength]byte
 
 // BytesToAddress returns Address with value b.
@@ -235,7 +235,7 @@ func NewAddressFromString(hexaddr string) (Address, error) {
 }
 
 // IsAddress verifies whether a string can represent a valid hex-encoded
-// Zond address or not.
+// QRL address or not.
 func IsAddress(s string) bool {
 	if !hasZPrefix(s) {
 		return false

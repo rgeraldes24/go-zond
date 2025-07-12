@@ -21,7 +21,7 @@ import (
 	"testing"
 )
 
-func TestParseZondstatsURL(t *testing.T) {
+func TestParseQRLstatsURL(t *testing.T) {
 	cases := []struct {
 		url              string
 		node, pass, host string
@@ -57,7 +57,7 @@ func TestParseZondstatsURL(t *testing.T) {
 	}
 
 	for i, c := range cases {
-		parts, err := parseZondstatsURL(c.url)
+		parts, err := parseQRLstatsURL(c.url)
 		if err != nil {
 			t.Fatal(err)
 		}

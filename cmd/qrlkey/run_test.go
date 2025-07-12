@@ -25,21 +25,21 @@ import (
 	"github.com/theQRL/go-zond/internal/cmdtest"
 )
 
-type testZondkey struct {
+type testQRLkey struct {
 	*cmdtest.TestCmd
 }
 
-// spawns zondkey with the given command line args.
-func runZondkey(t *testing.T, args ...string) *testZondkey {
-	tt := new(testZondkey)
+// spawns qrlkey with the given command line args.
+func runQRLkey(t *testing.T, args ...string) *testQRLkey {
+	tt := new(testQRLkey)
 	tt.TestCmd = cmdtest.NewTestCmd(t, tt)
-	tt.Run("zondkey-test", args...)
+	tt.Run("qrlkey-test", args...)
 	return tt
 }
 
 func TestMain(m *testing.M) {
-	// Run the app if we've been exec'd as "zondkey-test" in runZondkey.
-	reexec.Register("zondkey-test", func() {
+	// Run the app if we've been exec'd as "qrlkey-test" in runQRLkey.
+	reexec.Register("qrlkey-test", func() {
 		if err := app.Run(os.Args); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)

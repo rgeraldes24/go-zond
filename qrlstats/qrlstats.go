@@ -41,7 +41,7 @@ import (
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/p2p"
-	zondproto "github.com/theQRL/go-zond/qrl/protocols/qrl"
+	qrlproto "github.com/theQRL/go-zond/qrl/protocols/qrl"
 	"github.com/theQRL/go-zond/rpc"
 )
 
@@ -59,7 +59,7 @@ const (
 	messageSizeLimit = 15 * 1024 * 1024
 )
 
-// backend encompasses the bare-minimum functionality needed for zondstats reporting
+// backend encompasses the bare-minimum functionality needed for qrlstats reporting
 type backend interface {
 	SubscribeChainHeadEvent(ch chan<- core.ChainHeadEvent) event.Subscription
 	SubscribeNewTxsEvent(ch chan<- core.NewTxsEvent) event.Subscription
@@ -70,7 +70,7 @@ type backend interface {
 }
 
 // fullNodeBackend encompasses the functionality necessary for a full node
-// reporting to zondstats
+// reporting to qrlstats
 type fullNodeBackend interface {
 	backend
 	BlockByNumber(ctx context.Context, number rpc.BlockNumber) (*types.Block, error)
@@ -78,7 +78,7 @@ type fullNodeBackend interface {
 	SuggestGasTipCap(ctx context.Context) (*big.Int, error)
 }
 
-// Service implements a Zond netstats reporting daemon that pushes local
+// Service implements a QRL netstats reporting daemon that pushes local
 // chain statistics up to a monitoring server.
 type Service struct {
 	server  *p2p.Server // Peer-to-peer server to retrieve networking infos
@@ -146,10 +146,10 @@ func (w *connWrapper) Close() error {
 	return w.conn.Close()
 }
 
-// parseZondstatsURL parses the netstats connection url.
+// parseQRLstatsURL parses the netstats connection url.
 // URL argument should be of the form <nodename:secret@host:port>
 // If non-erroring, the returned slice contains 3 elements: [nodename, pass, host]
-func parseZondstatsURL(url string) (parts []string, err error) {
+func parseQRLstatsURL(url string) (parts []string, err error) {
 	err = fmt.Errorf("invalid netstats url: \"%s\", should be nodename:secret@host:port", url)
 
 	hostIndex := strings.LastIndex(url, "@")
@@ -172,11 +172,11 @@ func parseZondstatsURL(url string) (parts []string, err error) {
 
 // New returns a monitoring service ready for stats reporting.
 func New(node *node.Node, backend backend, engine consensus.Engine, url string) error {
-	parts, err := parseZondstatsURL(url)
+	parts, err := parseQRLstatsURL(url)
 	if err != nil {
 		return err
 	}
-	zondstats := &Service{
+	qrlstats := &Service{
 		backend: backend,
 		engine:  engine,
 		server:  node.Server(),
@@ -187,7 +187,7 @@ func New(node *node.Node, backend backend, engine consensus.Engine, url string) 
 		histCh:  make(chan []uint64, 1),
 	}
 
-	node.RegisterLifecycle(zondstats)
+	node.RegisterLifecycle(qrlstats)
 	return nil
 }
 
@@ -473,10 +473,10 @@ func (s *Service) login(conn *connWrapper) error {
 		protocols = append(protocols, fmt.Sprintf("%s/%d", proto.Name, proto.Version))
 	}
 	var network string
-	if info := infos.Protocols["zond"]; info != nil {
-		network = fmt.Sprintf("%d", info.(*zondproto.NodeInfo).Network)
+	if info := infos.Protocols["qrl"]; info != nil {
+		network = fmt.Sprintf("%d", info.(*qrlproto.NodeInfo).Network)
 	} else {
-		return errors.New("zond protocol not available")
+		return errors.New("qrl protocol not available")
 	}
 	auth := &authMsg{
 		ID: s.node,
@@ -530,7 +530,7 @@ func (s *Service) report(conn *connWrapper) error {
 // reportLatency sends a ping request to the server, measures the RTT time and
 // finally sends a latency update.
 func (s *Service) reportLatency(conn *connWrapper) error {
-	// Send the current time to the zondstats server
+	// Send the current time to the qrlstats server
 	start := time.Now()
 
 	ping := map[string][]interface{}{
@@ -553,7 +553,7 @@ func (s *Service) reportLatency(conn *connWrapper) error {
 	latency := strconv.Itoa(int((time.Since(start) / time.Duration(2)).Nanoseconds() / 1000000))
 
 	// Send back the measured latency
-	log.Trace("Sending measured latency to zondstats", "latency", latency)
+	log.Trace("Sending measured latency to qrlstats", "latency", latency)
 
 	stats := map[string][]interface{}{
 		"emit": {"latency", map[string]string{
@@ -589,7 +589,7 @@ func (s *Service) reportBlock(conn *connWrapper, block *types.Block) error {
 	details := s.assembleBlockStats(block)
 
 	// Assemble the block report and send it to the server
-	log.Trace("Sending new block to zondstats", "number", details.Number, "hash", details.Hash)
+	log.Trace("Sending new block to qrlstats", "number", details.Number, "hash", details.Hash)
 
 	stats := map[string]interface{}{
 		"id":    s.node,
@@ -692,7 +692,7 @@ func (s *Service) reportHistory(conn *connWrapper, list []uint64) error {
 	}
 	// Assemble the history report and send it to the server
 	if len(history) > 0 {
-		log.Trace("Sending historical blocks to zondstats", "first", history[0].Number, "last", history[len(history)-1].Number)
+		log.Trace("Sending historical blocks to qrlstats", "first", history[0].Number, "last", history[len(history)-1].Number)
 	} else {
 		log.Trace("No history to send to stats server")
 	}
@@ -717,7 +717,7 @@ func (s *Service) reportPending(conn *connWrapper) error {
 	// Retrieve the pending count from the local blockchain
 	pending, _ := s.backend.Stats()
 	// Assemble the transaction stats and send it to the server
-	log.Trace("Sending pending transactions to zondstats", "count", pending)
+	log.Trace("Sending pending transactions to qrlstats", "count", pending)
 
 	stats := map[string]interface{}{
 		"id": s.node,
@@ -764,7 +764,7 @@ func (s *Service) reportStats(conn *connWrapper) error {
 		syncing = s.backend.CurrentHeader().Number.Uint64() >= sync.HighestBlock
 	}
 	// Assemble the node stats and send it to the server
-	log.Trace("Sending node details to zondstats")
+	log.Trace("Sending node details to qrlstats")
 
 	stats := map[string]interface{}{
 		"id": s.node,

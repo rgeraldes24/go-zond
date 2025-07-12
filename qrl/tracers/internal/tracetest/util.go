@@ -17,8 +17,8 @@ import (
 // call trace run, assembling all the gathered information into a test case.
 var makeTest = function(tx, rewind) {
   // Generate the genesis block from the block, transaction and prestate data
-  var block   = zond.getBlock(zond.getTransaction(tx).blockHash);
-  var genesis = zond.getBlock(block.parentHash);
+  var block   = qrl.getBlock(qrl.getTransaction(tx).blockHash);
+  var genesis = qrl.getBlock(block.parentHash);
 
   delete genesis.gasUsed;
   delete genesis.logsBloom;
@@ -39,7 +39,7 @@ var makeTest = function(tx, rewind) {
       genesis.alloc[key].nonce = nonce.toString();
     }
   }
-  genesis.config = admin.nodeInfo.protocols.zond.config;
+  genesis.config = admin.nodeInfo.protocols.qrl.config;
 
   // Generate the call trace and produce the test input
   var result = debug.traceTransaction(tx, {tracer: "callTracer", rewind: rewind});
@@ -53,7 +53,7 @@ var makeTest = function(tx, rewind) {
       gasLimit:   block.gasLimit.toString(),
       miner:      block.miner,
     },
-    input:  zond.getRawTransaction(tx),
+    input:  qrl.getRawTransaction(tx),
     result: result,
   }, null, 2));
 }

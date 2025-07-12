@@ -2,7 +2,7 @@
 
 Clef can be used to sign transactions and data and is meant as a(n eventual) replacement for Gzond's account management. This allows DApps to not depend on Gzond's account management. When a DApp wants to sign data (or a transaction), it can send the content to Clef, which will then provide the user with context and asks for permission to sign the content. If the users grants the signing request, Clef will send the signature back to the DApp.
 
-This setup allows a DApp to connect to a remote Zond node and send transactions that are locally signed. This can help in situations when a DApp is connected to an untrusted remote Zond node, because a local one is not available, not synchronized with the chain, or is a node that has no built-in (or limited) account management.
+This setup allows a DApp to connect to a remote QRL node and send transactions that are locally signed. This can help in situations when a DApp is connected to an untrusted remote QRL node, because a local one is not available, not synchronized with the chain, or is a node that has no built-in (or limited) account management.
 
 Clef can run as a daemon on the same machine, off a usb-stick like [USB armory](https://inversepath.com/usbarmory), or even a separate VM in a [QubesOS](https://www.qubes-os.org/) type setup.
 
@@ -70,7 +70,7 @@ The security model of Clef is as follows:
 The general flow for signing a transaction using e.g. Gzond is as follows:
 ![image](sign_flow.png)
 
-In this case, `gzond` would be started with `--signer http://localhost:8550` and would relay requests to `zond.sendTransaction`.
+In this case, `gzond` would be started with `--signer http://localhost:8550` and would relay requests to `qrl.sendTransaction`.
 
 ## TODOs
 
@@ -674,11 +674,11 @@ Invoked when a request for account listing has been made.
     {
       "accounts": [
         {
-          "url": "keystore:///home/bazonk/.zond/keystore/UTC--2017-11-20T14-44-54.089682944Z--Z123409812340981234098123409812deadbeef42",
+          "url": "keystore:///home/bazonk/.qrl/keystore/UTC--2017-11-20T14-44-54.089682944Z--Z123409812340981234098123409812deadbeef42",
           "address": "Z123409812340981234098123409812deadbeef42"
         },
         {
-          "url": "keystore:///home/bazonk/.zond/keystore/UTC--2017-11-23T21-59-03.199240693Z--Zcafebabedeadbeef34098123409812deadbeef42",
+          "url": "keystore:///home/bazonk/.qrl/keystore/UTC--2017-11-23T21-59-03.199240693Z--Zcafebabedeadbeef34098123409812deadbeef42",
           "address": "Zcafebabedeadbeef34098123409812deadbeef42"
         }
       ],
@@ -876,7 +876,7 @@ A UI should conform to the following rules.
 * A UI MUST NOT load any external resources that were not embedded/part of the UI package.
   * For example, not load icons, stylesheets from the internet
   * Not load files from the filesystem, unless they reside in the same local directory (e.g. config files)
-* A Graphical UI MUST show the blocky-identicon for zond addresses.
+* A Graphical UI MUST show the blocky-identicon for qrl addresses.
 * A UI MUST warn display appropriate warning if the destination-account is formatted with invalid checksum.
 * A UI MUST NOT open any ports or services
   * The signer opens the public port

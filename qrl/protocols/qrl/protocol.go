@@ -32,11 +32,11 @@ const (
 	ETH68 = 68
 )
 
-// ProtocolName is the official short name of the `zond` protocol used during
+// ProtocolName is the official short name of the `qrl` protocol used during
 // devp2p capability negotiation.
-const ProtocolName = "zond"
+const ProtocolName = "qrl"
 
-// ProtocolVersions are the supported versions of the `zond` protocol (first
+// ProtocolVersions are the supported versions of the `qrl` protocol (first
 // is primary).
 var ProtocolVersions = []uint{ETH68}
 
@@ -72,7 +72,7 @@ var (
 	errForkIDRejected          = errors.New("fork ID rejected")
 )
 
-// Packet represents a p2p message in the `zond` protocol.
+// Packet represents a p2p message in the `qrl` protocol.
 type Packet interface {
 	Name() string // Name returns a string corresponding to the message type.
 	Kind() byte   // Kind returns the message type.
@@ -237,7 +237,7 @@ type ReceiptsRLPPacket struct {
 	ReceiptsRLPResponse
 }
 
-// NewPooledTransactionHashesPacket represents a transaction announcement packet on zond/68 and newer.
+// NewPooledTransactionHashesPacket represents a transaction announcement packet on qrl/68 and newer.
 type NewPooledTransactionHashesPacket struct {
 	Types  []byte
 	Sizes  []uint32

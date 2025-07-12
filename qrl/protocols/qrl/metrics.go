@@ -75,7 +75,7 @@ func newHandshakeMeters(base string) *hsMeters {
 
 func init() {
 	meters = bidirectionalMeters{
-		ingress: newHandshakeMeters("zond/protocols/zond/ingress/handshake/"),
-		egress:  newHandshakeMeters("zond/protocols/zond/egress/handshake/"),
+		ingress: newHandshakeMeters("qrl/protocols/qrl/ingress/handshake/"),
+		egress:  newHandshakeMeters("qrl/protocols/qrl/egress/handshake/"),
 	}
 }

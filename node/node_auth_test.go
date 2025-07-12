@@ -112,8 +112,8 @@ func TestAuthEndpoints(t *testing.T) {
 		AuthPort:  0,
 		JWTSecret: jwtPath,
 
-		WSModules:   []string{"zond", "engine"},
-		HTTPModules: []string{"zond", "engine"},
+		WSModules:   []string{"qrl", "engine"},
+		HTTPModules: []string{"qrl", "engine"},
 	}
 	node, err := New(conf)
 	if err != nil {

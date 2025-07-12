@@ -926,7 +926,7 @@ var HyperionParam = require('./param');
  * @returns {HyperionParam}
  */
 var formatInputInt = function (value) {
-    BigNumber.config(c.ZOND_BIGNUMBER_ROUNDING_MODE);
+    BigNumber.config(c.QRL_BIGNUMBER_ROUNDING_MODE);
     var result = utils.padLeft(utils.toTwosComplement(value).toString(16), 64);
     return new HyperionParam(result);
 };
@@ -1758,7 +1758,7 @@ if (typeof XMLHttpRequest === 'undefined') {
  */
 
 
-/// required to define ZOND_BIGNUMBER_ROUNDING_MODE
+/// required to define QRL_BIGNUMBER_ROUNDING_MODE
 var BigNumber = require('bignumber.js');
 
 var QRL_UNITS = [
@@ -1787,11 +1787,12 @@ var QRL_UNITS = [
 ];
 
 module.exports = {
-    ZOND_PADDING: 32,
-    ZOND_SIGNATURE_LENGTH: 4,
-    ZOND_UNITS: ZOND_UNITS,
-    ZOND_BIGNUMBER_ROUNDING_MODE: { ROUNDING_MODE: BigNumber.ROUND_DOWN },
-    ZOND_POLLING_TIMEOUT: 1000/2,
+    QRL_PADDING: 32,
+	// TODO(rgeraldes24)
+    QRL_SIGNATURE_LENGTH: 4,
+    QRL_UNITS: QRL_UNITS,
+    QRL_BIGNUMBER_ROUNDING_MODE: { ROUNDING_MODE: BigNumber.ROUND_DOWN },
+    QRL_POLLING_TIMEOUT: 1000/2,
     defaultBlock: 'latest',
     defaultAccount: undefined
 };
@@ -1879,27 +1880,27 @@ var sha3 = require('./sha3.js');
 var utf8 = require('utf8');
 
 var unitMap = {
-    'nozond':   '0',
-    'planck':  '1',
-    'kplanck': '1000',
-    'Kplanck': '1000',
-    'mplanck': '1000000',
-    'Mplanck': '1000000',
-    'gplanck': '1000000000',
-    'Gplanck': '1000000000',
-    'nano':    '1000000000',
-    'tplanck': '1000000000000',
-    'Tplanck': '1000000000000',
-    'micro':   '1000000000000',
-    'pplanck': '1000000000000000',
-    'Pplanck': '1000000000000000',
-    'milli':   '1000000000000000',
-    'zond':     '1000000000000000000',
-    'kzond':    '1000000000000000000000',
-    'grand':   '1000000000000000000000',
-    'mzond':    '1000000000000000000000000',
-    'gzond':    '1000000000000000000000000000',
-    'tzond':    '1000000000000000000000000000000'
+    'noquanta': '0',
+    'planck':   '1',
+    'kplanck':  '1000',
+    'Kplanck':  '1000',
+    'mplanck':  '1000000',
+    'Mplanck':  '1000000',
+    'gplanck':  '1000000000',
+    'Gplanck':  '1000000000',
+    'nano':     '1000000000',
+    'tplanck':  '1000000000000',
+    'Tplanck':  '1000000000000',
+    'micro':    '1000000000000',
+    'pplanck':  '1000000000000000',
+    'Pplanck':  '1000000000000000',
+    'milli':    '1000000000000000',
+    'quanta':   '1000000000000000000',
+    'kquanta':  '1000000000000000000000',
+    'grand':    '1000000000000000000000',
+    'mquanta':  '1000000000000000000000000',
+    'gquanta':  '1000000000000000000000000000',
+    'tquanta':  '1000000000000000000000000000000'
 };
 
 /**
@@ -2113,12 +2114,12 @@ var toHex = function (val) {
  * Returns value of unit in Planck
  *
  * @method getValueOfUnit
- * @param {String} unit the unit to convert to, default zond
+ * @param {String} unit the unit to convert to, default quanta
  * @returns {BigNumber} value of the unit (in Planck)
  * @throws error if the unit is not correct:w
  */
 var getValueOfUnit = function (unit) {
-    unit = unit ? unit.toLowerCase() : 'zond';
+    unit = unit ? unit.toLowerCase() : 'quanta';
     var unitValue = unitMap[unit];
     if (unitValue === undefined) {
         throw new Error('This unit doesn\'t exists, please use the one of the following units' + JSON.stringify(unitMap, null, 2));
@@ -2127,7 +2128,7 @@ var getValueOfUnit = function (unit) {
 };
 
 /**
- * Takes a number of planck and converts it to any other zond unit.
+ * Takes a number of planck and converts it to any other quanta unit.
  *
  * Possible units are:
  *   SI Short   Other
@@ -2136,15 +2137,15 @@ var getValueOfUnit = function (unit) {
  * - gplanck    nano
  * - tplanck    micro
  * - pplanck    milli
- * - zond
- * - kzond      grand
- * - mzond
- * - gzond
- * - tzond
+ * - quanta
+ * - kquanta    grand
+ * - mquanta
+ * - gquanta
+ * - tquanta
  *
  * @method fromPlanck
  * @param {Number|String} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert to, default zond
+ * @param {String} unit the unit to convert to, default quanta
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
 var fromPlanck = function(number, unit) {
@@ -2163,15 +2164,15 @@ var fromPlanck = function(number, unit) {
  * - gplanck    nano
  * - tplanck    micro
  * - pplanck    milli
- * - zond
- * - kzond      grand
- * - mzond
- * - gzond
- * - tzond
+ * - quanta
+ * - kquanta    grand
+ * - mquanta
+ * - gquanta
+ * - tquanta
  *
  * @method toPlanck
  * @param {Number|String|BigNumber} number can be a number, number string or a HEX of a decimal
- * @param {String} unit the unit to convert from, default zond
+ * @param {String} unit the unit to convert from, default quanta
  * @return {String|Object} When given a BigNumber object it returns one as well, otherwise a number
 */
 var toPlanck = function(number, unit) {
@@ -2396,7 +2397,7 @@ var isJson = function (str) {
 };
 
 /**
- * Returns true if given string is a valid Zond block header bloom.
+ * Returns true if given string is a valid QRL block header bloom.
  *
  * @method isBloom
  * @param {String} hex encoded bloom filter
@@ -2495,7 +2496,7 @@ module.exports={
 
 var RequestManager = require('./web3/requestmanager');
 var Iban = require('./web3/iban');
-var Zond = require('./web3/methods/zond');
+var QRL = require('./web3/methods/qrl');
 var DB = require('./web3/methods/db');
 var Net = require('./web3/methods/net');
 var Settings = require('./web3/settings');
@@ -2514,7 +2515,7 @@ var BigNumber = require('bignumber.js');
 function Web3 (provider) {
     this._requestManager = new RequestManager(provider);
     this.currentProvider = provider;
-    this.zond = new Zond(this);
+    this.qrl = new QRL(this);
     this.db = new DB(this);
     this.net = new Net(this);
     this.settings = new Settings();
@@ -2590,7 +2591,7 @@ var properties = function () {
             inputFormatter: utils.toDecimal
         }),
         new Property({
-            name: 'version.zond',
+            name: 'version.qrl',
             getter: 'qrl_protocolVersion',
             inputFormatter: utils.toDecimal
         })
@@ -2608,7 +2609,7 @@ Web3.prototype.createBatch = function () {
 module.exports = Web3;
 
 
-},{"./utils/sha3":19,"./utils/utils":20,"./version.json":21,"./web3/batch":24,"./web3/extend":28,"./web3/httpprovider":32,"./web3/iban":33,"./web3/ipcprovider":34,"./web3/methods/db":37,"./web3/methods/zond":38,"./web3/methods/net":39,"./web3/methods/personal":40,"./web3/methods/shh":41,"./web3/methods/swarm":42,"./web3/property":45,"./web3/requestmanager":46,"./web3/settings":47,"bignumber.js":"bignumber.js"}],23:[function(require,module,exports){
+},{"./utils/sha3":19,"./utils/utils":20,"./version.json":21,"./web3/batch":24,"./web3/extend":28,"./web3/httpprovider":32,"./web3/iban":33,"./web3/ipcprovider":34,"./web3/methods/db":37,"./web3/methods/qrl":38,"./web3/methods/net":39,"./web3/methods/personal":40,"./web3/methods/shh":41,"./web3/methods/swarm":42,"./web3/property":45,"./web3/requestmanager":46,"./web3/settings":47,"bignumber.js":"bignumber.js"}],23:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
@@ -2687,7 +2688,7 @@ AllHyperionEvents.prototype.execute = function (options, callback) {
 
     var o = this.encode(options);
     var formatter = this.decode.bind(this);
-    return new Filter(o, 'zond', this._requestManager, watches.zond(), formatter, callback);
+    return new Filter(o, 'qrl', this._requestManager, watches.qrl(), formatter, callback);
 };
 
 AllHyperionEvents.prototype.attachToContract = function (contract) {
@@ -2825,7 +2826,7 @@ var addFunctionsToContract = function (contract) {
     contract.abi.filter(function (json) {
         return json.type === 'function';
     }).map(function (json) {
-        return new HyperionFunction(contract._zond, json, contract.address);
+        return new HyperionFunction(contract._qrl, json, contract.address);
     }).forEach(function (f) {
         f.attachToContract(contract);
     });
@@ -2843,11 +2844,11 @@ var addEventsToContract = function (contract) {
         return json.type === 'event';
     });
 
-    var All = new AllEvents(contract._zond._requestManager, events, contract.address);
+    var All = new AllEvents(contract._qrl._requestManager, events, contract.address);
     All.attachToContract(contract);
 
     events.map(function (json) {
-        return new HyperionEvent(contract._zond._requestManager, json, contract.address);
+        return new HyperionEvent(contract._qrl._requestManager, json, contract.address);
     }).forEach(function (e) {
         e.attachToContract(contract);
     });
@@ -2867,7 +2868,7 @@ var checkForContractAddress = function(contract, callback){
         callbackFired = false;
 
     // wait for receipt
-    var filter = contract._zond.filter('latest', function(e){
+    var filter = contract._qrl.filter('latest', function(e){
         if (!e && !callbackFired) {
             count++;
 
@@ -2885,10 +2886,10 @@ var checkForContractAddress = function(contract, callback){
 
             } else {
 
-                contract._zond.getTransactionReceipt(contract.transactionHash, function(e, receipt){
+                contract._qrl.getTransactionReceipt(contract.transactionHash, function(e, receipt){
                     if(receipt && !callbackFired) {
 
-                        contract._zond.getCode(receipt.contractAddress, function(e, code){
+                        contract._qrl.getCode(receipt.contractAddress, function(e, code){
                             /*jshint maxcomplexity: 6 */
 
                             if(callbackFired || !code)
@@ -2931,8 +2932,8 @@ var checkForContractAddress = function(contract, callback){
  * @method ContractFactory
  * @param {Array} abi
  */
-var ContractFactory = function (zond, abi) {
-    this.zond = zond;
+var ContractFactory = function (qrl, abi) {
+    this.qrl = qrl;
     this.abi = abi;
 
     /**
@@ -2948,7 +2949,7 @@ var ContractFactory = function (zond, abi) {
     this.new = function () {
         /*jshint maxcomplexity: 7 */
         
-        var contract = new Contract(this.zond, this.abi);
+        var contract = new Contract(this.qrl, this.abi);
 
         // parse arguments
         var options = {}; // required!
@@ -2980,7 +2981,7 @@ var ContractFactory = function (zond, abi) {
         if (callback) {
 
             // wait for the contract address and check if the code was deployed
-            this.zond.sendTransaction(options, function (err, hash) {
+            this.qrl.sendTransaction(options, function (err, hash) {
                 if (err) {
                     callback(err);
                 } else {
@@ -2994,7 +2995,7 @@ var ContractFactory = function (zond, abi) {
                 }
             });
         } else {
-            var hash = this.zond.sendTransaction(options);
+            var hash = this.qrl.sendTransaction(options);
             // add the transaction hash
             contract.transactionHash = hash;
             checkForContractAddress(contract);
@@ -3029,7 +3030,7 @@ var ContractFactory = function (zond, abi) {
  * otherwise calls callback function (err, contract)
  */
 ContractFactory.prototype.at = function (address, callback) {
-    var contract = new Contract(this.zond, this.abi, address);
+    var contract = new Contract(this.qrl, this.abi, address);
 
     // this functions are not part of prototype,
     // because we don't want to spoil the interface
@@ -3069,8 +3070,8 @@ ContractFactory.prototype.getData = function () {
  * @param {Array} abi
  * @param {Address} contract address
  */
-var Contract = function (zond, abi, address) {
-    this._zond = zond;
+var Contract = function (qrl, abi, address) {
+    this._qrl = qrl;
     this.transactionHash = null;
     this.address = address;
     this.abi = abi;
@@ -3312,7 +3313,7 @@ HyperionEvent.prototype.execute = function (indexed, options, callback) {
 
     var o = this.encode(indexed, options);
     var formatter = this.decode.bind(this);
-    return new Filter(o, 'zond', this._requestManager, watches.zond(), formatter, callback);
+    return new Filter(o, 'qrl', this._requestManager, watches.qrl(), formatter, callback);
 };
 
 /**
@@ -3446,7 +3447,7 @@ var getOptions = function (options, type) {
 
 
     switch(type) {
-        case 'zond':
+        case 'qrl':
 
             // make sure topics, get converted to hex
             options.topics = options.topics || [];
@@ -3986,8 +3987,8 @@ var sha3 = require('../utils/sha3');
 /**
  * This prototype should be used to call/sendTransaction to hyperion functions
  */
-var HyperionFunction = function (zond, json, address) {
-    this._zond = zond;
+var HyperionFunction = function (qrl, json, address) {
+    this._qrl = qrl;
     this._inputTypes = json.inputs.map(function (i) {
         return i.type;
     });
@@ -4089,12 +4090,12 @@ HyperionFunction.prototype.call = function () {
 
 
     if (!callback) {
-        var output = this._zond.call(payload, defaultBlock);
+        var output = this._qrl.call(payload, defaultBlock);
         return this.unpackOutput(output);
     }
 
     var self = this;
-    this._zond.call(payload, defaultBlock, function (error, output) {
+    this._qrl.call(payload, defaultBlock, function (error, output) {
         if (error) return callback(error, null);
 
         var unpacked = null;
@@ -4124,10 +4125,10 @@ HyperionFunction.prototype.sendTransaction = function () {
     }
 
     if (!callback) {
-        return this._zond.sendTransaction(payload);
+        return this._qrl.sendTransaction(payload);
     }
 
-    this._zond.sendTransaction(payload, callback);
+    this._qrl.sendTransaction(payload, callback);
 };
 
 /**
@@ -4141,10 +4142,10 @@ HyperionFunction.prototype.estimateGas = function () {
     var payload = this.toPayload(args);
 
     if (!callback) {
-        return this._zond.estimateGas(payload);
+        return this._qrl.estimateGas(payload);
     }
 
-    this._zond.estimateGas(payload, callback);
+    this._qrl.estimateGas(payload, callback);
 };
 
 /**
@@ -4485,7 +4486,7 @@ var Iban = function (iban) {
 };
 
 /**
- * This method should be used to create iban object from zond address
+ * This method should be used to create iban object from qrl address
  *
  * @method fromAddress
  * @param {String} address
@@ -5174,7 +5175,7 @@ module.exports = DB;
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @file zond.js
+ * @file qrl.js
  * @author Marek Kotewicz <marek@ethdev.com>
  * @author Fabian Vogelsteller <fabian@ethdev.com>
  * @date 2015
@@ -5414,28 +5415,28 @@ var properties = function () {
     ];
 };
 
-Zond.prototype.contract = function (abi) {
+QRL.prototype.contract = function (abi) {
     var factory = new Contract(this, abi);
     return factory;
 };
 
-Zond.prototype.filter = function (options, callback, filterCreationErrorCallback) {
-    return new Filter(options, 'zond', this._requestManager, watches.zond(), formatters.outputLogFormatter, callback, filterCreationErrorCallback);
+QRL.prototype.filter = function (options, callback, filterCreationErrorCallback) {
+    return new Filter(options, 'qrl', this._requestManager, watches.qrl(), formatters.outputLogFormatter, callback, filterCreationErrorCallback);
 };
 
-Zond.prototype.namereg = function () {
+QRL.prototype.namereg = function () {
     return this.contract(namereg.global.abi).at(namereg.global.address);
 };
 
-Zond.prototype.icapNamereg = function () {
+QRL.prototype.icapNamereg = function () {
     return this.contract(namereg.icap.abi).at(namereg.icap.address);
 };
 
-Zond.prototype.isSyncing = function (callback) {
+QRL.prototype.isSyncing = function (callback) {
     return new IsSyncing(this._requestManager, callback);
 };
 
-module.exports = Zond;
+module.exports = QRL;
 
 },{"../../utils/config":18,"../../utils/utils":20,"../contract":25,"../filter":29,"../formatters":30,"../iban":33,"../method":36,"../namereg":44,"../property":45,"../syncing":48,"../transfer":49,"./watches":43}],39:[function(require,module,exports){
 /*
@@ -5454,7 +5455,7 @@ module.exports = Zond;
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
-/** @file zond.js
+/** @file qrl.js
  * @authors:
  *   Marek Kotewicz <marek@ethdev.com>
  * @date 2015
@@ -5474,7 +5475,7 @@ var Net = function (web3) {
     });
 };
 
-/// @returns an array of objects describing web3.zond api properties
+/// @returns an array of objects describing web3.qrl api properties
 var properties = function () {
     return [
         new Property({
@@ -5821,7 +5822,7 @@ var errors = require('./errors');
 
 /**
  * It's responsible for passing messages to providers
- * It's also responsible for polling the zond node for incoming messages
+ * It's also responsible for polling the qrl node for incoming messages
  * Default poll timeout is 1 second
  * Singleton
  */
@@ -5985,7 +5986,7 @@ RequestManager.prototype.reset = function (keepIsSyncing) {
  */
 RequestManager.prototype.poll = function () {
     /*jshint maxcomplexity: 6 */
-    this.timeout = setTimeout(this.poll.bind(this), c.ZOND_POLLING_TIMEOUT);
+    this.timeout = setTimeout(this.poll.bind(this), c.QRL_POLLING_TIMEOUT);
 
     if (Object.keys(this.polls).length === 0) {
         return;
@@ -6195,23 +6196,23 @@ var exchangeAbi = require('../contracts/SmartExchange.json');
  * @param {Value} value to be tranfered
  * @param {Function} callback, callback
  */
-var transfer = function (zond, from, to, value, callback) {
+var transfer = function (qrl, from, to, value, callback) {
     var iban = new Iban(to); 
     if (!iban.isValid()) {
         throw new Error('invalid iban address');
     }
 
     if (iban.isDirect()) {
-        return transferToAddress(zond, from, iban.address(), value, callback);
+        return transferToAddress(qrl, from, iban.address(), value, callback);
     }
 
     if (!callback) {
-        var address = zond.icapNamereg().addr(iban.institution());
-        return deposit(zond, from, address, value, iban.client());
+        var address = qrl.icapNamereg().addr(iban.institution());
+        return deposit(qrl, from, address, value, iban.client());
     }
 
-    zond.icapNamereg().addr(iban.institution(), function (err, address) {
-        return deposit(zond, from, address, value, iban.client(), callback);
+    qrl.icapNamereg().addr(iban.institution(), function (err, address) {
+        return deposit(qrl, from, address, value, iban.client(), callback);
     });
     
 };
@@ -6225,8 +6226,8 @@ var transfer = function (zond, from, to, value, callback) {
  * @param {Value} value to be tranfered
  * @param {Function} callback, callback
  */
-var transferToAddress = function (zond, from, to, value, callback) {
-    return zond.sendTransaction({
+var transferToAddress = function (qrl, from, to, value, callback) {
+    return qrl.sendTransaction({
         address: to,
         from: from,
         value: value
@@ -6243,9 +6244,9 @@ var transferToAddress = function (zond, from, to, value, callback) {
  * @param {String} client unique identifier
  * @param {Function} callback, callback
  */
-var deposit = function (zond, from, to, value, client, callback) {
+var deposit = function (qrl, from, to, value, client, callback) {
     var abi = exchangeAbi;
-    return zond.contract(abi).at(to).deposit(client, {
+    return qrl.contract(abi).at(to).deposit(client, {
         from: from,
         value: value
     }, callback);

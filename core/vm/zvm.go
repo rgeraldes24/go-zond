@@ -47,9 +47,9 @@ func (qrvm *QRVM) precompile(addr common.Address) (PrecompiledContract, bool) {
 // it shouldn't be modified.
 type BlockContext struct {
 	// CanTransfer returns whether the account contains
-	// sufficient zond to transfer the value
+	// sufficient quanta to transfer the value
 	CanTransfer CanTransferFunc
-	// Transfer transfers zond from one account to the other
+	// Transfer transfers quanta from one account to the other
 	Transfer TransferFunc
 	// GetHash returns the hash corresponding to n
 	GetHash GetHashFunc
@@ -71,9 +71,9 @@ type TxContext struct {
 	GasPrice *big.Int       // Provides information for GASPRICE
 }
 
-// QRVM is the Zond Virtual Machine base object and provides
-// the necessary tools to run a contract on the given state with
-// the provided context. It should be noted that any error
+// QRVM is the Quantum Resistant Virtual Machine base object and
+// provides the necessary tools to run a contract on the given state
+// with the provided context. It should be noted that any error
 // generated through any of the calls should be considered a
 // revert-state-and-consume-all-gas operation, no checks on
 // specific errors should ever be performed. The interpreter makes
@@ -96,7 +96,7 @@ type QRVM struct {
 	// virtual machine configuration options used to initialise the
 	// qrvm.
 	Config Config
-	// global (to this context) zond virtual machine
+	// global (to this context) quantum resistant virtual machine
 	// used throughout the execution of the tx.
 	interpreter *QRVMInterpreter
 	// abort is used to abort the QRVM calling operations

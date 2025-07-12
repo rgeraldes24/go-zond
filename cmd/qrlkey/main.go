@@ -31,7 +31,7 @@ const (
 var app *cli.App
 
 func init() {
-	app = flags.NewApp("Zond key manager")
+	app = flags.NewApp("QRL key manager")
 	app.Commands = []*cli.Command{
 		commandGenerate,
 		commandInspect,

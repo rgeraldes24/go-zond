@@ -33,7 +33,7 @@ func TestMessageSignVerify(t *testing.T) {
 	message := "test message"
 
 	// Create the key.
-	generate := runZondkey(t, "generate", "--lightkdf", keyfile)
+	generate := runQRLkey(t, "generate", "--lightkdf", keyfile)
 	generate.Expect(`
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "foobar"}}
@@ -43,7 +43,7 @@ Repeat password: {{.InputLine "foobar"}}
 	generate.ExpectExit()
 
 	// Sign a message.
-	sign := runZondkey(t, "signmessage", keyfile, message)
+	sign := runQRLkey(t, "signmessage", keyfile, message)
 	sign.Expect(`
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "foobar"}}
@@ -66,7 +66,7 @@ Password: {{.InputLine "foobar"}}
 
 	// Verify the message.
 	publicKey := key.Dilithium.GetPK()
-	verify := runZondkey(t, "verifymessage", signature, common.Bytes2Hex(publicKey[:]), message)
+	verify := runQRLkey(t, "verifymessage", signature, common.Bytes2Hex(publicKey[:]), message)
 	verify.ExpectRegexp(`
 Signature verification successful!
 `)

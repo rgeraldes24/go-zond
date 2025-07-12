@@ -86,7 +86,7 @@ func (c *Config) UnmarshalTOML(unmarshal func(interface{}) error) error {
 		Genesis                 *core.Genesis `toml:",omitempty"`
 		NetworkId               *uint64
 		SyncMode                *downloader.SyncMode
-		ZondDiscoveryURLs       []string
+		QRLDiscoveryURLs        []string
 		SnapDiscoveryURLs       []string
 		NoPruning               *bool
 		NoPrefetch              *bool
@@ -127,8 +127,8 @@ func (c *Config) UnmarshalTOML(unmarshal func(interface{}) error) error {
 	if dec.SyncMode != nil {
 		c.SyncMode = *dec.SyncMode
 	}
-	if dec.ZondDiscoveryURLs != nil {
-		c.QRLDiscoveryURLs = dec.ZondDiscoveryURLs
+	if dec.QRLDiscoveryURLs != nil {
+		c.QRLDiscoveryURLs = dec.QRLDiscoveryURLs
 	}
 	if dec.SnapDiscoveryURLs != nil {
 		c.SnapDiscoveryURLs = dec.SnapDiscoveryURLs

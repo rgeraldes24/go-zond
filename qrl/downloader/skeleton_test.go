@@ -30,7 +30,7 @@ import (
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/log"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 	"github.com/theQRL/go-zond/qrldb"
 )
 
@@ -111,7 +111,7 @@ func newSkeletonTestPeerWithHook(id string, headers []*types.Header, serve func(
 // RequestHeadersByNumber constructs a GetBlockHeaders function based on a numbered
 // origin; associated with a particular peer in the download tester. The returned
 // function can be used to retrieve batches of headers from the particular peer.
-func (p *skeletonTestPeer) RequestHeadersByNumber(origin uint64, amount int, skip int, reverse bool, sink chan *zond.Response) (*zond.Request, error) {
+func (p *skeletonTestPeer) RequestHeadersByNumber(origin uint64, amount int, skip int, reverse bool, sink chan *qrl.Response) (*qrl.Request, error) {
 	// Since skeleton test peer are in-memory mocks, dropping the does not make
 	// them inaccessible. As such, check a local `dropped` field to see if the
 	// peer has been dropped and should not respond any more.
@@ -154,7 +154,7 @@ func (p *skeletonTestPeer) RequestHeadersByNumber(origin uint64, amount int, ski
 			for i := 0; i < amount; i++ {
 				// Consider nil headers as a form of attack and withhold them. Nil
 				// cannot be decoded from RLP, so it's not possible to produce an
-				// attack by sending/receiving those over zond.
+				// attack by sending/receiving those over qrl.
 				header := p.headers[int(origin)-i]
 				if header == nil {
 					continue
@@ -170,12 +170,12 @@ func (p *skeletonTestPeer) RequestHeadersByNumber(origin uint64, amount int, ski
 		hashes[i] = header.Hash()
 	}
 	// Deliver the headers to the downloader
-	req := &zond.Request{
+	req := &qrl.Request{
 		Peer: p.id,
 	}
-	res := &zond.Response{
+	res := &qrl.Response{
 		Req:  req,
-		Res:  (*zond.BlockHeadersRequest)(&headers),
+		Res:  (*qrl.BlockHeadersRequest)(&headers),
 		Meta: hashes,
 		Time: 1,
 		Done: make(chan error),
@@ -194,15 +194,15 @@ func (p *skeletonTestPeer) Head() common.Hash {
 	panic("skeleton sync must not request the remote head")
 }
 
-func (p *skeletonTestPeer) RequestHeadersByHash(common.Hash, int, int, bool, chan *zond.Response) (*zond.Request, error) {
+func (p *skeletonTestPeer) RequestHeadersByHash(common.Hash, int, int, bool, chan *qrl.Response) (*qrl.Request, error) {
 	panic("skeleton sync must not request headers by hash")
 }
 
-func (p *skeletonTestPeer) RequestBodies([]common.Hash, chan *zond.Response) (*zond.Request, error) {
+func (p *skeletonTestPeer) RequestBodies([]common.Hash, chan *qrl.Response) (*qrl.Request, error) {
 	panic("skeleton sync must not request block bodies")
 }
 
-func (p *skeletonTestPeer) RequestReceipts([]common.Hash, chan *zond.Response) (*zond.Request, error) {
+func (p *skeletonTestPeer) RequestReceipts([]common.Hash, chan *qrl.Response) (*qrl.Request, error) {
 	panic("skeleton sync must not request receipts")
 }
 
@@ -844,7 +844,7 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 		// Create a peer set to feed headers through
 		peerset := newPeerSet()
 		for _, peer := range tt.peers {
-			peerset.Register(newPeerConnection(peer.id, zond.ETH68, peer, log.New("id", peer.id)))
+			peerset.Register(newPeerConnection(peer.id, qrl.ETH68, peer, log.New("id", peer.id)))
 		}
 		// Create a peer dropper to track malicious peers
 		dropped := make(map[string]int)
@@ -911,7 +911,7 @@ func TestSkeletonSyncRetrievals(t *testing.T) {
 		// Apply the post-init events if there's any
 		endpeers := tt.peers
 		if tt.newPeer != nil {
-			if err := peerset.Register(newPeerConnection(tt.newPeer.id, zond.ETH68, tt.newPeer, log.New("id", tt.newPeer.id))); err != nil {
+			if err := peerset.Register(newPeerConnection(tt.newPeer.id, qrl.ETH68, tt.newPeer, log.New("id", tt.newPeer.id))); err != nil {
 				t.Errorf("test %d: failed to register new peer: %v", i, err)
 			}
 			time.Sleep(time.Millisecond * 50) // given time for peer registration

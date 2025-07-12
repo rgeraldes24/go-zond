@@ -15,7 +15,7 @@ Official Golang execution layer implementation of the QRL protocol.
 
 ## Building the source
 
-For prerequisites and detailed build instructions please read the [Installation Instructions](https://test-zond.theqrl.org/install).
+For prerequisites and detailed build instructions please read the [Installation Instructions](https://test-qrl.theqrl.org/install).
 
 Building `gzond` requires both a Go (version 1.21 or later) and a C compiler. You can install
 them using your favourite package manager. Once the dependencies are installed, run
@@ -40,14 +40,14 @@ directory.
 | **`gzond`** | Our main QRL CLI client. It is the entry point into the QRL network (main-, test- or private net), capable of running as a full node (default), archive node (retaining all historical state) or a light node (retrieving data live). It can be used by other processes as a gateway into the QRL network via JSON RPC endpoints exposed on top of HTTP, WebSocket and/or IPC transports. Based on geth, `gzond --help` and the [geth CLI page](https://geth.ethereum.org/docs/fundamentals/command-line-options) show command line options. |
 |   `clef`    | Stand-alone signing tool, which can be used as a backend signer for `gzond`.                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 |  `devp2p`   | Utilities to interact with nodes on the networking layer, without running a full blockchain.                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|  `abigen`   | Source code generator to convert QRL contract definitions into easy-to-use, compile-time type-safe Go packages. It operates on plain [Zond contract ABIs](https://docs.soliditylang.org/en/develop/abi-spec.html) with expanded functionality if the contract bytecode is also available. However, it also accepts Hyperion source files, making development much more streamlined. Please see the [Native DApps](https://geth.ethereum.org/docs/developers/dapp-developer/native-bindings) page for details.                                  |
+|  `abigen`   | Source code generator to convert QRL contract definitions into easy-to-use, compile-time type-safe Go packages. It operates on plain [QRL contract ABIs](https://docs.soliditylang.org/en/develop/abi-spec.html) with expanded functionality if the contract bytecode is also available. However, it also accepts Hyperion source files, making development much more streamlined. Please see the [Native DApps](https://geth.ethereum.org/docs/developers/dapp-developer/native-bindings) page for details.                                  |
 | `bootnode`  | Stripped down version of our QRL client implementation that only takes part in the network node discovery protocol, but does not run any of the higher level application protocols. It can be used as a lightweight bootstrap node to aid in finding peers in private networks.                                                                                                                                                                                                                                               |
 |   `qrvm`     | Developer utility version of the QRVM (Quantum Resistant Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode. Its purpose is to allow isolated, fine-grained debugging of QRVM opcodes (e.g. `qrvm --code 60ff60ff --debug run`).                                                                                                                                                                                                                                               |
 | `rlpdump`   | Developer utility tool to convert binary RLP ([Recursive Length Prefix](https://ethereum.org/en/developers/docs/data-structures-and-encoding/rlp)) dumps (data encoding used by the QRL protocol both network as well as consensus wise) to user-friendlier hierarchical representation (e.g. `rlpdump --hex CE0183FFFFFFC4C304050583616263`).                                                                                                                                                                                |
 
 ## Running `gzond`
 
-Going through all the possible command line flags is out of scope here (please see our nascent [Zond Testnet docs](https://test-zond.theqrl.org) or consult the
+Going through all the possible command line flags is out of scope here (please see our nascent [QRL Testnet docs](https://test-qrl.theqrl.org) or consult the
 [geth CLI Wiki page](https://geth.ethereum.org/docs/fundamentals/command-line-options)),
 but we've enumerated a few common parameter combos to get you up to speed quickly
 on how you can run your own `gzond` instance.
@@ -114,7 +114,7 @@ One of the quickest ways to get QRL up and running on your machine is by using
 Docker:
 
 ```shell
-docker run -d --name zond-node -v /Users/alice/zond:/root \
+docker run -d --name qrl-node -v /Users/alice/qrl:/root \
            -p 8545:8545 -p 30303:30303 \
            theqrl/gzond
 ```
@@ -147,15 +147,15 @@ HTTP based JSON-RPC API options:
   * `--http` Enable the HTTP-RPC server
   * `--http.addr` HTTP-RPC server listening interface (default: `localhost`)
   * `--http.port` HTTP-RPC server listening port (default: `8545`)
-  * `--http.api` API's offered over the HTTP-RPC interface (default: `zond,net,web3`)
+  * `--http.api` API's offered over the HTTP-RPC interface (default: `qrl,net,web3`)
   * `--http.corsdomain` Comma separated list of domains from which to accept cross origin requests (browser enforced)
   * `--ws` Enable the WS-RPC server
   * `--ws.addr` WS-RPC server listening interface (default: `localhost`)
   * `--ws.port` WS-RPC server listening port (default: `8546`)
-  * `--ws.api` API's offered over the WS-RPC interface (default: `zond,net,web3`)
+  * `--ws.api` API's offered over the WS-RPC interface (default: `qrl,net,web3`)
   * `--ws.origins` Origins from which to accept WebSocket requests
   * `--ipcdisable` Disable the IPC-RPC server
-  * `--ipcapi` API's offered over the IPC-RPC interface (default: `admin,debug,zond,miner,net,personal,txpool,web3`)
+  * `--ipcapi` API's offered over the IPC-RPC interface (default: `admin,debug,qrl,miner,net,personal,txpool,web3`)
   * `--ipcpath` Filename for IPC socket/pipe within the datadir (explicit paths escape it)
 
 You'll need to use your own programming environments' capabilities (libraries, tools, etc) to

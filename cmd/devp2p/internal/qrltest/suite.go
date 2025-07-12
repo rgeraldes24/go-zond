@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-package zondtest
+package qrltest
 
 // TODO(now.youtrack.cloud/issue/TGZ-6)
 /*
 // Suite represents a structure used to test a node's conformance
-// to the zond protocol.
+// to the qrl protocol.
 type Suite struct {
 	Dest *enode.Node
 
@@ -27,7 +27,7 @@ type Suite struct {
 	fullChain *Chain
 }
 
-// NewSuite creates and returns a new zond-test suite that can
+// NewSuite creates and returns a new qrl-test suite that can
 // be used to test the given node against the given blockchain
 // data.
 func NewSuite(dest *enode.Node, chainfile string, genesisfile string) (*Suite, error) {
@@ -42,7 +42,7 @@ func NewSuite(dest *enode.Node, chainfile string, genesisfile string) (*Suite, e
 	}, nil
 }
 
-func (s *Suite) ZondTests() []utesting.Test {
+func (s *Suite) QRLTests() []utesting.Test {
 	return []utesting.Test{
 		// status
 		{Name: "TestStatus", Fn: s.TestStatus},
@@ -80,7 +80,7 @@ func (s *Suite) SnapTests() []utesting.Test {
 }
 
 // TestStatus attempts to connect to the given node and exchange
-// a status message with it on the zond protocol.
+// a status message with it on the qrl protocol.
 func (s *Suite) TestStatus(t *utesting.T) {
 	conn, err := s.dial()
 	if err != nil {
@@ -93,7 +93,7 @@ func (s *Suite) TestStatus(t *utesting.T) {
 }
 
 // TestGetBlockHeaders tests whether the given node can respond to
-// an zond `GetBlockHeaders` request and that the response is accurate.
+// an qrl `GetBlockHeaders` request and that the response is accurate.
 func (s *Suite) TestGetBlockHeaders(t *utesting.T) {
 	conn, err := s.dial()
 	if err != nil {
@@ -105,8 +105,8 @@ func (s *Suite) TestGetBlockHeaders(t *utesting.T) {
 	}
 	// write request
 	req := &GetBlockHeaders{
-		GetBlockHeadersPacket: &zond.GetBlockHeadersPacket{
-			Origin:  zond.HashOrNumber{Hash: s.chain.blocks[1].Hash()},
+		GetBlockHeadersPacket: &qrl.GetBlockHeadersPacket{
+			Origin:  qrl.HashOrNumber{Hash: s.chain.blocks[1].Hash()},
 			Amount:  2,
 			Skip:    1,
 			Reverse: false,
@@ -143,8 +143,8 @@ func (s *Suite) TestSimultaneousRequests(t *utesting.T) {
 	// create two requests
 	req1 := &GetBlockHeaders{
 		RequestId: uint64(111),
-		GetBlockHeadersPacket: &zond.GetBlockHeadersPacket{
-			Origin: zond.HashOrNumber{
+		GetBlockHeadersPacket: &qrl.GetBlockHeadersPacket{
+			Origin: qrl.HashOrNumber{
 				Hash: s.chain.blocks[1].Hash(),
 			},
 			Amount:  2,
@@ -154,8 +154,8 @@ func (s *Suite) TestSimultaneousRequests(t *utesting.T) {
 	}
 	req2 := &GetBlockHeaders{
 		RequestId: uint64(222),
-		GetBlockHeadersPacket: &zond.GetBlockHeadersPacket{
-			Origin: zond.HashOrNumber{
+		GetBlockHeadersPacket: &qrl.GetBlockHeadersPacket{
+			Origin: qrl.HashOrNumber{
 				Hash: s.chain.blocks[1].Hash(),
 			},
 			Amount:  4,
@@ -217,8 +217,8 @@ func (s *Suite) TestSameRequestID(t *utesting.T) {
 	reqID := uint64(1234)
 	request1 := &GetBlockHeaders{
 		RequestId: reqID,
-		GetBlockHeadersPacket: &zond.GetBlockHeadersPacket{
-			Origin: zond.HashOrNumber{
+		GetBlockHeadersPacket: &qrl.GetBlockHeadersPacket{
+			Origin: qrl.HashOrNumber{
 				Number: 1,
 			},
 			Amount: 2,
@@ -226,8 +226,8 @@ func (s *Suite) TestSameRequestID(t *utesting.T) {
 	}
 	request2 := &GetBlockHeaders{
 		RequestId: reqID,
-		GetBlockHeadersPacket: &zond.GetBlockHeadersPacket{
-			Origin: zond.HashOrNumber{
+		GetBlockHeadersPacket: &qrl.GetBlockHeadersPacket{
+			Origin: qrl.HashOrNumber{
 				Number: 33,
 			},
 			Amount: 2,
@@ -283,8 +283,8 @@ func (s *Suite) TestZeroRequestID(t *utesting.T) {
 		t.Fatalf("peering failed: %v", err)
 	}
 	req := &GetBlockHeaders{
-		GetBlockHeadersPacket: &zond.GetBlockHeadersPacket{
-			Origin: zond.HashOrNumber{Number: 0},
+		GetBlockHeadersPacket: &qrl.GetBlockHeadersPacket{
+			Origin: qrl.HashOrNumber{Number: 0},
 			Amount: 2,
 		},
 	}
@@ -315,7 +315,7 @@ func (s *Suite) TestGetBlockBodies(t *utesting.T) {
 	// create block bodies request
 	req := &GetBlockBodies{
 		RequestId: uint64(55),
-		GetBlockBodiesPacket: zond.GetBlockBodiesPacket{
+		GetBlockBodiesPacket: qrl.GetBlockBodiesPacket{
 			s.chain.blocks[54].Hash(),
 			s.chain.blocks[75].Hash(),
 		},
@@ -532,7 +532,7 @@ func (s *Suite) TestNewPooledTxs(t *utesting.T) {
 	}
 
 	var ann Message = NewPooledTransactionHashes{Types: types, Sizes: sizes, Hashes: hashes}
-	if conn.negotiatedProtoVersion < zond.ETH68 {
+	if conn.negotiatedProtoVersion < qrl.ETH68 {
 		ann = NewPooledTransactionHashes66(hashes)
 	}
 	err = conn.Write(ann)

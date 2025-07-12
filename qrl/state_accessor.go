@@ -174,9 +174,9 @@ func (qrl *QRL) hashState(ctx context.Context, block *types.Block, reexec uint64
 	return statedb, func() { triedb.Dereference(block.Root()) }, nil
 }
 
-func (zond *QRL) pathState(block *types.Block) (*state.StateDB, func(), error) {
+func (qrl *QRL) pathState(block *types.Block) (*state.StateDB, func(), error) {
 	// Check if the requested state is available in the live chain.
-	statedb, err := zond.blockchain.StateAt(block.Root())
+	statedb, err := qrl.blockchain.StateAt(block.Root())
 	if err == nil {
 		return statedb, noopReleaser, nil
 	}
@@ -208,27 +208,27 @@ func (zond *QRL) pathState(block *types.Block) (*state.StateDB, func(), error) {
 //   - preferDisk: This arg can be used by the caller to signal that even though the 'base' is
 //     provided, it would be preferable to start from a fresh state, if we have it
 //     on disk.
-func (zond *QRL) stateAtBlock(ctx context.Context, block *types.Block, reexec uint64, base *state.StateDB, readOnly bool, preferDisk bool) (statedb *state.StateDB, release tracers.StateReleaseFunc, err error) {
-	if zond.blockchain.TrieDB().Scheme() == rawdb.HashScheme {
-		return zond.hashState(ctx, block, reexec, base, readOnly, preferDisk)
+func (qrl *QRL) stateAtBlock(ctx context.Context, block *types.Block, reexec uint64, base *state.StateDB, readOnly bool, preferDisk bool) (statedb *state.StateDB, release tracers.StateReleaseFunc, err error) {
+	if qrl.blockchain.TrieDB().Scheme() == rawdb.HashScheme {
+		return qrl.hashState(ctx, block, reexec, base, readOnly, preferDisk)
 	}
-	return zond.pathState(block)
+	return qrl.pathState(block)
 }
 
 // stateAtTransaction returns the execution environment of a certain transaction.
-func (zond *QRL) stateAtTransaction(ctx context.Context, block *types.Block, txIndex int, reexec uint64) (*core.Message, vm.BlockContext, *state.StateDB, tracers.StateReleaseFunc, error) {
+func (qrl *QRL) stateAtTransaction(ctx context.Context, block *types.Block, txIndex int, reexec uint64) (*core.Message, vm.BlockContext, *state.StateDB, tracers.StateReleaseFunc, error) {
 	// Short circuit if it's genesis block.
 	if block.NumberU64() == 0 {
 		return nil, vm.BlockContext{}, nil, nil, errors.New("no transaction in genesis")
 	}
 	// Create the parent state database
-	parent := zond.blockchain.GetBlock(block.ParentHash(), block.NumberU64()-1)
+	parent := qrl.blockchain.GetBlock(block.ParentHash(), block.NumberU64()-1)
 	if parent == nil {
 		return nil, vm.BlockContext{}, nil, nil, fmt.Errorf("parent %#x not found", block.ParentHash())
 	}
 	// Lookup the statedb of parent block from the live database,
 	// otherwise regenerate it on the flight.
-	statedb, release, err := zond.stateAtBlock(ctx, parent, reexec, nil, true, false)
+	statedb, release, err := qrl.stateAtBlock(ctx, parent, reexec, nil, true, false)
 	if err != nil {
 		return nil, vm.BlockContext{}, nil, nil, err
 	}
@@ -236,17 +236,17 @@ func (zond *QRL) stateAtTransaction(ctx context.Context, block *types.Block, txI
 		return nil, vm.BlockContext{}, statedb, release, nil
 	}
 	// Recompute transactions up to the target index.
-	signer := types.MakeSigner(zond.blockchain.Config())
+	signer := types.MakeSigner(qrl.blockchain.Config())
 	for idx, tx := range block.Transactions() {
 		// Assemble the transaction call message and return if the requested offset
 		msg, _ := core.TransactionToMessage(tx, signer, block.BaseFee())
 		txContext := core.NewQRVMTxContext(msg)
-		context := core.NewQRVMBlockContext(block.Header(), zond.blockchain, nil)
+		context := core.NewQRVMBlockContext(block.Header(), qrl.blockchain, nil)
 		if idx == txIndex {
 			return msg, context, statedb, release, nil
 		}
 		// Not yet the searched for transaction, execute on top of the current state
-		vmenv := vm.NewQRVM(context, txContext, statedb, zond.blockchain.Config(), vm.Config{})
+		vmenv := vm.NewQRVM(context, txContext, statedb, qrl.blockchain.Config(), vm.Config{})
 		statedb.SetTxContext(tx.Hash(), idx)
 		if _, err := core.ApplyMessage(vmenv, msg, new(core.GasPool).AddGas(tx.Gas())); err != nil {
 			return nil, vm.BlockContext{}, nil, nil, fmt.Errorf("transaction %#x failed: %v", tx.Hash(), err)

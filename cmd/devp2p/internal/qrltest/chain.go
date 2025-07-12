@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-package zondtest
+package qrltest
 
 // TODO(now.youtrack.cloud/issue/TGZ-6)
 /*
@@ -33,7 +33,7 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
-	"github.com/theQRL/go-zond/zond/protocols/zond"
+	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 )
 
 type Chain struct {
@@ -76,8 +76,8 @@ func (c *Chain) Head() *types.Block {
 	return c.blocks[c.Len()-1]
 }
 
-// GetHeaders returns the headers base on a zondGetPacketHeadersPacket.
-func (c *Chain) GetHeaders(req *zond.GetBlockHeadersPacket) ([]*types.Header, error) {
+// GetHeaders returns the headers base on a qrlGetPacketHeadersPacket.
+func (c *Chain) GetHeaders(req *qrl.GetBlockHeadersPacket) ([]*types.Header, error) {
 	if req.Amount < 1 {
 		return nil, errors.New("no block headers requested")
 	}

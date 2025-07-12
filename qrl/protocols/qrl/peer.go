@@ -41,7 +41,7 @@ const (
 	maxQueuedTxAnns = 4096
 )
 
-// Peer is a collection of relevant information we have about a `zond` peer.
+// Peer is a collection of relevant information we have about a `qrl` peer.
 type Peer struct {
 	id string // Unique ID for the peer, cached
 
@@ -101,7 +101,7 @@ func (p *Peer) ID() string {
 	return p.id
 }
 
-// Version retrieves the peer's negotiated `zond` protocol version.
+// Version retrieves the peer's negotiated `qrl` protocol version.
 func (p *Peer) Version() uint {
 	return p.version
 }

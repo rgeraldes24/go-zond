@@ -35,7 +35,7 @@ const (
 	// signature and no receive function is specified.
 	Fallback
 	// Receive represents the receive function.
-	// This function is executed on plain Zond transfers.
+	// This function is executed on plain QRL transfers.
 	Receive
 	// Function represents a normal function.
 	Function

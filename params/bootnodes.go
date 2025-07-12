@@ -20,7 +20,7 @@ import "github.com/theQRL/go-zond/common"
 
 // TODO(now.youtrack.cloud/issue/TGZ-14)
 // MainnetBootnodes are the enode URLs of the P2P bootstrap nodes running on
-// the main Zond network.
+// the main QRL network.
 var MainnetBootnodes = []string{
 	// QRL Go Bootnodes
 }

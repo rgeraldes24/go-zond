@@ -23,7 +23,7 @@ import (
 	"github.com/theQRL/go-zond/rlp"
 )
 
-// enrEntry is the ENR entry which advertises `zond` protocol on the discovery.
+// enrEntry is the ENR entry which advertises `qrl` protocol on the discovery.
 type enrEntry struct {
 	ForkID forkid.ID // Fork identifier per EIP-2124
 
@@ -33,10 +33,10 @@ type enrEntry struct {
 
 // ENRKey implements enr.Entry.
 func (e enrEntry) ENRKey() string {
-	return "zond"
+	return "qrl"
 }
 
-// StartENRUpdater starts the `zond` ENR updater loop, which listens for chain
+// StartENRUpdater starts the `qrl` ENR updater loop, which listens for chain
 // head events and updates the requested node record whenever a fork is passed.
 func StartENRUpdater(chain *core.BlockChain, ln *enode.LocalNode) {
 	var newHead = make(chan core.ChainHeadEvent, 10)
@@ -57,7 +57,7 @@ func StartENRUpdater(chain *core.BlockChain, ln *enode.LocalNode) {
 	}()
 }
 
-// currentENREntry constructs an `zond` ENR entry based on the current state of the chain.
+// currentENREntry constructs an `qrl` ENR entry based on the current state of the chain.
 func currentENREntry(chain *core.BlockChain) *enrEntry {
 	head := chain.CurrentHeader()
 	return &enrEntry{

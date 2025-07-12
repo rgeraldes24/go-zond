@@ -67,13 +67,13 @@ type Backend interface {
 	// or if inbound transactions should simply be dropped.
 	AcceptTxs() bool
 
-	// RunPeer is invoked when a peer joins on the `zond` protocol. The handler
+	// RunPeer is invoked when a peer joins on the `qrl` protocol. The handler
 	// should do any peer maintenance work, handshakes and validations. If all
 	// is passed, control should be given back to the `handler` to process the
 	// inbound messages going forward.
 	RunPeer(peer *Peer, handler Handler) error
 
-	// PeerInfo retrieves all known `zond` information about a peer.
+	// PeerInfo retrieves all known `qrl` information about a peer.
 	PeerInfo(id enode.ID) interface{}
 
 	// Handle is a callback to be invoked when a data packet is received from
@@ -88,7 +88,7 @@ type TxPool interface {
 	Get(hash common.Hash) *types.Transaction
 }
 
-// MakeProtocols constructs the P2P protocol definitions for `zond`.
+// MakeProtocols constructs the P2P protocol definitions for `qrl`.
 func MakeProtocols(backend Backend, network uint64, dnsdisc enode.Iterator) []p2p.Protocol {
 	protocols := make([]p2p.Protocol, 0, len(ProtocolVersions))
 	for _, version := range ProtocolVersions {
@@ -119,16 +119,16 @@ func MakeProtocols(backend Backend, network uint64, dnsdisc enode.Iterator) []p2
 	return protocols
 }
 
-// NodeInfo represents a short summary of the `zond` sub-protocol metadata
+// NodeInfo represents a short summary of the `qrl` sub-protocol metadata
 // known about the host peer.
 type NodeInfo struct {
-	Network uint64              `json:"network"` // Zond network ID (1=Mainnet)
+	Network uint64              `json:"network"` // QRL network ID (1=Mainnet)
 	Genesis common.Hash         `json:"genesis"` // SHA3 hash of the host's genesis block
 	Config  *params.ChainConfig `json:"config"`  // Chain configuration for the fork rules
 	Head    common.Hash         `json:"head"`    // Hex hash of the host's best owned block
 }
 
-// nodeInfo retrieves some `zond` protocol metadata about the running host node.
+// nodeInfo retrieves some `qrl` protocol metadata about the running host node.
 func nodeInfo(chain *core.BlockChain, network uint64) *NodeInfo {
 	head := chain.CurrentBlock()
 	hash := head.Hash()
@@ -141,13 +141,13 @@ func nodeInfo(chain *core.BlockChain, network uint64) *NodeInfo {
 	}
 }
 
-// Handle is invoked whenever an `zond` connection is made that successfully passes
+// Handle is invoked whenever an `qrl` connection is made that successfully passes
 // the protocol handshake. This method will keep processing messages until the
 // connection is torn down.
 func Handle(backend Backend, peer *Peer) error {
 	for {
 		if err := handleMessage(backend, peer); err != nil {
-			peer.Log().Debug("Message handling failed in `zond`", "err", err)
+			peer.Log().Debug("Message handling failed in `qrl`", "err", err)
 			return err
 		}
 	}

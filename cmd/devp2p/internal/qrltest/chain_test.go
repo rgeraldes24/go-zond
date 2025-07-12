@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-package zondtest
+package qrltest
 
 // TODO(now.youtrack.cloud/issue/TGZ-6)
 /*
@@ -27,7 +27,7 @@ import (
 )
 
 // TestEthProtocolNegotiation tests whether the test suite
-// can negotiate the highest zond protocol in a status message exchange
+// can negotiate the highest qrl protocol in a status message exchange
 func TestEthProtocolNegotiation(t *testing.T) {
 	var tests = []struct {
 		conn     *Conn
@@ -39,9 +39,9 @@ func TestEthProtocolNegotiation(t *testing.T) {
 				ourHighestProtoVersion: 65,
 			},
 			caps: []p2p.Cap{
-				{Name: "zond", Version: 63},
-				{Name: "zond", Version: 64},
-				{Name: "zond", Version: 65},
+				{Name: "qrl", Version: 63},
+				{Name: "qrl", Version: 64},
+				{Name: "qrl", Version: 65},
 			},
 			expected: uint32(65),
 		},
@@ -50,9 +50,9 @@ func TestEthProtocolNegotiation(t *testing.T) {
 				ourHighestProtoVersion: 65,
 			},
 			caps: []p2p.Cap{
-				{Name: "zond", Version: 63},
-				{Name: "zond", Version: 64},
-				{Name: "zond", Version: 65},
+				{Name: "qrl", Version: 63},
+				{Name: "qrl", Version: 64},
+				{Name: "qrl", Version: 65},
 			},
 			expected: uint32(65),
 		},
@@ -61,9 +61,9 @@ func TestEthProtocolNegotiation(t *testing.T) {
 				ourHighestProtoVersion: 65,
 			},
 			caps: []p2p.Cap{
-				{Name: "zond", Version: 63},
-				{Name: "zond", Version: 64},
-				{Name: "zond", Version: 65},
+				{Name: "qrl", Version: 63},
+				{Name: "qrl", Version: 64},
+				{Name: "qrl", Version: 65},
 			},
 			expected: uint32(65),
 		},
@@ -72,9 +72,9 @@ func TestEthProtocolNegotiation(t *testing.T) {
 				ourHighestProtoVersion: 64,
 			},
 			caps: []p2p.Cap{
-				{Name: "zond", Version: 63},
-				{Name: "zond", Version: 64},
-				{Name: "zond", Version: 65},
+				{Name: "qrl", Version: 63},
+				{Name: "qrl", Version: 64},
+				{Name: "qrl", Version: 65},
 			},
 			expected: 64,
 		},
@@ -83,9 +83,9 @@ func TestEthProtocolNegotiation(t *testing.T) {
 				ourHighestProtoVersion: 65,
 			},
 			caps: []p2p.Cap{
-				{Name: "zond", Version: 0},
-				{Name: "zond", Version: 89},
-				{Name: "zond", Version: 65},
+				{Name: "qrl", Version: 0},
+				{Name: "qrl", Version: 89},
+				{Name: "qrl", Version: 65},
 			},
 			expected: uint32(65),
 		},
@@ -94,8 +94,8 @@ func TestEthProtocolNegotiation(t *testing.T) {
 				ourHighestProtoVersion: 64,
 			},
 			caps: []p2p.Cap{
-				{Name: "zond", Version: 63},
-				{Name: "zond", Version: 64},
+				{Name: "qrl", Version: 63},
+				{Name: "qrl", Version: 64},
 				{Name: "wrongProto", Version: 65},
 			},
 			expected: uint32(64),
@@ -105,8 +105,8 @@ func TestEthProtocolNegotiation(t *testing.T) {
 				ourHighestProtoVersion: 65,
 			},
 			caps: []p2p.Cap{
-				{Name: "zond", Version: 63},
-				{Name: "zond", Version: 64},
+				{Name: "qrl", Version: 63},
+				{Name: "qrl", Version: 64},
 				{Name: "wrongProto", Version: 65},
 			},
 			expected: uint32(64),
@@ -145,8 +145,8 @@ func TestChain_GetHeaders(t *testing.T) {
 	}{
 		{
 			req: GetBlockHeaders{
-				GetBlockHeadersPacket: &zond.GetBlockHeadersPacket{
-					Origin:  zond.HashOrNumber{Number: uint64(2)},
+				GetBlockHeadersPacket: &qrl.GetBlockHeadersPacket{
+					Origin:  qrl.HashOrNumber{Number: uint64(2)},
 					Amount:  uint64(5),
 					Skip:    1,
 					Reverse: false,
@@ -162,8 +162,8 @@ func TestChain_GetHeaders(t *testing.T) {
 		},
 		{
 			req: GetBlockHeaders{
-				GetBlockHeadersPacket: &zond.GetBlockHeadersPacket{
-					Origin:  zond.HashOrNumber{Number: uint64(chain.Len() - 1)},
+				GetBlockHeadersPacket: &qrl.GetBlockHeadersPacket{
+					Origin:  qrl.HashOrNumber{Number: uint64(chain.Len() - 1)},
 					Amount:  uint64(3),
 					Skip:    0,
 					Reverse: true,
@@ -177,8 +177,8 @@ func TestChain_GetHeaders(t *testing.T) {
 		},
 		{
 			req: GetBlockHeaders{
-				GetBlockHeadersPacket: &zond.GetBlockHeadersPacket{
-					Origin:  zond.HashOrNumber{Hash: chain.Head().Hash()},
+				GetBlockHeadersPacket: &qrl.GetBlockHeadersPacket{
+					Origin:  qrl.HashOrNumber{Hash: chain.Head().Hash()},
 					Amount:  uint64(1),
 					Skip:    0,
 					Reverse: false,

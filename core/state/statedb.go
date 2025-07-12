@@ -47,7 +47,7 @@ type revision struct {
 	journalIndex int
 }
 
-// StateDB structs within the zond protocol are used to store anything
+// StateDB structs within the qrl protocol are used to store anything
 // within the merkle trie. StateDBs take care of caching and storing
 // nested states. It's the general query interface to retrieve:
 //
@@ -608,7 +608,7 @@ func (s *StateDB) createObject(addr common.Address) (newobj, prev *stateObject) 
 //  1. sends funds to sha(account ++ (nonce + 1))
 //  2. tx_create(sha(account ++ nonce)) (note that this gets the address of 1)
 //
-// Carrying over the balance ensures that Zond doesn't disappear.
+// Carrying over the balance ensures that Quanta doesn't disappear.
 func (s *StateDB) CreateAccount(addr common.Address) {
 	newObj, prev := s.createObject(addr)
 	if prev != nil {

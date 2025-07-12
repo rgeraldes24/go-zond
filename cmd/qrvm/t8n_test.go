@@ -30,7 +30,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	// Run the app if we've been exec'd as "zondkey-test" in runZondkey.
+	// Run the app if we've been exec'd as "qrlkey-test" in runQRLkey.
 	reexec.Register("qrvm-test", func() {
 		if err := app.Run(os.Args); err != nil {
 			fmt.Fprintln(os.Stderr, err)

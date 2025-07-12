@@ -94,7 +94,7 @@ type API struct {
 	backend Backend
 }
 
-// NewAPI creates a new API definition for the tracing methods of the Zond service.
+// NewAPI creates a new API definition for the tracing methods of the QRL service.
 func NewAPI(backend Backend) *API {
 	return &API{backend: backend}
 }

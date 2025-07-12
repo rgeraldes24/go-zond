@@ -84,7 +84,7 @@ var (
 		},
 		{
 			BinaryName:  "bootnode",
-			Description: "Zond bootnode.",
+			Description: "QRL bootnode.",
 		},
 		{
 			BinaryName:  "qrvm",
@@ -105,15 +105,15 @@ var (
 	}
 
 	// A debian package is created for all executables listed here.
-	debZond = debPackage{
-		Name:        "zond",
+	debQRL = debPackage{
+		Name:        "qrl",
 		Version:     params.Version,
 		Executables: debExecutables,
 	}
 
 	// Debian meta packages to build and push to Ubuntu PPA
 	debPackages = []debPackage{
-		debZond,
+		debQRL,
 	}
 
 	// Distros for which packages are created.
@@ -577,7 +577,7 @@ func doDebianSource(cmdline []string) {
 	var (
 		cachedir = flag.String("cachedir", "./build/cache", `Filesystem path to cache the downloaded Go bundles at`)
 		signer   = flag.String("signer", "", `Signing key name, also used as package author`)
-		upload   = flag.String("upload", "", `Where to upload the source package (usually "theqrl/zond")`)
+		upload   = flag.String("upload", "", `Where to upload the source package (usually "theqrl/qrl")`)
 		sshUser  = flag.String("sftp-user", "", `Username for SFTP upload (usually "gzond-ci")`)
 		workdir  = flag.String("workdir", "", `Output directory for packages (uses temp dir if unset)`)
 		now      = time.Now()
@@ -734,7 +734,7 @@ func isUnstableBuild(env build.Environment) bool {
 }
 
 type debPackage struct {
-	Name        string          // the name of the Debian package to produce, e.g. "zond"
+	Name        string          // the name of the Debian package to produce, e.g. "qrl"
 	Version     string          // the clean version of the debPackage, e.g. 1.8.12, without any metadata
 	Executables []debExecutable // executables to be included in the package
 }
@@ -774,7 +774,7 @@ func (d debExecutable) Package() string {
 func newDebMetadata(distro, goboot, author string, env build.Environment, t time.Time, name string, version string, exes []debExecutable) debMetadata {
 	if author == "" {
 		// No signing key, use default author.
-		author = "Zond Builds <someone@theqrl.org>"
+		author = "QRL Builds <someone@theqrl.org>"
 	}
 	return debMetadata{
 		GoBootPackage: goboot,
@@ -839,7 +839,7 @@ func (meta debMetadata) ExeConflicts(exe debExecutable) string {
 		// be preferred and the conflicting files should be handled via
 		// alternates. We might do this eventually but using a conflict is
 		// easier now.
-		return "zond, " + exe.Package()
+		return "qrl, " + exe.Package()
 	}
 	return ""
 }

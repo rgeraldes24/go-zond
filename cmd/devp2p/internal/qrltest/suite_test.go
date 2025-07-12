@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with go-ethereum. If not, see <http://www.gnu.org/licenses/>.
 
-package zondtest
+package qrltest
 
 // TODO(now.youtrack.cloud/issue/TGZ-6)
 /*
@@ -35,7 +35,7 @@ var (
 
 TODO(now.youtrack.cloud/issue/TGZ-6)
 /*
-func TestZondSuite(t *testing.T) {
+func TestQRLSuite(t *testing.T) {
 	gzond, err := runGzond()
 	if err != nil {
 		t.Fatalf("could not run gzond: %v", err)
@@ -46,7 +46,7 @@ func TestZondSuite(t *testing.T) {
 	if err != nil {
 		t.Fatalf("could not create new test suite: %v", err)
 	}
-	for _, test := range suite.ZondTests() {
+	for _, test := range suite.QRLTests() {
 		t.Run(test.Name, func(t *testing.T) {
 			result := utesting.RunTAP([]utesting.Test{{Name: test.Name, Fn: test.Fn}}, os.Stdout)
 			if result[0].Failed {
@@ -109,7 +109,7 @@ func setupGzond(stack *node.Node) error {
 		return err
 	}
 
-	backend, err := zond.New(stack, &zondconfig.Config{
+	backend, err := qrl.New(stack, &qrlconfig.Config{
 		Genesis:        &chain.genesis,
 		NetworkId:      chain.genesis.Config.ChainID.Uint64(), // 19763
 		DatabaseCache:  10,
