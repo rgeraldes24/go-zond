@@ -16,7 +16,7 @@ INFO [08-29|20:12:04.348] Trie dumping started                     root=67e50f..
 INFO [08-29|20:12:04.348] Trie dumping complete                    accounts=1 elapsed="17.958µs"
 {
   "alloc": {
-    "Z204cc644e26bdf879db422658edee62e302c3da8": {
+    "Q204cc644e26bdf879db422658edee62e302c3da8": {
       "balance": "0x501bd00"
     }
   },

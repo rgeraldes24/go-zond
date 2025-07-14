@@ -45,7 +45,7 @@ var (
 	addressT = reflect.TypeOf(Address{})
 
 	// MaxAddress represents the maximum possible address value.
-	MaxAddress, _ = NewAddressFromString("Zffffffffffffffffffffffffffffffffffffffff")
+	MaxAddress, _ = NewAddressFromString("Qffffffffffffffffffffffffffffffffffffffff")
 
 	// MaxHash represents the maximum possible hash value.
 	MaxHash = HexToHash("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")

@@ -1120,7 +1120,7 @@ var formatOutputString = function (param) {
  */
 var formatOutputAddress = function (param) {
     var value = param.staticPart();
-    return "Z" + value.slice(value.length - 40, value.length);
+    return "Q" + value.slice(value.length - 40, value.length);
 };
 
 module.exports = {
