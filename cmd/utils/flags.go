@@ -408,7 +408,7 @@ var (
 	}
 	MinerPendingFeeRecipientFlag = &cli.StringFlag{
 		Name:     "miner.pending.feeRecipient",
-		Usage:    "Z prefixed public address for the pending block producer (not used for actual block production)",
+		Usage:    "Q prefixed public address for the pending block producer (not used for actual block production)",
 		Category: flags.MinerCategory,
 	}
 

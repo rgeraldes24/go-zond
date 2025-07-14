@@ -237,7 +237,7 @@ func NewAddressFromString(hexaddr string) (Address, error) {
 // IsAddress verifies whether a string can represent a valid hex-encoded
 // QRL address or not.
 func IsAddress(s string) bool {
-	if !hasZPrefix(s) {
+	if !hasQPrefix(s) {
 		return false
 	}
 	s = s[1:]

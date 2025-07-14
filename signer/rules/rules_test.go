@@ -447,7 +447,7 @@ func dummyTxWithV(value uint64) *core.SignTxRequest {
 }
 
 func dummySigned(value *big.Int) *types.Transaction {
-	to, _ := common.NewAddressFromString("Z000000000000000000000000000000000000dead")
+	to, _ := common.NewAddressFromString("Q000000000000000000000000000000000000dead")
 	gas := uint64(21000)
 	gasFeeCap := big.NewInt(2000000)
 	data := make([]byte, 0)

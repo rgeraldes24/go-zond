@@ -216,7 +216,7 @@ func TestNewAcc(t *testing.T) {
 }
 
 func mkTestTx(from common.MixedcaseAddress) apitypes.SendTxArgs {
-	address, _ := common.NewAddressFromString("Z0000000000000000000000000000000000001337")
+	address, _ := common.NewAddressFromString("Q0000000000000000000000000000000000001337")
 	to := common.NewMixedcaseAddress(address)
 	gas := hexutil.Uint64(21000)
 	maxFeePerGas := (hexutil.Big)(*big.NewInt(2000000000))

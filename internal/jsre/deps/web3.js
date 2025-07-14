@@ -2255,7 +2255,7 @@ var isAddress = function (address) {
 */
 var isChecksumAddress = function (address) {
     // Check each case
-    address = address.replace('Z','');
+    address = address.replace('Q','');
     var addressHash = sha3(address.toLowerCase());
 
     for (var i = 0; i < 40; i++ ) {
@@ -2279,9 +2279,9 @@ var isChecksumAddress = function (address) {
 var toChecksumAddress = function (address) {
     if (typeof address === 'undefined') return '';
 
-    address = address.toLowerCase().replace('Z','');
+    address = address.toLowerCase().replace('Q','');
     var addressHash = sha3(address);
-    var checksumAddress = 'Z';
+    var checksumAddress = 'Q';
 
     for (var i = 0; i < address.length; i++ ) {
         // If ith character is 9 to f then make it uppercase
@@ -2295,7 +2295,7 @@ var toChecksumAddress = function (address) {
 };
 
 /**
- * Transforms given string to valid 20 bytes-length address with Z prefix
+ * Transforms given string to valid 20 bytes-length address with Q prefix
  *
  * @method toAddress
  * @param {String} address
@@ -2307,10 +2307,10 @@ var toAddress = function (address) {
     }
 
     if (/^[0-9a-f]{40}$/.test(address)) {
-        return 'Z' + address;
+        return 'Q' + address;
     }
 
-    return 'Z' + padLeft(toHex(address).substr(2), 40);
+    return 'Q' + padLeft(toHex(address).substr(2), 40);
 };
 
 /**
@@ -3904,11 +3904,11 @@ var outputPostFormatter = function(post){
 var inputAddressFormatter = function (address) {
     var iban = new Iban(address);
     if (iban.isValid() && iban.isDirect()) {
-        return 'Z' + iban.address();
+        return 'Q' + iban.address();
     } else if (utils.isStrictAddress(address)) {
         return address;
     } else if (utils.isAddress(address)) {
-        return 'Z' + address;
+        return 'Q' + address;
     }
     throw new Error('invalid address');
 };

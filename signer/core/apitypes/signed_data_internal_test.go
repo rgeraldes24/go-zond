@@ -222,9 +222,9 @@ func TestConvertUint256DataToSlice(t *testing.T) {
 }
 
 func TestConvertAddressDataToSlice(t *testing.T) {
-	addr1, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000001")
-	addr2, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000002")
-	addr3, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000003")
+	addr1, _ := common.NewAddressFromString("Q0000000000000000000000000000000000000001")
+	addr2, _ := common.NewAddressFromString("Q0000000000000000000000000000000000000002")
+	addr3, _ := common.NewAddressFromString("Q0000000000000000000000000000000000000003")
 
 	slice := []common.Address{addr1, addr2, addr3}
 	var it interface{} = slice

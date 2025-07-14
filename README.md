@@ -185,7 +185,7 @@ aware of and agree upon. This consists of a small JSON file (e.g. call it `genes
     "chainId": <arbitrary positive integer>
   },
   "alloc": {},
-  "coinbase": "Z0000000000000000000000000000000000000000",
+  "coinbase": "Q0000000000000000000000000000000000000000",
   "extraData": "",
   "gasLimit": "0x2fefd8",
   "mixhash": "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -201,10 +201,10 @@ the accounts and populate the `alloc` field with their addresses.
 
 ```json
 "alloc": {
-  "Z0000000000000000000000000000000000000001": {
+  "Q0000000000000000000000000000000000000001": {
     "balance": "111111111"
   },
-  "Z0000000000000000000000000000000000000002": {
+  "Q0000000000000000000000000000000000000002": {
     "balance": "222222222"
   }
 }

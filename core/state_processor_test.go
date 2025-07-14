@@ -74,8 +74,8 @@ func TestStateProcessorErrors(t *testing.T) {
 
 	{ // Tests against a 'recent' chain definition
 		var (
-			address0, _ = common.NewAddressFromString("Z20a1A68e6818a1142F85671DB01eF7226debf822")
-			address1, _ = common.NewAddressFromString("Z20B045A50E3C97dcf002eeFed02dB2dB22AE92A0")
+			address0, _ = common.NewAddressFromString("Q20a1A68e6818a1142F85671DB01eF7226debf822")
+			address1, _ = common.NewAddressFromString("Q20B045A50E3C97dcf002eeFed02dB2dB22AE92A0")
 			db          = rawdb.NewMemoryDatabase()
 			gspec       = &Genesis{
 				Config: config,
@@ -267,7 +267,7 @@ func TestStateProcessorErrors(t *testing.T) {
 	// ErrSenderNoEOA, for this we need the sender to have contract code
 	{
 		var (
-			address, _ = common.NewAddressFromString("Z20a1A68e6818a1142F85671DB01eF7226debf822")
+			address, _ = common.NewAddressFromString("Q20a1A68e6818a1142F85671DB01eF7226debf822")
 			db         = rawdb.NewMemoryDatabase()
 			gspec      = &Genesis{
 				Config: config,

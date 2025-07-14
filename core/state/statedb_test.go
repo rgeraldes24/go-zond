@@ -536,7 +536,7 @@ func TestTouchDelete(t *testing.T) {
 // See https://github.com/theQRL/go-zond/pull/15225#issuecomment-380191512
 func TestCopyOfCopy(t *testing.T) {
 	state, _ := New(types.EmptyRootHash, NewDatabase(rawdb.NewMemoryDatabase()), nil)
-	addr, _ := common.NewAddressFromString("Z000000000000000000000000000000000000aaaa")
+	addr, _ := common.NewAddressFromString("Q000000000000000000000000000000000000aaaa")
 	state.SetBalance(addr, big.NewInt(42))
 
 	if got := state.Copy().GetBalance(addr).Uint64(); got != 42 {
@@ -556,7 +556,7 @@ func TestCopyCommitCopy(t *testing.T) {
 	state, _ := New(types.EmptyRootHash, tdb, nil)
 
 	// Create an account and check if the retrieved balance is correct
-	addr, _ := common.NewAddressFromString("Zaffeaffeaffeaffeaffeaffeaffeaffeaffeaffe")
+	addr, _ := common.NewAddressFromString("Qaffeaffeaffeaffeaffeaffeaffeaffeaffeaffe")
 	skey := common.HexToHash("aaa")
 	sval := common.HexToHash("bbb")
 
@@ -629,7 +629,7 @@ func TestCopyCopyCommitCopy(t *testing.T) {
 	state, _ := New(types.EmptyRootHash, NewDatabase(rawdb.NewMemoryDatabase()), nil)
 
 	// Create an account and check if the retrieved balance is correct
-	addr, _ := common.NewAddressFromString("Zaffeaffeaffeaffeaffeaffeaffeaffeaffeaffe")
+	addr, _ := common.NewAddressFromString("Qaffeaffeaffeaffeaffeaffeaffeaffeaffeaffe")
 	skey := common.HexToHash("aaa")
 	sval := common.HexToHash("bbb")
 
@@ -698,7 +698,7 @@ func TestCommitCopy(t *testing.T) {
 	state, _ := New(types.EmptyRootHash, NewDatabase(rawdb.NewMemoryDatabase()), nil)
 
 	// Create an account and check if the retrieved balance is correct
-	addr, _ := common.NewAddressFromString("Zaffeaffeaffeaffeaffeaffeaffeaffeaffeaffe")
+	addr, _ := common.NewAddressFromString("Qaffeaffeaffeaffeaffeaffeaffeaffeaffeaffe")
 	skey := common.HexToHash("aaa")
 	sval := common.HexToHash("bbb")
 
@@ -1026,7 +1026,7 @@ func TestResetObject(t *testing.T) {
 		db       = NewDatabaseWithNodeDB(disk, tdb)
 		snaps, _ = snapshot.New(snapshot.Config{CacheSize: 10}, disk, tdb, types.EmptyRootHash)
 		state, _ = New(types.EmptyRootHash, db, snaps)
-		addr, _  = common.NewAddressFromString("Z0000000000000000000000000000000000000001")
+		addr, _  = common.NewAddressFromString("Q0000000000000000000000000000000000000001")
 		slotA    = common.HexToHash("0x1")
 		slotB    = common.HexToHash("0x2")
 	)
@@ -1060,7 +1060,7 @@ func TestDeleteStorage(t *testing.T) {
 		db       = NewDatabaseWithNodeDB(disk, tdb)
 		snaps, _ = snapshot.New(snapshot.Config{CacheSize: 10}, disk, tdb, types.EmptyRootHash)
 		state, _ = New(types.EmptyRootHash, db, snaps)
-		addr, _  = common.NewAddressFromString("Z0000000000000000000000000000000000000001")
+		addr, _  = common.NewAddressFromString("Q0000000000000000000000000000000000000001")
 	)
 	// Initialize account and populate storage
 	state.SetBalance(addr, big.NewInt(1))

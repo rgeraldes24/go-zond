@@ -172,7 +172,7 @@ func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = key.GetAddress()
 		funds   = big.NewInt(1000000000000000)
-		dad, _  = common.NewAddressFromString("Z0000000000000000000000000000000000000dad")
+		dad, _  = common.NewAddressFromString("Q0000000000000000000000000000000000000dad")
 	)
 	stack := createNode(t)
 	defer stack.Close()

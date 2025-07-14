@@ -101,7 +101,7 @@ func TestExecute(t *testing.T) {
 
 func TestCall(t *testing.T) {
 	state, _ := state.New(types.EmptyRootHash, state.NewDatabase(rawdb.NewMemoryDatabase()), nil)
-	address, _ := common.NewAddressFromString("Z000000000000000000000000000000000000000a")
+	address, _ := common.NewAddressFromString("Q000000000000000000000000000000000000000a")
 	state.SetCode(address, []byte{
 		byte(vm.PUSH1), 10,
 		byte(vm.PUSH1), 0,
@@ -201,7 +201,7 @@ func BenchmarkQRVM_CREATE2_1200(bench *testing.B) {
 }
 
 func fakeHeader(n uint64, parentHash common.Hash) *types.Header {
-	coinbase, _ := common.NewAddressFromString("Z00000000000000000000000000000000deadbeef")
+	coinbase, _ := common.NewAddressFromString("Q00000000000000000000000000000000deadbeef")
 	header := types.Header{
 		Coinbase:   coinbase,
 		Number:     big.NewInt(int64(n)),
@@ -331,12 +331,12 @@ func benchmarkNonModifyingCode(gas uint64, code []byte, name string, tracerCode 
 		sender      = vm.AccountRef(cfg.Origin)
 	)
 	cfg.State.CreateAccount(destination)
-	eoa, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000E0")
+	eoa, _ := common.NewAddressFromString("Q00000000000000000000000000000000000000E0")
 	{
 		cfg.State.CreateAccount(eoa)
 		cfg.State.SetNonce(eoa, 100)
 	}
-	reverting, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000EE")
+	reverting, _ := common.NewAddressFromString("Q00000000000000000000000000000000000000EE")
 	{
 		cfg.State.CreateAccount(reverting)
 		cfg.State.SetCode(reverting, []byte{
@@ -756,11 +756,11 @@ func TestRuntimeJSTracer(t *testing.T) {
 		byte(vm.PUSH1), 0,
 		byte(vm.RETURN),
 	}
-	main, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000aa")
-	address0, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000bb")
-	address1, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000cc")
-	address2, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000dd")
-	address3, _ := common.NewAddressFromString("Z00000000000000000000000000000000000000ee")
+	main, _ := common.NewAddressFromString("Q00000000000000000000000000000000000000aa")
+	address0, _ := common.NewAddressFromString("Q00000000000000000000000000000000000000bb")
+	address1, _ := common.NewAddressFromString("Q00000000000000000000000000000000000000cc")
+	address2, _ := common.NewAddressFromString("Q00000000000000000000000000000000000000dd")
+	address3, _ := common.NewAddressFromString("Q00000000000000000000000000000000000000ee")
 	for i, jsTracer := range jsTracers {
 		for j, tc := range tests {
 			statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(rawdb.NewMemoryDatabase()), nil)

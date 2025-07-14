@@ -34,9 +34,9 @@ import (
 )
 
 var (
-	address1, _       = common.NewAddressFromString("Z2099d76d9a34cdd2694c4dc703930a6fbbc1d402")
-	address2, _       = common.NewAddressFromString("Z205547bA6232eEc096770f7161d57dEA54FD13D0")
-	address3, _       = common.NewAddressFromString("Z206f5f53D348954856a6D2cDe75Ad6381945fB46")
+	address1, _       = common.NewAddressFromString("Q2099d76d9a34cdd2694c4dc703930a6fbbc1d402")
+	address2, _       = common.NewAddressFromString("Q205547bA6232eEc096770f7161d57dEA54FD13D0")
+	address3, _       = common.NewAddressFromString("Q206f5f53D348954856a6D2cDe75Ad6381945fB46")
 	cachetestDir, _   = filepath.Abs(filepath.Join("testdata", "keystore"))
 	cachetestAccounts = []accounts.Account{
 		{
@@ -166,13 +166,13 @@ func TestCacheAddDeleteOrder(t *testing.T) {
 	cache, _ := newAccountCache("testdata/no-such-dir")
 	cache.watcher.running = true // prevent unexpected reloads
 
-	address1, _ := common.NewAddressFromString("Z095e7baea6a6c7c4c2dfeb977efac326af552d87")
-	address2, _ := common.NewAddressFromString("Z2cac1adea150210703ba75ed097ddfe24e14f213")
-	address3, _ := common.NewAddressFromString("Z8bda78331c916a08481428e4b07c96d3e916d165")
-	address4, _ := common.NewAddressFromString("Zd49ff4eeb0b2686ed89c0fc0f2b6ea533ddbbd5e")
-	address5, _ := common.NewAddressFromString("Z7ef5a6135f1fd6a02593eedc869c6d41d934aef8")
-	address6, _ := common.NewAddressFromString("Zf466859ead1932d743d622cb74fc058882e8648a")
-	address7, _ := common.NewAddressFromString("Z289d485d9771714cce91d3393d764e1311907acc")
+	address1, _ := common.NewAddressFromString("Q095e7baea6a6c7c4c2dfeb977efac326af552d87")
+	address2, _ := common.NewAddressFromString("Q2cac1adea150210703ba75ed097ddfe24e14f213")
+	address3, _ := common.NewAddressFromString("Q8bda78331c916a08481428e4b07c96d3e916d165")
+	address4, _ := common.NewAddressFromString("Qd49ff4eeb0b2686ed89c0fc0f2b6ea533ddbbd5e")
+	address5, _ := common.NewAddressFromString("Q7ef5a6135f1fd6a02593eedc869c6d41d934aef8")
+	address6, _ := common.NewAddressFromString("Qf466859ead1932d743d622cb74fc058882e8648a")
+	address7, _ := common.NewAddressFromString("Q289d485d9771714cce91d3393d764e1311907acc")
 	accs := []accounts.Account{
 		{
 			Address: address1,
@@ -223,7 +223,7 @@ func TestCacheAddDeleteOrder(t *testing.T) {
 			t.Errorf("expected hasAccount(%x) to return true", a.Address)
 		}
 	}
-	address, _ := common.NewAddressFromString("Zfd9bd350f08ee3c0c19b85a8e16114a11a60aa4e")
+	address, _ := common.NewAddressFromString("Qfd9bd350f08ee3c0c19b85a8e16114a11a60aa4e")
 	if cache.hasAddress(address) {
 		t.Errorf("expected hasAccount(%x) to return false", address)
 	}
@@ -259,9 +259,9 @@ func TestCacheFind(t *testing.T) {
 	cache, _ := newAccountCache(dir)
 	cache.watcher.running = true // prevent unexpected reloads
 
-	address1, _ := common.NewAddressFromString("Z095e7baea6a6c7c4c2dfeb977efac326af552d87")
-	address2, _ := common.NewAddressFromString("Z2cac1adea150210703ba75ed097ddfe24e14f213")
-	address3, _ := common.NewAddressFromString("Zd49ff4eeb0b2686ed89c0fc0f2b6ea533ddbbd5e")
+	address1, _ := common.NewAddressFromString("Q095e7baea6a6c7c4c2dfeb977efac326af552d87")
+	address2, _ := common.NewAddressFromString("Q2cac1adea150210703ba75ed097ddfe24e14f213")
+	address3, _ := common.NewAddressFromString("Qd49ff4eeb0b2686ed89c0fc0f2b6ea533ddbbd5e")
 	accs := []accounts.Account{
 		{
 			Address: address1,
@@ -284,7 +284,7 @@ func TestCacheFind(t *testing.T) {
 		cache.add(a)
 	}
 
-	address, _ := common.NewAddressFromString("Zf466859ead1932d743d622cb74fc058882e8648a")
+	address, _ := common.NewAddressFromString("Qf466859ead1932d743d622cb74fc058882e8648a")
 	nomatchAccount := accounts.Account{
 		Address: address,
 		URL:     accounts.URL{Scheme: KeyStoreScheme, Path: filepath.Join(dir, "something")},

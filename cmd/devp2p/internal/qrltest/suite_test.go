@@ -23,8 +23,8 @@ import (
 
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/zond"
-	"github.com/theQRL/go-zond/zond/zondconfig"
+	"github.com/theQRL/go-zond/qrl"
+	"github.com/theQRL/go-zond/qrl/qrlconfig"
 )
 
 var (

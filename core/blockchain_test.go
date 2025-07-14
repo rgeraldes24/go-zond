@@ -2220,7 +2220,7 @@ func testSkipStaleTxIndicesInSnapSync(t *testing.T, scheme string) {
 // Benchmarks large blocks with value transfers to non-existing accounts
 func benchmarkLargeNumberOfValueToNonexisting(b *testing.B, numTxs, numBlocks int, recipientFn func(uint64) common.Address) {
 	var (
-		address, _      = common.NewAddressFromString("Z000000000000000000000000000000000000c0de")
+		address, _      = common.NewAddressFromString("Q000000000000000000000000000000000000c0de")
 		signer          = types.ShanghaiSigner{}
 		testBankKey, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		testBankAddress = testBankKey.GetAddress()
@@ -2350,7 +2350,7 @@ func testInitThenFailCreateContract(t *testing.T, scheme string) {
 		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = key.GetAddress()
 		funds   = big.NewInt(1000000000000000)
-		bb, _   = common.NewAddressFromString("Z000000000000000000000000000000000000bbbb")
+		bb, _   = common.NewAddressFromString("Q000000000000000000000000000000000000bbbb")
 	)
 
 	// The bb-code needs to CREATE2 the aa contract. It consists of
@@ -2465,7 +2465,7 @@ func TestEIP2718Transition(t *testing.T) {
 
 func testEIP2718Transition(t *testing.T, scheme string) {
 	var (
-		aa, _  = common.NewAddressFromString("Z000000000000000000000000000000000000aaaa")
+		aa, _  = common.NewAddressFromString("Q000000000000000000000000000000000000aaaa")
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
@@ -2547,7 +2547,7 @@ func TestEIP1559Transition(t *testing.T) {
 
 func testEIP1559Transition(t *testing.T, scheme string) {
 	var (
-		aa, _  = common.NewAddressFromString("Z000000000000000000000000000000000000aaaa")
+		aa, _  = common.NewAddressFromString("Q000000000000000000000000000000000000aaaa")
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
@@ -2907,7 +2907,7 @@ func TestTxIndexer(t *testing.T) {
 		nonce  = uint64(0)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, engine, 128, func(i int, gen *BlockGen) {
-		to, _ := common.NewAddressFromString("Z00000000000000000000000000000000deadbeef")
+		to, _ := common.NewAddressFromString("Q00000000000000000000000000000000deadbeef")
 		tx := types.NewTx(&types.DynamicFeeTx{
 			Nonce:     nonce,
 			To:        &to,
@@ -3108,8 +3108,8 @@ func TestTxIndexer(t *testing.T) {
 
 func TestEIP3651(t *testing.T) {
 	var (
-		aa, _  = common.NewAddressFromString("Z000000000000000000000000000000000000aaaa")
-		bb, _  = common.NewAddressFromString("Z000000000000000000000000000000000000bbbb")
+		aa, _  = common.NewAddressFromString("Q000000000000000000000000000000000000aaaa")
+		bb, _  = common.NewAddressFromString("Q000000000000000000000000000000000000bbbb")
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds

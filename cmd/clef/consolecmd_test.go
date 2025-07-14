@@ -87,7 +87,7 @@ func TestListAccounts(t *testing.T) {
 		clef.input("myverylongpassword").input("myverylongpassword").WaitExit()
 		// Secondly, do a listing, using the same datadir
 		clef = runWithKeystore(t, clef.Datadir, "--suppress-bootwarn", "--lightkdf", "list-accounts")
-		if out := string(clef.Output()); !strings.Contains(out, "Z2099d76D9a34cDd2694c4DC703930A6fBbc1d402 (keystore:") {
+		if out := string(clef.Output()); !strings.Contains(out, "Q2099d76D9a34cDd2694c4DC703930A6fBbc1d402 (keystore:") {
 			t.Logf("Output\n%v", out)
 			t.Error("Failure")
 		}
