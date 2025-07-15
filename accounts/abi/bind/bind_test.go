@@ -1660,7 +1660,7 @@ var bindTests = []struct {
 			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
 			"github.com/theQRL/go-zond/core"
 			"github.com/theQRL/go-zond/crypto"
-			"github.com/theQRL/go-zond/zond/qrlconfig"
+			"github.com/theQRL/go-zond/qrl/qrlconfig"
 		`,
 		`
 			var (
@@ -1778,7 +1778,7 @@ var bindTests = []struct {
 			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
 			"github.com/theQRL/go-zond/core"
 			"github.com/theQRL/go-zond/crypto"
-			"github.com/theQRL/go-zond/zond/qrlconfig"
+			"github.com/theQRL/go-zond/qrl/qrlconfig"
 		`,
 		tester: `
 			var (
@@ -1824,7 +1824,7 @@ var bindTests = []struct {
 			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
 			"github.com/theQRL/go-zond/core"
 			"github.com/theQRL/go-zond/crypto"
-			"github.com/theQRL/go-zond/zond/qrlconfig"
+			"github.com/theQRL/go-zond/qrl/qrlconfig"
 		`,
 		tester: `
 			var (
@@ -1862,7 +1862,7 @@ var bindTests = []struct {
 			"github.com/theQRL/go-zond/accounts/abi/bind/backends"
 			"github.com/theQRL/go-zond/core"
 			"github.com/theQRL/go-zond/crypto"
-			"github.com/theQRL/go-zond/zond/qrlconfig"
+			"github.com/theQRL/go-zond/qrl/qrlconfig"
 		`,
 		tester: `
 			var (

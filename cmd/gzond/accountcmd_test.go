@@ -176,7 +176,7 @@ Repeat password: {{.InputLine "foobar2"}}
 
 func TestUnlockFlag(t *testing.T) {
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "Q061d4bb7a03eddcab945a5cfc7b5b32eac2284e", "console", "--exec", "loadScript('testdata/empty.js')")
+		"--unlock", "Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e", "console", "--exec", "loadScript('testdata/empty.js')")
 	gzond.Expect(`
 Unlocking account Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
