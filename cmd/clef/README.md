@@ -559,7 +559,7 @@ Results in the following invocation on the UI:
           },
           {
             "type": "Info",
-            "message": "safeSend(address: Z0000000000000000000000000000000000000012)"
+            "message": "safeSend(address: Q0000000000000000000000000000000000000012)"
           }
         ],
       "meta": {
@@ -674,11 +674,11 @@ Invoked when a request for account listing has been made.
     {
       "accounts": [
         {
-          "url": "keystore:///home/bazonk/.qrl/keystore/UTC--2017-11-20T14-44-54.089682944Z--Z123409812340981234098123409812deadbeef42",
+          "url": "keystore:///home/bazonk/.qrl/keystore/UTC--2017-11-20T14-44-54.089682944Z--Q123409812340981234098123409812deadbeef42",
           "address": "Q123409812340981234098123409812deadbeef42"
         },
         {
-          "url": "keystore:///home/bazonk/.qrl/keystore/UTC--2017-11-23T21-59-03.199240693Z--Zcafebabedeadbeef34098123409812deadbeef42",
+          "url": "keystore:///home/bazonk/.qrl/keystore/UTC--2017-11-23T21-59-03.199240693Z--Qcafebabedeadbeef34098123409812deadbeef42",
           "address": "Qcafebabedeadbeef34098123409812deadbeef42"
         }
       ],
@@ -861,7 +861,7 @@ Example call:
   "params": [
     {
       "title": "Account password",
-      "prompt": "Please enter the password for account Z694267f14675d7e1b9494fd8d72fefe1755710fa",
+      "prompt": "Please enter the password for account Q694267f14675d7e1b9494fd8d72fefe1755710fa",
       "isPassword": true
     }
   ]

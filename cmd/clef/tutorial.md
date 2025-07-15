@@ -75,10 +75,10 @@ This will prompt the user within the Clef CLI to confirm or deny the request:
 -------- List Account request--------------
 A request has been made to list all accounts.
 You can select which accounts the caller can see
-  [x] ZD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3
-    URL: keystore://$HOME/.qrl/rinkeby/keystore/UTC--2017-04-14T15-15-00.327614556Z--Zd9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3
-  [x] Z086278A6C067775F71d6B2BB1856Db6E28c30418
-    URL: keystore://$HOME/.qrl/rinkeby/keystore/UTC--2018-02-06T22-53-11.211657239Z--Z086278a6c067775f71d6b2bb1856db6e28c30418
+  [x] QD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3
+    URL: keystore://$HOME/.qrl/rinkeby/keystore/UTC--2017-04-14T15-15-00.327614556Z--Qd9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3
+  [x] Q086278A6C067775F71d6B2BB1856Db6E28c30418
+    URL: keystore://$HOME/.qrl/rinkeby/keystore/UTC--2018-02-06T22-53-11.211657239Z--Q086278a6c067775f71d6b2bb1856db6e28c30418
 -------------------------------------------
 Request context:
 	NA -> NA -> NA
@@ -191,7 +191,7 @@ In `$HOME/.clef`, the `masterseed.json` file was created, containing the master 
 In order to make more useful rules - like signing transactions - the signer needs access to the passwords needed to unlock keys from the keystore. You can inject an unlock password via `clef setpw`.
 
 ```text
-$ clef setpw Zd9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3
+$ clef setpw Qd9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3
 
 Please enter a password to store for this address:
 Password:
@@ -199,7 +199,7 @@ Repeat password:
 
 Decrypt master seed of clef
 Password:
-INFO [07-01|14:05:56.031] Credential store updated                 key=Zd9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3
+INFO [07-01|14:05:56.031] Credential store updated                 key=Qd9c9cd5f6779558b6e0ed4e6acf6b1947e7fa1f3
 ```
 
 Now let's update the rules to make use of the new credentials:
@@ -222,7 +222,7 @@ function ApproveSignData(req) {
 
 In this example:
 
-- Any requests to sign data with the account `Zd9c9...` will be:
+- Any requests to sign data with the account `Qd9c9...` will be:
     - Auto-approved if the message contains `bazonk`,
     - Auto-rejected if the message does not contain `bazonk`,
 - Any other requests will be passed along for manual confirmation.
@@ -330,8 +330,8 @@ Lastly, when we requested a transaction to be sent, Clef prompted us in the orig
 
 ```text
 --------- Transaction request-------------
-to:           ZD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3
-from:         ZD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3 [chksum ok]
+to:           QD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3
+from:         QD9C9Cd5f6779558b6e0eD4e6Acf6b1947E7fA1F3 [chksum ok]
 value:        0 planck
 gas:          0x5208 (21000)
 maxFeePerGas: 1000000000 planck

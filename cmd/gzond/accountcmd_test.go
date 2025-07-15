@@ -50,15 +50,15 @@ func TestAccountListEmpty(t *testing.T) {
 func TestAccountList(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
 	var want = `
-Account #0: {Z2068da65aa0167e1d55fd692786cf87117fcf3fc} keystore://{{.Datadir}}/keystore/UTC--2024-05-27T07-48-33.872599000Z--Z2068da65aa0167e1d55fd692786cf87117fcf3fc
-Account #1: {Z208f56097044fc0302ee090d7f410df6a6897392} keystore://{{.Datadir}}/keystore/aaa
-Account #2: {Z2061d4bb7a03eddcab945a5cfc7b5b32eac2284e} keystore://{{.Datadir}}/keystore/zzz
+Account #0: {Q2068da65aa0167e1d55fd692786cf87117fcf3fc} keystore://{{.Datadir}}/keystore/UTC--2024-05-27T07-48-33.872599000Z--Q2068da65aa0167e1d55fd692786cf87117fcf3fc
+Account #1: {Q208f56097044fc0302ee090d7f410df6a6897392} keystore://{{.Datadir}}/keystore/aaa
+Account #2: {Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e} keystore://{{.Datadir}}/keystore/zzz
 `
 	if runtime.GOOS == "windows" {
 		want = `
-Account #0: {Z2068da65aa0167e1d55fd692786cf87117fcf3fc} keystore://{{.Datadir}}\keystore\UTC--2024-05-27T07-48-33.872599000Z--Z2068da65aa0167e1d55fd692786cf87117fcf3fc
-Account #1: {Z208f56097044fc0302ee090d7f410df6a6897392} keystore://{{.Datadir}}\keystore\aaa
-Account #2: {Z2061d4bb7a03eddcab945a5cfc7b5b32eac2284e} keystore://{{.Datadir}}\keystore\zzz
+Account #0: {Q2068da65aa0167e1d55fd692786cf87117fcf3fc} keystore://{{.Datadir}}\keystore\UTC--2024-05-27T07-48-33.872599000Z--Q2068da65aa0167e1d55fd692786cf87117fcf3fc
+Account #1: {Q208f56097044fc0302ee090d7f410df6a6897392} keystore://{{.Datadir}}\keystore\aaa
+Account #2: {Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e} keystore://{{.Datadir}}\keystore\zzz
 `
 	}
 	{
@@ -85,8 +85,8 @@ Repeat password: {{.InputLine "foobar"}}
 Your new key was generated
 `)
 	gzond.ExpectRegexp(`
-Public address of the key:   Z[0-9a-fA-F]{40}
-Path of the secret key file: .*UTC--.+--Z[0-9a-f]{40}
+Public address of the key:   Q[0-9a-fA-F]{40}
+Path of the secret key file: .*UTC--.+--Q[0-9a-f]{40}
 
 - You can share your public address with anyone. Others need it to interact with you.
 - You must NEVER share the secret key with anyone! The key controls access to your funds!
@@ -100,7 +100,7 @@ func TestAccountImport(t *testing.T) {
 		{
 			name:   "correct account",
 			seed:   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdeffcad0b19bb29d4674531d6f115237e16",
-			output: "Address: {Z20b0ebf635349c8167daac7d7246b8e0d892926f}\n",
+			output: "Address: {Q20b0ebf635349c8167daac7d7246b8e0d892926f}\n",
 		},
 		{
 			name:   "invalid character",
@@ -300,7 +300,7 @@ undefined
 
 	wantMessages := []string{
 		"Unlocked account",
-		"=Z208f56097044FC0302eE090d7f410DF6A6897392",
+		"=Q208f56097044FC0302eE090d7f410DF6A6897392",
 	}
 	for _, m := range wantMessages {
 		if !strings.Contains(gzond.StderrText(), m) {

@@ -80,7 +80,7 @@ func TestTransactionValidation(t *testing.T) {
 		// Invalid to checksum
 		{from: "Q000000000000000000000000000000000000dead", to: "Q000000000000000000000000000000000000dead",
 			n: "0x01", g: "0x20", mfpg: "0x40", mpfpg: "0x0", value: "0x01", numMessages: 1},
-		// valid Z000000000000000000000000000000000000dEaD
+		// valid Q000000000000000000000000000000000000dEaD
 		{from: "Q000000000000000000000000000000000000dead", to: "Q000000000000000000000000000000000000dEaD",
 			n: "0x01", g: "0x20", mfpg: "0x40", mpfpg: "0x0", value: "0x01", numMessages: 0},
 		// conflicting input and data
