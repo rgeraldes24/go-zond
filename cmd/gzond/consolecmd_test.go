@@ -66,7 +66,7 @@ func TestConsoleWelcome(t *testing.T) {
 
 	// Verify the actual welcome message to the required template
 	gzond.Expect(`
-Welcome to the Gzond JavaScript console!
+Welcome to the QRL JavaScript console!
 
 instance: Gzond/v{{gzondver}}/{{goos}}-{{goarch}}/{{gover}}
 at block: 0 ({{niltime}})
