@@ -2224,7 +2224,7 @@ var toTwosComplement = function (number) {
  * @return {Boolean}
 */
 var isStrictAddress = function (address) {
-    return /^Z[0-9a-f]{40}$/i.test(address);
+    return /^Q[0-9a-f]{40}$/i.test(address);
 };
 
 /**
@@ -2235,10 +2235,10 @@ var isStrictAddress = function (address) {
  * @return {Boolean}
 */
 var isAddress = function (address) {
-    if (!/^Z[0-9a-f]{40}$/i.test(address)) {
+    if (!/^Q[0-9a-f]{40}$/i.test(address)) {
         // check if it has the basic requirements of an address
         return false;
-    } else if (/^Z[0-9a-f]{40}$/.test(address)) {
+    } else if (/^Q[0-9a-f]{40}$/.test(address)) {
         return true;
     } else {
         // Otherwise check each case
