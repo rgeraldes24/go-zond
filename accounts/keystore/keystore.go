@@ -79,9 +79,9 @@ type unlocked struct {
 }
 
 // NewKeyStore creates a keystore for the given directory.
-func NewKeyStore(keydir string, scryptN, scryptP int) *KeyStore {
+func NewKeyStore(keydir string, argon2idT, argon2idM uint32, argon2idP uint8) *KeyStore {
 	keydir, _ = filepath.Abs(keydir)
-	ks := &KeyStore{storage: &keyStorePassphrase{keydir, scryptN, scryptP, false}}
+	ks := &KeyStore{storage: &keyStorePassphrase{keydir, argon2idT, argon2idM, argon2idP, false}}
 	ks.init(keydir)
 	return ks
 }
@@ -429,13 +429,17 @@ func (ks *KeyStore) Export(a accounts.Account, passphrase, newPassphrase string)
 	if err != nil {
 		return nil, err
 	}
-	var N, P int
+	var (
+		T, M uint32
+		P    uint8
+	)
+
 	if store, ok := ks.storage.(*keyStorePassphrase); ok {
-		N, P = store.scryptN, store.scryptP
+		T, M, P = store.argon2idT, store.argon2idM, store.argon2idP
 	} else {
-		N, P = StandardScryptN, StandardScryptP
+		T, M, P = StandardArgon2idT, StandardArgon2idM, StandardArgon2idP
 	}
-	return EncryptKey(key, newPassphrase, N, P)
+	return EncryptKey(key, newPassphrase, T, M, P)
 }
 
 // Import stores the given encrypted JSON key into the key directory.

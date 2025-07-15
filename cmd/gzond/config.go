@@ -305,11 +305,13 @@ func deprecated(field string) bool {
 }
 
 func setAccountManagerBackends(conf *node.Config, am *accounts.Manager, keydir string) error {
-	scryptN := keystore.StandardScryptN
-	scryptP := keystore.StandardScryptP
+	argon2idT := keystore.StandardArgon2idT
+	argon2idM := keystore.StandardArgon2idM
+	argon2idP := keystore.StandardArgon2idP
 	if conf.UseLightweightKDF {
-		scryptN = keystore.LightScryptN
-		scryptP = keystore.LightScryptP
+		argon2idT = keystore.LightArgon2idT
+		argon2idM = keystore.LightArgon2idM
+		argon2idP = keystore.LightArgon2idP
 	}
 
 	// Assemble the supported backends
@@ -327,7 +329,7 @@ func setAccountManagerBackends(conf *node.Config, am *accounts.Manager, keydir s
 	// If/when we implement some form of lockfile for USB and keystore wallets,
 	// we can have both, but it's very confusing for the user to see the same
 	// accounts in both externally and locally, plus very racey.
-	am.AddBackend(keystore.NewKeyStore(keydir, scryptN, scryptP))
+	am.AddBackend(keystore.NewKeyStore(keydir, argon2idT, argon2idM, argon2idP))
 	// TODO(now.youtrack.cloud/issue/TGZ-4)
 	/*
 		if conf.USB {

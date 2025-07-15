@@ -29,6 +29,7 @@ import (
 	"hash"
 
 	"github.com/theQRL/go-zond/common/mclock"
+	zcipher "github.com/theQRL/go-zond/crypto/cipher"
 	"github.com/theQRL/go-zond/p2p/enode"
 	"github.com/theQRL/go-zond/p2p/enr"
 	"github.com/theQRL/go-zond/rlp"
@@ -427,7 +428,7 @@ func (c *Codec) encryptMessage(s *session, p Packet, head *Header, headerData []
 	messagePT := c.msgbuf.Bytes()
 
 	// Encrypt into message ciphertext buffer.
-	messageCT, err := encryptGCM(c.msgctbuf[:0], s.writeKey, head.Nonce[:], messagePT, headerData)
+	messageCT, err := zcipher.EncryptGCM(c.msgctbuf[:0], s.writeKey, head.Nonce[:], messagePT, headerData)
 	if err == nil {
 		c.msgctbuf = messageCT
 	}
@@ -628,7 +629,7 @@ func (c *Codec) decodeMessage(fromAddr string, head *Header, headerData, msgData
 }
 
 func (c *Codec) decryptMessage(input, nonce, headerData, readKey []byte) (Packet, error) {
-	msgdata, err := decryptGCM(readKey, nonce, input, headerData)
+	msgdata, err := zcipher.DecryptGCM(readKey, nonce, input, headerData)
 	if err != nil {
 		return nil, errMessageDecrypt
 	}

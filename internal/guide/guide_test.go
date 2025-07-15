@@ -38,8 +38,8 @@ func TestAccountManagement(t *testing.T) {
 	// Create a temporary folder to work with
 	workdir := t.TempDir()
 
-	// Create an encrypted keystore (using light scrypt parameters)
-	ks := keystore.NewKeyStore(filepath.Join(workdir, "keystore"), keystore.LightScryptN, keystore.LightScryptP)
+	// Create an encrypted keystore (using light argon2id parameters)
+	ks := keystore.NewKeyStore(filepath.Join(workdir, "keystore"), keystore.LightArgon2idT, keystore.LightArgon2idM, keystore.LightArgon2idP)
 
 	// Create a new account with the specified encryption passphrase
 	newAcc, err := ks.NewAccount("Creation password")

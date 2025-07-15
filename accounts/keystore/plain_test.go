@@ -19,7 +19,6 @@ package keystore
 import (
 	"encoding/hex"
 	"fmt"
-	"path/filepath"
 	"reflect"
 	"testing"
 
@@ -29,7 +28,7 @@ import (
 func tmpKeyStoreIface(t *testing.T, encrypted bool) (dir string, ks keyStore) {
 	d := t.TempDir()
 	if encrypted {
-		ks = &keyStorePassphrase{d, veryLightScryptN, veryLightScryptP, true}
+		ks = &keyStorePassphrase{d, veryLightArgon2idT, veryLightArgon2idM, veryLightArgon2idP, true}
 	} else {
 		ks = &keyStorePlain{d}
 	}
@@ -91,88 +90,40 @@ func TestKeyStorePassphraseDecryptionFail(t *testing.T) {
 
 // Test and utils for the key store tests in the QRL JSON tests;
 // testdataKeyStoreTests/basic_tests.json
-type KeyStoreTestV3 struct {
-	Json     encryptedKeyJSONV3
+type KeyStoreTestV1 struct {
+	Json     encryptedKeyJSONV1
 	Password string
-	Priv     string
+	Seed     string
 }
 
-func TestV3_PBKDF2_1(t *testing.T) {
+func TestV1_Argon2id_1(t *testing.T) {
 	t.Parallel()
-	tests := loadKeyStoreTestV3("testdata/v3_test_vector.json", t)
-	testDecryptV3(tests["wikipage_test_vector_pbkdf2"], t)
+	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
+	testDecryptV1(tests["test_vector_argon2id"], t)
 }
 
-var testsSubmodule = filepath.Join("..", "..", "tests", "testdata", "KeyStoreTests")
-
-func skipIfSubmoduleMissing(t *testing.T) {
-	if !common.FileExist(testsSubmodule) {
-		t.Skipf("can't find JSON tests from submodule at %s", testsSubmodule)
-	}
-}
-
-func TestV3_PBKDF2_2(t *testing.T) {
-	skipIfSubmoduleMissing(t)
+func TestV1_Argon2id_2(t *testing.T) {
 	t.Parallel()
-	tests := loadKeyStoreTestV3(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV3(tests["test1"], t)
+	tests := loadKeyStoreTestV1("testdata/v1_test_vector.json", t)
+	testDecryptV1(tests["test_vector_argon2id_2"], t)
 }
 
-func TestV3_PBKDF2_3(t *testing.T) {
-	skipIfSubmoduleMissing(t)
-	t.Parallel()
-	tests := loadKeyStoreTestV3(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV3(tests["python_generated_test_with_odd_iv"], t)
-}
-
-func TestV3_PBKDF2_4(t *testing.T) {
-	skipIfSubmoduleMissing(t)
-	t.Parallel()
-	tests := loadKeyStoreTestV3(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV3(tests["evilnonce"], t)
-}
-
-func TestV3_Scrypt_1(t *testing.T) {
-	t.Parallel()
-	tests := loadKeyStoreTestV3("testdata/v3_test_vector.json", t)
-	testDecryptV3(tests["wikipage_test_vector_scrypt"], t)
-}
-
-func TestV3_Scrypt_2(t *testing.T) {
-	skipIfSubmoduleMissing(t)
-	t.Parallel()
-	tests := loadKeyStoreTestV3(filepath.Join(testsSubmodule, "basic_tests.json"), t)
-	testDecryptV3(tests["test2"], t)
-}
-
-func testDecryptV3(test KeyStoreTestV3, t *testing.T) {
-	privBytes, _, err := decryptKeyV3(&test.Json, test.Password)
+func testDecryptV1(test KeyStoreTestV1, t *testing.T) {
+	seedBytes, _, err := decryptKeyV1(&test.Json, test.Password)
 	if err != nil {
 		t.Fatal(err)
 	}
-	privHex := hex.EncodeToString(privBytes)
-	if test.Priv != privHex {
-		t.Fatal(fmt.Errorf("Decrypted bytes not equal to test, expected %v have %v", test.Priv, privHex))
+	seedHex := hex.EncodeToString(seedBytes)
+	if test.Seed != seedHex {
+		t.Fatal(fmt.Errorf("Decrypted bytes not equal to test, expected %v have %v", test.Seed, seedHex))
 	}
 }
 
-func loadKeyStoreTestV3(file string, t *testing.T) map[string]KeyStoreTestV3 {
-	tests := make(map[string]KeyStoreTestV3)
+func loadKeyStoreTestV1(file string, t *testing.T) map[string]KeyStoreTestV1 {
+	tests := make(map[string]KeyStoreTestV1)
 	err := common.LoadJSON(file, &tests)
 	if err != nil {
 		t.Fatal(err)
 	}
 	return tests
-}
-
-func TestV3_31_Byte_Key(t *testing.T) {
-	t.Parallel()
-	tests := loadKeyStoreTestV3("testdata/v3_test_vector.json", t)
-	testDecryptV3(tests["31_byte_key"], t)
-}
-
-func TestV3_30_Byte_Key(t *testing.T) {
-	t.Parallel()
-	tests := loadKeyStoreTestV3("testdata/v3_test_vector.json", t)
-	testDecryptV3(tests["30_byte_key"], t)
 }

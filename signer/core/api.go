@@ -124,14 +124,14 @@ type Metadata struct {
 func StartClefAccountManager(ksLocation string /*usbEnabled bool,*/, lightKDF bool /*scpath string*/) *accounts.Manager {
 	var (
 		backends []accounts.Backend
-		n, p     = keystore.StandardScryptN, keystore.StandardScryptP
+		t, m, p  = keystore.StandardArgon2idT, keystore.StandardArgon2idM, keystore.StandardArgon2idP
 	)
 	if lightKDF {
-		n, p = keystore.LightScryptN, keystore.LightScryptP
+		t, m, p = keystore.LightArgon2idT, keystore.LightArgon2idM, keystore.LightArgon2idP
 	}
 	// support password based accounts
 	if len(ksLocation) > 0 {
-		backends = append(backends, keystore.NewKeyStore(ksLocation, n, p))
+		backends = append(backends, keystore.NewKeyStore(ksLocation, t, m, p))
 	}
 
 	// TODO(now.youtrack.cloud/issue/TGZ-4)
