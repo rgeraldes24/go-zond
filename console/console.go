@@ -295,7 +295,7 @@ func (c *Console) AutoCompleteInput(line string, pos int) (string, []string, str
 // Welcome show summary of current Gzond instance and some metadata about the
 // console's available modules.
 func (c *Console) Welcome() {
-	message := "Welcome to the Gzond JavaScript console!\n\n"
+	message := "Welcome to the QRL JavaScript console!\n\n"
 
 	// Print some generic Gzond metadata
 	if res, err := c.jsre.Run(`

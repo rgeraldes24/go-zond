@@ -139,7 +139,7 @@ func testAttachWelcome(t *testing.T, gzond *testgzond, endpoint, apis string) {
 
 	// Verify the actual welcome message to the required template
 	attach.Expect(`
-Welcome to the Gzond JavaScript console!
+Welcome to the QRL JavaScript console!
 
 instance: Gzond/v{{gzondver}}/{{goos}}-{{goarch}}/{{gover}}
 at block: 0 ({{niltime}}){{if ipc}}
