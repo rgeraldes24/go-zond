@@ -459,7 +459,7 @@ var (
 	}
 	RPCGlobalTxFeeCapFlag = &cli.Float64Flag{
 		Name:     "rpc.txfeecap",
-		Usage:    "Sets a cap on transaction fee (in qrl) that can be sent via the RPC APIs (0 = no cap)",
+		Usage:    "Sets a cap on transaction fee (in quanta) that can be sent via the RPC APIs (0 = no cap)",
 		Value:    qrlconfig.Defaults.RPCTxFeeCap,
 		Category: flags.APICategory,
 	}
