@@ -24,12 +24,12 @@ import (
 	"github.com/theQRL/go-zond/core/vm"
 )
 
-// accessList is an accumulator for the set of accounts and storage slots an QRVM
+// accessList is an accumulator for the set of accounts and storage slots a QRVM
 // contract execution touches.
 type accessList map[common.Address]accessListSlots
 
 // accessListSlots is an accumulator for the set of storage slots within a single
-// contract that an QRVM contract execution touches.
+// contract that a QRVM contract execution touches.
 type accessListSlots map[common.Hash]struct{}
 
 // newAccessList creates a new accessList.

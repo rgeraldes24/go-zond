@@ -100,7 +100,7 @@ func (s *StructLog) ErrorString() string {
 	return ""
 }
 
-// StructLogger is an QRVM state logger and implements QRVMLogger.
+// StructLogger is a QRVM state logger and implements QRVMLogger.
 //
 // StructLogger can capture state based on the given Log configuration and also keeps
 // a track record of modified storage which is used in reporting snapshots of the

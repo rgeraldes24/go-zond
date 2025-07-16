@@ -24,7 +24,7 @@ import (
 	"github.com/theQRL/go-zond/params"
 )
 
-// StateDB is an QRVM database for full state querying.
+// StateDB is a QRVM database for full state querying.
 type StateDB interface {
 	CreateAccount(common.Address)
 

@@ -22,7 +22,7 @@ import (
 	"github.com/theQRL/go-zond/common"
 )
 
-// QRVMLogger is used to collect execution traces from an QRVM transaction
+// QRVMLogger is used to collect execution traces from a QRVM transaction
 // execution. CaptureState is called for each step of the VM with the
 // current VM state.
 // Note that reference types are actual VM data structures; make copies

@@ -39,7 +39,7 @@ type ScopeContext struct {
 	Contract *Contract
 }
 
-// QRVMInterpreter represents an QRVM interpreter
+// QRVMInterpreter represents a QRVM interpreter
 type QRVMInterpreter struct {
 	qrvm  *QRVM
 	table *JumpTable

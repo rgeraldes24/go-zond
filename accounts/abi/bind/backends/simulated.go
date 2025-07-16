@@ -414,7 +414,7 @@ func newRevertError(result *core.ExecutionResult) *revertError {
 	}
 }
 
-// revertError is an API error that encompasses an QRVM revert with JSON error
+// revertError is an API error that encompasses a QRVM revert with JSON error
 // code and a binary data blob.
 type revertError struct {
 	error
