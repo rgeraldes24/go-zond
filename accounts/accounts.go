@@ -28,7 +28,7 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
-// Account represents an QRL account located at a specific location defined
+// Account represents a QRL account located at a specific location defined
 // by the optional URL field.
 type Account struct {
 	Address common.Address `json:"address"` // QRL account address derived from the key

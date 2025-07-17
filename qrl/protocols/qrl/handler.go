@@ -159,6 +159,7 @@ type Decoder interface {
 	Time() time.Time
 }
 
+// TODO(rgeraldes24): naming
 var eth68 = map[uint64]msgHandler{
 	TransactionsMsg:               handleTransactions,
 	NewPooledTransactionHashesMsg: handleNewPooledTransactionHashes,

@@ -118,11 +118,12 @@ geth --datadir <datadir> --nodiscover --nat=none --networkid 19763 --verbosity 5
 
 Then, run the following command, replacing `<qnode>` with the qnode of the geth node:
  ```
- devp2p rlpx eth-test <qnode> cmd/devp2p/internal/ethtest/testdata/chain.rlp cmd/devp2p/internal/ethtest/testdata/genesis.json
+ devp2p rlpx qrl-test <qnode> cmd/devp2p/internal/qrltest/testdata/chain.rlp cmd/devp2p/internal/qrltest/testdata/genesis.json
 ```
 
 Repeat the above process (re-initialising the node) in order to run the Eth Protocol test suite again.
 
+// TODO(rgeraldes24)
 #### Eth66 Test Suite
 
 The Eth66 test suite is also a conformance test suite for the eth 66 protocol version specifically.
@@ -130,7 +131,7 @@ To run the eth66 protocol test suite, initialize a geth node as described above 
 replacing `<qnode>` with the qnode of the geth node:
 
  ```
- devp2p rlpx eth66-test <qnode> cmd/devp2p/internal/ethtest/testdata/chain.rlp cmd/devp2p/internal/ethtest/testdata/genesis.json
+ devp2p rlpx eth66-test <qnode> cmd/devp2p/internal/qrltest/testdata/chain.rlp cmd/devp2p/internal/qrltest/testdata/genesis.json
 ```
 
 [eth]: https://github.com/ethereum/devp2p/blob/master/caps/eth.md

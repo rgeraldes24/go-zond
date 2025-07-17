@@ -93,7 +93,7 @@ func (s *Suite) TestStatus(t *utesting.T) {
 }
 
 // TestGetBlockHeaders tests whether the given node can respond to
-// an qrl `GetBlockHeaders` request and that the response is accurate.
+// a qrl `GetBlockHeaders` request and that the response is accurate.
 func (s *Suite) TestGetBlockHeaders(t *utesting.T) {
 	conn, err := s.dial()
 	if err != nil {

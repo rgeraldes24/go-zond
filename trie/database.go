@@ -230,6 +230,7 @@ func (db *Database) Dereference(root common.Hash) error {
 	return nil
 }
 
+// TODO(rgeraldes24): eth66
 // Node retrieves the rlp-encoded node blob with provided node hash. It's
 // only supported by hash-based database and will return an error for others.
 // Note, this function should be deprecated once ETH66 is deprecated.
