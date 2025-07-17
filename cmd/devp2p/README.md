@@ -5,7 +5,7 @@ protocol development purposes. It can do many things.
 
 ### QNR Decoding
 
-Use `devp2p qnrdump <base64>` to verify and display an Quantum Node Record.
+Use `devp2p qnrdump <base64>` to verify and display a Quantum Node Record.
 
 ### Node Key Management
 
