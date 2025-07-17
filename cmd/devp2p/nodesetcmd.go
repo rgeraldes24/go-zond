@@ -27,7 +27,7 @@ import (
 
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/forkid"
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnr"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/urfave/cli/v2"
@@ -69,7 +69,7 @@ func nodesetInfo(ctx *cli.Context) error {
 	return nil
 }
 
-// showAttributeCounts prints the distribution of ENR attributes in a node set.
+// showAttributeCounts prints the distribution of QNR attributes in a node set.
 func showAttributeCounts(ns nodeSet) {
 	attrcount := make(map[string]int)
 	var attrlist []interface{}
@@ -91,7 +91,7 @@ func showAttributeCounts(ns nodeSet) {
 		}
 	}
 	sort.Strings(keys)
-	fmt.Println("ENR attribute counts:")
+	fmt.Println("QNR attribute counts:")
 	for _, key := range keys {
 		fmt.Printf("%s%s: %d\n", strings.Repeat(" ", maxlength-len(key)+1), key, attrcount[key])
 	}
@@ -238,7 +238,7 @@ func qrlFilter(args []string) (nodeFilter, error) {
 			ForkID forkid.ID
 			Tail   []rlp.RawValue `rlp:"tail"`
 		}
-		if n.N.Load(enr.WithEntry("qrl", &qrl)) != nil {
+		if n.N.Load(qnr.WithEntry("qrl", &qrl)) != nil {
 			return false
 		}
 		return filter(qrl.ForkID) == nil
@@ -251,7 +251,7 @@ func snapFilter(args []string) (nodeFilter, error) {
 		var snap struct {
 			Tail []rlp.RawValue `rlp:"tail"`
 		}
-		return n.N.Load(enr.WithEntry("snap", &snap)) == nil
+		return n.N.Load(qnr.WithEntry("snap", &snap)) == nil
 	}
 	return f, nil
 }

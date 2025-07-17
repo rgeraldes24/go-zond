@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package enode
+package qnode
 
 import (
 	"crypto/rand"
@@ -23,7 +23,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnr"
 )
 
 func newLocalNodeForTesting() (*LocalNode, *DB) {
@@ -40,9 +40,9 @@ func TestLocalNode(t *testing.T) {
 		t.Fatal("inconsistent ID")
 	}
 
-	ln.Set(enr.WithEntry("x", uint(3)))
+	ln.Set(qnr.WithEntry("x", uint(3)))
 	var x uint
-	if err := ln.Node().Load(enr.WithEntry("x", &x)); err != nil {
+	if err := ln.Node().Load(qnr.WithEntry("x", &x)); err != nil {
 		t.Fatal("can't load entry 'x':", err)
 	} else if x != 3 {
 		t.Fatal("wrong value for entry 'x':", x)
@@ -61,7 +61,7 @@ func TestLocalNodeSeqPersist(t *testing.T) {
 		t.Fatalf("wrong initial seq %d, want at least %d", initialSeq, timestamp)
 	}
 
-	ln.Set(enr.WithEntry("x", uint(1)))
+	ln.Set(qnr.WithEntry("x", uint(1)))
 	if s := ln.Node().Seq(); s != initialSeq+1 {
 		t.Fatalf("wrong seq %d after set, want %d", s, initialSeq+1)
 	}

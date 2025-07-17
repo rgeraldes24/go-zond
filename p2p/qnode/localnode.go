@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package enode
+package qnode
 
 import (
 	"crypto/ecdsa"
@@ -27,8 +27,8 @@ import (
 	"time"
 
 	"github.com/theQRL/go-zond/log"
-	"github.com/theQRL/go-zond/p2p/enr"
 	"github.com/theQRL/go-zond/p2p/netutil"
+	"github.com/theQRL/go-zond/p2p/qnr"
 )
 
 const (
@@ -37,12 +37,12 @@ const (
 	iptrackWindow        = 5 * time.Minute
 	iptrackContactWindow = 10 * time.Minute
 
-	// time needed to wait between two updates to the local ENR
+	// time needed to wait between two updates to the local QNR
 	recordUpdateThrottle = time.Millisecond
 )
 
 // LocalNode produces the signed node record of a local node, i.e. a node run in the
-// current process. Setting ENR entries via the Set method updates the record. A new version
+// current process. Setting QNR entries via the Set method updates the record. A new version
 // of the record is signed on demand when the Node method is called.
 type LocalNode struct {
 	cur atomic.Value // holds a non-nil node pointer while the record is up-to-date
@@ -55,7 +55,7 @@ type LocalNode struct {
 	mu        sync.RWMutex
 	seq       uint64
 	update    time.Time // timestamp when the record was last updated
-	entries   map[string]enr.Entry
+	entries   map[string]qnr.Entry
 	endpoint4 lnEndpoint
 	endpoint6 lnEndpoint
 }
@@ -72,7 +72,7 @@ func NewLocalNode(db *DB, key *ecdsa.PrivateKey) *LocalNode {
 		id:      PubkeyToIDV4(&key.PublicKey),
 		db:      db,
 		key:     key,
-		entries: make(map[string]enr.Entry),
+		entries: make(map[string]qnr.Entry),
 		endpoint4: lnEndpoint{
 			track: netutil.NewIPTracker(iptrackWindow, iptrackContactWindow, iptrackMinStatements),
 		},
@@ -144,33 +144,33 @@ func (ln *LocalNode) ID() ID {
 // Since node record updates are throttled to one per second, Set is asynchronous.
 // Any update will be queued up and published when at least one second passes from
 // the last change.
-func (ln *LocalNode) Set(e enr.Entry) {
+func (ln *LocalNode) Set(e qnr.Entry) {
 	ln.mu.Lock()
 	defer ln.mu.Unlock()
 
 	ln.set(e)
 }
 
-func (ln *LocalNode) set(e enr.Entry) {
-	val, exists := ln.entries[e.ENRKey()]
+func (ln *LocalNode) set(e qnr.Entry) {
+	val, exists := ln.entries[e.QNRKey()]
 	if !exists || !reflect.DeepEqual(val, e) {
-		ln.entries[e.ENRKey()] = e
+		ln.entries[e.QNRKey()] = e
 		ln.invalidate()
 	}
 }
 
 // Delete removes the given entry from the local record.
-func (ln *LocalNode) Delete(e enr.Entry) {
+func (ln *LocalNode) Delete(e qnr.Entry) {
 	ln.mu.Lock()
 	defer ln.mu.Unlock()
 
 	ln.delete(e)
 }
 
-func (ln *LocalNode) delete(e enr.Entry) {
-	_, exists := ln.entries[e.ENRKey()]
+func (ln *LocalNode) delete(e qnr.Entry) {
+	_, exists := ln.entries[e.QNRKey()]
 	if exists {
-		delete(ln.entries, e.ENRKey())
+		delete(ln.entries, e.QNRKey())
 		ln.invalidate()
 	}
 }
@@ -239,24 +239,24 @@ func (ln *LocalNode) updateEndpoints() {
 	ip6, udp6 := ln.endpoint6.get()
 
 	if ip4 != nil && !ip4.IsUnspecified() {
-		ln.set(enr.IPv4(ip4))
+		ln.set(qnr.IPv4(ip4))
 	} else {
-		ln.delete(enr.IPv4{})
+		ln.delete(qnr.IPv4{})
 	}
 	if ip6 != nil && !ip6.IsUnspecified() {
-		ln.set(enr.IPv6(ip6))
+		ln.set(qnr.IPv6(ip6))
 	} else {
-		ln.delete(enr.IPv6{})
+		ln.delete(qnr.IPv6{})
 	}
 	if udp4 != 0 {
-		ln.set(enr.UDP(udp4))
+		ln.set(qnr.UDP(udp4))
 	} else {
-		ln.delete(enr.UDP(0))
+		ln.delete(qnr.UDP(0))
 	}
 	if udp6 != 0 && udp6 != udp4 {
-		ln.set(enr.UDP6(udp6))
+		ln.set(qnr.UDP6(udp6))
 	} else {
-		ln.delete(enr.UDP6(0))
+		ln.delete(qnr.UDP6(0))
 	}
 }
 
@@ -300,18 +300,18 @@ func (ln *LocalNode) sign() {
 		return // no changes
 	}
 
-	var r enr.Record
+	var r qnr.Record
 	for _, e := range ln.entries {
 		r.Set(e)
 	}
 	ln.bumpSeq()
 	r.SetSeq(ln.seq)
 	if err := SignV4(&r, ln.key); err != nil {
-		panic(fmt.Errorf("enode: can't sign record: %v", err))
+		panic(fmt.Errorf("qnode: can't sign record: %v", err))
 	}
 	n, err := New(ValidSchemes, &r)
 	if err != nil {
-		panic(fmt.Errorf("enode: can't verify local record: %v", err))
+		panic(fmt.Errorf("qnode: can't verify local record: %v", err))
 	}
 	ln.cur.Store(n)
 	log.Info("New local node record", "seq", ln.seq, "id", n.ID(), "ip", n.IP(), "udp", n.UDP(), "tcp", n.TCP())

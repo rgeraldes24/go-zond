@@ -28,24 +28,24 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/theQRL/go-zond/p2p/enode"
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnode"
+	"github.com/theQRL/go-zond/p2p/qnr"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/urfave/cli/v2"
 )
 
 var fileFlag = &cli.StringFlag{Name: "file"}
 
-var enrdumpCommand = &cli.Command{
-	Name:   "enrdump",
+var qnrdumpCommand = &cli.Command{
+	Name:   "qnrdump",
 	Usage:  "Pretty-prints node records",
-	Action: enrdump,
+	Action: qnrdump,
 	Flags: []cli.Flag{
 		fileFlag,
 	},
 }
 
-func enrdump(ctx *cli.Context) error {
+func qnrdump(ctx *cli.Context) error {
 	var source string
 	if file := ctx.String(fileFlag.Name); file != "" {
 		if ctx.NArg() != 0 {
@@ -77,8 +77,8 @@ func enrdump(ctx *cli.Context) error {
 }
 
 // dumpRecord creates a human-readable description of the given node record.
-func dumpRecord(out io.Writer, r *enr.Record) {
-	n, err := enode.New(enode.ValidSchemes, r)
+func dumpRecord(out io.Writer, r *qnr.Record) {
+	n, err := qnode.New(qnode.ValidSchemes, r)
 	if err != nil {
 		fmt.Fprintf(out, "INVALID: %v\n", err)
 	} else {
@@ -90,8 +90,8 @@ func dumpRecord(out io.Writer, r *enr.Record) {
 	fmt.Fprint(out, dumpRecordKV(kv, 2))
 }
 
-func dumpNodeURL(out io.Writer, n *enode.Node) {
-	var key enode.Secp256k1
+func dumpNodeURL(out io.Writer, n *qnode.Node) {
+	var key qnode.Secp256k1
 	if n.Load(&key) != nil {
 		return // no secp256k1 public key
 	}
@@ -129,26 +129,26 @@ func dumpRecordKV(kv []interface{}, indent int) string {
 }
 
 // parseNode parses a node record and verifies its signature.
-func parseNode(source string) (*enode.Node, error) {
-	if strings.HasPrefix(source, "enode://") {
-		return enode.ParseV4(source)
+func parseNode(source string) (*qnode.Node, error) {
+	if strings.HasPrefix(source, "qnode://") {
+		return qnode.ParseV4(source)
 	}
 	r, err := parseRecord(source)
 	if err != nil {
 		return nil, err
 	}
-	return enode.New(enode.ValidSchemes, r)
+	return qnode.New(qnode.ValidSchemes, r)
 }
 
 // parseRecord parses a node record from hex, base64, or raw binary input.
-func parseRecord(source string) (*enr.Record, error) {
+func parseRecord(source string) (*qnr.Record, error) {
 	bin := []byte(source)
 	if d, ok := decodeRecordHex(bytes.TrimSpace(bin)); ok {
 		bin = d
 	} else if d, ok := decodeRecordBase64(bytes.TrimSpace(bin)); ok {
 		bin = d
 	}
-	var r enr.Record
+	var r qnr.Record
 	err := rlp.DecodeBytes(bin, &r)
 	return &r, err
 }
@@ -163,7 +163,7 @@ func decodeRecordHex(b []byte) ([]byte, bool) {
 }
 
 func decodeRecordBase64(b []byte) ([]byte, bool) {
-	if bytes.HasPrefix(b, []byte("enr:")) {
+	if bytes.HasPrefix(b, []byte("qnr:")) {
 		b = b[4:]
 	}
 	dec := make([]byte, base64.RawURLEncoding.DecodedLen(len(b)))
@@ -171,7 +171,7 @@ func decodeRecordBase64(b []byte) ([]byte, bool) {
 	return dec[:n], err == nil
 }
 
-// attrFormatters contains formatting functions for well-known ENR keys.
+// attrFormatters contains formatting functions for well-known QNR keys.
 var attrFormatters = map[string]func(rlp.RawValue) (string, bool){
 	"id":   formatAttrString,
 	"ip":   formatAttrIP,

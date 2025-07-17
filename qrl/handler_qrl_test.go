@@ -31,7 +31,7 @@ import (
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/event"
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/p2p/qnode"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/qrl/downloader"
 	"github.com/theQRL/go-zond/qrl/protocols/qrl"
@@ -48,7 +48,7 @@ func (h *testQRLHandler) Chain() *core.BlockChain              { panic("no backi
 func (h *testQRLHandler) TxPool() qrl.TxPool                   { panic("no backing tx pool") }
 func (h *testQRLHandler) AcceptTxs() bool                      { return true }
 func (h *testQRLHandler) RunPeer(*qrl.Peer, qrl.Handler) error { panic("not used in tests") }
-func (h *testQRLHandler) PeerInfo(enode.ID) interface{}        { panic("not used in tests") }
+func (h *testQRLHandler) PeerInfo(qnode.ID) interface{}        { panic("not used in tests") }
 
 func (h *testQRLHandler) Handle(peer *qrl.Peer, packet qrl.Packet) error {
 	switch packet := packet.(type) {
@@ -125,8 +125,8 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 	defer p2pNoFork.Close()
 	defer p2pProFork.Close()
 
-	peerNoFork := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pNoFork), p2pNoFork, nil)
-	peerProFork := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pProFork), p2pProFork, nil)
+	peerNoFork := qrl.NewPeer(protocol, p2p.NewPeerPipe(qnode.ID{1}, "", nil, p2pNoFork), p2pNoFork, nil)
+	peerProFork := qrl.NewPeer(protocol, p2p.NewPeerPipe(qnode.ID{2}, "", nil, p2pProFork), p2pProFork, nil)
 	defer peerNoFork.Close()
 	defer peerProFork.Close()
 
@@ -156,8 +156,8 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 	defer p2pNoFork.Close()
 	defer p2pProFork.Close()
 
-	peerNoFork = qrl.NewPeer(protocol, p2p.NewPeer(enode.ID{1}, "", nil), p2pNoFork, nil)
-	peerProFork = qrl.NewPeer(protocol, p2p.NewPeer(enode.ID{2}, "", nil), p2pProFork, nil)
+	peerNoFork = qrl.NewPeer(protocol, p2p.NewPeer(qnode.ID{1}, "", nil), p2pNoFork, nil)
+	peerProFork = qrl.NewPeer(protocol, p2p.NewPeer(qnode.ID{2}, "", nil), p2pProFork, nil)
 	defer peerNoFork.Close()
 	defer peerProFork.Close()
 
@@ -189,8 +189,8 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 		defer p2pNoFork.Close()
 		defer p2pProFork.Close()
 
-		peerNoFork = qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pNoFork), p2pNoFork, nil)
-		peerProFork = qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pProFork), p2pProFork, nil)
+		peerNoFork = qrl.NewPeer(protocol, p2p.NewPeerPipe(qnode.ID{1}, "", nil, p2pNoFork), p2pNoFork, nil)
+		peerProFork = qrl.NewPeer(protocol, p2p.NewPeerPipe(qnode.ID{2}, "", nil, p2pProFork), p2pProFork, nil)
 		defer peerNoFork.Close()
 		defer peerProFork.Close()
 
@@ -240,8 +240,8 @@ func testRecvTransactions(t *testing.T, protocol uint) {
 	defer p2pSrc.Close()
 	defer p2pSink.Close()
 
-	src := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pSrc), p2pSrc, handler.txpool)
-	sink := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pSink), p2pSink, handler.txpool)
+	src := qrl.NewPeer(protocol, p2p.NewPeerPipe(qnode.ID{1}, "", nil, p2pSrc), p2pSrc, handler.txpool)
+	sink := qrl.NewPeer(protocol, p2p.NewPeerPipe(qnode.ID{2}, "", nil, p2pSink), p2pSink, handler.txpool)
 	defer src.Close()
 	defer sink.Close()
 
@@ -313,8 +313,8 @@ func testSendTransactions(t *testing.T, protocol uint) {
 	defer p2pSrc.Close()
 	defer p2pSink.Close()
 
-	src := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{1}, "", nil, p2pSrc), p2pSrc, handler.txpool)
-	sink := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{2}, "", nil, p2pSink), p2pSink, handler.txpool)
+	src := qrl.NewPeer(protocol, p2p.NewPeerPipe(qnode.ID{1}, "", nil, p2pSrc), p2pSrc, handler.txpool)
+	sink := qrl.NewPeer(protocol, p2p.NewPeerPipe(qnode.ID{2}, "", nil, p2pSink), p2pSink, handler.txpool)
 	defer src.Close()
 	defer sink.Close()
 
@@ -400,8 +400,8 @@ func testTransactionPropagation(t *testing.T, protocol uint) {
 		defer sourcePipe.Close()
 		defer sinkPipe.Close()
 
-		sourcePeer := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{byte(i + 1)}, "", nil, sourcePipe), sourcePipe, source.txpool)
-		sinkPeer := qrl.NewPeer(protocol, p2p.NewPeerPipe(enode.ID{0}, "", nil, sinkPipe), sinkPipe, sink.txpool)
+		sourcePeer := qrl.NewPeer(protocol, p2p.NewPeerPipe(qnode.ID{byte(i + 1)}, "", nil, sourcePipe), sourcePipe, source.txpool)
+		sinkPeer := qrl.NewPeer(protocol, p2p.NewPeerPipe(qnode.ID{0}, "", nil, sinkPipe), sinkPipe, sink.txpool)
 		defer sourcePeer.Close()
 		defer sinkPeer.Close()
 

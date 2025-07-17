@@ -25,8 +25,8 @@ import (
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/p2p/enode"
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnode"
+	"github.com/theQRL/go-zond/p2p/qnr"
 	"github.com/theQRL/go-zond/params"
 )
 
@@ -74,7 +74,7 @@ type Backend interface {
 	RunPeer(peer *Peer, handler Handler) error
 
 	// PeerInfo retrieves all known `qrl` information about a peer.
-	PeerInfo(id enode.ID) interface{}
+	PeerInfo(id qnode.ID) interface{}
 
 	// Handle is a callback to be invoked when a data packet is received from
 	// the remote peer. Only packets not consumed by the protocol handler will
@@ -89,7 +89,7 @@ type TxPool interface {
 }
 
 // MakeProtocols constructs the P2P protocol definitions for `qrl`.
-func MakeProtocols(backend Backend, network uint64, dnsdisc enode.Iterator) []p2p.Protocol {
+func MakeProtocols(backend Backend, network uint64, dnsdisc qnode.Iterator) []p2p.Protocol {
 	protocols := make([]p2p.Protocol, 0, len(ProtocolVersions))
 	for _, version := range ProtocolVersions {
 		version := version // Closure
@@ -109,10 +109,10 @@ func MakeProtocols(backend Backend, network uint64, dnsdisc enode.Iterator) []p2
 			NodeInfo: func() interface{} {
 				return nodeInfo(backend.Chain(), network)
 			},
-			PeerInfo: func(id enode.ID) interface{} {
+			PeerInfo: func(id qnode.ID) interface{} {
 				return backend.PeerInfo(id)
 			},
-			Attributes:     []enr.Entry{currentENREntry(backend.Chain())},
+			Attributes:     []qnr.Entry{currentQNREntry(backend.Chain())},
 			DialCandidates: dnsdisc,
 		})
 	}

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package enode
+package qnode
 
 import (
 	"crypto/ecdsa"
@@ -23,18 +23,18 @@ import (
 
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnr"
 	"github.com/theQRL/go-zond/rlp"
 	"golang.org/x/crypto/sha3"
 )
 
 // ValidSchemes is a List of known secure identity schemes.
-var ValidSchemes = enr.SchemeMap{
+var ValidSchemes = qnr.SchemeMap{
 	"v4": V4ID{},
 }
 
 // ValidSchemesForTesting is a List of identity schemes for testing.
-var ValidSchemesForTesting = enr.SchemeMap{
+var ValidSchemesForTesting = qnr.SchemeMap{
 	"v4":   V4ID{},
 	"null": NullID{},
 }
@@ -43,10 +43,10 @@ var ValidSchemesForTesting = enr.SchemeMap{
 type V4ID struct{}
 
 // SignV4 signs a record using the v4 scheme.
-func SignV4(r *enr.Record, privkey *ecdsa.PrivateKey) error {
+func SignV4(r *qnr.Record, privkey *ecdsa.PrivateKey) error {
 	// Copy r to avoid modifying it if signing fails.
 	cpy := *r
-	cpy.Set(enr.ID("v4"))
+	cpy.Set(qnr.ID("v4"))
 	cpy.Set(Secp256k1(privkey.PublicKey))
 
 	h := sha3.NewLegacyKeccak256()
@@ -62,7 +62,7 @@ func SignV4(r *enr.Record, privkey *ecdsa.PrivateKey) error {
 	return err
 }
 
-func (V4ID) Verify(r *enr.Record, sig []byte) error {
+func (V4ID) Verify(r *qnr.Record, sig []byte) error {
 	var entry s256raw
 	if err := r.Load(&entry); err != nil {
 		return err
@@ -73,12 +73,12 @@ func (V4ID) Verify(r *enr.Record, sig []byte) error {
 	h := sha3.NewLegacyKeccak256()
 	rlp.Encode(h, r.AppendElements(nil))
 	if !crypto.VerifySignature(entry, h.Sum(nil), sig) {
-		return enr.ErrInvalidSig
+		return qnr.ErrInvalidSig
 	}
 	return nil
 }
 
-func (V4ID) NodeAddr(r *enr.Record) []byte {
+func (V4ID) NodeAddr(r *qnr.Record) []byte {
 	var pubkey Secp256k1
 	err := r.Load(&pubkey)
 	if err != nil {
@@ -93,7 +93,7 @@ func (V4ID) NodeAddr(r *enr.Record) []byte {
 // Secp256k1 is the "secp256k1" key, which holds a public key.
 type Secp256k1 ecdsa.PublicKey
 
-func (v Secp256k1) ENRKey() string { return "secp256k1" }
+func (v Secp256k1) QNRKey() string { return "secp256k1" }
 
 // EncodeRLP implements rlp.Encoder.
 func (v Secp256k1) EncodeRLP(w io.Writer) error {
@@ -117,7 +117,7 @@ func (v *Secp256k1) DecodeRLP(s *rlp.Stream) error {
 // s256raw is an unparsed secp256k1 public key entry.
 type s256raw []byte
 
-func (s256raw) ENRKey() string { return "secp256k1" }
+func (s256raw) QNRKey() string { return "secp256k1" }
 
 // v4CompatID is a weaker and insecure version of the "v4" scheme which only checks for the
 // presence of a secp256k1 public key, but doesn't verify the signature.
@@ -125,35 +125,35 @@ type v4CompatID struct {
 	V4ID
 }
 
-func (v4CompatID) Verify(r *enr.Record, sig []byte) error {
+func (v4CompatID) Verify(r *qnr.Record, sig []byte) error {
 	var pubkey Secp256k1
 	return r.Load(&pubkey)
 }
 
-func signV4Compat(r *enr.Record, pubkey *ecdsa.PublicKey) {
+func signV4Compat(r *qnr.Record, pubkey *ecdsa.PublicKey) {
 	r.Set((*Secp256k1)(pubkey))
 	if err := r.SetSig(v4CompatID{}, []byte{}); err != nil {
 		panic(err)
 	}
 }
 
-// NullID is the "null" ENR identity scheme. This scheme stores the node
+// NullID is the "null" QNR identity scheme. This scheme stores the node
 // ID in the record without any signature.
 type NullID struct{}
 
-func (NullID) Verify(r *enr.Record, sig []byte) error {
+func (NullID) Verify(r *qnr.Record, sig []byte) error {
 	return nil
 }
 
-func (NullID) NodeAddr(r *enr.Record) []byte {
+func (NullID) NodeAddr(r *qnr.Record) []byte {
 	var id ID
-	r.Load(enr.WithEntry("nulladdr", &id))
+	r.Load(qnr.WithEntry("nulladdr", &id))
 	return id[:]
 }
 
-func SignNull(r *enr.Record, id ID) *Node {
-	r.Set(enr.ID("null"))
-	r.Set(enr.WithEntry("nulladdr", id))
+func SignNull(r *qnr.Record, id ID) *Node {
+	r.Set(qnr.ID("null"))
+	r.Set(qnr.WithEntry("nulladdr", id))
 	if err := r.SetSig(NullID{}, []byte{}); err != nil {
 		panic(err)
 	}

@@ -18,7 +18,7 @@ package qrl
 
 import (
 	"github.com/theQRL/go-zond/core"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/p2p/qnode"
 	"github.com/theQRL/go-zond/qrl/protocols/snap"
 )
 
@@ -34,7 +34,7 @@ func (h *snapHandler) RunPeer(peer *snap.Peer, hand snap.Handler) error {
 }
 
 // PeerInfo retrieves all known `snap` information about a peer.
-func (h *snapHandler) PeerInfo(id enode.ID) interface{} {
+func (h *snapHandler) PeerInfo(id qnode.ID) interface{} {
 	if p := h.peers.peer(id.String()); p != nil {
 		if p.snapExt != nil {
 			return p.snapExt.info()

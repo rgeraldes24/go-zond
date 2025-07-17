@@ -23,7 +23,7 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/forkid"
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/p2p/qnode"
 )
 
 // Tests that handshake failures are detected and reported correctly.
@@ -73,7 +73,7 @@ func testHandshake(t *testing.T, protocol uint) {
 		defer app.Close()
 		defer net.Close()
 
-		peer := NewPeer(protocol, p2p.NewPeer(enode.ID{}, "peer", nil), net, nil)
+		peer := NewPeer(protocol, p2p.NewPeer(qnode.ID{}, "peer", nil), net, nil)
 		defer peer.Close()
 
 		// Send the junk test with one peer, check the handshake failure

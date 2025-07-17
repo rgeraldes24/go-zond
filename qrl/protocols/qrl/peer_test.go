@@ -25,7 +25,7 @@ import (
 
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/p2p/qnode"
 )
 
 // testPeer is a simulated peer to allow testing direct network calls.
@@ -42,7 +42,7 @@ func newTestPeer(name string, version uint, backend Backend) (*testPeer, <-chan 
 	app, net := p2p.MsgPipe()
 
 	// Start the peer on a new thread
-	var id enode.ID
+	var id qnode.ID
 	rand.Read(id[:])
 
 	peer := NewPeer(version, p2p.NewPeer(id, name, nil), net, backend.TxPool())

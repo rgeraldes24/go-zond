@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	"github.com/theQRL/go-zond/core"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/p2p/qnode"
 	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 )
 
@@ -37,7 +37,7 @@ func (h *qrlHandler) RunPeer(peer *qrl.Peer, hand qrl.Handler) error {
 }
 
 // PeerInfo retrieves all known `qrl` information about a peer.
-func (h *qrlHandler) PeerInfo(id enode.ID) interface{} {
+func (h *qrlHandler) PeerInfo(id qnode.ID) interface{} {
 	if p := h.peers.peer(id.String()); p != nil {
 		return p.info()
 	}

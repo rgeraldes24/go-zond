@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package enode
+package qnode
 
 import (
 	"crypto/ecdsa"
@@ -26,21 +26,21 @@ import (
 	"net"
 	"strings"
 
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnr"
 	"github.com/theQRL/go-zond/rlp"
 )
 
-var errMissingPrefix = errors.New("missing 'enr:' prefix for base64-encoded record")
+var errMissingPrefix = errors.New("missing 'qnr:' prefix for base64-encoded record")
 
 // Node represents a host on the network.
 type Node struct {
-	r  enr.Record
+	r  qnr.Record
 	id ID
 }
 
 // New wraps a node record. The record must be valid according to the given
 // identity scheme.
-func New(validSchemes enr.IdentityScheme, r *enr.Record) (*Node, error) {
+func New(validSchemes qnr.IdentityScheme, r *qnr.Record) (*Node, error) {
 	if err := r.VerifySignature(validSchemes); err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func New(validSchemes enr.IdentityScheme, r *enr.Record) (*Node, error) {
 	return node, nil
 }
 
-// MustParse parses a node record or enode:// URL. It panics if the input is invalid.
+// MustParse parses a node record or qnode:// URL. It panics if the input is invalid.
 func MustParse(rawurl string) *Node {
 	n, err := Parse(ValidSchemes, rawurl)
 	if err != nil {
@@ -61,18 +61,18 @@ func MustParse(rawurl string) *Node {
 }
 
 // Parse decodes and verifies a base64-encoded node record.
-func Parse(validSchemes enr.IdentityScheme, input string) (*Node, error) {
-	if strings.HasPrefix(input, "enode://") {
+func Parse(validSchemes qnr.IdentityScheme, input string) (*Node, error) {
+	if strings.HasPrefix(input, "qnode://") {
 		return ParseV4(input)
 	}
-	if !strings.HasPrefix(input, "enr:") {
+	if !strings.HasPrefix(input, "qnr:") {
 		return nil, errMissingPrefix
 	}
 	bin, err := base64.RawURLEncoding.DecodeString(input[4:])
 	if err != nil {
 		return nil, err
 	}
-	var r enr.Record
+	var r qnr.Record
 	if err := rlp.DecodeBytes(bin, &r); err != nil {
 		return nil, err
 	}
@@ -95,15 +95,15 @@ func (n *Node) Incomplete() bool {
 }
 
 // Load retrieves an entry from the underlying record.
-func (n *Node) Load(k enr.Entry) error {
+func (n *Node) Load(k qnr.Entry) error {
 	return n.r.Load(k)
 }
 
 // IP returns the IP address of the node. This prefers IPv4 addresses.
 func (n *Node) IP() net.IP {
 	var (
-		ip4 enr.IPv4
-		ip6 enr.IPv6
+		ip4 qnr.IPv4
+		ip6 qnr.IPv6
 	)
 	if n.Load(&ip4) == nil {
 		return net.IP(ip4)
@@ -116,14 +116,14 @@ func (n *Node) IP() net.IP {
 
 // UDP returns the UDP port of the node.
 func (n *Node) UDP() int {
-	var port enr.UDP
+	var port qnr.UDP
 	n.Load(&port)
 	return int(port)
 }
 
 // TCP returns the TCP port of the node.
 func (n *Node) TCP() int {
-	var port enr.TCP
+	var port qnr.TCP
 	n.Load(&port)
 	return int(port)
 }
@@ -139,7 +139,7 @@ func (n *Node) Pubkey() *ecdsa.PublicKey {
 
 // Record returns the node's record. The return value is a copy and may
 // be modified by the caller.
-func (n *Node) Record() *enr.Record {
+func (n *Node) Record() *qnr.Record {
 	cpy := n.r
 	return &cpy
 }
@@ -169,7 +169,7 @@ func (n *Node) String() string {
 	}
 	enc, _ := rlp.EncodeToBytes(&n.r) // always succeeds because record is valid
 	b64 := base64.RawURLEncoding.EncodeToString(enc)
-	return "enr:" + b64
+	return "qnr:" + b64
 }
 
 // MarshalText implements encoding.TextMarshaler.
@@ -201,7 +201,7 @@ func (n ID) String() string {
 
 // GoString returns the Go syntax representation of a ID is a call to HexID.
 func (n ID) GoString() string {
-	return fmt.Sprintf("enode.HexID(\"%x\")", n[:])
+	return fmt.Sprintf("qnode.HexID(\"%x\")", n[:])
 }
 
 // TerminalString returns a shortened hex string for terminal logging.

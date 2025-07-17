@@ -19,26 +19,26 @@ package qrl
 import (
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/forkid"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/p2p/qnode"
 	"github.com/theQRL/go-zond/rlp"
 )
 
-// enrEntry is the ENR entry which advertises `qrl` protocol on the discovery.
-type enrEntry struct {
+// qnrEntry is the QNR entry which advertises `qrl` protocol on the discovery.
+type qnrEntry struct {
 	ForkID forkid.ID // Fork identifier per EIP-2124
 
 	// Ignore additional fields (for forward compatibility).
 	Rest []rlp.RawValue `rlp:"tail"`
 }
 
-// ENRKey implements enr.Entry.
-func (e enrEntry) ENRKey() string {
+// QNRKey implements qnr.Entry.
+func (q qnrEntry) QNRKey() string {
 	return "qrl"
 }
 
-// StartENRUpdater starts the `qrl` ENR updater loop, which listens for chain
+// StartQNRUpdater starts the `qrl` QNR updater loop, which listens for chain
 // head events and updates the requested node record whenever a fork is passed.
-func StartENRUpdater(chain *core.BlockChain, ln *enode.LocalNode) {
+func StartQNRUpdater(chain *core.BlockChain, ln *qnode.LocalNode) {
 	var newHead = make(chan core.ChainHeadEvent, 10)
 	sub := chain.SubscribeChainHeadEvent(newHead)
 
@@ -47,7 +47,7 @@ func StartENRUpdater(chain *core.BlockChain, ln *enode.LocalNode) {
 		for {
 			select {
 			case <-newHead:
-				ln.Set(currentENREntry(chain))
+				ln.Set(currentQNREntry(chain))
 			case <-sub.Err():
 				// Would be nice to sync with Stop, but there is no
 				// good way to do that.
@@ -57,10 +57,10 @@ func StartENRUpdater(chain *core.BlockChain, ln *enode.LocalNode) {
 	}()
 }
 
-// currentENREntry constructs an `qrl` ENR entry based on the current state of the chain.
-func currentENREntry(chain *core.BlockChain) *enrEntry {
+// currentQNREntry constructs an `qrl` QNR entry based on the current state of the chain.
+func currentQNREntry(chain *core.BlockChain) *qnrEntry {
 	head := chain.CurrentHeader()
-	return &enrEntry{
+	return &qnrEntry{
 		ForkID: forkid.NewID(chain.Config(), chain.Genesis(), head.Number.Uint64(), head.Time),
 	}
 }

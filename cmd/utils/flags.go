@@ -54,9 +54,9 @@ import (
 	"github.com/theQRL/go-zond/miner"
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/p2p/enode"
 	"github.com/theQRL/go-zond/p2p/nat"
 	"github.com/theQRL/go-zond/p2p/netutil"
+	"github.com/theQRL/go-zond/p2p/qnode"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/qrl"
 	"github.com/theQRL/go-zond/qrl/catalyst"
@@ -656,7 +656,7 @@ var (
 	}
 	BootnodesFlag = &cli.StringFlag{
 		Name:     "bootnodes",
-		Usage:    "Comma separated enode URLs for P2P discovery bootstrap",
+		Usage:    "Comma separated qnode URLs for P2P discovery bootstrap",
 		Value:    "",
 		Category: flags.NetworkingCategory,
 	}
@@ -938,12 +938,12 @@ func setBootstrapNodes(ctx *cli.Context, cfg *p2p.Config) {
 		return
 	}
 
-	cfg.BootstrapNodes = make([]*enode.Node, 0, len(urls))
+	cfg.BootstrapNodes = make([]*qnode.Node, 0, len(urls))
 	for _, url := range urls {
 		if url != "" {
-			node, err := enode.Parse(enode.ValidSchemes, url)
+			node, err := qnode.Parse(qnode.ValidSchemes, url)
 			if err != nil {
-				log.Crit("Bootstrap URL invalid", "enode", url, "err", err)
+				log.Crit("Bootstrap URL invalid", "qnode", url, "err", err)
 				continue
 			}
 			cfg.BootstrapNodes = append(cfg.BootstrapNodes, node)
@@ -962,12 +962,12 @@ func setBootstrapNodesV5(ctx *cli.Context, cfg *p2p.Config) {
 		return // already set, don't apply defaults.
 	}
 
-	cfg.BootstrapNodesV5 = make([]*enode.Node, 0, len(urls))
+	cfg.BootstrapNodesV5 = make([]*qnode.Node, 0, len(urls))
 	for _, url := range urls {
 		if url != "" {
-			node, err := enode.Parse(enode.ValidSchemes, url)
+			node, err := qnode.Parse(qnode.ValidSchemes, url)
 			if err != nil {
-				log.Error("Bootstrap URL invalid", "enode", url, "err", err)
+				log.Error("Bootstrap URL invalid", "qnode", url, "err", err)
 				continue
 			}
 			cfg.BootstrapNodesV5 = append(cfg.BootstrapNodesV5, node)

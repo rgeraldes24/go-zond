@@ -43,7 +43,7 @@ import (
 	"github.com/theQRL/go-zond/node"
 	"github.com/theQRL/go-zond/p2p"
 	"github.com/theQRL/go-zond/p2p/dnsdisc"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/p2p/qnode"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/qrl/downloader"
 	"github.com/theQRL/go-zond/qrl/gasprice"
@@ -64,8 +64,8 @@ type QRL struct {
 
 	blockchain         *core.BlockChain
 	handler            *handler
-	qrlDialCandidates  enode.Iterator
-	snapDialCandidates enode.Iterator
+	qrlDialCandidates  qnode.Iterator
+	snapDialCandidates qnode.Iterator
 
 	// DB interfaces
 	chainDb qrldb.Database // Block chain database
@@ -326,7 +326,7 @@ func (s *QRL) Protocols() []p2p.Protocol {
 // Start implements node.Lifecycle, starting all internal goroutines needed by the
 // QRL protocol implementation.
 func (s *QRL) Start() error {
-	qrl.StartENRUpdater(s.blockchain, s.p2pServer.LocalNode())
+	qrl.StartQNRUpdater(s.blockchain, s.p2pServer.LocalNode())
 
 	// Start the bloom bits servicing goroutines
 	s.startBloomHandlers(params.BloomBitsBlocks)

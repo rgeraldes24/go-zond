@@ -33,7 +33,7 @@ import (
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/p2p/qnode"
 	"github.com/theQRL/go-zond/params"
 	"github.com/theQRL/go-zond/qrldb"
 )
@@ -110,7 +110,7 @@ func (b *testBackend) RunPeer(peer *Peer, handler Handler) error {
 	// is omitted and we will just give control back to the handler.
 	return handler(peer)
 }
-func (b *testBackend) PeerInfo(enode.ID) interface{} { panic("not implemented") }
+func (b *testBackend) PeerInfo(qnode.ID) interface{} { panic("not implemented") }
 
 func (b *testBackend) AcceptTxs() bool {
 	panic("data processing tests should be done in the handler package")

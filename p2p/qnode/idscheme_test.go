@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package enode
+package qnode
 
 import (
 	"bytes"
@@ -26,7 +26,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnr"
 	"github.com/theQRL/go-zond/rlp"
 )
 
@@ -36,7 +36,7 @@ var (
 )
 
 func TestEmptyNodeID(t *testing.T) {
-	var r enr.Record
+	var r qnr.Record
 	if addr := ValidSchemes.NodeAddr(&r); addr != nil {
 		t.Errorf("wrong address on empty record: got %v, want %v", addr, nil)
 	}
@@ -50,7 +50,7 @@ func TestEmptyNodeID(t *testing.T) {
 func TestSignError(t *testing.T) {
 	invalidKey := &ecdsa.PrivateKey{D: new(big.Int), PublicKey: *pubkey}
 
-	var r enr.Record
+	var r qnr.Record
 	emptyEnc, _ := rlp.EncodeToBytes(&r)
 	if err := SignV4(&r, invalidKey); err == nil {
 		t.Fatal("expected error from SignV4")
@@ -63,7 +63,7 @@ func TestSignError(t *testing.T) {
 
 // TestGetSetSecp256k1 tests encoding/decoding and setting/getting of the Secp256k1 key.
 func TestGetSetSecp256k1(t *testing.T) {
-	var r enr.Record
+	var r qnr.Record
 	if err := SignV4(&r, privkey); err != nil {
 		t.Fatal(err)
 	}

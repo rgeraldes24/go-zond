@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package enode
+package qnode
 
 import (
 	"encoding/binary"
@@ -23,7 +23,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnr"
 )
 
 func TestReadNodes(t *testing.T) {
@@ -274,7 +274,7 @@ func (s *genIter) Close() {
 func testNode(id, seq uint64) *Node {
 	var nodeID ID
 	binary.BigEndian.PutUint64(nodeID[:], id)
-	r := new(enr.Record)
+	r := new(qnr.Record)
 	r.SetSeq(seq)
 	return SignNull(r, nodeID)
 }

@@ -21,7 +21,7 @@ package qrltest
 // Suite represents a structure used to test a node's conformance
 // to the qrl protocol.
 type Suite struct {
-	Dest *enode.Node
+	Dest *qnode.Node
 
 	chain     *Chain
 	fullChain *Chain
@@ -30,7 +30,7 @@ type Suite struct {
 // NewSuite creates and returns a new qrl-test suite that can
 // be used to test the given node against the given blockchain
 // data.
-func NewSuite(dest *enode.Node, chainfile string, genesisfile string) (*Suite, error) {
+func NewSuite(dest *qnode.Node, chainfile string, genesisfile string) (*Suite, error) {
 	chain, err := loadChain(chainfile, genesisfile)
 	if err != nil {
 		return nil, err

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package enr implements Ethereum Node Records as defined in EIP-778. A node record holds
+// Package qnr implements Quantum Node Records as defined in EIP-778. A node record holds
 // arbitrary information about a node on the peer-to-peer network. Node information is
 // stored in key/value pairs. To store and retrieve key/values in a record, use the Entry
 // interface.
@@ -30,8 +30,8 @@
 // When creating a record, set the entries you want and use a signing function provided by
 // the identity scheme to add the signature. Modifying a record invalidates the signature.
 //
-// Package enr supports the "secp256k1-keccak" identity scheme.
-package enr
+// Package qnr supports the "secp256k1-keccak" identity scheme.
+package qnr
 
 import (
 	"bytes"
@@ -134,14 +134,14 @@ func (r *Record) SetSeq(s uint64) {
 // Errors returned by Load are wrapped in KeyError. You can distinguish decoding errors
 // from missing keys using the IsNotFound function.
 func (r *Record) Load(e Entry) error {
-	i := sort.Search(len(r.pairs), func(i int) bool { return r.pairs[i].k >= e.ENRKey() })
-	if i < len(r.pairs) && r.pairs[i].k == e.ENRKey() {
+	i := sort.Search(len(r.pairs), func(i int) bool { return r.pairs[i].k >= e.QNRKey() })
+	if i < len(r.pairs) && r.pairs[i].k == e.QNRKey() {
 		if err := rlp.DecodeBytes(r.pairs[i].v, e); err != nil {
-			return &KeyError{Key: e.ENRKey(), Err: err}
+			return &KeyError{Key: e.QNRKey(), Err: err}
 		}
 		return nil
 	}
-	return &KeyError{Key: e.ENRKey(), Err: errNotFound}
+	return &KeyError{Key: e.QNRKey(), Err: errNotFound}
 }
 
 // Set adds or updates the given entry in the record. It panics if the value can't be
@@ -150,26 +150,26 @@ func (r *Record) Load(e Entry) error {
 func (r *Record) Set(e Entry) {
 	blob, err := rlp.EncodeToBytes(e)
 	if err != nil {
-		panic(fmt.Errorf("enr: can't encode %s: %v", e.ENRKey(), err))
+		panic(fmt.Errorf("qnr: can't encode %s: %v", e.QNRKey(), err))
 	}
 	r.invalidate()
 
 	pairs := make([]pair, len(r.pairs))
 	copy(pairs, r.pairs)
-	i := sort.Search(len(pairs), func(i int) bool { return pairs[i].k >= e.ENRKey() })
+	i := sort.Search(len(pairs), func(i int) bool { return pairs[i].k >= e.QNRKey() })
 	switch {
-	case i < len(pairs) && pairs[i].k == e.ENRKey():
+	case i < len(pairs) && pairs[i].k == e.QNRKey():
 		// element is present at r.pairs[i]
 		pairs[i].v = blob
 	case i < len(r.pairs):
 		// insert pair before i-th elem
-		el := pair{e.ENRKey(), blob}
+		el := pair{e.QNRKey(), blob}
 		pairs = append(pairs, pair{})
 		copy(pairs[i+1:], pairs[i:])
 		pairs[i] = el
 	default:
 		// element should be placed at the end of r.pairs
-		pairs = append(pairs, pair{e.ENRKey(), blob})
+		pairs = append(pairs, pair{e.QNRKey(), blob})
 	}
 	r.pairs = pairs
 }
@@ -292,9 +292,9 @@ func (r *Record) SetSig(s IdentityScheme, sig []byte) error {
 	switch {
 	// Prevent storing invalid data.
 	case s == nil && sig != nil:
-		panic("enr: invalid call to SetSig with non-nil signature but nil scheme")
+		panic("qnr: invalid call to SetSig with non-nil signature but nil scheme")
 	case s != nil && sig == nil:
-		panic("enr: invalid call to SetSig with nil signature but non-nil scheme")
+		panic("qnr: invalid call to SetSig with nil signature but non-nil scheme")
 	// Verify if we have a scheme.
 	case s != nil:
 		if err := s.Verify(r, sig); err != nil {

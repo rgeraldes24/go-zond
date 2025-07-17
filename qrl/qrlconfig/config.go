@@ -76,7 +76,7 @@ type Config struct {
 	NetworkId uint64
 	SyncMode  downloader.SyncMode
 
-	// This can be set to list of enrtree:// URLs which will be queried for
+	// This can be set to list of qnrtree:// URLs which will be queried for
 	// for nodes to connect to.
 	QRLDiscoveryURLs  []string
 	SnapDiscoveryURLs []string

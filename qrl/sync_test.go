@@ -21,7 +21,7 @@ import (
 	"time"
 
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/p2p/qnode"
 	"github.com/theQRL/go-zond/qrl/downloader"
 	"github.com/theQRL/go-zond/qrl/protocols/qrl"
 	"github.com/theQRL/go-zond/qrl/protocols/snap"
@@ -56,8 +56,8 @@ func testSnapSyncDisabling(t *testing.T, qrlVer uint, snapVer uint) {
 	defer emptyPipeQRL.Close()
 	defer fullPipeQRL.Close()
 
-	emptyPeerQRL := qrl.NewPeer(qrlVer, p2p.NewPeer(enode.ID{1}, "", caps), emptyPipeQRL, empty.txpool)
-	fullPeerQRL := qrl.NewPeer(qrlVer, p2p.NewPeer(enode.ID{2}, "", caps), fullPipeQRL, full.txpool)
+	emptyPeerQRL := qrl.NewPeer(qrlVer, p2p.NewPeer(qnode.ID{1}, "", caps), emptyPipeQRL, empty.txpool)
+	fullPeerQRL := qrl.NewPeer(qrlVer, p2p.NewPeer(qnode.ID{2}, "", caps), fullPipeQRL, full.txpool)
 	defer emptyPeerQRL.Close()
 	defer fullPeerQRL.Close()
 
@@ -72,8 +72,8 @@ func testSnapSyncDisabling(t *testing.T, qrlVer uint, snapVer uint) {
 	defer emptyPipeSnap.Close()
 	defer fullPipeSnap.Close()
 
-	emptyPeerSnap := snap.NewPeer(snapVer, p2p.NewPeer(enode.ID{1}, "", caps), emptyPipeSnap)
-	fullPeerSnap := snap.NewPeer(snapVer, p2p.NewPeer(enode.ID{2}, "", caps), fullPipeSnap)
+	emptyPeerSnap := snap.NewPeer(snapVer, p2p.NewPeer(qnode.ID{1}, "", caps), emptyPipeSnap)
+	fullPeerSnap := snap.NewPeer(snapVer, p2p.NewPeer(qnode.ID{2}, "", caps), fullPipeSnap)
 
 	go empty.handler.runSnapExtension(emptyPeerSnap, func(peer *snap.Peer) error {
 		return snap.Handle((*snapHandler)(empty.handler), peer)

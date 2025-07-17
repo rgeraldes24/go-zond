@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package enr
+package qnr
 
 import (
 	"bytes"
@@ -92,16 +92,16 @@ func TestLoadErrors(t *testing.T) {
 	if !IsNotFound(err) {
 		t.Error("IsNotFound should return true for missing key")
 	}
-	assert.Equal(t, &KeyError{Key: udp.ENRKey(), Err: errNotFound}, err)
+	assert.Equal(t, &KeyError{Key: udp.QNRKey(), Err: errNotFound}, err)
 
 	// Check error for invalid keys.
 	var list []uint
-	err = r.Load(WithEntry(ip4.ENRKey(), &list))
+	err = r.Load(WithEntry(ip4.QNRKey(), &list))
 	kerr, ok := err.(*KeyError)
 	if !ok {
 		t.Fatalf("expected KeyError, got %T", err)
 	}
-	assert.Equal(t, kerr.Key, ip4.ENRKey())
+	assert.Equal(t, kerr.Key, ip4.QNRKey())
 	assert.Error(t, kerr.Err)
 	if IsNotFound(err) {
 		t.Error("IsNotFound should return false for decoding errors")
@@ -313,7 +313,7 @@ type testSig struct{}
 
 type testID []byte
 
-func (id testID) ENRKey() string { return "testid" }
+func (id testID) QNRKey() string { return "testid" }
 
 func signTest(id []byte, r *Record) error {
 	r.Set(ID("test"))

@@ -223,10 +223,10 @@ $ bootnode --genkey=boot.key
 $ bootnode --nodekey=boot.key
 ```
 
-With the bootnode online, it will display an [`enode` URL](https://ethereum.org/en/developers/docs/networking-layer/network-addresses/#enode)
+With the bootnode online, it will display an [`qnode` URL](https://ethereum.org/en/developers/docs/networking-layer/network-addresses/#enode)
 that other nodes can use to connect to it and exchange peer information. Make sure to
 replace the displayed IP address information (most probably `[::]`) with your externally
-accessible IP to get the actual `enode` URL.
+accessible IP to get the actual `qnode` URL.
 
 *Note: You could also use a full-fledged `gzond` node as a bootnode, but it's the less
 recommended way.*
@@ -240,7 +240,7 @@ probably also be desirable to keep the data directory of your private network se
 do also specify a custom `--datadir` flag.
 
 ```shell
-$ gzond --datadir=path/to/custom/data/folder --bootnodes=<bootnode-enode-url-from-above>
+$ gzond --datadir=path/to/custom/data/folder --bootnodes=<bootnode-qnode-url-from-above>
 ```
 
 *Note: Since your network will be completely cut off from the main and test networks, you'll

@@ -35,7 +35,7 @@ import (
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/p2p/qnode"
 	"github.com/theQRL/go-zond/qrl/downloader"
 	"github.com/theQRL/go-zond/qrl/fetcher"
 	"github.com/theQRL/go-zond/qrl/protocols/qrl"
@@ -84,7 +84,7 @@ type txPool interface {
 // handlerConfig is the collection of initialization parameters to create a full
 // node network handler.
 type handlerConfig struct {
-	NodeID         enode.ID               // P2P node ID used for tx propagation topology
+	NodeID         qnode.ID               // P2P node ID used for tx propagation topology
 	Database       qrldb.Database         // Database for direct sync insertions
 	Chain          *core.BlockChain       // Blockchain to serve data from
 	TxPool         txPool                 // Transaction pool to propagate from
@@ -96,7 +96,7 @@ type handlerConfig struct {
 }
 
 type handler struct {
-	nodeID     enode.ID
+	nodeID     qnode.ID
 	networkID  uint64
 	forkFilter forkid.Filter // Fork ID filter, constant across the lifetime of the node
 
@@ -494,8 +494,8 @@ func (h *handler) BroadcastTransactions(txs types.Transactions) {
 		// the peers that have not received it yet, ensuring that the flow of
 		// transactions is grouped by account to (try and) avoid nonce gaps.
 		//
-		// To do this, we hash the local enode IW with together with a peer's
-		// enode ID together with the transaction sender and broadcast if
+		// To do this, we hash the local qnode IW with together with a peer's
+		// qnode ID together with the transaction sender and broadcast if
 		// `sha(self, peer, sender) mod peers < sqrt(peers)`.
 		for _, peer := range h.peers.peersWithoutTransaction(tx.Hash()) {
 			var broadcast bool

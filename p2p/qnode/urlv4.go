@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package enode
+package qnode
 
 import (
 	"crypto/ecdsa"
@@ -28,11 +28,11 @@ import (
 
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnr"
 )
 
 var (
-	incompleteNodeURL = regexp.MustCompile("(?i)^(?:enode://)?([0-9a-f]+)$")
+	incompleteNodeURL = regexp.MustCompile("(?i)^(?:qnode://)?([0-9a-f]+)$")
 	lookupIPFunc      = net.LookupIP
 )
 
@@ -54,7 +54,7 @@ func MustParseV4(rawurl string) *Node {
 //
 // For incomplete nodes, the designator must look like one of these
 //
-//	enode://<hex node id>
+//	qnode://<hex node id>
 //	<hex node id>
 //
 // For complete nodes, the node ID is encoded in the username portion
@@ -68,7 +68,7 @@ func MustParseV4(rawurl string) *Node {
 // a node with IP address 10.3.58.6, TCP listening port 30303
 // and UDP discovery port 30301.
 //
-//	enode://<hex node id>@10.3.58.6:30303?discport=30301
+//	qnode://<hex node id>@10.3.58.6:30303?discport=30301
 func ParseV4(rawurl string) (*Node, error) {
 	if m := incompleteNodeURL.FindStringSubmatch(rawurl); m != nil {
 		id, err := parsePubkey(m[1])
@@ -83,15 +83,15 @@ func ParseV4(rawurl string) (*Node, error) {
 // NewV4 creates a node from discovery v4 node information. The record
 // contained in the node has a zero-length signature.
 func NewV4(pubkey *ecdsa.PublicKey, ip net.IP, tcp, udp int) *Node {
-	var r enr.Record
+	var r qnr.Record
 	if len(ip) > 0 {
-		r.Set(enr.IP(ip))
+		r.Set(qnr.IP(ip))
 	}
 	if udp != 0 {
-		r.Set(enr.UDP(udp))
+		r.Set(qnr.UDP(udp))
 	}
 	if tcp != 0 {
-		r.Set(enr.TCP(tcp))
+		r.Set(qnr.TCP(tcp))
 	}
 	signV4Compat(&r, pubkey)
 	n, err := New(v4CompatID{}, &r)
@@ -116,8 +116,8 @@ func parseComplete(rawurl string) (*Node, error) {
 	if err != nil {
 		return nil, err
 	}
-	if u.Scheme != "enode" {
-		return nil, errors.New("invalid URL scheme, want \"enode\"")
+	if u.Scheme != "qnode" {
+		return nil, errors.New("invalid URL scheme, want \"qnode\"")
 	}
 	// Parse the Node ID from the user portion.
 	if u.User == nil {
@@ -168,7 +168,7 @@ func parsePubkey(in string) (*ecdsa.PublicKey, error) {
 
 func (n *Node) URLv4() string {
 	var (
-		scheme enr.ID
+		scheme qnr.ID
 		nodeid string
 		key    ecdsa.PublicKey
 	)
@@ -180,7 +180,7 @@ func (n *Node) URLv4() string {
 	default:
 		nodeid = fmt.Sprintf("%s.%x", scheme, n.id[:])
 	}
-	u := url.URL{Scheme: "enode"}
+	u := url.URL{Scheme: "qnode"}
 	if n.Incomplete() {
 		u.Host = nodeid
 	} else {

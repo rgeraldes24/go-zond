@@ -27,8 +27,8 @@ import (
 	"github.com/theQRL/go-zond/log"
 	"github.com/theQRL/go-zond/metrics"
 	"github.com/theQRL/go-zond/p2p"
-	"github.com/theQRL/go-zond/p2p/enode"
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnode"
+	"github.com/theQRL/go-zond/p2p/qnr"
 	"github.com/theQRL/go-zond/trie"
 	"github.com/theQRL/go-zond/trie/trienode"
 )
@@ -73,7 +73,7 @@ type Backend interface {
 	RunPeer(peer *Peer, handler Handler) error
 
 	// PeerInfo retrieves all known `snap` information about a peer.
-	PeerInfo(id enode.ID) interface{}
+	PeerInfo(id qnode.ID) interface{}
 
 	// Handle is a callback to be invoked when a data packet is received from
 	// the remote peer. Only packets not consumed by the protocol handler will
@@ -82,10 +82,10 @@ type Backend interface {
 }
 
 // MakeProtocols constructs the P2P protocol definitions for `snap`.
-func MakeProtocols(backend Backend, dnsdisc enode.Iterator) []p2p.Protocol {
+func MakeProtocols(backend Backend, dnsdisc qnode.Iterator) []p2p.Protocol {
 	// Filter the discovery iterator for nodes advertising snap support.
-	dnsdisc = enode.Filter(dnsdisc, func(n *enode.Node) bool {
-		var snap enrEntry
+	dnsdisc = qnode.Filter(dnsdisc, func(n *qnode.Node) bool {
+		var snap qnrEntry
 		return n.Load(&snap) == nil
 	})
 
@@ -105,10 +105,10 @@ func MakeProtocols(backend Backend, dnsdisc enode.Iterator) []p2p.Protocol {
 			NodeInfo: func() interface{} {
 				return nodeInfo(backend.Chain())
 			},
-			PeerInfo: func(id enode.ID) interface{} {
+			PeerInfo: func(id qnode.ID) interface{} {
 				return backend.PeerInfo(id)
 			},
-			Attributes:     []enr.Entry{&enrEntry{}},
+			Attributes:     []qnr.Entry{&qnrEntry{}},
 			DialCandidates: dnsdisc,
 		}
 	}

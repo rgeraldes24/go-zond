@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package enode
+package qnode
 
 import (
 	"bytes"
@@ -25,7 +25,7 @@ import (
 	"testing/quick"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/theQRL/go-zond/p2p/enr"
+	"github.com/theQRL/go-zond/p2p/qnr"
 	"github.com/theQRL/go-zond/rlp"
 )
 
@@ -34,7 +34,7 @@ var pyRecord, _ = hex.DecodeString("f884b8407098ad865b00a582051940cb9cf368365724
 // TestPythonInterop checks that we can decode and verify a record produced by the Python
 // implementation.
 func TestPythonInterop(t *testing.T) {
-	var r enr.Record
+	var r qnr.Record
 	if err := rlp.DecodeBytes(pyRecord, &r); err != nil {
 		t.Fatalf("can't decode: %v", err)
 	}
@@ -46,8 +46,8 @@ func TestPythonInterop(t *testing.T) {
 	var (
 		wantID  = HexID("a448f24c6d18e575453db13171562b71999873db5b286df957af199ec94617f7")
 		wantSeq = uint64(1)
-		wantIP  = enr.IPv4{127, 0, 0, 1}
-		wantUDP = enr.UDP(30303)
+		wantIP  = qnr.IPv4{127, 0, 0, 1}
+		wantUDP = qnr.UDP(30303)
 	)
 	if n.Seq() != wantSeq {
 		t.Errorf("wrong seq: got %d, want %d", n.Seq(), wantSeq)
@@ -55,9 +55,9 @@ func TestPythonInterop(t *testing.T) {
 	if n.ID() != wantID {
 		t.Errorf("wrong id: got %x, want %x", n.ID(), wantID)
 	}
-	want := map[enr.Entry]interface{}{new(enr.IPv4): &wantIP, new(enr.UDP): &wantUDP}
+	want := map[qnr.Entry]interface{}{new(qnr.IPv4): &wantIP, new(qnr.UDP): &wantUDP}
 	for k, v := range want {
-		desc := fmt.Sprintf("loading key %q", k.ENRKey())
+		desc := fmt.Sprintf("loading key %q", k.QNRKey())
 		if assert.NoError(t, n.Load(k), desc) {
 			assert.Equal(t, k, v, desc)
 		}

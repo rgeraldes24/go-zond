@@ -20,13 +20,13 @@ import (
 	"github.com/theQRL/go-zond/rlp"
 )
 
-// enrEntry is the ENR entry which advertises `snap` protocol on the discovery.
-type enrEntry struct {
+// qnrEntry is the QNR entry which advertises `snap` protocol on the discovery.
+type qnrEntry struct {
 	// Ignore additional fields (for forward compatibility).
 	Rest []rlp.RawValue `rlp:"tail"`
 }
 
-// ENRKey implements enr.Entry.
-func (e enrEntry) ENRKey() string {
+// QNRKey implements qnr.Entry.
+func (e qnrEntry) QNRKey() string {
 	return "snap"
 }
