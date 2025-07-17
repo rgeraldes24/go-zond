@@ -156,7 +156,6 @@ func parseAndVerifyRoot(txt string, loc *linkEntry) (rootEntry, error) {
 		return e, err
 	}
 	if !e.verifySignature(loc.pubkey) {
-		fmt.Println("AQUI")
 		return e, entryError{typ: "root", err: errInvalidSig}
 	}
 	return e, nil
