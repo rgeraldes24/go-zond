@@ -48,7 +48,7 @@ var (
 		ChainID: big.NewInt(32382),
 	}
 
-	// AllBeaconProtocolChanges contains every protocol change (EIPs) introduced
+	// AllBeaconProtocolChanges contains every protocol change (QIPs) introduced
 	// and accepted by the QRL core developers into the Beacon consensus.
 	AllBeaconProtocolChanges = &ChainConfig{
 		ChainID: big.NewInt(1337),
@@ -59,14 +59,14 @@ var (
 		IsDevMode: true,
 	}
 
-	// TestChainConfig contains every protocol change (EIPs) introduced
+	// TestChainConfig contains every protocol change (QIPs) introduced
 	// and accepted by the QRL core developers for testing proposes.
 	TestChainConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
 	}
 
 	// NonActivatedConfig defines the chain configuration without activating
-	// any protocol change (EIPs).
+	// any protocol change (QIPs).
 	NonActivatedConfig = &ChainConfig{
 		ChainID: big.NewInt(1),
 	}

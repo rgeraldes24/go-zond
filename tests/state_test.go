@@ -62,7 +62,7 @@ func TestState(t *testing.T) {
 
 	// For Istanbul, older tests were moved into LegacyTests
 	for _, dir := range []string{
-		filepath.Join(baseDir, "EIPTests", "StateTests"),
+		filepath.Join(baseDir, "QIPTests", "StateTests"),
 		stateTestDir,
 		legacyStateTestDir,
 		benchmarksDir,
@@ -206,14 +206,14 @@ func runBenchmark(b *testing.B, t *StateTest) {
 		b.Run(key, func(b *testing.B) {
 			vmconfig := vm.Config{}
 
-			config, eips, err := GetChainConfig(subtest.Fork)
+			config, qips, err := GetChainConfig(subtest.Fork)
 			if err != nil {
 				b.Error(err)
 				return
 			}
 			var rules = config.Rules(new(big.Int), 0)
 
-			vmconfig.ExtraEips = eips
+			vmconfig.ExtraQips = qips
 			block := t.genesis(config).ToBlock()
 			triedb, _, statedb := MakePreState(rawdb.NewMemoryDatabase(), t.json.Pre, false, rawdb.HashScheme)
 			defer triedb.Close()

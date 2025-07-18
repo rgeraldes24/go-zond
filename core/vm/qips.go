@@ -25,23 +25,23 @@ import (
 
 var activators = map[int]func(*JumpTable){}
 
-// EnableEIP enables the given EIP on the config.
+// EnableQIP enables the given QIP on the config.
 // This operation writes in-place, and callers need to ensure that the globally
 // defined jump tables are not polluted.
-func EnableEIP(eipNum int, jt *JumpTable) error {
-	enablerFn, ok := activators[eipNum]
+func EnableQIP(qipNum int, jt *JumpTable) error {
+	enablerFn, ok := activators[qipNum]
 	if !ok {
-		return fmt.Errorf("undefined eip %d", eipNum)
+		return fmt.Errorf("undefined qip %d", qipNum)
 	}
 	enablerFn(jt)
 	return nil
 }
 
-func ValidEip(eipNum int) bool {
-	_, ok := activators[eipNum]
+func ValidQip(qipNum int) bool {
+	_, ok := activators[qipNum]
 	return ok
 }
-func ActivateableEips() []string {
+func ActivateableQips() []string {
 	var nums []string
 	for k := range activators {
 		nums = append(nums, fmt.Sprintf("%d", k))

@@ -122,11 +122,11 @@ var (
 		Usage: fmt.Sprintf("Name of ruleset to use."+
 			"\n\tAvailable forknames:"+
 			"\n\t    %v"+
-			"\n\tAvailable extra eips:"+
+			"\n\tAvailable extra qips:"+
 			"\n\t    %v"+
-			"\n\tSyntax <forkname>(+ExtraEip)",
+			"\n\tSyntax <forkname>(+ExtraQip)",
 			strings.Join(tests.AvailableForks(), "\n\t    "),
-			strings.Join(vm.ActivateableEips(), ", ")),
+			strings.Join(vm.ActivateableQips(), ", ")),
 		Value: "Shanghai",
 	}
 	VerbosityFlag = &cli.IntFlag{

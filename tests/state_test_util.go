@@ -129,27 +129,27 @@ type stTransactionMarshaling struct {
 // GetChainConfig takes a fork definition and returns a chain config.
 // The fork definition can be
 // - a plain forkname, e.g. `Byzantium`,
-// - a fork basename, and a list of EIPs to enable; e.g. `Byzantium+1884+1283`.
-func GetChainConfig(forkString string) (baseConfig *params.ChainConfig, eips []int, err error) {
+// - a fork basename, and a list of QIPs to enable; e.g. `Byzantium+1884+1283`.
+func GetChainConfig(forkString string) (baseConfig *params.ChainConfig, qips []int, err error) {
 	var (
 		splitForks            = strings.Split(forkString, "+")
 		ok                    bool
-		baseName, eipsStrings = splitForks[0], splitForks[1:]
+		baseName, qipsStrings = splitForks[0], splitForks[1:]
 	)
 	if baseConfig, ok = Forks[baseName]; !ok {
 		return nil, nil, UnsupportedForkError{baseName}
 	}
-	for _, eip := range eipsStrings {
-		if eipNum, err := strconv.Atoi(eip); err != nil {
-			return nil, nil, fmt.Errorf("syntax error, invalid eip number %v", eipNum)
+	for _, qip := range qipsStrings {
+		if qipNum, err := strconv.Atoi(qip); err != nil {
+			return nil, nil, fmt.Errorf("syntax error, invalid qip number %v", qipNum)
 		} else {
-			if !vm.ValidEip(eipNum) {
-				return nil, nil, fmt.Errorf("syntax error, invalid eip number %v", eipNum)
+			if !vm.ValidQip(qipNum) {
+				return nil, nil, fmt.Errorf("syntax error, invalid qip number %v", qipNum)
 			}
-			eips = append(eips, eipNum)
+			qips = append(qips, qipNum)
 		}
 	}
-	return baseConfig, eips, nil
+	return baseConfig, qips, nil
 }
 
 // Subtests returns all valid subtests of the test.
@@ -222,11 +222,11 @@ func (t *StateTest) Run(subtest StateSubtest, vmconfig vm.Config, snapshotter bo
 
 // RunNoVerify runs a specific subtest and returns the statedb and post-state root
 func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapshotter bool, scheme string) (*trie.Database, *snapshot.Tree, *state.StateDB, common.Hash, error) {
-	config, eips, err := GetChainConfig(subtest.Fork)
+	config, qips, err := GetChainConfig(subtest.Fork)
 	if err != nil {
 		return nil, nil, nil, common.Hash{}, UnsupportedForkError{subtest.Fork}
 	}
-	vmconfig.ExtraEips = eips
+	vmconfig.ExtraQips = qips
 
 	block := t.genesis(config).ToBlock()
 	triedb, snaps, statedb := MakePreState(rawdb.NewMemoryDatabase(), t.json.Pre, snapshotter, scheme)

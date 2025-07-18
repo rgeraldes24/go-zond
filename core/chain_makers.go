@@ -74,7 +74,7 @@ func (b *BlockGen) SetExtra(data []byte) {
 // There are a few options can be passed as well in order to run some
 // customized rules.
 // - bc:       enables the ability to query historical block hashes for BLOCKHASH
-// - vmConfig: extends the flexibility for customizing qrvm rules, e.g. enable extra EIPs
+// - vmConfig: extends the flexibility for customizing qrvm rules, e.g. enable extra QIPs
 func (b *BlockGen) addTx(bc *BlockChain, vmConfig vm.Config, tx *types.Transaction) {
 	if b.gasPool == nil {
 		b.SetCoinbase(common.Address{})

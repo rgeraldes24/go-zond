@@ -498,7 +498,7 @@ func TestEip2929Cases(t *testing.T) {
 		Execute(code, nil, &Config{
 			QRVMConfig: vm.Config{
 				Tracer:    logger.NewMarkdownLogger(nil, os.Stdout),
-				ExtraEips: []int{2929},
+				ExtraQips: []int{2929},
 			},
 		})
 	}

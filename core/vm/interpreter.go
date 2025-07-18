@@ -28,7 +28,7 @@ type Config struct {
 	Tracer                  QRVMLogger // Opcode logger
 	NoBaseFee               bool       // Forces the EIP-1559 baseFee to 0 (needed for 0 price calls)
 	EnablePreimageRecording bool       // Enables recording of SHA3/keccak preimages
-	ExtraEips               []int      // Additional EIPS that are to be enabled
+	ExtraQips               []int      // Additional QIPS that are to be enabled
 }
 
 // ScopeContext contains the things that are per-call, such as stack and memory,
@@ -55,20 +55,20 @@ type QRVMInterpreter struct {
 func NewQRVMInterpreter(qrvm *QRVM) *QRVMInterpreter {
 	// If jump table was not initialised we set the default one.
 	table := &shanghaiInstructionSet
-	var extraEips []int
-	if len(qrvm.Config.ExtraEips) > 0 {
+	var extraQips []int
+	if len(qrvm.Config.ExtraQips) > 0 {
 		// Deep-copy jumptable to prevent modification of opcodes in other tables
 		table = copyJumpTable(table)
 	}
-	for _, eip := range qrvm.Config.ExtraEips {
-		if err := EnableEIP(eip, table); err != nil {
+	for _, qip := range qrvm.Config.ExtraQips {
+		if err := EnableQIP(qip, table); err != nil {
 			// Disable it, so caller can check if it's activated or not
-			log.Error("EIP activation failed", "eip", eip, "error", err)
+			log.Error("QIP activation failed", "qip", qip, "error", err)
 		} else {
-			extraEips = append(extraEips, eip)
+			extraQips = append(extraQips, qip)
 		}
 	}
-	qrvm.Config.ExtraEips = extraEips
+	qrvm.Config.ExtraQips = extraQips
 	return &QRVMInterpreter{qrvm: qrvm, table: table}
 }
 
