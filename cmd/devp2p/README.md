@@ -105,9 +105,9 @@ Start the test by running `devp2p discv5 test -listen1 127.0.0.1 -listen2 127.0.
 
 ### QRL Protocol Test Suite
 
-The Eth Protocol test suite is a conformance test suite for the qrl protocol.
+The QRL Protocol test suite is a conformance test suite for the qrl protocol.
 
-To run the eth protocol test suite against your implementation, the node needs to be initialized as such:
+To run the qrl protocol test suite against your implementation, the node needs to be initialized as such:
 
 1. initialize the gzond node with the `genesis.json` file contained in the `testdata` directory
 2. import the `halfchain.rlp` file in the `testdata` directory
@@ -121,7 +121,7 @@ Then, run the following command, replacing `<qnode>` with the qnode of the gzond
  devp2p rlpx qrl-test <qnode> cmd/devp2p/internal/qrltest/testdata/chain.rlp cmd/devp2p/internal/qrltest/testdata/genesis.json
 ```
 
-Repeat the above process (re-initialising the node) in order to run the Eth Protocol test suite again.
+Repeat the above process (re-initialising the node) in order to run the QRL Protocol test suite again.
 
 [eth]: https://github.com/ethereum/devp2p/blob/master/caps/eth.md
 [dns-tutorial]: https://geth.ethereum.org/docs/developers/geth-developer/dns-discovery-setup
