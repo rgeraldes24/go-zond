@@ -20,6 +20,7 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"errors"
+	"fmt"
 	"reflect"
 	"testing"
 	"time"
@@ -43,13 +44,18 @@ func TestClientSyncTree(t *testing.T) {
 		"qnr:-HW4QLAYqmrwllBEnzWWs7I5Ev2IAs7x_dZlbYdRdMUx5EyKHDXp7AV5CkuPGUPdvbv1_Ms1CPfhcGCvSElSosZmyoqAgmlkgnY0iXNlY3AyNTZrMaECriawHKWdDRk2xeZkrOXBQ0dfMFLHY4eENZwdufn1S1o",
 	}
 
+	tree, _ := MakeTree(1, parseNodes(nodes), []string{"qnrtree://AM5FCQLWIZX2QFPNJAP7VUERCCRNGRHWZG3YYHIUV7BVDQ5FDPRT2@morenodes.example.org"})
+	url, _ := tree.Sign(signingKeyForTesting, "n")
+	fmt.Println(url)
+	fmt.Printf("%#v\n", tree.ToTXT("n"))
+
 	r := mapResolver{
-		"n":                            "qnrtree-root:v1 e=JWXYDBPXYWG6FX3GMDIBFA6CJ4 l=C7HRFPF3BLGF3YR4DY5KX3SMBE seq=1 sig=o908WmNp7LibOfPsr4btQwatZJ5URBr2ZAuxvK4UWHlsB9sUOTJQaGAlLPVAhM__XJesCHxLISo94z5Z2a463gA",
-		"C7HRFPF3BLGF3YR4DY5KX3SMBE.n": "qnrtree://AM5FCQLWIZX2QFPNJAP7VUERCCRNGRHWZG3YYHIUV7BVDQ5FDPRT2@morenodes.example.org",
-		"JWXYDBPXYWG6FX3GMDIBFA6CJ4.n": "qnrtree-branch:2XS2367YHAXJFGLZHVAWLQD4ZY,H4FHT4B454P6UXFD7JCYQ5PWDY,MHTDO6TMUBRIA2XWG5LUDACK24",
-		"2XS2367YHAXJFGLZHVAWLQD4ZY.n": nodes[0],
-		"H4FHT4B454P6UXFD7JCYQ5PWDY.n": nodes[1],
-		"MHTDO6TMUBRIA2XWG5LUDACK24.n": nodes[2],
+		"n":                            "qnrtree-root:v1 e=XJQBKU4LLJBNWT7BOGCZGSODG4 l=I4EQVGEUFFSFYVEIZTXGWFRKWA seq=1 sig=2eC2RXndIOgMSZSHkUpeJhTkRRcQIiOi271kXaa5KfZ2P4ijpP9GEnxx9QekBzq1db1lGjaf5k26F7wt4VldkAA",
+		"I4EQVGEUFFSFYVEIZTXGWFRKWA.n": "qnrtree://AM5FCQLWIZX2QFPNJAP7VUERCCRNGRHWZG3YYHIUV7BVDQ5FDPRT2@morenodes.example.org",
+		"XJQBKU4LLJBNWT7BOGCZGSODG4.n": "qnrtree-branch:VN37HFRVMVYCNLEOCKSNASP6GI,TBNBZMPRFCSNXN7M4CDQ4GYVXE,5UOZBDYWZMT44OHU5BOSAJLL7I",
+		"VN37HFRVMVYCNLEOCKSNASP6GI.n": nodes[0],
+		"TBNBZMPRFCSNXN7M4CDQ4GYVXE.n": nodes[1],
+		"5UOZBDYWZMT44OHU5BOSAJLL7I.n": nodes[2],
 	}
 	var (
 		wantNodes = sortByID(parseNodes(nodes))
@@ -87,13 +93,13 @@ func TestClientSyncTreeBadNode(t *testing.T) {
 	// fmt.Printf("%#v\n", tree.ToTXT("n"))
 
 	r := mapResolver{
-		"n":                            "qnrtree-root:v1 e=INDMVBZEEQ4ESVYAKGIYU74EAA l=C7HRFPF3BLGF3YR4DY5KX3SMBE seq=3 sig=Vl3AmunLur0JZ3sIyJPSH6A3Vvdp4F40jWQeCmkIhmcgwE4VC5U9wpK8C_uL_CMY29fd6FAhspRvq2z_VysTLAA",
-		"C7HRFPF3BLGF3YR4DY5KX3SMBE.n": "qnrtree://AM5FCQLWIZX2QFPNJAP7VUERCCRNGRHWZG3YYHIUV7BVDQ5FDPRT2@morenodes.example.org",
-		"INDMVBZEEQ4ESVYAKGIYU74EAA.n": "qnr:-----",
+		"n":                            "qnrtree-root:v1 e=USMXFT4JNYMLNTSJBJEEBUSTRQ l=I4EQVGEUFFSFYVEIZTXGWFRKWA seq=3 sig=i9dkL1DjNPk_mLZXaTvsAZmcSvdHSggrkwRM4bTvzGdBHN9BOST7PapHQG8djtX18hhtikK2jcXHsfFCeuAwcgE",
+		"I4EQVGEUFFSFYVEIZTXGWFRKWA.n": "qnrtree://AM5FCQLWIZX2QFPNJAP7VUERCCRNGRHWZG3YYHIUV7BVDQ5FDPRT2@morenodes.example.org",
+		"USMXFT4JNYMLNTSJBJEEBUSTRQ.n": "qnr:-----",
 	}
 	c := NewClient(Config{Resolver: r, Logger: testlog.Logger(t, log.LvlTrace)})
 	_, err := c.SyncTree("qnrtree://AKPYQIUQIL7PSIACI32J7FGZW56E5FKHEFCCOFHILBIMW3M6LWXS2@n")
-	wantErr := nameError{name: "INDMVBZEEQ4ESVYAKGIYU74EAA.n", err: entryError{typ: "qnr", err: errInvalidQNR}}
+	wantErr := nameError{name: "USMXFT4JNYMLNTSJBJEEBUSTRQ.n", err: entryError{typ: "qnr", err: errInvalidQNR}}
 	if err != wantErr {
 		t.Fatalf("expected sync error %q, got %q", wantErr, err)
 	}
