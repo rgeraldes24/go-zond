@@ -71,7 +71,7 @@ func (h *testQRLHandler) Handle(peer *qrl.Peer, packet qrl.Packet) error {
 
 // Tests that peers are correctly accepted (or rejected) based on the advertised
 // fork IDs in the protocol handshake.
-func TestForkIDSplit68(t *testing.T) { testForkIDSplit(t, qrl.QRL1) }
+func TestForkIDSplit1(t *testing.T) { testForkIDSplit(t, qrl.QRL1) }
 
 func testForkIDSplit(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -220,7 +220,7 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 }
 
 // Tests that received transactions are added to the local pool.
-func TestRecvTransactions68(t *testing.T) { testRecvTransactions(t, qrl.QRL1) }
+func TestRecvTransactions1(t *testing.T) { testRecvTransactions(t, qrl.QRL1) }
 
 func testRecvTransactions(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -373,7 +373,7 @@ func testSendTransactions(t *testing.T, protocol uint) {
 
 // Tests that transactions get propagated to all attached peers, either via direct
 // broadcasts or via announcements/retrievals.
-func TestTransactionPropagation68(t *testing.T) { testTransactionPropagation(t, qrl.QRL1) }
+func TestTransactionPropagation1(t *testing.T) { testTransactionPropagation(t, qrl.QRL1) }
 
 func testTransactionPropagation(t *testing.T, protocol uint) {
 	t.Parallel()

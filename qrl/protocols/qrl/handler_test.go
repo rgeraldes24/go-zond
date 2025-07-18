@@ -120,7 +120,7 @@ func (b *testBackend) Handle(*Peer, Packet) error {
 }
 
 // Tests that block headers can be retrieved from a remote chain based on user queries.
-func TestGetBlockHeaders68(t *testing.T) { testGetBlockHeaders(t, QRL1) }
+func TestGetBlockHeaders1(t *testing.T) { testGetBlockHeaders(t, QRL1) }
 
 func testGetBlockHeaders(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -305,7 +305,7 @@ func testGetBlockHeaders(t *testing.T, protocol uint) {
 }
 
 // Tests that block contents can be retrieved from a remote chain based on their hashes.
-func TestGetBlockBodies68(t *testing.T) { testGetBlockBodies(t, QRL1) }
+func TestGetBlockBodies1(t *testing.T) { testGetBlockBodies(t, QRL1) }
 
 func testGetBlockBodies(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -399,7 +399,7 @@ func testGetBlockBodies(t *testing.T, protocol uint) {
 }
 
 // Tests that the transaction receipts can be retrieved based on hashes.
-func TestGetBlockReceipts68(t *testing.T) { testGetBlockReceipts(t, QRL1) }
+func TestGetBlockReceipts1(t *testing.T) { testGetBlockReceipts(t, QRL1) }
 
 func testGetBlockReceipts(t *testing.T, protocol uint) {
 	t.Parallel()
