@@ -401,8 +401,8 @@ func assertOwnChain(t *testing.T, tester *downloadTester, length int) {
 	}
 }
 
-func TestCanonicalSynchronisation68Full(t *testing.T) { testCanonSync(t, qrlproto.ETH68, FullSync) }
-func TestCanonicalSynchronisation68Snap(t *testing.T) { testCanonSync(t, qrlproto.ETH68, SnapSync) }
+func TestCanonicalSynchronisation68Full(t *testing.T) { testCanonSync(t, qrlproto.QRL1, FullSync) }
+func TestCanonicalSynchronisation68Snap(t *testing.T) { testCanonSync(t, qrlproto.QRL1, SnapSync) }
 
 func testCanonSync(t *testing.T, protocol uint, mode SyncMode) {
 	success := make(chan struct{})
@@ -429,9 +429,9 @@ func testCanonSync(t *testing.T, protocol uint, mode SyncMode) {
 
 // Tests that if a large batch of blocks are being downloaded, it is throttled
 // until the cached blocks are retrieved.
-func TestThrottling68Full(t *testing.T) { testThrottling(t, qrlproto.ETH68, FullSync) }
+func TestThrottling68Full(t *testing.T) { testThrottling(t, qrlproto.QRL1, FullSync) }
 
-func TestThrottling68Snap(t *testing.T) { testThrottling(t, qrlproto.ETH68, SnapSync) }
+func TestThrottling68Snap(t *testing.T) { testThrottling(t, qrlproto.QRL1, SnapSync) }
 
 func testThrottling(t *testing.T, protocol uint, mode SyncMode) {
 	tester := newTester(t)
@@ -508,8 +508,8 @@ func testThrottling(t *testing.T, protocol uint, mode SyncMode) {
 }
 
 // Tests that a canceled download wipes all previously accumulated state.
-func TestCancel68Full(t *testing.T) { testCancel(t, qrlproto.ETH68, FullSync) }
-func TestCancel68Snap(t *testing.T) { testCancel(t, qrlproto.ETH68, SnapSync) }
+func TestCancel68Full(t *testing.T) { testCancel(t, qrlproto.QRL1, FullSync) }
+func TestCancel68Snap(t *testing.T) { testCancel(t, qrlproto.QRL1, SnapSync) }
 
 func testCancel(t *testing.T, protocol uint, mode SyncMode) {
 	complete := make(chan struct{})
@@ -541,10 +541,10 @@ func testCancel(t *testing.T, protocol uint, mode SyncMode) {
 // Tests that synchronisations behave well in multi-version protocol environments
 // and not wreak havoc on other nodes in the network.
 func TestMultiProtoSynchronisation68Full(t *testing.T) {
-	testMultiProtoSync(t, qrlproto.ETH68, FullSync)
+	testMultiProtoSync(t, qrlproto.QRL1, FullSync)
 }
 func TestMultiProtoSynchronisation68Snap(t *testing.T) {
-	testMultiProtoSync(t, qrlproto.ETH68, SnapSync)
+	testMultiProtoSync(t, qrlproto.QRL1, SnapSync)
 }
 
 func testMultiProtoSync(t *testing.T, protocol uint, mode SyncMode) {
@@ -559,7 +559,7 @@ func testMultiProtoSync(t *testing.T, protocol uint, mode SyncMode) {
 	chain := testChainBase.shorten(blockCacheMaxItems - 15)
 
 	// Create peers of every type
-	tester.newPeer("peer 68", qrlproto.ETH68, chain.blocks[1:])
+	tester.newPeer("peer 68", qrlproto.QRL1, chain.blocks[1:])
 
 	if err := tester.downloader.BeaconSync(mode, chain.blocks[len(chain.blocks)-1].Header(), nil); err != nil {
 		t.Fatalf("failed to start beacon sync: #{err}")
@@ -583,8 +583,8 @@ func testMultiProtoSync(t *testing.T, protocol uint, mode SyncMode) {
 
 // Tests that if a block is empty (e.g. header only), no body request should be
 // made, and instead the header should be assembled into a whole block in itself.
-func TestEmptyShortCircuit68Full(t *testing.T) { testEmptyShortCircuit(t, qrlproto.ETH68, FullSync) }
-func TestEmptyShortCircuit68Snap(t *testing.T) { testEmptyShortCircuit(t, qrlproto.ETH68, SnapSync) }
+func TestEmptyShortCircuit68Full(t *testing.T) { testEmptyShortCircuit(t, qrlproto.QRL1, FullSync) }
+func TestEmptyShortCircuit68Snap(t *testing.T) { testEmptyShortCircuit(t, qrlproto.QRL1, SnapSync) }
 
 func testEmptyShortCircuit(t *testing.T, protocol uint, mode SyncMode) {
 	success := make(chan struct{})
@@ -652,8 +652,8 @@ func checkProgress(t *testing.T, d *Downloader, stage string, want qrl.SyncProgr
 
 // Tests that peers below a pre-configured checkpoint block are prevented from
 // being fast-synced from, avoiding potential cheap eclipse attacks.
-func TestBeaconSync68Full(t *testing.T) { testBeaconSync(t, qrlproto.ETH68, FullSync) }
-func TestBeaconSync68Snap(t *testing.T) { testBeaconSync(t, qrlproto.ETH68, SnapSync) }
+func TestBeaconSync68Full(t *testing.T) { testBeaconSync(t, qrlproto.QRL1, FullSync) }
+func TestBeaconSync68Snap(t *testing.T) { testBeaconSync(t, qrlproto.QRL1, SnapSync) }
 
 func testBeaconSync(t *testing.T, protocol uint, mode SyncMode) {
 	var cases = []struct {
@@ -698,8 +698,8 @@ func testBeaconSync(t *testing.T, protocol uint, mode SyncMode) {
 
 // Tests that synchronisation progress (origin block number, current block number
 // and highest block number) is tracked and updated correctly.
-func TestSyncProgress68Full(t *testing.T) { testSyncProgress(t, qrlproto.ETH68, FullSync) }
-func TestSyncProgress68Snap(t *testing.T) { testSyncProgress(t, qrlproto.ETH68, SnapSync) }
+func TestSyncProgress68Full(t *testing.T) { testSyncProgress(t, qrlproto.QRL1, FullSync) }
+func TestSyncProgress68Snap(t *testing.T) { testSyncProgress(t, qrlproto.QRL1, SnapSync) }
 
 func testSyncProgress(t *testing.T, protocol uint, mode SyncMode) {
 	success := make(chan struct{})

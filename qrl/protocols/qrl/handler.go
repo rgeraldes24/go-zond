@@ -159,8 +159,7 @@ type Decoder interface {
 	Time() time.Time
 }
 
-// TODO(rgeraldes24): naming
-var eth68 = map[uint64]msgHandler{
+var qrl1 = map[uint64]msgHandler{
 	TransactionsMsg:               handleTransactions,
 	NewPooledTransactionHashesMsg: handleNewPooledTransactionHashes,
 	GetBlockHeadersMsg:            handleGetBlockHeaders,
@@ -186,7 +185,7 @@ func handleMessage(backend Backend, peer *Peer) error {
 	}
 	defer msg.Discard()
 
-	var handlers = eth68
+	var handlers = qrl1
 
 	// Track the amount of time it takes to serve the request and run the handler
 	if metrics.Enabled {

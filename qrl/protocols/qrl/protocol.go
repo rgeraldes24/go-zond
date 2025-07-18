@@ -29,7 +29,7 @@ import (
 
 // Constants to match up protocol versions and messages
 const (
-	ETH68 = 68
+	QRL1 = 1
 )
 
 // ProtocolName is the official short name of the `qrl` protocol used during
@@ -38,11 +38,11 @@ const ProtocolName = "qrl"
 
 // ProtocolVersions are the supported versions of the `qrl` protocol (first
 // is primary).
-var ProtocolVersions = []uint{ETH68}
+var ProtocolVersions = []uint{QRL1}
 
 // protocolLengths are the number of implemented message corresponding to
 // different protocol versions.
-var protocolLengths = map[uint]uint64{ETH68: 17}
+var protocolLengths = map[uint]uint64{QRL1: 17}
 
 // maxMessageSize is the maximum cap on the size of a protocol message.
 const maxMessageSize = 10 * 1024 * 1024
@@ -237,7 +237,7 @@ type ReceiptsRLPPacket struct {
 	ReceiptsRLPResponse
 }
 
-// NewPooledTransactionHashesPacket represents a transaction announcement packet on qrl/68 and newer.
+// NewPooledTransactionHashesPacket represents a transaction announcement packet on qrl/1 and newer.
 type NewPooledTransactionHashesPacket struct {
 	Types  []byte
 	Sizes  []uint32

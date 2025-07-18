@@ -71,7 +71,7 @@ func (h *testQRLHandler) Handle(peer *qrl.Peer, packet qrl.Packet) error {
 
 // Tests that peers are correctly accepted (or rejected) based on the advertised
 // fork IDs in the protocol handshake.
-func TestForkIDSplit68(t *testing.T) { testForkIDSplit(t, qrl.ETH68) }
+func TestForkIDSplit68(t *testing.T) { testForkIDSplit(t, qrl.QRL1) }
 
 func testForkIDSplit(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -220,7 +220,7 @@ func testForkIDSplit(t *testing.T, protocol uint) {
 }
 
 // Tests that received transactions are added to the local pool.
-func TestRecvTransactions68(t *testing.T) { testRecvTransactions(t, qrl.ETH68) }
+func TestRecvTransactions68(t *testing.T) { testRecvTransactions(t, qrl.QRL1) }
 
 func testRecvTransactions(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -283,7 +283,7 @@ func testRecvTransactions(t *testing.T, protocol uint) {
 }
 
 // This test checks that pending transactions are sent.
-func TestSendTransactions68(t *testing.T) { testSendTransactions(t, qrl.ETH68) }
+func TestSendTransactions1(t *testing.T) { testSendTransactions(t, qrl.QRL1) }
 
 func testSendTransactions(t *testing.T, protocol uint) {
 	t.Parallel()
@@ -347,7 +347,7 @@ func testSendTransactions(t *testing.T, protocol uint) {
 	seen := make(map[common.Hash]struct{})
 	for len(seen) < len(insert) {
 		switch protocol {
-		case 68:
+		case 1:
 			select {
 			case hashes := <-anns:
 				for _, hash := range hashes {
@@ -357,7 +357,7 @@ func testSendTransactions(t *testing.T, protocol uint) {
 					seen[hash] = struct{}{}
 				}
 			case <-bcasts:
-				t.Errorf("initial tx broadcast received on post qrl/66")
+				t.Errorf("initial tx broadcast received on post qrl/1")
 			}
 
 		default:
@@ -373,7 +373,7 @@ func testSendTransactions(t *testing.T, protocol uint) {
 
 // Tests that transactions get propagated to all attached peers, either via direct
 // broadcasts or via announcements/retrievals.
-func TestTransactionPropagation68(t *testing.T) { testTransactionPropagation(t, qrl.ETH68) }
+func TestTransactionPropagation68(t *testing.T) { testTransactionPropagation(t, qrl.QRL1) }
 
 func testTransactionPropagation(t *testing.T, protocol uint) {
 	t.Parallel()
