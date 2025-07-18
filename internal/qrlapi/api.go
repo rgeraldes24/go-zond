@@ -277,7 +277,7 @@ func NewBlockChainAPI(b Backend) *BlockChainAPI {
 	return &BlockChainAPI{b}
 }
 
-// ChainId is the EIP-155 replay-protection chain id for the current chain config.
+// ChainId is the EIP-155 replay-protection chain id for the current QRL chain config.
 //
 // Note, this method does not conform to EIP-695 because the configured chain ID is always
 // returned, regardless of the current head block. We used to return an error when the chain
