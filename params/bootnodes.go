@@ -39,19 +39,23 @@ var V5Bootnodes = []string{
 	// QRL bootnodes
 }
 
-// TODO(rgeraldes24)
+// TODO(now.youtrack.cloud/issue/TGZ-21)
 const dnsPrefix = "qnrtree://AKA3AM6LPBYEUDMVNU3BSVQJ5AD45Y7YPOHJLEF6W26QOE4VTUDPE@"
 
+// TODO(now.youtrack.cloud/issue/TGZ-21)
 // KnownDNSNetwork returns the address of a public DNS-based node list for the given
 // genesis hash and protocol. See https://github.com/ethereum/discv4-dns-lists for more
 // information.
 func KnownDNSNetwork(genesis common.Hash, protocol string) string {
-	var net string
-	switch genesis {
-	case MainnetGenesisHash:
-		net = "mainnet"
-	default:
-		return ""
-	}
-	return dnsPrefix + protocol + "." + net + ".ethdisco.net"
+	/*
+		var net string
+		switch genesis {
+		case MainnetGenesisHash:
+			net = "mainnet"
+		default:
+			return ""
+		}
+		return dnsPrefix + protocol + "." + net + ".ethdisco.net"
+	*/
+	return ""
 }

@@ -1788,7 +1788,6 @@ var QRL_UNITS = [
 
 module.exports = {
     QRL_PADDING: 32,
-	// TODO(rgeraldes24)
     QRL_SIGNATURE_LENGTH: 4,
     QRL_UNITS: QRL_UNITS,
     QRL_BIGNUMBER_ROUNDING_MODE: { ROUNDING_MODE: BigNumber.ROUND_DOWN },
