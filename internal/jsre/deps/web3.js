@@ -2127,7 +2127,7 @@ var getValueOfUnit = function (unit) {
 };
 
 /**
- * Takes a number of planck and converts it to any other quanta unit.
+ * Takes a number of planck and converts it to any other qrl unit.
  *
  * Possible units are:
  *   SI Short   Other
