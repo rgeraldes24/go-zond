@@ -318,7 +318,7 @@ func listen(ctx *cli.Context, ln *qnode.LocalNode) *net.UDPConn {
 	}
 	ln.SetFallbackUDP(uaddr.Port)
 
-	// If an QNR endpoint is set explicitly on the command-line, override
+	// If a QNR endpoint is set explicitly on the command-line, override
 	// the information from the listening address. Note this is careful not
 	// to set the UDP port if the external address doesn't have it.
 	extAddr := ctx.String(extAddrFlag.Name)

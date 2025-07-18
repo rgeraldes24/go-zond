@@ -224,7 +224,7 @@ func (ct *clientTree) slowdownRootUpdate(ctx context.Context) bool {
 	}
 }
 
-// subtreeSync is the sync of an QNR or link subtree.
+// subtreeSync is the sync of a QNR or link subtree.
 type subtreeSync struct {
 	c       *Client
 	loc     *linkEntry

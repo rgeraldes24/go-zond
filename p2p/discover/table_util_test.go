@@ -163,7 +163,7 @@ func (t *pingRecorder) ping(n *qnode.Node) (seq uint64, err error) {
 	return seq, nil
 }
 
-// RequestQNR simulates an QNR request.
+// RequestQNR simulates a QNR request.
 func (t *pingRecorder) RequestQNR(n *qnode.Node) (*qnode.Node, error) {
 	t.mu.Lock()
 	defer t.mu.Unlock()

@@ -413,7 +413,7 @@ func truncateHash(hash string) string {
 
 // URL encoding
 
-// ParseURL parses an qnrtree:// URL and returns its components.
+// ParseURL parses a qnrtree:// URL and returns its components.
 func ParseURL(url string) (domain string, pubkey *ecdsa.PublicKey, err error) {
 	le, err := parseLink(url)
 	if err != nil {
