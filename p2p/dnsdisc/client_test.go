@@ -20,7 +20,6 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"errors"
-	"fmt"
 	"reflect"
 	"testing"
 	"time"
@@ -43,11 +42,6 @@ func TestClientSyncTree(t *testing.T) {
 		"qnr:-HW4QAggRauloj2SDLtIHN1XBkvhFZ1vtf1raYQp9TBW2RD5EEawDzbtSmlXUfnaHcvwOizhVYLtr7e6vw7NAf6mTuoCgmlkgnY0iXNlY3AyNTZrMaECjrXI8TLNXU0f8cthpAMxEshUyQlK-AM0PW2wfrnacNI",
 		"qnr:-HW4QLAYqmrwllBEnzWWs7I5Ev2IAs7x_dZlbYdRdMUx5EyKHDXp7AV5CkuPGUPdvbv1_Ms1CPfhcGCvSElSosZmyoqAgmlkgnY0iXNlY3AyNTZrMaECriawHKWdDRk2xeZkrOXBQ0dfMFLHY4eENZwdufn1S1o",
 	}
-
-	tree, _ := MakeTree(1, parseNodes(nodes), []string{"qnrtree://AM5FCQLWIZX2QFPNJAP7VUERCCRNGRHWZG3YYHIUV7BVDQ5FDPRT2@morenodes.example.org"})
-	url, _ := tree.Sign(signingKeyForTesting, "n")
-	fmt.Println(url)
-	fmt.Printf("%#v\n", tree.ToTXT("n"))
 
 	r := mapResolver{
 		"n":                            "qnrtree-root:v1 e=XJQBKU4LLJBNWT7BOGCZGSODG4 l=I4EQVGEUFFSFYVEIZTXGWFRKWA seq=1 sig=2eC2RXndIOgMSZSHkUpeJhTkRRcQIiOi271kXaa5KfZ2P4ijpP9GEnxx9QekBzq1db1lGjaf5k26F7wt4VldkAA",
