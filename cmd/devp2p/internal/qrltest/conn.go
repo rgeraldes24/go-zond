@@ -116,7 +116,7 @@ func (c *Conn) Write(proto Proto, code uint64, msg any) error {
 	return err
 }
 
-// ReadQrl reads an Qrl sub-protocol wire message.
+// ReadQrl reads a Qrl sub-protocol wire message.
 func (c *Conn) ReadQrl() (any, error) {
 	c.SetReadDeadline(time.Now().Add(timeout))
 	for {
