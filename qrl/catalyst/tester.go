@@ -27,7 +27,7 @@ import (
 	"github.com/theQRL/go-zond/qrl/downloader"
 )
 
-// FullSyncTester is an auxiliary service that allows Geth to perform full sync
+// FullSyncTester is an auxiliary service that allows Gzond to perform full sync
 // alone without consensus-layer attached. Users must specify a valid block hash
 // as the sync target.
 //

@@ -144,14 +144,14 @@ func (ps *peerSet) registerPeer(peer *qrl.Peer, ext *snap.Peer) error {
 	if _, ok := ps.peers[id]; ok {
 		return errPeerAlreadyRegistered
 	}
-	eth := &qrlPeer{
+	qrl := &qrlPeer{
 		Peer: peer,
 	}
 	if ext != nil {
-		eth.snapExt = &snapPeer{ext}
+		qrl.snapExt = &snapPeer{ext}
 		ps.snapPeers++
 	}
-	ps.peers[id] = eth
+	ps.peers[id] = qrl
 	return nil
 }
 

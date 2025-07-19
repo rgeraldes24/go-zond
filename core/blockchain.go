@@ -1511,7 +1511,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, setHead bool) (int, error)
 		// Skip all known blocks that are behind us.
 		var current = bc.CurrentBlock()
 		for block != nil && bc.skipBlock(err, it) {
-			// In eth2 the forker always returns true for reorg decision (blindly trusting
+			// In qrl POS the forker always returns true for reorg decision (blindly trusting
 			// the external consensus engine), but in order to prevent the unnecessary
 			// reorgs when importing known blocks, the special case is handled here.
 			if block.NumberU64() > current.Number.Uint64() || bc.GetCanonicalHash(block.NumberU64()) != block.Hash() {

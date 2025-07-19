@@ -135,7 +135,7 @@ type Message struct {
 
 	// When SkipAccountChecks is true, the message nonce is not checked against the
 	// account nonce in state. It also disables checking that the sender is an EOA.
-	// This field will be set to true for operations like RPC eth_call.
+	// This field will be set to true for operations like RPC qrl_call.
 	SkipAccountChecks bool
 }
 
@@ -399,7 +399,7 @@ func (st *StateTransition) refundGas(refundQuotient uint64) {
 	}
 	st.gasRemaining += refund
 
-	// Return ETH for remaining gas, exchanged at the original rate.
+	// Return QRL for remaining gas, exchanged at the original rate.
 	remaining := new(big.Int).Mul(new(big.Int).SetUint64(st.gasRemaining), st.msg.GasPrice)
 	st.state.AddBalance(st.msg.From, remaining)
 

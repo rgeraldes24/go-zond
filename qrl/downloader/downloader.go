@@ -111,7 +111,7 @@ type Downloader struct {
 	headerProcCh chan *headerTask // Channel to feed the header processor new tasks
 
 	// Skeleton sync
-	skeleton *skeleton // Header skeleton to backfill the chain with (eth2 mode)
+	skeleton *skeleton // Header skeleton to backfill the chain with (PoS mode)
 
 	// State sync
 	pivotHeader *types.Header // Pivot block header to dynamically push the syncing state root

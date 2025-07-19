@@ -131,7 +131,6 @@ func minerTestGenesisBlock(gasLimit uint64, faucet common.Address) *core.Genesis
 }
 
 func createMiner(t *testing.T) *Miner {
-	// Create Ethash config
 	feeRecipient, _ := common.NewAddressFromString("Q0000000000000000000000000000000123456789")
 	config := Config{
 		PendingFeeRecipient: feeRecipient,

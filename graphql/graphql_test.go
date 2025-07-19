@@ -443,7 +443,7 @@ func newGQLService(t *testing.T, stack *node.Node, gspec *core.Genesis, genBlock
 	var engine consensus.Engine = beacon.NewFaker()
 	qrlBackend, err := qrl.New(stack, qrlConf)
 	if err != nil {
-		t.Fatalf("could not create eth backend: %v", err)
+		t.Fatalf("could not create qrl backend: %v", err)
 	}
 	// Create some blocks and import them
 	chain, _ := core.GenerateChain(params.AllBeaconProtocolChanges, qrlBackend.BlockChain().Genesis(),

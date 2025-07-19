@@ -84,14 +84,14 @@ var tomlSettings = toml.Config{
 	},
 }
 
-type ethstatsConfig struct {
+type qrlstatsConfig struct {
 	URL string `toml:",omitempty"`
 }
 
 type gzondConfig struct {
 	QRL      qrlconfig.Config
 	Node     node.Config
-	QRLstats ethstatsConfig
+	QRLstats qrlstatsConfig
 	Metrics  metrics.Config
 }
 

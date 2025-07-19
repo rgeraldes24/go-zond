@@ -37,7 +37,7 @@ func (h *bidirectionalMeters) get(ingress bool) *hsMeters {
 }
 
 // hsMeters is a collection of meters which track metrics related to the
-// eth subprotocol handshake.
+// qrl subprotocol handshake.
 type hsMeters struct {
 	// peerError measures the number of errors related to incorrect peer
 	// behaviour, such as invalid message code, size, encoding, etc.

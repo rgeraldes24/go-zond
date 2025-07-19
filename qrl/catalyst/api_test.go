@@ -90,7 +90,7 @@ func generateChain(n int) (*core.Genesis, []*types.Block) {
 	return genesis, blocks
 }
 
-func TestEth2AssembleBlock(t *testing.T) {
+func TestAssembleBlock(t *testing.T) {
 	genesis, blocks := generateChain(10)
 	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
@@ -130,7 +130,7 @@ func assembleWithTransactions(api *ConsensusAPI, parentHash common.Hash, params 
 	return nil, err
 }
 
-func TestEth2AssembleBlockWithAnotherBlocksTxs(t *testing.T) {
+func TestAssembleBlockWithAnotherBlocksTxs(t *testing.T) {
 	genesis, blocks := generateChain(10)
 	n, qrlservice := startQRLService(t, genesis, blocks[:9])
 	defer n.Close()
@@ -150,7 +150,7 @@ func TestEth2AssembleBlockWithAnotherBlocksTxs(t *testing.T) {
 	}
 }
 
-func TestEth2PrepareAndGetPayload(t *testing.T) {
+func TestPrepareAndGetPayload(t *testing.T) {
 	genesis, blocks := generateChain(10)
 	n, qrlservice := startQRLService(t, genesis, blocks[:9])
 	defer n.Close()
@@ -258,7 +258,7 @@ func TestInvalidPayloadTimestamp(t *testing.T) {
 	}
 }
 
-func TestEth2NewBlock(t *testing.T) {
+func TestNewBlock(t *testing.T) {
 	genesis, blocks := generateChain(10)
 	n, qrlservice := startQRLService(t, genesis, blocks)
 	defer n.Close()
@@ -365,8 +365,8 @@ func TestEth2NewBlock(t *testing.T) {
 	}
 }
 
-func TestEth2DeepReorg(t *testing.T) {
-	// TODO (MariusVanDerWijden) TestEth2DeepReorg is currently broken, because it tries to reorg
+func TestDeepReorg(t *testing.T) {
+	// TODO (MariusVanDerWijden) TestDeepReorg is currently broken, because it tries to reorg
 	// before the totalTerminalDifficulty threshold
 	/*
 		genesis, blocks := generateChain(core.TriesInMemory * 2)

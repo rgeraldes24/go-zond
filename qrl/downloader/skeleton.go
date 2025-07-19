@@ -174,14 +174,14 @@ type backfiller interface {
 // skeleton represents a header chain synchronized after the merge where blocks
 // aren't validated any more via PoW in a forward fashion, rather are dictated
 // and extended at the head via the beacon chain and backfilled on the original
-// Ethereum block sync protocol.
+// QRL block sync protocol.
 //
 // Since the skeleton is grown backwards from head to genesis, it is handled as
 // a separate entity, not mixed in with the logical sequential transition of the
 // blocks. Once the skeleton is connected to an existing, validated chain, the
 // headers will be moved into the main downloader for filling and execution.
 //
-// Opposed to the original Ethereum block synchronization which is trustless (and
+// Opposed to the original QRL block synchronization which is trustless (and
 // uses a master peer to minimize the attack surface), post-merge block sync starts
 // from a trusted head. As such, there is no need for a master peer any more and
 // headers can be requested fully concurrently (though some batches might be

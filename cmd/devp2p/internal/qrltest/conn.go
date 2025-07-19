@@ -105,7 +105,7 @@ func (c *Conn) ReadMsg(proto Proto, code uint64, msg any) error {
 	}
 }
 
-// Write writes a eth packet to the connection.
+// Write writes a qrl packet to the connection.
 func (c *Conn) Write(proto Proto, code uint64, msg any) error {
 	c.SetWriteDeadline(time.Now().Add(timeout))
 	payload, err := rlp.EncodeToBytes(msg)
@@ -116,8 +116,8 @@ func (c *Conn) Write(proto Proto, code uint64, msg any) error {
 	return err
 }
 
-// ReadEth reads an Eth sub-protocol wire message.
-func (c *Conn) ReadEth() (any, error) {
+// ReadQrl reads an Qrl sub-protocol wire message.
+func (c *Conn) ReadQrl() (any, error) {
 	c.SetReadDeadline(time.Now().Add(timeout))
 	for {
 		code, data, _, err := c.Conn.Read()
@@ -129,7 +129,7 @@ func (c *Conn) ReadEth() (any, error) {
 			continue
 		}
 		if getProto(code) != ethProto {
-			// Read until eth message.
+			// Read until qrl message.
 			continue
 		}
 		code -= baseProtoLen
@@ -155,10 +155,10 @@ func (c *Conn) ReadEth() (any, error) {
 		case qrl.PooledTransactionsMsg:
 			msg = new(qrl.PooledTransactionsPacket)
 		default:
-			panic(fmt.Sprintf("unhandled eth msg code %d", code))
+			panic(fmt.Sprintf("unhandled qrl msg code %d", code))
 		}
 		if err := rlp.DecodeBytes(data, msg); err != nil {
-			return nil, fmt.Errorf("unable to decode eth msg: %v", err)
+			return nil, fmt.Errorf("unable to decode qrl msg: %v", err)
 		}
 		return msg, nil
 	}
@@ -247,7 +247,7 @@ func (c *Conn) handshake() error {
 		}
 		c.negotiateEthProtocol(msg.Caps)
 		if c.negotiatedProtoVersion == 0 {
-			return fmt.Errorf("could not negotiate qrl protocol (remote caps: %v, local eth version: %v)", msg.Caps, c.ourHighestProtoVersion)
+			return fmt.Errorf("could not negotiate qrl protocol (remote caps: %v, local qrl version: %v)", msg.Caps, c.ourHighestProtoVersion)
 		}
 		// If we require snap, verify that it was negotiated.
 		if c.ourHighestSnapProtoVersion != c.negotiatedSnapProtoVersion {

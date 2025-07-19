@@ -548,7 +548,7 @@ func InspectDatabase(db qrldb.Database, keyPrefix, keyStart []byte) error {
 				databaseVersionKey, headHeaderKey, headBlockKey, headFastBlockKey, headFinalizedBlockKey,
 				lastPivotKey, fastTrieProgressKey, snapshotDisabledKey, SnapshotRootKey, snapshotJournalKey,
 				snapshotGeneratorKey, snapshotRecoveryKey, txIndexTailKey, fastTxLookupLimitKey,
-				uncleanShutdownKey, badBlockKey, transitionStatusKey, skeletonSyncStatusKey,
+				uncleanShutdownKey, badBlockKey, skeletonSyncStatusKey,
 				persistentStateIDKey, trieJournalKey, snapshotSyncStatusKey,
 			} {
 				if bytes.Equal(key, meta) {

@@ -48,7 +48,7 @@ set to standard output. The following filters are supported:
 - `-snap` filters nodes by snap protocol support
 
 For example, given a node set in `nodes.json`, you could create a filtered set containing
-up to 20 eth mainnet nodes which also support snap sync using this command:
+up to 20 qrl mainnet nodes which also support snap sync using this command:
 
     devp2p nodeset filter nodes.json -eth-network mainnet -snap -limit 20
 

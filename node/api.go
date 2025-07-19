@@ -313,7 +313,7 @@ func (s *web3API) ClientVersion() string {
 	return s.stack.Server().Name
 }
 
-// Sha3 applies the ethereum sha3 implementation on the input.
+// Sha3 applies the qrl sha3 implementation on the input.
 // It assumes the input is hex encoded.
 func (s *web3API) Sha3(input hexutil.Bytes) hexutil.Bytes {
 	return crypto.Keccak256(input)
