@@ -981,7 +981,5 @@ func overrideConfig(original *params.ChainConfig, override *params.ChainConfig) 
 	*copy = *original
 	canon := true
 
-	// Apply forks (after Berlin) to the copy.
-
 	return copy, canon
 }

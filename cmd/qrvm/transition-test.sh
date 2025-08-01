@@ -207,7 +207,7 @@ found in [`tests/init.go`](tests/init.go).
 
 Invoking it with the provided example files
 EOF
-cmd="./qrvm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --state.fork=Berlin"
+cmd="./qrvm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --state.fork=Shanghai"
 tick;echo "$cmd"; tick
 $cmd 2>/dev/null
 echo "Two resulting files:"
@@ -217,7 +217,7 @@ showjson result.json
 echo ""
 
 echo "We can make them spit out the data to e.g. \`stdout\` like this:"
-cmd="./qrvm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --output.result=stdout --output.alloc=stdout --state.fork=Berlin"
+cmd="./qrvm t8n --input.alloc=./testdata/1/alloc.json --input.txs=./testdata/1/txs.json --input.env=./testdata/1/env.json --output.result=stdout --output.alloc=stdout --state.fork=Shanghai"
 tick;echo "$cmd"; tick
 output=`$cmd 2>/dev/null`
 echo "Output:"
