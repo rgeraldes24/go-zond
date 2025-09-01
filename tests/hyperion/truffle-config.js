@@ -69,7 +69,7 @@
 //       // port: 8777,             // Custom port
 //       // network_id: 1342,       // Custom network
 //       // gas: 8500000,           // Gas sent with each transaction (default: ~6700000)
-//       // gasPrice: 20000000000,  // 20 gplanck (in planck) (default: 100 gplanck)
+//       // gasPrice: 20000000000,  // 20 shor (in planck) (default: 100 shor)
 //       // from: <address>,        // Account to send txs from (default: accounts[0])
 //       // websockets: true        // Enable EventEmitter interface for web3 (default: false)
 //     // },

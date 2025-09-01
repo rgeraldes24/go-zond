@@ -1764,10 +1764,10 @@ var BigNumber = require('bignumber.js');
 var QRL_UNITS = [
     'planck',
     'kplanck',
+    'shor',
     'Mplanck',
-    'Gplanck',
-    'Tplanck',
-    'Pplanck',
+    'Kshor',
+    'Mshor',
     'nano',
     'micro',
     'milli',
@@ -1885,14 +1885,13 @@ var unitMap = {
     'Kplanck':  '1000',
     'mplanck':  '1000000',
     'Mplanck':  '1000000',
-    'gplanck':  '1000000000',
-    'Gplanck':  '1000000000',
+    'shor':  '1000000000',
     'nano':     '1000000000',
-    'tplanck':  '1000000000000',
-    'Tplanck':  '1000000000000',
+    'kshor':  '1000000000000',
+    'Kshor':  '1000000000000',
     'micro':    '1000000000000',
-    'pplanck':  '1000000000000000',
-    'Pplanck':  '1000000000000000',
+    'mshor':  '1000000000000000',
+    'Mshor':  '1000000000000000',
     'milli':    '1000000000000000',
     'quanta':   '1000000000000000000',
     'kquanta':  '1000000000000000000000',
@@ -2133,9 +2132,9 @@ var getValueOfUnit = function (unit) {
  *   SI Short   Other
  * - kplanck
  * - mplanck
- * - gplanck    nano
- * - tplanck    micro
- * - pplanck    milli
+ * - shor       nano
+ * - kshor      micro
+ * - mshor      milli
  * - quanta
  * - kquanta    grand
  * - mquanta
@@ -2160,9 +2159,9 @@ var fromPlanck = function(number, unit) {
  *   SI Short   Other
  * - kplanck
  * - mplanck
- * - gplanck    nano
- * - tplanck    micro
- * - pplanck    milli
+ * - shor       nano
+ * - kshor      micro
+ * - mshor      milli
  * - quanta
  * - kquanta    grand
  * - mquanta

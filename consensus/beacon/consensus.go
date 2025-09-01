@@ -198,9 +198,9 @@ func (beacon *Beacon) verifyHeaders(chain consensus.ChainHeaderReader, headers [
 func (beacon *Beacon) Finalize(chain consensus.ChainHeaderReader, header *types.Header, state *state.StateDB, body *types.Body) {
 	// Withdrawals processing.
 	for _, w := range body.Withdrawals {
-		// Convert amount from gplanck to planck.
+		// Convert amount from shor to planck.
 		amount := new(big.Int).SetUint64(w.Amount)
-		amount = amount.Mul(amount, big.NewInt(params.GPlanck))
+		amount = amount.Mul(amount, big.NewInt(params.Shor))
 		state.AddBalance(w.Address, amount)
 	}
 	// No block reward which is issued by consensus layer instead.

@@ -83,7 +83,7 @@ const schema string = `
         validator: Long!
         # Recipient address of the withdrawn amount.
         address: Address!
-        # Amount is the withdrawal value in Gplanck.
+        # Amount is the withdrawal value in Shor.
         amount: Long!
     }
 
