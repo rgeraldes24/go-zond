@@ -493,7 +493,7 @@ func (rw *protoRW) ReadMsg() (Msg, error) {
 // peer. Sub-protocol independent fields are contained and initialized here, with
 // protocol specifics delegated to all connected sub-protocols.
 type PeerInfo struct {
-	QNR     string   `json:"qnr,omitempty"` // Quantum Node Record
+	QNR     string   `json:"qnr,omitempty"` // QRL Node Record
 	Qnode   string   `json:"qnode"`         // Node URL
 	ID      string   `json:"id"`            // Unique node identifier
 	Name    string   `json:"name"`          // Name of the node, including client type, version, OS, custom data

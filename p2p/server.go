@@ -1074,7 +1074,7 @@ type NodeInfo struct {
 	ID    string `json:"id"`    // Unique node identifier (also the encryption key)
 	Name  string `json:"name"`  // Name of the node, including client type, version, OS, custom data
 	Qnode string `json:"qnode"` // Qnode URL for adding this peer from remote peers
-	QNR   string `json:"qnr"`   // Quantum Node Record
+	QNR   string `json:"qnr"`   // QRL Node Record
 	IP    string `json:"ip"`    // IP address of the node
 	Ports struct {
 		Discovery int `json:"discovery"` // UDP listening port for discovery protocol
