@@ -1764,8 +1764,8 @@ var BigNumber = require('bignumber.js');
 var QRL_UNITS = [
     'planck',
     'kplanck',
-    'shor',
     'Mplanck',
+	'shor',
     'Kshor',
     'Mshor',
     'nano',
