@@ -76,8 +76,8 @@ func newCanonical(engine consensus.Engine, n int, full bool, scheme string) (qrl
 	return genDb, genesis, blockchain, err
 }
 
-func newGplanck(n int64) *big.Int {
-	return new(big.Int).Mul(big.NewInt(n), big.NewInt(params.GPlanck))
+func newShor(n int64) *big.Int {
+	return new(big.Int).Mul(big.NewInt(n), big.NewInt(params.Shor))
 }
 
 // Test fork of length N starting from block i
@@ -2593,7 +2593,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 			Nonce:      0,
 			To:         &aa,
 			Gas:        30000,
-			GasFeeCap:  newGplanck(5),
+			GasFeeCap:  newShor(5),
 			GasTipCap:  big.NewInt(2),
 			AccessList: accesses,
 			Data:       []byte{},
@@ -2645,8 +2645,8 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 			Nonce:     0,
 			To:        &aa,
 			Gas:       30000,
-			GasFeeCap: newGplanck(5),
-			GasTipCap: newGplanck(5),
+			GasFeeCap: newShor(5),
+			GasTipCap: newShor(5),
 		}
 		tx := types.NewTx(txdata)
 		tx, _ = types.SignTx(tx, signer, key2)
@@ -3165,7 +3165,7 @@ func TestEIP3651(t *testing.T) {
 			Nonce:      0,
 			To:         &bb,
 			Gas:        500000,
-			GasFeeCap:  newGplanck(5),
+			GasFeeCap:  newShor(5),
 			GasTipCap:  big.NewInt(2),
 			AccessList: nil,
 			Data:       []byte{},

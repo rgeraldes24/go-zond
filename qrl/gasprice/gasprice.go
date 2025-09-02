@@ -36,7 +36,7 @@ import (
 const sampleNumber = 3 // Number of transactions sampled in a block
 
 var (
-	DefaultMaxPrice    = big.NewInt(500 * params.GPlanck)
+	DefaultMaxPrice    = big.NewInt(500 * params.Shor)
 	DefaultIgnorePrice = big.NewInt(2 * params.Planck)
 )
 

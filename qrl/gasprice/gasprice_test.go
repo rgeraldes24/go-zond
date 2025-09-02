@@ -143,8 +143,8 @@ func newTestBackend(t *testing.T, pending bool) *testBackend {
 			Nonce:     b.TxNonce(addr),
 			To:        &common.Address{},
 			Gas:       30000,
-			GasFeeCap: big.NewInt(100 * params.GPlanck),
-			GasTipCap: big.NewInt(int64(i+1) * params.GPlanck),
+			GasFeeCap: big.NewInt(100 * params.Shor),
+			GasTipCap: big.NewInt(int64(i+1) * params.Shor),
 			Data:      []byte{},
 		}
 		b.AddTx(types.MustSignNewTx(key, signer, txdata))
@@ -174,17 +174,17 @@ func TestSuggestTipCap(t *testing.T) {
 	config := Config{
 		Blocks:     3,
 		Percentile: 60,
-		Default:    big.NewInt(params.GPlanck),
+		Default:    big.NewInt(params.Shor),
 	}
 	var cases = []struct {
 		fork   *big.Int // London fork number
 		expect *big.Int // Expected gasprice suggestion
 	}{
-		{nil, big.NewInt(params.GPlanck * int64(30))},
-		{big.NewInt(0), big.NewInt(params.GPlanck * int64(30))},  // Fork point in genesis
-		{big.NewInt(1), big.NewInt(params.GPlanck * int64(30))},  // Fork point in first block
-		{big.NewInt(32), big.NewInt(params.GPlanck * int64(30))}, // Fork point in last block
-		{big.NewInt(33), big.NewInt(params.GPlanck * int64(30))}, // Fork point in the future
+		{nil, big.NewInt(params.Shor * int64(30))},
+		{big.NewInt(0), big.NewInt(params.Shor * int64(30))},  // Fork point in genesis
+		{big.NewInt(1), big.NewInt(params.Shor * int64(30))},  // Fork point in first block
+		{big.NewInt(32), big.NewInt(params.Shor * int64(30))}, // Fork point in last block
+		{big.NewInt(33), big.NewInt(params.Shor * int64(30))}, // Fork point in the future
 	}
 	for _, c := range cases {
 		backend := newTestBackend(t, false)

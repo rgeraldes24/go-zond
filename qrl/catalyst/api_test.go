@@ -80,7 +80,7 @@ func generateChain(n int) (*core.Genesis, []*types.Block) {
 			Value:     big.NewInt(1),
 			Gas:       params.TxGas,
 			GasFeeCap: big.NewInt(8750000000),
-			GasTipCap: big.NewInt(params.GPlanck),
+			GasTipCap: big.NewInt(params.Shor),
 			Data:      nil}), types.LatestSigner(&config), testKey)
 		g.AddTx(tx)
 		testNonce++
@@ -545,7 +545,7 @@ func TestNewPayloadOnInvalidChain(t *testing.T) {
 			Value:     new(big.Int),
 			Gas:       1000000,
 			GasFeeCap: big.NewInt(2 * params.InitialBaseFee),
-			GasTipCap: big.NewInt(params.GPlanck),
+			GasTipCap: big.NewInt(params.Shor),
 			Data:      logCode,
 		})
 		qrlservice.TxPool().Add([]*types.Transaction{tx}, false, true)
@@ -1017,8 +1017,8 @@ func TestWithdrawals(t *testing.T) {
 		t.Fatalf("unable to load db: %v", err)
 	}
 	for i, w := range blockParams.Withdrawals {
-		// w.Amount is in gplanck, balance in planck
-		if db.GetBalance(w.Address).Uint64() != w.Amount*params.GPlanck {
+		// w.Amount is in shor, balance in planck
+		if db.GetBalance(w.Address).Uint64() != w.Amount*params.Shor {
 			t.Fatalf("failed to process withdrawal %d", i)
 		}
 	}

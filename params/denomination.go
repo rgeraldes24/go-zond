@@ -17,11 +17,11 @@
 package params
 
 // These are the multipliers for qrl denominations.
-// Example: To get the planck value of an amount in 'gplanck', use
+// Example: To get the planck value of an amount in 'shor', use
 //
-//	new(big.Int).Mul(value, big.NewInt(params.GPlanck))
+//	new(big.Int).Mul(value, big.NewInt(params.Shor))
 const (
-	Planck  = 1
-	GPlanck = 1e9
-	Quanta  = 1e18
+	Planck = 1
+	Shor   = 1e9
+	Quanta = 1e18
 )
