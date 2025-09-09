@@ -24,14 +24,14 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 )
 
 const (
-	version = 3
+	version = 1
 )
 
 type Key struct {
@@ -40,7 +40,7 @@ type Key struct {
 	Address common.Address
 	// we only store seed as pubkey/address & private key can be derived from it
 	// seed in this struct is always in plaintext
-	Dilithium *dilithium.Dilithium
+	Wallet *walletmldsa87.Wallet
 }
 
 type keyStore interface {
@@ -59,7 +59,7 @@ type plainKeyJSON struct {
 	Version int    `json:"version"`
 }
 
-type encryptedKeyJSONV3 struct {
+type encryptedKeyJSONV1 struct {
 	Address string     `json:"address"`
 	Crypto  CryptoJSON `json:"crypto"`
 	Id      string     `json:"id"`
@@ -72,7 +72,6 @@ type CryptoJSON struct {
 	CipherParams cipherparamsJSON       `json:"cipherparams"`
 	KDF          string                 `json:"kdf"`
 	KDFParams    map[string]interface{} `json:"kdfparams"`
-	MAC          string                 `json:"mac"`
 }
 
 type cipherparamsJSON struct {
@@ -80,7 +79,7 @@ type cipherparamsJSON struct {
 }
 
 func (k *Key) MarshalJSON() (j []byte, err error) {
-	seed := k.Dilithium.GetSeed()
+	seed := k.Wallet.GetSeed()
 	jStruct := plainKeyJSON{
 		fmt.Sprintf("%#x", k.Address),
 		common.Bytes2Hex(seed[:]),
@@ -110,7 +109,7 @@ func (k *Key) UnmarshalJSON(j []byte) (err error) {
 	}
 
 	k.Address = addr
-	k.Dilithium, err = pqcrypto.HexToDilithium(keyJSON.HexSeed)
+	k.Wallet, err = pqcrypto.HexToWallet(keyJSON.HexSeed)
 	if err != nil {
 		return err
 	}
@@ -118,25 +117,25 @@ func (k *Key) UnmarshalJSON(j []byte) (err error) {
 	return nil
 }
 
-func newKeyFromDilithium(d *dilithium.Dilithium) *Key {
+func newKeyFromMLDSA87(w *walletmldsa87.Wallet) *Key {
 	id, err := uuid.NewRandom()
 	if err != nil {
 		panic(fmt.Sprintf("Could not create random uuid: %v", err))
 	}
 	key := &Key{
-		Id:        id,
-		Address:   d.GetAddress(),
-		Dilithium: d,
+		Id:      id,
+		Address: w.GetAddress(),
+		Wallet:  w,
 	}
 	return key
 }
 
 func newKey() (*Key, error) {
-	d, err := dilithium.New()
+	d, err := walletmldsa87.NewWallet()
 	if err != nil {
 		return nil, err
 	}
-	return newKeyFromDilithium(d), nil
+	return newKeyFromMLDSA87(d), nil
 }
 
 func storeNewKey(ks keyStore, auth string) (*Key, accounts.Account, error) {
@@ -149,7 +148,7 @@ func storeNewKey(ks keyStore, auth string) (*Key, accounts.Account, error) {
 		URL:     accounts.URL{Scheme: KeyStoreScheme, Path: ks.JoinPath(keyFileName(key.Address))},
 	}
 	if err := ks.StoreKey(a.URL.Path, key, auth); err != nil {
-		zeroKey(&key.Dilithium)
+		zeroKey(&key.Wallet)
 		return nil, a, err
 	}
 	return key, a, err
@@ -186,7 +185,7 @@ func writeKeyFile(file string, content []byte) error {
 }
 
 // keyFileName implements the naming convention for keyfiles:
-// UTC--<created_at UTC ISO8601>-<z-prefixed address hex>
+// UTC--<created_at UTC ISO8601>-<Q-prefixed address hex>
 func keyFileName(keyAddr common.Address) string {
 	ts := time.Now().UTC()
 	return fmt.Sprintf("UTC--%s--%#x", toISO8601(ts), keyAddr)

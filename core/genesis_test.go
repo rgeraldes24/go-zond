@@ -26,9 +26,9 @@ import (
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/rawdb"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/trie"
 	"github.com/theQRL/go-zond/trie/triedb/pathdb"
-	"github.com/theQRL/go-zond/zonddb"
 )
 
 func TestSetupGenesis(t *testing.T) {
@@ -38,7 +38,7 @@ func TestSetupGenesis(t *testing.T) {
 
 func testSetupGenesis(t *testing.T, scheme string) {
 	var (
-		customghash = common.HexToHash("0x512a0d99941f1551db550852bdec6c9e213595356ede9dd23d1572199a8d66ba")
+		customghash = common.HexToHash("0x2cc76cea8ddd6a59c0c6c6d34a8e9b53bb50e3b5da34d6f7f06cda0469fd56b5")
 		customg     = Genesis{
 			Config: &params.ChainConfig{},
 			Alloc: GenesisAlloc{
@@ -51,14 +51,14 @@ func testSetupGenesis(t *testing.T, scheme string) {
 
 	tests := []struct {
 		name       string
-		fn         func(zonddb.Database) (*params.ChainConfig, common.Hash, error)
+		fn         func(qrldb.Database) (*params.ChainConfig, common.Hash, error)
 		wantConfig *params.ChainConfig
 		wantHash   common.Hash
 		wantErr    error
 	}{
 		{
 			name: "genesis without ChainConfig",
-			fn: func(db zonddb.Database) (*params.ChainConfig, common.Hash, error) {
+			fn: func(db qrldb.Database) (*params.ChainConfig, common.Hash, error) {
 				return SetupGenesisBlock(db, trie.NewDatabase(db, newDbConfig(scheme)), new(Genesis))
 			},
 			wantErr:    errGenesisNoConfig,
@@ -68,7 +68,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 		/*
 			{
 				name: "no block in DB, genesis == nil",
-				fn: func(db zonddb.Database) (*params.ChainConfig, common.Hash, error) {
+				fn: func(db qrldb.Database) (*params.ChainConfig, common.Hash, error) {
 					return SetupGenesisBlock(db, trie.NewDatabase(db, newDbConfig(scheme)), nil)
 				},
 				// wantHash:   params.MainnetGenesisHash,
@@ -77,7 +77,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 			},
 			{
 				name: "mainnet block in DB, genesis == nil",
-				fn: func(db zonddb.Database) (*params.ChainConfig, common.Hash, error) {
+				fn: func(db qrldb.Database) (*params.ChainConfig, common.Hash, error) {
 					DefaultGenesisBlock().MustCommit(db, trie.NewDatabase(db, newDbConfig(scheme)))
 					return SetupGenesisBlock(db, trie.NewDatabase(db, newDbConfig(scheme)), nil)
 				},
@@ -87,7 +87,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 		*/
 		{
 			name: "custom block in DB, genesis == nil",
-			fn: func(db zonddb.Database) (*params.ChainConfig, common.Hash, error) {
+			fn: func(db qrldb.Database) (*params.ChainConfig, common.Hash, error) {
 				tdb := trie.NewDatabase(db, newDbConfig(scheme))
 				customg.Commit(db, tdb)
 				return SetupGenesisBlock(db, tdb, nil)
@@ -99,7 +99,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 		/*
 			{
 				name: "custom block in DB, genesis == goerli",
-				fn: func(db zonddb.Database) (*params.ChainConfig, common.Hash, error) {
+				fn: func(db qrldb.Database) (*params.ChainConfig, common.Hash, error) {
 					tdb := trie.NewDatabase(db, newDbConfig(scheme))
 					customg.Commit(db, tdb)
 					return SetupGenesisBlock(db, tdb, DefaultGoerliGenesisBlock())
@@ -111,7 +111,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 		*/
 		{
 			name: "compatible config in DB",
-			fn: func(db zonddb.Database) (*params.ChainConfig, common.Hash, error) {
+			fn: func(db qrldb.Database) (*params.ChainConfig, common.Hash, error) {
 				tdb := trie.NewDatabase(db, newDbConfig(scheme))
 				oldcustomg.Commit(db, tdb)
 				return SetupGenesisBlock(db, tdb, &customg)
@@ -123,7 +123,7 @@ func testSetupGenesis(t *testing.T, scheme string) {
 		/*
 			{
 				name: "incompatible config in DB",
-				fn: func(db zonddb.Database) (*params.ChainConfig, common.Hash, error) {
+				fn: func(db qrldb.Database) (*params.ChainConfig, common.Hash, error) {
 					// Commit the 'old' genesis block with Homestead transition at #2.
 					// Advance to block #4, past the homestead transition block of customg.
 					tdb := trie.NewDatabase(db, newDbConfig(scheme))

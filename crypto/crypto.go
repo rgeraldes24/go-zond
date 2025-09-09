@@ -29,7 +29,7 @@ import (
 	"math/big"
 	"os"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/rlp"
@@ -113,16 +113,16 @@ func Keccak512(data ...[]byte) []byte {
 	return d.Sum(nil)
 }
 
-// CreateAddress creates a zond address given the bytes and the nonce
+// CreateAddress creates a qrl address given the bytes and the nonce
 func CreateAddress(b common.Address, nonce uint64) common.Address {
 	data, _ := rlp.EncodeToBytes([]interface{}{b, nonce})
-	return common.BytesToAddress(Keccak256(data)[12:])
+	return common.BytesToAddress(Keccak256(data)[8:])
 }
 
-// CreateAddress2 creates a zond address given the address bytes, initial
+// CreateAddress2 creates a qrl address given the address bytes, initial
 // contract code hash and a salt.
 func CreateAddress2(b common.Address, salt [32]byte, inithash []byte) common.Address {
-	return common.BytesToAddress(Keccak256([]byte{0xff}, b.Bytes(), salt[:], inithash)[12:])
+	return common.BytesToAddress(Keccak256([]byte{0xff}, b.Bytes(), salt[:], inithash)[8:])
 }
 
 // ToECDSA creates a private key with the given D value.
@@ -267,9 +267,9 @@ func GenerateKey() (*ecdsa.PrivateKey, error) {
 	return ecdsa.GenerateKey(S256(), rand.Reader)
 }
 
-// GenerateDilihtiumKey generates a new private key.
-func GenerateDilithiumKey() (*dilithium.Dilithium, error) {
-	return dilithium.New()
+// GenerateMLDSA87Key generates a new private key.
+func GenerateMLDSA87Key() (*walletmldsa87.Wallet, error) {
+	return walletmldsa87.NewWallet()
 }
 
 // ValidateSignatureValues verifies whether the signature values are valid with

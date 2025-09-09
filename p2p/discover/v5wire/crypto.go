@@ -17,8 +17,6 @@
 package v5wire
 
 import (
-	"crypto/aes"
-	"crypto/cipher"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"errors"
@@ -27,18 +25,18 @@ import (
 
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/crypto"
-	"github.com/theQRL/go-zond/p2p/enode"
+	"github.com/theQRL/go-zond/crypto/cipher"
+	"github.com/theQRL/go-zond/p2p/qnode"
 	"golang.org/x/crypto/hkdf"
 )
 
 const (
 	// Encryption/authentication parameters.
-	aesKeySize   = 16
-	gcmNonceSize = 12
+	aesKeySize = 16
 )
 
 // Nonce represents a nonce used for AES/GCM.
-type Nonce [gcmNonceSize]byte
+type Nonce [cipher.GCMNonceSize]byte
 
 // EncodePubkey encodes a public key.
 func EncodePubkey(key *ecdsa.PublicKey) []byte {
@@ -64,7 +62,7 @@ func DecodePubkey(curve elliptic.Curve, e []byte) (*ecdsa.PublicKey, error) {
 }
 
 // idNonceHash computes the ID signature hash used in the handshake.
-func idNonceHash(h hash.Hash, challenge, ephkey []byte, destID enode.ID) []byte {
+func idNonceHash(h hash.Hash, challenge, ephkey []byte, destID qnode.ID) []byte {
 	h.Reset()
 	h.Write([]byte("discovery v5 identity proof"))
 	h.Write(challenge)
@@ -74,7 +72,7 @@ func idNonceHash(h hash.Hash, challenge, ephkey []byte, destID enode.ID) []byte 
 }
 
 // makeIDSignature creates the ID nonce signature.
-func makeIDSignature(hash hash.Hash, key *ecdsa.PrivateKey, challenge, ephkey []byte, destID enode.ID) ([]byte, error) {
+func makeIDSignature(hash hash.Hash, key *ecdsa.PrivateKey, challenge, ephkey []byte, destID qnode.ID) ([]byte, error) {
 	input := idNonceHash(hash, challenge, ephkey, destID)
 	switch key.Curve {
 	case crypto.S256():
@@ -88,13 +86,13 @@ func makeIDSignature(hash hash.Hash, key *ecdsa.PrivateKey, challenge, ephkey []
 	}
 }
 
-// s256raw is an unparsed secp256k1 public key ENR entry.
+// s256raw is an unparsed secp256k1 public key QNR entry.
 type s256raw []byte
 
-func (s256raw) ENRKey() string { return "secp256k1" }
+func (s256raw) QNRKey() string { return "secp256k1" }
 
 // verifyIDSignature checks that signature over idnonce was made by the given node.
-func verifyIDSignature(hash hash.Hash, sig []byte, n *enode.Node, challenge, ephkey []byte, destID enode.ID) error {
+func verifyIDSignature(hash hash.Hash, sig []byte, n *qnode.Node, challenge, ephkey []byte, destID qnode.ID) error {
 	switch idscheme := n.Record().IdentityScheme(); idscheme {
 	case "v4":
 		var pubkey s256raw
@@ -114,7 +112,7 @@ func verifyIDSignature(hash hash.Hash, sig []byte, n *enode.Node, challenge, eph
 type hashFn func() hash.Hash
 
 // deriveKeys creates the session keys.
-func deriveKeys(hash hashFn, priv *ecdsa.PrivateKey, pub *ecdsa.PublicKey, n1, n2 enode.ID, challenge []byte) *session {
+func deriveKeys(hash hashFn, priv *ecdsa.PrivateKey, pub *ecdsa.PublicKey, n1, n2 qnode.ID, challenge []byte) *session {
 	const text = "discovery v5 key agreement"
 	var info = make([]byte, 0, len(text)+len(n1)+len(n2))
 	info = append(info, text...)
@@ -145,36 +143,4 @@ func ecdh(privkey *ecdsa.PrivateKey, pubkey *ecdsa.PublicKey) []byte {
 	sec[0] = 0x02 | byte(secY.Bit(0))
 	math.ReadBits(secX, sec[1:])
 	return sec
-}
-
-// encryptGCM encrypts pt using AES-GCM with the given key and nonce. The ciphertext is
-// appended to dest, which must not overlap with plaintext. The resulting ciphertext is 16
-// bytes longer than plaintext because it contains an authentication tag.
-func encryptGCM(dest, key, nonce, plaintext, authData []byte) ([]byte, error) {
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		panic(fmt.Errorf("can't create block cipher: %v", err))
-	}
-	aesgcm, err := cipher.NewGCMWithNonceSize(block, gcmNonceSize)
-	if err != nil {
-		panic(fmt.Errorf("can't create GCM: %v", err))
-	}
-	return aesgcm.Seal(dest, nonce, plaintext, authData), nil
-}
-
-// decryptGCM decrypts ct using AES-GCM with the given key and nonce.
-func decryptGCM(key, nonce, ct, authData []byte) ([]byte, error) {
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, fmt.Errorf("can't create block cipher: %v", err)
-	}
-	if len(nonce) != gcmNonceSize {
-		return nil, fmt.Errorf("invalid GCM nonce size: %d", len(nonce))
-	}
-	aesgcm, err := cipher.NewGCMWithNonceSize(block, gcmNonceSize)
-	if err != nil {
-		return nil, fmt.Errorf("can't create GCM: %v", err)
-	}
-	pt := make([]byte, 0, len(ct))
-	return aesgcm.Open(pt, nonce, ct, authData)
 }

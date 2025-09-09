@@ -21,7 +21,8 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/wallet/common/descriptor"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
@@ -63,8 +64,8 @@ func LatestSignerForChainID(chainID *big.Int) Signer {
 	return NewShanghaiSigner(chainID)
 }
 
-// SignTx signs the transaction using the given dilithium signer and private key.
-func SignTx(tx *Transaction, s Signer, d *dilithium.Dilithium) (*Transaction, error) {
+// SignTx signs the transaction using the given ML-DSA-87 signer and wallet.
+func SignTx(tx *Transaction, s Signer, w *walletmldsa87.Wallet) (*Transaction, error) {
 	// Check that chain ID of tx matches the signer. We also accept ID zero here,
 	// because it indicates that the chain ID was not specified in the tx.
 	// NOTE(rgeraldes24): chain ID is filled in in the WithSignatureAndPublicKey method
@@ -74,29 +75,29 @@ func SignTx(tx *Transaction, s Signer, d *dilithium.Dilithium) (*Transaction, er
 	}
 
 	h := s.Hash(tx)
-	sig, err := pqcrypto.Sign(h[:], d)
+	sig, err := pqcrypto.Sign(h[:], w)
 	if err != nil {
 		return nil, err
 	}
-	pk := d.GetPK()
-	return tx.WithSignatureAndPublicKey(s, sig[:], pk[:])
+	pk := w.GetPK()
+	return tx.WithSignaturePublicKeyAndDescriptor(s, sig[:], pk[:], w.GetDescriptor().ToDescriptor().ToBytes())
 }
 
 // SignNewTx creates a transaction and signs it.
-func SignNewTx(d *dilithium.Dilithium, s Signer, txdata TxData) (*Transaction, error) {
+func SignNewTx(w *walletmldsa87.Wallet, s Signer, txdata TxData) (*Transaction, error) {
 	tx := NewTx(txdata)
 	h := s.Hash(tx)
-	sig, err := pqcrypto.Sign(h[:], d)
+	sig, err := pqcrypto.Sign(h[:], w)
 	if err != nil {
 		return nil, err
 	}
-	pk := d.GetPK()
-	return tx.WithSignatureAndPublicKey(s, sig, pk[:])
+	pk := w.GetPK()
+	return tx.WithSignaturePublicKeyAndDescriptor(s, sig, pk[:], w.GetDescriptor().ToDescriptor().ToBytes())
 }
 
 // MustSignNewTx creates a transaction and signs it.
 // This panics if the transaction cannot be signed.
-func MustSignNewTx(d *dilithium.Dilithium, s Signer, txdata TxData) *Transaction {
+func MustSignNewTx(d *walletmldsa87.Wallet, s Signer, txdata TxData) *Transaction {
 	tx, err := SignNewTx(d, s, txdata)
 	if err != nil {
 		panic(err)
@@ -139,9 +140,9 @@ type Signer interface {
 	// Sender returns the sender address of the transaction.
 	Sender(tx *Transaction) (common.Address, error)
 
-	// SignatureAndPublicKeyValues returns the raw signature, publicKey values corresponding to the
-	// given signature.
-	SignatureAndPublicKeyValues(tx *Transaction, sig, pk []byte) (signature, publicKey []byte, err error)
+	// SignaturePublicKeyAndDescriptorValues returns the raw signature, publicKey, descriptor values
+	// corresponding to the given signature.
+	SignaturePublicKeyAndDescriptorValues(tx *Transaction, sig, pk, desc []byte) (signature, publicKey, descriptor []byte, err error)
 	ChainID() *big.Int
 
 	// Hash returns 'signature hash', i.e. the transaction hash that is signed by the
@@ -172,7 +173,12 @@ func (s ShanghaiSigner) Sender(tx *Transaction) (common.Address, error) {
 	if tx.ChainId().Cmp(s.ChainId) != 0 {
 		return common.Address{}, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, tx.ChainId(), s.ChainId)
 	}
-	return pqcrypto.DilithiumPKToAddress(tx.RawPublicKeyValue()), nil
+
+	d, err := descriptor.FromBytes(tx.RawDescriptorValue())
+	if err != nil {
+		return common.Address{}, err
+	}
+	return pqcrypto.PKToAddress(tx.RawPublicKeyValue(), d)
 }
 
 func (s ShanghaiSigner) Equal(s2 Signer) bool {
@@ -180,16 +186,17 @@ func (s ShanghaiSigner) Equal(s2 Signer) bool {
 	return ok && x.ChainId.Cmp(s.ChainId) == 0
 }
 
-func (s ShanghaiSigner) SignatureAndPublicKeyValues(tx *Transaction, sig, pk []byte) (Signature, PublicKey []byte, err error) {
+func (s ShanghaiSigner) SignaturePublicKeyAndDescriptorValues(tx *Transaction, sig, pk, desc []byte) (Signature, PublicKey, Descriptor []byte, err error) {
 	// Check that chain ID of tx matches the signer. We also accept ID zero here,
 	// because it indicates that the chain ID was not specified in the tx.
 	chainID := tx.inner.chainID()
 	if chainID.Sign() != 0 && chainID.Cmp(s.ChainId) != 0 {
-		return nil, nil, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, chainID, s.ChainId)
+		return nil, nil, nil, fmt.Errorf("%w: have %d want %d", ErrInvalidChainId, chainID, s.ChainId)
 	}
 	Signature = decodeSignature(sig)
 	PublicKey = decodePublicKey(pk)
-	return Signature, PublicKey, nil
+	Descriptor = decodeDescriptor(desc)
+	return Signature, PublicKey, Descriptor, nil
 }
 
 // Hash returns the hash to be signed by the sender.
@@ -222,19 +229,28 @@ func (s ShanghaiSigner) Hash(tx *Transaction) common.Hash {
 }
 
 func decodeSignature(sig []byte) (signature []byte) {
-	if len(sig) != pqcrypto.DilithiumSignatureLength {
-		panic(fmt.Sprintf("wrong size for signature: got %d, want %d", len(sig), pqcrypto.DilithiumSignatureLength))
+	if len(sig) != pqcrypto.MLDSA87SignatureLength {
+		panic(fmt.Sprintf("wrong size for ml-dsa-87 signature: got %d, want %d", len(sig), pqcrypto.MLDSA87SignatureLength))
 	}
-	signature = make([]byte, pqcrypto.DilithiumSignatureLength)
+	signature = make([]byte, pqcrypto.MLDSA87SignatureLength)
 	copy(signature, sig)
 	return signature
 }
 
 func decodePublicKey(pk []byte) (publicKey []byte) {
-	if len(pk) != pqcrypto.DilithiumPublicKeyLength {
-		panic(fmt.Sprintf("wrong size for dilithium publickey: got %d, want %d", len(pk), pqcrypto.DilithiumPublicKeyLength))
+	if len(pk) != pqcrypto.MLDSA87PublicKeyLength {
+		panic(fmt.Sprintf("wrong size for ml-dsa-87 publickey: got %d, want %d", len(pk), pqcrypto.MLDSA87PublicKeyLength))
 	}
-	publicKey = make([]byte, pqcrypto.DilithiumPublicKeyLength)
+	publicKey = make([]byte, pqcrypto.MLDSA87PublicKeyLength)
 	copy(publicKey, pk)
 	return publicKey
+}
+
+func decodeDescriptor(d []byte) (descriptor []byte) {
+	if len(d) != pqcrypto.DescriptorSize {
+		panic(fmt.Sprintf("wrong size for descriptor: got %d, want %d", len(d), pqcrypto.DescriptorSize))
+	}
+	descriptor = make([]byte, pqcrypto.DescriptorSize)
+	copy(descriptor, d)
+	return descriptor
 }

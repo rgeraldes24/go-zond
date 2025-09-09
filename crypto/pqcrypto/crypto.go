@@ -8,20 +8,25 @@ import (
 	"io"
 	"os"
 
-	qrllibCommon "github.com/theQRL/go-qrllib/common"
-	"github.com/theQRL/go-qrllib/dilithium"
+	cryptomldsa87 "github.com/theQRL/go-qrllib/crypto/ml_dsa_87"
+	"github.com/theQRL/go-qrllib/wallet"
+	walletcommon "github.com/theQRL/go-qrllib/wallet/common"
+	"github.com/theQRL/go-qrllib/wallet/common/descriptor"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 )
 
-const DilithiumSignatureLength = dilithium.CryptoBytes
+const MLDSA87SignatureLength = cryptomldsa87.CryptoBytes
 
-const DilithiumPublicKeyLength = dilithium.CryptoPublicKeyBytes
+const MLDSA87PublicKeyLength = cryptomldsa87.CryptoPublicKeyBytes
+
+const DescriptorSize = descriptor.DescriptorSize
 
 // DigestLength sets the signature digest exact length
 const DigestLength = 32
 
-// LoadDilithium loads Dilithium from the given file having hex seed (not extended hex seed).
-func LoadDilithium(file string) (*dilithium.Dilithium, error) {
+// LoadWallet loads ML-DSA-87 or SPHINCS+-256s Wallet from the given file having hex seed (not extended hex seed).
+func LoadWallet(file string) (*walletmldsa87.Wallet, error) {
 	fd, err := os.Open(file)
 	if err != nil {
 		return nil, err
@@ -29,22 +34,22 @@ func LoadDilithium(file string) (*dilithium.Dilithium, error) {
 	defer fd.Close()
 
 	r := bufio.NewReader(fd)
-	buf := make([]byte, qrllibCommon.SeedSize*2)
+	buf := make([]byte, walletcommon.SeedSize*2)
 	n, err := readASCII(buf, r)
 	if err != nil {
 		return nil, err
 	} else if n != len(buf) {
-		return nil, fmt.Errorf("key file too short, want %v hex characters", qrllibCommon.SeedSize*2)
+		return nil, fmt.Errorf("key file too short, want %v hex characters", walletcommon.SeedSize*2)
 	}
 	if err := checkKeyFileEnd(r); err != nil {
 		return nil, err
 	}
 
-	return HexToDilithium(string(buf))
+	return HexToWallet(string(buf))
 }
 
-func GenerateDilithiumKey() (*dilithium.Dilithium, error) {
-	return dilithium.New()
+func GenerateWalletKey() (*walletmldsa87.Wallet, error) {
+	return walletmldsa87.NewWallet()
 }
 
 // readASCII reads into 'buf', stopping when the buffer is full or
@@ -79,21 +84,21 @@ func checkKeyFileEnd(r *bufio.Reader) error {
 	}
 }
 
-// ToDilithiumUnsafe blindly converts a binary blob to a private key. It should almost
+// ToWalletUnsafe blindly converts a binary blob to a private key. It should almost
 // never be used unless you are sure the input is valid and want to avoid hitting
 // errors due to bad origin encoding (0 prefixes cut off).
-func ToDilithiumUnsafe(seed []byte) *dilithium.Dilithium {
-	var sizedSeed [qrllibCommon.SeedSize]uint8
+func ToWalletUnsafe(seed []byte) *walletmldsa87.Wallet {
+	var sizedSeed [walletcommon.SeedSize]uint8
 	copy(sizedSeed[:], seed)
-	d, err := dilithium.NewDilithiumFromSeed(sizedSeed)
+	d, err := walletmldsa87.NewWalletFromSeed(sizedSeed)
 	if err != nil {
 		return nil
 	}
 	return d
 }
 
-// HexToDilithium parses a hex seed (not extended hex seed).
-func HexToDilithium(hexSeedStr string) (*dilithium.Dilithium, error) {
+// HexToWallet parses a hex seed (not extended hex seed).
+func HexToWallet(hexSeedStr string) (*walletmldsa87.Wallet, error) {
 	b, err := hex.DecodeString(hexSeedStr)
 	if byteErr, ok := err.(hex.InvalidByteError); ok {
 		return nil, fmt.Errorf("invalid hex character %q in seed", byte(byteErr))
@@ -101,14 +106,12 @@ func HexToDilithium(hexSeedStr string) (*dilithium.Dilithium, error) {
 		return nil, errors.New("invalid hex data for seed")
 	}
 
-	var hexSeed [qrllibCommon.SeedSize]uint8
+	var hexSeed [walletcommon.SeedSize]uint8
 	copy(hexSeed[:], b)
 
-	return dilithium.NewDilithiumFromSeed(hexSeed)
+	return walletmldsa87.NewWalletFromSeed(hexSeed)
 }
 
-func DilithiumPKToAddress(publicKey []byte) common.Address {
-	var pk [DilithiumPublicKeyLength]uint8
-	copy(pk[:], publicKey)
-	return dilithium.GetDilithiumAddressFromPK(pk)
+func PKToAddress(pk []byte, d descriptor.Descriptor) (common.Address, error) {
+	return wallet.GetAddressFromPKAndDescriptor(pk, d)
 }

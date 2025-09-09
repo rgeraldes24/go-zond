@@ -25,7 +25,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletcommon "github.com/theQRL/go-qrllib/wallet/common"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/common/math"
@@ -37,11 +38,11 @@ import (
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/rlp"
 	"github.com/theQRL/go-zond/trie"
 	"github.com/theQRL/go-zond/trie/triedb/hashdb"
 	"github.com/theQRL/go-zond/trie/triedb/pathdb"
-	"github.com/theQRL/go-zond/zonddb"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -129,27 +130,27 @@ type stTransactionMarshaling struct {
 // GetChainConfig takes a fork definition and returns a chain config.
 // The fork definition can be
 // - a plain forkname, e.g. `Byzantium`,
-// - a fork basename, and a list of EIPs to enable; e.g. `Byzantium+1884+1283`.
-func GetChainConfig(forkString string) (baseConfig *params.ChainConfig, eips []int, err error) {
+// - a fork basename, and a list of QIPs to enable; e.g. `Byzantium+1884+1283`.
+func GetChainConfig(forkString string) (baseConfig *params.ChainConfig, qips []int, err error) {
 	var (
 		splitForks            = strings.Split(forkString, "+")
 		ok                    bool
-		baseName, eipsStrings = splitForks[0], splitForks[1:]
+		baseName, qipsStrings = splitForks[0], splitForks[1:]
 	)
 	if baseConfig, ok = Forks[baseName]; !ok {
 		return nil, nil, UnsupportedForkError{baseName}
 	}
-	for _, eip := range eipsStrings {
-		if eipNum, err := strconv.Atoi(eip); err != nil {
-			return nil, nil, fmt.Errorf("syntax error, invalid eip number %v", eipNum)
+	for _, qip := range qipsStrings {
+		if qipNum, err := strconv.Atoi(qip); err != nil {
+			return nil, nil, fmt.Errorf("syntax error, invalid qip number %v", qipNum)
 		} else {
-			if !vm.ValidEip(eipNum) {
-				return nil, nil, fmt.Errorf("syntax error, invalid eip number %v", eipNum)
+			if !vm.ValidQip(qipNum) {
+				return nil, nil, fmt.Errorf("syntax error, invalid qip number %v", qipNum)
 			}
-			eips = append(eips, eipNum)
+			qips = append(qips, qipNum)
 		}
 	}
-	return baseConfig, eips, nil
+	return baseConfig, qips, nil
 }
 
 // Subtests returns all valid subtests of the test.
@@ -222,11 +223,11 @@ func (t *StateTest) Run(subtest StateSubtest, vmconfig vm.Config, snapshotter bo
 
 // RunNoVerify runs a specific subtest and returns the statedb and post-state root
 func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapshotter bool, scheme string) (*trie.Database, *snapshot.Tree, *state.StateDB, common.Hash, error) {
-	config, eips, err := GetChainConfig(subtest.Fork)
+	config, qips, err := GetChainConfig(subtest.Fork)
 	if err != nil {
 		return nil, nil, nil, common.Hash{}, UnsupportedForkError{subtest.Fork}
 	}
-	vmconfig.ExtraEips = eips
+	vmconfig.ExtraQips = qips
 
 	block := t.genesis(config).ToBlock()
 	triedb, snaps, statedb := MakePreState(rawdb.NewMemoryDatabase(), t.json.Pre, snapshotter, scheme)
@@ -261,9 +262,9 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 		}
 	}
 
-	// Prepare the ZVM.
-	txContext := core.NewZVMTxContext(msg)
-	context := core.NewZVMBlockContext(block.Header(), nil, &t.json.Env.Coinbase)
+	// Prepare the QRVM.
+	txContext := core.NewQRVMTxContext(msg)
+	context := core.NewQRVMBlockContext(block.Header(), nil, &t.json.Env.Coinbase)
 	context.GetHash = vmTestBlockHash
 	context.BaseFee = baseFee
 	context.Random = nil
@@ -271,13 +272,13 @@ func (t *StateTest) RunNoVerify(subtest StateSubtest, vmconfig vm.Config, snapsh
 		rnd := common.BigToHash(t.json.Env.Random)
 		context.Random = &rnd
 	}
-	zvm := vm.NewZVM(context, txContext, statedb, config, vmconfig)
+	qrvm := vm.NewQRVM(context, txContext, statedb, config, vmconfig)
 
 	// Execute the message.
 	snapshot := statedb.Snapshot()
 	gaspool := new(core.GasPool)
 	gaspool.AddGas(block.GasLimit())
-	_, err = core.ApplyMessage(zvm, msg, gaspool)
+	_, err = core.ApplyMessage(qrvm, msg, gaspool)
 	if err != nil {
 		statedb.RevertToSnapshot(snapshot)
 	}
@@ -297,7 +298,7 @@ func (t *StateTest) gasLimit(subtest StateSubtest) uint64 {
 	return t.json.Tx.GasLimit[t.json.Post[subtest.Fork][subtest.Index].Indexes.Gas]
 }
 
-func MakePreState(db zonddb.Database, accounts core.GenesisAlloc, snapshotter bool, scheme string) (*trie.Database, *snapshot.Tree, *state.StateDB) {
+func MakePreState(db qrldb.Database, accounts core.GenesisAlloc, snapshotter bool, scheme string) (*trie.Database, *snapshot.Tree, *state.StateDB) {
 	tconf := &trie.Config{Preimages: true}
 	if scheme == rawdb.HashScheme {
 		tconf.HashDB = hashdb.Defaults
@@ -354,12 +355,16 @@ func (tx *stTransaction) toMessage(ps stPostState, baseFee *big.Int) (*core.Mess
 	if tx.Sender != nil {
 		from = *tx.Sender
 	} else if len(tx.Seed) > 0 {
+		extendedSeed, err := walletcommon.NewExtendedSeedFromHexString(tx.Seed)
+		if err != nil {
+			return nil, fmt.Errorf("failed to convert tx.Seed string into extendedSeed: %v", err)
+		}
 		// Derive sender from key if needed.
-		key, err := dilithium.NewDilithiumFromHexSeed(tx.Seed)
+		key, err := walletmldsa87.NewWalletFromExtendedSeed(extendedSeed)
 		if err != nil {
 			return nil, fmt.Errorf("invalid seed: %v", err)
 		}
-		from = common.Address(key.GetAddress())
+		from = key.GetAddress()
 	}
 	// Parse recipient if present.
 	var to *common.Address

@@ -22,7 +22,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/txpool"
 	"github.com/theQRL/go-zond/core/types"
@@ -41,9 +41,9 @@ func TestTransactionPriceNonceSort1559(t *testing.T) {
 // the same account.
 func testTransactionPriceNonceSort(t *testing.T, baseFee *big.Int) {
 	// Generate a batch of accounts to start with
-	keys := make([]*dilithium.Dilithium, 25)
+	keys := make([]*walletmldsa87.Wallet, 25)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 	}
 	signer := types.LatestSignerForChainID(common.Big1)
 
@@ -125,9 +125,9 @@ func testTransactionPriceNonceSort(t *testing.T, baseFee *big.Int) {
 func TestTransactionTimeSort(t *testing.T) {
 	t.Parallel()
 	// Generate a batch of accounts to start with
-	keys := make([]*dilithium.Dilithium, 5)
+	keys := make([]*walletmldsa87.Wallet, 5)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 	}
 	signer := types.ShanghaiSigner{ChainId: big.NewInt(0)}
 

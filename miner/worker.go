@@ -314,14 +314,14 @@ func (miner *Miner) fillTransactions(interrupt *atomic.Int32, env *environment) 
 	return nil
 }
 
-// totalFees computes total consumed miner fees in Wei. Block transactions and receipts have to have the same order.
+// totalFees computes total consumed miner fees in Planck. Block transactions and receipts have to have the same order.
 func totalFees(block *types.Block, receipts []*types.Receipt) *big.Int {
-	feesWei := new(big.Int)
+	feesPlanck := new(big.Int)
 	for i, tx := range block.Transactions() {
 		minerFee, _ := tx.EffectiveGasTip(block.BaseFee())
-		feesWei.Add(feesWei, new(big.Int).Mul(new(big.Int).SetUint64(receipts[i].GasUsed), minerFee))
+		feesPlanck.Add(feesPlanck, new(big.Int).Mul(new(big.Int).SetUint64(receipts[i].GasUsed), minerFee))
 	}
-	return feesWei
+	return feesPlanck
 }
 
 // signalToErr converts the interruption signal to a concrete error type for return.

@@ -36,7 +36,7 @@ var (
 	// support notifications. You can use this error value to check for subscription
 	// support like this:
 	//
-	//	sub, err := client.EthSubscribe(ctx, channel, "newHeads", true)
+	//	sub, err := client.QRLSubscribe(ctx, channel, "newHeads", true)
 	//	if errors.Is(err, rpc.ErrNotificationsUnsupported) {
 	//		// Server does not support subscriptions, fall back to polling.
 	//	}
@@ -206,7 +206,7 @@ func (s *Subscription) MarshalJSON() ([]byte, error) {
 }
 
 // ClientSubscription is a subscription established through the Client's Subscribe or
-// EthSubscribe methods.
+// QRLSubscribe methods.
 type ClientSubscription struct {
 	client    *Client
 	etype     reflect.Type

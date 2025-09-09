@@ -85,9 +85,9 @@ func TestTypeRegexp(t *testing.T) {
 		{"string", nil, Type{T: StringTy, stringKind: "string"}},
 		{"string[]", nil, Type{T: SliceTy, Elem: &Type{T: StringTy, stringKind: "string"}, stringKind: "string[]"}},
 		{"string[2]", nil, Type{T: ArrayTy, Size: 2, Elem: &Type{T: StringTy, stringKind: "string"}, stringKind: "string[2]"}},
-		{"address", nil, Type{Size: 20, T: AddressTy, stringKind: "address"}},
-		{"address[]", nil, Type{T: SliceTy, Elem: &Type{Size: 20, T: AddressTy, stringKind: "address"}, stringKind: "address[]"}},
-		{"address[2]", nil, Type{T: ArrayTy, Size: 2, Elem: &Type{Size: 20, T: AddressTy, stringKind: "address"}, stringKind: "address[2]"}},
+		{"address", nil, Type{Size: common.AddressLength, T: AddressTy, stringKind: "address"}},
+		{"address[]", nil, Type{T: SliceTy, Elem: &Type{Size: common.AddressLength, T: AddressTy, stringKind: "address"}, stringKind: "address[]"}},
+		{"address[2]", nil, Type{T: ArrayTy, Size: 2, Elem: &Type{Size: common.AddressLength, T: AddressTy, stringKind: "address"}, stringKind: "address[2]"}},
 		// TODO when fixed types are implemented properly
 		// {"fixed", nil, Type{}},
 		// {"fixed128x128", nil, Type{}},

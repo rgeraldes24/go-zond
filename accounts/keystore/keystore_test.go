@@ -342,17 +342,17 @@ func TestWalletNotifications(t *testing.T) {
 // TestImportExport tests the import functionality of a keystore.
 func TestImportECDSA(t *testing.T) {
 	_, ks := tmpKeyStore(t)
-	key, err := pqcrypto.GenerateDilithiumKey()
+	key, err := pqcrypto.GenerateWalletKey()
 	if err != nil {
 		t.Fatalf("failed to generate key: %v", key)
 	}
-	if _, err = ks.ImportDilithium(key, "old"); err != nil {
+	if _, err = ks.ImportMLDSA87(key, "old"); err != nil {
 		t.Errorf("importing failed: %v", err)
 	}
-	if _, err = ks.ImportDilithium(key, "old"); err == nil {
+	if _, err = ks.ImportMLDSA87(key, "old"); err == nil {
 		t.Errorf("importing same key twice succeeded")
 	}
-	if _, err = ks.ImportDilithium(key, "new"); err == nil {
+	if _, err = ks.ImportMLDSA87(key, "new"); err == nil {
 		t.Errorf("importing same key twice succeeded")
 	}
 }
@@ -452,6 +452,8 @@ func checkEvents(t *testing.T, want []walletEvent, have []walletEvent) {
 
 func tmpKeyStore(t *testing.T) (string, *KeyStore) {
 	d := t.TempDir()
-	newKs := func(kd string) *KeyStore { return NewKeyStore(kd, veryLightScryptN, veryLightScryptP) }
+	newKs := func(kd string) *KeyStore {
+		return NewKeyStore(kd, veryLightArgon2idT, veryLightArgon2idM, veryLightArgon2idP)
+	}
 	return d, newKs(d)
 }

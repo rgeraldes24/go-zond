@@ -26,11 +26,7 @@ The crypto is documented at https://github.com/ethereum/wiki/wiki/Web3-Secret-St
 package keystore
 
 import (
-	"bytes"
-	"crypto/aes"
-	"crypto/cipher"
 	"crypto/rand"
-	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -41,39 +37,48 @@ import (
 	"github.com/google/uuid"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
-	"github.com/theQRL/go-zond/crypto"
+	"github.com/theQRL/go-zond/crypto/cipher"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
-	"golang.org/x/crypto/pbkdf2"
-	"golang.org/x/crypto/scrypt"
+	"golang.org/x/crypto/argon2"
 )
 
 const (
-	keyHeaderKDF = "scrypt"
+	keyHeaderKDF = "argon2id"
 
-	// StandardScryptN is the N parameter of Scrypt encryption algorithm, using 256MB
-	// memory and taking approximately 1s CPU time on a modern processor.
-	StandardScryptN = 1 << 18
+	// StandardArgon2idT is the iterations parameter of Argon2id encryption algorithm, using
+	// 256MB memory and taking approximately 1.5s CPU time on a modern processor.
+	StandardArgon2idT uint32 = 8
 
-	// StandardScryptP is the P parameter of Scrypt encryption algorithm, using 256MB
-	// memory and taking approximately 1s CPU time on a modern processor.
-	StandardScryptP = 1
+	// StandardArgon2idM is the memory cost parameter of Argon2id encryption algorithm, using
+	// 256MB memory and taking approximately 1.5s CPU time on a modern processor.
+	StandardArgon2idM uint32 = 1 << 18
 
-	// LightScryptN is the N parameter of Scrypt encryption algorithm, using 4MB
-	// memory and taking approximately 100ms CPU time on a modern processor.
-	LightScryptN = 1 << 12
+	// StandardArgon2idP is the parallelism parameter of Argon2id encryption algorithm, using
+	// 256MB memory and taking approximately 1.5s CPU time on a modern processor.
+	StandardArgon2idP uint8 = 1
 
-	// LightScryptP is the P parameter of Scrypt encryption algorithm, using 4MB
-	// memory and taking approximately 100ms CPU time on a modern processor.
-	LightScryptP = 6
+	// LightArgon2idT is the iterations parameter of Argon2id encryption algorithm, using 4MB
+	// memory and taking approximately 500ms CPU time on a modern processor.
+	LightArgon2idT uint32 = 8
 
-	scryptR     = 8
-	scryptDKLen = 32
+	// LightArgon2idM is the memory cost parameter of Argon2id encryption algorithm, using 4MB
+	// memory and taking approximately 500ms CPU time on a modern processor.
+	LightArgon2idM uint32 = 1 << 12
+
+	// LightArgon2idP is the parallelism parameter of Argon2id encryption algorithm, using 4MB
+	// memory and taking approximately 500ms CPU time on a modern processor.
+	LightArgon2idP uint8 = 1
+
+	argon2idDKLen = 32
 )
 
 type keyStorePassphrase struct {
 	keysDirPath string
-	scryptN     int
-	scryptP     int
+
+	argon2idT uint32
+	argon2idM uint32
+	argon2idP uint8
+
 	// skipKeyFileVerification disables the security-feature which does
 	// reads and decrypts any newly created keyfiles. This should be 'false' in all
 	// cases except tests -- setting this to 'true' is not recommended.
@@ -98,13 +103,13 @@ func (ks keyStorePassphrase) GetKey(addr common.Address, filename, auth string) 
 }
 
 // StoreKey generates a key, encrypts with 'auth' and stores in the given directory
-func StoreKey(dir, auth string, scryptN, scryptP int) (accounts.Account, error) {
-	_, a, err := storeNewKey(&keyStorePassphrase{dir, scryptN, scryptP, false}, auth)
+func StoreKey(dir, auth string, argon2idT, argon2idM uint32, argon2idP uint8) (accounts.Account, error) {
+	_, a, err := storeNewKey(&keyStorePassphrase{dir, argon2idT, argon2idM, argon2idP, false}, auth)
 	return a, err
 }
 
 func (ks keyStorePassphrase) StoreKey(filename string, key *Key, auth string) error {
-	keyjson, err := EncryptKey(key, auth, ks.scryptN, ks.scryptP)
+	keyjson, err := EncryptKey(key, auth, ks.argon2idT, ks.argon2idM, ks.argon2idP)
 	if err != nil {
 		return err
 	}
@@ -138,63 +143,58 @@ func (ks keyStorePassphrase) JoinPath(filename string) string {
 }
 
 // Encryptdata encrypts the data given as 'data' with the password 'auth'.
-func EncryptDataV3(data, auth []byte, scryptN, scryptP int) (CryptoJSON, error) {
+func EncryptDataV1(data, auth []byte, argon2idT, argon2idM uint32, argon2idP uint8) (CryptoJSON, error) {
 	salt := make([]byte, 32)
 	if _, err := io.ReadFull(rand.Reader, salt); err != nil {
 		panic("reading from crypto/rand failed: " + err.Error())
 	}
-	derivedKey, err := scrypt.Key(auth, salt, scryptN, scryptR, scryptP, scryptDKLen)
-	if err != nil {
-		return CryptoJSON{}, err
-	}
-	encryptKey := derivedKey[:16]
 
-	iv := make([]byte, aes.BlockSize) // 16
+	iv := make([]byte, cipher.GCMNonceSize) // 12
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		panic("reading from crypto/rand failed: " + err.Error())
 	}
-	cipherText, err := aesCTRXOR(encryptKey, data, iv)
+
+	derivedKey := argon2.IDKey(auth, salt, argon2idT, argon2idM, argon2idP, argon2idDKLen)
+	cipherText, err := cipher.EncryptGCM(nil, derivedKey, iv, data, nil)
 	if err != nil {
 		return CryptoJSON{}, err
 	}
-	mac := crypto.Keccak256(derivedKey[16:32], cipherText)
 
-	scryptParamsJSON := make(map[string]interface{}, 5)
-	scryptParamsJSON["n"] = scryptN
-	scryptParamsJSON["r"] = scryptR
-	scryptParamsJSON["p"] = scryptP
-	scryptParamsJSON["dklen"] = scryptDKLen
-	scryptParamsJSON["salt"] = hex.EncodeToString(salt)
+	argon2idParamsJSON := make(map[string]interface{}, 5)
+	argon2idParamsJSON["t"] = argon2idT
+	argon2idParamsJSON["m"] = argon2idM
+	argon2idParamsJSON["p"] = argon2idP
+	argon2idParamsJSON["dklen"] = argon2idDKLen
+	argon2idParamsJSON["salt"] = hex.EncodeToString(salt)
 	cipherParamsJSON := cipherparamsJSON{
 		IV: hex.EncodeToString(iv),
 	}
 
 	cryptoStruct := CryptoJSON{
-		Cipher:       "aes-128-ctr",
+		Cipher:       "aes-256-gcm",
 		CipherText:   hex.EncodeToString(cipherText),
 		CipherParams: cipherParamsJSON,
 		KDF:          keyHeaderKDF,
-		KDFParams:    scryptParamsJSON,
-		MAC:          hex.EncodeToString(mac),
+		KDFParams:    argon2idParamsJSON,
 	}
 	return cryptoStruct, nil
 }
 
-// EncryptKey encrypts a key using the specified scrypt parameters into a json
+// EncryptKey encrypts a key using the specified argon2id parameters into a json
 // blob that can be decrypted later on.
-func EncryptKey(key *Key, auth string, scryptN, scryptP int) ([]byte, error) {
-	seed := key.Dilithium.GetSeed()
-	cryptoStruct, err := EncryptDataV3(seed[:], []byte(auth), scryptN, scryptP)
+func EncryptKey(key *Key, auth string, argon2idT, argo2idM uint32, argo2idP uint8) ([]byte, error) {
+	seed := key.Wallet.GetSeed()
+	cryptoStruct, err := EncryptDataV1(seed[:], []byte(auth), argon2idT, argo2idM, argo2idP)
 	if err != nil {
 		return nil, err
 	}
-	encryptedKeyJSONV3 := encryptedKeyJSONV3{
+	encryptedKeyJSONV1 := encryptedKeyJSONV1{
 		fmt.Sprintf("%#x", key.Address),
 		cryptoStruct,
 		key.Id.String(),
 		version,
 	}
-	return json.Marshal(encryptedKeyJSONV3)
+	return json.Marshal(encryptedKeyJSONV1)
 }
 
 // DecryptKey decrypts a key from a json blob, returning the private key itself.
@@ -210,35 +210,31 @@ func DecryptKey(keyjson []byte, auth string) (*Key, error) {
 		err             error
 	)
 
-	k := new(encryptedKeyJSONV3)
+	k := new(encryptedKeyJSONV1)
 	if err := json.Unmarshal(keyjson, k); err != nil {
 		return nil, err
 	}
-	keyBytes, keyId, err = decryptKeyV3(k, auth)
+	keyBytes, keyId, err = decryptKeyV1(k, auth)
 
 	// Handle any decryption errors and return the key
 	if err != nil {
 		return nil, err
 	}
-	d := pqcrypto.ToDilithiumUnsafe(keyBytes)
+	w := pqcrypto.ToWalletUnsafe(keyBytes)
 	id, err := uuid.FromBytes(keyId)
 	if err != nil {
 		return nil, err
 	}
 	return &Key{
-		Id:        id,
-		Address:   d.GetAddress(),
-		Dilithium: d,
+		Id:      id,
+		Address: w.GetAddress(),
+		Wallet:  w,
 	}, nil
 }
 
-func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
-	if cryptoJson.Cipher != "aes-128-ctr" {
+func DecryptDataV1(cryptoJson CryptoJSON, auth string) ([]byte, error) {
+	if cryptoJson.Cipher != "aes-256-gcm" {
 		return nil, fmt.Errorf("cipher not supported: %v", cryptoJson.Cipher)
-	}
-	mac, err := hex.DecodeString(cryptoJson.MAC)
-	if err != nil {
-		return nil, err
 	}
 
 	iv, err := hex.DecodeString(cryptoJson.CipherParams.IV)
@@ -256,19 +252,14 @@ func DecryptDataV3(cryptoJson CryptoJSON, auth string) ([]byte, error) {
 		return nil, err
 	}
 
-	calculatedMAC := crypto.Keccak256(derivedKey[16:32], cipherText)
-	if !bytes.Equal(calculatedMAC, mac) {
-		return nil, ErrDecrypt
-	}
-
-	plainText, err := aesCTRXOR(derivedKey[:16], cipherText, iv)
+	plainText, err := cipher.DecryptGCM(derivedKey, iv, cipherText, nil)
 	if err != nil {
-		return nil, err
+		return nil, ErrDecrypt
 	}
 	return plainText, err
 }
 
-func decryptKeyV3(keyProtected *encryptedKeyJSONV3, auth string) (keyBytes []byte, keyId []byte, err error) {
+func decryptKeyV1(keyProtected *encryptedKeyJSONV1, auth string) (keyBytes []byte, keyId []byte, err error) {
 	if keyProtected.Version != version {
 		return nil, nil, fmt.Errorf("version not supported: %v", keyProtected.Version)
 	}
@@ -277,7 +268,7 @@ func decryptKeyV3(keyProtected *encryptedKeyJSONV3, auth string) (keyBytes []byt
 		return nil, nil, err
 	}
 	keyId = keyUUID[:]
-	plainText, err := DecryptDataV3(keyProtected.Crypto, auth)
+	plainText, err := DecryptDataV1(keyProtected.Crypto, auth)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -290,21 +281,13 @@ func getKDFKey(cryptoJSON CryptoJSON, auth string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	dkLen := ensureInt(cryptoJSON.KDFParams["dklen"])
+	dkLen := uint32(ensureInt(cryptoJSON.KDFParams["dklen"]))
 
 	if cryptoJSON.KDF == keyHeaderKDF {
-		n := ensureInt(cryptoJSON.KDFParams["n"])
-		r := ensureInt(cryptoJSON.KDFParams["r"])
-		p := ensureInt(cryptoJSON.KDFParams["p"])
-		return scrypt.Key(authArray, salt, n, r, p, dkLen)
-	} else if cryptoJSON.KDF == "pbkdf2" {
-		c := ensureInt(cryptoJSON.KDFParams["c"])
-		prf := cryptoJSON.KDFParams["prf"].(string)
-		if prf != "hmac-sha256" {
-			return nil, fmt.Errorf("unsupported PBKDF2 PRF: %s", prf)
-		}
-		key := pbkdf2.Key(authArray, salt, c, dkLen, sha256.New)
-		return key, nil
+		t := uint32(ensureInt(cryptoJSON.KDFParams["t"]))
+		m := uint32(ensureInt(cryptoJSON.KDFParams["m"]))
+		p := uint8(ensureInt(cryptoJSON.KDFParams["p"]))
+		return argon2.IDKey(authArray, salt, t, m, p, dkLen), nil
 	}
 
 	return nil, fmt.Errorf("unsupported KDF: %s", cryptoJSON.KDF)
@@ -319,52 +302,4 @@ func ensureInt(x interface{}) int {
 		res = int(x.(float64))
 	}
 	return res
-}
-
-func aesCTRXOR(key, inText, iv []byte) ([]byte, error) {
-	// AES-128 is selected due to size of encryptKey.
-	aesBlock, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-	stream := cipher.NewCTR(aesBlock, iv)
-	outText := make([]byte, len(inText))
-	stream.XORKeyStream(outText, inText)
-	return outText, err
-}
-
-func aesCBCDecrypt(key, cipherText, iv []byte) ([]byte, error) {
-	aesBlock, err := aes.NewCipher(key)
-	if err != nil {
-		return nil, err
-	}
-	decrypter := cipher.NewCBCDecrypter(aesBlock, iv)
-	paddedPlaintext := make([]byte, len(cipherText))
-	decrypter.CryptBlocks(paddedPlaintext, cipherText)
-	plaintext := pkcs7Unpad(paddedPlaintext)
-	if plaintext == nil {
-		return nil, ErrDecrypt
-	}
-	return plaintext, err
-}
-
-// From https://leanpub.com/gocrypto/read#leanpub-auto-block-cipher-modes
-func pkcs7Unpad(in []byte) []byte {
-	if len(in) == 0 {
-		return nil
-	}
-
-	padding := in[len(in)-1]
-	if int(padding) > len(in) || padding > aes.BlockSize {
-		return nil
-	} else if padding == 0 {
-		return nil
-	}
-
-	for i := len(in) - 1; i > len(in)-int(padding)-1; i-- {
-		if in[i] != padding {
-			return nil
-		}
-	}
-	return in[:len(in)-int(padding)]
 }

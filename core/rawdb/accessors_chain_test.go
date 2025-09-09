@@ -331,7 +331,7 @@ func TestBlockReceiptStorage(t *testing.T) {
 	db := NewMemoryDatabase()
 
 	// Create a live block since we need metadata to reconstruct the receipt
-	to1, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000001")
+	to1, _ := common.NewAddressFromString("Q0000000000000000000000000000000000000001")
 	tx1 := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     1,
 		To:        &to1,
@@ -340,7 +340,7 @@ func TestBlockReceiptStorage(t *testing.T) {
 		GasFeeCap: big.NewInt(1),
 		Data:      nil,
 	})
-	to2, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000002")
+	to2, _ := common.NewAddressFromString("Q0000000000000000000000000000000000000002")
 	tx2 := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     2,
 		To:        &to2,
@@ -609,7 +609,7 @@ func BenchmarkWriteAncientBlocks(b *testing.B) {
 
 // makeTestBlocks creates fake blocks for the ancient write benchmark.
 func makeTestBlocks(nblock int, txsPerBlock int) []*types.Block {
-	key, _ := pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	key, _ := pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	signer := types.LatestSignerForChainID(big.NewInt(8))
 
 	// Create transactions.
@@ -687,7 +687,7 @@ func TestReadLogs(t *testing.T) {
 	db := NewMemoryDatabase()
 
 	// Create a live block since we need metadata to reconstruct the receipt
-	to1, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000001")
+	to1, _ := common.NewAddressFromString("Q0000000000000000000000000000000000000001")
 	tx1 := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     1,
 		To:        &to1,
@@ -696,7 +696,7 @@ func TestReadLogs(t *testing.T) {
 		GasFeeCap: big.NewInt(1),
 		Data:      nil,
 	})
-	to2, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000002")
+	to2, _ := common.NewAddressFromString("Q0000000000000000000000000000000000000002")
 	tx2 := types.NewTx(&types.DynamicFeeTx{
 		Nonce:     2,
 		To:        &to2,
@@ -780,8 +780,8 @@ func TestReadLogs(t *testing.T) {
 
 func TestDeriveLogFields(t *testing.T) {
 	// Create a few transactions to have receipts for
-	to2, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000002")
-	to3, _ := common.NewAddressFromString("Z0000000000000000000000000000000000000003")
+	to2, _ := common.NewAddressFromString("Q0000000000000000000000000000000000000002")
+	to3, _ := common.NewAddressFromString("Q0000000000000000000000000000000000000003")
 	txs := types.Transactions{
 		types.NewTx(&types.DynamicFeeTx{
 			Nonce:     1,

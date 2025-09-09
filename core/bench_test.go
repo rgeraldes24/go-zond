@@ -20,7 +20,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/consensus/beacon"
@@ -29,7 +29,7 @@ import (
 	"github.com/theQRL/go-zond/core/vm"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
-	"github.com/theQRL/go-zond/zonddb"
+	"github.com/theQRL/go-zond/qrldb"
 )
 
 func BenchmarkInsertChain_empty_memdb(b *testing.B) {
@@ -65,7 +65,7 @@ func BenchmarkInsertChain_ring1000_diskdb(b *testing.B) {
 
 var (
 	// This is the content of the genesis block used by the benchmarks.
-	benchRootKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	benchRootKey, _ = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	benchRootAddr   = common.Address(benchRootKey.GetAddress())
 	benchRootFunds  = math.BigPow(2, 200)
 )
@@ -96,7 +96,7 @@ func genValueTx(nbytes int) func(int, *BlockGen) {
 }
 
 var (
-	ringKeys  = make([]*dilithium.Dilithium, 1000)
+	ringKeys  = make([]*walletmldsa87.Wallet, 1000)
 	ringAddrs = make([]common.Address, len(ringKeys))
 )
 
@@ -104,12 +104,12 @@ func init() {
 	ringKeys[0] = benchRootKey
 	ringAddrs[0] = benchRootAddr
 	for i := 1; i < len(ringKeys); i++ {
-		ringKeys[i], _ = pqcrypto.GenerateDilithiumKey()
+		ringKeys[i], _ = pqcrypto.GenerateWalletKey()
 		ringAddrs[i] = ringKeys[i].GetAddress()
 	}
 }
 
-// genTxRing returns a block generator that sends ether in a ring
+// genTxRing returns a block generator that sends quanta in a ring
 // among n accounts. This is creates n entries in the state database
 // and fills the blocks with many small transactions.
 func genTxRing(naccounts int) func(int, *BlockGen) {
@@ -154,7 +154,7 @@ func genTxRing(naccounts int) func(int, *BlockGen) {
 
 func benchInsertChain(b *testing.B, disk bool, gen func(int, *BlockGen)) {
 	// Create the database in memory or in a temporary directory.
-	var db zonddb.Database
+	var db qrldb.Database
 	var err error
 	if !disk {
 		db = rawdb.NewMemoryDatabase()
@@ -225,7 +225,7 @@ func BenchmarkChainWrite_full_500k(b *testing.B) {
 
 // makeChainForBench writes a given number of headers or empty blocks/receipts
 // into a database.
-func makeChainForBench(db zonddb.Database, full bool, count uint64) {
+func makeChainForBench(db qrldb.Database, full bool, count uint64) {
 	var hash common.Hash
 	for n := uint64(0); n < count; n++ {
 		header := &types.Header{

@@ -48,7 +48,7 @@ Note that exporting your key in unencrypted format is NOT supported.
 
 Keys are stored under <DATADIR>/keystore.
 It is safe to transfer the entire directory or the individual keys therein
-between zond nodes by simply copying.
+between qrl nodes by simply copying.
 
 Make sure you backup your keys regularly.`,
 		Subcommands: []*cli.Command{
@@ -145,7 +145,7 @@ For non-interactive use the password can be specified with the -password flag:
     gzond account import [options] <keyfile>
 
 Note:
-As you can directly copy your encrypted accounts to another zond instance,
+As you can directly copy your encrypted accounts to another qrl instance,
 this import mechanism is not needed when you transfer an account between
 nodes.
 `,
@@ -251,16 +251,18 @@ func accountCreate(ctx *cli.Context) error {
 	if isEphemeral {
 		utils.Fatalf("Can't use ephemeral directory as keystore path")
 	}
-	scryptN := keystore.StandardScryptN
-	scryptP := keystore.StandardScryptP
+	argon2idT := keystore.StandardArgon2idT
+	argon2idM := keystore.StandardArgon2idM
+	argon2idP := keystore.StandardArgon2idP
 	if cfg.Node.UseLightweightKDF {
-		scryptN = keystore.LightScryptN
-		scryptP = keystore.LightScryptP
+		argon2idT = keystore.LightArgon2idT
+		argon2idM = keystore.LightArgon2idM
+		argon2idP = keystore.LightArgon2idP
 	}
 
 	password := utils.GetPassPhraseWithList("Your new account is locked with a password. Please give a password. Do not forget this password.", true, 0, utils.MakePasswordList(ctx))
 
-	account, err := keystore.StoreKey(keydir, password, scryptN, scryptP)
+	account, err := keystore.StoreKey(keydir, password, argon2idT, argon2idM, argon2idP)
 
 	if err != nil {
 		utils.Fatalf("Failed to create account: %v", err)
@@ -303,7 +305,7 @@ func accountImport(ctx *cli.Context) error {
 		utils.Fatalf("keyfile must be given as the only argument")
 	}
 	keyfile := ctx.Args().First()
-	key, err := pqcrypto.LoadDilithium(keyfile)
+	key, err := pqcrypto.LoadWallet(keyfile)
 	if err != nil {
 		utils.Fatalf("Failed to load the private key: %v", err)
 	}
@@ -315,7 +317,7 @@ func accountImport(ctx *cli.Context) error {
 	ks := backends[0].(*keystore.KeyStore)
 	passphrase := utils.GetPassPhraseWithList("Your new account is locked with a password. Please give a password. Do not forget this password.", true, 0, utils.MakePasswordList(ctx))
 
-	acct, err := ks.ImportDilithium(key, passphrase)
+	acct, err := ks.ImportMLDSA87(key, passphrase)
 	if err != nil {
 		utils.Fatalf("Could not create the account: %v", err)
 	}

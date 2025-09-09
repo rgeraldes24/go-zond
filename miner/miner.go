@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// Package miner implements Zond block creation and mining.
+// Package miner implements QRL block creation and mining.
 package miner
 
 import (
@@ -52,7 +52,7 @@ type Config struct {
 // DefaultConfig contains default settings for miner.
 var DefaultConfig = Config{
 	GasCeil:  params.MaxGasLimit,
-	GasPrice: big.NewInt(params.GWei),
+	GasPrice: big.NewInt(params.Shor),
 
 	// The default recommit time is chosen as two seconds since
 	// consensus-layer usually will wait a half slot of time(30s)
@@ -75,13 +75,13 @@ type Miner struct {
 }
 
 // New creates a new miner with provided config.
-func New(zond Backend, config Config, engine consensus.Engine) *Miner {
+func New(qrl Backend, config Config, engine consensus.Engine) *Miner {
 	return &Miner{
 		config:      &config,
-		chainConfig: zond.BlockChain().Config(),
+		chainConfig: qrl.BlockChain().Config(),
 		engine:      engine,
-		txpool:      zond.TxPool(),
-		chain:       zond.BlockChain(),
+		txpool:      qrl.TxPool(),
+		chain:       qrl.BlockChain(),
 		pending:     &pending{},
 	}
 }

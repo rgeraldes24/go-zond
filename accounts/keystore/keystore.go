@@ -30,7 +30,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/types"
@@ -79,9 +79,9 @@ type unlocked struct {
 }
 
 // NewKeyStore creates a keystore for the given directory.
-func NewKeyStore(keydir string, scryptN, scryptP int) *KeyStore {
+func NewKeyStore(keydir string, argon2idT, argon2idM uint32, argon2idP uint8) *KeyStore {
 	keydir, _ = filepath.Abs(keydir)
-	ks := &KeyStore{storage: &keyStorePassphrase{keydir, scryptN, scryptP, false}}
+	ks := &KeyStore{storage: &keyStorePassphrase{keydir, argon2idT, argon2idM, argon2idP, false}}
 	ks.init(keydir)
 	return ks
 }
@@ -232,7 +232,7 @@ func (ks *KeyStore) Delete(a accounts.Account, passphrase string) error {
 	// immediately afterwards.
 	a, key, err := ks.getDecryptedKey(a, passphrase)
 	if key != nil {
-		key.Dilithium = nil
+		key.Wallet = nil
 	}
 	if err != nil {
 		return err
@@ -248,7 +248,7 @@ func (ks *KeyStore) Delete(a accounts.Account, passphrase string) error {
 	return err
 }
 
-// SignHash returns the Dilithium signature for the given hash.
+// SignHash returns the ML-DSA-87 signature for the given hash.
 func (ks *KeyStore) SignHash(a accounts.Account, hash []byte) ([]byte, error) {
 	// Look up the key to sign with and abort if it cannot be found
 	ks.mu.RLock()
@@ -259,7 +259,7 @@ func (ks *KeyStore) SignHash(a accounts.Account, hash []byte) ([]byte, error) {
 		return nil, ErrLocked
 	}
 
-	signature, err := unlockedKey.Dilithium.Sign(hash)
+	signature, err := unlockedKey.Wallet.Sign(hash)
 
 	return signature[:], err
 }
@@ -274,9 +274,24 @@ func (ks *KeyStore) GetPublicKey(a accounts.Account) ([]byte, error) {
 		return nil, ErrLocked
 	}
 
-	pk := unlockedKey.Dilithium.GetPK()
+	pk := unlockedKey.Wallet.GetPK()
 
 	return pk[:], nil
+}
+
+func (ks *KeyStore) GetDescriptor(a accounts.Account) ([]byte, error) {
+	// Look up the key to sign with and abort if it cannot be found
+	ks.mu.RLock()
+	defer ks.mu.RUnlock()
+
+	unlockedKey, found := ks.unlocked[a.Address]
+	if !found {
+		return nil, ErrLocked
+	}
+
+	desc := unlockedKey.Wallet.GetDescriptor()
+
+	return desc[:], nil
 }
 
 // SignTx signs the given transaction with the requested account.
@@ -290,7 +305,7 @@ func (ks *KeyStore) SignTx(a accounts.Account, tx *types.Transaction, chainID *b
 		return nil, ErrLocked
 	}
 	signer := types.LatestSignerForChainID(chainID)
-	return types.SignTx(tx, signer, unlockedKey.Dilithium)
+	return types.SignTx(tx, signer, unlockedKey.Wallet)
 }
 
 // SignHashWithPassphrase signs hash if the private key matching the given address
@@ -301,8 +316,8 @@ func (ks *KeyStore) SignHashWithPassphrase(a accounts.Account, passphrase string
 	if err != nil {
 		return nil, err
 	}
-	defer zeroKey(&key.Dilithium)
-	return pqcrypto.Sign(hash, key.Dilithium)
+	defer zeroKey(&key.Wallet)
+	return pqcrypto.Sign(hash, key.Wallet)
 }
 
 // SignTxWithPassphrase signs the transaction if the private key matching the
@@ -312,10 +327,10 @@ func (ks *KeyStore) SignTxWithPassphrase(a accounts.Account, passphrase string, 
 	if err != nil {
 		return nil, err
 	}
-	defer zeroKey(&key.Dilithium)
+	defer zeroKey(&key.Wallet)
 	// Depending on the presence of the chain ID, sign with or without replay protection.
 	signer := types.LatestSignerForChainID(chainID)
-	return types.SignTx(tx, signer, key.Dilithium)
+	return types.SignTx(tx, signer, key.Wallet)
 }
 
 // Unlock unlocks the given account indefinitely.
@@ -355,7 +370,7 @@ func (ks *KeyStore) TimedUnlock(a accounts.Account, passphrase string, timeout t
 		if u.abort == nil {
 			// The address was unlocked indefinitely, so unlocking
 			// it with a timeout would be confusing.
-			zeroKey(&key.Dilithium)
+			zeroKey(&key.Wallet)
 			return nil
 		}
 		// Terminate the expire goroutine and replace it below.
@@ -402,7 +417,7 @@ func (ks *KeyStore) expire(addr common.Address, u *unlocked, timeout time.Durati
 		// because the map stores a new pointer every time the key is
 		// unlocked.
 		if ks.unlocked[addr] == u {
-			zeroKey(&u.Dilithium)
+			zeroKey(&u.Wallet)
 			delete(ks.unlocked, addr)
 		}
 		ks.mu.Unlock()
@@ -429,20 +444,24 @@ func (ks *KeyStore) Export(a accounts.Account, passphrase, newPassphrase string)
 	if err != nil {
 		return nil, err
 	}
-	var N, P int
+	var (
+		T, M uint32
+		P    uint8
+	)
+
 	if store, ok := ks.storage.(*keyStorePassphrase); ok {
-		N, P = store.scryptN, store.scryptP
+		T, M, P = store.argon2idT, store.argon2idM, store.argon2idP
 	} else {
-		N, P = StandardScryptN, StandardScryptP
+		T, M, P = StandardArgon2idT, StandardArgon2idM, StandardArgon2idP
 	}
-	return EncryptKey(key, newPassphrase, N, P)
+	return EncryptKey(key, newPassphrase, T, M, P)
 }
 
 // Import stores the given encrypted JSON key into the key directory.
 func (ks *KeyStore) Import(keyJSON []byte, passphrase, newPassphrase string) (accounts.Account, error) {
 	key, err := DecryptKey(keyJSON, passphrase)
-	if key != nil && key.Dilithium != nil {
-		defer zeroKey(&key.Dilithium)
+	if key != nil && key.Wallet != nil {
+		defer zeroKey(&key.Wallet)
 	}
 	if err != nil {
 		return accounts.Account{}, err
@@ -458,12 +477,12 @@ func (ks *KeyStore) Import(keyJSON []byte, passphrase, newPassphrase string) (ac
 	return ks.importKey(key, newPassphrase)
 }
 
-// ImportDilithium stores the given key into the key directory, encrypting it with the passphrase.
-func (ks *KeyStore) ImportDilithium(d *dilithium.Dilithium, passphrase string) (accounts.Account, error) {
+// ImportMLDSA87 stores the given key into the key directory, encrypting it with the passphrase.
+func (ks *KeyStore) ImportMLDSA87(w *walletmldsa87.Wallet, passphrase string) (accounts.Account, error) {
 	ks.importMu.Lock()
 	defer ks.importMu.Unlock()
 
-	key := newKeyFromDilithium(d)
+	key := newKeyFromMLDSA87(w)
 	if ks.cache.hasAddress(key.Address) {
 		return accounts.Account{
 			Address: key.Address,
@@ -499,7 +518,7 @@ func (ks *KeyStore) isUpdating() bool {
 	return ks.updating
 }
 
-// zeroKey nil to dilithium key in memory.
-func zeroKey(k **dilithium.Dilithium) {
+// zeroKey nil to ML-DSA-87 key in memory.
+func zeroKey(k **walletmldsa87.Wallet) {
 	*k = nil
 }

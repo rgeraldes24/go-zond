@@ -35,9 +35,9 @@ import (
 	"github.com/theQRL/go-zond/crypto"
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 	"github.com/theQRL/go-zond/params"
+	"github.com/theQRL/go-zond/qrl/tracers/logger"
+	"github.com/theQRL/go-zond/qrldb"
 	"github.com/theQRL/go-zond/trie"
-	"github.com/theQRL/go-zond/zond/tracers/logger"
-	"github.com/theQRL/go-zond/zonddb"
 )
 
 // So we can deterministically seed different blockchains
@@ -50,7 +50,7 @@ var (
 // chain. Depending on the full flag, if creates either a full block chain or a
 // header only chain. The database and genesis specification for block generation
 // are also returned in case more test blocks are needed later.
-func newCanonical(engine consensus.Engine, n int, full bool, scheme string) (zonddb.Database, *Genesis, *BlockChain, error) {
+func newCanonical(engine consensus.Engine, n int, full bool, scheme string) (qrldb.Database, *Genesis, *BlockChain, error) {
 	var (
 		genesis = &Genesis{
 			BaseFee: big.NewInt(params.InitialBaseFee),
@@ -76,8 +76,8 @@ func newCanonical(engine consensus.Engine, n int, full bool, scheme string) (zon
 	return genDb, genesis, blockchain, err
 }
 
-func newGwei(n int64) *big.Int {
-	return new(big.Int).Mul(big.NewInt(n), big.NewInt(params.GWei))
+func newShor(n int64) *big.Int {
+	return new(big.Int).Mul(big.NewInt(n), big.NewInt(params.Shor))
 }
 
 // Test fork of length N starting from block i
@@ -676,7 +676,7 @@ func TestFastVsFullChains(t *testing.T) {
 func testFastVsFullChains(t *testing.T, scheme string) {
 	// Configure and generate a sample block chain
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key, _  = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = key.GetAddress()
 		funds   = big.NewInt(1000000000000000)
 		gspec   = &Genesis{
@@ -818,7 +818,7 @@ func testLightVsFastVsFullChainHeads(t *testing.T, scheme string) {
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, beacon.NewFaker(), int(height), nil)
 
 	// makeDb creates a db instance for testing.
-	makeDb := func() zonddb.Database {
+	makeDb := func() qrldb.Database {
 		db, err := rawdb.NewDatabaseWithFreezer(rawdb.NewMemoryDatabase(), t.TempDir(), "", false)
 		if err != nil {
 			t.Fatalf("failed to create temp freezer db: %v", err)
@@ -921,9 +921,9 @@ func TestChainTxReorgs(t *testing.T) {
 
 func testChainTxReorgs(t *testing.T, scheme string) {
 	var (
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		key2, _ = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-		key3, _ = pqcrypto.HexToDilithium("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
+		key1, _ = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key2, _ = pqcrypto.HexToWallet("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		key3, _ = pqcrypto.HexToWallet("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
 		addr1   = key1.GetAddress()
 		addr2   = key2.GetAddress()
 		addr3   = key3.GetAddress()
@@ -1044,7 +1044,7 @@ func TestLogReorgs(t *testing.T) {
 
 func testLogReorgs(t *testing.T, scheme string) {
 	var (
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key1, _ = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1   = key1.GetAddress()
 
 		// this code generates a log
@@ -1099,7 +1099,7 @@ func testLogReorgs(t *testing.T, scheme string) {
 	}
 }
 
-// This ZVM code generates a log when the contract is created.
+// This QRVM code generates a log when the contract is created.
 var logCode = common.Hex2Bytes("60606040525b7f24ec1d3ff24c2f6ff210738839dbc339cd45a5294d85c79361016243157aae7b60405180905060405180910390a15b600a8060416000396000f360606040526008565b00")
 
 // This test checks that log events and RemovedLogsEvent are sent
@@ -1111,7 +1111,7 @@ func TestLogRebirth(t *testing.T) {
 
 func testLogRebirth(t *testing.T, scheme string) {
 	var (
-		key1, _       = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key1, _       = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1         = key1.GetAddress()
 		gspec         = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{addr1: {Balance: big.NewInt(10000000000000000)}}}
 		signer        = types.LatestSigner(gspec.Config)
@@ -1233,7 +1233,7 @@ func TestReorgSideEvent(t *testing.T) {
 
 func testReorgSideEvent(t *testing.T, scheme string) {
 	var (
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key1, _ = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr1   = key1.GetAddress()
 		gspec   = &Genesis{
 			Config: params.TestChainConfig,
@@ -1372,7 +1372,7 @@ func TestEIP161AccountRemoval(t *testing.T) {
 func testEIP161AccountRemoval(t *testing.T, scheme string) {
 	// Configure and generate a sample block chain
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key, _  = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = key.GetAddress()
 		funds   = big.NewInt(100000000000000000)
 		theAddr = common.Address{1}
@@ -2019,7 +2019,7 @@ func testReorgToShorterRemovesCanonMappingHeaderChain(t *testing.T, scheme strin
 func TestTransactionIndices(t *testing.T) {
 	// Configure and generate a sample block chain
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key, _  = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = key.GetAddress()
 		funds   = big.NewInt(100000000000000000)
 		gspec   = &Genesis{
@@ -2132,7 +2132,7 @@ func TestSkipStaleTxIndicesInSnapSync(t *testing.T) {
 func testSkipStaleTxIndicesInSnapSync(t *testing.T, scheme string) {
 	// Configure and generate a sample block chain
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key, _  = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = key.GetAddress()
 		funds   = big.NewInt(100000000000000000)
 		gspec   = &Genesis{Config: params.TestChainConfig, Alloc: GenesisAlloc{address: {Balance: funds}}}
@@ -2220,9 +2220,9 @@ func testSkipStaleTxIndicesInSnapSync(t *testing.T, scheme string) {
 // Benchmarks large blocks with value transfers to non-existing accounts
 func benchmarkLargeNumberOfValueToNonexisting(b *testing.B, numTxs, numBlocks int, recipientFn func(uint64) common.Address) {
 	var (
-		address, _      = common.NewAddressFromString("Z000000000000000000000000000000000000c0de")
+		address, _      = common.NewAddressFromString("Q000000000000000000000000000000000000c0de")
 		signer          = types.ShanghaiSigner{}
-		testBankKey, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		testBankKey, _  = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		testBankAddress = testBankKey.GetAddress()
 		bankFunds       = big.NewInt(100000000000000000)
 		gspec           = &Genesis{
@@ -2323,13 +2323,13 @@ func BenchmarkBlockChain_1x1000Executions(b *testing.B) {
 
 // TestInitThenFailCreateContract tests a pretty notorious case that happened
 // on mainnet over blocks 7338108, 7338110 and 7338115.
-//   - Block 7338108: address Ze771789f5cccac282f23bb7add5690e1f6ca467c is initiated
-//     with 0.001 ether (thus created but no code)
+//   - Block 7338108: address Qe771789f5cccac282f23bb7add5690e1f6ca467c is initiated
+//     with 0.001 quanta (thus created but no code)
 //   - Block 7338110: a CREATE2 is attempted. The CREATE2 would deploy code on
-//     the same address Ze771789f5cccac282f23bb7add5690e1f6ca467c. However, the
+//     the same address Qe771789f5cccac282f23bb7add5690e1f6ca467c. However, the
 //     deployment fails due to OOG during initcode execution
 //   - Block 7338115: another tx checks the balance of
-//     Ze771789f5cccac282f23bb7add5690e1f6ca467c, and the snapshotter returned it as
+//     Qe771789f5cccac282f23bb7add5690e1f6ca467c, and the snapshotter returned it as
 //     zero.
 //
 // The problem being that the snapshotter maintains a destructset, and adds items
@@ -2347,10 +2347,10 @@ func testInitThenFailCreateContract(t *testing.T, scheme string) {
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key, _  = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = key.GetAddress()
 		funds   = big.NewInt(1000000000000000)
-		bb, _   = common.NewAddressFromString("Z000000000000000000000000000000000000bbbb")
+		bb, _   = common.NewAddressFromString("Q000000000000000000000000000000000000bbbb")
 	)
 
 	// The bb-code needs to CREATE2 the aa contract. It consists of
@@ -2465,11 +2465,11 @@ func TestEIP2718Transition(t *testing.T) {
 
 func testEIP2718Transition(t *testing.T, scheme string) {
 	var (
-		aa, _  = common.NewAddressFromString("Z000000000000000000000000000000000000aaaa")
+		aa, _  = common.NewAddressFromString("Q000000000000000000000000000000000000aaaa")
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key, _  = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = key.GetAddress()
 		funds   = big.NewInt(1000000000000000)
 		gspec   = &Genesis{
@@ -2547,15 +2547,15 @@ func TestEIP1559Transition(t *testing.T) {
 
 func testEIP1559Transition(t *testing.T, scheme string) {
 	var (
-		aa, _  = common.NewAddressFromString("Z000000000000000000000000000000000000aaaa")
+		aa, _  = common.NewAddressFromString("Q000000000000000000000000000000000000aaaa")
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		key2, _ = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		key1, _ = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key2, _ = pqcrypto.HexToWallet("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		addr1   = key1.GetAddress()
 		addr2   = key2.GetAddress()
-		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Quanta))
 		config  = *params.AllBeaconProtocolChanges
 		gspec   = &Genesis{
 			Config: &config,
@@ -2593,7 +2593,7 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 			Nonce:      0,
 			To:         &aa,
 			Gas:        30000,
-			GasFeeCap:  newGwei(5),
+			GasFeeCap:  newShor(5),
 			GasTipCap:  big.NewInt(2),
 			AccessList: accesses,
 			Data:       []byte{},
@@ -2645,8 +2645,8 @@ func testEIP1559Transition(t *testing.T, scheme string) {
 			Nonce:     0,
 			To:        &aa,
 			Gas:       30000,
-			GasFeeCap: newGwei(5),
-			GasTipCap: newGwei(5),
+			GasFeeCap: newShor(5),
+			GasTipCap: newShor(5),
 		}
 		tx := types.NewTx(txdata)
 		tx, _ = types.SignTx(tx, signer, key2)
@@ -2688,7 +2688,7 @@ func testSetCanonical(t *testing.T, scheme string) {
 	//log.Root().SetHandler(log.LvlFilterHandler(log.LvlDebug, log.StreamHandler(os.Stderr, log.TerminalFormat(true))))
 
 	var (
-		key, _  = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key, _  = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = key.GetAddress()
 		funds   = big.NewInt(100000000000000000)
 		gspec   = &Genesis{
@@ -2894,7 +2894,7 @@ func testCanonicalHashMarker(t *testing.T, scheme string) {
 // TestTxIndexer tests the tx indexes are updated correctly.
 func TestTxIndexer(t *testing.T) {
 	var (
-		testBankKey, _  = pqcrypto.GenerateDilithiumKey()
+		testBankKey, _  = pqcrypto.GenerateWalletKey()
 		testBankAddress = testBankKey.GetAddress()
 		testBankFunds   = big.NewInt(1000000000000000000)
 
@@ -2907,7 +2907,7 @@ func TestTxIndexer(t *testing.T) {
 		nonce  = uint64(0)
 	)
 	_, blocks, receipts := GenerateChainWithGenesis(gspec, engine, 128, func(i int, gen *BlockGen) {
-		to, _ := common.NewAddressFromString("Z00000000000000000000000000000000deadbeef")
+		to, _ := common.NewAddressFromString("Q00000000000000000000000000000000deadbeef")
 		tx := types.NewTx(&types.DynamicFeeTx{
 			Nonce:     nonce,
 			To:        &to,
@@ -2923,7 +2923,7 @@ func TestTxIndexer(t *testing.T) {
 
 	// verifyIndexes checks if the transaction indexes are present or not
 	// of the specified block.
-	verifyIndexes := func(db zonddb.Database, number uint64, exist bool) {
+	verifyIndexes := func(db qrldb.Database, number uint64, exist bool) {
 		if number == 0 {
 			return
 		}
@@ -2939,12 +2939,12 @@ func TestTxIndexer(t *testing.T) {
 		}
 	}
 	// verifyRange runs verifyIndexes for a range of blocks, from and to are included.
-	verifyRange := func(db zonddb.Database, from, to uint64, exist bool) {
+	verifyRange := func(db qrldb.Database, from, to uint64, exist bool) {
 		for number := from; number <= to; number += 1 {
 			verifyIndexes(db, number, exist)
 		}
 	}
-	verify := func(db zonddb.Database, expTail uint64) {
+	verify := func(db qrldb.Database, expTail uint64) {
 		tail := rawdb.ReadTxIndexTail(db)
 		if tail == nil {
 			t.Fatal("Failed to write tx index tail")
@@ -3108,16 +3108,16 @@ func TestTxIndexer(t *testing.T) {
 
 func TestEIP3651(t *testing.T) {
 	var (
-		aa, _  = common.NewAddressFromString("Z000000000000000000000000000000000000aaaa")
-		bb, _  = common.NewAddressFromString("Z000000000000000000000000000000000000bbbb")
+		aa, _  = common.NewAddressFromString("Q00000000000000000000000000000000000000000000aaaa")
+		bb, _  = common.NewAddressFromString("Q00000000000000000000000000000000000000000000bbbb")
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
-		key1, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
-		key2, _ = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		key1, _ = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key2, _ = pqcrypto.HexToWallet("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
 		addr1   = key1.GetAddress()
 		addr2   = key2.GetAddress()
-		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Ether))
+		funds   = new(big.Int).Mul(common.Big1, big.NewInt(params.Quanta))
 		config  = *params.AllBeaconProtocolChanges
 		gspec   = &Genesis{
 			Config: &config,
@@ -3165,7 +3165,7 @@ func TestEIP3651(t *testing.T) {
 			Nonce:      0,
 			To:         &bb,
 			Gas:        500000,
-			GasFeeCap:  newGwei(5),
+			GasFeeCap:  newShor(5),
 			GasTipCap:  big.NewInt(2),
 			AccessList: nil,
 			Data:       []byte{},
