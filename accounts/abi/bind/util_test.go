@@ -31,9 +31,9 @@ import (
 	"github.com/theQRL/go-zond/crypto/pqcrypto"
 )
 
-var testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+var testKey, _ = pqcrypto.HexToWallet("f29f58aff0b00de2844f7e20bd9eeaacc379150043beeb328335817512b29fbb7184da84a092f842b2a06d72a24a5d28")
 
-var wantedAddr, _ = common.NewAddressFromString("Qfe66B8AED6e4fb3e12d0B65f61ef246c4d0CfFFA")
+var wantedAddr, _ = common.NewAddressFromString("QFC225fAa97981B6De357Bf8353fB27a4dBddC0af")
 var waitDeployedTests = map[string]struct {
 	code        string
 	gas         uint64
@@ -98,7 +98,7 @@ func TestWaitDeployed(t *testing.T) {
 				t.Errorf("test %q: error mismatch: want %q, got %q", name, test.wantErr, err)
 			}
 			if address != test.wantAddress {
-				t.Errorf("test %q: unexpected contract address %s", name, address.Hex())
+				t.Errorf("test %q: unexpected contract address %s %s", name, address.Hex(), test.wantAddress)
 			}
 		case <-time.After(2 * time.Second):
 			t.Errorf("test %q: timeout", name)

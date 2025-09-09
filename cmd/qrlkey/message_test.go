@@ -65,7 +65,7 @@ Password: {{.InputLine "foobar"}}
 	}
 
 	// Verify the message.
-	publicKey := key.Dilithium.GetPK()
+	publicKey := key.Wallet.GetPK()
 	verify := runQRLkey(t, "verifymessage", signature, common.Bytes2Hex(publicKey[:]), message)
 	verify.ExpectRegexp(`
 Signature verification successful!

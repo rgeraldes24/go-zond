@@ -28,7 +28,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/hexutil"
 	"github.com/theQRL/go-zond/consensus"
@@ -812,13 +812,13 @@ func TestTracingWithOverrides(t *testing.T) {
 }
 
 type Account struct {
-	key  *dilithium.Dilithium
+	key  *walletmldsa87.Wallet
 	addr common.Address
 }
 
 func newAccounts(n int) (accounts []Account) {
 	for i := 0; i < n; i++ {
-		key, _ := crypto.GenerateDilithiumKey()
+		key, _ := crypto.GenerateMLDSA87Key()
 		addr := key.GetAddress()
 		accounts = append(accounts, Account{key: key, addr: addr})
 	}

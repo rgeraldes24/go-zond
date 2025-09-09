@@ -57,9 +57,10 @@ type DynamicFeeTx struct {
 	Data       []byte
 	AccessList AccessList
 
-	// Public Key & Signature values
-	PublicKey []byte
-	Signature []byte
+	// Public Key, Signature & Descriptor values
+	PublicKey  []byte
+	Signature  []byte
+	Descriptor []byte
 }
 
 // copy creates a deep copy of the transaction data and initializes all fields.
@@ -75,8 +76,9 @@ func (tx *DynamicFeeTx) copy() TxData {
 		ChainID:    new(big.Int),
 		GasTipCap:  new(big.Int),
 		GasFeeCap:  new(big.Int),
-		PublicKey:  make([]byte, pqcrypto.DilithiumPublicKeyLength),
-		Signature:  make([]byte, pqcrypto.DilithiumSignatureLength),
+		PublicKey:  make([]byte, pqcrypto.MLDSA87PublicKeyLength),
+		Signature:  make([]byte, pqcrypto.MLDSA87SignatureLength),
+		Descriptor: make([]byte, pqcrypto.DescriptorSize),
 	}
 	copy(cpy.AccessList, tx.AccessList)
 	if tx.Value != nil {
@@ -92,10 +94,13 @@ func (tx *DynamicFeeTx) copy() TxData {
 		cpy.GasFeeCap.Set(tx.GasFeeCap)
 	}
 	if tx.PublicKey != nil {
-		copy(cpy.PublicKey[:pqcrypto.DilithiumPublicKeyLength], tx.PublicKey)
+		copy(cpy.PublicKey[:pqcrypto.MLDSA87PublicKeyLength], tx.PublicKey)
 	}
 	if tx.Signature != nil {
-		copy(cpy.Signature[:pqcrypto.DilithiumSignatureLength], tx.Signature)
+		copy(cpy.Signature[:pqcrypto.MLDSA87SignatureLength], tx.Signature)
+	}
+	if tx.Descriptor != nil {
+		copy(cpy.Descriptor[:pqcrypto.DescriptorSize], tx.Descriptor)
 	}
 	return cpy
 }
@@ -132,8 +137,12 @@ func (tx *DynamicFeeTx) rawPublicKeyValue() (publicKey []byte) {
 	return tx.PublicKey
 }
 
-func (tx *DynamicFeeTx) setSignatureAndPublicKeyValues(chainID *big.Int, signature, publicKey []byte) {
-	tx.ChainID, tx.PublicKey, tx.Signature = chainID, publicKey, signature
+func (tx *DynamicFeeTx) rawDescriptorValue() (descriptor []byte) {
+	return tx.Descriptor
+}
+
+func (tx *DynamicFeeTx) setSignaturePublicKeyAndDescriptorValues(chainID *big.Int, signature, publicKey, descriptor []byte) {
+	tx.ChainID, tx.PublicKey, tx.Signature, tx.Descriptor = chainID, publicKey, signature, descriptor
 }
 
 func (tx *DynamicFeeTx) encode(b *bytes.Buffer) error {

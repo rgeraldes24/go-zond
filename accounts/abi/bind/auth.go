@@ -22,7 +22,7 @@ import (
 	"io"
 	"math/big"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/accounts/external"
 	"github.com/theQRL/go-zond/accounts/keystore"
@@ -48,7 +48,7 @@ func NewTransactorWithChainID(keyin io.Reader, passphrase string, chainID *big.I
 	if err != nil {
 		return nil, err
 	}
-	return NewKeyedTransactorWithChainID(key.Dilithium, chainID)
+	return NewKeyedTransactorWithChainID(key.Wallet, chainID)
 }
 
 // NewKeyStoreTransactorWithChainID is a utility method to easily create a transaction signer from
@@ -72,7 +72,11 @@ func NewKeyStoreTransactorWithChainID(keystore *keystore.KeyStore, account accou
 			if err != nil {
 				return nil, err
 			}
-			return tx.WithSignatureAndPublicKey(signer, signature, pk)
+			desc, err := keystore.GetDescriptor(account)
+			if err != nil {
+				return nil, err
+			}
+			return tx.WithSignaturePublicKeyAndDescriptor(signer, signature, pk, desc)
 		},
 		Context: context.Background(),
 	}, nil
@@ -80,8 +84,8 @@ func NewKeyStoreTransactorWithChainID(keystore *keystore.KeyStore, account accou
 
 // NewKeyedTransactorWithChainID is a utility method to easily create a transaction signer
 // from a single private key.
-func NewKeyedTransactorWithChainID(d *dilithium.Dilithium, chainID *big.Int) (*TransactOpts, error) {
-	keyAddr := d.GetAddress()
+func NewKeyedTransactorWithChainID(w *walletmldsa87.Wallet, chainID *big.Int) (*TransactOpts, error) {
+	keyAddr := w.GetAddress()
 	if chainID == nil {
 		return nil, ErrNoChainID
 	}
@@ -92,12 +96,13 @@ func NewKeyedTransactorWithChainID(d *dilithium.Dilithium, chainID *big.Int) (*T
 			if address != keyAddr {
 				return nil, ErrNotAuthorized
 			}
-			signature, err := pqcrypto.Sign(signer.Hash(tx).Bytes(), d)
+			signature, err := pqcrypto.Sign(signer.Hash(tx).Bytes(), w)
 			if err != nil {
 				return nil, err
 			}
-			pk := d.GetPK()
-			return tx.WithSignatureAndPublicKey(signer, signature, pk[:])
+			pk := w.GetPK()
+			desc := w.GetDescriptor().ToDescriptor().ToBytes()
+			return tx.WithSignaturePublicKeyAndDescriptor(signer, signature, pk[:], desc)
 		},
 		Context: context.Background(),
 	}, nil

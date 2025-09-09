@@ -32,7 +32,7 @@ import (
 )
 
 func BenchmarkTransactionTrace(b *testing.B) {
-	key, _ := pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	key, _ := pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	from := key.GetAddress()
 	gas := uint64(1000000) // 1M gas
 	to, _ := common.NewAddressFromString("Q00000000000000000000000000000000deadbeef")

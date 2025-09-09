@@ -28,7 +28,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core"
 	"github.com/theQRL/go-zond/core/rawdb"
@@ -94,11 +94,11 @@ func (bc *testBlockChain) SubscribeChainHeadEvent(ch chan<- core.ChainHeadEvent)
 	return bc.chainHeadFeed.Subscribe(ch)
 }
 
-func transaction(nonce uint64, gaslimit uint64, key *dilithium.Dilithium) *types.Transaction {
+func transaction(nonce uint64, gaslimit uint64, key *walletmldsa87.Wallet) *types.Transaction {
 	return dynamicFeeTx(nonce, gaslimit, big.NewInt(1), big.NewInt(1), key)
 }
 
-func dynamicFeeTx(nonce uint64, gaslimit uint64, gasFee *big.Int, tip *big.Int, key *dilithium.Dilithium) *types.Transaction {
+func dynamicFeeTx(nonce uint64, gaslimit uint64, gasFee *big.Int, tip *big.Int, key *walletmldsa87.Wallet) *types.Transaction {
 	tx, _ := types.SignNewTx(key, types.LatestSignerForChainID(params.TestChainConfig.ChainID), &types.DynamicFeeTx{
 		ChainID:    params.TestChainConfig.ChainID,
 		Nonce:      nonce,
@@ -113,7 +113,7 @@ func dynamicFeeTx(nonce uint64, gaslimit uint64, gasFee *big.Int, tip *big.Int, 
 	return tx
 }
 
-func dynamicFeeDataTx(nonce uint64, gaslimit uint64, gasFee *big.Int, tip *big.Int, key *dilithium.Dilithium, bytes uint64) *types.Transaction {
+func dynamicFeeDataTx(nonce uint64, gaslimit uint64, gasFee *big.Int, tip *big.Int, key *walletmldsa87.Wallet, bytes uint64) *types.Transaction {
 	data := make([]byte, bytes)
 	crand.Read(data)
 
@@ -156,15 +156,15 @@ func makeAddressReserver() txpool.AddressReserver {
 	}
 }
 
-func setupPool() (*LegacyPool, *dilithium.Dilithium) {
+func setupPool() (*LegacyPool, *walletmldsa87.Wallet) {
 	return setupPoolWithConfig(params.TestChainConfig)
 }
 
-func setupPoolWithConfig(config *params.ChainConfig) (*LegacyPool, *dilithium.Dilithium) {
+func setupPoolWithConfig(config *params.ChainConfig) (*LegacyPool, *walletmldsa87.Wallet) {
 	statedb, _ := state.New(types.EmptyRootHash, state.NewDatabase(rawdb.NewMemoryDatabase()), nil)
 	blockchain := newTestBlockChain(config, 10000000, statedb, new(event.Feed))
 
-	key, _ := crypto.GenerateDilithiumKey()
+	key, _ := crypto.GenerateMLDSA87Key()
 	pool := New(testTxPoolConfig, blockchain)
 	if err := pool.Init(new(big.Int).SetUint64(testTxPoolConfig.PriceLimit), blockchain.CurrentBlock(), makeAddressReserver()); err != nil {
 		panic(err)
@@ -268,7 +268,7 @@ func TestStateChangeDuringReset(t *testing.T) {
 	t.Parallel()
 
 	var (
-		key, _     = crypto.GenerateDilithiumKey()
+		key, _     = crypto.GenerateMLDSA87Key()
 		address    = key.GetAddress()
 		statedb, _ = state.New(types.EmptyRootHash, state.NewDatabase(rawdb.NewMemoryDatabase()), nil)
 		trigger    = false
@@ -713,11 +713,11 @@ func TestPostponing(t *testing.T) {
 	defer pool.Close()
 
 	// Create two test accounts to produce different gap profiles with
-	keys := make([]*dilithium.Dilithium, 2)
+	keys := make([]*walletmldsa87.Wallet, 2)
 	accs := make([]common.Address, len(keys))
 
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 		accs[i] = keys[i].GetAddress()
 
 		testAddBalance(pool, keys[i].GetAddress(), big.NewInt(50100))
@@ -930,9 +930,9 @@ func testQueueGlobalLimiting(t *testing.T, nolocals bool) {
 	defer pool.Close()
 
 	// Create a number of test accounts and fund them (last one will be the local)
-	keys := make([]*dilithium.Dilithium, 5)
+	keys := make([]*walletmldsa87.Wallet, 5)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 		testAddBalance(pool, keys[i].GetAddress(), big.NewInt(1000000))
 	}
 	local := keys[len(keys)-1]
@@ -1024,8 +1024,8 @@ func testQueueTimeLimiting(t *testing.T, nolocals bool) {
 	defer pool.Close()
 
 	// Create two test accounts to ensure remotes expire but locals do not
-	local, _ := crypto.GenerateDilithiumKey()
-	remote, _ := crypto.GenerateDilithiumKey()
+	local, _ := crypto.GenerateMLDSA87Key()
+	remote, _ := crypto.GenerateMLDSA87Key()
 
 	testAddBalance(pool, local.GetAddress(), big.NewInt(1000000000))
 	testAddBalance(pool, remote.GetAddress(), big.NewInt(1000000000))
@@ -1209,9 +1209,9 @@ func TestPendingGlobalLimiting(t *testing.T) {
 	defer pool.Close()
 
 	// Create a number of test accounts and fund them
-	keys := make([]*dilithium.Dilithium, 5)
+	keys := make([]*walletmldsa87.Wallet, 5)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 		testAddBalance(pool, keys[i].GetAddress(), big.NewInt(1000000))
 	}
 	// Generate and queue a batch of transactions
@@ -1314,7 +1314,7 @@ func TestCapClearsFromAll(t *testing.T) {
 	defer pool.Close()
 
 	// Create a number of test accounts and fund them
-	key, _ := crypto.GenerateDilithiumKey()
+	key, _ := crypto.GenerateMLDSA87Key()
 	addr := key.GetAddress()
 	testAddBalance(pool, addr, big.NewInt(1000000))
 
@@ -1347,9 +1347,9 @@ func TestPendingMinimumAllowance(t *testing.T) {
 	defer pool.Close()
 
 	// Create a number of test accounts and fund them
-	keys := make([]*dilithium.Dilithium, 5)
+	keys := make([]*walletmldsa87.Wallet, 5)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 		testAddBalance(pool, keys[i].GetAddress(), big.NewInt(1000000))
 	}
 	// Generate and queue a batch of transactions
@@ -1389,7 +1389,7 @@ func TestMinGasPriceEnforced(t *testing.T) {
 	pool.Init(new(big.Int).SetUint64(txPoolConfig.PriceLimit), blockchain.CurrentBlock(), makeAddressReserver())
 	defer pool.Close()
 
-	key, _ := crypto.GenerateDilithiumKey()
+	key, _ := crypto.GenerateMLDSA87Key()
 	testAddBalance(pool, common.Address(key.GetAddress()), big.NewInt(1000000))
 
 	tx := dynamicFeeTx(0, 100000, big.NewInt(2), big.NewInt(2), key)
@@ -1438,9 +1438,9 @@ func TestRepricingDynamicFee(t *testing.T) {
 	defer sub.Unsubscribe()
 
 	// Create a number of test accounts and fund them
-	keys := make([]*dilithium.Dilithium, 4)
+	keys := make([]*walletmldsa87.Wallet, 4)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 		testAddBalance(pool, keys[i].GetAddress(), big.NewInt(1000000))
 	}
 	// Generate and queue a batch of transactions, both pending and queued
@@ -1561,9 +1561,9 @@ func TestRepricingKeepsLocals(t *testing.T) {
 	defer pool.Close()
 
 	// Create a number of test accounts and fund them
-	keys := make([]*dilithium.Dilithium, 3)
+	keys := make([]*walletmldsa87.Wallet, 3)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 		testAddBalance(pool, keys[i].GetAddress(), big.NewInt(100000*1000000))
 	}
 	// Create transaction (both pending and queued) with a linearly growing gasprice
@@ -1631,9 +1631,9 @@ func TestStableUnderpricing(t *testing.T) {
 	defer sub.Unsubscribe()
 
 	// Create a number of test accounts and fund them
-	keys := make([]*dilithium.Dilithium, 2)
+	keys := make([]*walletmldsa87.Wallet, 2)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 		testAddBalance(pool, keys[i].GetAddress(), big.NewInt(1000000))
 	}
 	// Fill up the entire queue with the same transaction price points
@@ -1695,10 +1695,10 @@ func TestUnderpricingDynamicFee(t *testing.T) {
 	defer sub.Unsubscribe()
 
 	// Create a number of test accounts and fund them
-	keys := make([]*dilithium.Dilithium, 4)
+	keys := make([]*walletmldsa87.Wallet, 4)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = dilithium.New()
-		testAddBalance(pool, common.Address(keys[i].GetAddress()), big.NewInt(1000000))
+		keys[i], _ = walletmldsa87.NewWallet()
+		testAddBalance(pool, keys[i].GetAddress(), big.NewInt(1000000))
 	}
 
 	// Generate and queue a batch of transactions, both pending and queued
@@ -1811,7 +1811,7 @@ func TestDualHeapEviction(t *testing.T) {
 		for i := 0; i < 20; i++ {
 			var tx *types.Transaction
 			// Create a test accounts and fund it
-			key, _ := crypto.GenerateDilithiumKey()
+			key, _ := crypto.GenerateMLDSA87Key()
 			testAddBalance(pool, key.GetAddress(), big.NewInt(1000000000000))
 			if urgent {
 				tx = dynamicFeeTx(0, 100000, big.NewInt(int64(baseFee+1+i)), big.NewInt(int64(1+i)), key)
@@ -1855,7 +1855,7 @@ func TestDeduplication(t *testing.T) {
 	defer pool.Close()
 
 	// Create a test account to add transactions with
-	key, _ := crypto.GenerateDilithiumKey()
+	key, _ := crypto.GenerateMLDSA87Key()
 	testAddBalance(pool, key.GetAddress(), big.NewInt(1000000000))
 
 	// Create a batch of transactions and add a few of them
@@ -2051,8 +2051,8 @@ func testJournaling(t *testing.T, nolocals bool) {
 	pool.Init(new(big.Int).SetUint64(config.PriceLimit), blockchain.CurrentBlock(), makeAddressReserver())
 
 	// Create two test accounts to ensure remotes expire but locals do not
-	local, _ := crypto.GenerateDilithiumKey()
-	remote, _ := crypto.GenerateDilithiumKey()
+	local, _ := crypto.GenerateMLDSA87Key()
+	remote, _ := crypto.GenerateMLDSA87Key()
 
 	testAddBalance(pool, local.GetAddress(), big.NewInt(1000000000))
 	testAddBalance(pool, remote.GetAddress(), big.NewInt(1000000000))
@@ -2148,9 +2148,9 @@ func TestStatusCheck(t *testing.T) {
 	defer pool.Close()
 
 	// Create the test accounts to check various transaction statuses with
-	keys := make([]*dilithium.Dilithium, 3)
+	keys := make([]*walletmldsa87.Wallet, 3)
 	for i := 0; i < len(keys); i++ {
-		keys[i], _ = crypto.GenerateDilithiumKey()
+		keys[i], _ = crypto.GenerateMLDSA87Key()
 		testAddBalance(pool, keys[i].GetAddress(), big.NewInt(1000000))
 	}
 	// Generate and queue a batch of transactions, both pending and queued
@@ -2193,7 +2193,7 @@ func TestStatusCheck(t *testing.T) {
 func TestSlotCount(t *testing.T) {
 	t.Parallel()
 
-	key, _ := crypto.GenerateDilithiumKey()
+	key, _ := crypto.GenerateMLDSA87Key()
 
 	// Check that an empty transaction consumes a single slot
 	smallTx := dynamicFeeDataTx(0, 0, big.NewInt(0), big.NewInt(0), key, 0)
@@ -2294,10 +2294,10 @@ func benchmarkBatchInsert(b *testing.B, size int, local bool) {
 
 func BenchmarkInsertRemoteWithAllLocals(b *testing.B) {
 	// Allocate keys for testing
-	key, _ := crypto.GenerateDilithiumKey()
+	key, _ := crypto.GenerateMLDSA87Key()
 	account := key.GetAddress()
 
-	remoteKey, _ := crypto.GenerateDilithiumKey()
+	remoteKey, _ := crypto.GenerateMLDSA87Key()
 	remoteAddr := remoteKey.GetAddress()
 
 	locals := make([]*types.Transaction, 4096+1024) // Occupy all slots
@@ -2335,7 +2335,7 @@ func BenchmarkMultiAccountBatchInsert(b *testing.B) {
 	b.ReportAllocs()
 	batches := make(types.Transactions, b.N)
 	for i := 0; i < b.N; i++ {
-		key, _ := crypto.GenerateDilithiumKey()
+		key, _ := crypto.GenerateMLDSA87Key()
 		account := key.GetAddress()
 		pool.currentState.AddBalance(account, big.NewInt(1000000))
 		tx := transaction(uint64(0), 100000, key)

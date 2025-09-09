@@ -21,7 +21,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/theQRL/go-qrllib/dilithium"
+	"github.com/theQRL/go-qrllib/wallet/common/descriptor"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
@@ -70,7 +71,7 @@ To sign a message contained in a file, use the --msgfile flag.
 			utils.Fatalf("Error decrypting key: %v", err)
 		}
 
-		signature, err := pqcrypto.Sign(accounts.TextHash(message), key.Dilithium)
+		signature, err := pqcrypto.Sign(accounts.TextHash(message), key.Wallet)
 		if err != nil {
 			utils.Fatalf("Failed to sign message: %v", err)
 		}
@@ -104,14 +105,16 @@ It is possible to refer to a file containing the message.`,
 	Action: func(ctx *cli.Context) error {
 		signatureHex := ctx.Args().First()
 		pubKeyHex := ctx.Args().Get(1)
-		message := getMessage(ctx, 2)
+		descriptorHex := ctx.Args().Get(2)
+		message := getMessage(ctx, 3)
 
 		signature := common.FromHex(signatureHex)
 		publicKey := common.FromHex(pubKeyHex)
+		desc := common.FromHex(descriptorHex)
 
-		dilithiumPublicKey := [2592]uint8(publicKey)
+		pk := walletmldsa87.PK(publicKey)
 		out := outputVerify{
-			Success: dilithium.Verify(accounts.TextHash(message), [4595]uint8(signature), &dilithiumPublicKey),
+			Success: walletmldsa87.Verify(accounts.TextHash(message), signature, &pk, descriptor.Descriptor(desc)),
 		}
 		if ctx.Bool(jsonFlag.Name) {
 			mustPrintJSON(out)

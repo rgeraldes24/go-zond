@@ -40,6 +40,7 @@ type txJSON struct {
 	AccessList           *AccessList     `json:"accessList,omitempty"`
 	PublicKey            *hexutil.Bytes  `json:"publicKey"`
 	Signature            *hexutil.Bytes  `json:"signature"`
+	Descriptor           *hexutil.Bytes  `json:"descriptor"`
 
 	// Only used for encoding:
 	Hash common.Hash `json:"hash"`
@@ -66,6 +67,7 @@ func (tx *Transaction) MarshalJSON() ([]byte, error) {
 		enc.AccessList = &itx.AccessList
 		enc.PublicKey = (*hexutil.Bytes)(&itx.PublicKey)
 		enc.Signature = (*hexutil.Bytes)(&itx.Signature)
+		enc.Descriptor = (*hexutil.Bytes)(&itx.Descriptor)
 	}
 	return json.Marshal(&enc)
 }
@@ -126,6 +128,10 @@ func (tx *Transaction) UnmarshalJSON(input []byte) error {
 			return errors.New("missing required field 'signature' in transaction")
 		}
 		itx.Signature = *dec.Signature
+		if dec.Descriptor == nil {
+			return errors.New("missing required field 'descriptor' in transaction")
+		}
+		itx.Descriptor = *dec.Descriptor
 		// TODO (cyyber): add sanity check later
 		//withSignature := itx.V.Sign() != 0 || itx.R.Sign() != 0 || itx.S.Sign() != 0
 		//if withSignature {

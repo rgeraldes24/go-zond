@@ -30,7 +30,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/require"
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	qrl "github.com/theQRL/go-zond"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/common"
@@ -56,7 +56,7 @@ func testTransactionMarshal(t *testing.T, tests []txData, config *params.ChainCo
 	t.Parallel()
 	var (
 		signer = types.LatestSigner(config)
-		key, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key, _ = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	)
 
 	for i, tt := range tests {
@@ -647,13 +647,13 @@ func TestCall(t *testing.T) {
 }
 
 type Account struct {
-	key  *dilithium.Dilithium
+	key  *walletmldsa87.Wallet
 	addr common.Address
 }
 
 func newAccounts(n int) (accounts []Account) {
 	for i := 0; i < n; i++ {
-		key, _ := crypto.GenerateDilithiumKey()
+		key, _ := crypto.GenerateMLDSA87Key()
 		addr := key.GetAddress()
 		accounts = append(accounts, Account{key: key, addr: addr})
 	}
@@ -878,8 +878,8 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 
 	// Initialize test accounts
 	var (
-		acc1Key, _                = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-		acc2Key, _                = pqcrypto.HexToDilithium("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
+		acc1Key, _                = pqcrypto.HexToWallet("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		acc2Key, _                = pqcrypto.HexToWallet("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
 		acc1Addr                  = acc1Key.GetAddress()
 		acc2Addr   common.Address = acc2Key.GetAddress()
 		genesis                   = &core.Genesis{
@@ -1130,8 +1130,8 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 func setupReceiptBackend(t *testing.T, genBlocks int) (*testBackend, []common.Hash) {
 	config := *params.TestChainConfig
 	var (
-		acc1Key, _                 = pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-		acc2Key, _                 = pqcrypto.HexToDilithium("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
+		acc1Key, _                 = pqcrypto.HexToWallet("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+		acc2Key, _                 = pqcrypto.HexToWallet("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
 		acc1Addr                   = acc1Key.GetAddress()
 		acc2Addr    common.Address = acc2Key.GetAddress()
 		contract, _                = common.NewAddressFromString("Q0000000000000000000000000000000000031ec7")

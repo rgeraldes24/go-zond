@@ -81,7 +81,8 @@ type TxData interface {
 
 	rawSignatureValue() (signature []byte)
 	rawPublicKeyValue() (publicKey []byte)
-	setSignatureAndPublicKeyValues(chainID *big.Int, signature, publicKey []byte)
+	rawDescriptorValue() (descriptor []byte)
+	setSignaturePublicKeyAndDescriptorValues(chainID *big.Int, signature, publicKey, descriptor []byte)
 
 	// effectiveGasPrice computes the gas price paid by the transaction, given
 	// the inclusion block baseFee.
@@ -284,6 +285,12 @@ func (tx *Transaction) RawPublicKeyValue() (publicKey []byte) {
 	return tx.inner.rawPublicKeyValue()
 }
 
+// RawDescriptorValue returns the descriptor value of the transaction.
+// The return values should not be modified by the caller.
+func (tx *Transaction) RawDescriptorValue() (descriptor []byte) {
+	return tx.inner.rawDescriptorValue()
+}
+
 // GasFeeCapCmp compares the fee cap of two transactions.
 func (tx *Transaction) GasFeeCapCmp(other *Transaction) int {
 	return tx.inner.gasFeeCap().Cmp(other.inner.gasFeeCap())
@@ -382,14 +389,14 @@ func (tx *Transaction) Size() uint64 {
 	return size
 }
 
-// WithSignatureAndPublicKey returns a new transaction with the given signature.
-func (tx *Transaction) WithSignatureAndPublicKey(signer Signer, sig, pk []byte) (*Transaction, error) {
-	signature, publicKey, err := signer.SignatureAndPublicKeyValues(tx, sig, pk)
+// WithSignaturePublicKeyAndDescriptor returns a new transaction with the given signature.
+func (tx *Transaction) WithSignaturePublicKeyAndDescriptor(signer Signer, sig, pk, desc []byte) (*Transaction, error) {
+	signature, publicKey, descriptor, err := signer.SignaturePublicKeyAndDescriptorValues(tx, sig, pk, desc)
 	if err != nil {
 		return nil, err
 	}
 	cpy := tx.inner.copy()
-	cpy.setSignatureAndPublicKeyValues(signer.ChainID(), signature, publicKey)
+	cpy.setSignaturePublicKeyAndDescriptorValues(signer.ChainID(), signature, publicKey, descriptor)
 	return &Transaction{inner: cpy, time: tx.time}, nil
 }
 

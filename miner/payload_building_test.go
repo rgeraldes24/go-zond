@@ -43,7 +43,7 @@ var (
 	beaconChainConfig *params.ChainConfig
 
 	// Test accounts
-	testBankKey, _  = crypto.GenerateDilithiumKey()
+	testBankKey, _  = crypto.GenerateMLDSA87Key()
 	testBankAddress = testBankKey.GetAddress()
 	testBankFunds   = big.NewInt(1000000000000000000)
 

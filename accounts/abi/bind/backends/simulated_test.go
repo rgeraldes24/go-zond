@@ -40,7 +40,7 @@ import (
 
 func TestSimulatedBackend(t *testing.T) {
 	var gasLimit uint64 = 8000029
-	key, _ := crypto.GenerateDilithiumKey() // nolint: gosec
+	key, _ := crypto.GenerateMLDSA87Key() // nolint: gosec
 	auth, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 	genAlloc := make(core.GenesisAlloc)
 	genAlloc[auth.From] = core.GenesisAccount{Balance: big.NewInt(9223372036854775807)}
@@ -98,7 +98,7 @@ func TestSimulatedBackend(t *testing.T) {
 	}
 }
 
-var testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+var testKey, _ = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
 // the following is based on this contract:
 //
@@ -476,7 +476,7 @@ func TestEstimateGas(t *testing.T) {
 	const contractAbi = "[{\"inputs\":[],\"name\":\"Assert\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"OOG\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"PureRevert\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"Revert\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"Valid\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
 	const contractBin = "0x60806040523480156100115760006000fd5b50610017565b61016e806100266000396000f3fe60806040523480156100115760006000fd5b506004361061005c5760003560e01c806350f6fe3414610062578063aa8b1d301461006c578063b9b046f914610076578063d8b9839114610080578063e09fface1461008a5761005c565b60006000fd5b61006a610094565b005b6100746100ad565b005b61007e6100b5565b005b6100886100c2565b005b610092610135565b005b6000600090505b5b808060010191505061009b565b505b565b60006000fd5b565b600015156100bf57fe5b5b565b6040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252600d8152602001807f72657665727420726561736f6e0000000000000000000000000000000000000081526020015060200191505060405180910390fd5b565b5b56fea2646970667358221220345bbcbb1a5ecf22b53a78eaebf95f8ee0eceff6d10d4b9643495084d2ec934a64736f6c63430006040033"
 
-	key, _ := crypto.GenerateDilithiumKey()
+	key, _ := crypto.GenerateMLDSA87Key()
 	var addr common.Address = key.GetAddress()
 	opts, _ := bind.NewKeyedTransactorWithChainID(key, big.NewInt(1337))
 

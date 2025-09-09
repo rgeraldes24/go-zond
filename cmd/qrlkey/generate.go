@@ -22,7 +22,7 @@ import (
 	"path/filepath"
 
 	"github.com/google/uuid"
-	"github.com/theQRL/go-qrllib/dilithium"
+	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/accounts/keystore"
 	"github.com/theQRL/go-zond/cmd/utils"
 	"github.com/theQRL/go-zond/common"
@@ -73,17 +73,17 @@ If you want to encrypt an existing private key seed, it can be specified by sett
 			utils.Fatalf("Error checking if keyfile exists: %v", err)
 		}
 
-		var dilithiumKey *dilithium.Dilithium
+		var wallet *walletmldsa87.Wallet
 		var err error
 		if file := ctx.String(seedFlag.Name); file != "" {
 			// Load private key seed from file.
-			dilithiumKey, err = pqcrypto.LoadDilithium(file)
+			wallet, err = pqcrypto.LoadWallet(file)
 			if err != nil {
 				utils.Fatalf("Can't load private key seed: %v", err)
 			}
 		} else {
 			// If not loaded, generate random.
-			dilithiumKey, err = pqcrypto.GenerateDilithiumKey()
+			wallet, err = pqcrypto.GenerateWalletKey()
 			if err != nil {
 				utils.Fatalf("Failed to generate random private key: %v", err)
 			}
@@ -95,9 +95,9 @@ If you want to encrypt an existing private key seed, it can be specified by sett
 			utils.Fatalf("Failed to generate random uuid: %v", err)
 		}
 		key := &keystore.Key{
-			Id:        UUID,
-			Address:   common.Address(dilithiumKey.GetAddress()),
-			Dilithium: dilithiumKey,
+			Id:      UUID,
+			Address: common.Address(wallet.GetAddress()),
+			Wallet:  wallet,
 		}
 
 		// Encrypt key with passphrase.

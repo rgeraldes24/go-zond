@@ -37,7 +37,7 @@ func getBlock(transactions int, dataSize int) *types.Block {
 		engine = beacon.NewFaker()
 
 		// A sender who makes transactions, has some funds
-		d, _    = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		d, _    = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		address = d.GetAddress()
 		funds   = big.NewInt(1_000_000_000_000_000_000)
 		gspec   = &Genesis{

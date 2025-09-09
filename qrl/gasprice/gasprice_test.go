@@ -122,7 +122,7 @@ func (b *testBackend) teardown() {
 // after use, otherwise the blockchain instance will mem-leak via goroutines.
 func newTestBackend(t *testing.T, pending bool) *testBackend {
 	var (
-		key, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+		key, _ = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 		addr   = key.GetAddress()
 		config = *params.TestChainConfig // needs copy because it is modified below
 		gspec  = &core.Genesis{

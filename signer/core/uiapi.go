@@ -123,7 +123,7 @@ func fetchKeystore(am *accounts.Manager) *keystore.KeyStore {
 // Example call (should fail on password too short)
 // {"jsonrpc":"2.0","method":"clef_importRawKey","params":["1111111111111111111111111111111111111111111111111111111111111111","test"], "id":6}
 func (s *UIServerAPI) ImportRawKey(hexSeed string, password string) (accounts.Account, error) {
-	key, err := pqcrypto.HexToDilithium(hexSeed)
+	key, err := pqcrypto.HexToWallet(hexSeed)
 	if err != nil {
 		return accounts.Account{}, err
 	}
@@ -131,7 +131,7 @@ func (s *UIServerAPI) ImportRawKey(hexSeed string, password string) (accounts.Ac
 		return accounts.Account{}, fmt.Errorf("password requirements not met: %v", err)
 	}
 	// No error
-	return fetchKeystore(s.am).ImportDilithium(key, password)
+	return fetchKeystore(s.am).ImportMLDSA87(key, password)
 }
 
 // OpenWallet initiates a hardware wallet opening procedure, establishing a USB

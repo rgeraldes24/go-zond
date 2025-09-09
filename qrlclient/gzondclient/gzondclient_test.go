@@ -40,7 +40,7 @@ import (
 )
 
 var (
-	testKey, _      = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	testKey, _      = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 	testAddr        = testKey.GetAddress()
 	zeroAddr, _     = common.NewAddressFromString("Q0000000000000000000000000000000000000000")
 	testContract, _ = common.NewAddressFromString("Q000000000000000000000000000000000000beef")
@@ -300,7 +300,7 @@ func testGetProofCanonicalizeKeys(t *testing.T, client *rpc.Client) {
 }
 
 func testGetProofNonExistent(t *testing.T, client *rpc.Client) {
-	addr, _ := common.NewAddressFromString("Q0000000000000000000000000000000000000001")
+	addr, _ := common.NewAddressFromString("Q000000000000000000000000000000000000000000000001")
 	ec := New(client)
 	result, err := ec.GetProof(context.Background(), addr, nil, nil)
 	if err != nil {

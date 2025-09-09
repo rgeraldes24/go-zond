@@ -40,7 +40,7 @@ import (
 
 var (
 	// testKey is a private key to use for funding a tester account.
-	testKey, _ = pqcrypto.HexToDilithium("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
+	testKey, _ = pqcrypto.HexToWallet("b71c71a67e1177ad4e901695e1b4b9ee17ae16c6668d313eac2f96dbcda3f291")
 
 	// testAddr is the QRL address of the tester account.
 	testAddr = testKey.GetAddress()
@@ -405,8 +405,8 @@ func testGetBlockReceipts(t *testing.T, protocol uint) {
 	t.Parallel()
 
 	// Define three accounts to simulate transactions with
-	acc1Key, _ := pqcrypto.HexToDilithium("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
-	acc2Key, _ := pqcrypto.HexToDilithium("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
+	acc1Key, _ := pqcrypto.HexToWallet("8a1f9a8f95be41cd7ccb6168179afb4504aefe388d1e14474d32c45c72ce7b7a")
+	acc2Key, _ := pqcrypto.HexToWallet("49a7b37aa6f6645917e7b807e9d1c00d4fa71f18343b0d4122a4d2df64dd6fee")
 	acc1Addr := acc1Key.GetAddress()
 	acc2Addr := acc2Key.GetAddress()
 

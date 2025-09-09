@@ -71,13 +71,13 @@ make sure to use this feature with great caution!`,
 
 		// Output all relevant information we can retrieve.
 		showPrivate := ctx.Bool(privateFlag.Name)
-		publicKey := key.Dilithium.GetPK()
+		publicKey := key.Wallet.GetPK()
 		out := outputInspect{
 			Address:   key.Address.Hex(),
 			PublicKey: hex.EncodeToString(publicKey[:]),
 		}
 		if showPrivate {
-			seed := key.Dilithium.GetSeed()
+			seed := key.Wallet.GetSeed()
 			out.Seed = hex.EncodeToString(seed[:])
 		}
 
