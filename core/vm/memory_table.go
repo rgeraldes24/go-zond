@@ -16,6 +16,11 @@
 
 package vm
 
+import (
+	"github.com/holiman/uint256"
+	"github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
+)
+
 func memoryKeccak256(stack *Stack) (uint64, bool) {
 	return calcMemSize64(stack.Back(0), stack.Back(1))
 }
@@ -110,4 +115,30 @@ func memoryRevert(stack *Stack) (uint64, bool) {
 
 func memoryLog(stack *Stack) (uint64, bool) {
 	return calcMemSize64(stack.Back(0), stack.Back(1))
+}
+
+func memoryMLDSA87Verify(stack *Stack) (uint64, bool) {
+	msgMemSize, overflow := calcMemSize64(stack.Back(0), stack.Back(3))
+	if overflow {
+		return 0, true
+	}
+	pkMemSize, overflow := calcMemSize64(stack.Back(1), new(uint256.Int).SetUint64(ml_dsa_87.PKSize))
+	if overflow {
+		return 0, true
+	}
+	sigMemSize, overflow := calcMemSize64(stack.Back(2), new(uint256.Int).SetUint64(ml_dsa_87.SigSize))
+	if overflow {
+		return 0, true
+	}
+
+	var mem uint64
+	if msgMemSize >= pkMemSize && msgMemSize >= sigMemSize {
+		mem = msgMemSize
+	} else if pkMemSize >= msgMemSize && pkMemSize >= sigMemSize {
+		mem = pkMemSize
+	} else {
+		mem = sigMemSize
+	}
+
+	return mem, false
 }

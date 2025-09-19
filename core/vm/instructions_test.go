@@ -20,11 +20,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/big"
 	"os"
 	"testing"
 
 	"github.com/holiman/uint256"
+	"github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
@@ -699,5 +701,110 @@ func TestRandom(t *testing.T) {
 		if actual.Cmp(expected) != 0 {
 			t.Errorf("Testcase %v: expected  %x, got %x", tt.name, expected, actual)
 		}
+	}
+}
+
+func TestOpMLDSA87Verify(t *testing.T) {
+	var (
+		env             = NewQRVM(BlockContext{}, TxContext{}, nil, params.TestChainConfig, Config{})
+		stack           = newstack()
+		mem             = NewMemory()
+		qrvmInterpreter = NewQRVMInterpreter(env)
+		pc              = uint64(0)
+		msg             = []byte("QRL")
+		msgSize         = uint64(len(msg))
+	)
+
+	wallet, err := ml_dsa_87.NewWallet()
+	if err != nil {
+		t.Fatalf("Failed to create wallet: %v", err)
+	}
+
+	sig, err := wallet.Sign(msg)
+	if err != nil {
+		t.Fatalf("Failed to sign message: %v", err)
+	}
+
+	pk := wallet.GetPK()
+	size := ml_dsa_87.SigSize + ml_dsa_87.PKSize + msgSize
+	mem.Resize(size)
+	mem.Set(0, ml_dsa_87.SigSize, sig[:])
+	mem.Set(ml_dsa_87.SigSize, ml_dsa_87.PKSize, pk[:])
+	mem.Set(ml_dsa_87.SigSize+ml_dsa_87.PKSize, msgSize, msg)
+
+	stack.push(uint256.NewInt(msgSize))
+	stack.push(new(uint256.Int))
+	stack.push(uint256.NewInt(ml_dsa_87.SigSize))
+	stack.push(uint256.NewInt(ml_dsa_87.PKSize + ml_dsa_87.SigSize))
+
+	opMLDSA87Verify(&pc, qrvmInterpreter, &ScopeContext{mem, stack, nil})
+	if len(stack.data) != 1 {
+		t.Errorf("Expected one item on stack after opMLDSA87Verify, got %d: ", len(stack.data))
+	}
+	result := stack.pop()
+	if result.Uint64() != 1 {
+		t.Errorf("Verification failed for valid signature")
+	}
+
+	// Invalid sig scenario
+	sig[0] ^= 0x01 // Flip a bit to invalidate sig
+
+	mem = NewMemory()
+	mem.Resize(size)
+	mem.Set(0, ml_dsa_87.SigSize, sig[:])
+	mem.Set(ml_dsa_87.SigSize, ml_dsa_87.PKSize, pk[:])
+	mem.Set(ml_dsa_87.SigSize+ml_dsa_87.PKSize, msgSize, msg)
+
+	stack = newstack()
+	stack.push(uint256.NewInt(msgSize))
+	stack.push(new(uint256.Int))
+	stack.push(uint256.NewInt(ml_dsa_87.SigSize))
+	stack.push(uint256.NewInt(ml_dsa_87.PKSize + ml_dsa_87.SigSize))
+
+	opMLDSA87Verify(&pc, qrvmInterpreter, &ScopeContext{mem, stack, nil})
+	if len(stack.data) != 1 {
+		t.Errorf("Expected one item on stack after opMLDSA87Verify, got %d: ", len(stack.data))
+	}
+	result = stack.pop()
+	if result.Uint64() != 0 {
+		t.Errorf("Verification succeeded for invalid signature")
+	}
+}
+
+func BenchmarkOpMLDSA87Verify(bench *testing.B) {
+	var (
+		env             = NewQRVM(BlockContext{}, TxContext{}, nil, params.TestChainConfig, Config{})
+		stack           = newstack()
+		mem             = NewMemory()
+		qrvmInterpreter = NewQRVMInterpreter(env)
+		pc              = uint64(0)
+		msg             = []byte("QRL")
+		msgSize         = uint64(len(msg))
+	)
+
+	wallet, err := ml_dsa_87.NewWallet()
+	if err != nil {
+		log.Fatalf("Failed to create wallet: %v", err)
+	}
+
+	sig, err := wallet.Sign(msg)
+	if err != nil {
+		log.Fatalf("Failed to sign message: %v", err)
+	}
+
+	pk := wallet.GetPK()
+	size := ml_dsa_87.SigSize + ml_dsa_87.PKSize + msgSize
+	mem.Resize(size)
+	mem.Set(0, ml_dsa_87.SigSize, sig[:])
+	mem.Set(ml_dsa_87.SigSize, ml_dsa_87.PKSize, pk[:])
+	mem.Set(ml_dsa_87.SigSize+ml_dsa_87.PKSize, msgSize, msg)
+
+	bench.ResetTimer()
+	for i := 0; i < bench.N; i++ {
+		stack.push(uint256.NewInt(msgSize))
+		stack.push(new(uint256.Int))
+		stack.push(uint256.NewInt(ml_dsa_87.SigSize))
+		stack.push(uint256.NewInt(ml_dsa_87.PKSize + ml_dsa_87.SigSize))
+		opMLDSA87Verify(&pc, qrvmInterpreter, &ScopeContext{mem, stack, nil})
 	}
 }

@@ -262,3 +262,7 @@ func gasStaticCall(qrvm *QRVM, contract *Contract, stack *Stack, mem *Memory, me
 	}
 	return gas, nil
 }
+
+func gasMLDSA87Verify(qrvm *QRVM, contract *Contract, stack *Stack, mem *Memory, memorySize uint64) (uint64, error) {
+	return 0, nil
+}

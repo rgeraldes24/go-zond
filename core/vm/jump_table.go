@@ -954,6 +954,14 @@ func newShanghaiInstructionSet() JumpTable {
 			minStack:    minStack(0, 1),
 			maxStack:    maxStack(0, 1),
 		},
+		MLDSA87VERIFY: {
+			execute:     opMLDSA87Verify,
+			constantGas: params.MLDSA87VerifyGas,
+			dynamicGas:  gasMLDSA87Verify,
+			minStack:    minStack(4, 1),
+			maxStack:    maxStack(4, 1),
+			memorySize:  memoryMLDSA87Verify,
+		},
 	}
 
 	// Fill all unassigned slots with opUndefined.

@@ -17,10 +17,10 @@
 package params
 
 const (
-	GasLimitBoundDivisor uint64 = 1024               // The bound divisor of the gas limit, used in update calculations.
-	MinGasLimit          uint64 = 5000               // Minimum the gas limit may ever be.
-	MaxGasLimit          uint64 = 20000000           // Maximum the gas limit
-	GenesisGasLimit      uint64 = 4712388            // Gas limit of the Genesis block.
+	GasLimitBoundDivisor uint64 = 1024     // The bound divisor of the gas limit, used in update calculations.
+	MinGasLimit          uint64 = 5000     // Minimum the gas limit may ever be.
+	MaxGasLimit          uint64 = 20000000 // Maximum the gas limit
+	GenesisGasLimit      uint64 = 4712388  // Gas limit of the Genesis block.
 
 	MaximumExtraDataSize  uint64 = 32    // Maximum size extra data may be after Genesis.
 	SloadGas              uint64 = 50    // Multiplied by the number of 32-byte words that are copied (round up) for any *COPY operation and added.
@@ -98,4 +98,6 @@ const (
 	// up to half the consumed gas could be refunded. Redefined as 1/5th in EIP-3529
 	RefundQuotient        uint64 = 2
 	RefundQuotientEIP3529 uint64 = 5
+
+	MLDSA87VerifyGas uint64 = 5571 // Once per MLDSA87VERIFY operation.
 )

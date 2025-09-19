@@ -20,6 +20,7 @@ import (
 	"math"
 
 	"github.com/holiman/uint256"
+	"github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/core/types"
 	"github.com/theQRL/go-zond/crypto"
@@ -858,4 +859,30 @@ func makeSwap(size int64) executionFunc {
 		scope.Stack.swap(int(size))
 		return nil, nil
 	}
+}
+
+func opMLDSA87Verify(_ *uint64, _ *QRVMInterpreter, scope *ScopeContext) ([]byte, error) {
+	msgOffset := scope.Stack.pop()
+
+	pkOffset := scope.Stack.pop()
+	pkBytes := scope.Memory.GetPtr(int64(pkOffset.Uint64()), int64(ml_dsa_87.PKSize))
+
+	sigOffset := scope.Stack.pop()
+	sig := scope.Memory.GetPtr(int64(sigOffset.Uint64()), int64(ml_dsa_87.SigSize))
+
+	msgSize := scope.Stack.peek()
+	msg := scope.Memory.GetPtr(int64(msgOffset.Uint64()), int64(msgSize.Uint64()))
+
+	pk, err := ml_dsa_87.BytesToPK(pkBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	if ml_dsa_87.Verify(msg, sig, &pk, ml_dsa_87.NewMLDSA87Descriptor()) {
+		msgSize.SetUint64(1)
+	} else {
+		msgSize.SetUint64(0)
+	}
+
+	return nil, nil
 }
