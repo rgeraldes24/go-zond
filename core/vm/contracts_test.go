@@ -57,6 +57,7 @@ var allPrecompiles = map[common.Address]PrecompiledContract{
 	common.BytesToAddress([]byte{6}):    &bn256AddIstanbul{},
 	common.BytesToAddress([]byte{7}):    &bn256ScalarMulIstanbul{},
 	common.BytesToAddress([]byte{8}):    &bn256PairingIstanbul{},
+	common.BytesToAddress([]byte{9}):    &mlDSA87Verify{},
 }
 
 func testPrecompiled(addr string, test precompiledTest, t *testing.T) {
@@ -306,3 +307,11 @@ func loadJsonFail(name string) ([]precompiledFailureTest, error) {
 	return testcases, err
 }
 */
+
+func TestPrecompiledMLDSA87Verify(t *testing.T) {
+	testJson("mldsa87verify", "Q0000000000000000000000000000000000000009", t)
+}
+
+func BenchmarkPrecompiledMLDSA87Verify(b *testing.B) {
+	benchJson("mldsa87verify", "Q0000000000000000000000000000000000000009", b)
+}

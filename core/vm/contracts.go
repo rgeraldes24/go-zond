@@ -25,6 +25,7 @@ import (
 
 	pkgerrors "github.com/pkg/errors"
 	ssz "github.com/prysmaticlabs/fastssz"
+	"github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/common"
 	"github.com/theQRL/go-zond/common/math"
 	"github.com/theQRL/go-zond/crypto/bn256"
@@ -49,6 +50,7 @@ var PrecompiledContractsShanghai = map[common.Address]PrecompiledContract{
 	common.BytesToAddress([]byte{6}): &bn256AddIstanbul{},
 	common.BytesToAddress([]byte{7}): &bn256ScalarMulIstanbul{},
 	common.BytesToAddress([]byte{8}): &bn256PairingIstanbul{},
+	common.BytesToAddress([]byte{9}): &mlDSA87Verify{},
 }
 
 var (
@@ -482,4 +484,29 @@ func (c *bn256PairingIstanbul) RequiredGas(input []byte) uint64 {
 
 func (c *bn256PairingIstanbul) Run(input []byte) ([]byte, error) {
 	return runBn256Pairing(input)
+}
+
+type mlDSA87Verify struct{}
+
+func (c *mlDSA87Verify) RequiredGas(input []byte) uint64 {
+	return 5000 // temp value
+}
+
+func (c *mlDSA87Verify) Run(input []byte) ([]byte, error) {
+	var (
+		pkBytes = getData(input, 0, ml_dsa_87.PKSize)
+		sig     = getData(input, ml_dsa_87.PKSize, ml_dsa_87.SigSize)
+		msg     = getData(input, ml_dsa_87.PKSize+ml_dsa_87.SigSize, uint64(len(input))-ml_dsa_87.SigSize-ml_dsa_87.PKSize)
+	)
+
+	pk, err := ml_dsa_87.BytesToPK(pkBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	// Execute the signature check and return the result
+	if ml_dsa_87.Verify(msg, sig, &pk, ml_dsa_87.NewMLDSA87Descriptor()) {
+		return true32Byte, nil
+	}
+	return false32Byte, nil
 }
