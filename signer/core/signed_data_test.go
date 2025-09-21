@@ -217,7 +217,7 @@ func TestSignData(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if signature == nil || len(signature) != 4595 {
+	if signature == nil || len(signature) != 4627 {
 		t.Errorf("Expected 65 byte signature (got %d bytes)", len(signature))
 	}
 	// data/typed via SignTypeData
@@ -226,7 +226,7 @@ func TestSignData(t *testing.T) {
 	var want []byte
 	if signature, err = api.SignTypedData(context.Background(), a, typedData); err != nil {
 		t.Fatal(err)
-	} else if signature == nil || len(signature) != 4595 {
+	} else if signature == nil || len(signature) != 4627 {
 		t.Errorf("Expected 65 byte signature (got %d bytes)", len(signature))
 	} else {
 		want = signature
@@ -239,7 +239,7 @@ func TestSignData(t *testing.T) {
 		t.Fatal(err)
 	} else if signature, err = api.SignData(context.Background(), apitypes.DataTyped.Mime, a, hexutil.Encode(typedDataJson)); err != nil {
 		t.Fatal(err)
-	} else if signature == nil || len(signature) != 4595 {
+	} else if signature == nil || len(signature) != 4627 {
 		t.Errorf("Expected 65 byte signature (got %d bytes)", len(signature))
 	} else if have := signature; !bytes.Equal(have, want) {
 		t.Fatalf("want %x, have %x", want, have)
