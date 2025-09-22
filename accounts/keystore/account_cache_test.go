@@ -36,7 +36,7 @@ import (
 var (
 	address1, _       = common.NewAddressFromString("Q2068da65aa0167e1d55fd692786cf87117fcf3fc")
 	address2, _       = common.NewAddressFromString("Q208f56097044fc0302ee090d7f410df6a6897392")
-	address3, _       = common.NewAddressFromString("Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e")
+	address3, _       = common.NewAddressFromString("Q871a6402f64025bc3555616f544af9df9899d237")
 	cachetestDir, _   = filepath.Abs(filepath.Join("testdata", "keystore"))
 	cachetestAccounts = []accounts.Account{
 		{

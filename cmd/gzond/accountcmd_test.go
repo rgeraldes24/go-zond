@@ -52,13 +52,13 @@ func TestAccountList(t *testing.T) {
 	var want = `
 Account #0: {Q2068da65aa0167e1d55fd692786cf87117fcf3fc} keystore://{{.Datadir}}/keystore/UTC--2024-05-27T07-48-33.872599000Z--Q2068da65aa0167e1d55fd692786cf87117fcf3fc
 Account #1: {Q208f56097044fc0302ee090d7f410df6a6897392} keystore://{{.Datadir}}/keystore/aaa
-Account #2: {Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e} keystore://{{.Datadir}}/keystore/zzz
+Account #2: {Q871a6402f64025bc3555616f544af9df9899d237} keystore://{{.Datadir}}/keystore/zzz
 `
 	if runtime.GOOS == "windows" {
 		want = `
 Account #0: {Q2068da65aa0167e1d55fd692786cf87117fcf3fc} keystore://{{.Datadir}}\keystore\UTC--2024-05-27T07-48-33.872599000Z--Q2068da65aa0167e1d55fd692786cf87117fcf3fc
 Account #1: {Q208f56097044fc0302ee090d7f410df6a6897392} keystore://{{.Datadir}}\keystore\aaa
-Account #2: {Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e} keystore://{{.Datadir}}\keystore\zzz
+Account #2: {Q871a6402f64025bc3555616f544af9df9899d237} keystore://{{.Datadir}}\keystore\zzz
 `
 	}
 	{
@@ -100,7 +100,7 @@ func TestAccountImport(t *testing.T) {
 		{
 			name:   "correct account",
 			seed:   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdeffcad0b19bb29d4674531d6f115237e16",
-			output: "Address: {Q20b0ebf635349c8167daac7d7246b8e0d892926f}\n",
+			output: "Address: {Q50ba4fbaa0c5525ca0dda1f0be93218760155772}\n",
 		},
 		{
 			name:   "invalid character",
@@ -162,10 +162,10 @@ func TestAccountUpdate(t *testing.T) {
 	datadir := tmpDatadirWithKeystore(t)
 	gzond := runGzond(t, "account", "update",
 		"--datadir", datadir, "--lightkdf",
-		"Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e")
+		"Q871a6402f64025bc3555616f544af9df9899d237")
 	defer gzond.ExpectExit()
 	gzond.Expect(`
-Unlocking account Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e | Attempt 1/3
+Unlocking account Q871a6402f64025bc3555616f544af9df9899d237 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "1234567890"}}
 Please give a new password. Do not forget this password.
@@ -176,9 +176,9 @@ Repeat password: {{.InputLine "foobar2"}}
 
 func TestUnlockFlag(t *testing.T) {
 	gzond := runMinimalGzond(t, "--port", "0", "--ipcdisable", "--datadir", tmpDatadirWithKeystore(t),
-		"--unlock", "Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e", "console", "--exec", "loadScript('testdata/empty.js')")
+		"--unlock", "Q871a6402f64025bc3555616f544af9df9899d237", "console", "--exec", "loadScript('testdata/empty.js')")
 	gzond.Expect(`
-Unlocking account Q2061d4bb7a03eddcab945a5cfc7b5b32eac2284e | Attempt 1/3
+Unlocking account Q871a6402f64025bc3555616f544af9df9899d237 | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "1234567890"}}
 undefined
@@ -187,7 +187,7 @@ undefined
 
 	wantMessages := []string{
 		"Unlocked account",
-		"=Q2061d4bb7a03EdDcAB945A5cFc7b5b32Eac2284e",
+		"=Q871a6402f64025bc3555616f544af9df9899d237",
 	}
 	for _, m := range wantMessages {
 		if !strings.Contains(gzond.StderrText(), m) {
@@ -230,7 +230,7 @@ undefined
 	wantMessages := []string{
 		"Unlocked account",
 		"=Q2068da65aA0167E1d55fD692786Cf87117FCF3FC",
-		"=Q2061d4bb7a03EdDcAB945A5cFc7b5b32Eac2284e",
+		"=Q871a6402f64025bc3555616f544af9df9899d237",
 	}
 	for _, m := range wantMessages {
 		if !strings.Contains(gzond.StderrText(), m) {
@@ -251,7 +251,7 @@ undefined
 	wantMessages := []string{
 		"Unlocked account",
 		"=Q2068da65aA0167E1d55fD692786Cf87117FCF3FC",
-		"=Q2061d4bb7a03EdDcAB945A5cFc7b5b32Eac2284e",
+		"=Q871a6402f64025bc3555616f544af9df9899d237",
 	}
 	for _, m := range wantMessages {
 		if !strings.Contains(gzond.StderrText(), m) {

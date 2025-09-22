@@ -34,7 +34,7 @@ import (
 // The values in those tests are from the Transaction Tests
 // at github.com/ethereum/tests.
 var (
-	testAddr, _ = common.NewAddressFromString("Q55f129a54149f8bfa08fe8d1159f78368af3de9764763083")
+	testAddr, _ = common.NewAddressFromString("Qb94f5374fce5edbc8e2a8697c15331677e6ebf0b")
 
 	emptyEip2718Tx = NewTx(&DynamicFeeTx{
 		ChainID:   big.NewInt(1),
@@ -84,7 +84,7 @@ func TestEIP2930Signer(t *testing.T) {
 		tx0     = NewTx(&DynamicFeeTx{Nonce: 1})
 		tx1     = NewTx(&DynamicFeeTx{ChainID: big.NewInt(1), Nonce: 1})
 		tx2, _  = SignNewTx(key, signer2, &DynamicFeeTx{ChainID: big.NewInt(2), Nonce: 1})
-		to, _   = common.NewAddressFromString("Qcccccccccccccccccccccccccccccccccccccccccccccccc")
+		to, _   = common.NewAddressFromString("Qcccccccccccccccccccccccccccccccccccccccc")
 		tx3, _  = SignNewTx(key, signer1, &DynamicFeeTx{
 			Data:      common.Hex2Bytes("00"),
 			Value:     big.NewInt(0),
@@ -104,7 +104,7 @@ func TestEIP2930Signer(t *testing.T) {
 				},
 			},
 		})
-		to2, _ = common.NewAddressFromString("Q46a16f6216b330c3cef65a832a656dfdc7387e607593fed0")
+		to2, _ = common.NewAddressFromString("Q20a1A68e6818a1142F85671DB01eF7226debf822")
 		tx4, _ = SignNewTx(key, signer1, &DynamicFeeTx{
 			Data:       common.Hex2Bytes("095ea7b30000000000000000000000001111111254eeb25477b68fb85ed929f73a960582ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
 			Value:      big.NewInt(0),
@@ -116,7 +116,7 @@ func TestEIP2930Signer(t *testing.T) {
 			To:         &to2,
 			AccessList: []AccessTuple{},
 		})
-		to3, _ = common.NewAddressFromString("Q07cdeb7f69bd8f71a47ca646043ad210a2c41f2b73b85e15")
+		to3, _ = common.NewAddressFromString("Q20B045A50E3C97dcf002eeFed02dB2dB22AE92A0")
 		tx5, _ = SignNewTx(key, signer1, &DynamicFeeTx{
 			Data:       []byte{},
 			Value:      big.NewInt(73360267083380739),
