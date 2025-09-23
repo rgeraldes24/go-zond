@@ -187,7 +187,7 @@ undefined
 
 	wantMessages := []string{
 		"Unlocked account",
-		"=Q871a6402f64025bc3555616f544af9df9899d237",
+		"=Q871A6402f64025Bc3555616f544AF9Df9899d237",
 	}
 	for _, m := range wantMessages {
 		if !strings.Contains(gzond.StderrText(), m) {
@@ -229,7 +229,7 @@ undefined
 
 	wantMessages := []string{
 		"Unlocked account",
-		"=Q2068da65aA0167E1d55fD692786Cf87117FCF3FC",
+		"=Q208f56097044fc0302ee090d7f410df6a6897392",
 		"=Q871a6402f64025bc3555616f544af9df9899d237",
 	}
 	for _, m := range wantMessages {
