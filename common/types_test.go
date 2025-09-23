@@ -405,12 +405,12 @@ func TestAddress_Format(t *testing.T) {
 		{
 			name: "println",
 			out:  fmt.Sprintln(addr),
-			want: "Qb26f2b342aaB24BCF63ea218C6A9274D30ab9A15\n",
+			want: "QB26f2b342AAb24BCF63ea218c6A9274D30Ab9A15\n",
 		},
 		{
 			name: "print",
 			out:  fmt.Sprint(addr),
-			want: "Qb26f2b342aaB24BCF63ea218C6A9274D30ab9A15",
+			want: "QB26f2b342AAb24BCF63ea218c6A9274D30Ab9A15",
 		},
 		{
 			name: "printf-s",
@@ -419,12 +419,12 @@ func TestAddress_Format(t *testing.T) {
 				fmt.Fprintf(buf, "%s", addr)
 				return buf.String()
 			}(),
-			want: "Qb26f2b342aaB24BCF63ea218C6A9274D30ab9A15",
+			want: "QB26f2b342AAb24BCF63ea218c6A9274D30Ab9A15",
 		},
 		{
 			name: "printf-q",
 			out:  fmt.Sprintf("%q", addr),
-			want: `"Qb26f2b342aaB24BCF63ea218C6A9274D30ab9A15"`,
+			want: `"QB26f2b342AAb24BCF63ea218c6A9274D30Ab9A15"`,
 		},
 		{
 			name: "printf-x",
@@ -434,7 +434,7 @@ func TestAddress_Format(t *testing.T) {
 		{
 			name: "printf-X",
 			out:  fmt.Sprintf("%X", addr),
-			want: "00000000B26F2B342AAB24BCF63EA218C6A9274D30AB9A15",
+			want: "B26F2B342AAB24BCF63EA218C6A9274D30AB9A15",
 		},
 		{
 			name: "printf-#x",
@@ -444,19 +444,19 @@ func TestAddress_Format(t *testing.T) {
 		{
 			name: "printf-v",
 			out:  fmt.Sprintf("%v", addr),
-			want: "Qb26f2b342aaB24BCF63ea218C6A9274D30ab9A15",
+			want: "QB26f2b342AAb24BCF63ea218c6A9274D30Ab9A15",
 		},
 		// The original default formatter for byte slice
 		{
 			name: "printf-d",
 			out:  fmt.Sprintf("%d", addr),
-			want: "[0 0 0 0 178 111 43 52 42 171 36 188 246 62 162 24 198 169 39 77 48 171 154 21]",
+			want: "[178 111 43 52 42 171 36 188 246 62 162 24 198 169 39 77 48 171 154 21]",
 		},
 		// Invalid format char.
 		{
 			name: "printf-t",
 			out:  fmt.Sprintf("%t", addr),
-			want: "%!t(address=00000000b26f2b342aab24bcf63ea218c6a9274d30ab9a15)",
+			want: "%!t(address=b26f2b342aab24bcf63ea218c6a9274d30ab9a15)",
 		},
 	}
 	for _, tt := range tests {

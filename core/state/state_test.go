@@ -64,21 +64,21 @@ func TestDump(t *testing.T) {
 	s.state, _ = New(root, tdb, nil)
 	got := string(s.state.Dump(nil))
 	want := `{
-    "root": "15d1a27449b0639d285a46c9f934bc90d47023b35cce0a53afd2a759b29f9236",
+    "root": "71edff0130dd2385947095001c73d9e28d862fc286fca2b922ca6f6f3cddfdd2",
     "accounts": {
-        "Q00000000000000000000000000000001": {
+        "Q0000000000000000000000000000000000000001": {
             "balance": "22",
             "nonce": 0,
             "root": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "codeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
-            "key": "0xbd465dc7b544c480dc6400ad26a95a4741d09c2d581aac44832e2bd3556da105"
+            "key": "0x1468288056310c82aa4c01a7e12a10f8111a0560e72b700555479031b86c357d"
         },
         "Q0000000000000000000000000000000000000002": {
             "balance": "44",
             "nonce": 0,
             "root": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "codeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
-            "key": "0x4334cb721a00e18c6cdb1b20f047e5e75ad11b680c5520d1be296e34817fad88"
+            "key": "0xd52688a8f926c816ca1e079067caba944f158e764817b83fc43594370ca9cf62"
         },
         "Q0000000000000000000000000000000000000102": {
             "balance": "0",
@@ -86,7 +86,7 @@ func TestDump(t *testing.T) {
             "root": "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
             "codeHash": "0x87874902497a5bb968da31a2998d8f22e949d1ef6214bcdedd8bae24cca4b9e3",
             "code": "0x03030303030303",
-            "key": "0x1468139c16e95059d4bc2ddba5f71a203d3870fab1b9fd634460f9fcf3913273"
+            "key": "0xa17eacbc25cda025e81db9c5c62868822c73ce097cee2a63e33a2e41268358a1"
         }
     }
 }`
