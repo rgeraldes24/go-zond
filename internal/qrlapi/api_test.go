@@ -1230,38 +1230,36 @@ func TestRPCGetTransactionReceipt(t *testing.T) {
 			txHash: txHashes[0],
 			file:   "normal-transfer-tx",
 		},
-		/*
-			// 1. create contract
-			{
-				txHash: txHashes[1],
-				file:   "create-contract-tx",
-			},
-			// 2. with logs success
-			{
-				txHash: txHashes[2],
-				file:   "with-logs",
-			},
-			// 3. dynamic tx with logs success
-			{
-				txHash: txHashes[3],
-				file:   `dynamic-tx-with-logs`,
-			},
-			// 4. access list tx with create contract
-			{
-				txHash: txHashes[4],
-				file:   "create-contract-with-access-list",
-			},
-			// 5. txhash empty
-			{
-				txHash: common.Hash{},
-				file:   "txhash-empty",
-			},
-			// 6. txhash not found
-			{
-				txHash: common.HexToHash("deadbeef"),
-				file:   "txhash-notfound",
-			},
-		*/
+		// 1. create contract
+		{
+			txHash: txHashes[1],
+			file:   "create-contract-tx",
+		},
+		// 2. with logs success
+		{
+			txHash: txHashes[2],
+			file:   "with-logs",
+		},
+		// 3. dynamic tx with logs success
+		{
+			txHash: txHashes[3],
+			file:   `dynamic-tx-with-logs`,
+		},
+		// 4. access list tx with create contract
+		{
+			txHash: txHashes[4],
+			file:   "create-contract-with-access-list",
+		},
+		// 5. txhash empty
+		{
+			txHash: common.Hash{},
+			file:   "txhash-empty",
+		},
+		// 6. txhash not found
+		{
+			txHash: common.HexToHash("deadbeef"),
+			file:   "txhash-notfound",
+		},
 	}
 
 	for i, tt := range testSuite {
