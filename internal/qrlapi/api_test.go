@@ -925,7 +925,7 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 		}
 		blockHashes[i] = header.Hash()
 	}
-	// pendingHash := pending.Hash()
+	pendingHash := pending.Hash()
 
 	var testSuite = []struct {
 		blockNumber rpc.BlockNumber
@@ -1009,82 +1009,80 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 			fullTx:      true,
 			file:        "tag-pending-fullTx",
 		},
-		/*
-			// 13. latest header by hash
-			{
-				blockHash: &blockHashes[len(blockHashes)-1],
-				reqHeader: true,
-				file:      "hash-latest",
-			},
-			// 14. genesis header by hash
-			{
-				blockHash: &blockHashes[0],
-				reqHeader: true,
-				file:      "hash-0",
-			},
-			// 15. #1 header
-			{
-				blockHash: &blockHashes[1],
-				reqHeader: true,
-				file:      "hash-1",
-			},
-			// 16. latest-1 header
-			{
-				blockHash: &blockHashes[len(blockHashes)-2],
-				reqHeader: true,
-				file:      "hash-latest-1",
-			},
-			// 17. empty hash
-			{
-				blockHash: &common.Hash{},
-				reqHeader: true,
-				file:      "hash-empty",
-			},
-			// 18. pending hash
-			{
-				blockHash: &pendingHash,
-				reqHeader: true,
-				file:      `hash-pending`,
-			},
-			// 19. latest block
-			{
-				blockHash: &blockHashes[len(blockHashes)-1],
-				file:      "hash-latest",
-			},
-			// 20. genesis block
-			{
-				blockHash: &blockHashes[0],
-				file:      "hash-genesis",
-			},
-			// 21. #1 block
-			{
-				blockHash: &blockHashes[1],
-				file:      "hash-1",
-			},
-			// 22. latest-1 block
-			{
-				blockHash: &blockHashes[len(blockHashes)-2],
-				fullTx:    true,
-				file:      "hash-latest-1-fullTx",
-			},
-			// 23. empty hash + body
-			{
-				blockHash: &common.Hash{},
-				fullTx:    true,
-				file:      "hash-empty-fullTx",
-			},
-			// 24. pending block
-			{
-				blockHash: &pendingHash,
-				file:      `hash-pending`,
-			},
-			// 25. pending block + fullTx
-			{
-				blockHash: &pendingHash,
-				fullTx:    true,
-				file:      "hash-pending-fullTx",
-			},
-		*/
+		// 13. latest header by hash
+		{
+			blockHash: &blockHashes[len(blockHashes)-1],
+			reqHeader: true,
+			file:      "hash-latest",
+		},
+		// 14. genesis header by hash
+		{
+			blockHash: &blockHashes[0],
+			reqHeader: true,
+			file:      "hash-0",
+		},
+		// 15. #1 header
+		{
+			blockHash: &blockHashes[1],
+			reqHeader: true,
+			file:      "hash-1",
+		},
+		// 16. latest-1 header
+		{
+			blockHash: &blockHashes[len(blockHashes)-2],
+			reqHeader: true,
+			file:      "hash-latest-1",
+		},
+		// 17. empty hash
+		{
+			blockHash: &common.Hash{},
+			reqHeader: true,
+			file:      "hash-empty",
+		},
+		// 18. pending hash
+		{
+			blockHash: &pendingHash,
+			reqHeader: true,
+			file:      `hash-pending`,
+		},
+		// 19. latest block
+		{
+			blockHash: &blockHashes[len(blockHashes)-1],
+			file:      "hash-latest",
+		},
+		// 20. genesis block
+		{
+			blockHash: &blockHashes[0],
+			file:      "hash-genesis",
+		},
+		// 21. #1 block
+		{
+			blockHash: &blockHashes[1],
+			file:      "hash-1",
+		},
+		// 22. latest-1 block
+		{
+			blockHash: &blockHashes[len(blockHashes)-2],
+			fullTx:    true,
+			file:      "hash-latest-1-fullTx",
+		},
+		// 23. empty hash + body
+		{
+			blockHash: &common.Hash{},
+			fullTx:    true,
+			file:      "hash-empty-fullTx",
+		},
+		// 24. pending block
+		{
+			blockHash: &pendingHash,
+			file:      `hash-pending`,
+		},
+		// 25. pending block + fullTx
+		{
+			blockHash: &pendingHash,
+			fullTx:    true,
+			file:      "hash-pending-fullTx",
+		},
 	}
 
 	for i, tt := range testSuite {
@@ -1232,36 +1230,38 @@ func TestRPCGetTransactionReceipt(t *testing.T) {
 			txHash: txHashes[0],
 			file:   "normal-transfer-tx",
 		},
-		// 1. create contract
-		{
-			txHash: txHashes[1],
-			file:   "create-contract-tx",
-		},
-		// 2. with logs success
-		{
-			txHash: txHashes[2],
-			file:   "with-logs",
-		},
-		// 3. dynamic tx with logs success
-		{
-			txHash: txHashes[3],
-			file:   `dynamic-tx-with-logs`,
-		},
-		// 4. access list tx with create contract
-		{
-			txHash: txHashes[4],
-			file:   "create-contract-with-access-list",
-		},
-		// 5. txhash empty
-		{
-			txHash: common.Hash{},
-			file:   "txhash-empty",
-		},
-		// 6. txhash not found
-		{
-			txHash: common.HexToHash("deadbeef"),
-			file:   "txhash-notfound",
-		},
+		/*
+			// 1. create contract
+			{
+				txHash: txHashes[1],
+				file:   "create-contract-tx",
+			},
+			// 2. with logs success
+			{
+				txHash: txHashes[2],
+				file:   "with-logs",
+			},
+			// 3. dynamic tx with logs success
+			{
+				txHash: txHashes[3],
+				file:   `dynamic-tx-with-logs`,
+			},
+			// 4. access list tx with create contract
+			{
+				txHash: txHashes[4],
+				file:   "create-contract-with-access-list",
+			},
+			// 5. txhash empty
+			{
+				txHash: common.Hash{},
+				file:   "txhash-empty",
+			},
+			// 6. txhash not found
+			{
+				txHash: common.HexToHash("deadbeef"),
+				file:   "txhash-notfound",
+			},
+		*/
 	}
 
 	for i, tt := range testSuite {
