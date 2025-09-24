@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/theQRL/go-qrllib/wallet/common/descriptor"
 	walletmldsa87 "github.com/theQRL/go-qrllib/wallet/ml_dsa_87"
 	"github.com/theQRL/go-zond/accounts"
 	"github.com/theQRL/go-zond/accounts/keystore"
@@ -94,7 +93,7 @@ type outputVerify struct {
 var commandVerifyMessage = &cli.Command{
 	Name:      "verifymessage",
 	Usage:     "verify the signature of a signed message",
-	ArgsUsage: "<signature> <publickey> <descriptor> <message>",
+	ArgsUsage: "<signature> <publickey> <message>",
 	Description: `
 Verify the signature of the message.
 It is possible to refer to a file containing the message.`,
@@ -105,16 +104,14 @@ It is possible to refer to a file containing the message.`,
 	Action: func(ctx *cli.Context) error {
 		signatureHex := ctx.Args().First()
 		pubKeyHex := ctx.Args().Get(1)
-		descriptorHex := ctx.Args().Get(2)
-		message := getMessage(ctx, 3)
+		message := getMessage(ctx, 2)
 
 		signature := common.FromHex(signatureHex)
 		publicKey := common.FromHex(pubKeyHex)
-		desc := common.FromHex(descriptorHex)
 
 		pk := walletmldsa87.PK(publicKey)
 		out := outputVerify{
-			Success: walletmldsa87.Verify(accounts.TextHash(message), signature, &pk, descriptor.Descriptor(desc)),
+			Success: walletmldsa87.Verify(accounts.TextHash(message), signature, &pk, walletmldsa87.NewMLDSA87Descriptor()),
 		}
 		if ctx.Bool(jsonFlag.Name) {
 			mustPrintJSON(out)

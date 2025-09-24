@@ -40,8 +40,6 @@ import (
 // TestCreation tests that different genesis and fork rule combinations result in
 // the correct fork ID.
 func TestCreation(t *testing.T) {
-	// TODO(rgeraldes24)
-	t.Skip()
 	type testcase struct {
 		head uint64
 		time uint64
@@ -57,7 +55,7 @@ func TestCreation(t *testing.T) {
 			params.MainnetChainConfig,
 			core.DefaultGenesisBlock().ToBlock(),
 			[]testcase{
-				{0, 0, ID{Hash: checksumToBytes(0x1dc04dfb), Next: 0}},
+				{0, 0, ID{Hash: checksumToBytes(0x6170f487), Next: 0}},
 				// NOTE(rgeraldes24): revisit upon new fork
 				/*
 					{0, 0, ID{Hash: checksumToBytes(0xfc64ec04), Next: 1150000}},                    // Unsynced

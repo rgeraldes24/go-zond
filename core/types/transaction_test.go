@@ -65,13 +65,11 @@ func TestDecodeEmptyTypedTx(t *testing.T) {
 }
 
 func TestEIP2718TransactionSigHash(t *testing.T) {
-	// TODO(rgeraldes24)
-	t.Skip()
 	s := NewShanghaiSigner(big.NewInt(1))
-	if s.Hash(emptyEip2718Tx) != common.HexToHash("51f7a3b00f7d2177701293974ebfb09909790f78c1155412051b67b699d90d82") {
+	if s.Hash(emptyEip2718Tx) != common.HexToHash("cf171c2aadabcb1e36975d0949d3b831188b555b7764342bf7b1b47238c428e4") {
 		t.Errorf("empty EIP-2718 transaction hash mismatch, got %x", s.Hash(emptyEip2718Tx))
 	}
-	if s.Hash(signedEip2718Tx) != common.HexToHash("51f7a3b00f7d2177701293974ebfb09909790f78c1155412051b67b699d90d82") {
+	if s.Hash(signedEip2718Tx) != common.HexToHash("cf171c2aadabcb1e36975d0949d3b831188b555b7764342bf7b1b47238c428e4") {
 		t.Errorf("signed EIP-2718 transaction hash mismatch, got %x", s.Hash(signedEip2718Tx))
 	}
 }

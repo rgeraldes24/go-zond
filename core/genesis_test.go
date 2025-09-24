@@ -32,15 +32,13 @@ import (
 )
 
 func TestSetupGenesis(t *testing.T) {
-	// TODO(rgeraldes24)
-	t.Skip()
 	testSetupGenesis(t, rawdb.HashScheme)
 	testSetupGenesis(t, rawdb.PathScheme)
 }
 
 func testSetupGenesis(t *testing.T, scheme string) {
 	var (
-		customghash = common.HexToHash("0x2cc76cea8ddd6a59c0c6c6d34a8e9b53bb50e3b5da34d6f7f06cda0469fd56b5")
+		customghash = common.HexToHash("0x512a0d99941f1551db550852bdec6c9e213595356ede9dd23d1572199a8d66ba")
 		customg     = Genesis{
 			Config: &params.ChainConfig{},
 			Alloc: GenesisAlloc{
@@ -178,8 +176,6 @@ func testSetupGenesis(t *testing.T, scheme string) {
 // TestGenesisHashes checks the congruity of default genesis data to
 // corresponding hardcoded genesis hash values.
 func TestGenesisHashes(t *testing.T) {
-	// TODO(rgeraldes24)
-	t.Skip()
 	for i, c := range []struct {
 		genesis *Genesis
 		want    common.Hash
