@@ -94,7 +94,7 @@ type outputVerify struct {
 var commandVerifyMessage = &cli.Command{
 	Name:      "verifymessage",
 	Usage:     "verify the signature of a signed message",
-	ArgsUsage: "<signature> <publickey> <message>",
+	ArgsUsage: "<signature> <publickey> <descriptor> <message>",
 	Description: `
 Verify the signature of the message.
 It is possible to refer to a file containing the message.`,
