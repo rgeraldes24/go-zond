@@ -97,7 +97,7 @@ func (c *depositroot) Run(input []byte) ([]byte, error) {
 		pkBytes     = getData(input, 0, 2592)    // 2592 bytes
 		credsBytes  = getData(input, 2592, 32)   // 32 bytes
 		amountBytes = getData(input, 2624, 8)    // 8 bytes
-		sigBytes    = getData(input, 2632, 4595) // 4595 bytes
+		sigBytes    = getData(input, 2632, 4627) // 4627 bytes
 	)
 
 	var amountUint uint64
@@ -155,8 +155,8 @@ func (d *depositdata) HashTreeRootWith(hh *ssz.Hasher) (err error) {
 	hh.PutUint64(d.Amount)
 
 	// Field (3) 'Signature'
-	if size := len(d.Signature); size != 4595 {
-		err = ssz.ErrBytesLengthFn("--.Signature", size, 4595)
+	if size := len(d.Signature); size != 4627 {
+		err = ssz.ErrBytesLengthFn("--.Signature", size, 4627)
 		return
 	}
 	hh.PutBytes(d.Signature)

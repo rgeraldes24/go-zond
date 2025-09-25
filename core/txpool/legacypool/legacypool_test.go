@@ -1261,7 +1261,7 @@ func TestAllowedTxSize(t *testing.T) {
 	//   - gasLimit  <= 32 bytes
 	//   - recipient == 20 bytes
 	//   - value     <= 32 bytes
-	//   - signature == 4595 bytes
+	//   - signature == 4627 bytes
 	//   - publicKey == 2592 bytes
 	// All those fields are summed up to at most 7335 bytes.
 	baseSize := uint64(7335)
