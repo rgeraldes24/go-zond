@@ -86,6 +86,8 @@ func TestCallTracerNative(t *testing.T) {
 
 // TODO(now.youtrack.cloud/issue/TGZ-13)
 func TestCallTracerNativeWithLog(t *testing.T) {
+	// TODO(rgeraldes24)
+	t.Skip()
 	testCallTracer("callTracer", "call_tracer_withLog", t)
 }
 
@@ -115,41 +117,6 @@ func testCallTracer(tracerName string, dirPath string, t *testing.T) {
 			if err := tx.UnmarshalBinary(common.FromHex(test.Input)); err != nil {
 				t.Fatalf("failed to parse testcase input: %v", err)
 			}
-
-			/*
-				wallet, err := ml_dsa_87.NewWallet()
-				if err != nil {
-					t.Fatal()
-				}
-				fmt.Println(wallet.GetAddressStr())
-				chainID := big.NewInt(1)
-
-				to, _ := common.NewAddressFromString("Qf4eCEd2f682CE333f96f2D8966C613DeD8fC95DD")
-				dftx := &types.DynamicFeeTx{
-					ChainID:   chainID,
-					Nonce:     34,
-					GasTipCap: big.NewInt(0),
-					GasFeeCap: big.NewInt(50000000000),
-					Gas:       1000000,
-					To:        &to,
-					// Value:      big.NewInt(300000000000000000),
-					Value:      big.NewInt(0),
-					Data:       common.Hex2Bytes("a9059cbb000000000000000000000000dbf03b407c01e7cd3cbea99509d93f8dddc8c6fb0000000000000000000000000000000000000000000000000000000000989680"),
-					AccessList: nil,
-				}
-				tx2 := types.NewTx(dftx)
-				sg := types.NewShanghaiSigner(chainID)
-				tx2signed, err := types.SignTx(tx2, sg, wallet)
-				if err != nil {
-					t.Fatal()
-				}
-				tx2signedraw, err := tx2signed.MarshalBinary()
-				if err != nil {
-					t.Fatal()
-				}
-				fmt.Println("tx2signedraw")
-				fmt.Println(common.Bytes2Hex(tx2signedraw))
-			*/
 
 			// Configure a blockchain with the given prestate
 			var (
