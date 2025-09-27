@@ -155,15 +155,14 @@ func TestT8n(t *testing.T) {
 			output: t8nOutput{body: true},
 			expOut: "exp.json",
 		},
-		// TODO(rgeraldes24)
-		// { // Already signed transactions
-		// 	base: "./testdata/13",
-		// 	input: t8nInput{
-		// 		"alloc.json", "signed_txs.rlp", "env.json", "Shanghai", "",
-		// 	},
-		// 	output: t8nOutput{result: true},
-		// 	expOut: "exp2.json",
-		// },
+		{ // Already signed transactions
+			base: "./testdata/13",
+			input: t8nInput{
+				"alloc.json", "signed_txs.rlp", "env.json", "Shanghai", "",
+			},
+			output: t8nOutput{result: true},
+			expOut: "exp2.json",
+		},
 		{ // Test post-merge transition
 			base: "./testdata/24",
 			input: t8nInput{
