@@ -79,8 +79,6 @@ type callTracerTest struct {
 }
 
 func TestCallTracerNative(t *testing.T) {
-	// TODO(rgeraldes24)
-	t.Skip()
 	testCallTracer("callTracer", "call_tracer", t)
 }
 
