@@ -1336,6 +1336,7 @@ func TestRPCGetBlockReceipts(t *testing.T) {
 			test: rpc.BlockNumberOrHashWithNumber(rpc.BlockNumber(2)),
 			file: "block-with-contract-create-tx",
 		},
+
 		// 6. block with contract call tx(hash)
 		{
 			test: rpc.BlockNumberOrHashWithHash(blockHashes[3], false),
