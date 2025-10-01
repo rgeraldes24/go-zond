@@ -98,7 +98,7 @@ func TestListAccounts(t *testing.T) {
 func TestListWallets(t *testing.T) {
 	t.Parallel()
 	keyPath := filepath.Join(os.TempDir(), fmt.Sprintf("%v-tempkey.test", t.Name()))
-	os.WriteFile(keyPath, []byte("acf882b322e0fe34f1ecd294489cd5157ca04dad38b71874d0e57138165d5ea43eba329dc72fc2037e32704ba1d218b4"), 0777)
+	os.WriteFile(keyPath, []byte("3bf5fbadaa64ce2974d2464dc17fdac669557f05bd5329c35aa84e85636d0565f5cb4d3427d6033ccabf0b6c3f157bb5"), 0777)
 	t.Cleanup(func() { os.Remove(keyPath) })
 
 	t.Run("no-accounts", func(t *testing.T) {
@@ -116,7 +116,7 @@ func TestListWallets(t *testing.T) {
 		clef.input("myverylongpassword").input("myverylongpassword").WaitExit()
 		// Secondly, do a listing, using the same datadir
 		clef = runWithKeystore(t, clef.Datadir, "--suppress-bootwarn", "--lightkdf", "list-wallets")
-		if out := string(clef.Output()); !strings.Contains(out, "Account 0: Q066570b8482bd968F41f2536981fDC0c10a4610E") {
+		if out := string(clef.Output()); !strings.Contains(out, "Account 0: Q0256E92B2fA7Cee1F6C172F9eDe57eFC2292EC3C") {
 			t.Logf("Output\n%v", out)
 			t.Error("Failure")
 		}
