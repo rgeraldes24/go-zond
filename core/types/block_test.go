@@ -95,7 +95,7 @@ func TestEIP1559BlockEncoding(t *testing.T) {
 	check("Coinbase", block.Coinbase(), coinbase)
 	check("Random", block.Random(), common.HexToHash("0000000000000000000000000000000000000000000000000000000000000000"))
 	check("Root", block.Root(), common.HexToHash("cd426e735813e331baee90aea50d7c2dd866a8ad40fe301285fba8ad357d2c02"))
-	check("Hash", block.Hash(), common.HexToHash("0xbd48c874a72d85e0de975491c27ac637e64769c349077af139539ed77404c558"))
+	check("Hash", block.Hash(), common.HexToHash("bd48c874a72d85e0de975491c27ac637e64769c349077af139539ed77404c558"))
 	check("Time", block.Time(), uint64(9150))
 	check("Size", block.Size(), uint64(len(blockEnc)))
 	check("BaseFee", block.BaseFee(), new(big.Int).SetUint64(269797233))
