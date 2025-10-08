@@ -34,14 +34,14 @@ import (
 )
 
 var (
-	address1, _       = common.NewAddressFromString("Q7dc77ecc04feebb45f6f9b878d2eed271d1a17a5")
+	address1, _       = common.NewAddressFromString("Q31fec69ece96b8cdac5814ff9dd92759e7c6018b")
 	address2, _       = common.NewAddressFromString("Q0c276753083e71893dbbc1173566febef6361ab2")
-	address3, _       = common.NewAddressFromString("Qe3a470ee5138676ba9c9882e1fdffc2f20e60e50")
+	address3, _       = common.NewAddressFromString("Q2d9b972ef8219246c73363fd7c048cef81456f9d")
 	cachetestDir, _   = filepath.Abs(filepath.Join("testdata", "keystore"))
 	cachetestAccounts = []accounts.Account{
 		{
 			Address: address1,
-			URL:     accounts.URL{Scheme: KeyStoreScheme, Path: filepath.Join(cachetestDir, "UTC--2024-05-27T07-48-33.872599000Z--Q7dc77ecc04feebb45f6f9b878d2eed271d1a17a5")},
+			URL:     accounts.URL{Scheme: KeyStoreScheme, Path: filepath.Join(cachetestDir, "UTC--2024-05-27T07-48-33.872599000Z--Q31fec69ece96b8cdac5814ff9dd92759e7c6018b")},
 		},
 		{
 			Address: address2,
