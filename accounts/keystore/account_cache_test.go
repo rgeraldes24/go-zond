@@ -223,7 +223,7 @@ func TestCacheAddDeleteOrder(t *testing.T) {
 			t.Errorf("expected hasAccount(%x) to return true", a.Address)
 		}
 	}
-	address, _ := common.NewAddressFromString("Q0256e92b2fa7cee1f6c172f9ede57efc2292ec3c")
+	address, _ := common.NewAddressFromString("Qbb81a0496aa34a64f96c2bcd28793165e1e6c08a")
 	if cache.hasAddress(address) {
 		t.Errorf("expected hasAccount(%x) to return false", address)
 	}

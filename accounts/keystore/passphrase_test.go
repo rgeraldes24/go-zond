@@ -36,7 +36,7 @@ func TestKeyEncryptDecrypt(t *testing.T) {
 		t.Fatal(err)
 	}
 	password := ""
-	address, _ := common.NewAddressFromString("Q066570b8482bd968f41f2536981fdc0c10a4610e")
+	address, _ := common.NewAddressFromString("Qcf3a354d32c36db1e9c27602bd3c154f5679401e")
 
 	// Do a few rounds of decryption and encryption
 	for i := 0; i < 3; i++ {
