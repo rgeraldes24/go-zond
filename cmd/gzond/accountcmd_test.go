@@ -326,7 +326,7 @@ func TestUnlockFlagAmbiguousWrongPassword(t *testing.T) {
 Unlocking account Q4cce0507B955D0c7e6b79269B66ed498c670Bb0a | Attempt 1/3
 !! Unsupported terminal, password will be echoed.
 Password: {{.InputLine "wrong"}}
-Multiple key files exist for address Q4cce0507B955D0c7e6b79269B66ed498c670Bb0a:
+Multiple key files exist for address Q4cce0507b955d0c7e6b79269b66ed498c670bb0a:
    keystore://{{keypath "1"}}
    keystore://{{keypath "2"}}
 Testing your password against all of them...
