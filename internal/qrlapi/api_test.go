@@ -933,7 +933,7 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 		}
 		blockHashes[i] = header.Hash()
 	}
-	// pendingHash := pending.Hash()
+	pendingHash := pending.Hash()
 
 	var testSuite = []struct {
 		blockNumber rpc.BlockNumber
@@ -967,132 +967,130 @@ func TestRPCGetBlockOrHeader(t *testing.T) {
 			reqHeader:   true,
 			file:        "number-latest-1",
 		},
-		/*
-			// 4. latest+1 header
-			{
-				blockNumber: rpc.BlockNumber(11),
-				reqHeader:   true,
-				file:        "number-latest+1",
-			},
-			// 5. pending header
-			{
-				blockNumber: rpc.PendingBlockNumber,
-				reqHeader:   true,
-				file:        "tag-pending",
-			},
-			// 6. latest block
-			{
-				blockNumber: rpc.LatestBlockNumber,
-				file:        "tag-latest",
-			},
-			// 7. genesis block
-			{
-				blockNumber: rpc.BlockNumber(0),
-				file:        "number-0",
-			},
-			// 8. #1 block
-			{
-				blockNumber: rpc.BlockNumber(1),
-				file:        "number-1",
-			},
-			// 9. latest-1 block
-			{
-				blockNumber: rpc.BlockNumber(9),
-				fullTx:      true,
-				file:        "number-latest-1",
-			},
-			// 10. latest+1 block
-			{
-				blockNumber: rpc.BlockNumber(11),
-				fullTx:      true,
-				file:        "number-latest+1",
-			},
-			// 11. pending block
-			{
-				blockNumber: rpc.PendingBlockNumber,
-				file:        "tag-pending",
-			},
-			// 12. pending block + fullTx
-			{
-				blockNumber: rpc.PendingBlockNumber,
-				fullTx:      true,
-				file:        "tag-pending-fullTx",
-			},
-			// 13. latest header by hash
-			{
-				blockHash: &blockHashes[len(blockHashes)-1],
-				reqHeader: true,
-				file:      "hash-latest",
-			},
-			// 14. genesis header by hash
-			{
-				blockHash: &blockHashes[0],
-				reqHeader: true,
-				file:      "hash-0",
-			},
-			// 15. #1 header
-			{
-				blockHash: &blockHashes[1],
-				reqHeader: true,
-				file:      "hash-1",
-			},
-			// 16. latest-1 header
-			{
-				blockHash: &blockHashes[len(blockHashes)-2],
-				reqHeader: true,
-				file:      "hash-latest-1",
-			},
-			// 17. empty hash
-			{
-				blockHash: &common.Hash{},
-				reqHeader: true,
-				file:      "hash-empty",
-			},
-			// 18. pending hash
-			{
-				blockHash: &pendingHash,
-				reqHeader: true,
-				file:      `hash-pending`,
-			},
-			// 19. latest block
-			{
-				blockHash: &blockHashes[len(blockHashes)-1],
-				file:      "hash-latest",
-			},
-			// 20. genesis block
-			{
-				blockHash: &blockHashes[0],
-				file:      "hash-genesis",
-			},
-			// 21. #1 block
-			{
-				blockHash: &blockHashes[1],
-				file:      "hash-1",
-			},
-			// 22. latest-1 block
-			{
-				blockHash: &blockHashes[len(blockHashes)-2],
-				fullTx:    true,
-				file:      "hash-latest-1-fullTx",
-			},
-			// 23. empty hash + body
-			{
-				blockHash: &common.Hash{},
-				fullTx:    true,
-				file:      "hash-empty-fullTx",
-			},
-			// 24. pending block
-			{
-				blockHash: &pendingHash,
-				file:      `hash-pending`,
-			},
-			// 25. pending block + fullTx
-			{
-				blockHash: &pendingHash,
-				fullTx:    true,
-				file:      "hash-pending-fullTx",
-			},
-		*/
+		// 4. latest+1 header
+		{
+			blockNumber: rpc.BlockNumber(11),
+			reqHeader:   true,
+			file:        "number-latest+1",
+		},
+		// 5. pending header
+		{
+			blockNumber: rpc.PendingBlockNumber,
+			reqHeader:   true,
+			file:        "tag-pending",
+		},
+		// 6. latest block
+		{
+			blockNumber: rpc.LatestBlockNumber,
+			file:        "tag-latest",
+		},
+		// 7. genesis block
+		{
+			blockNumber: rpc.BlockNumber(0),
+			file:        "number-0",
+		},
+		// 8. #1 block
+		{
+			blockNumber: rpc.BlockNumber(1),
+			file:        "number-1",
+		},
+		// 9. latest-1 block
+		{
+			blockNumber: rpc.BlockNumber(9),
+			fullTx:      true,
+			file:        "number-latest-1",
+		},
+		// 10. latest+1 block
+		{
+			blockNumber: rpc.BlockNumber(11),
+			fullTx:      true,
+			file:        "number-latest+1",
+		},
+		// 11. pending block
+		{
+			blockNumber: rpc.PendingBlockNumber,
+			file:        "tag-pending",
+		},
+		// 12. pending block + fullTx
+		{
+			blockNumber: rpc.PendingBlockNumber,
+			fullTx:      true,
+			file:        "tag-pending-fullTx",
+		},
+		// 13. latest header by hash
+		{
+			blockHash: &blockHashes[len(blockHashes)-1],
+			reqHeader: true,
+			file:      "hash-latest",
+		},
+		// 14. genesis header by hash
+		{
+			blockHash: &blockHashes[0],
+			reqHeader: true,
+			file:      "hash-0",
+		},
+		// 15. #1 header
+		{
+			blockHash: &blockHashes[1],
+			reqHeader: true,
+			file:      "hash-1",
+		},
+		// 16. latest-1 header
+		{
+			blockHash: &blockHashes[len(blockHashes)-2],
+			reqHeader: true,
+			file:      "hash-latest-1",
+		},
+		// 17. empty hash
+		{
+			blockHash: &common.Hash{},
+			reqHeader: true,
+			file:      "hash-empty",
+		},
+		// 18. pending hash
+		{
+			blockHash: &pendingHash,
+			reqHeader: true,
+			file:      `hash-pending`,
+		},
+		// 19. latest block
+		{
+			blockHash: &blockHashes[len(blockHashes)-1],
+			file:      "hash-latest",
+		},
+		// 20. genesis block
+		{
+			blockHash: &blockHashes[0],
+			file:      "hash-genesis",
+		},
+		// 21. #1 block
+		{
+			blockHash: &blockHashes[1],
+			file:      "hash-1",
+		},
+		// 22. latest-1 block
+		{
+			blockHash: &blockHashes[len(blockHashes)-2],
+			fullTx:    true,
+			file:      "hash-latest-1-fullTx",
+		},
+		// 23. empty hash + body
+		{
+			blockHash: &common.Hash{},
+			fullTx:    true,
+			file:      "hash-empty-fullTx",
+		},
+		// 24. pending block
+		{
+			blockHash: &pendingHash,
+			file:      `hash-pending`,
+		},
+		// 25. pending block + fullTx
+		{
+			blockHash: &pendingHash,
+			fullTx:    true,
+			file:      "hash-pending-fullTx",
+		},
 	}
 
 	for i, tt := range testSuite {
