@@ -336,36 +336,33 @@ func TestFilters(t *testing.T) {
 			f:    sys.NewRangeFilter(int64(rpc.FinalizedBlockNumber), int64(rpc.FinalizedBlockNumber), nil, nil),
 			want: `[{"address":"Qff00000000000000000000000000000000000000","topics":["0x0000000000000000000000000000000000000000000000000000746f70696333"],"data":"0x","blockNumber":"0x3e7","transactionHash":"0x65a94a9eabb1e0f2d31c55d535ecc7b84bf52e56cfec7730c6d3dad9ab36c379","transactionIndex":"0x0","blockHash":"0x3f8f1b8cd94fab843d590982f0055929e8acfaba6e1ba368ec071421427ee804","logIndex":"0x0","removed":false}]`,
 		},
-		/*
-
-			{
-				f: sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.FinalizedBlockNumber), nil, nil),
-			},
-			{
-				f:   sys.NewRangeFilter(int64(rpc.SafeBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
-				err: "safe header not found",
-			},
-			{
-				f:   sys.NewRangeFilter(int64(rpc.SafeBlockNumber), int64(rpc.SafeBlockNumber), nil, nil),
-				err: "safe header not found",
-			},
-			{
-				f:   sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.SafeBlockNumber), nil, nil),
-				err: "safe header not found",
-			},
-			{
-				f:   sys.NewRangeFilter(int64(rpc.PendingBlockNumber), int64(rpc.PendingBlockNumber), nil, nil),
-				err: errPendingLogsUnsupported.Error(),
-			},
-			{
-				f:   sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.PendingBlockNumber), nil, nil),
-				err: errPendingLogsUnsupported.Error(),
-			},
-			{
-				f:   sys.NewRangeFilter(int64(rpc.PendingBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
-				err: errPendingLogsUnsupported.Error(),
-			},
-		*/
+		{
+			f: sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.FinalizedBlockNumber), nil, nil),
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.SafeBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
+			err: "safe header not found",
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.SafeBlockNumber), int64(rpc.SafeBlockNumber), nil, nil),
+			err: "safe header not found",
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.SafeBlockNumber), nil, nil),
+			err: "safe header not found",
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.PendingBlockNumber), int64(rpc.PendingBlockNumber), nil, nil),
+			err: errPendingLogsUnsupported.Error(),
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.LatestBlockNumber), int64(rpc.PendingBlockNumber), nil, nil),
+			err: errPendingLogsUnsupported.Error(),
+		},
+		{
+			f:   sys.NewRangeFilter(int64(rpc.PendingBlockNumber), int64(rpc.LatestBlockNumber), nil, nil),
+			err: errPendingLogsUnsupported.Error(),
+		},
 	} {
 		logs, err := tc.f.Logs(context.Background())
 		if err == nil && tc.err != "" {
