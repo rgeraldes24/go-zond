@@ -33,7 +33,7 @@ import (
 
 var testKey, _ = pqcrypto.HexToWallet("f29f58aff0b00de2844f7e20bd9eeaacc379150043beeb328335817512b29fbb7184da84a092f842b2a06d72a24a5d28")
 
-var wantedAddr, _ = common.NewAddressFromString("QFC225fAa97981B6De357Bf8353fB27a4dBddC0af")
+var wantedAddr, _ = common.NewAddressFromString("QcF39819954C9b2937A802eCff89F4d7aA89b0769")
 var waitDeployedTests = map[string]struct {
 	code        string
 	gas         uint64

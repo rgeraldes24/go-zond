@@ -55,7 +55,7 @@ require (
 	github.com/status-im/keycard-go v0.2.0
 	github.com/stretchr/testify v1.8.1
 	github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7
-	github.com/theQRL/go-qrllib v0.0.0-20250909061333-45d1b89fb22e
+	github.com/theQRL/go-qrllib v0.0.0-20251008091143-a411d9a85341
 	github.com/urfave/cli/v2 v2.25.7
 	go.uber.org/automaxprocs v1.5.2
 	golang.org/x/crypto v0.17.0
