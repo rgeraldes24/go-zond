@@ -37,7 +37,7 @@ func TestImportRaw(t *testing.T) {
 		clef := runClef(t, "--suppress-bootwarn", "--lightkdf", "importraw", keyPath)
 		clef.input("myverylongpassword").input("myverylongpassword")
 		if out := string(clef.Output()); !strings.Contains(out,
-			"Key imported:\n  Address Q0256E92B2fA7Cee1F6C172F9eDe57eFC2292EC3C") {
+			"Key imported:\n  Address QBb81a0496aa34a64F96C2BCd28793165E1E6c08a") {
 			t.Logf("Output\n%v", out)
 			t.Error("Failure")
 		}
@@ -87,7 +87,7 @@ func TestListAccounts(t *testing.T) {
 		clef.input("myverylongpassword").input("myverylongpassword").WaitExit()
 		// Secondly, do a listing, using the same datadir
 		clef = runWithKeystore(t, clef.Datadir, "--suppress-bootwarn", "--lightkdf", "list-accounts")
-		if out := string(clef.Output()); !strings.Contains(out, "Q0256E92B2fA7Cee1F6C172F9eDe57eFC2292EC3C (keystore:") {
+		if out := string(clef.Output()); !strings.Contains(out, "QBb81a0496aa34a64F96C2BCd28793165E1E6c08a (keystore:") {
 			t.Logf("Output\n%v", out)
 			t.Error("Failure")
 		}
@@ -116,7 +116,7 @@ func TestListWallets(t *testing.T) {
 		clef.input("myverylongpassword").input("myverylongpassword").WaitExit()
 		// Secondly, do a listing, using the same datadir
 		clef = runWithKeystore(t, clef.Datadir, "--suppress-bootwarn", "--lightkdf", "list-wallets")
-		if out := string(clef.Output()); !strings.Contains(out, "Account 0: Q0256E92B2fA7Cee1F6C172F9eDe57eFC2292EC3C") {
+		if out := string(clef.Output()); !strings.Contains(out, "Account 0: QBb81a0496aa34a64F96C2BCd28793165E1E6c08a") {
 			t.Logf("Output\n%v", out)
 			t.Error("Failure")
 		}

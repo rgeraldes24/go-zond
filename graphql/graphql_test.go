@@ -227,7 +227,7 @@ func TestGraphQLBlockSerializationEIP2718(t *testing.T) {
 	}{
 		{
 			body: `{"query": "{block {number transactions { from { address } to { address } value hash type accessList { address storageKeys } index}}}"}`,
-			want: `{"data":{"block":{"number":"0x1","transactions":[{"from":{"address":"Q16b330c3cef65a832a656dfdc7387e607593fed0"},"to":{"address":"Q0000000000000000000000000000000000000dad"},"value":"0x64","hash":"0x55fac5d94bb5add2b55f0d3e4c068c5003c2c517ec92a286b01928e107d6dae9","type":"0x2","accessList":[],"index":"0x0"},{"from":{"address":"Q16b330c3cef65a832a656dfdc7387e607593fed0"},"to":{"address":"Q0000000000000000000000000000000000000dad"},"value":"0x32","hash":"0x227bee400ea996770f3b91d00dcc88130b5a12634ad1d4492d25b72874f669ed","type":"0x2","accessList":[{"address":"Q0000000000000000000000000000000000000dad","storageKeys":["0x0000000000000000000000000000000000000000000000000000000000000000"]}],"index":"0x1"}]}}}`,
+			want: `{"data":{"block":{"number":"0x1","transactions":[{"from":{"address":"Qd5812f6cf4a0f645aa620cd57319a0ed649dd8f5"},"to":{"address":"Q0000000000000000000000000000000000000dad"},"value":"0x64","hash":"0x55fac5d94bb5add2b55f0d3e4c068c5003c2c517ec92a286b01928e107d6dae9","type":"0x2","accessList":[],"index":"0x0"},{"from":{"address":"Qd5812f6cf4a0f645aa620cd57319a0ed649dd8f5"},"to":{"address":"Q0000000000000000000000000000000000000dad"},"value":"0x32","hash":"0x227bee400ea996770f3b91d00dcc88130b5a12634ad1d4492d25b72874f669ed","type":"0x2","accessList":[{"address":"Q0000000000000000000000000000000000000dad","storageKeys":["0x0000000000000000000000000000000000000000000000000000000000000000"]}],"index":"0x1"}]}}}`,
 			code: 200,
 		},
 	} {
